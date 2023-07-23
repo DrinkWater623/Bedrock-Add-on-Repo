@@ -1,0 +1,33 @@
+{
+    "format_version": "1.19.50",
+    "minecraft:block": {
+        "description": {
+            "identifier": "dw623:gunpowder_block",
+            "register_to_creative_menu": true,
+            "menu_category": {                
+                "category": "construction",               
+                "is_hidden_in_commands": false
+            }
+        },
+        "components": {
+            "minecraft:collision_box":true,
+            "minecraft:destructible_by_explosion": true,
+            "minecraft:destructible_by_mining": true,
+            "minecraft:display_name":"Gunpowder Block",
+            "minecraft:flammable": true,
+            "minecraft:map_color":"#FFFFFF",
+            "minecraft:selection_box":true
+            //test them remove
+            ,"minecraft:on_interact": {"event":"ev:test_interact"}
+        },
+        "events":{
+            /*
+                test
+                fireball
+                snowball
+                arrow
+            */
+            "ev:test_interact":{"run_command":{"command":["say Interaction Happened"]}}
+        }        
+    }    
+}

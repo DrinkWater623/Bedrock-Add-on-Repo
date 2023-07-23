@@ -1,0 +1,12 @@
+{
+   "$template":{
+      "dw623:c4": {"isotropic":true,"textures":"c4"},
+      "dw623:obsidian_lite": {"isotropic":true,"textures":"obsidian_lite"},
+
+      //"dw623:tnt_test_block": {"sound": "grass","textures":"glass"},
+      
+      //This does not seem to be work, may be because of the geo used
+      //test with unit cube to se if can use the texture as it is correctly
+      "{{#tnt_types.filter(x => x.ns != 'minecraft')}}": {"{{ns}}:{{identifier}}_xblock":{"sound":"grass"}}
+   }
+}

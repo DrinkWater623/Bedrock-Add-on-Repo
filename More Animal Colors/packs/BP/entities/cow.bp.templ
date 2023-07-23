@@ -1,0 +1,27 @@
+{
+	"$copy": "{{getLatestBPFile('entities/cow.json')}}",
+	"$template": {
+    "minecraft:entity": {
+      "component_groups": {
+        "minecraft:cow_baby": {"minecraft:ageable":{"duration":3600}},
+        "{{#cow_colors}}": {"cg:skin_{{color_id}}_{{color}}":{"minecraft:skin_id":{"value":"{{=color_id}}"}}}
+      },
+      "events": {
+        "minecraft:entity_born": {"trigger":"ev:color_random_weighted"},
+        "$minecraft:entity_spawned": {
+          "sequence": [
+            {"trigger":"ev:color_random_weighted"},
+            {"trigger":"ev:entity_spawned_baby_or_adult"}
+          ]
+        },
+        "ev:entity_spawned_baby_or_adult": {
+          "randomize": [
+            {"weight":90,"remove":{},"add":{"component_groups":["minecraft:cow_adult"]}},
+            {"weight":10,"remove":{},"add":{"component_groups":["minecraft:cow_baby"]}}
+          ]
+        },
+        "ev:color_random_weighted": {"randomize":[{"{{#cow_colors}}":{"weight":"{{=weight}}","add":{"component_groups":["cg:skin_{{color_id}}_{{color}}"]}}}]}
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "format_version": "1.17.0",
+  "minecraft:recipe_shaped": {
+    "description": {"identifier":"dw623:obsidian_lite_recipe"},
+    "tags": ["crafting_table"],
+    "group": "stone",
+    "pattern": [
+      "###",
+      "#p#",
+      "###"
+    ],
+    "key": {
+      "#": {"item":"minecraft:obsidian"},
+      "p": {"item":"minecraft:iron_block"}
+      //"p": {"item":"minecraft:potion","data":34}
+    },
+    "result": {"item":"dw623:obsidian_lite","count":32}
+  }
+}

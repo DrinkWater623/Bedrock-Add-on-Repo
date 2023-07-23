@@ -1,0 +1,98 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.query_test": {
+            "initial_state": "spawned",
+			"states": {
+				"spawned": {
+					"on_entry": ["/say in AC"],
+					"transitions": [
+						{"is_alive": "return q.is_alive;"},
+						{"is_not_alive": "return !q.is_alive;"}
+					]
+				},
+				"is_alive": {
+					"on_entry": ["/say is_alive"],
+					"transitions": [
+						{"is_on_fire":	 "return q.is_on_fire;"},
+						{"is_not_on_fire":	 "return !q.is_on_fire;"}
+					]
+				},
+				"is_not_alive": {
+					"on_entry": ["/say is_not_alive"],
+					"transitions": [
+						{"is_on_fire":	 "return q.is_on_fire;"},
+						{"is_not_on_fire":	 "return !q.is_on_fire;"}
+					]
+				},
+				"is_on_fire": {
+					"on_entry": ["/say is_on_fire"],
+					"transitions": [
+						{"is_on_ground"		:"return q.is_on_ground;"},
+						{"is_not_on_ground"	:"return !q.is_on_ground;"}
+					]
+				},
+				"is_not_on_fire": {
+					"on_entry": ["/say is_not_on_fire"],
+					"transitions": [
+						{"is_on_ground"		:"return q.is_on_ground;"},
+						{"is_not_on_ground"	:"return !q.is_on_ground;"}
+					]
+				},
+				"is_on_ground": {
+					"on_entry": ["/say is_on_ground"],
+					"transitions": [
+						{"is_moving":	 "return q.is_moving;"},
+						{"is_not_moving":	 "return !q.is_moving;"}
+					]
+				},
+				"is_not_on_ground": {
+					"on_entry": ["/say is_not_on_ground"],
+					"transitions": [
+						{"is_moving"	:"return q.is_moving;"},
+						{"is_not_moving":"return !q.is_moving;"}
+					]
+				},
+				"is_moving": {
+					"on_entry": ["/say is_moving"],
+					"transitions": [
+						{"is_levitating":	 "return q.is_levitating;"},
+						{"is_not_levitating":	 "return !q.is_levitating;"}
+					]
+				},
+				"is_not_moving": {
+					"on_entry": ["/say is_not_moving"],
+					"transitions": [
+						{"is_levitating"	:"return q.is_levitating;"},
+						{"is_not_levitating":"return !q.is_levitating;"}
+					]
+				},
+				"is_levitating": {
+					"on_entry": ["/say is_levitating"],
+					"transitions": [
+						{"is_standing":	 "return q.is_standing;"},
+						{"is_not_standing":	 "return !q.is_standing;"}
+					]
+				},
+				"is_not_levitating": {
+					"on_entry": ["/say is_not_levitating"],
+					"transitions": [
+						{"is_standing"	:"return q.is_standing;"},
+						{"is_not_standing":"return !q.is_standing;"}
+					]
+				},
+				"is_standing": {
+					"on_entry": ["/say is_standing"],
+					"transitions": [
+					]
+				},
+				"is_not_standing": {
+					"on_entry": ["/say is_not_standing"],
+					"transitions": [
+						
+					]
+				}					
+			}
+		}
+	}
+}

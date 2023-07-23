@@ -1,0 +1,12 @@
+{	
+  "$copy": "{{getLatestRPFile('entity/cow.entity.json')}}",
+	"$template": {
+    "minecraft:client_entity": {
+      "description": {
+        "$textures": {
+          "{{#cow_colors}}": {"{{color}}_cow":"textures/entity/cow/cow_{{color}}"}
+        }
+      }
+    }
+  }
+}

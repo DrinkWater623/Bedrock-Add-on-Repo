@@ -1,0 +1,41 @@
+{
+	"$files": {
+        "array": "tnt_types.filter(x => x.level >= 0)",
+        "fileName": "{{identifier}}_entity.rp"
+    },
+	"$template":{
+		"format_version": "1.10.0",
+		"minecraft:client_entity": {
+			"description": {
+				"identifier": "{{settings.ns}}:{{identifier}}_entity",
+				"materials": {
+					"default": "entity"
+				},
+				"textures": {
+					"block": "textures/blocks/better_tnt/tnt_{{color}}_band",
+					"invisible": "textures/blocks/better_tnt/invisible",
+					"white": "textures/blocks/better_tnt/run"
+				},
+				"geometry": {
+					"default": "geometry.box"
+				},
+				"render_controllers": ["controller.render.better_tnt"]
+			}
+		}
+	}
+}
+/*
+"textures": {
+				//"default": "textures/entity/invisible"
+				"installed"		: "textures/entities/black_on",   //0
+				"off_ms_on"		: "textures/entities/gray_on",	  //1
+				"off_ms_dead"	: "textures/entities/gray_off",	
+				"on_motion"		: "textures/entities/gray_90_pct", 
+				"on_player"		: "textures/entities/white_on",
+				"on_ms_dead"	: "textures/entities/white_off",
+				"off_flicker"	: "textures/entities/gray_05_pct"
+			},		
+			"geometry": {
+				"default": "geometry.box"
+			},
+			"render_controllers": ["controller.render.motion_sensor"]*/

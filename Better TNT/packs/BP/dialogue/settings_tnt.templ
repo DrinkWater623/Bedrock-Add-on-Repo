@@ -1,0 +1,169 @@
+{
+	"$template":
+	{
+		"format_version": "1.17.0",
+		"minecraft:npc_dialogue": {
+			"scenes": [							
+				{
+					"scene_tag": "bt_menu_direction",
+					"npc_name": "Better TNT Re-Direct Menu",
+					"on_open_commands": [
+						//make sure of: new world - stuff is loaded
+						"/dialogue open @s @initiator[scores={better_tnt_admin=..0}] bt_menu_player",
+						"/dialogue open @s @initiator[scores={better_tnt_admin=1..},tag=Debug_Better_TNT] bt_menu_debugger",
+						"/dialogue open @s @initiator[scores={better_tnt_admin=1..},tag=!Debug_Better_TNT] bt_menu_admin"
+					],
+					"text": "Select an Action or Sub-Menu\n\nThe Summon will only work for an Admin",
+					"buttons": [{"name":"Exit","commands":[]}]
+				},
+				{
+					"scene_tag": "bt_menu_admin",
+					"npc_name": "Better TNT Admin Menu",				
+					"text": "Admin Level: Select an Action or Sub-Menu",
+					"buttons": [										
+						{
+							"name": "TNT Menu",
+							"commands": ["/dialogue open @s @initiator bt_menu_settings"]
+						},
+						{
+							"name": "§5View Sidebar",
+							"commands": [
+								"/scoreboard objectives setdisplay sidebar better_tnt",
+								"/scoreboard objectives setdisplay list better_tnt"
+							]
+						},
+						{						
+							"name": "Reset Menu",
+							"commands": ["/dialogue open @s @initiator bt_menu_reset"]
+						},				
+						{"name":"§4Exit","commands":[]},
+						{						
+							"name": "Sidebar Off",
+							"commands": [
+								"/scoreboard objectives setdisplay sidebar",
+								"/scoreboard objectives setdisplay list"
+							]
+						},
+						{
+							"name": "§lThis Bot",
+							"commands": ["/dialogue open @s @initiator menu_{{settings.main_bot}}_control"]
+						}
+					]
+				},
+				{
+					"scene_tag": "bt_menu_debugger",
+					"npc_name": "Better TNT Debugger Menu",				
+					"text": "Admin Level: Select an Action or Sub-Menu",
+					"buttons": [										
+						{
+							"name": "TNT Menu",
+							"commands": ["/dialogue open @s @initiator bt_menu_settings"]
+						},
+						{
+							"name": "§5View Sidebar",
+							"commands": [
+								"/scoreboard objectives setdisplay sidebar better_tnt"
+							]
+						},
+						{						
+							"name": "Reset Menu",
+							"commands": ["/dialogue open @s @initiator bt_menu_reset"]
+						},				
+						{"name":"§4Exit","commands":[]},
+						{						
+							"name": "Sidebar Menu<>",
+							"commands": ["/dialogue open @s @initiator bt_menu_sidebars"]
+						},
+						{
+							"name": "§lThis Bot",
+							"commands": ["/dialogue open @s @initiator menu_{{settings.main_bot}}_control"]
+						}
+					]
+				},
+				{
+					"scene_tag": "bt_menu_sidebars",
+					"npc_name": "Better TNT Sidebar Menu",				
+					"text": "Admin Level: Select a Scoreboard to Display\n\nSidebar and List Mode",
+					"buttons": [										
+						{
+							"name": "better_tnt",
+							"commands": [
+								"/scoreboard objectives setdisplay sidebar better_tnt",
+								"/scoreboard objectives setdisplay list better_tnt"
+							]
+						},
+						{
+							"name": "bt_status",
+							"commands": [
+								"/scoreboard objectives setdisplay sidebar bt_status",
+								"/scoreboard objectives setdisplay list bt_status"
+							]
+						},
+						{						
+							"name": "better_tnt_admin",
+							"commands": [
+								"/scoreboard objectives setdisplay sidebar better_tnt_admin",
+								"/scoreboard objectives setdisplay list better_tnt_admin"
+							]
+						},				
+						{"name":"§4Exit","commands":[]},
+						{						
+							"name": "bt_timer",
+							"commands": [
+								"/scoreboard objectives setdisplay sidebar bt_timer",
+								"/scoreboard objectives setdisplay list bt_timer"
+							]
+						},
+						{						
+							"name": "Sidebar Off",
+							"commands": [
+								"/scoreboard objectives setdisplay sidebar",
+								"/scoreboard objectives setdisplay list"
+							]
+						}
+					]
+				},
+				{
+					"scene_tag": "bt_menu_settings",
+					"npc_name": "TNT Settings",				
+					"text": "Select Sub-Menu to Adjust:\n\nThe Life Time of the TNT\nor\nWho it Attacks.  Look for Kill_Attacks_? on TNT Settings Scoreboard",
+					"buttons": [					
+						{
+							"name": "[] Better TNT",
+							"commands": [
+								"/dialogue open @s @initiator tnt_settings"
+							]
+						},				
+						{
+							"name": "§4« Back",
+							"commands": ["/dialogue open @e[c=1,family=bot] @initiator tnt_settings"]
+						}
+					]
+				},
+				{
+					"scene_tag": "bt_menu_reset",
+					"npc_name": "Better TNT Rest Menu",				
+					"text": "§cBe Careful - there is NO Confirmation Prompt§r\n\n1) Settings: Which TNT can Explode\n2) Admin: Which players can access the admin menu (note: any player that goes into creative mode is automatically given admin over Better TNT)",
+					"buttons": [										
+						{"name":"§4« Back","commands":["/dialogue open @e[c=1,family=bot] @initiator bt_menu_admin"]},
+						{
+							"name": "Reset Settings",
+							"commands": [
+								"/function dw623/better_tnt/addon_2_reset",
+								"/scoreboard objective setdisplay sidebar better_tnt"
+							]
+						},
+						{
+							"name": "Reset Admin",
+							"commands": [
+								"/scoreboard players reset * better_tnt_admin",
+								"/scoreboard players set @initiator better_tnt_admin 1",
+								"/scoreboard objective setdisplay sidebar better_tnt_admin"
+							]
+						}
+					]
+				}
+			]
+		}
+	}
+}

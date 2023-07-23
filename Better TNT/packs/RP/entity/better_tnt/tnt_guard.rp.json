@@ -1,0 +1,19 @@
+{
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "dw623:tnt_guard",
+			"materials": {
+				"default": "entity"
+			},
+			"textures": {
+				//"default": "textures/entity/invisible"
+				"default": "textures/blocks/better_tnt/invisible"
+			},
+			"geometry": {
+				"default": "geometry.box"
+			},
+			"render_controllers": ["controller.render.default"]
+		}
+	}
+}

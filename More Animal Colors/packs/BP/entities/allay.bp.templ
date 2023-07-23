@@ -1,0 +1,56 @@
+{
+	"$copy": "{{getLatestBPFile('entities/allay.json')}}",
+	"$template": {
+    "minecraft:entity": {
+      //This one is the order of the array... reest is the color_id for the DYE
+      "component_groups": {"{{#allay_colors}}": {"cg:allay_{{color}}":{"minecraft:skin_id":{"value":"{{=id}}"}}}},
+      "components": {
+       // "minecraft:is_dyeable": {"interact_text":"action.interact.dye"},
+        "$minecraft:interact": {
+          "interactions": [
+            {
+              "{{#allay_colors}}": {
+                "on_interact": {
+                  "filters": {"test": "has_equipment", "subject": "other", "domain": "hand","value": "{{color}}_dye"},
+                  // "filters": {"test": "has_equipment", "subject": "other", "domain": "hand","value": "dye:{{bug_id}}"},
+                  "event":"ev:turn_{{color}}"
+                },
+                "cooldown": 0.0,
+                "swing": true,
+                "use_item": true,
+                "play_sounds": "leash_knot",
+                "give_item": false,
+                "take_item": false
+              }
+            },
+            {
+              "on_interact": {
+                "filters": {
+                  "all_of": [
+                    {"test":"is_family","subject":"other","value":"player"},
+                    {"test":"is_sneaking","subject":"other","value":false},
+                    {
+                      "none_of":[
+                        {
+                          "{{#allay_colors}}": {"test": "has_equipment", "subject": "other", "domain": "hand","value": "{{color}}_dye"}
+                        }
+                      ]
+                    }                    
+                  ]
+                }
+              },
+              "give_item": true,
+              "take_item": true,
+              "interact_text": "action.interact.allay"
+            }
+          ]
+        }      
+      },
+      "events": {  
+        "minecraft:entity_spawned": {"trigger":"ev:color_random_weighted"},     
+        "ev:color_random_weighted": {"randomize":[{"{{#allay_colors}}":{"weight":"{{=weight}}","add":{"component_groups":["cg:allay_{{color}}"]}}}]},
+        "{{#allay_colors}}": {"ev:turn_{{color}}":{"add":{"component_groups":["cg:allay_{{color}}"]}}}
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+	"format_version": "1.19.80",
+	"minecraft:item": {
+		"description": {
+			"identifier": "dw623:wither_remote",
+			"category": "equipment"
+		},
+		"components": {			
+			"minecraft:creative_category": {"parent": "itemGroup.name.none"},
+			"minecraft:display_name": {"value": "Wither Remote"},
+            "minecraft:foil": false,
+			"minecraft:hand_equipped": true,
+			"minecraft:icon": {"texture": "wither_remote_stick"},
+			"minecraft:max_stack_size": 1,
+			/*
+			"minecraft:render_offsets":{"main_hand":[0,0,0],"off_hand":[0,0.5,0]}
+			*/			
+			"minecraft:on_use": {"on_use": {"event": "ev:dialogue_open"}}
+		},
+		"events": {
+			/*If not one close by, summon a new one*/
+			"ev:dialogue_open": {
+				"run_command": {
+					"command": [
+						"function dw623/wither_control/scoreboard_init",
+						"execute as @s at @s unless entity @e[r=16,family=wither_bot] run summon dw623:wither_bot ^ ^1 ^3 facing @s minecraft:entity_spawned \"Wither Bot\""						
+					],
+					"target": "self"
+				},
+				"swing": {}				
+			},
+			"ev:test": {"run_command":{"command":["say hi"],"target":"self"}}			
+		}
+	}
+}
+
+/*
+minecraft:entity_spawned
+
+*/

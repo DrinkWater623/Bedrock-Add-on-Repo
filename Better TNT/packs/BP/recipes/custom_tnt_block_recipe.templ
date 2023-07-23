@@ -1,0 +1,30 @@
+{
+	"$files": {
+        "array": "tnt_types.filter(x => x.level > 0)",
+        "fileName": "{{identifier}}.recipe"
+    },
+	"$template": {
+    "format_version": "1.17.0",
+    "minecraft:recipe_shaped": {
+      "description": {
+      "identifier": "{{settings.ns}}:{{identifier}}_block_recipe"
+      },
+      
+      "tags": [ "crafting_table" ],
+      "pattern": "{{recipe_pattern}}",
+      "key": {
+        "s": {"item":"minecraft:string"},
+        "p": {"item":"minecraft:paper"},
+        "g": {"item":"minecraft:gunpowder"},
+        "b": {"item":"{{settings.ns}}:gunpowder_block"},
+        "c": {"item":"{{settings.ns}}:c4"},
+        "d": {"item":"minecraft:diamond"},
+        "a": {"item":"minecraft:ancient_debris"},
+        "n": {"item":"minecraft:netherite_ingot"}
+      },
+      "result": {
+        "item": "{{settings.ns}}:{{identifier}}_block"
+      }
+    }
+  }
+}

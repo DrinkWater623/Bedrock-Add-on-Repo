@@ -1,0 +1,25 @@
+{
+  "format_version": "1.17.0",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "shaped:wither_remote_from_stick"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "group": "stick",
+    "pattern": [
+      "|b|",
+      "|b|",
+      "|||"
+    ],
+    "key": {
+      "|": {"item":"minecraft:stick"},
+      "b": {"item":"minecraft:skull","data":1}
+    },
+    "result": {
+      "item": "dw623:wither_remote",
+      "count": 1
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{	
+  "$copy": "{{getLatestRPFile('render_controllers/allay.render_controllers.json')}}",
+	"$template": {
+    "render_controllers": {
+      "controller.render.allay": {
+        "$textures": ["Array.textures[query.skin_id]"],
+        "$arrays": {"textures":{"Array.textures":[{"{{#allay_colors}}":"Texture.{{color}}_allay"}]}}
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.1.json",
+	"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
+	"name": "DW_Better_TNT",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"jsonte": {
+				"url": "github.com/MCDevKit/regolith-library",
+				"version": "2.11.2"
+			},
+			"mani_fest": {
+				"runWith": "nodejs",
+				"script": "./filters/mani_fest.js"
+			}
+		},
+		"profiles": {
+			"build": {
+				"export": {
+					"readOnly": false,
+					"target": "local"
+				},
+				"filters": [
+					{
+						"filter": "jsonte"
+					},
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"description": "More TNT Options - Recipes and Blast Radius.\nIncludes C4 and Obsidian-Lite\nRequires Holiday Creator Features Experiment",
+							"min_engine_version": [
+								1,
+								19,
+								80
+							],
+							"name": "Better TNT by DW623"
+						}
+					}
+				]
+			},
+			"default": {
+				"export": {
+					"readOnly": false,
+					"target": "development"
+				},
+				"filters": [
+					{
+						"filter": "jsonte"
+					},
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"BP": {
+								"UUID": "aa12ecb0-64f4-460c-9385-aa021fc7ec1b",
+								"module": "85291a98-0a52-491b-8b97-c65375b2e011"
+							},
+							"RP": {
+								"UUID": "7974b1a6-c8f9-4178-b941-2d27611c3ae3",
+								"module": "71ba4306-156c-4b84-9b00-8cf143bc3666"
+							},
+							"description": "Work in Progress",
+							"min_engine_version": [
+								1,
+								19,
+								80
+							],
+							"name": "Dev Better TNT"
+						}
+					}
+				]
+			}
+		}
+	}
+}

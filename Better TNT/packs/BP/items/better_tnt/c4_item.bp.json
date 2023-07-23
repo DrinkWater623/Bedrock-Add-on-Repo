@@ -1,0 +1,14 @@
+{
+    "format_version": "1.19.80",
+    "minecraft:item": {
+        "description": {
+            "identifier": "dw623:c4",
+            "category": "equipment"
+        },
+        "components": {
+            "minecraft:max_stack_size": 16,
+            "minecraft:icon": {"texture": "c4"},
+            "minecraft:display_name": {"value": "C4"}
+        }
+    }
+}

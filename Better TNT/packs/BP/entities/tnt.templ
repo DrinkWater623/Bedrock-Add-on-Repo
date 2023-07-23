@@ -1,0 +1,27 @@
+{
+  "$copy": "{{getLatestBPFile('entities/tnt.json')}}",
+  "$template":{
+    "format_version": "1.19.50",
+    "minecraft:entity": {
+      "component_groups": {
+        "from_explosion": {
+          "minecraft:explode": {
+            "fuse_length": {"range_min":0.5,"range_max":2},
+            "fuse_lit": true,
+            "power": 4,
+            "causes_fire": false
+          }
+        }
+      },    
+      "components": {
+        "minecraft:type_family": {"family":["dw623_tnt","vanilla"]},
+        "minecraft:explode": {
+          "fuse_length": 5,
+          "fuse_lit": true,
+          "power": 4,
+          "causes_fire": false
+        }       
+      }
+    }
+  }
+}

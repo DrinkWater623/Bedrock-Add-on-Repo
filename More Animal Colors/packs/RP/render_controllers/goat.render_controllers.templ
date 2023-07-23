@@ -1,0 +1,11 @@
+{	
+  "$copy": "{{getLatestRPFile('render_controllers/goat.render_controllers.json')}}",
+	"$template": {
+    "render_controllers": {
+      "controller.render.goat": {
+        "$textures": ["Array.textures[query.skin_id]"],
+        "$arrays": {"textures":{"Array.textures":[{"{{#goat_colors}}":"Texture.{{color}}_goat"}]}}
+      }
+    }
+  }
+}

@@ -1,0 +1,97 @@
+{
+  /*
+    This is altered from Vanilla NPC for just the robot looking ones
+    
+    to-do
+      1) Add CG for Events to change skin from event
+  */
+  "format_version": "1.19.30",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "dw623:wither_bot",
+      "is_spawnable": false,
+      "is_summonable": true,
+      "is_experimental": false
+    },
+    "component_groups": {
+      "cg:instant_despawn": {"minecraft:instant_despawn": {}},
+      "cg:physics_gravity_on" : {"minecraft:physics": {"has_collision":true,"has_gravity":true,"push_towards_closest_space":true}},
+      "cg:physics_gravity_off" : {"minecraft:physics": {"has_collision":true,"has_gravity":false,"push_towards_closest_space":true}}  
+    },
+    "components": {  
+      "minecraft:behavior.look_at_player": {"priority":0,"look_distance":6,"probability":0.02},
+      "minecraft:collision_box": {"width":0.6,"height":2.1},
+      "minecraft:fire_immune": {},
+      "minecraft:loot": {"table":"loot_tables/empty.json"},
+      "minecraft:movement": {"value":0.5},
+      "minecraft:persistent": {},
+      "minecraft:physics": {"has_collision":true,"has_gravity":false,"push_towards_closest_space":true},
+      //DW623 Altered
+      "minecraft:type_family": {"family":["bot","wither_bot","mob"]},
+      "minecraft:npc": {
+        "npc_data": {
+          "portrait_offsets": {"translate":[-7,50,0],"scale":[1.75,1.75,1.75]},
+          "picker_offsets": {"translate":[0,20,0],"scale":[1.7,1.7,1.7]},
+          "skin_list": [
+            {"variant":0},
+            {"variant":1},
+            {"variant":2},
+            {"variant":3},
+            {"variant":4},
+            {"variant":5}
+          ]
+        }
+      },
+      "minecraft:nameable": {"always_show":true,"allow_name_tag_renaming":false},
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "cause": "all",
+            "deals_damage": false
+          }               
+        ]
+      },
+      //DW623 Added
+      "minecraft:variant":{"value":2},
+      "minecraft:despawn": {
+        "filters": {
+          "all_of":[
+            {
+              "any_of": [
+                {"test":"distance_to_nearest_player","operator":">","value":8},
+                {"test":"has_tag","value":"despawn"}
+              ]
+            },
+            {
+              "test":"has_tag","operator":"!=","value":"persistent"
+            }
+          ]            
+        }
+      },      
+      "minecraft:interact": {
+        "interactions": [
+          {
+            "on_interact": {
+              "filters": {
+                "all_of": [
+                  {"test":"is_family","subject":"other","value":"player"}                                  ]
+              },
+              "event": "ev:wither_dialogue_open"
+            },
+            "swing": true
+          }
+        ]
+      },     
+      "minecraft:timer": {
+        "looping":false,"time":1,
+        "time_down_event":{"event":"ev:wither_dialogue_open"}
+      }      
+    },
+    "events": {  
+      "ev:wither_dialogue_open":{"sequence":[{"run_command":{"target":"self","command":["dialogue open @s @p[r=7] wither_settings"]}}]},
+      "ev:gravity_off": {"add":{"component_groups":["cg:physics_gravity_off"]}},
+      "ev:gravity_on":{"add":{"component_groups":["cg:physics_gravity_on"]}},
+      "ev:suicide":{"add":{"component_groups":["cg:instant_despawn"]}}
+    }
+  }
+}

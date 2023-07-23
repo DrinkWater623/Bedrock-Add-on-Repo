@@ -1,0 +1,12 @@
+{	
+  "$copy": "{{getLatestRPFile('entity/allay.entity.json')}}",
+	"$template": {
+    "minecraft:client_entity": {
+      "description": {
+        "$textures": {
+          "{{#allay_colors}}": {"{{color}}_allay":"textures/entity/allay/allay_{{color}}"}
+        }
+      }
+    }
+  }
+}

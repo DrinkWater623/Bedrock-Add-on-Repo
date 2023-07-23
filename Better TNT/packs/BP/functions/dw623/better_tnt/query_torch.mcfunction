@@ -1,0 +1,25 @@
+execute as @s[family=!activated] at @s if block ~   ~-1 ~   torch run tell @a[tag=Debug_Better_TNT,r=10] torch bottom
+execute as @s[family=!activated] at @s if block ~   ~1  ~   torch run tell @a[tag=Debug_Better_TNT,r=10] torch top
+execute as @s[family=!activated] at @s if block ~-1  ~  ~   torch run tell @a[tag=Debug_Better_TNT,r=10] torch X
+execute as @s[family=!activated] at @s if block ~1   ~  ~   torch run tell @a[tag=Debug_Better_TNT,r=10] torch X
+execute as @s[family=!activated] at @s if block ~    ~  ~-1 torch run tell @a[tag=Debug_Better_TNT,r=10] torch Z
+execute as @s[family=!activated] at @s if block ~    ~  ~1  torch run tell @a[tag=Debug_Better_TNT,r=10] torch Z
+execute as @s[family=!activated] at @s if block ~   ~-1 ~   torch run event entity @s ev:explode_from_fire
+execute as @s[family=!activated] at @s if block ~   ~1  ~   torch run event entity @s ev:explode_from_fuse_long
+execute as @s[family=!activated] at @s if block ~-1  ~  ~   torch run event entity @s ev:explode_from_high_heat
+execute as @s[family=!activated] at @s if block ~1   ~  ~   torch run event entity @s ev:explode_from_high_heat
+execute as @s[family=!activated] at @s if block ~    ~  ~-1 torch run event entity @s ev:explode_from_high_heat
+execute as @s[family=!activated] at @s if block ~    ~  ~1  torch run event entity @s ev:explode_from_high_heat
+#####
+execute as @s[family=!activated] at @s if block ~   ~-1 ~   campfire run tell @a[tag=Debug_Better_TNT,r=10] campfire bottom
+execute as @s[family=!activated] at @s if block ~   ~1  ~   campfire run tell @a[tag=Debug_Better_TNT,r=10] campfire top
+execute as @s[family=!activated] at @s if block ~-1  ~  ~   campfire run tell @a[tag=Debug_Better_TNT,r=10] campfire X
+execute as @s[family=!activated] at @s if block ~1   ~  ~   campfire run tell @a[tag=Debug_Better_TNT,r=10] campfire X
+execute as @s[family=!activated] at @s if block ~    ~  ~-1 campfire run tell @a[tag=Debug_Better_TNT,r=10] campfire Z
+execute as @s[family=!activated] at @s if block ~    ~  ~1  campfire run tell @a[tag=Debug_Better_TNT,r=10] campfire Z
+execute as @s[family=!activated] at @s if block ~   ~-1 ~   campfire run event entity @s ev:explode_from_fuse_short
+execute as @s[family=!activated] at @s if block ~   ~1  ~   campfire run event entity @s ev:explode_from_fuse_long
+execute as @s[family=!activated] at @s if block ~-1  ~  ~   campfire run event entity @s ev:explode_from_high_heat
+execute as @s[family=!activated] at @s if block ~1   ~  ~   campfire run event entity @s ev:explode_from_high_heat
+execute as @s[family=!activated] at @s if block ~    ~  ~-1 campfire run event entity @s ev:explode_from_high_heat
+execute as @s[family=!activated] at @s if block ~    ~  ~1  campfire run event entity @s ev:explode_from_high_heat

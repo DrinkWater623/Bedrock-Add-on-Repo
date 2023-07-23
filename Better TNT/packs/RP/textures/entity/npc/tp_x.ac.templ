@@ -1,0 +1,80 @@
+{
+	"$template":{
+		"format_version": "1.10.0",
+		"animation_controllers": {
+			"controller.animation.tp_bot_go_x": {
+				"initial_state": "load",
+				"states": {
+					"load": {"transitions":[{"initialize":"return q.property('bit:delay') == 1 && q.property('int:coord_ptr') == 0') == 1;"}]},			
+					"initialize": {					
+						"on_entry": [
+							"/tell @p[tag=Debug_TP_Bot] x initialize",
+							"/tp 0 ~ ~"
+						],
+						"transitions":[
+							{"initialize"	:"v.x_axis = q.scoreboard('tp_x_axis')); return false;"},
+							{"negative_x"	:"return v.x_axis < 0;"},
+							{"positive_x"	:"return v.x_axis >= 0;"}							
+						]		
+					},																
+					//============================================================================
+					"arrived": {
+						"on_entry":[
+							"/tell @p[tag=Debug_TP_Bot] x arrived",
+							"/execute if entity @a[tag=Debug_TP_Bot] run scoreboard players operation x_arrive tp_bot_test = timer tp_bot_test",						
+							"@s ev:arrived_x"
+						],
+						"transitions":[]
+					},
+					//============================================================================
+					// Regolith / jsonte filter
+					//============================================================================
+					"positive_x": {	
+						"on_entry": [
+							"/tell @p[tag=Debug_TP_Bot] positive_x",
+							"/execute if entity @a[tag=Debug_TP_Bot] run scoreboard players add x_search_ctr tp_bot_test 1"
+						],				
+						"transitions":[						
+							{"arrived"	:"return v.x_axis == 0;"},
+							{
+								"{{#(0..25).reverse()}}":{
+									"p{{pow(2,value)}}":"return v.x_axis >= {{pow(2,value)}};"
+								}
+							}
+						]
+					},
+					"negative_x": {	
+						"on_entry": [
+							"/tell @p[tag=Debug_TP_Bot] negative_x",
+							"/execute if entity @a[tag=Debug_TP_Bot] run scoreboard players add x_search_ctr tp_bot_test 1"
+						],				
+						"transitions":[						
+							{"arrived"	:"return v.x_axis == 0;"},
+							{
+								"{{#(0..25).reverse()}}":{
+									"n{{pow(2,value)}}":"return v.x_axis <= -{{pow(2,value)}};"
+								}
+							}
+						]
+					},
+					"{{#0..25}}":{
+						"p{{pow(2,value)}}": {
+							"on_entry":[
+								"/tp @s ~{{pow(2,value)}} ~ ~ ",
+								"v.x_axis = v.x_axis - {{pow(2,value)}};"
+							],
+							"transitions":[{"positive_x":"return true;"}]
+						},
+						"n{{pow(2,value)}}": {
+							"on_entry":[
+								"/tp @s ~-{{pow(2,value)}} ~ ~ ",
+								"v.x_axis = v.x_axis + {{pow(2,value)}};"
+							],
+							"transitions":[{"negative_x":"return true;"}]
+						}
+					}
+				}
+			}
+		}
+	}
+}

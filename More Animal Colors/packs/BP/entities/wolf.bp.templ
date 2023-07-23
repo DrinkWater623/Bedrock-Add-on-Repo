@@ -1,0 +1,35 @@
+{
+	/*
+		Notes:	The TGA File is the animal on a layer with opacity 1 and the tame color on another layer
+				So you have to make each one - easy to do.... See layer menu and F4 to change opacity
+	*/
+	"$copy": "{{getLatestBPFile('entities/wolf.json')}}",
+	"$template": {
+		"minecraft:entity": {
+			"component_groups": {
+				"minecraft:wolf_baby": {"minecraft:ageable":{"duration":3600}},
+				"minecraft:wolf_tame": {
+					"minecraft:color": {"value":14},
+					"minecraft:health":{"value":140,"max":140}
+				},
+				"{{#wolf_colors}}": {"cg:skin_{{color_id}}_{{color}}":{"minecraft:skin_id":{"value":"{{=color_id}}"}}}
+			},
+			"events": {
+				"minecraft:entity_born": {"trigger":"ev:color_random_weighted"},
+				"$minecraft:entity_spawned": {
+					"sequence": [
+						{"trigger":"ev:color_random_weighted"},
+						{"trigger":"ev:entity_spawned_baby_or_adult"}
+					]
+				},
+				"ev:entity_spawned_baby_or_adult": {
+					"randomize": [
+						{"weight":7,"remove":{},"add":{"component_groups":["minecraft:wolf_adult","minecraft:wolf_wild"]}},
+						{"weight":3,"remove":{},"add":{"component_groups":["minecraft:wolf_baby","minecraft:wolf_wild"]}}
+					]
+				},
+				"ev:color_random_weighted": {"randomize":[{"{{#wolf_colors}}":{"weight":"{{=weight}}","add":{"component_groups":["cg:skin_{{color_id}}_{{color}}"]}}}]}
+			}
+		}
+	}
+}
