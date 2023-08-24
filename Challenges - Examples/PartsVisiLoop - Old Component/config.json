@@ -1,0 +1,72 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.1.json",
+	"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
+	"name": "PartsVisiLoop",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"mani_fest": {
+				"runWith": "nodejs",
+				"script": "./filters/mani_fest.js"
+			},
+			"name_ninja": {
+				"url": "github.com/Bedrock-OSS/regolith-filters",
+				"version": "1.2.3"
+			}
+		},
+		"profiles": {
+			"build": {
+				"export": {
+					"readOnly": false,
+					"target": "local"
+				},
+				"filters": [{
+					"filter": "mani_fest",
+					"settings": {
+						"description": "Example Challenge - Need HCF and Molang Experiments",
+						"min_engine_version": [
+							1, 19, 50
+						],
+						"name": "Released: Parts Visibility Timer Loop",
+						"version": [2, 0, 1]
+					}
+				}]
+			},
+			"dev": {
+				"export": {
+					"readOnly": false,
+					"target": "development"
+				},
+				"filters": [{
+					"filter": "mani_fest",
+					"settings": {
+						"BP": {
+							"UUID": "bb859674-d303-4a89-b466-ff6239ff7b3d",
+							"module": "32f9015b-494b-41d5-9017-03955aafbad5"
+						},
+						"RP": {
+							"UUID": "240acda7-3034-4aee-b856-d2bd3e9b619d",
+							"module": "b7dc84c2-c564-44b8-8837-e76dbfd9d665"
+						},
+						"description": "Example Challenge - Need HCF and Molang Experiments",
+						"min_engine_version": [
+							1,
+							19,
+							50
+						],
+						"name": "Dev: Parts Visibility Timer Loop",
+						"version": [
+							1,
+							1,
+							1
+						]
+					}
+				}]
+			}
+		}
+	}
+}
