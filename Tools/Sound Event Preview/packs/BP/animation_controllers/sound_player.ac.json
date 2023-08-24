@@ -1,0 +1,30 @@
+{
+    "format_version": "1.10.0",
+    "animation_controllers": {
+        "controller.animation.sound_id_watch": {
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            //"changed": "math.abs(q.skin_id - v.skin_id)>0"
+                            "changed":"q.skin_id != q.property('ptr:color_id')"
+                        }
+                    ]
+                },
+                "changed": {
+                    "on_entry": [
+                        "/me skin_id <> color_id"
+                    ],
+                    "animations": [
+						"skin_id_update"
+					],
+                    "transitions": [
+                        {
+                            "default": "q.skin_id == q.property('ptr:color_id')"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,127 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.1.json",
+	"author": "DW623",
+	"name": "Sound Event Preview",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"jsonte": {
+				"url": "github.com/MCDevKit/regolith-library",
+				"version": "2.7.0"
+			},
+			"mani_fest": {
+				"runWith": "nodejs",
+				"script": "./filters/mani_fest.js"
+			},
+			"name_ninja": {
+				"url": "github.com/Bedrock-OSS/regolith-filters",
+				"version": "1.2.3"
+			}
+		},
+		"profiles": {
+			//========================================
+			"local": {
+				"export": {
+					"readOnly": false,
+					"target": "local"
+				},
+				"filters": [
+					{"filter":"jsonte"},				
+					{
+						"filter": "name_ninja",
+						"settings": {
+							"blocks": {"auto_name":true},
+							"ignored_identifiers": ["minecraft"],
+							"language": "en_US.lang",
+							"overwrite": true,
+							"sort": true
+						}
+					},				
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"BP": {
+								"UUID": "6e91b1cc-a1c0-4658-a6d1-a775888dcdf3",
+								"module": "859af6ef-3e23-4756-826d-5648af39d947"
+							},
+							"RP": {
+								"UUID": "20c7f68b-e19e-444d-ba40-96e308f7dc70",
+								"module": "3d481405-878d-4583-bf2f-d31514575a38"
+							},
+							"description": "Work in Progress",
+							"min_engine_version": [1,19,50],
+							"name": "Dev Sound Event Preview",
+							"version": [1,1,1]
+						}
+					}
+				]
+			},
+			//========================================
+			"build": {
+				"export": {
+					"readOnly": false,
+					"target": "local"
+				},
+				"filters": [
+					{
+						"filter": "name_ninja",
+						"settings": {
+							"blocks": {"auto_name":true},
+							"ignored_identifiers": ["minecraft"],
+							"language": "en_US.lang",
+							"overwrite": true,
+							"sort": true
+						}
+					},				
+					{"filter":"jsonte"},
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"description": "It is done and It Does Nothing!!!",
+							"min_engine_version": [1,19,50],
+							"name": "My Template Add-On",
+							"version": [2,0,1]
+						}
+					}
+				]
+			},
+			"default": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"filter":"jsonte"},				
+					{
+						"filter": "name_ninja",
+						"settings": {
+							"blocks": {"auto_name":true},
+							"ignored_identifiers": ["minecraft"],
+							"language": "en_US.lang",
+							"overwrite": true,
+							"sort": true
+						}
+					},				
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"BP": {
+								"UUID": "6e91b1cc-a1c0-4658-a6d1-a775888dcdf3",
+								"module": "859af6ef-3e23-4756-826d-5648af39d947"
+							},
+							"RP": {
+								"UUID": "20c7f68b-e19e-444d-ba40-96e308f7dc70",
+								"module": "3d481405-878d-4583-bf2f-d31514575a38"
+							},
+							"description": "Work in Progress",
+							"min_engine_version": [1,19,50],
+							"name": "Dev Sound Event Preview",
+							"version": [1,1,1]
+						}
+					}
+				]
+			}
+		}
+	}
+}

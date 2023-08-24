@@ -1,0 +1,25 @@
+{
+	"$template": {
+		"format_version": "1.10.0",
+		"minecraft:client_entity": {
+			"description": {
+				"identifier": "entity:sound_player",
+				"materials": {
+					"default": "entity_alphatest"
+				},
+				"textures": {
+					"default":"textures/colors/white",
+					"{{#colors.filter(x => x.color_id > 0)}}": {
+						"{{color}}": "textures/colors/{{color}}"
+					}
+				},
+				"geometry": {
+					"default": "geometry.entity_10x10x10"
+				},
+				"render_controllers": [
+					"controller.render.default"
+				]
+			}
+		}
+	}
+}

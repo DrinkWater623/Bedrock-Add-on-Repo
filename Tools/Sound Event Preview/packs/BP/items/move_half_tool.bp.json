@@ -1,0 +1,17 @@
+{
+	"format_version": "1.19.50",
+	"minecraft:item": {
+		"description": {
+			"identifier": "tool:move_half",
+			"name":"Move half",
+			"category": "equipment"
+		},
+		"components": {
+			"minecraft:creative_category": {"parent": "itemGroup.name.none"},
+			"minecraft:display_name": {"value": "Move half"},
+			"minecraft:hand_equipped": true,
+			"minecraft:icon": {"texture": "blue_rod"},
+			"minecraft:max_stack_size": 1
+		}
+	}
+}

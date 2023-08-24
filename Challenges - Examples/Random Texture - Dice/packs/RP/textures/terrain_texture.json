@@ -1,0 +1,24 @@
+{
+   "resource_pack_name" : "dw623",
+   "texture_name" : "atlas.terrain",
+   "num_mip_levels" : 4,
+   "padding" : 8,
+   "texture_data" : {
+      "dice" : {
+         "textures" :
+         [
+            {
+               "variations": 
+               [
+                  {"path": "textures/blocks/dice/dice_1","weight": 1},
+                  {"path": "textures/blocks/dice/dice_2","weight": 1},
+                  {"path": "textures/blocks/dice/dice_3","weight": 1},
+                  {"path": "textures/blocks/dice/dice_4","weight": 1},
+                  {"path": "textures/blocks/dice/dice_5","weight": 1},
+                  {"path": "textures/blocks/dice/dice_6","weight": 1}
+               ]
+            }
+         ]
+      }
+   }   
+}

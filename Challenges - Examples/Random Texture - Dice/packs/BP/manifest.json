@@ -1,0 +1,47 @@
+{
+	"format_version": 2,
+	"header": {
+		"name": "Dice Roll BP",
+		"description": "Texture Variation Sample by DW623",
+		"uuid": "1a8b37f8-e5e9-4996-9837-abd7ad48b011",
+		"version": [
+			22,
+			7,
+			14
+		],
+		"min_engine_version": [
+			1,
+			14,
+			0
+		]
+	},
+	"modules": [
+		{
+			"type": "data",
+			"description": "_",
+			"uuid": "c0769196-696d-4a9f-9421-b17070583b21",
+			"version": [
+				1,
+				0,
+				0
+			]
+		}
+	],
+	"dependencies": [
+		{
+			"uuid": "a5c51ce4-a48a-4158-9abe-e5cb072681e6",
+			"version": [
+				22,
+				7,
+				14
+			]
+		}
+	],
+	"metadata": {
+		"generated_with": {
+			"bridge": [
+				"1.8.4"
+			]
+		}
+	}
+}

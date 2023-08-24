@@ -1,0 +1,13 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.skin_id_update": {
+			"loop": false,
+			"animation_length": 1.1,
+			"timeline": {
+				"0.0": "/me is running event:color:change",
+				"1.1": "/event entity @s event:color:change"
+			}
+		}
+	}
+}
