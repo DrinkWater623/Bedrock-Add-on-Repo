@@ -10,7 +10,7 @@ def delete_folders_starting_with_dot(current_dir: Path):
             if folder_path.stem.startswith('.'):
                 try:
                     # Remove the folder and its contents recursively
-                    shutil.rmtree(folder_path)
+                    shutil.rmtree(folder_path, ignore_errors = True)
                     print(f"Deleted folder: {folder_path}")
                 except Exception as e:
                     print(f"Error while deleting folder {folder_path}: {e}")
