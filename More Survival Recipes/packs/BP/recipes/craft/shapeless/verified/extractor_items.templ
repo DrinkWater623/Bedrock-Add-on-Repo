@@ -1,0 +1,25 @@
+{
+  "$files": {
+      "array": "extractor",
+      "fileName": "./{{folder}}/{{output}}_from_{{input}}.recipe"
+  },
+  "$template": {
+    "format_version": "1.17.0",
+    "minecraft:recipe_shapeless": {
+      "description": {
+        "identifier": "dw623:{{output}}_from_{{input}}"
+      },
+      "tags": ["crafting_table"],      
+      "priority": 10,
+      "ingredients": [
+        {"item":"dw623:extractor_coin","count":1},
+        {"item":"minecraft:{{input}}","count":1}
+      ],
+      "result": {
+        "item": "minecraft:{{output}}",
+        "count": "{{=count}}"
+      }
+    }
+  }
+}
+

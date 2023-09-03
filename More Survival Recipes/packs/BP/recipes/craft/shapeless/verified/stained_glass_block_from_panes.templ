@@ -1,0 +1,30 @@
+{
+  "$files": {
+      "array": "0..15",
+      "fileName": "./glass/stained_glass_from_panes_{{value}}.recipe"
+  },
+  "$template": {
+    "format_version": "1.17.0",
+    "minecraft:recipe_shapeless": {
+      "description": {
+        "identifier": "dw623:craft_stained_glass_from_panes_{{value}}"
+      },
+      "tags": ["crafting_table"],
+      "group": "stained_glass",
+      "priority": 0,
+      "ingredients": [
+        {
+          "item": "minecraft:stained_glass_pane",
+          "data": "{{=value}}",
+          "count": 6
+        }
+      ],
+      "result": {
+        "item": "minecraft:stained_glass",
+        "data": "{{=value}}",
+        "count": 1
+      }
+    }
+  }
+}
+

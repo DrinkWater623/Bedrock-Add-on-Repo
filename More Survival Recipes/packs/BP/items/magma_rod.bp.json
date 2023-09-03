@@ -1,0 +1,22 @@
+{
+    "format_version": "1.20.10",
+    "minecraft:item": {
+        "description": {
+            "identifier": "dw623:magma_rod",
+            "category": "items"
+        },
+        "components": {
+            "minecraft:display_name": {
+                "value": "Magma Rod"
+            },
+            "minecraft:fuel": {
+                "duration": 1000.0
+            },
+            "minecraft:hand_equipped": true,
+            "minecraft:icon": {
+                "texture": "magma_rod"
+            },
+            "minecraft:max_stack_size": 64
+        }
+    }
+}

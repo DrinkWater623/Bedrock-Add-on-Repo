@@ -1,0 +1,34 @@
+{
+    "$scope":{
+        "vanilla_shapeless_craft": [
+            {"input":"nether_wart_block","output":"nether_wart"		,"out_count":9},           
+            {"input":"amethyst_block"	,"output":"amethyst_shard"	,"out_count":4},           
+            {"input":"web"				,"output":"string"			,"out_count":3}
+        ]
+    },
+    "$files": {
+        "array": "vanilla_shapeless_craft",
+        "fileName": "./misc/{{output}}_from_{{input}}.recipe"
+    },
+    "$template":
+    {
+        "format_version": "1.12.0",
+        "minecraft:recipe_shapeless": {
+            "description": {
+                "identifier": "dw623:{{output}}_from_{{input}}"
+            },
+            "tags": [
+                "crafting_table"
+            ],
+            "ingredients": [
+                {
+                    "item": "minecraft:{{input}}"
+                }
+            ],
+            "result": {
+                "item": "minecraft:{{output}}",
+                "count": "{{=out_count}}"
+            }
+        }
+    }
+}

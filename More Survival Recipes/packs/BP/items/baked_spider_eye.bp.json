@@ -1,0 +1,49 @@
+{
+    "format_version": "1.20.10",
+    "minecraft:item": {
+        "description": {
+            "identifier": "dw623:baked_spider_eye",
+            "category": "Equipment"
+        },
+        "components": {
+            "minecraft:display_name":{
+                "value": "Baked Spider Eye"
+            },
+            "minecraft:food": {
+                "can_always_eat": false,
+                "nutrition": 5,
+                "saturation_modifier": 2,
+                "effects": [
+                    {
+                        "name": "night_vision",
+                        "chance": 0.75,
+                        "duration": 6000,
+                        "amplifier": 100
+                    }
+                ]
+            },
+            "minecraft:icon": {"texture":"baked_spider_eye"},
+            "minecraft:creative_category": {"parent": "itemGroup.name.cookedFood"},
+            "minecraft:use_animation": "eat",
+            "minecraft:use_duration": 1.5
+        }
+        /*
+        "events": {
+            "eat": {
+                "randomize": [
+                    {
+                        "weight": 3
+                    },
+                    {
+                        "weight": 1,
+                        "add_mob_effect": {
+                            "effect": "nausea",
+                            "duration": 15,
+                            "amplifier": 0
+                        }
+                    }
+                ]
+            }
+        }*/
+    }
+}

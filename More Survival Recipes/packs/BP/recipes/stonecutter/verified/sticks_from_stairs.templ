@@ -1,0 +1,23 @@
+{
+  "$files": {
+    "array": "wood_types",
+    "fileName": "./sticks/from_stairs_{{type}}.recipe"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {"identifier":"dw623:stonecutter_{{type}}_sticks_from_stairs"},
+      "tags": ["stonecutter"],
+      "priority": 0,
+      "ingredients": [
+        {
+          "item": "minecraft:{{type}}_stairs"
+        }
+      ],
+      "result": {
+        "item": "minecraft:stick",
+        "count": 48
+      }
+    }
+  }
+}

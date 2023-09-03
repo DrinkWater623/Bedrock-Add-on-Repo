@@ -1,0 +1,14 @@
+{
+    "format_version": "1.20.10",
+    "minecraft:item": {
+        "description": {
+            "identifier": "dw623:iron_block_anvil",
+            "category": "items"
+        },
+        "components": {
+            "minecraft:max_stack_size": 64,
+            "minecraft:icon": {"texture": "iron_block_anvil"},
+            "minecraft:display_name": {"value": "Iron Block Anvil"}
+        }
+    }
+}

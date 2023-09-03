@@ -1,0 +1,21 @@
+{
+      "resource_pack_name": "dw623",
+      "texture_name": "atlas.items",
+      "texture_data": {
+            "baked_spider_eye": {
+                  "textures": "textures/items/baked_spider_eye"
+            },
+            "extractor_coin": {
+                  "textures": "textures/items/extractor_coin"
+            },
+            "iron_block_anvil": {
+                  "textures": "textures/items/iron_block_anvil"
+            },
+            "magma_rod": {
+                  "textures": "textures/items/magma_rod"
+            },
+            "rotten_flesh_jerky": {
+                  "textures": "textures/items/rotten_flesh_jerky"
+            }
+      }
+}

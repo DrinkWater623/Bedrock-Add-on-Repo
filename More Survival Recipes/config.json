@@ -1,0 +1,78 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.1.json",
+	"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
+	"name": "More_Recipes",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"jsonte": {
+				"url": "github.com/MCDevKit/regolith-library",
+				"version": "2.11.2"
+			},
+			"dot_ignore": {
+				"runWith": "python",
+				"script": "./filters/dot_ignore.py"
+			},
+			"empty_ignore": {
+				"runWith": "python",
+				"script": "./filters/empty_ignore.py"
+			},
+			"mani_fest": {
+				"runWith": "nodejs",
+				"script": "./filters/mani_fest.js"
+			}
+		},
+		"profiles": {
+			"build": {
+				"export": {
+					"readOnly": false,
+					"target": "local"
+				},
+				"filters": [
+					{"filter":"dot_ignore"},
+					{"filter":"empty_ignore"},
+					{"filter":"jsonte"},					
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"description": "Recipes Economized and More Fair by DW623",
+							"getUUIDs": true,
+							"min_engine_version": [1,20,10],
+							"name": "More Survival Recipes"
+						}
+					}
+				]
+			},
+			"default": {
+				"export": {
+					"readOnly": false,
+					"target": "development"
+				},
+				"filters": [
+					{"filter":"dot_ignore"},
+					{"filter":"jsonte"},					
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"BP": {
+								"UUID": "e95ade4e-1e32-4418-a0ff-00a3dea5a442",
+								"module": "5177c861-bd36-4809-b33d-82c28ff6ed74"
+							},
+							"RP": {
+								"UUID": "bd733592-f101-4da5-9d28-34a9cc9dbe60",
+								"module": "11a6f2dc-000d-42f8-8af7-c2f7c57ccd53"
+							},
+							"description": "Work in Progress",
+							"min_engine_version": [1,20,10],
+							"name": "Dev: More Recipes"
+						}
+					}
+				]
+			}
+		}
+	}
+}

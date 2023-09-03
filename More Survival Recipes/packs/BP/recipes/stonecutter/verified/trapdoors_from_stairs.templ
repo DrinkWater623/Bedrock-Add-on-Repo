@@ -1,0 +1,27 @@
+{
+  "$files": {
+    "array": "wood_types",
+    "fileName": "./trapdoors/from_stairs_{{type}}.recipe"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {
+        "identifier": "dw623:stonecutter_trapdoors_from_stairs_{{type}}"
+      },
+      "tags": [
+        "stonecutter"
+      ],
+      "priority": 0,
+      "ingredients": [
+        {
+          "item": "minecraft:{{type}}_stairs"
+        }
+      ],
+      "result": {
+        "item": "minecraft:{{trapdoor > '' ? trapdoor : type+'_trapdoor'}}",
+        "count": 2
+      }
+    }
+  }
+}

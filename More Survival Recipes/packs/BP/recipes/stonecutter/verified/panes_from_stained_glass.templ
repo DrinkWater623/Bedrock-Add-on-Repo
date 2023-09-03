@@ -1,0 +1,29 @@
+{
+  "$files": {
+      "array": "colors",
+      "fileName": "./panes/from_{{color}}_glass.recipe"
+  },
+  "$template": {
+    "format_version": "1.17.0",
+    "minecraft:recipe_shapeless": {
+      "description": {
+        "identifier": "dw623:stonecutter_{{color}}_panes_from_stained_glass"
+      },
+      "tags": ["stonecutter"],
+      "group": "stained_glass_pane",
+      "priority": 0,
+      "ingredients": [
+        {
+          "item": "minecraft:stained_glass",
+          "data": "{{=color_id}}"
+        }
+      ],
+      "result": {
+        "item": "minecraft:stained_glass_pane",
+        "data": "{{=color_id}}",
+        "count": 6
+      }
+    }
+  }
+}
+

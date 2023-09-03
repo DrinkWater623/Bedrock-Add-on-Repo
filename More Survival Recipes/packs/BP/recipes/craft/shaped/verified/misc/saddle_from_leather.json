@@ -1,0 +1,29 @@
+{
+  "format_version": "1.14.0",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:craft_saddle_from_leather"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "   ",
+      "LLL",
+      "LTL"
+    ],
+    "key": {
+      "L": {
+        "item": "minecraft:leather"
+      },
+      "T": {
+        "item": "minecraft:tripwire_hook"
+      }
+    },
+    "result": {
+      "item": "minecraft:saddle",
+      "data": 0,
+      "count": 1
+    }
+  }
+}

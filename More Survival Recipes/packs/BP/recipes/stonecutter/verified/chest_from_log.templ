@@ -1,0 +1,23 @@
+{
+  "$files": {
+    "array": "log_list",
+    "fileName": "./chest/from_{{type}}_{{log}}.recipe"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {"identifier":"dw623:stonecutter_chest_from_{{type}}_{{log}}"},
+      "tags": ["stonecutter"],
+      "priority": 0,
+      "ingredients": [
+        {
+          "item": "minecraft:{{type+'_'+log}}"
+        }
+      ],
+      "result": {
+        "item": "minecraft:chest",
+        "count": 1
+      }
+    }
+  }
+}

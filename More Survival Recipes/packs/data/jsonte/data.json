@@ -1,0 +1,15 @@
+{
+	"settings": {
+        "ns": "dw623",
+        "addon": "more_recipes"
+		// {{Title(replace(settings.main_bot,'_',' '))}}
+		// {{settings.addon}}
+        // {{settings.ns}}
+    },
+    //for when I need an array defined but do not need an array in the template.. like for files
+    "$scope":{
+        "none":[
+          {"none":"none"}
+        ]
+      }	
+}

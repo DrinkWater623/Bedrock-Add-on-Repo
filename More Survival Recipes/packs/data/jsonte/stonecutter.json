@@ -1,0 +1,21 @@
+{	
+	"stonecutter":[
+		{"folder":"pressure_plates"	,"input":"iron_trapdoor"	,"count":3	,"output":"heavy_weighted_pressure_plate"		},
+		{"folder":"pressure_plates"	,"input":"iron_door"		,"count":6	,"output":"heavy_weighted_pressure_plate"		},
+		{"folder":"pressure_plates"	,"input":"iron_block"		,"count":16	,"output":"heavy_weighted_pressure_plate"		},
+
+		{"folder":"trapdoors"		,"input":"iron_door"		,"count":2	,"output":"iron_trapdoor"	},
+		{"folder":"trapdoors"		,"input":"iron_block"		,"count":5	,"output":"iron_trapdoor"	},
+
+		{"folder":"panes"			,"input":"glass"			,"count":6	,"output":"glass_pane"	},
+
+		{"folder":"misc"			,"input":"nether_brick"		,"count":9	,"output":"netherbrick"	},
+		{"folder":"misc"			,"input":"brick_block"		,"count":9	,"output":"brick"	},
+		{"folder":"misc"			,"input":"hardened_clay"	,"count":9	,"output":"brick"	}
+	],
+	"stonecutter_custom":[
+		{"folder":"misc"	,"ns_in":"minecraft","input":"iron_block"	,"count":1	,"ns_out":"dw623","output":"iron_block_anvil"},
+		{"folder":"misc"	,"ns_in":"minecraft","input":"magma"		,"count":64	,"ns_out":"dw623","output":"magma_rod"		}
+	]
+	
+}

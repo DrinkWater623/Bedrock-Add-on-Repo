@@ -1,0 +1,69 @@
+{
+	/*
+		wood_types.filter(x => x.has_boat == 1)
+
+		Block is 4096 pixels
+
+		Use ID for output
+		fence (292) (stonecutter=14) (visual=12) per plank
+
+		Use Name for output
+		fence_gate (256) (stonecutter=16) (visual=10)
+		sign (288) (stonecutter=14.22) (visual=12) - but oak is just sign and dark_oak is darkoak
+		door (16x16x4x2=2048)
+		stairs (3072 = .75 of block)
+
+		"key": {
+			"#": {
+				"item": "minecraft:{{planks > '' ? planks : type+'_planks'}}",
+				"data": "{{planks > '' ? id : 0}}"
+			}
+		},
+
+		"key": {
+			"#": {
+				"item": "minecraft:{{slab > '' ? slab : type+'_slab'}}",
+				"data": "{{slab > '' ? id : 0}}"
+			}
+		},
+
+		"item": "minecraft:{{button > '' ? button : type+'_button'}}",
+		"item": "minecraft:{{door > '' ? door : type+'_door'}}",
+	*/
+	"wood_types":[
+		{"id":0 ,"use_data_id":1,"type":"oak"		,"log":"log"	,"planks":"planks"	,"slab":"wooden_slab"	,"button":"wooden"	,"door":"wooden"		,"trapdoor":"trapdoor"	,"pressure_plate":"wooden"	,"fence_gate":"fence_gate"	,"has_boat":1,"has_raft":0	},
+		{"id":1 ,"use_data_id":1,"type":"spruce"	,"log":"log"	,"planks":"planks"	,"slab":"wooden_slab"	,"button":""		,"door":""				,"trapdoor":""			,"pressure_plate":""		,"fence_gate":""			,"has_boat":1,"has_raft":0	},
+		{"id":2 ,"use_data_id":1,"type":"birch"		,"log":"log"	,"planks":"planks"	,"slab":"wooden_slab"	,"button":""		,"door":""				,"trapdoor":""			,"pressure_plate":""		,"fence_gate":""			,"has_boat":1,"has_raft":0	},
+		{"id":3 ,"use_data_id":1,"type":"jungle"	,"log":"log"	,"planks":"planks"	,"slab":"wooden_slab"	,"button":""		,"door":""				,"trapdoor":""			,"pressure_plate":""		,"fence_gate":""			,"has_boat":1,"has_raft":0	},
+		{"id":4 ,"use_data_id":1,"type":"acacia"	,"log":"log"	,"planks":"planks"	,"slab":"wooden_slab"	,"button":""		,"door":""				,"trapdoor":""			,"pressure_plate":""		,"fence_gate":""			,"has_boat":1,"has_raft":0	},		
+		{"id":5 ,"use_data_id":1,"type":"dark_oak"	,"log":"log"	,"planks":"planks"	,"slab":"wooden_slab"	,"button":""		,"door":""				,"trapdoor":""			,"pressure_plate":""		,"fence_gate":""			,"has_boat":1,"has_raft":0	},
+		{"id":0 ,"use_data_id":0,"type":"bamboo"	,"log":""		,"planks":""		,"slab":""				,"button":""		,"door":""				,"trapdoor":""			,"pressure_plate":""		,"fence_gate":""			,"has_boat":0,"has_raft":1	},
+		{"id":0 ,"use_data_id":0,"type":"crimson"	,"log":"stem"	,"planks":""		,"slab":""				,"button":""		,"door":""				,"trapdoor":""			,"pressure_plate":""		,"fence_gate":""			,"has_boat":0,"has_raft":0	},
+		{"id":0 ,"use_data_id":0,"type":"cherry"	,"log":"log"	,"planks":""		,"slab":""				,"button":""		,"door":""				,"trapdoor":""			,"pressure_plate":""		,"fence_gate":""			,"has_boat":1,"has_raft":0	},
+		{"id":0 ,"use_data_id":0,"type":"mangrove"	,"log":"log"	,"planks":""		,"slab":""				,"button":""		,"door":""				,"trapdoor":""			,"pressure_plate":""		,"fence_gate":""			,"has_boat":1,"has_raft":0	},
+		{"id":0 ,"use_data_id":0,"type":"warped"	,"log":"stem"	,"planks":""		,"slab":""				,"button":""		,"door":""				,"trapdoor":""			,"pressure_plate":""		,"fence_gate":""			,"has_boat":0,"has_raft":0	}
+	],
+	"log_list":[
+		{"type":"acacia"	,"log":"log"		},		
+		{"type":"birch"		,"log":"log"		},
+		{"type":"cherry"	,"log":"log"		},
+		{"type":"dark_oak"	,"log":"log"		},
+		{"type":"jungle"	,"log":"log"		},
+		{"type":"mangrove"	,"log":"log"		},
+		{"type":"oak"		,"log":"log"		},
+		{"type":"spruce"	,"log":"log"		},
+		{"type":"stripped_acacia"	,"log":"log"		},		
+		{"type":"stripped_birch"	,"log":"log"		},
+		{"type":"stripped_cherry"	,"log":"log"		},
+		{"type":"stripped_dark_oak"	,"log":"log"		},
+		{"type":"stripped_jungle"	,"log":"log"		},
+		{"type":"stripped_mangrove"	,"log":"log"		},
+		{"type":"stripped_oak"		,"log":"log"		},
+		{"type":"stripped_spruce"	,"log":"log"		},
+		{"type":"crimson"			,"log":"stem"		},
+		{"type":"warped"			,"log":"stem"		},
+		{"type":"stripped_crimson"	,"log":"stem"		},
+		{"type":"stripped_warped"	,"log":"stem"		}
+	]
+
+}
