@@ -1,0 +1,181 @@
+{		
+	"stone_items":	[
+		{"folder":"pressure_plates"	,"input_id":0	,"input":"stone"							,"abbr_in":"stone_block"		,"out_count":16	,"abbr_out":"stone_pp"		,"out_id":0	,"output":"stone_pressure_plate"},
+		{"folder":"pressure_plates"	,"input_id":2	,"input":"stone_block_slab4"				,"abbr_in":"stone_slab"			,"out_count":8	,"abbr_out":"stone_pp"		,"out_id":0	,"output":"stone_pressure_plate"},
+		{"folder":"pressure_plates"	,"input_id":0	,"input":"stone_stairs"						,"abbr_in":""					,"out_count":8	,"abbr_out":"stone_pp"		,"out_id":0	,"output":"stone_pressure_plate"},
+		{"folder":"pressure_plates"	,"input_id":0	,"input":"polished_blackstone"				,"abbr_in":"pbs_block"			,"out_count":16	,"abbr_out":"pbs_pp"		,"out_id":0	,"output":"polished_blackstone_pressure_plate"},
+		{"folder":"pressure_plates"	,"input_id":0	,"input":"polished_blackstone_slab"			,"abbr_in":"pbs_slab"			,"out_count":8	,"abbr_out":"pbs_pp"		,"out_id":0	,"output":"polished_blackstone_pressure_plate"},
+		{"folder":"pressure_plates"	,"input_id":0	,"input":"polished_blackstone_stairs"		,"abbr_in":"pbs_stairs"			,"out_count":8	,"abbr_out":"pbs_pp"		,"out_id":0	,"output":"polished_blackstone_pressure_plate"},
+		{"folder":"buttons"			,"input_id":0	,"input":"stone"							,"abbr_in":"stone_block"		,"out_count":64	,"abbr_out":""				,"out_id":0	,"output":"stone_button"},
+		{"folder":"buttons"			,"input_id":0	,"input":"stonebrick"						,"abbr_in":"stone_bricks"		,"out_count":64	,"abbr_out":""				,"out_id":0	,"output":"stone_button"},
+		{"folder":"buttons"			,"input_id":2	,"input":"stone_block_slab4"				,"abbr_in":"stone_slab"			,"out_count":32	,"abbr_out":""				,"out_id":0	,"output":"stone_button"},
+		{"folder":"buttons"			,"input_id":5	,"input":"stone_block_slab"					,"abbr_in":"sb_slab"			,"out_count":32	,"abbr_out":""				,"out_id":0	,"output":"stone_button"},
+		{"folder":"buttons"			,"input_id":7	,"input":"cobblestone_wall"					,"abbr_in":"sb_wall"			,"out_count":16	,"abbr_out":""				,"out_id":0	,"output":"stone_button"},
+		{"folder":"buttons"			,"input_id":0	,"input":"stone_stairs"						,"abbr_in":""					,"out_count":48	,"abbr_out":""				,"out_id":0	,"output":"stone_button"},
+		{"folder":"buttons"			,"input_id":0	,"input":"stone_brick_stairs"				,"abbr_in":""					,"out_count":48	,"abbr_out":""				,"out_id":0	,"output":"stone_button"},
+		{"folder":"buttons"			,"input_id":5	,"input":"polished_blackstone_bricks"		,"abbr_in":"pbs_bricks"			,"out_count":64	,"abbr_out":"pbs_button"	,"out_id":0	,"output":"polished_blackstone_button"},
+		{"folder":"buttons"			,"input_id":0	,"input":"polished_blackstone_brick_slab"	,"abbr_in":"pbs_brick_slab"		,"out_count":32	,"abbr_out":"pbs_button"	,"out_id":0	,"output":"polished_blackstone_button"},
+		{"folder":"buttons"			,"input_id":0	,"input":"polished_blackstone_brick_stairs"	,"abbr_in":"pbs_brick_stairs"	,"out_count":48	,"abbr_out":"pbs_button"	,"out_id":0	,"output":"polished_blackstone_button"},
+		{"folder":"buttons"			,"input_id":0	,"input":"polished_blackstone_brick_wall"	,"abbr_in":"pbs_brick_wall"		,"out_count":48	,"abbr_out":"pbs_button"	,"out_id":0	,"output":"polished_blackstone_button"},
+		{"folder":"buttons"			,"input_id":0	,"input":"polished_blackstone"				,"abbr_in":"pbs_block"			,"out_count":64	,"abbr_out":"pbs_button"	,"out_id":0	,"output":"polished_blackstone_button"},
+		{"folder":"buttons"			,"input_id":0	,"input":"polished_blackstone_slab"			,"abbr_in":"pbs_slab"			,"out_count":32	,"abbr_out":"pbs_button"	,"out_id":0	,"output":"polished_blackstone_button"},
+		{"folder":"buttons"			,"input_id":0	,"input":"polished_blackstone_stairs"		,"abbr_in":"pbs_stairs"			,"out_count":48	,"abbr_out":"pbs_button"	,"out_id":0	,"output":"polished_blackstone_button"},
+		{"folder":"buttons"			,"input_id":7	,"input":"polished_blackstone_wall"			,"abbr_in":"pbs_wall"			,"out_count":16	,"abbr_out":"pbs_button"	,"out_id":0	,"output":"polished_blackstone_button"}
+	],
+	"stone_list":	[
+		{"name":"stone"				,"abbr":""		,"block_id":0,"block_input":"stone"					,"slab_id":2,"slab_input":"stone_block_slab4"		,"wall_id":-1	,"wall_input":""					,"stairs_id":0	,"stairs_input":"normal_stone_stairs"		},
+		{"name":"smooth_stone"		,"abbr":""		,"block_id":4,"block_input":"stonebrick"			,"slab_id":0,"slab_input":"stone_block_slab"		,"wall_id":-1	,"wall_input":""					,"stairs_id":-1	,"stairs_input":""							},
+
+		{"name":"andesite"			,"abbr":""		,"block_id":5,"block_input":"stone"					,"slab_id":3,"slab_input":"stone_block_slab3"		,"wall_id":4	,"wall_input":"cobblestone_wall"	,"stairs_id":0	,"stairs_input":"andesite_stairs"			},
+		{"name":"diorite"			,"abbr":""		,"block_id":3,"block_input":"stone"					,"slab_id":4,"slab_input":"stone_block_slab3"		,"wall_id":3	,"wall_input":"cobblestone_wall"	,"stairs_id":0	,"stairs_input":"diorite_stairs"			},
+		{"name":"granite"			,"abbr":""		,"block_id":1,"block_input":"stone"					,"slab_id":6,"slab_input":"stone_block_slab3"		,"wall_id":2	,"wall_input":"cobblestone_wall"	,"stairs_id":0	,"stairs_input":"granite_stairs"			},		
+		{"name":"smooth_andesite"	,"abbr":""		,"block_id":6,"block_input":"stone"					,"slab_id":2,"slab_input":"stone_block_slab3"		,"wall_id":-1	,"wall_input":""					,"stairs_id":0	,"stairs_input":"andesite_stairs"			},
+		{"name":"smooth_diorite"	,"abbr":""		,"block_id":4,"block_input":"stone"					,"slab_id":5,"slab_input":"stone_block_slab3"		,"wall_id":-1	,"wall_input":""					,"stairs_id":0	,"stairs_input":"polished_diorite_stairs"	},
+		{"name":"smooth_granite"	,"abbr":""		,"block_id":2,"block_input":"stone"					,"slab_id":7,"slab_input":"stone_block_slab3"		,"wall_id":-1	,"wall_input":""					,"stairs_id":0	,"stairs_input":"polished_granite_stairs"	},
+
+		{"name":"sandstone" 			,"abbr":"ss"	,"block_id":0,"block_input":"sandstone"			,"slab_id":1,"slab_input":"stone_block_slab"	,"wall_id":5	,"wall_input":"cobblestone_wall"		,"stairs_id":0	,"stairs_input":"sandstone_stairs" 			},			
+		{"name":"brick" 				,"abbr":""		,"block_id":0,"block_input":"brick_block"		,"slab_id":4,"slab_input":"stone_block_slab"	,"wall_id":6	,"wall_input":"cobblestone_wall"		,"stairs_id":0	,"stairs_input":"brick_stairs" 				},			
+		{"name":"stone_brick" 			,"abbr":"sb"	,"block_id":0,"block_input":"stonebrick"		,"slab_id":5,"slab_input":"stone_block_slab"	,"wall_id":7	,"wall_input":"cobblestone_wall"		,"stairs_id":0	,"stairs_input":"stone_brick_stairs" 		},			
+		{"name":"mossy_stone_brick"		,"abbr":"msb"	,"block_id":1,"block_input":"stonebrick" 		,"slab_id":0,"slab_input":"stone_block_slab4"	,"wall_id":8	,"wall_input":"cobblestone_wall"		,"stairs_id":0	,"stairs_input":"mossy_stone_brick_stairs"	},			
+		{"name":"nether_brick"	 		,"abbr":"nb"	,"block_id":0,"block_input":"nether_brick"		,"slab_id":7,"slab_input":"stone_block_slab"	,"wall_id":9	,"wall_input":"cobblestone_wall"		,"stairs_id":0	,"stairs_input":"nether_brick_stairs"	 	},			
+		{"name":"end_brick" 			,"abbr":"eb"	,"block_id":0,"block_input":"end_brick"			,"slab_id":0,"slab_input":"stone_block_slab3"	,"wall_id":10	,"wall_input":"cobblestone_wall"		,"stairs_id":0	,"stairs_input":"end_brick_stairs" 			},		
+		{"name":"prismarine" 			,"abbr":""		,"block_id":0,"block_input":"prismarine"		,"slab_id":2,"slab_input":"stone_block_slab2"	,"wall_id":11	,"wall_input":"cobblestone_wall"		,"stairs_id":0	,"stairs_input":"prismarine_stairs" 		},		
+		{"name":"red_sandstone"			,"abbr":"rs"	,"block_id":0,"block_input":"red_sandstone"		,"slab_id":0,"slab_input":"stone_block_slab2"	,"wall_id":12	,"wall_input":"cobblestone_wall"		,"stairs_id":0	,"stairs_input":"red_sandstone_stairs"		},		
+		{"name":"red_nether_brick"		,"abbr":"rnb"	,"block_id":0,"block_input":"red_nether_brick"	,"slab_id":7,"slab_input":"stone_block_slab2"	,"wall_id":13	,"wall_input":"cobblestone_wall"		,"stairs_id":0	,"stairs_input":"red_nether_brick_stairs"	},		
+				
+		{"name":"blackstone"				,"abbr":""		,"block_id":0,"block_input":"blackstone"					,"slab_id":0,"slab_input":"blackstone_slab"					,"wall_id":0,"wall_input":"blackstone_wall"					,"stairs_id":0,"stairs_input":"blackstone_stairs"			},		
+		{"name":"polished_blackstone"		,"abbr":"pbs"	,"block_id":0,"block_input":"polished_blackstone"			,"slab_id":0,"slab_input":"polished_blackstone_slab"		,"wall_id":0,"wall_input":"polished_blackstone_wall"		,"stairs_id":0,"stairs_input":"polished_blackstone_stairs"	},		
+		{"name":"polished_blackstone_bricks","abbr":"pbsb"	,"block_id":0,"block_input":"polished_blackstone_bricks"	,"slab_id":0,"slab_input":"polished_blackstone_brick_slab"	,"wall_id":0,"wall_input":"polished_blackstone_brick_wall"	,"stairs_id":0,"stairs_input":"polished_blackstone_bricks_stairs"	},		
+
+		{"name":"cobbled_deepslate"		,"abbr":"cds"		,"block_id":0,"block_input":"cobbled_deepslate"				,"slab_id":0,"slab_input":"cobbled_deepslate_slab"			,"wall_id":0,"wall_input":"cobbled_deepslate_wall"			,"stairs_id":0,"stairs_input":"cobbled_deepslate_stairs"	},		
+		{"name":"polished_deepslate"	,"abbr":"pds"		,"block_id":0,"block_input":"polished_deepslate"			,"slab_id":0,"slab_input":"polished_deepslate_slab"			,"wall_id":0,"wall_input":"polished_deepslate_wall"			,"stairs_id":0,"stairs_input":"polished_deepslate_stairs"	},		
+		{"name":"deepslate_bricks"		,"abbr":"dsb"		,"block_id":0,"block_input":"deepslate_bricks"				,"slab_id":0,"slab_input":"deepslate_brick_slab"			,"wall_id":0,"wall_input":"deepslate_brick_wall"			,"stairs_id":0,"stairs_input":"deepslate_brick_stairs"	},		
+		{"name":"deepslate_tiles"		,"abbr":"dst"		,"block_id":0,"block_input":"deepslate_tiles"				,"slab_id":0,"slab_input":"deepslate_tile_slab"				,"wall_id":0,"wall_input":"deepslate_tile_wall"				,"stairs_id":0,"stairs_input":"deepslate_tile_stairs"	},		
+
+		{"name":"cobblestone"			,"abbr":"cs"	,"block_id":0,"block_input":"cobblestone"		,"slab_id":3,"slab_input":"stone_block_slab"	,"wall_id":	0	,"wall_input":"cobblestone_wall"		,"stairs_id":0	,"stairs_input":"stone_stairs"				},
+		{"name":"mossy_cobblestone"		,"abbr":"mcs"	,"block_id":0,"block_input":"mossy_cobblestone"	,"slab_id":5,"slab_input":"stone_block_slab2"	,"wall_id":	1	,"wall_input":"cobblestone_wall"		,"stairs_id":0	,"stairs_input":"mossy_cobblestone_stairs"	}
+	],
+	"from_to":[
+		{"name":"andesite"	  	,"from":"default"	,"to":"polished"	,"from_block_id":5,"from_block_input":"stone"	,"from_slab_id":3	,"from_slab_input":"stone_block_slab3"			,"from_stairs_id":0	,"from_stairs_input":"andesite_stairs"		,"from_wall_id":4	,"from_wall_input":"cobblestone_wall"	,"to_slab_id":2	,"to_slab_input":"stone_block_slab3"	,"to_stairs_id":0	,"to_stairs_input":"polished_andesite_stairs"	,"to_wall_id":-1,"to_wall_input":""					},
+		{"name":"diorite"	  	,"from":"default"	,"to":"polished"	,"from_block_id":3,"from_block_input":"stone"	,"from_slab_id":4	,"from_slab_input":"stone_block_slab3"			,"from_stairs_id":0	,"from_stairs_input":"diorite_stairs"		,"from_wall_id":3	,"from_wall_input":"cobblestone_wall"	,"to_slab_id":5	,"to_slab_input":"stone_block_slab3"	,"to_stairs_id":0	,"to_stairs_input":"polished_diorite_stairs"	,"to_wall_id":-1,"to_wall_input":""					},
+		{"name":"granite"	  	,"from":"default"	,"to":"polished"	,"from_block_id":1,"fr1om_block_input":"stone"	,"from_slab_id":6	,"from_slab_input":"stone_block_slab3"			,"from_stairs_id":0	,"from_stairs_input":"granite_stairs"		,"from_wall_id":2	,"from_wall_input":"cobblestone_wall"	,"to_slab_id":7	,"to_slab_input":"stone_block_slab3"	,"to_stairs_id":0	,"to_stairs_input":"polished_granite_stairs"	,"to_wall_id":-1,"to_wall_input":""					},
+		{"name":"stone"	  		,"from":"default"	,"to":"brick"		,"from_block_id":0,"from_block_input":"stone"	,"from_slab_id":2	,"from_slab_input":"stone_block_slab4"			,"from_stairs_id":0,"from_stairs_input":"normal_stone_stairs"	,"from_wall_id":-1	,"from_wall_input":""					,"to_slab_id":5	,"to_slab_input":"stone_block_slab"		,"to_stairs_id":0	,"to_stairs_input":"stone_brick_stairs"			,"to_wall_id":7,"to_wall_input":"cobblestone_wall"	},
+
+		{"name":"blackstone"  	,"from":"default"	,"to":"polished"	,"from_block_id":0,"from_block_input":"blackstone"			,"from_slab_id":0	,"from_slab_input":"blackstone_slab"			,"from_stairs_id":0	,"from_stairs_input":"blackstone_stairs"			,"from_wall_id":0	,"from_wall_input":"blackstone_wall"			,"to_slab_id":0	,"to_slab_input":"polished_blackstone_slab"			,"to_stairs_id":0	,"to_stairs_input":"polished_blackstone_stairs"			,"to_wall_id":0	,"to_wall_input":"polished_blackstone_wall"			},		
+		{"name":"blackstone"  	,"from":"default"	,"to":"brick"		,"from_block_id":0,"from_block_input":"blackstone"			,"from_slab_id":0	,"from_slab_input":"blackstone_slab"			,"from_stairs_id":0	,"from_stairs_input":"blackstone_stairs"			,"from_wall_id":0	,"from_wall_input":"blackstone_wall"			,"to_slab_id":0	,"to_slab_input":"polished_blackstone_brick_slab"	,"to_stairs_id":0	,"to_stairs_input":"polished_blackstone_brick_stairs"	,"to_wall_id":0	,"to_wall_input":"polished_blackstone_brick_wall"	},		
+		{"name":"blackstone"	,"from":"polished"	,"to":"brick"		,"from_block_id":0,"from_block_input":"polished_blackstone"	,"from_slab_id":0	,"from_slab_input":"polished_blackstone_slab"	,"from_stairs_id":0	,"from_stairs_input":"polished_blackstone_stairs"	,"from_wall_id":0	,"from_wall_input":"polished_blackstone_wall"	,"to_slab_id":0	,"to_slab_input":"polished_blackstone_brick_slab"	,"to_stairs_id":0	,"to_stairs_input":"polished_blackstone_brick_stairs"	,"to_wall_id":0	,"to_wall_input":"polished_blackstone_brick_wall"	},		
+
+		{"name":"deepslate"    	,"from":"cobbled"	,"to":"polished"	,"from_block_id":0,"from_block_input":"cobbled_deepslate"	,"from_slab_id":0	,"from_slab_input":"cobbled_deepslate_slab"			,"from_stairs_id":0	,"from_stairs_input":"cobbled_deepslate_stairs"			,"from_wall_id":0	,"from_wall_input":"cobbled_deepslate_wall"			,"to_slab_id":0	,"to_slab_input":"polished_deepslate_slab"	,"to_stairs_id":0	,"to_stairs_input":"polished_deepslate_stairs"	,"to_wall_id":0	,"to_wall_input":"polished_deepslate_wall"	},		
+		{"name":"deepslate"    	,"from":"cobbled"	,"to":"brick"		,"from_block_id":0,"from_block_input":"cobbled_deepslate"	,"from_slab_id":0	,"from_slab_input":"cobbled_deepslate_slab"			,"from_stairs_id":0	,"from_stairs_input":"cobbled_deepslate_stairs"			,"from_wall_id":0	,"from_wall_input":"cobbled_deepslate_wall"			,"to_slab_id":0	,"to_slab_input":"deepslate_brick_slab"		,"to_stairs_id":0	,"to_stairs_input":"deepslate_brick_stairs"		,"to_wall_id":0	,"to_wall_input":"deepslate_brick_wall"		},		
+		{"name":"deepslate"    	,"from":"cobbled"	,"to":"tile"		,"from_block_id":0,"from_block_input":"cobbled_deepslate"	,"from_slab_id":0	,"from_slab_input":"cobbled_deepslate_slab"			,"from_stairs_id":0	,"from_stairs_input":"cobbled_deepslate_stairs"			,"from_wall_id":0	,"from_wall_input":"cobbled_deepslate_wall"			,"to_slab_id":0	,"to_slab_input":"deepslate_tile_slab"		,"to_stairs_id":0	,"to_stairs_input":"deepslate_tile_stairs"		,"to_wall_id":0	,"to_wall_input":"deepslate_tile_wall"		},		
+		{"name":"deepslate"    	,"from":"polished"	,"to":"brick"		,"from_block_id":0,"from_block_input":"polished_deepslate"	,"from_slab_id":0	,"from_slab_input":"polished_deepslate_slab"		,"from_stairs_id":0	,"from_stairs_input":"polished_deepslate_stairs"		,"from_wall_id":0	,"from_wall_input":"polished_deepslate_wall"		,"to_slab_id":0	,"to_slab_input":"deepslate_brick_slab"		,"to_stairs_id":0	,"to_stairs_input":"deepslate_brick_stairs"		,"to_wall_id":0	,"to_wall_input":"deepslate_brick_wall"		},		
+		{"name":"deepslate"    	,"from":"polished"	,"to":"tile"		,"from_block_id":0,"from_block_input":"polished_deepslate"	,"from_slab_id":0	,"from_slab_input":"polished_deepslate_slab"		,"from_stairs_id":0	,"from_stairs_input":"polished_deepslate_stairs"		,"from_wall_id":0	,"from_wall_input":"polished_deepslate_wall"		,"to_slab_id":0	,"to_slab_input":"deepslate_tile_slab"		,"to_stairs_id":0	,"to_stairs_input":"deepslate_tile_stairs"		,"to_wall_id":0	,"to_wall_input":"deepslate_tile_wall"		},		
+		{"name":"deepslate"    	,"from":"brick"		,"to":"tile"		,"from_block_id":0,"from_block_input":"deepslate_bricks"	,"from_slab_id":0	,"from_slab_input":"polished_deepslate_brick_slab"	,"from_stairs_id":0	,"from_stairs_input":"polished_deepslate_brick_stairs"	,"from_wall_id":0	,"from_wall_input":"polished_deepslate_brick_wall"	,"to_slab_id":0	,"to_slab_input":"deepslate_tile_slab"		,"to_stairs_id":0	,"to_stairs_input":"deepslate_tile_stairs"		,"to_wall_id":0	,"to_wall_input":"deepslate_tile_wall"		}		
+	] 
+	//add stone slabs to stone brick  and others like it
+}
+/*
+TO DO
+--========================================================================
+{"name":"sandstone" 			,"abbr":""		,"block_id":0,"block_input":""	,"slab_id":1,"slab_input":"stone_block_slab"	,"wall_id":5	,"wall_input":"cobblestone_wall"		,"stairs_input":"sandstone_stairs" 			},			
+{"name":"brick"] 				,"abbr":""		,"block_id":0,"block_input":""	,"slab_id":4,"slab_input":"stone_block_slab"	,"wall_id":6	,"wall_input":"cobblestone_wall"		,"stairs_input":"brick_stairs" 				},			
+{"name":"stone_brick" 			,"abbr":""		,"block_id":0,"block_input":""	,"slab_id":5,"slab_input":"stone_block_slab"	,"wall_id":7	,"wall_input":"cobblestone_wall"		,"stairs_input":"stone_brick_stairs" 		},			
+{"name":"mossy_stone_brick"		,"abbr":""		,"block_id":0,"block_input":"" 	,"slab_id":0,"slab_input":"stone_block_slab4"	,"wall_id":8	,"wall_input":"cobblestone_wall"		,"stairs_input":"mossy_stone_brick_stairs"	},			
+{"name":"nether_brick"	 		,"abbr":""		,"block_id":0,"block_input":""	,"slab_id":7,"slab_input":"stone_block_slab"	,"wall_id":9	,"wall_input":"cobblestone_wall"		,"stairs_input":"nether_brick_stairs"	 	},			
+{"name":"end_brick" 			,"abbr":""		,"block_id":0,"block_input":""	,"slab_id":0,"slab_input":"stone_block_slab3"	,"wall_id":10	,"wall_input":"cobblestone_wall"		,"stairs_input":"end_brick_stairs" 			},		
+{"name":"prismarine" 			,"abbr":""		,"block_id":0,"block_input":""	,"slab_id":2,"slab_input":"stone_block_slab2"	,"wall_id":11	,"wall_input":"cobblestone_wall"		,"stairs_input":"prismarine_stairs" 		},		
+{"name":"red_sandstone"			,"abbr":""		,"block_id":0,"block_input":""	,"slab_id":0,"slab_input":"stone_block_slab2"	,"wall_id":12	,"wall_input":"cobblestone_wall"		,"stairs_input":"red_sandstone_stairs"		},		
+{"name":"red_nether_brick"		,"abbr":""		,"block_id":0,"block_input":""	,"slab_id":7,"slab_input":"stone_block_slab2"	,"wall_id":13	,"wall_input":"cobblestone_wall"		,"stairs_input":"red_nether_brick_stairs"	},		
+Wall
+	minecraft:cobblestone_wall	0	["cobblestone"]
+	minecraft:cobblestone_wall	1	["mossy_cobblestone"]
+	minecraft:cobblestone_wall	2	["granite"]
+	minecraft:cobblestone_wall	3	["diorite"]
+	minecraft:cobblestone_wall	4	["andesite"]
+	minecraft:cobblestone_wall	5	["sandstone"]
+	minecraft:cobblestone_wall	6	["brick"]
+	minecraft:cobblestone_wall	7	["stone_brick"]
+	minecraft:cobblestone_wall	8	["mossy_stone_brick"]
+	minecraft:cobblestone_wall	9	["nether_brick"]
+	minecraft:cobblestone_wall	10	["end_brick"]
+	minecraft:cobblestone_wall	11	["prismarine"]
+	minecraft:cobblestone_wall	12	["red_sandstone"]
+	minecraft:cobblestone_wall	13	["red_nether_brick"]
+slab (1)
+minecraft:stone_block_slab	0	["stone_slab_type" = "smooth_stone"]
+	minecraft:stone_block_slab	1	["stone_slab_type" = "sandstone"]
+minecraft:stone_block_slab	2	["stone_slab_type" = "wood"]
+	minecraft:stone_block_slab	3	["stone_slab_type" = "cobblestone"]
+minecraft:stone_block_slab	4	["stone_slab_type" = "brick"]
+minecraft:stone_block_slab	5	["stone_slab_type" = "stone_brick"]
+minecraft:stone_block_slab	6	["stone_slab_type" = "quartz"]
+	minecraft:stone_block_slab	7	["stone_slab_type" = "nether_brick"]
+slab2
+	minecraft:stone_block_slab2	0	["stone_slab_type_2" = "red_sandstone"]
+minecraft:stone_block_slab2	1	["stone_slab_type_2" = "purpur"]
+	minecraft:stone_block_slab2	2	["stone_slab_type_2" = "prismarine_rough"]
+minecraft:stone_block_slab2	3	["stone_slab_type_2" = "prismarine_dark"]
+minecraft:stone_block_slab2	4	["stone_slab_type_2" = "prismarine_brick"]
+	minecraft:stone_block_slab2	5	["stone_slab_type_2" = "mossy_cobblestone"]
+minecraft:stone_block_slab2	6	["stone_slab_type_2" = "smooth_sandstone"]
+	minecraft:stone_block_slab2	7	["stone_slab_type_2" = "red_nether_brick"]
+slab3
+	minecraft:stone_block_slab3	0	["stone_slab_type_3" = "end_stone_brick"]
+minecraft:stone_block_slab3	1	["stone_slab_type_3" = "smooth_red_sandstone"]
+	minecraft:stone_block_slab3	2	["stone_slab_type_3" = "polished_andesite"]
+	minecraft:stone_block_slab3	3	["stone_slab_type_3" = "andesite"]
+	minecraft:stone_block_slab3	4	["stone_slab_type_3" = "diorite"]
+	minecraft:stone_block_slab3	5	["stone_slab_type_3" = "polished_diorite"]
+	minecraft:stone_block_slab3	6	["stone_slab_type_3" = "granite"]
+	minecraft:stone_block_slab3	7	["stone_slab_type_3" = "polished_granite"]
+
+slab4
+	minecraft:stone_block_slab4	0	["stone_slab_type_4" = "mossy_stone_brick"]
+minecraft:stone_block_slab4	1	["stone_slab_type_4" = "smooth_quartz"]
+	minecraft:stone_block_slab4	2	["stone_slab_type_4" = "stone"]
+minecraft:stone_block_slab4	3	["stone_slab_type_4" = "cut_sandstone"]
+minecraft:stone_block_slab4	4	["stone_slab_type_4" = "cut_red_sandstone"]
+minecraft:stone_block_slab4	5	["stone_slab_type_4" = "mossy_stone_brick"]
+
+All Stairs - data id=0
+minecraft:acacia_stairs	
+minecraft:bamboo_stairs	
+minecraft:birch_stairs	
+minecraft:cherry_stairs	
+minecraft:crimson_stairs	
+minecraft:dark_oak_stairs	
+minecraft:jungle_stairs	
+minecraft:mangrove_stairs	
+minecraft:oak_stairs	
+minecraft:spruce_stairs	
+minecraft:warped_stairs	
+
+	minecraft:andesite_stairs	
+minecraft:blackstone_stairs	
+	minecraft:brick_stairs	
+	minecraft:dark_prismarine_stairs	
+	minecraft:diorite_stairs	
+	minecraft:end_brick_stairs	
+	minecraft:granite_stairs	
+	minecraft:mossy_cobblestone_stairs	
+	minecraft:mossy_stone_brick_stairs	
+	minecraft:nether_brick_stairs	
+	minecraft:normal_stone_stairs	<--- this is STONE
+	minecraft:polished_andesite_stairs	
+minecraft:polished_blackstone_brick_stairs	
+minecraft:polished_blackstone_stairs	
+	minecraft:polished_diorite_stairs	
+	minecraft:polished_granite_stairs	
+minecraft:prismarine_bricks_stairs	
+	minecraft:prismarine_stairs	
+minecraft:purpur_stairs	
+minecraft:quartz_stairs	
+	minecraft:red_nether_brick_stairs	
+	minecraft:red_sandstone_stairs	
+	minecraft:sandstone_stairs	
+minecraft:smooth_quartz_stairs	
+minecraft:smooth_red_sandstone_stairs	
+minecraft:smooth_sandstone_stairs	
+	minecraft:stone_brick_stairs	
+	minecraft:stone_stairs					<--- this is COBBLESTONE  not stone (see normal_stone_stairs)
+*/

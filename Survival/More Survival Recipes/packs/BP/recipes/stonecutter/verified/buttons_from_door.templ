@@ -1,0 +1,23 @@
+{
+  "$files": {
+    "array": "wood_types",
+    "fileName": "./buttons/from_door_{{type}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {"identifier":"dw623:cut_{{type}}_buttons_from_door"},
+      "tags": ["stonecutter"],
+      "priority": 0,
+      "ingredients": [
+        {
+          "item": "minecraft:{{door > '' ? door : type}}_door"
+        }
+      ],
+      "result": {
+        "item": "minecraft:{{button > '' ? button : type}}_button",
+        "count": 16
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$files": {
+    "array": "wood_types",
+    "fileName": "./buttons/from_slab_{{type}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {"identifier":"dw623:cut_{{type}}_buttons_from_slab"},
+      "tags": ["stonecutter"],
+      "priority": 0,
+      "ingredients": [
+        {
+          "item": "minecraft:{{slab > '' ? slab : type+'_slab'}}",
+          "data": "{{slab > '' ? id : 0}}"
+        }
+      ],
+      "result": {
+        "item": "minecraft:{{button > '' ? button : type}}_button",
+        "count": 32
+      }
+    }
+  }
+}

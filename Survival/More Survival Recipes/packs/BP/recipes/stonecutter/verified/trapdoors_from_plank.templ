@@ -1,0 +1,28 @@
+{
+  "$files": {
+    "array": "wood_types",
+    "fileName": "./trapdoors/from_plank_{{type}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {
+        "identifier":"dw623:cut_trapdoors_from_plank_{{type}}"
+      },
+      "tags": [
+        "stonecutter"
+      ],
+      "priority": 0,
+      "ingredients": [
+        {
+          "item": "minecraft:{{planks > '' ? planks : type+'_planks'}}",
+          "data": "{{planks > '' ? id : 0}}"
+        }
+      ],
+      "result": {
+        "item": "minecraft:{{trapdoor > '' ? trapdoor : type+'_trapdoor'}}",
+        "count": 5
+      }
+    }
+  }
+}

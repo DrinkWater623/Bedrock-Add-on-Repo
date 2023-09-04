@@ -1,0 +1,27 @@
+{
+  "$files": {
+    "array": "wood_types",
+    "fileName": "./pressure_plates/from_stairs_{{type}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {
+        "identifier":"dw623:cut_{{type}}_pressure_plates_from_stairs"
+      },
+      "tags": [
+        "stonecutter"
+      ],
+      "priority": 0,
+      "ingredients": [
+        {
+          "item": "minecraft:{{type}}_stairs"
+        }
+      ],
+      "result": {
+        "item": "minecraft:{{pressure_plate > '' ? pressure_plate : type}}_pressure_plate",
+        "count": 8
+      }
+    }
+  }
+}

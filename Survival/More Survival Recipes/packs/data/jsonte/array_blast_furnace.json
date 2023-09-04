@@ -1,0 +1,19 @@
+{
+	"blast_furnace":[
+		{"folder":"misc"	,"input":"raw_copper_block"	,"count":1 ,"output":"copper_block"},
+		{"folder":"misc"	,"input":"raw_gold_block"	,"count":1 ,"output":"gold_block"},
+		{"folder":"misc"	,"input":"raw_iron_block"	,"count":1 ,"output":"iron_block"},
+		{"folder":"misc"	,"input":"iron_trapdoor"	,"count":1 ,"output":"iron_ingot"},
+		{"folder":"misc"	,"input":"iron_ingot"		,"count":1 ,"output":"iron_trapdoor"},		
+		{"folder":"misc"	,"input":"rotten_flesh"		,"count":1 ,"output":"leather"},		
+		{"folder":"misc"	,"input":"stone_axe"		,"count":1 ,"output":"stone_button"},
+		{"folder":"misc"	,"input":"stone_hoe"		,"count":1 ,"output":"stone_button"},
+		{"folder":"misc"	,"input":"stone_pickaxe"	,"count":1 ,"output":"stone_button"},
+		{"folder":"misc"	,"input":"stone_shovel"		,"count":1 ,"output":"stone_button"},
+		{"folder":"misc"	,"input":"stone_sword"		,"count":1 ,"output":"stone_button"}
+	],
+	"campfire_mc_2_custom":[
+		{"input":"rotten_flesh"		,"count":1 ,"output":"rotten_flesh_jerky"},
+		{"input":"spider_eye"		,"count":1 ,"output":"baked_spider_eye"}
+	]
+}

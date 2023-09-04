@@ -1,0 +1,23 @@
+{
+  "format_version": "1.17.0",
+  "minecraft:recipe_shaped": {
+    "description": {
+    "identifier": "dw623:cheaper_tnt"
+    },    
+    "tags": [ "crafting_table" ],
+    "pattern": [
+      "rsr",
+      "pgp",
+      "rpr"
+    ],
+    "key": {
+      "s": {"item":"minecraft:string"},
+      "p": {"item":"minecraft:paper"},
+      "g": {"item":"minecraft:gunpowder"},
+      "r": {"item":"minecraft:sand"}
+    },
+    "result": {
+      "item": "minecraft:tnt"
+    }
+  }
+}

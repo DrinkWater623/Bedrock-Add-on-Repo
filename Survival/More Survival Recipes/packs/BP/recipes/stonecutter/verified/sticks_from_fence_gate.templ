@@ -1,0 +1,23 @@
+{
+  "$files": {
+    "array": "wood_types",
+    "fileName": "./sticks/from_fence_gate_{{type}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {"identifier":"dw623:cut_{{type}}_sticks_from_fence_gate"},
+      "tags": ["stonecutter"],
+      "priority": 0,
+      "ingredients": [
+        {
+          "item": "minecraft:{{fence_gate > '' ? fence_gate : type+'_fence_gate'}}"
+        }
+      ],
+      "result": {
+        "item": "minecraft:stick",
+        "count": 4
+      }
+    }
+  }
+}
