@@ -1,21 +1,21 @@
 {
   "$scope":{
-		"local_from_to_list": "{{from_to.filter(x => x.from_stairs_id >= 0 && x.to_stairs_id >= 0)}}"
+		"local_from_to_list": "{{from_to.filter(x => x.from_stairs_id >= 0 && x.to_slab_id >= 0)}}"
   },
   "$files": {
     "array": "local_from_to_list",
-    "fileName": "./stairs/convert_{{name}}_{{to}}_from_{{from}}"
+    "fileName": "./slabs/cut_{{length(abbr) > 0 ? abbr : name}}_{{to}}_from_{{from}}_stairs"
+    
   },
   "$template": {
     "format_version": "1.12.0",
     "minecraft:recipe_shapeless": {
       "description": {
-        "identifier": "dw623:convert_{{name}}_{{to}}_from_{{from}}.cut"
+        "identifier": "dw623:cut_{{name}}_{{to}}_slab_from_{{from}}_stairs"
       },
       "tags": [
         "stonecutter"
-      ],
-      "priority": 0,
+      ],     
       "ingredients": [
         {
           "item": "minecraft:{{from_stairs_input}}",
@@ -23,9 +23,9 @@
         }
       ],
       "result": {
-        "item": "minecraft:{{to_stairs_input}}",
-        "data": "{{=to_stairs_id}}",
-      "count": 1
+        "item": "minecraft:{{to_slab_input}}",
+        "data": "{{=to_slab_id}}",
+        "count": 1
       }
     }
   }
