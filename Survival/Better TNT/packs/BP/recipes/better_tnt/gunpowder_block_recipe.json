@@ -3,9 +3,7 @@
   "minecraft:recipe_shaped": {
     "description": {
     "identifier": "dw623:gunpowder_block"
-    },
-
-    
+    },    
     "tags": [ "crafting_table" ],
     "pattern": [
       "###",

@@ -24,6 +24,6 @@ execute as @s[tag=!dispenser_found,tag=dispenser_y_p] run tag @s add dispenser_f
 execute as @s[tag=!dispenser_found,tag=dispenser_z] run tag @s add dispenser_found
 execute as @s[tag=!dispenser_found,tag=dispenser_x] run tag @s add dispenser_found
 ##############################################################
-execute as @s[tag=dispenser_found] run function dw623/better_tnt/summon_3
+execute as @s[tag=dispenser_found] run function better_tnt/summon_3
 ##############################################################
 # End

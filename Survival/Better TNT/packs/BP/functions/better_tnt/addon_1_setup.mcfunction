@@ -23,7 +23,7 @@ scoreboard players add tnt_nuke           better_tnt 0
 scoreboard players add tnt_armageddon     better_tnt 0
 ##############################################################
 # Initialize for world if 1st time
-execute if score initialized better_tnt matches 0 run function dw623/better_tnt/addon_2_reset
+execute if score initialized better_tnt matches 0 run function better_tnt/addon_2_reset
 scoreboard players set initialized better_tnt 623
 ##############################################################
 # Update tntexplodes from owner game_settings if any
@@ -36,7 +36,7 @@ execute if score Tnt_Explodes game_settings matches 0 run scoreboard players set
 execute if score TNT_Explodes game_settings matches 0 run scoreboard players set better_tntexplodes better_tnt 0
 execute if score TNTexplodes  game_settings matches 0 run scoreboard players set better_tntexplodes better_tnt 0
 ##############################################################
-execute if score timer bt_timer matches  0 run function dw623/better_tnt/addon_4_status_set
+execute if score timer bt_timer matches  0 run function better_tnt/addon_4_status_set
 #Always Allowed - No Damage
 scoreboard players set tnt_test better_tnt 1
 scoreboard players set tnt_test bt_status 3

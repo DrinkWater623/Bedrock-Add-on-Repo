@@ -1,8 +1,8 @@
 {
   "$copy": "{{getLatestBPFile('entities/tnt.json')}}",
-  "$template":{
-    "format_version": "1.19.50",
+  "$template":{    
     "minecraft:entity": {
+      /* For now, just add the family to the OG TNT
       "component_groups": {
         "from_explosion": {
           "minecraft:explode": {
@@ -12,15 +12,16 @@
             "causes_fire": false
           }
         }
-      },    
+      },*/   
       "components": {
-        "minecraft:type_family": {"family":["dw623_tnt","vanilla"]},
+        "minecraft:type_family": {"family":["dw623_tnt","vanilla"]}
+        /*,
         "minecraft:explode": {
           "fuse_length": 5,
           "fuse_lit": true,
           "power": 4,
           "causes_fire": false
-        }       
+        } */      
       }
     }
   }

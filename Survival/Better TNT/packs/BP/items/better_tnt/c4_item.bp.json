@@ -1,14 +1,14 @@
 {
-    "format_version": "1.19.80",
+    "format_version": "1.20.10",
     "minecraft:item": {
         "description": {
-            "identifier": "dw623:c4",
+            "identifier": "dw623:c4_stick",
             "category": "equipment"
         },
         "components": {
             "minecraft:max_stack_size": 16,
-            "minecraft:icon": {"texture": "c4"},
-            "minecraft:display_name": {"value": "C4"}
+            "minecraft:icon": {"texture": "c4_stick"},
+            "minecraft:display_name": {"value": "Stick of C4"}
         }
     }
 }

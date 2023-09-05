@@ -2,7 +2,7 @@
   "format_version": "1.17.0",
   "minecraft:recipe_shaped": {
     "description": {
-    "identifier": "dw623:c4"
+    "identifier": "dw623:c4_stick"
     },    
     "tags": [ "crafting_table" ],
     "pattern": [
@@ -13,6 +13,6 @@
       "b": {"item":"minecraft:bone_meal"},
       "g": {"item":"minecraft:gunpowder"}
     },
-    "result": {"item":"dw623:c4","count":1}
+    "result": {"item":"dw623:c4_stick","count":1}
   }
 }

@@ -2,18 +2,19 @@
   "format_version": "1.17.0",
   "minecraft:recipe_shaped": {
     "description": {
-    "identifier": "minecraft:tnt"
+      "identifier": "minecraft:tnt"
     },    
     "tags": [ "crafting_table" ],
     "pattern": [
-      "psp",
+      "rsr",
       "pgp",
-      "ppp"
+      "rpr"
     ],
     "key": {
       "s": {"item":"minecraft:string"},
       "p": {"item":"minecraft:paper"},
-      "g": {"item":"minecraft:gunpowder"}
+      "g": {"item":"minecraft:gunpowder"},
+      "r": {"item":"minecraft:sand"}
     },
     "result": {
       "item": "minecraft:tnt"

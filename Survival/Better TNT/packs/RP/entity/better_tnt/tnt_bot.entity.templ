@@ -1,0 +1,45 @@
+{
+  "$template":
+  {
+    "format_version": "1.10.0",
+    "minecraft:client_entity": {
+      "description": {
+        "identifier": "dw623:{{settings.main_bot}}",
+        "materials": {
+          "default": "npc"
+        },
+        "textures": {            
+          "black":  "textures/entity/npc/lil_bot/black",
+          "blue":   "textures/entity/npc/lil_bot/blue",           
+          "cyan":   "textures/entity/npc/lil_bot/cyan",
+          "gold":   "textures/entity/npc/lil_bot/gold",
+          "orange": "textures/entity/npc/lil_bot/orange",
+          "red":    "textures/entity/npc/lil_bot/red",
+          "white":  "textures/entity/npc/lil_bot/white"
+        },
+        "geometry": {
+          "default": "geometry.npc"
+        },
+        "scripts": {
+          "animate": [
+            "general",
+            { "move": "query.modified_move_speed" },
+            "look_at_target",
+            { "baby_transform": "query.is_baby" }
+          ]
+        },
+        "animations": {
+          "general": "animation.npc.general",
+          "look_at_target": "animation.common.look_at_target",
+          "move": "animation.npc.move",
+          "baby_transform": "animation.npc.baby_transform"
+        },
+        "render_controllers": [ "controller.render.{{settings.main_bot}}" ],
+        "spawn_egg": {
+          "texture": "spawn_egg",
+          "texture_index": 35
+        }
+      }
+    }
+  }
+}

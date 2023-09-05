@@ -3,9 +3,7 @@
   "minecraft:recipe_shaped": {
     "description": {
     "identifier": "minecraft:string_to_wool"
-    },
-
-    
+    },    
     "tags": [ "crafting_table" ],
     "pattern": [
       "###",
