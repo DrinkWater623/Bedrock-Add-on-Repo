@@ -9,16 +9,8 @@ The raw files are written for use with Regolith, the JSON Templating Filter (jso
 If I have released the .mcaddon to my world for use or testing, there will be a copy of it in a release folder of that add-on and you can crack that open to examine the full add-on.  Otherwise, go Regolith/Jsonte or go home.  You can learn about or get Regolith at their Hub (see links below)
 
 ### Fan-Girl Links:
-[List of Key Dev Discords](https://wiki.bedrock.dev/discord.html)
-<br>[Bedrock OSS GitHub Repo's](https://github.com/Bedrock-OSS)
-<br>[Regolith](https://bedrock-oss.github.io/regolith/)
-<br>[Jsonte (JSON Templating) Filter Quick Tutorial](https://mcdevkit.com/tutorial)
-<br>[Jsonte Filter Documentation](https://docs.mcdevkit.com/json-templating-engine/)
-
-### About Me
-Gamer Tag in most places: DrinkWater623
-<br>Discord: @DrinkWater623
-<br>Gender: Female
-<br>Age: Older than you
-<br>Life Goal: Minecraft Goddess Engineer
-<br>Where to find me... helper-mod on Bedrock Add-ons Discord (see link above)
+- [List of Key Dev Discords](https://wiki.bedrock.dev/discord.html)
+- [Bedrock OSS GitHub Repo's](https://github.com/Bedrock-OSS)
+- [Regolith](https://bedrock-oss.github.io/regolith/)
+- [Jsonte (JSON Templating) Filter Quick Tutorial](https://mcdevkit.com/tutorial)
+- [Jsonte Filter Documentation](https://docs.mcdevkit.com/json-templating-engine/)
