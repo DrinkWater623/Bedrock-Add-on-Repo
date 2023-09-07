@@ -1,0 +1,22 @@
+{
+    "$files": {    
+        "array": "0..8",
+        "fileName": "tree_chopper_minion_{{value}}.rp"
+    },
+    "$template": {
+        "format_version": "1.10.0",
+        "minecraft:client_entity": {
+            "description": {
+                "identifier": "dw623:tree_chopper_minion_{{value}}",
+                "materials": {
+                    "default": "entity"
+                },
+                "textures": {"default":"textures/colors/color_{{value}}"},
+                //"textures": {"default":"textures/colors/color_{{mod(value,16)}}"},
+                "geometry": {"default":"geometry.box"},
+                "render_controllers": ["controller.render.default"]
+                
+            }
+        }
+    }
+}

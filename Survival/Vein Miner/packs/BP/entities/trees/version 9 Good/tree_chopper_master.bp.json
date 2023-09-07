@@ -1,0 +1,125 @@
+{
+	// this version works good.  but need to limit it again, like the vein miner
+	// because of the dark oak forest... can take the whole thing down and make
+	// the game crawl
+	// limit by how tall jungle trees can get.  maybe 25.
+	"format_version": "1.20.10",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "dw623:tree_chopper_master",
+			"is_spawnable": false,
+			"is_summonable": true,
+			"is_experimental": false		
+		},
+		"component_groups": {
+			"cg:despawn": {"minecraft:instant_despawn": {}},
+			"cg:collection_chest_timer":{
+				"minecraft:timer": {
+					"time": 2.5,"time_down_event": {"event":"ev:summon_collection_chest"},
+					"looping": false,"randomInterval": false
+				}
+			} 			
+		},
+		"components": {
+			"minecraft:breathable":{
+				"breathes_air": true,
+				"breathes_lava": true,
+				"breathes_solids": true,
+				"breathes_water": true,
+				"generates_bubbles": false,
+				"inhale_time": 1.0,
+				"suffocate_time": 100,
+				"total_supply": 100
+			},
+			"minecraft:collision_box": {"height":0.5,"width":0.5},
+			"minecraft:physics": {"has_gravity": false,"has_collision": false},
+			"minecraft:scale":{"value":0.125},			
+			"minecraft:health": {"value":1000,"max":1000},				
+			"minecraft:type_family": {"family": ["tree_master"]},
+			"minecraft:timer": {
+				"time": 1.0,"looping": false,"randomInterval": false,
+				"time_down_event": {"event":"ev:environmental_sensor"}
+			}
+		},
+		"events": {
+			"ev:despawn":{"add":{"component_groups":["cg:despawn"]}},
+			//center me in block
+			"minecraft:entity_spawned":  {
+				"sequence":[										
+					{
+						"run_command":{"command":[
+							//"execute if entity @e[family=tree_minion] run tellraw @s {\"rawtext\":[\"text\":\"§cPlease wait until the another tree is finished being Vein-Chopped\"]}",							
+							"execute if entity @e[family=tree_minion] run title @p title §cPlease wait until other Vein-Chop is done",
+							"execute if entity @e[family=tree_minion] run event entity @s ev:despawn"
+						]}
+					},
+					{"run_command":{"command":["execute align xyz run tp @s ~0.5 ~0.5 ~0.5"]}}
+				]
+			},
+			"ev:environmental_sensor":  {
+				"sequence": [					
+					{
+						"filters": {"test":"has_biome_tag","operator":"!=","value":"roofed"},
+						"trigger": "ev:summon_with_limit_8"
+					},
+					//dark oak forrest
+					{							
+						"filters": {"test":"has_biome_tag","operator":"==","value":"roofed"},
+						"trigger": "ev:summon_with_limit_4"
+					},
+					//collection_chest_timer
+					{"add":{"component_groups":["cg:collection_chest_timer"]}}
+				]
+			},
+			"ev:summon_collection_chest":  {
+				"sequence":[					
+					//{"run_command":{"command":["say hi"]}},
+					{"run_command":{"command":["execute unless entity @e[r=48,family=tree_chest] run summon dw623:tree_chopper_chest ~ ~ ~ 0 0 ev:entity_spawned Tree-Loot "]}},
+					{"add":{"component_groups":["cg:despawn"]}}
+				]
+			},
+			/*
+				Logic... as long as a log, can stay same level and keep going.
+						most likely it is going up...
+						when it does leaves, the level goes down.. 
+						this way, should get to middle of top as log and then can go out in all directions as leaves
+						so, a 8-16 limit is good.. to stop deforestation
+
+						Especially test Acacia, Jungle and Dark Oak
+			*/
+			"ev:summon_with_limit_4":  {
+				"sequence": [															
+					{					
+						"run_command": {
+							"command": [
+								"say ROOFED",							
+								"execute unless block ~   ~-0.75  ~  air run summon dw623:tree_chopper_minion_15  ~   ~-1  ~ ",
+								"execute unless block ~-0.75 ~    ~  air run summon dw623:tree_chopper_minion_15  ~-1 ~    ~ ",
+								"execute unless block ~0.75  ~    ~  air run summon dw623:tree_chopper_minion_15  ~1  ~    ~ ",
+								"execute unless block ~   ~   ~-0.75 air run summon dw623:tree_chopper_minion_15  ~   ~   ~-1",
+								"execute unless block ~   ~    ~0.75 air run summon dw623:tree_chopper_minion_15  ~   ~    ~1",
+								"execute unless block ~   ~0.75   ~  air run summon dw623:tree_chopper_minion_15  ~   ~1   ~ "							
+							]							
+						}
+					}					
+				]
+			},
+			"ev:summon_with_limit_8":  {
+				"sequence": [															
+					{					
+						"run_command": {
+							"command": [							
+								"execute unless block ~   ~-0.75  ~  air run summon dw623:tree_chopper_minion_15  ~   ~-1  ~ ",
+								"execute unless block ~-0.75 ~    ~  air run summon dw623:tree_chopper_minion_15  ~-1 ~    ~ ",
+								"execute unless block ~0.75  ~    ~  air run summon dw623:tree_chopper_minion_15  ~1  ~    ~ ",
+								"execute unless block ~   ~   ~-0.75 air run summon dw623:tree_chopper_minion_15  ~   ~   ~-1",
+								"execute unless block ~   ~    ~0.75 air run summon dw623:tree_chopper_minion_15  ~   ~    ~1",
+								"execute unless block ~   ~0.75   ~  air run summon dw623:tree_chopper_minion_15  ~   ~1   ~ "																
+							]							
+						}
+					}					
+				]
+			}	
+		}
+	}
+}

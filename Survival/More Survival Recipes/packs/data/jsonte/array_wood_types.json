@@ -9,7 +9,7 @@
 
 		Use Name for output
 		fence_gate (256) (stonecutter=16) (visual=10)
-		sign (288) (stonecutter=14.22) (visual=12) - but oak is just sign and dark_oak is darkoak
+		sign (288) (stonecutter=14.22) (visual=12) - but oak is just sign 
 		door (16x16x4x2=2048)
 		stairs (3072 = .75 of block)
 
