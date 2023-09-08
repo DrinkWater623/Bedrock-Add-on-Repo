@@ -1,0 +1,238 @@
+{
+	/*
+		Note: This must be placed by a master who will know what type of tree this is.
+		Preferably it will call based on Canopy Size
+		
+		"$scope":{
+			//"local_log_level_combo": "{{global_log_list.flatMap(x => (0..15).map(y => {'leaf_level': y,'canopy_size':x	,'wood_name': x	,'log_sfx': x	,'sapling_sfx': x	,'leaf_sfx': x}))}}"
+			
+		},
+		*/
+	
+    "$files": {    
+        "array": "log_level_combo",
+        "fileName": "tree_minion_{{wood_name}}_{{leaf_level}}.bp"
+    },
+    "$template": {
+		"format_version": "1.20.10",
+		"minecraft:entity": {
+			"description": {
+				"identifier": "dw623:tree_minion_{{wood_name}}_{{leaf_level}}",
+				//"runtime_identifier": "minecraft:ender_crystal",
+				"is_spawnable": false,
+				"is_summonable": true,
+				"is_experimental": false,
+				"properties": {
+					"bit:in_log": {"type": "bool","default": false},
+					"bit:in_leaf": {"type": "bool","default": false},
+					"bit:is_not_last": {"type": "bool","default": true},
+					"int:canopy_size": {"type": "int","default": "{{=canopy_size}}","range": [0,15]}, //change it if get master to 
+					"int:my_number": {"type": "int","default": "{{=leaf_level}}","range": [0,15]}   //call based on canopy size
+				}
+			},
+			"component_groups": {							
+				"cg:despawn": {"minecraft:instant_despawn": {}}				
+			},
+			"components": {	
+				"minecraft:breathable":{
+					"breathes_air": true,
+					"breathes_lava": true,
+					"breathes_solids": true,
+					"breathes_water": true,
+					"generates_bubbles": false,
+					"inhale_time": 1.0,
+					"suffocate_time": 100,
+					"total_supply": 100
+				},
+				"minecraft:collision_box": {"height":0.5,"width":0.5},
+				"minecraft:damage_sensor":{"triggers":{"cause":"all","deals_damage":false}},
+				"minecraft:despawn": {
+					"filters":[
+						{
+							"any_of": [
+								{"test":"distance_to_nearest_player","operator":">","value":32},
+								{"test": "in_block","value": "minecraft:air"},
+								{"test": "in_block","value": "minecraft:dirt"}
+							]
+						}
+					]
+				},
+				"minecraft:physics": {"has_gravity": false,"has_collision": false},
+				"minecraft:scale":{"value":0.125},
+				"minecraft:health": {"value":100,"max":100},
+				"minecraft:type_family": {"family": ["tree_minion"]},
+				"minecraft:timer": {
+					"time": [0.25, 0.5],"looping": false,"randomInterval": true,
+					"time_down_event": {"event":"ev:environment_sensor"}
+				}
+			},
+			"events": {
+				"ev:despawn":{"add":{"component_groups":["cg:despawn"]}},
+				"minecraft:entity_spawned":  {
+					"sequence": [						
+						// center myself
+						{"run_command":{"command":["execute align xyz run tp @s ~0.5 ~0.5 ~0.5"]}},
+						//Trees Only
+						{		
+							"filters": {
+								"any_of": [									
+									{"test": "in_block","value": "minecraft:{{wood_name}}_{{log_sfx}}"},
+									{"test": "in_block","value": "minecraft:stripped_{{wood_name}}_{{log_sfx}}"}									
+								]
+							},
+							"set_property": {"bit:in_log": true}
+						},
+						{		
+							"filters": {
+								"any_of": [			
+									{"test": "in_block","value": "minecraft:leaves"},
+									{"test": "in_block","value": "minecraft:leaves2"},
+									//newer leaves are not in the above groups
+									{ //see if can do all, just in case they made it work here
+										"{{#global_wood_types.filter(x => x.wood_name == wood_name && x.give_leaf == 1)}}":{											
+											"test": "in_block","value": "minecraft:{{wood_name+'_'+leaf_sfx}}"
+										}
+									},
+									{
+										"{{#other_tree_block_loot.filter(x => x.related_wood_1 == wood_name || x.related_wood_2 == wood_name)}}":{											
+											"test": "in_block","value": "minecraft:{{name}}"
+										}
+									}
+								]
+							},
+							"set_property": {"bit:in_leaf": true}
+						},
+						//Vines - should be last of a tree.. so stop - no matter what level
+						{		
+							"filters": {
+								"any_of": [									
+									{
+										"{{#other_tree_block_loot.filter(x => x.consider_as_last == 1 && (x.related_wood_1 == wood_name || x.related_wood_2 == wood_name || x.related_wood_1 == x.related_wood_2))}}":{											
+											"test": "in_block","value": "minecraft:{{name}}"
+										}
+									}
+								]
+							},
+							"set_property": {"bit:is_not_last": false}
+						}
+					]
+				},
+				"ev:environment_sensor":{
+					"sequence": [
+						{
+							"filters": {								
+								"none_of": [																									
+									{"test":"bool_property","domain":"bit:in_log", "value":true},
+									{"test":"bool_property","domain":"bit:in_leaf", "value":true}
+								]
+							},
+							"trigger":"ev:despawn"
+						},
+						{
+							"filters": {								
+								"any_of": [																									
+									{"test":"bool_property","domain":"bit:in_log", "value":true},
+									{"test":"bool_property","domain":"bit:in_leaf", "value":true}
+								]
+							},
+							"trigger": "ev:summon_to_neighbors"
+						}
+					]
+				},
+				"ev:summon_to_neighbors":  {
+					"sequence": [
+						//{"remove": {"component_groups":["cg:environment_sensor"]}},
+						//Leaves
+						{	
+							"filters": {								
+								"all_of": [																									
+									{"test":"int_property","domain":"int:my_number","operator":">=","value":1},
+									{"test":"bool_property","domain":"bit:is_not_last", "value":true},
+									{"test":"bool_property","domain":"bit:in_leaf", "value":true}
+								]
+							},
+							"run_command": {
+								"command": [																		
+									"execute unless block ~   ~-0.75  ~  air run summon dw623:tree_minion_{{wood_name}}_{{leaf_level}}  ~   ~-1  ~ ",
+									"execute unless block ~   ~0.75   ~  air run summon dw623:tree_minion_{{wood_name}}_{{leaf_level}}  ~   ~1   ~ ",
+									"execute unless block ~-0.75 ~    ~  air run summon dw623:tree_minion_{{wood_name}}_{{leaf_level == 0 ? 0 : leaf_level-1}}  ~-1 ~    ~ ",
+									"execute unless block ~0.75  ~    ~  air run summon dw623:tree_minion_{{wood_name}}_{{leaf_level == 0 ? 0 : leaf_level-1}}  ~1  ~    ~ ",
+									"execute unless block ~   ~   ~-0.75 air run summon dw623:tree_minion_{{wood_name}}_{{leaf_level == 0 ? 0 : leaf_level-1}}  ~   ~   ~-1",
+									"execute unless block ~   ~    ~0.75 air run summon dw623:tree_minion_{{wood_name}}_{{leaf_level == 0 ? 0 : leaf_level-1}}  ~   ~    ~1"
+								]							
+							}
+						},
+						{	
+							"filters": {								
+								"all_of": [																									
+									{"test":"int_property","domain":"int:my_number","operator":">=","value":1},
+									{"test":"bool_property","domain":"bit:in_log", "value":true}
+								]
+							},
+							"run_command": {
+								"command": [																		
+									"execute unless block ~   ~-0.75  ~  air run summon dw623:tree_minion_{{wood_name}}_{{leaf_level >= (canopy_size-1) ? canopy_size : leaf_level >= (canopy_size-2) ? leaf_level : leaf_level}}  ~   ~-1  ~ ",
+									"execute unless block ~   ~0.75   ~  air run summon dw623:tree_minion_{{wood_name}}_{{leaf_level >= (canopy_size-1) ? canopy_size : leaf_level >= (canopy_size-2) ? leaf_level : leaf_level}}  ~   ~1   ~ ",								
+									"execute unless block ~-0.75 ~    ~  air run summon dw623:tree_minion_{{wood_name}}_{{leaf_level >= (canopy_size-1) ? canopy_size : leaf_level >= (canopy_size-2) ? leaf_level : leaf_level == 0 ? 0 : leaf_level-1}}  ~-1 ~    ~ ",
+									"execute unless block ~0.75  ~    ~  air run summon dw623:tree_minion_{{wood_name}}_{{leaf_level >= (canopy_size-1) ? canopy_size : leaf_level >= (canopy_size-2) ? leaf_level : leaf_level == 0 ? 0 : leaf_level-1}}  ~1  ~    ~ ",
+									"execute unless block ~   ~   ~-0.75 air run summon dw623:tree_minion_{{wood_name}}_{{leaf_level >= (canopy_size-1) ? canopy_size : leaf_level >= (canopy_size-2) ? leaf_level : leaf_level == 0 ? 0 : leaf_level-1}}  ~   ~   ~-1",
+									"execute unless block ~   ~    ~0.75 air run summon dw623:tree_minion_{{wood_name}}_{{leaf_level >= (canopy_size-1) ? canopy_size : leaf_level >= (canopy_size-2) ? leaf_level : leaf_level == 0 ? 0 : leaf_level-1}}  ~   ~    ~1"
+								]							
+							}
+						},
+						/*
+						{	
+							"filters": {								
+								"all_of": [																									
+									{"test":"int_property","domain":"int:my_number","operator":">=","value":"{{=canopy_size-2}}"},
+									{"test":"bool_property","domain":"bit:in_log", "value":true}
+								]
+							},
+							"run_command": {
+								"command": [																		
+									"execute unless block ~   ~-0.75  ~  air run summon dw623:tree_minion_{{wood_name}}_{{canopy_size}}  ~   ~-1  ~ ",
+									"execute unless block ~-0.75 ~    ~  air run summon dw623:tree_minion_{{wood_name}}_{{canopy_size}}  ~-1 ~    ~ ",
+									"execute unless block ~0.75  ~    ~  air run summon dw623:tree_minion_{{wood_name}}_{{canopy_size}}  ~1  ~    ~ ",
+									"execute unless block ~   ~   ~-0.75 air run summon dw623:tree_minion_{{wood_name}}_{{canopy_size}}  ~   ~   ~-1",
+									"execute unless block ~   ~    ~0.75 air run summon dw623:tree_minion_{{wood_name}}_{{canopy_size}}  ~   ~    ~1",
+									"execute unless block ~   ~0.75   ~  air run summon dw623:tree_minion_{{wood_name}}_{{canopy_size}}  ~   ~1   ~ "									
+								]							
+							}
+						},
+						{	
+							"filters": {								
+								"all_of": [																									
+									{"test":"bool_property","domain":"bit:in_log", "value":true},
+									{"test":"int_property","domain":"int:my_number","operator":"<","value":"{{=canopy_size-2}}"}
+								]
+							},
+							"run_command": {
+								"command": [																		
+									"execute unless block ~   ~-0.75  ~  air run summon dw623:tree_minion_{{wood_name}}_{{leaf_level}}   ~   ~-1  ~ ",
+									"execute unless block ~-0.75 ~    ~  air run summon dw623:tree_minion_{{wood_name}}_{{leaf_level-1}} ~-1 ~    ~ ",
+									"execute unless block ~0.75  ~    ~  air run summon dw623:tree_minion_{{wood_name}}_{{leaf_level-1}} ~1  ~    ~ ",
+									"execute unless block ~   ~   ~-0.75 air run summon dw623:tree_minion_{{wood_name}}_{{leaf_level-1}} ~   ~   ~-1",
+									"execute unless block ~   ~    ~0.75 air run summon dw623:tree_minion_{{wood_name}}_{{leaf_level-1}} ~   ~    ~1",
+									"execute unless block ~   ~0.75   ~  air run summon dw623:tree_minion_{{wood_name}}_{{leaf_level}}   ~   ~1   ~ "									
+								]							
+							}
+						},
+						*/
+						{
+							"run_command":{"command":[
+								//later add loot for leaves here
+
+								// 1) if no tree chest, spawn one in
+								"execute unless entity @e[r=48,family=tree_chest,family=hungry] run summon dw623:tree_chopper_chest ~ ~ ~ 0 0 ev:entity_spawned Tree-Loot",
+
+								// 2) destroy the block I am in
+								"fill ~ ~ ~  ~ ~ ~ air destroy"
+							]}
+						},
+						{"add": {"component_groups":["cg:despawn"]}}
+					]
+				}				
+			}			
+		}
+	}
+}

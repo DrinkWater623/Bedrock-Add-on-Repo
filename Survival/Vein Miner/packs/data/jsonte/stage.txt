@@ -1,0 +1,7 @@
+{{
+    global_log_list.flatMap(
+            x => (0..15).map(
+                        y => {'leaf_level': y,'canopy_size':x	,'wood_name': x	,'log_sfx': x	,'sapling_sfx': x	,'leaf_sfx': x}
+                    )
+        )
+    }}

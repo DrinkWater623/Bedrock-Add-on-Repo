@@ -1,4 +1,6 @@
 {
+	//Maybe feed it and it will follow ??? too much ???
+	
 	// this version works good.  but need to limit it again, like the vein miner
 	// because of the dark oak forest... can take the whole thing down and make
 	// the game crawl
@@ -11,7 +13,10 @@
 				"runtime_identifier": "minecraft:shulker",
 				"is_spawnable": false,
 				"is_summonable": true,
-				"is_experimental": false
+				"is_experimental": false,
+				"properties": {
+					"bit:is_full": {"type": "bool","default": false}
+				}
 			},		
 			"component_groups": {			
 				"cg:despawn_when_empty":{
@@ -24,11 +29,17 @@
 				},			
 				"cg:recruit_timer":{
 					"minecraft:timer": {"time":2.0,"time_down_event":{"event":"ev:recruit"},"looping":true,"randomInterval":false}
+				},
+				"cg:family_hungry":{
+					"minecraft:type_family": {"family": ["chest","tree_chest","hungry"]}
+				},
+				"cg:family_full":{
+					"minecraft:type_family": {"family": ["chest","tree_chest","full"]}
 				}   			
 			},
 			"components": {
 				"minecraft:breathable": {"breathes_air":true,"breathes_lava":true,"breathes_solids":true,"breathes_water":true,"generates_bubbles":false},
-				"minecraft:collision_box": {"height": 0.75,"width":0.75},
+				//"minecraft:collision_box": {"height": 0.75,"width":0.75},
 				"minecraft:damage_sensor":{"triggers":{"cause":"all","deals_damage":false}},
 				"minecraft:fire_immune":{},
 				"minecraft:health": {"value":1000,"max":1000},
@@ -36,14 +47,15 @@
 				"minecraft:is_stackable": {},
 				"minecraft:item_hopper":{},
 				"minecraft:nameable": {"allow_name_tag_renaming":true,"always_show":true},
+				"minecraft:persistent":{},
 				"minecraft:physics": {"has_collision":true,"has_gravity":true},
 				//"minecraft:push_through": {"value":1},
 				"minecraft:pushable":{"is_pushable":true,"is_pushable_by_piston": false},
-				"minecraft:scale": {"value":0.5},
+				//"minecraft:scale": {"value":0.5},
 				"minecraft:timer": {
 					"time": 0.05,"time_down_event": {"event":"ev:collection_start"},
 					"looping": false,"randomInterval": false},
-				"minecraft:type_family": {"family": ["chest","tree_chest"]}
+				"minecraft:type_family": {"family": ["chest","tree_chest","hungry"]}
 			},
 			"events": {			
 				"ev:collection_start": {"add": {"component_groups":["cg:collect_timer"]}},
@@ -51,11 +63,13 @@
 					"sequence":[
 						{
 							"filters": {"test":"any_slot_empty","value":"inventory"},
-							"run_command":{"command":["execute if entity @e[r=64,type=item] run function chest_tp_tree_chopper_items_r64"]}
+							"run_command":{"command":["execute if entity @e[r=64,type=item] run function chest_tp_tree_chopper_items_r64"]},
+							"set_property": {"bit:is_full": false},
+							"add": {"component_groups":["cg:family_hungry"]}
 						},					
 						{						
 							"filters": {"none_of":[{"test":"any_slot_empty","value":"inventory"}]},
-							"add": {"component_groups":["cg:recruit_timer"]}
+							"add": {"component_groups":["cg:recruit_timer","cg:family_full"]}
 						},
 						{
 							"filters": {"test":"all_slots_empty","value":"inventory"},
@@ -67,14 +81,16 @@
 					"sequence":[					
 						//if slots are full... summon another if still stuff on the ground near
 						{						
-							"filters": {"none_of":[{"test":"any_slot_empty","value":"inventory"}]},
-							"run_command":{"command":[
-								//"",
-								"execute unless entity @e[x=~,z=~,y=~2,dy=1,family=tree_chest] run say Recruiting",
-								"execute unless entity @e[x=~,z=~,y=~2,dy=1,family=tree_chest] if entity @e[r=64,type=item] run function chest_tp_tree_chopper_items_r64",
-								"execute unless entity @e[x=~,z=~,y=~2,dy=1,family=tree_chest] if entity @e[r=1,type=item] run summon dw623:tree_chopper_chest ^ ^1 ^ 0 0 More-Tree-Loot"
-							]}
-						},
+							"filters": {"test":"bool_property","domain":"bit:is_full", "value":false},
+							"run_command":{"command":[								
+								"title @a[r=64,hasitem={item=dw623:diamond_double_axe,location=slot.weapon.mainhand}] title Adding another Tree-Loot-Chest",
+								"execute if entity @e[r=64,type=item] run function chest_tp_tree_chopper_items_r64",
+								//do not recruit if another near by is still hungry
+								"execute unless entity @e[r=32,family=tree_chest,family=hungry] if entity @e[r=1,type=item] run summon dw623:tree_chopper_chest ^ ^2 ^ 0 0 . More-Tree-Loot"
+					
+							]},
+							"set_property": {"bit:is_full": true}
+						},						
 						{"add": {"component_groups":["cg:collect_timer"]}}
 					]				
 				},

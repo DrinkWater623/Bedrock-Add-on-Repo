@@ -1,0 +1,19 @@
+{
+	/*	try
+	
+		array.flatMap(x => (0..6).map(y => {'name': x, 'level': y}))	
+	*/
+	"global_wood_types":[
+		{"canopy_size":7	,"wood_name":"acacia"	,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":null	,"leaf2_id":0		,"alt_give_leaf":null},		
+		{"canopy_size":3	,"wood_name":"birch"	,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":2	,"leaf2_id":null	,"alt_give_leaf":null},
+		{"canopy_size":7	,"wood_name":"cherry"	,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":1	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":null},
+		{"canopy_size":4	,"wood_name":"dark_oak"	,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":null	,"leaf2_id":1		,"alt_give_leaf":null},
+		{"canopy_size":7	,"wood_name":"jungle"	,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":3	,"leaf2_id":null	,"alt_give_leaf":null},
+		{"canopy_size":7	,"wood_name":"mangrove"	,"log_sfx":"log"	,"sapling_sfx":"propagule"	,"leaf_sfx":"leaves"	,"give_leaf":1	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":null},
+		{"canopy_size":5	,"wood_name":"oak"		,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":0	,"leaf2_id":null	,"alt_give_leaf":null},
+		{"canopy_size":4	,"wood_name":"spruce"	,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":1	,"leaf2_id":null	,"alt_give_leaf":null},
+		{"canopy_size":7	,"wood_name":"crimson"	,"log_sfx":"stem"	,"sapling_sfx":null			,"leaf_sfx": null		,"give_leaf":0	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":"nether_wart_block"},
+		{"canopy_size":7	,"wood_name":"warped"	,"log_sfx":"stem"	,"sapling_sfx":null			,"leaf_sfx":"wart_block","give_leaf":1	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":null}
+	]
+	
+}

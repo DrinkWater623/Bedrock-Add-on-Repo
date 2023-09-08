@@ -2,7 +2,7 @@
     "format_version": "1.10.0",
     "minecraft:client_entity": {
         "description": {
-            "identifier": "dw623:tree_chopper_master",
+            "identifier": "dw623:tree_minion_master",
             "materials": {
                 "default": "entity"
             },

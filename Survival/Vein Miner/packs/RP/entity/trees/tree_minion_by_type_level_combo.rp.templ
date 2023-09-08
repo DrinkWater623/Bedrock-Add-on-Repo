@@ -1,0 +1,21 @@
+{
+    "$files": {    
+        "array": "log_level_combo",
+        "fileName": "tree_minion_{{wood_name}}_{{leaf_level}}.rp"
+    },
+    "$template": {
+        "format_version": "1.10.0",
+        "minecraft:client_entity": {
+            "description": {
+                "identifier": "dw623:tree_minion_{{wood_name}}_{{leaf_level}}",
+                "materials": {
+                    "default": "entity"
+                },
+                "textures": {"default":"textures/colors/color_{{mod(leaf_level,16)}}"},
+                "geometry": {"default":"geometry.box"},
+                "render_controllers": ["controller.render.default"]
+                
+            }
+        }
+    }
+}

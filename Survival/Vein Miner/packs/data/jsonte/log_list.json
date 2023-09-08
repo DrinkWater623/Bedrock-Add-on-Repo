@@ -1,0 +1,25 @@
+{
+	"global_log_list":[
+		{"main":1	,"log_name":"acacia"			,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaves":0	,"large_canopy":1},		
+		{"main":1	,"log_name":"birch"				,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaves":0	,"large_canopy":0},
+		{"main":1	,"log_name":"cherry"			,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaves":1	,"large_canopy":1},
+		{"main":1	,"log_name":"dark_oak"			,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaves":0	,"large_canopy":0},
+		{"main":1	,"log_name":"jungle"			,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaves":0	,"large_canopy":1},
+		{"main":1	,"log_name":"mangrove"			,"log_sfx":"log"	,"sapling_sfx":"propagule"	,"leaf_sfx":"leaves"	,"give_leaves":1	,"large_canopy":1},
+		{"main":1	,"log_name":"oak"				,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaves":0	,"large_canopy":0},
+		{"main":1	,"log_name":"spruce"			,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaves":0	,"large_canopy":1},
+		{"main":1	,"log_name":"crimson"			,"log_sfx":"stem"	,"sapling_sfx":""			,"leaf_sfx":""			,"give_leaves":0	,"large_canopy":1},
+		{"main":1	,"log_name":"warped"			,"log_sfx":"stem"	,"sapling_sfx":""			,"leaf_sfx":"wart_block","give_leaves":1	,"large_canopy":1},
+		{"main":0	,"log_name":"stripped_acacia"	,"log_sfx":"log"	,"sapling_sfx":""			,"leaf_sfx":""			,"give_leaves":0	,"large_canopy":1},		
+		{"main":0	,"log_name":"stripped_birch"	,"log_sfx":"log"	,"sapling_sfx":""			,"leaf_sfx":""			,"give_leaves":0	,"large_canopy":0},
+		{"main":0	,"log_name":"stripped_cherry"	,"log_sfx":"log"	,"sapling_sfx":""			,"leaf_sfx":""			,"give_leaves":0	,"large_canopy":1},
+		{"main":0	,"log_name":"stripped_dark_oak"	,"log_sfx":"log"	,"sapling_sfx":""			,"leaf_sfx":""			,"give_leaves":0	,"large_canopy":0},
+		{"main":0	,"log_name":"stripped_jungle"	,"log_sfx":"log"	,"sapling_sfx":""			,"leaf_sfx":""			,"give_leaves":0	,"large_canopy":1},
+		{"main":0	,"log_name":"stripped_mangrove"	,"log_sfx":"log"	,"sapling_sfx":""			,"leaf_sfx":""			,"give_leaves":0	,"large_canopy":1},
+		{"main":0	,"log_name":"stripped_oak"		,"log_sfx":"log"	,"sapling_sfx":""			,"leaf_sfx":""			,"give_leaves":0	,"large_canopy":0},
+		{"main":0	,"log_name":"stripped_spruce"	,"log_sfx":"log"	,"sapling_sfx":""			,"leaf_sfx":""			,"give_leaves":0	,"large_canopy":1},
+		{"main":0	,"log_name":"stripped_crimson"	,"log_sfx":"stem"	,"sapling_sfx":""			,"leaf_sfx":""			,"give_leaves":0	,"large_canopy":1},
+		{"main":0	,"log_name":"stripped_warped"	,"log_sfx":"stem"	,"sapling_sfx":""			,"leaf_sfx":""			,"give_leaves":0	,"large_canopy":1}
+		//{"main":1	,"log_name":"nether"			,"log_sfx":""		,"sapling_sfx":""			,"leaf_sfx":"wart_block","give_leaves":1	,"large_canopy":1},
+	]
+}

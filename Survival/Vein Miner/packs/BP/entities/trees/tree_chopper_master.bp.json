@@ -6,7 +6,8 @@
 	"format_version": "1.20.10",
 	"minecraft:entity": {
 		"description": {
-			"identifier": "dw623:tree_chopper_master",
+			"identifier": "dw623:tree_minion_master",
+			//"runtime_identifier": "minecraft:ender_crystal",
 			"is_spawnable": false,
 			"is_summonable": true,
 			"is_experimental": false		
@@ -46,13 +47,13 @@
 			//center me in block
 			"minecraft:entity_spawned":  {
 				"sequence":[										
-					{
-						"run_command":{"command":[
-							//"execute if entity @e[family=tree_minion] run tellraw @s {\"rawtext\":[\"text\":\"§cPlease wait until the another tree is finished being Vein-Chopped\"]}",							
-							"execute if entity @e[family=tree_minion] run title @p title §cPlease wait until other Vein-Chop is done",
-							"execute if entity @e[family=tree_minion] run event entity @s ev:despawn"
-						]}
-					},
+					//{
+						//"run_command":{"command":[
+							
+							//"execute if entity @e[family=tree_minion] run title @p[hasitem={item=dw623:diamond_double_axe,location=slot.weapon.mainhand}] title §cPlease wait until other Vein-Chop is done"
+							//"execute if entity @e[family=tree_minion] run event entity @s ev:despawn"
+						//]}
+					//},
 					{"run_command":{"command":["execute align xyz run tp @s ~0.5 ~0.5 ~0.5"]}}
 				]
 			},
@@ -93,12 +94,12 @@
 						"run_command": {
 							"command": [
 								"say ROOFED",							
-								"execute unless block ~   ~-0.75  ~  air run summon dw623:tree_chopper_minion_6  ~   ~-1  ~ ",
-								"execute unless block ~-0.75 ~    ~  air run summon dw623:tree_chopper_minion_6  ~-1 ~    ~ ",
-								"execute unless block ~0.75  ~    ~  air run summon dw623:tree_chopper_minion_6  ~1  ~    ~ ",
-								"execute unless block ~   ~   ~-0.75 air run summon dw623:tree_chopper_minion_6  ~   ~   ~-1",
-								"execute unless block ~   ~    ~0.75 air run summon dw623:tree_chopper_minion_6  ~   ~    ~1",
-								"execute unless block ~   ~0.75   ~  air run summon dw623:tree_chopper_minion_6  ~   ~1   ~ "							
+								"execute unless block ~   ~-0.75  ~  air run summon dw623:tree_minion_5  ~   ~-1  ~ ",
+								"execute unless block ~-0.75 ~    ~  air run summon dw623:tree_minion_5  ~-1 ~    ~ ",
+								"execute unless block ~0.75  ~    ~  air run summon dw623:tree_minion_5  ~1  ~    ~ ",
+								"execute unless block ~   ~   ~-0.75 air run summon dw623:tree_minion_5  ~   ~   ~-1",
+								"execute unless block ~   ~    ~0.75 air run summon dw623:tree_minion_5  ~   ~    ~1",
+								"execute unless block ~   ~0.75   ~  air run summon dw623:tree_minion_5  ~   ~1   ~ "							
 							]							
 						}
 					}					
@@ -109,12 +110,12 @@
 					{					
 						"run_command": {
 							"command": [							
-								"execute unless block ~   ~-0.75  ~  air run summon dw623:tree_chopper_minion_10  ~   ~-1  ~ ",
-								"execute unless block ~-0.75 ~    ~  air run summon dw623:tree_chopper_minion_10  ~-1 ~    ~ ",
-								"execute unless block ~0.75  ~    ~  air run summon dw623:tree_chopper_minion_10  ~1  ~    ~ ",
-								"execute unless block ~   ~   ~-0.75 air run summon dw623:tree_chopper_minion_10  ~   ~   ~-1",
-								"execute unless block ~   ~    ~0.75 air run summon dw623:tree_chopper_minion_10  ~   ~    ~1",
-								"execute unless block ~   ~0.75   ~  air run summon dw623:tree_chopper_minion_10  ~   ~1   ~ "																
+								"execute unless block ~   ~-0.75  ~  air run summon dw623:tree_minion_7  ~   ~-1  ~ ",
+								"execute unless block ~-0.75 ~    ~  air run summon dw623:tree_minion_7  ~-1 ~    ~ ",
+								"execute unless block ~0.75  ~    ~  air run summon dw623:tree_minion_7  ~1  ~    ~ ",
+								"execute unless block ~   ~   ~-0.75 air run summon dw623:tree_minion_7  ~   ~   ~-1",
+								"execute unless block ~   ~    ~0.75 air run summon dw623:tree_minion_7  ~   ~    ~1",
+								"execute unless block ~   ~0.75   ~  air run summon dw623:tree_minion_7  ~   ~1   ~ "																
 							]							
 						}
 					}					

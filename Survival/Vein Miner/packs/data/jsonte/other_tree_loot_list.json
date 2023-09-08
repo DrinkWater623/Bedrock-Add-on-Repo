@@ -1,0 +1,17 @@
+{
+	
+	"other_tree_block_loot":[
+		{"name":"mangrove_roots"	,"consider_as_last":0	,"related_wood_1":"mangrove","rw1_sfx":"log","related_wood_2":""},
+		{"name":"shroomlight"		,"consider_as_last":0	,"related_wood_1":"crimson"	,"rw1_sfx":"stem","related_wood_2":"warped"},
+		{"name":"twisting_vines"	,"consider_as_last":1	,"related_wood_1":"warped"	,"rw1_sfx":"stem","related_wood_2":""},
+		{"name":"nether_wart_block"	,"consider_as_last":0	,"related_wood_1":"crimson"	,"rw1_sfx":"stem","related_wood_2":""},
+		{"name":"weeping_vines"		,"consider_as_last":1	,"related_wood_1":"crimson"	,"rw1_sfx":"stem","related_wood_2":""},
+		{"name":"vines"				,"consider_as_last":1	,"related_wood_1":""		,"rw1_sfx":""	 ,"related_wood_2":""}
+	],
+	"other_tree_item_loot":[
+		{"name":"apple"},
+		{"name":"dirt"},
+		{"name":"snowball"},
+		{"name":"stick"}
+	]
+}
