@@ -1,0 +1,16 @@
+
+									// -Z
+									"execute if block ~ ~ ~-0.75  minecraft:leaves run summon dw623:tree_minion_{{radius_ptr-1}}  ~ ~ ~-1",
+									"execute if block ~ ~ ~-0.75  minecraft:leaves2 run summon dw623:tree_minion_{{radius_ptr-1}}  ~ ~ ~-1",
+									{"{{#local_give_leaf_sfx}}":"execute if block ~ ~ ~-0.75  minecraft:{{wood_name}}_{{leaf_sfx}} run summon dw623:tree_minion_{{radius_ptr-1}}  ~ ~ ~-1"},
+									{"{{#local_log_sfx}}":"execute if block ~ ~ ~-0.75  minecraft:{{wood_name}}_{{log_sfx}} run summon dw623:tree_minion_{{radius_ptr}}  ~ ~ ~-1"},
+									{"{{#local_log_sfx}}":"execute if block ~ ~ ~-0.75  minecraft:stripped_{{wood_name}}_{{log_sfx}} run summon dw623:tree_minion_{{radius_ptr}}  ~ ~ ~-1"},
+									{"{{#other_tree_block_loot}}":"execute if block ~ ~ ~-0.75  minecraft:{{block_name}} run summon dw623:tree_minion_{{radius_ptr-1}}  ~ ~ ~-1"},
+									// +Z
+									"execute if block ~ ~ ~0.75  minecraft:leaves run summon dw623:tree_minion_{{radius_ptr-1}}  ~ ~ ~1",
+									"execute if block ~ ~ ~0.75  minecraft:leaves2 run summon dw623:tree_minion_{{radius_ptr-1}}  ~ ~ ~1",
+									{"{{#local_give_leaf_sfx}}":"execute if block ~ ~ ~0.75  minecraft:{{wood_name}}_{{leaf_sfx}} run summon dw623:tree_minion_{{radius_ptr-1}}  ~ ~ ~1"},
+									{"{{#local_log_sfx}}":"execute if block ~ ~ ~0.75  minecraft:{{wood_name}}_{{log_sfx}} run summon dw623:tree_minion_{{radius_ptr}}  ~ ~ ~1"},
+									{"{{#local_log_sfx}}":"execute if block ~ ~ ~0.75  minecraft:stripped_{{wood_name}}_{{log_sfx}} run summon dw623:tree_minion_{{radius_ptr}}  ~ ~ ~1"},
+									{"{{#other_tree_block_loot}}":"execute if block ~ ~ ~0.75  minecraft:{{block_name}} run summon dw623:tree_minion_{{radius_ptr-1}}  ~ ~ ~1"}
+								

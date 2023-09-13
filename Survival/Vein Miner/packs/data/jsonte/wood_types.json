@@ -3,17 +3,45 @@
 	
 		array.flatMap(x => (0..6).map(y => {'name': x, 'level': y}))	
 	*/
+	//lid for id to pass to next as to what log I was.. so a leaf can know what leaf it may be
+	//NO CANOPY over 8 for now ...since entity goes up to 8
+
+	// Add Bamboo
 	"global_wood_types":[
-		{"canopy_size":7	,"wood_name":"acacia"	,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":null	,"leaf2_id":0		,"alt_give_leaf":null},		
-		{"canopy_size":3	,"wood_name":"birch"	,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":2	,"leaf2_id":null	,"alt_give_leaf":null},
-		{"canopy_size":7	,"wood_name":"cherry"	,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":1	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":null},
-		{"canopy_size":4	,"wood_name":"dark_oak"	,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":null	,"leaf2_id":1		,"alt_give_leaf":null},
-		{"canopy_size":7	,"wood_name":"jungle"	,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":3	,"leaf2_id":null	,"alt_give_leaf":null},
-		{"canopy_size":7	,"wood_name":"mangrove"	,"log_sfx":"log"	,"sapling_sfx":"propagule"	,"leaf_sfx":"leaves"	,"give_leaf":1	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":null},
-		{"canopy_size":5	,"wood_name":"oak"		,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":0	,"leaf2_id":null	,"alt_give_leaf":null},
-		{"canopy_size":4	,"wood_name":"spruce"	,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":1	,"leaf2_id":null	,"alt_give_leaf":null},
-		{"canopy_size":7	,"wood_name":"crimson"	,"log_sfx":"stem"	,"sapling_sfx":null			,"leaf_sfx": null		,"give_leaf":0	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":"nether_wart_block"},
-		{"canopy_size":7	,"wood_name":"warped"	,"log_sfx":"stem"	,"sapling_sfx":null			,"leaf_sfx":"wart_block","give_leaf":1	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":null}
+		{"lid":1	,"log_group":2	,"canopy_size":7	,"wood_name":"acacia"	,"log_sfx":"log"	,"in_log_tag":1	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":null	,"leaf2_id":0		,"alt_give_leaf":null				,"test_entry":"{{value}}"},		
+		{"lid":2	,"log_group":1	,"canopy_size":3	,"wood_name":"birch"	,"log_sfx":"log"	,"in_log_tag":1	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":2	,"leaf2_id":null	,"alt_give_leaf":null				,"test_entry":"{{value}}"},
+		{"lid":3	,"log_group":3	,"canopy_size":7	,"wood_name":"cherry"	,"log_sfx":"log"	,"in_log_tag":0	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":1	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":null				,"test_entry":"{{value}}"},
+		{"lid":4	,"log_group":2	,"canopy_size":4	,"wood_name":"dark_oak"	,"log_sfx":"log"	,"in_log_tag":1	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":null	,"leaf2_id":1		,"alt_give_leaf":null				,"test_entry":"{{value}}"},
+		{"lid":5	,"log_group":1	,"canopy_size":7	,"wood_name":"jungle"	,"log_sfx":"log"	,"in_log_tag":1	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":3	,"leaf2_id":null	,"alt_give_leaf":null				,"test_entry":"{{value}}"},
+		{"lid":6	,"log_group":3	,"canopy_size":7	,"wood_name":"mangrove"	,"log_sfx":"log"	,"in_log_tag":0	,"sapling_sfx":"propagule"	,"leaf_sfx":"leaves"	,"give_leaf":1	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":null				,"test_entry":"{{value}}"},
+		{"lid":7	,"log_group":1	,"canopy_size":5	,"wood_name":"oak"		,"log_sfx":"log"	,"in_log_tag":1	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":0	,"leaf2_id":null	,"alt_give_leaf":null				,"test_entry":"{{value}}"},
+		{"lid":8	,"log_group":1	,"canopy_size":4	,"wood_name":"spruce"	,"log_sfx":"log"	,"in_log_tag":1	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":1	,"leaf2_id":null	,"alt_give_leaf":null				,"test_entry":"{{value}}"},
+		{"lid":9	,"log_group":3	,"canopy_size":8	,"wood_name":"crimson"	,"log_sfx":"stem"	,"in_log_tag":0	,"sapling_sfx":null			,"leaf_sfx": null		,"give_leaf":0	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":"nether_wart_block","test_entry":"{{value}}"},
+		{"lid":10	,"log_group":3	,"canopy_size":8	,"wood_name":"warped"	,"log_sfx":"stem"	,"in_log_tag":0	,"sapling_sfx":null			,"leaf_sfx":"wart_block","give_leaf":1	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":null				,"test_entry":"{{value}}"}
+		//,{"lid":11	,"canopy_size":1	,"wood_name":"bamboo"	,"log_sfx":""		,"sapling_sfx":null			,"leaf_sfx":""			,"give_leaf":0	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":null							,"give_slab":1}
+	],
+
+	//minecraft:log
+	"global_log1":[
+		{"log1_lid":2	,"log_group":1	,"canopy_size":3	,"log1__name":"birch"	,"log1_sfx":"log"	,"in_log_tag":1	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":2	,"leaf2_id":null	,"alt_give_leaf":null				,"give_slab":0},
+		{"log1_lid":5	,"log_group":1	,"canopy_size":7	,"log1__name":"jungle"	,"log1_sfx":"log"	,"in_log_tag":1	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":3	,"leaf2_id":null	,"alt_give_leaf":null				,"give_slab":0},
+		{"log1_lid":7	,"log_group":1	,"canopy_size":5	,"log1__name":"oak"		,"log1_sfx":"log"	,"in_log_tag":1	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":0	,"leaf2_id":null	,"alt_give_leaf":null				,"give_slab":0},
+		{"log1_lid":8	,"log_group":1	,"canopy_size":4	,"log1__name":"spruce"	,"log1_sfx":"log"	,"in_log_tag":1	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":1	,"leaf2_id":null	,"alt_give_leaf":null				,"give_slab":0}
+		//,{"lid":11	,"canopy_size":1	,"wood_name":"bamboo"	,"log_sfx":""		,"sapling_sfx":null			,"leaf_sfx":""			,"give_leaf":0	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":null							,"give_slab":1}
+	],
+
+	//minecraft:log2
+	"global_log2":[
+		{"log2_lid":1	,"log_group":2	,"canopy_size":7	,"log2_name":"acacia"	,"log2_sfx":"log"	,"in_log_tag":1	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":null	,"leaf2_id":0		,"alt_give_leaf":null				,"give_slab":0},		
+		{"log2_lid":4	,"log_group":2	,"canopy_size":4	,"log2_name":"dark_oak"	,"log2_sfx":"log"	,"in_log_tag":1	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":null	,"leaf2_id":1		,"alt_give_leaf":null				,"give_slab":0}
+	],
+
+	//neither - came flatten out of groups
+	"global_log3":[
+		{"lid":3	,"log_group":3	,"canopy_size":7	,"log3_name":"cherry"	,"log3_sfx":"log"	,"in_log_tag":0	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":1	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":null				,"give_slab":1},
+		{"lid":6	,"log_group":3	,"canopy_size":7	,"log3_name":"mangrove"	,"log3_sfx":"log"	,"in_log_tag":0	,"sapling_sfx":"propagule"	,"leaf_sfx":"leaves"	,"give_leaf":1	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":null				,"give_slab":1},
+		{"lid":9	,"log_group":3	,"canopy_size":8	,"log3_name":"crimson"	,"log3_sfx":"stem"	,"in_log_tag":0	,"sapling_sfx":null			,"leaf_sfx": null		,"give_leaf":0	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":"nether_wart_block","give_slab":1},
+		{"lid":10	,"log_group":3	,"canopy_size":8	,"log3_name":"warped"	,"log3_sfx":"stem"	,"in_log_tag":0	,"sapling_sfx":null			,"leaf_sfx":"wart_block","give_leaf":1	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":null				,"give_slab":1}
+		//,{"lid":11	,"canopy_size":1	,"wood_name":"bamboo"	,"log_sfx":""		,"sapling_sfx":null			,"leaf_sfx":""			,"give_leaf":0	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":null							,"give_slab":1}
 	]
-	
 }

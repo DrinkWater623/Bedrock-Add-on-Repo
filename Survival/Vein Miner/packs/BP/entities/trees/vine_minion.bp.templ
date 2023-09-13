@@ -1,0 +1,114 @@
+{
+	/*
+		Note: This must be placed by a master who will know what type of tree this is.
+		Preferably it will call based on Canopy Size
+		
+		"$scope":{
+			//"local_log_level_combo": "{{global_log_list.flatMap(x => (0..15).map(y => {'radius_ptr': y,'canopy_size':x	,'wood_name': x	,'log_sfx': x	,'sapling_sfx': x	,'leaf_sfx': x}))}}"
+			
+		},
+	*/
+	"$scope":{
+		"vines_list":"{{other_tree_block_loot.filter(x => x.is_vine == 1)}}"
+	},	
+    "$template": {
+		"format_version": "1.20.10",
+		"minecraft:entity": {
+			"description": {
+				"identifier": "dw623:vine_minion",
+				//"runtime_identifier": "minecraft:ender_crystal",
+				"is_spawnable": false,
+				"is_summonable": true,
+				"is_experimental": false,
+				"properties": {
+					"bit:in_log": {"type": "bool","default": false},
+					"bit:in_leaf": {"type": "bool","default": false},
+					"bit:in_vine": {"type": "bool","default": false},
+					"bit:is_not_vine": {"type": "bool","default": true},
+					"int:my_radius": {"type": "int","default": "{{=radius_ptr}}","range": [0,"{{=radius_ptr+1}}"]}   //call based on canopy size
+				}
+			},
+			"component_groups": {
+				"cg:despawn": {"minecraft:instant_despawn": {}},
+				"cg:delay_timer_destroy_vine":{
+					"minecraft:timer": {
+						"time": 0.5,"looping": false,"randomInterval": false,
+						"time_down_event": {"event":"ev:step_3_destroy_vine"}
+					}
+				}
+			},
+			"components": {
+				"minecraft:breathable":{
+					"breathes_air": true,
+					"breathes_lava": true,
+					"breathes_solids": true,
+					"breathes_water": true,
+					"generates_bubbles": false,
+					"inhale_time": 1.0,
+					"suffocate_time": 100,
+					"total_supply": 100
+				},
+				"minecraft:collision_box": {"height":0.125,"width":0.125},
+				"minecraft:damage_sensor":{"triggers":{"cause":"all","deals_damage":false}},
+				"minecraft:despawn": {
+					"filters":[
+						{
+							"any_of": [
+								{"test":"distance_to_nearest_player","operator":">","value":16},
+								{"test": "in_block","value": "minecraft:air"},
+								{"test": "in_block","value": "minecraft:dirt"},
+								{"test": "in_block","value": "minecraft:log"},
+								{"test": "in_block","value": "minecraft:leaves"},
+								{"test": "in_block","value": "minecraft:log2"},
+								{"test": "in_block","value": "minecraft:leaves2"}
+							]
+						}
+					]
+				},
+				"minecraft:physics": {"has_gravity": false,"has_collision": false},
+				"minecraft:scale":{"value":0.25},
+				"minecraft:health": {"value":100,"max":100},
+				"minecraft:type_family": {"family": ["vine_minion"]}				
+			},
+			"events": {
+				"ev:despawn":{"add":{"component_groups":["cg:despawn"]}},
+				"minecraft:entity_spawned":  {
+					"sequence": [
+						{"run_command":{"command":["execute align xyz run tp @s ~0.5 ~0.5 ~0.5"]}},
+						{
+							"filters": {"any_of":[{"{{#vines_list}}":{"test":"in_block","value":"minecraft:{{block_name}}"}}]},
+							"trigger":"ev:step_2_minion_process"
+						}
+					]
+				},				
+				"ev:step_2_minion_process":{
+					"sequence": [
+						{
+							"run_command":{"command":["function {{settings.addon}}/trees/loot_my_vine"]}
+						},						
+						{	//vine grows from floor
+							"filters": {"test": "in_block","value": "minecraft:twisting_vine"},
+							"run_command":{"command":[
+								"execute unless block ~ ~1 ~ air run summon dw623:vine_minion ~ ~1 ~"
+							]}
+							
+						},
+						{
+							//because if top is destroyed, bottom is too, so give time
+							"filters": {"none_of":[{"test":"in_block","value":"minecraft:twisting_vine"}]},
+							"run_command":{"command":[
+								"execute unless block ~ ~-1 ~ air run summon dw623:vine_minion ~ ~-1 ~"
+							]}							
+						},
+						{"add":{"component_groups":["cg:delay_timer_destroy_vine"]}}
+					]
+				},
+				"ev:step_3_destroy_vine":  {
+					"sequence": [
+						{"run_command":{"command":["fill ~ ~ ~  ~ ~ ~ air destroy"]}}
+					]
+				}
+			}
+		}
+	}
+}

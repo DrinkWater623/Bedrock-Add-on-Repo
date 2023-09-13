@@ -46,14 +46,7 @@
 			"ev:despawn":{"add":{"component_groups":["cg:despawn"]}},
 			//center me in block
 			"minecraft:entity_spawned":  {
-				"sequence":[										
-					//{
-						//"run_command":{"command":[
-							
-							//"execute if entity @e[family=tree_minion] run title @p[hasitem={item=dw623:diamond_double_axe,location=slot.weapon.mainhand}] title §cPlease wait until other Vein-Chop is done"
-							//"execute if entity @e[family=tree_minion] run event entity @s ev:despawn"
-						//]}
-					//},
+				"sequence":[															
 					{"run_command":{"command":["execute align xyz run tp @s ~0.5 ~0.5 ~0.5"]}}
 				]
 			},

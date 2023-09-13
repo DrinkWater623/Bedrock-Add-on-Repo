@@ -63,7 +63,7 @@
 					"sequence":[
 						{
 							"filters": {"test":"any_slot_empty","value":"inventory"},
-							"run_command":{"command":["execute if entity @e[r=64,type=item] run function chest_tp_tree_chopper_items_r64"]},
+							"run_command":{"command":["execute if entity @e[r=48,type=item] run function {{settings.addon}}/trees/chest_tp_tree_chopper_items_r48"]},
 							"set_property": {"bit:is_full": false},
 							"add": {"component_groups":["cg:family_hungry"]}
 						},					
@@ -82,12 +82,12 @@
 						//if slots are full... summon another if still stuff on the ground near
 						{						
 							"filters": {"test":"bool_property","domain":"bit:is_full", "value":false},
-							"run_command":{"command":[								
-								"title @a[r=64,hasitem={item=dw623:diamond_double_axe,location=slot.weapon.mainhand}] title Adding another Tree-Loot-Chest",
-								"execute if entity @e[r=64,type=item] run function chest_tp_tree_chopper_items_r64",
+							"run_command":{"command":[	
+								"execute if entity @e[r=48,type=item] run function {{settings.addon}}/trees/chest_tp_tree_chopper_items_r48",
 								//do not recruit if another near by is still hungry
-								"execute unless entity @e[r=32,family=tree_chest,family=hungry] if entity @e[r=1,type=item] run summon dw623:tree_chopper_chest ^ ^2 ^ 0 0 . More-Tree-Loot"
-					
+								{"{{axe_material_list.filter(x => x.material != 'wooden')}}":"execute unless entity @e[r=48,family=tree_chest,family=hungry] if entity @e[r=1,type=item] run title @a[r=32,hasitem={item=dw623:{{material}}_double_vein_axe,location=slot.weapon.mainhand}] title Spawning Additional Chest"},
+								{"{{axe_material_list.filter(x => x.material != 'wooden')}}":"execute unless entity @e[r=48,family=tree_chest,family=hungry] if entity @e[r=1,type=item] run title @a[r=32,hasitem={item=dw623:{{material}}_double_vein_silk_touch_axe,location=slot.weapon.mainhand}] title Spawning Additional Chest"},
+								"execute unless entity @e[r=48,family=tree_chest,family=hungry] if entity @e[r=1,type=item] run summon dw623:tree_chopper_chest ^ ^2 ^ 0 0 . More-Tree-Loot"					
 							]},
 							"set_property": {"bit:is_full": true}
 						},						

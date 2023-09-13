@@ -1,0 +1,50 @@
+{
+    "squiggly_pos":[
+        //X
+        {"pos":1    ,"p75":"~-0.75 ~ ~"    ,"one":"~-1 ~ ~"},                
+        {"pos":1    ,"p75":"~0.75 ~ ~"     ,"one":"~1 ~ ~"},
+        //Y
+        {"pos":2    ,"p75":"~ ~-0.75 ~"    ,"one":"~ ~-1 ~"},                
+        {"pos":2    ,"p75":"~ ~0.75 ~"     ,"one":"~ ~1 ~"},
+        //Z
+        {"pos":3    ,"p75":"~ ~ ~-0.75"    ,"one":"~ ~ ~-1"},                
+        {"pos":3    ,"p75":"~ ~ ~0.75"     ,"one":"~ ~ ~1"}
+    ],
+    //not needed anymore... keep until sure
+    "radius_ptrs":[
+        {"radius_ptr":0},                
+        {"radius_ptr":1},                
+        {"radius_ptr":2},
+        {"radius_ptr":3},
+        {"radius_ptr":4},
+        {"radius_ptr":5},
+        {"radius_ptr":6},
+        {"radius_ptr":7},
+        {"radius_ptr":8},
+        {"radius_ptr":9},
+        {"radius_ptr":10},
+        {"radius_ptr":11},
+        {"radius_ptr":12},
+        {"radius_ptr":13},
+        {"radius_ptr":14},
+        {"radius_ptr":15},
+        {"radius_ptr":16},    
+        {"radius_ptr":17},
+        {"radius_ptr":18},
+        {"radius_ptr":19},
+        {"radius_ptr":20},                
+        {"radius_ptr":21},                
+        {"radius_ptr":22},
+        {"radius_ptr":23},
+        {"radius_ptr":24},
+        {"radius_ptr":25},
+        {"radius_ptr":26},
+        {"radius_ptr":27},
+        {"radius_ptr":28},
+        {"radius_ptr":29},
+        {"radius_ptr":30},                
+        {"radius_ptr":31},                
+        {"radius_ptr":32}
+    ]
+
+}
