@@ -1,11 +1,11 @@
 {   
     //Reg values - multiply in usage for double axe or vein
     "axe_material_list": [
-        {"material":"wooden"		,"attack_damage":4,"max_durability":60	,"cooldown_duration":1.5,"wood_destroy_speed":2	,"function_not_sneaking":"" ,"function_sneaking":""},
-        {"material":"stone"		,"attack_damage":5,"max_durability":131	,"cooldown_duration":1.2,"wood_destroy_speed":4	,"function_not_sneaking":"on_use_on_log_this_tree_trunk" ,"function_sneaking":"on_use_on_log_this_tree_trunk"},
-        {"material":"iron"		,"attack_damage":6,"max_durability":250	,"cooldown_duration":1.1,"wood_destroy_speed":6	,"function_not_sneaking":"on_use_on_log_this_tree"		,"function_sneaking":"on_use_on_log_this_tree"},
-        {"material":"emerald"	,"attack_damage":7,"max_durability":500 ,"cooldown_duration":1.0,"wood_destroy_speed":7	,"function_not_sneaking":"on_use_on_log_this_type_r7"	,"function_sneaking":"on_use_on_log_any_r7"},
-        {"material":"diamond"	,"attack_damage":7,"max_durability":1561,"cooldown_duration":1.0,"wood_destroy_speed":8 ,"function_not_sneaking":"on_use_on_log_this_type_r15"	,"function_sneaking":"on_use_on_log_any_r15"}
+        {"material":"wooden"	,"attack_damage":4,"max_durability":60	,"cooldown_duration":1.5,"wood_destroy_speed":2	,"efficiency_not_sneaking":"" 											,"efficiency_sneaking":""											,"silk_touch_not_sneaking":"" 											,"silk_touch_sneaking":""								},
+        {"material":"stone"		,"attack_damage":5,"max_durability":131	,"cooldown_duration":1.2,"wood_destroy_speed":4	,"efficiency_not_sneaking":"efficiency_on_use_on_log_this_tree_trunk" 	,"efficiency_sneaking":"efficiency_on_use_on_log_this_tree_trunk"	,"silk_touch_not_sneaking":"silk_touch_on_use_on_log_this_tree_trunk" 	,"silk_touch_sneaking":"silk_touch_on_use_on_log_this_tree_trunk"	},
+        {"material":"iron"		,"attack_damage":6,"max_durability":250	,"cooldown_duration":1.1,"wood_destroy_speed":6	,"efficiency_not_sneaking":"efficiency_on_use_on_log_this_tree"			,"efficiency_sneaking":"efficiency_on_use_on_log_this_tree"			,"silk_touch_not_sneaking":"silk_touch_on_use_on_log_this_tree"			,"silk_touch_sneaking":"silk_touch_on_use_on_log_this_tree"		},
+        {"material":"emerald"	,"attack_damage":7,"max_durability":500 ,"cooldown_duration":1.0,"wood_destroy_speed":7	,"efficiency_not_sneaking":"efficiency_on_use_on_log_this_type_r7"		,"efficiency_sneaking":"efficiency_on_use_on_log_any_r7"			,"silk_touch_not_sneaking":"silk_touch_on_use_on_log_this_type_r7"		,"silk_touch_sneaking":"silk_touch_on_use_on_log_any_r7"			},
+        {"material":"diamond"	,"attack_damage":7,"max_durability":1561,"cooldown_duration":1.0,"wood_destroy_speed":8 ,"efficiency_not_sneaking":"efficiency_on_use_on_log_this_type_r15"		,"efficiency_sneaking":"efficiency_on_use_on_log_any_r15"			,"silk_touch_not_sneaking":"silk_touch_on_use_on_log_this_type_r15"		,"silk_touch_sneaking":"silk_touch_on_use_on_log_any_r15"			}
     ],
 	"axe_digger_tags":[
 		//Wood

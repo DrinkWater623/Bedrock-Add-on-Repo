@@ -41,7 +41,8 @@
 					"bit:has_silk_touch":{"type": "bool","default": false},
 					"bit:in_log":{"type": "bool","default": false},
 					"bit:in_leaf":{"type": "bool","default": false},
-					"int:my_radius":{"type": "int","default": "{{=radius_ptr}}","range":[0,"{{=radius_ptr+1}}"]}
+					"bit:in_related":{"type": "bool","default": false}
+					//,"int:my_radius":{"type": "int","default": "{{=radius_ptr}}","range":[0,"{{=radius_ptr+1}}"]}
 				}
 			},
 			"component_groups":{
@@ -73,7 +74,9 @@
 							"any_of":[
 								{"test":"distance_to_nearest_player","operator":">","value":32},
 								{"test": "in_block","value": "minecraft:air"},
+								{"test": "in_block","value": "minecraft:cobblestone"},
 								{"test": "in_block","value": "minecraft:dirt"},
+								{"test": "in_block","value": "minecraft:stone"},
 								{"test": "in_block","value": "minecraft:water"}
 							]
 						}
@@ -123,79 +126,54 @@
 									{"test": "in_block","value": "minecraft:{{wood_name}}_{{log_sfx}}"},
 									{"test": "in_block","value": "minecraft:stripped_{{wood_name}}_{{log_sfx}}"}
 								]
-							},							
+							},
 							"set_property":{"bit:in_log": true}
 						},
 						// LEAVES
 						{
-							"filters":{"test":"in_block","value":"minecraft:{{leaf_id >= 0 ? 'leaves' : leaf2_id >= 0 ? 'leaves2' : give_leaf == 1 ? wood_name + '_'+leaf_sfx : 'air'}}"},
-							//"set_property":{"bit:in_leaf": true}
-							"trigger":"ev:step_1b_confirm_leaf"
-						},
-						{
-							"filters":{
-								"any_of":[									
-									{
-										"{{#related_loot.filter(x => x.related_wood_1 == wood_name || x.related_wood_2 == wood_name)}}":{
-											"test": "in_block","value": "minecraft:{{block_name}}"
-										}
-									}
-								]
-							},
-							"set_property":{"bit:in_leaf": true}
-						}
-					]
-				},
-				"$ev:step_1b_confirm_leaf":{
-					"sequence":[
-						{
-							"filters":{
-								"none_of":[
-									{"test":"in_block","value":"minecraft:leaves"},
-									{"test":"in_block","value":"minecraft:leaves2"}
-								]
-							},
-							"set_property":{"bit:in_leaf": true}
-						},
-						{
-							"filters":{"test":"in_block","value":"minecraft:leaves"},
-							"trigger":"ev:step_1c_confirm_leaf_group_1"
-						},
-						{
-							"filters":{"test":"in_block","value":"minecraft:leaves2"},
-							"trigger":"ev:step_1c_confirm_leaf_group_2"
-						}
-					]
-				},
-				"$ev:step_1c_confirm_leaf_group_1":{
-					// Note: This is only called when silk touch is on
-					"sequence":[
-						{
-							"{{#global_log1}}":{
+							"{{?value.leaf_id >= 0}}":{
+								"filters":{"test":"in_block","value":"minecraft:leaves"},							
 								"run_command":{"command":[
 									"setblock ~ {{320-leaf_id}} ~ leaves [\"old_leaf_type\" = \"{{wood_name}}\"]",
-									"execute if blocks ~ ~ ~  ~ ~ ~  ~ {{320-leaf_id}} ~ run event entity @s ev:step_1e_leaf_confirmed",
+									"execute if blocks ~ ~ ~  ~ ~ ~  ~ {{320-leaf_id}} ~ run event entity @s ev:step_1b_leaf_confirmed",
 									"execute unless block ~ {{320-leaf_id}} ~ air execute setblock ~ {{320-leaf_id}} ~ air"
 								]}
 							}
-						}
-					]
-				},
-				"$ev:step_1d_confirm_leaf_group_2":{
-					// Note: This is only called when silk touch is on
-					"sequence":[
+						},
 						{
-							"{{#global_log1}}":{
+							"{{?value.leaf2_id >= 0}}":{
+								"filters":{"test":"in_block","value":"minecraft:leaves2"},							
 								"run_command":{"command":[
 									"setblock ~ {{320-leaf2_id}} ~ leaves [\"new_leaf_type\" = \"{{wood_name}}\"]",
-									"execute if blocks ~ ~ ~  ~ ~ ~  ~ {{320-leaf2_id}} ~ run event entity @s ev:step_1e_leaf_confirmed",
+									"execute if blocks ~ ~ ~  ~ ~ ~  ~ {{320-leaf2_id}} ~ run event entity @s ev:step_1b_leaf_confirmed",
 									"execute unless block ~ {{320-leaf2_id}} ~ air execute setblock ~ {{320-leaf2_id}} ~ air"
 								]}
 							}
+						},
+						{
+							"{{?value.give_leaf == 1 || value.alt_give_leaf > ''}}":{
+								"filters":{"test":"in_block","value":"minecraft:{{alt_give_leaf > '' ? alt_give_leaf : wood_name + '_'+leaf_sfx}}"},							
+								"set_property":{"bit:in_leaf": true}
+							}
+						},
+						// RELATED
+						{	
+							"{{?related_loot.count(x => x.related_wood_1 == wood_name || x.related_wood_2 == wood_name)}}":{
+								"filters":{
+									"any_of":[																		
+										{"{{#related_loot.filter(x => x.related_wood_1 == wood_name || x.related_wood_2 == wood_name)}}":{"test":"in_block","value":"minecraft:{{block_name}}"}}
+									]
+								},
+								"set_property":{"bit:in_related": true}
+							}
 						}
 					]
+				},				
+				"{{?value.leaf_id >= 0 || value.leaf2_id >= 0}}":{
+					"$ev:step_1b_leaf_confirmed":{
+						"set_property":{"bit:in_leaf":true}
+					}
 				},
-				"ev:step_1e_leaf_confirmed":{"set_property":{"bit:in_leaf":true}},
 				// Step TWO
 				"ev:step_2_minion_process":{
 					"sequence":[
@@ -206,7 +184,8 @@
 							"filters":{
 								"none_of":[
 									{"test":"bool_property","domain":"bit:in_log", "value":true},
-									{"test":"bool_property","domain":"bit:in_leaf", "value":true}
+									{"test":"bool_property","domain":"bit:in_leaf", "value":true},
+									{"test":"bool_property","domain":"bit:in_related", "value":true}
 								]
 							},
 							"run_command":{"command":["execute if entity @p[r=5,tag=debug_max] run function vein_miner/debug/msg_despawn_not_tree"]},
@@ -216,7 +195,8 @@
 							"filters":{
 								"any_of":[
 									{"test":"bool_property","domain":"bit:in_log", "value":true},
-									{"test":"bool_property","domain":"bit:in_leaf", "value":true}
+									{"test":"bool_property","domain":"bit:in_leaf", "value":true},
+									{"test":"bool_property","domain":"bit:in_related", "value":true}
 								]
 							},
 							"trigger": "ev:step_3_summon_and_loot"
@@ -264,13 +244,18 @@
 				},
 				"$ev:step_4b_loot_leaves":{
 					// Note: This is only called when silk touch is on
+					// Note: LEAF has been confirmed in step 2 - so no need to recheck
 					"sequence":[
 						{
 							"filters":{"test": "in_block","value": "minecraft:{{leaf_id >= 0 ? 'leaves' : leaf2_id >= 0 ? 'leaves2' : give_leaf == 1 ? wood_name + '_'+leaf_sfx : 'bedrock'}}"},
-							"run_command":{"command":["loot spawn ~ ~ ~ loot \"{{settings.addon}}/tree_loot/{{wood_name}}_leaf_loot\""]}
+							"run_command":{"command":[
+								"loot spawn ~ ~ ~ loot \"{{settings.addon}}/tree_loot/{{wood_name}}_leaf_loot\"",
+								"setblock ~ ~ ~ dead_brain_coral"
+							]}
 						}
 					]
 				},
+				/*
 				// Called by Delay Timer
 				"ev:step_5_summon_to_neighbors":{
 					"sequence":[
@@ -295,6 +280,29 @@
 						{"trigger": "ev:step_z_destroy_block_and_despawn"}
 					]
 				},
+				*/
+				// Called by Delay Timer
+				"ev:step_5_summon_to_neighbors":{
+					"sequence":[
+						// Vertical, Either Leaves or Logs - Y
+						{"trigger":"ev:step_6a_summon_vertical"},
+						// Radius @ Zero
+						{	
+							"{{?value.radius_ptr == 0}}":{	
+								"filters":{"test":"bool_property","domain":"bit:in_log", "value":true},
+								"trigger": "ev:step_6b_summon_log_horizontal_radius_zero"
+							}
+						},
+						// Radius One Plus
+						{
+							"{{?value.radius_ptr > 0}}":{
+								"trigger": "ev:step_6c_summon_horizontal_radius_one_plus"
+							}
+						},
+						// Done
+						{"trigger": "ev:step_z_destroy_block_and_despawn"}
+					]
+				},
 				"$ev:step_6a_summon_vertical":{
 					"sequence":[
 						//Vertical, Either Leaves or Logs - Y
@@ -313,43 +321,47 @@
 						}			
 					]
 				},
-				"$ev:step_6b_summon_log_radius_zero":{
-					"sequence":[					
-						//Logs	X/Z				
-						{	
-							"{{#squiggly_pos.filter(x => x.pos != 2)}}":{	
-								"run_command":{"command":[
-									"execute if block {{p75}} minecraft:{{wood_name}}_{{log_sfx}} run summon dw623:tree_minion_{{wood_name}}_{{radius_ptr}} {{one}}",
-									"execute if block {{p75}} minecraft:stripped_{{wood_name}}_{{log_sfx}} run summon dw623:tree_minion_{{wood_name}}_{{radius_ptr}} {{one}}",
-									{
-										"{{#related_loot.filter(x => x.related_wood_1 == wood_name || x.related_wood_2 == wood_name)}}":
-											"execute if block {{p75}} minecraft:{{block_name}} run summon dw623:tree_minion_{{wood_name}}_{{radius_ptr}} {{one}}"
-									}
-								]}
-							}
-						}				
-					]
+				"{{?value.radius_ptr == 0}}":{
+					"$ev:step_6b_summon_log_radius_zero":{
+						"sequence":[					
+							//Logs	X/Z				
+							{	
+								"{{#squiggly_pos.filter(x => x.pos != 2)}}":{	
+									"run_command":{"command":[
+										"execute if block {{p75}} minecraft:{{wood_name}}_{{log_sfx}} run summon dw623:tree_minion_{{wood_name}}_{{radius_ptr}} {{one}}",
+										"execute if block {{p75}} minecraft:stripped_{{wood_name}}_{{log_sfx}} run summon dw623:tree_minion_{{wood_name}}_{{radius_ptr}} {{one}}",
+										{
+											"{{#related_loot.filter(x => x.related_wood_1 == wood_name || x.related_wood_2 == wood_name)}}":
+												"execute if block {{p75}} minecraft:{{block_name}} run summon dw623:tree_minion_{{wood_name}}_{{radius_ptr}} {{one}}"
+										}
+									]}
+								}
+							}				
+						]
+					}
 				},
-				"$ev:step_6c_summon_horizontal_radius_one_plus":{
-					"sequence":[					
-						//Logs	X/Z				
-						{	
-							"{{#squiggly_pos.filter(x => x.pos != 2 && radius_ptr > 0)}}":{	
-								"run_command":{"command":[
-									// Leaves
-									"execute if block {{p75}} minecraft:{{leaf_id >= 0 ? 'leaves' : leaf2_id >= 0 ? 'leaves2' : give_leaf == 1 ? wood_name + '_'+leaf_sfx : 'bedrock'}} run summon dw623:tree_minion_{{wood_name}}_{{radius_ptr-1}} {{one}}",
-									// Logs
-									"execute if block {{p75}} minecraft:{{wood_name}}_{{log_sfx}} run summon dw623:tree_minion_{{wood_name}}_{{radius_ptr}} {{one}}",
-									"execute if block {{p75}} minecraft:stripped_{{wood_name}}_{{log_sfx}} run summon dw623:tree_minion_{{wood_name}}_{{radius_ptr}} {{one}}",
-									// Other
-									{
-										"{{#related_loot.filter(x => x.related_wood_1 == wood_name || x.related_wood_2 == wood_name)}}":
-											"execute if block {{p75}} minecraft:{{block_name}} run summon dw623:tree_minion_{{wood_name}}_{{radius_ptr-1}} {{one}}"
-									}
-								]}
-							}
-						}				
-					]
+				"{{?value.radius_ptr > 0}}":{
+					"$ev:step_6c_summon_horizontal_radius_one_plus":{
+						"sequence":[					
+							//Logs	X/Z				
+							{	
+								"{{#squiggly_pos.filter(x => x.pos != 2)}}":{	
+									"run_command":{"command":[
+										// Leaves
+										"execute if block {{p75}} minecraft:{{leaf_id >= 0 ? 'leaves' : leaf2_id >= 0 ? 'leaves2' : give_leaf == 1 ? wood_name + '_'+leaf_sfx : 'bedrock'}} run summon dw623:tree_minion_{{wood_name}}_{{radius_ptr-1}} {{one}}",
+										// Logs
+										"execute if block {{p75}} minecraft:{{wood_name}}_{{log_sfx}} run summon dw623:tree_minion_{{wood_name}}_{{radius_ptr}} {{one}}",
+										"execute if block {{p75}} minecraft:stripped_{{wood_name}}_{{log_sfx}} run summon dw623:tree_minion_{{wood_name}}_{{radius_ptr}} {{one}}",
+										// Other
+										{
+											"{{#related_loot.filter(x => x.related_wood_1 == wood_name || x.related_wood_2 == wood_name)}}":
+												"execute if block {{p75}} minecraft:{{block_name}} run summon dw623:tree_minion_{{wood_name}}_{{radius_ptr-1}} {{one}}"
+										}
+									]}
+								}
+							}				
+						]
+					}
 				},
 				"ev:step_z_destroy_block_and_despawn":{
 					"sequence":[

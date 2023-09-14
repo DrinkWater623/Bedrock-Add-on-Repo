@@ -1,7 +1,30 @@
 {
-    "$template": {
-  // {"id":"minecraft:blue_glazed_terracotta","legacyId":231,"metadata":0,"maxDurability":0,"damage":0,"armor":0,"maxStackSize":64,"tags":[],"category":"construction","nutrition":0,"fuelDuration":0,"aliases":["minecraft:glazedTerracotta.blue"],"nameKey":"tile.glazedTerracotta.blue.name","langName":"Blue Glazed Terracotta"}
-      "test": "{{findItemInfoByName('diorite')}}"
-    }
+  "$scope":{
+    "event_addon":[
+      {"if":false,"add_this":""},
+      {"if":true,"add_this":" 0 0 ev:XYZ"}
+    ]
+  },
+  "$template": {
+"{{?value.radius_ptr == 0}}":{
+  "$ev:step_6b_summon_log_horizontal_radius_zero":{
+    "sequence":[
+      {	
+        "{{#event_silk_touch}}":{
+          "{{#squiggly_pos.filter(x => x.pos != 2)}}":{
+            "filters":{"test":"bool_property","domain":"bit:has_silk_touch", "value":"{{if}}"},	
+            "run_command":{"command":[
+              "execute if block {{p75}} minecraft:log run summon dw623:tree_minion_{{radius_ptr}} {{one}} {{event_name}}",
+              "execute if block {{p75}} minecraft:log2 run summon dw623:tree_minion_{{radius_ptr}} {{one}} {{event_name}}",
+              {"{{#global_log3}}":"execute if block {{p75}} minecraft:{{log3_name}}_{{log3_sfx}} run summon dw623:tree_minion_{{radius_ptr}} {{one}} {{event_name}}"},
+              {"{{#local_stripped_logs}}":"execute if block {{p75}} minecraft:stripped_{{wood_name}}_{{log_sfx}} run summon dw623:tree_minion_{{radius_ptr}} {{one}} {{event_name}}"}
+            ]}
+          }
+        }
+      }
+    ]
   }
+}
+  }
+}
   

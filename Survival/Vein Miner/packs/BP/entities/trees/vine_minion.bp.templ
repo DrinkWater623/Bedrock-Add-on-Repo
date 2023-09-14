@@ -15,18 +15,11 @@
 		"format_version": "1.20.10",
 		"minecraft:entity": {
 			"description": {
-				"identifier": "dw623:vine_minion",
-				//"runtime_identifier": "minecraft:ender_crystal",
+				"identifier": "dw623:vine_minion",				
 				"is_spawnable": false,
 				"is_summonable": true,
-				"is_experimental": false,
-				"properties": {
-					"bit:in_log": {"type": "bool","default": false},
-					"bit:in_leaf": {"type": "bool","default": false},
-					"bit:in_vine": {"type": "bool","default": false},
-					"bit:is_not_vine": {"type": "bool","default": true},
-					"int:my_radius": {"type": "int","default": "{{=radius_ptr}}","range": [0,"{{=radius_ptr+1}}"]}   //call based on canopy size
-				}
+				"is_experimental": false
+				//,"properties": {//"bit:in_vine": {"type": "bool","default": false}}
 			},
 			"component_groups": {
 				"cg:despawn": {"minecraft:instant_despawn": {}},
@@ -84,10 +77,16 @@
 				"ev:step_2_minion_process":{
 					"sequence": [
 						{
-							"run_command":{"command":["function {{settings.addon}}/trees/loot_my_vine"]}
+							"run_command":{"command":[
+								//"function {{settings.addon}}/trees/loot_my_vine",
+								{
+									"{{#vines_list}}":
+									"execute if block ~ ~ ~ minecraft:{{block_name}} run loot spawn ~ ~ ~ loot \"{{settings.addon}}/tree_loot/{{wood_name}}_loot\""
+								}
+							]}
 						},						
 						{	//vine grows from floor
-							"filters": {"test": "in_block","value": "minecraft:twisting_vine"},
+							"filters": {"test": "in_block","value": "minecraft:twisting_vines"},
 							"run_command":{"command":[
 								"execute unless block ~ ~1 ~ air run summon dw623:vine_minion ~ ~1 ~"
 							]}
@@ -95,7 +94,7 @@
 						},
 						{
 							//because if top is destroyed, bottom is too, so give time
-							"filters": {"none_of":[{"test":"in_block","value":"minecraft:twisting_vine"}]},
+							"filters": {"none_of":[{"test":"in_block","value":"minecraft:twisting_vines"}]},
 							"run_command":{"command":[
 								"execute unless block ~ ~-1 ~ air run summon dw623:vine_minion ~ ~-1 ~"
 							]}							

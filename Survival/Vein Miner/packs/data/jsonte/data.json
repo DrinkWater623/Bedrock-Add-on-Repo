@@ -10,6 +10,10 @@
         {"pos":3    ,"p75":"~ ~ ~-0.75"    ,"one":"~ ~ ~-1"},                
         {"pos":3    ,"p75":"~ ~ ~0.75"     ,"one":"~ ~ ~1"}
     ],
+    "event_silk_touch":[
+		{"if":false ,"event_name":""},
+		{"if":true  ,"event_name":" 0 0 ev:silk_touch_activate"}
+	],
     //not needed anymore... keep until sure
     "radius_ptrs":[
         {"radius_ptr":0},                

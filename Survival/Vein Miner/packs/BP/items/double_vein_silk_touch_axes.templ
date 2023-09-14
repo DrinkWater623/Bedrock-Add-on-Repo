@@ -12,7 +12,7 @@
 			},
 			"components": {
 				//"tag:minecraft:is_axe": {}, //This takes away the on_use_on						
-				"minecraft:display_name": {"value": "{{Title(material)}} Double Vein Axe\n§5§oSilk Touch"},
+				"minecraft:display_name": {"value": "{{Title(material)}} Double Vein Axe\n§d§oSilk Touch"},
 				"minecraft:glint": {},
 				"minecraft:icon": {"texture": "{{material}}_double_vein_axe"},
 				"minecraft:on_use_on": {"on_use_on": {"event": "ev:place_entity"}}
@@ -23,11 +23,11 @@
 						{	"trigger":"ev:damage_10"},
 						{
 							"condition": "!q.is_sneaking",
-							"run_command": {"command":["function {{settings.addon}}/trees/{{function_not_sneaking}}"]}							
+							"run_command": {"command":["function {{settings.addon}}/trees/{{silk_touch_not_sneaking}}"]}							
 						},
 						{
 							"condition": "q.is_sneaking",
-							"run_command": {"command":["function {{settings.addon}}/trees/{{function_sneaking}}"]}
+							"run_command": {"command":["function {{settings.addon}}/trees/{{silk_touch_sneaking}}"]}
 						}
 					]
 				}				

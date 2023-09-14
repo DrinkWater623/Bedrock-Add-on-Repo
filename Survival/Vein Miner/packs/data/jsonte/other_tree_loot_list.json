@@ -5,7 +5,7 @@
 		{"block_name":"mangrove_roots"	,"tool":"pickaxe"	,"is_vine":0	,"related_wood_1":"mangrove"	,"related_wood_2":""},
 		{"block_name":"shroomlight"		,"tool":"pickaxe"	,"is_vine":0	,"related_wood_1":"crimson"		,"related_wood_2":"warped"},
 		{"block_name":"twisting_vines"	,"tool":"sword"		,"is_vine":1	,"related_wood_1":"warped"		,"related_wood_2":""},
-		{"block_name":"nether_wart_block"	,"tool":"pickaxe"	,"is_vine":0	,"related_wood_1":"crimson"		,"related_wood_2":""},
+		//{"block_name":"nether_wart_block"	,"tool":"pickaxe"	,"is_vine":0	,"related_wood_1":"crimson"		,"related_wood_2":""},
 		{"block_name":"weeping_vines"		,"tool":"sword"		,"is_vine":1	,"related_wood_1":"crimson"		,"related_wood_2":""},
 		{"block_name":"vine"				,"tool":"shears"	,"is_vine":1	,"related_wood_1":""			,"related_wood_2":""}
 	],

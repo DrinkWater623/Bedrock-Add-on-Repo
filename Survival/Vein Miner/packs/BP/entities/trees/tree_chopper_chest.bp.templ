@@ -5,6 +5,9 @@
 	// because of the dark oak forest... can take the whole thing down and make
 	// the game crawl
 	// limit by how tall jungle trees can get.  maybe 25.
+	"$scope":{
+		"material_list":"{{axe_material_list.filter(x => x.material != 'wooden')}}"
+	},
 	"$template":{
 		"format_version": "1.20.10",
 		"minecraft:entity": {
@@ -85,8 +88,8 @@
 							"run_command":{"command":[	
 								"execute if entity @e[r=48,type=item] run function {{settings.addon}}/trees/chest_tp_tree_chopper_items_r48",
 								//do not recruit if another near by is still hungry
-								{"{{axe_material_list.filter(x => x.material != 'wooden')}}":"execute unless entity @e[r=48,family=tree_chest,family=hungry] if entity @e[r=1,type=item] run title @a[r=32,hasitem={item=dw623:{{material}}_double_vein_axe,location=slot.weapon.mainhand}] title Spawning Additional Chest"},
-								{"{{axe_material_list.filter(x => x.material != 'wooden')}}":"execute unless entity @e[r=48,family=tree_chest,family=hungry] if entity @e[r=1,type=item] run title @a[r=32,hasitem={item=dw623:{{material}}_double_vein_silk_touch_axe,location=slot.weapon.mainhand}] title Spawning Additional Chest"},
+								{"{{#material_list}}":"execute unless entity @e[r=48,family=tree_chest,family=hungry] if entity @e[r=1,type=item] run title @a[r=32,hasitem={item=dw623:{{material}}_double_vein_axe,location=slot.weapon.mainhand}] title Spawning Additional Chest"},
+								{"{{#material_list}}":"execute unless entity @e[r=48,family=tree_chest,family=hungry] if entity @e[r=1,type=item] run title @a[r=32,hasitem={item=dw623:{{material}}_double_vein_silk_touch_axe,location=slot.weapon.mainhand}] title Spawning Additional Chest"},
 								"execute unless entity @e[r=48,family=tree_chest,family=hungry] if entity @e[r=1,type=item] run summon dw623:tree_chopper_chest ^ ^2 ^ 0 0 . More-Tree-Loot"					
 							]},
 							"set_property": {"bit:is_full": true}
