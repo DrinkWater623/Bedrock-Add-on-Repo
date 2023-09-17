@@ -2,7 +2,7 @@
     "settings": {
         "ns": "dw623",
         "addon": "vein_miner",
-        "canopy_max": 16
+        "canopy_max": 32
 		// {{Title(replace(settings.main_bot,'_',' '))}}
 		// {{settings.main_bot}}
     }

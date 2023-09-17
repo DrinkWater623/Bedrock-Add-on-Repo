@@ -1,0 +1,28 @@
+{
+  "$scope":{
+    "vines_list":"{{other_tree_block_loot.filter(x => x.is_vine == 1)}}"
+  },
+  "$files": {    
+      "array": "vines_list",
+      "fileName": "./tree_loot/{{block_name}}_loot"
+  },
+  "$template":{
+    "pools": [
+      {
+        "rolls": 1,
+        "entries": [
+          {
+            "type": "item",
+            "name": "minecraft:{{block_name}}",
+            "functions": [
+              {
+                "function": "set_count",
+                "count": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

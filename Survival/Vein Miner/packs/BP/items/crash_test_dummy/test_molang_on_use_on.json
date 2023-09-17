@@ -1,0 +1,31 @@
+{
+	"format_version": "1.20.10",
+	"minecraft:item": {
+		"description": {
+			"identifier": "ctd:test_molang_on_use_on",
+			"category": "Equipment"
+		},
+		"components": {
+			"minecraft:display_name": {"value":"Test Molang Block Info - On Use On"},
+			//"minecraft:entity_placer": {				"entity": "ctd:test_minion"			},
+			"minecraft:icon": {"texture":"stick"},
+			"minecraft:max_stack_size": 1,
+			"minecraft:on_use_on": {"on_use_on":{"event":"ev:query"}}
+		},
+		"events": {
+			"ev:query": {
+				"sequence": [
+					{
+						"condition": "q.has_block_property('old_leaf')",
+						"run_command": {"command":["say q.has_block_property('old_leaf')"]}
+
+					},
+					{
+						"condition": "q.is_sneaking",
+						"run_command": {"command":["say Sneaking"]}
+					}
+				]
+			}
+		}
+	}
+}

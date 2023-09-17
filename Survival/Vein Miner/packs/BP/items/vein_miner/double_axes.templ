@@ -1,0 +1,23 @@
+{
+	"$files": {    
+        "array": "axe_material_list",
+        "fileName": "./axes/double_axe_{{material}}.bp"
+    },
+	"$extend": ["double_axe"],
+	"$template":{
+		"format_version": "",
+		"minecraft:item": {
+			"description": {
+				"identifier": "dw623:{{material}}_double_axe"
+			},
+			"components": {
+				"tag:minecraft:is_axe": {}, //This takes away the on_use_on							
+				"minecraft:display_name": {"value": "{{Title(material)}} Double Axe\n§b§oExtra Sharp"},
+				"minecraft:durability":{"damage_chance":{"min":0,"max":1},"max_durability":"{{=max_durability*2}}"},
+				"minecraft:icon": {"texture": "{{material}}_double_axe"}
+			},				
+			"events":{
+			}
+		}
+	}
+}

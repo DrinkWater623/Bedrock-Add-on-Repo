@@ -5,7 +5,14 @@
 	*/
 	//lid for id to pass to next as to what log I was.. so a leaf can know what leaf it may be
 	//NO CANOPY over 8 for now ...since entity goes up to 8
-
+	"leaf_persistent_bit":[{"persistent_bit":false},{"persistent_bit":true}],
+	"leaf_update_bit":[{"update_bit":false},{"update_bit":true}],
+	"leaf_or_log_word":[{"lol_word":"leaf"},{"lol_word":"log"}],
+	"leaf_log_or_related_word":[{"llr_word":"leaf"},{"llr_word":"log"},{"llr_word":"related"}],
+	"part_one_or_two":[
+		{"part":"","part_type":"old"},
+		{"part":"2","part_type":"new"}
+	],
 	// Add Bamboo
 	"global_wood_types":[
 		{"lid":1	,"log_group":2	,"canopy_size":7	,"wood_name":"acacia"	,"log_sfx":"log"	,"in_log_tag":1	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":null	,"leaf2_id":0		,"alt_give_leaf":null				,"test_entry":"{{value}}"},		

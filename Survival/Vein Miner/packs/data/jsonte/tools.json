@@ -1,11 +1,17 @@
 {   
+	"this_or_any":[
+		{"toa":"any" ,"condition":"q.is_sneaking"},
+		{"toa":"this","condition":"!q.is_sneaking"}
+	],
     //Reg values - multiply in usage for double axe or vein
     "axe_material_list": [
-        {"material":"wooden"	,"attack_damage":4,"max_durability":60	,"cooldown_duration":1.5,"wood_destroy_speed":2	,"efficiency_not_sneaking":"" 											,"efficiency_sneaking":""											,"silk_touch_not_sneaking":"" 											,"silk_touch_sneaking":""								},
-        {"material":"stone"		,"attack_damage":5,"max_durability":131	,"cooldown_duration":1.2,"wood_destroy_speed":4	,"efficiency_not_sneaking":"efficiency_on_use_on_log_this_tree_trunk" 	,"efficiency_sneaking":"efficiency_on_use_on_log_this_tree_trunk"	,"silk_touch_not_sneaking":"silk_touch_on_use_on_log_this_tree_trunk" 	,"silk_touch_sneaking":"silk_touch_on_use_on_log_this_tree_trunk"	},
-        {"material":"iron"		,"attack_damage":6,"max_durability":250	,"cooldown_duration":1.1,"wood_destroy_speed":6	,"efficiency_not_sneaking":"efficiency_on_use_on_log_this_tree"			,"efficiency_sneaking":"efficiency_on_use_on_log_this_tree"			,"silk_touch_not_sneaking":"silk_touch_on_use_on_log_this_tree"			,"silk_touch_sneaking":"silk_touch_on_use_on_log_this_tree"		},
-        {"material":"emerald"	,"attack_damage":7,"max_durability":500 ,"cooldown_duration":1.0,"wood_destroy_speed":7	,"efficiency_not_sneaking":"efficiency_on_use_on_log_this_type_r7"		,"efficiency_sneaking":"efficiency_on_use_on_log_any_r7"			,"silk_touch_not_sneaking":"silk_touch_on_use_on_log_this_type_r7"		,"silk_touch_sneaking":"silk_touch_on_use_on_log_any_r7"			},
-        {"material":"diamond"	,"attack_damage":7,"max_durability":1561,"cooldown_duration":1.0,"wood_destroy_speed":8 ,"efficiency_not_sneaking":"efficiency_on_use_on_log_this_type_r15"		,"efficiency_sneaking":"efficiency_on_use_on_log_any_r15"			,"silk_touch_not_sneaking":"silk_touch_on_use_on_log_this_type_r15"		,"silk_touch_sneaking":"silk_touch_on_use_on_log_any_r15"			}
+        {"level_id":0,"material":"wooden"	,"radius_max":0,"desc":""				,"attack_damage":4,"max_durability":60	,"cooldown_duration":1.5,"wood_destroy_speed":2	,"efficiency_not_sneaking":"" 											,"efficiency_sneaking":""											,"silk_touch_not_sneaking":"" 											,"silk_touch_sneaking":""											},
+        {"level_id":1,"material":"stone"	,"radius_max":0,"desc":"radius=1"		,"attack_damage":5,"max_durability":131	,"cooldown_duration":1.2,"wood_destroy_speed":4	,"efficiency_not_sneaking":"efficiency_on_use_on_log_this_type_r0" 	,"efficiency_sneaking":"efficiency_on_use_on_log_this_type_r0"	,"silk_touch_not_sneaking":"silk_touch_on_use_on_log_this_type_r0" 	,"silk_touch_sneaking":"silk_touch_on_use_on_log_this_type_r0"	},
+        {"level_id":2,"material":"iron"		,"radius_max":3,"desc":"radius=3"		,"attack_damage":6,"max_durability":250	,"cooldown_duration":1.1,"wood_destroy_speed":6	,"efficiency_not_sneaking":"efficiency_on_use_on_log_this_tree"			,"efficiency_sneaking":"efficiency_on_use_on_log_this_tree"			,"silk_touch_not_sneaking":"silk_touch_on_use_on_log_this_tree"			,"silk_touch_sneaking":"silk_touch_on_use_on_log_this_tree"			},
+        {"level_id":3,"material":"emerald"	,"radius_max":7,"desc":"radius=7"		,"attack_damage":7,"max_durability":500 ,"cooldown_duration":1.0,"wood_destroy_speed":8	,"efficiency_not_sneaking":"efficiency_on_use_on_log_this_type_r7"		,"efficiency_sneaking":"efficiency_on_use_on_log_any_r7"			,"silk_touch_not_sneaking":"silk_touch_on_use_on_log_this_type_r7"		,"silk_touch_sneaking":"silk_touch_on_use_on_log_any_r7"			},
+        {"level_id":4,"material":"diamond"	,"radius_max":15,"desc":"radius=15"		,"attack_damage":8,"max_durability":1561,"cooldown_duration":1.0,"wood_destroy_speed":10 ,"efficiency_not_sneaking":"efficiency_on_use_on_log_this_type_r15"		,"efficiency_sneaking":"efficiency_on_use_on_log_any_r15"			,"silk_touch_not_sneaking":"silk_touch_on_use_on_log_this_type_r15"		,"silk_touch_sneaking":"silk_touch_on_use_on_log_any_r15"			},
+        {"level_id":5,"material":"netherite","radius_max":31,"desc":"radius=31"		,"attack_damage":16,"max_durability":1561,"cooldown_duration":0.5,"wood_destroy_speed":15 ,"efficiency_not_sneaking":"efficiency_on_use_on_log_this_type_r15"		,"efficiency_sneaking":"efficiency_on_use_on_log_any_r15"			,"silk_touch_not_sneaking":"silk_touch_on_use_on_log_this_type_r15"		,"silk_touch_sneaking":"silk_touch_on_use_on_log_any_r15"			}
+		//add a netherite... r=32... the deforester
     ],
 	"axe_digger_tags":[
 		//Wood
@@ -64,8 +70,8 @@
 		{"axe_item":1    ,"name":"jukebox"		    ,"speed":7	},
 		{"axe_item":1    ,"name":"ladder"   	    ,"speed":7	},
 		{"axe_item":1    ,"name":"lectern"		    ,"speed":7	},
-		//{"axe_item":1    ,"name":"melon"			,"speed":7	},
-        {"axe_item":1    ,"name":"nether_wart_block","speed":7	},
+		//{"axe_item":1    ,"name":"melon_block"			,"speed":7	},
+        //{"axe_item":1    ,"name":"nether_wart_block","speed":7	},
 		{"axe_item":1    ,"name":"noteblock"		,"speed":7	},
 		{"axe_item":1    ,"name":"planks"			,"speed":7	},
         {"axe_item":1    ,"name":"scaffolding"		,"speed":7	},
@@ -79,8 +85,8 @@
 		{"axe_item":0    ,"name":"coal_block"		,"speed":7	},
 		{"axe_item":0    ,"name":"glass"			,"speed":10	},
 		{"axe_item":0    ,"name":"ice"				,"speed":10	},
-		{"axe_item":1    ,"name":"leaves"		    ,"speed":7	}, 
-		{"axe_item":1    ,"name":"leaves2"		    ,"speed":7	},
+		//{"axe_item":1    ,"name":"leaves"		    ,"speed":7	}, 
+		//{"axe_item":1    ,"name":"leaves2"		    ,"speed":7	},
 		{"axe_item":0    ,"name":"packed_ice"		,"speed":10	},
 		{"axe_item":0    ,"name":"stained_glass"	,"speed":10	},
 		

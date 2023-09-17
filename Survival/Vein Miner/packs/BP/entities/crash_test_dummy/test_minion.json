@@ -1,0 +1,41 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:entity":{
+    "description":{
+      "identifier": "ctd:test_minion",
+      "is_spawnable": false,
+      "is_summonable": true,
+      "is_experimental": false
+    },
+    "component_groups":{
+      "cg:despawn":{"minecraft:instant_despawn":{}}
+    },
+    "components":{
+      "minecraft:breathable":{
+        "breathes_air": true,
+        "breathes_lava": true,
+        "breathes_solids": true,
+        "breathes_water": true,
+        "generates_bubbles": false,
+        "inhale_time": 1.0,
+        "suffocate_time": 100,
+        "total_supply": 100
+      },
+      "minecraft:collision_box":{"height":0.125,"width":0.125},
+      "minecraft:damage_sensor":{"triggers":{"cause":"all","deals_damage":false}},      
+      "minecraft:physics":{"has_gravity": false,"has_collision": false},
+      "minecraft:scale":{"value":0.5},
+      "minecraft:health":{"value":100,"max":100},
+      "minecraft:nameable": {"allow_name_tag_renaming":true,"always_show":true},
+      "minecraft:type_family":{"family":["crash_test_dummy","ctd"]}
+    },
+    "events":{
+      "ev:despawn":{"add":{"component_groups":["cg:despawn"]}},
+      "minecraft:entity_spawned":  {
+        "sequence": [
+          {"run_command":{"command":["say Aligning","execute align xyz run tp @s ~0.5 ~0.125 ~0.5"]}}          
+        ]
+      }
+    }
+  }
+}

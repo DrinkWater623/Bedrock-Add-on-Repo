@@ -1,0 +1,25 @@
+{
+	"$files": {    
+        "array": "axe_material_list.filter(x => x.material != 'emerald')",
+        "fileName": "./axes/double_axe_{{material}}.recipe"
+  },	
+	"$template":{
+    "format_version": "1.12.0",
+    "minecraft:recipe_shaped": {
+      "description": {"identifier":"dw623:{{material}}_double_axe"},
+      "tags": ["crafting_table"],
+      "pattern": ["sss","!s!","sss"],
+      "key": {
+        "!":{"item": "minecraft:{{material}}_axe"},
+        "s":{"item": "dw623:sticky_string"}
+        //"r":{"item": "minecraft:redstone"},
+        /* 
+        eff=15, looting=14 , fortune=18, silk=16, mending 26,
+        unbreaking=17 , sharp=9, thorns 5, fire=13
+        power=19, smite=10, riptide=30 , bane=11
+        */
+      },
+      "result": {"item":"dw623:{{material}}_double_axe","count":1}
+    }
+  }
+}

@@ -1,19 +1,20 @@
 {
     "squiggly_pos":[
         //X
-        {"pos":1    ,"p75":"~-0.75 ~ ~"    ,"one":"~-1 ~ ~"},                
-        {"pos":1    ,"p75":"~0.75 ~ ~"     ,"one":"~1 ~ ~"},
+        {"pos":1    ,"p75":"~-0.75 ~ ~"    ,"one":"~-1 ~ ~" ,"d":"x="},                
+        {"pos":1    ,"p75":"~0.75 ~ ~"     ,"one":"~1 ~ ~"  ,"d":"x="},
         //Y
         {"pos":2    ,"p75":"~ ~-0.75 ~"    ,"one":"~ ~-1 ~"},                
-        {"pos":2    ,"p75":"~ ~0.75 ~"     ,"one":"~ ~1 ~"},
+        {"pos":2    ,"p75":"~ ~0.75 ~"     ,"one":"~ ~1 ~" },
         //Z
         {"pos":3    ,"p75":"~ ~ ~-0.75"    ,"one":"~ ~ ~-1"},                
-        {"pos":3    ,"p75":"~ ~ ~0.75"     ,"one":"~ ~ ~1"}
+        {"pos":3    ,"p75":"~ ~ ~0.75"     ,"one":"~ ~ ~1" }
     ],
     "event_silk_touch":[
-		{"if":false ,"event_name":""},
+		{"if":false ,"event_name":" 0 0 ev:efficiency_activate"},
 		{"if":true  ,"event_name":" 0 0 ev:silk_touch_activate"}
 	],
+    "true_false":[{"if":false},{"if":true}],
     //not needed anymore... keep until sure
     "radius_ptrs":[
         {"radius_ptr":0},                
