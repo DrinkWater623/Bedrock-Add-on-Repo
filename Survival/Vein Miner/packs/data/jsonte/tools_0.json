@@ -1,0 +1,14 @@
+{   
+	"this_or_any":[
+		{"toa":"any" ,"condition":"q.is_sneaking"},
+		{"toa":"this","condition":"!q.is_sneaking"}
+	],
+    //Reg values - multiply in usage for double axe or vein
+    "tool_material_list": [
+        {"material_id":0,"material":"wooden"	,"radius_max":0	,"desc":""				,"attack_damage":4,"max_durability":60	,"cooldown_duration":1.5,"wood_destroy_speed":2		},
+        {"material_id":1,"material":"stone"		,"radius_max":3	,"desc":"radius=3"		,"attack_damage":5,"max_durability":131	,"cooldown_duration":1.2,"wood_destroy_speed":4		},
+        {"material_id":2,"material":"iron"		,"radius_max":7	,"desc":"radius=7"		,"attack_damage":6,"max_durability":250	,"cooldown_duration":1.1,"wood_destroy_speed":6		},
+        {"material_id":3,"material":"diamond"	,"radius_max":15,"desc":"radius=15"		,"attack_damage":8,"max_durability":1561,"cooldown_duration":1.0,"wood_destroy_speed":10 	},
+        {"material_id":4,"material":"netherite"	,"radius_max":23,"desc":"radius=23"		,"attack_damage":16,"max_durability":1561,"cooldown_duration":0.5,"wood_destroy_speed":15	}
+    ]
+}

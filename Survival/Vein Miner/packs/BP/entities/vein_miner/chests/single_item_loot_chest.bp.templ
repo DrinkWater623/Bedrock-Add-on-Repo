@@ -1,0 +1,56 @@
+{
+	//Maybe feed it and it will follow ??? too much ???
+	
+	"$extend":["loot_chest"],	
+	
+	"$scope":{
+		"loot_radius":{"radius":16},
+		
+        "local_loot_list":[
+            {"uid":1,"name":"bamboo"},
+            {"uid":2,"name":"sugar_cane"}
+            ]
+    }, 
+    "$files": {    
+        "array": "local_loot_list",
+        "fileName": "{{name}}_loot_chest.bp"
+    },
+	"$template":{
+		"format_version": "0.0.0",
+		"minecraft:entity": {
+			"description": {
+				"identifier": "dw623:{{name}}_loot_chest",
+				"runtime_identifier": "minecraft:shulker"
+			},
+			"component_groups": {							
+				"cg:family_hungry":{
+					"minecraft:type_family": {"family": ["chest","{{name}}_chest","hungry"]}
+				},
+				"cg:family_full":{
+					"minecraft:type_family": {"family": ["chest","{{name}}_chest","full"]}
+				}   			
+			},
+			"components": {
+				"minecraft:type_family": {"family": ["{{name}}_chest"]}
+			},
+			"events": {											
+				"$ev:gather_loot": {"trigger":"ev:gather_{{name}}_loot"},
+				"$ev:gather_{{name}}_loot": {
+					"sequence":[							
+						{"run_command":{"command":["tp @e[r={{loot_radius.radius}},type=item,name=\"{{realTitle(name)}}\"] @s"]}}
+					]
+				},
+				"$ev:summon_friend": {
+					"sequence":[	
+						{
+							"run_command":{"command":[
+								"execute unless entity @e[r={{loot_radius.radius}},family={{name}}_chest,family=hungry] if entity @e[r=1,type=item] run title @a[r=32] title Spawning Additional Chest",								
+								"execute unless entity @e[r={{loot_radius.radius}},family={{name}}_chest,family=hungry] if entity @e[r=1,type=item] run summon dw623:{{name}}_loot_chest ^ ^2 ^ 0 0 . More-{{name}}-Loot"					
+								]}
+						}
+					]
+				}								
+			}
+		}
+	}
+}

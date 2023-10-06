@@ -1,0 +1,45 @@
+{
+	"$module":"any_minion",
+//======================================================================================
+	"$scope":{		
+//======================================================================================
+		"related_loot":"{{other_tree_block_loot.filter(x => x.is_vine == 0 && (x.related_wood_1 > '' || x.related_wood_2 > ''))}}",
+		"local_vine_list":"{{other_tree_block_loot.filter(x => x.is_vine == 1)}}"
+	},
+//======================================================================================
+	"$template":{
+		"$format_version": "{{settings.format_version}}",
+		"minecraft:entity":{
+			"description":{				
+				"is_spawnable": false,
+				"is_summonable": true,
+				"is_experimental": false
+			},
+			"component_groups":{
+				"cg:despawn":{"minecraft:instant_despawn":{}}
+			},
+			"components":{
+				"minecraft:breathable":{
+					"breathes_air": true,
+					"breathes_lava": true,
+					"breathes_solids": true,
+					"breathes_water": true,
+					"generates_bubbles": false,
+					"inhale_time": 1.0,
+					"suffocate_time": 100,
+					"total_supply": 100
+				},
+				"minecraft:collision_box":{"height":0.125,"width":0.125},
+				"minecraft:damage_sensor":{"triggers":{"cause":"all","deals_damage":false}},	
+				"minecraft:health":{"value":100,"max":100}				,
+				"minecraft:physics":{"has_gravity": false,"has_collision": false},
+				"minecraft:scale":{"value":0.25},
+				"minecraft:type_family": {"family": ["minion"]}
+			},
+			"events":{				
+				"minecraft:entity_spawned":{"add":{"component_groups":["cg:despawn"]}},
+				"$ev:despawn":{"add":{"component_groups":["cg:despawn"]}}
+			}
+		}
+	}
+}

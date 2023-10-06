@@ -1,0 +1,38 @@
+{
+    "$scope":{
+		"{{#0..24}}":{
+            "local_wood_type_radius":[
+                // Paste Wood Types Array here and add "radius_ptr":"{{=value}}"  , in front of each line
+                {"radius_ptr":"{{=value}}"  ,"lid":1	,"log_group":2	,"canopy_size":7	,"wood_name":"acacia"	,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":null	,"leaf2_id":0		,"alt_give_leaf":null},
+                {"radius_ptr":"{{=value}}"  ,"lid":2	,"log_group":1	,"canopy_size":3	,"wood_name":"birch"	,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":2	,"leaf2_id":null	,"alt_give_leaf":null},
+                {"radius_ptr":"{{=value}}"  ,"lid":3	,"log_group":3	,"canopy_size":7	,"wood_name":"cherry"	,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":1	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":null},
+                {"radius_ptr":"{{=value}}"  ,"lid":4	,"log_group":2	,"canopy_size":4	,"wood_name":"dark_oak"	,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":null	,"leaf2_id":1		,"alt_give_leaf":null},
+                {"radius_ptr":"{{=value}}"  ,"lid":5	,"log_group":1	,"canopy_size":7	,"wood_name":"jungle"	,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":3	,"leaf2_id":null	,"alt_give_leaf":null},
+                {"radius_ptr":"{{=value}}"  ,"lid":6	,"log_group":3	,"canopy_size":7	,"wood_name":"mangrove"	,"log_sfx":"log"	,"sapling_sfx":"propagule"	,"leaf_sfx":"leaves"	,"give_leaf":1	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":null},
+                {"radius_ptr":"{{=value}}"  ,"lid":7	,"log_group":1	,"canopy_size":5	,"wood_name":"oak"		,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":0	,"leaf2_id":null	,"alt_give_leaf":null},
+                {"radius_ptr":"{{=value}}"  ,"lid":8	,"log_group":1	,"canopy_size":4	,"wood_name":"spruce"	,"log_sfx":"log"	,"sapling_sfx":"Sapling"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":1	,"leaf2_id":null	,"alt_give_leaf":null},
+                {"radius_ptr":"{{=value}}"  ,"lid":9	,"log_group":3	,"canopy_size":7	,"wood_name":"crimson"	,"log_sfx":"stem"	,"sapling_sfx":null			,"leaf_sfx": null		,"give_leaf":0	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":"nether_wart_block"},
+                {"radius_ptr":"{{=value}}"  ,"lid":10	,"log_group":3	,"canopy_size":7	,"wood_name":"warped"	,"log_sfx":"stem"	,"sapling_sfx":null			,"leaf_sfx":"wart_block","give_leaf":1	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":null}        
+            ]
+        }
+    },   
+    "$files": {    
+        "array": "local_wood_type_radius",
+        "fileName": "./tree/tree_minion_{{wood_name}}_{{radius_ptr}}.rp"
+    },
+    "$template": {
+        "format_version": "1.10.0",
+        "minecraft:client_entity": {
+            "description": {
+                "identifier": "dw623:tree_minion_{{wood_name}}_{{radius_ptr}}",
+                "materials": {
+                    "default": "entity"
+                },
+                "textures": {"default":"textures/colors/color_{{mod(radius_ptr,16)}}"},
+                "geometry": {"default":"geometry.entity_box_8"},
+                "render_controllers": ["controller.render.default"]
+                
+            }
+        }
+    }
+}

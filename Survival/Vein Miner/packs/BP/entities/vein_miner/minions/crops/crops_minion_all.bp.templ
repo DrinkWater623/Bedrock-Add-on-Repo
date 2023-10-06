@@ -1,0 +1,82 @@
+{
+	// crops should just mine horizontal
+	"$extend":["any_minion"],
+	//=====================================================================================	
+	"$scope":{
+		"local_crops_loot":"{{global_nature_loot.filter(x => x.is_block == 1 && x.data_id <= 0 && x.is_crop > 0 && x.block_state_name == '')}}",
+		"squiggly_pos_XZ":"{{squiggly_pos.filter(x => x.pos != 2)}}"
+	},
+	//=====================================================================================	
+    "$template": {
+		"format_version": {},
+		"minecraft:entity": {
+			
+			"description": {"identifier":"dw623:crops_minion"},
+
+			"component_groups": {				
+				"cg:delay_timer_step_2":{
+					"minecraft:timer": {
+						"time": 0.05,"looping": false,"randomInterval": false,
+						"time_down_event": {"event":"ev:step_2_minion_process"}
+					}
+				}
+			},
+			"components": {				
+				"$minecraft:despawn": {
+					"filters": {"none_of":[
+						{"{{#local_crops_loot}}":{"test":"in_block","value":"minecraft:{{item_name}}}"}},
+						{"test":"in_block","value":"minecraft:air"}
+					]}
+				},
+				"minecraft:type_family": {"family": ["crops_minion"]}		
+			},
+			"events": {				
+				"$minecraft:entity_spawned":  {
+					"sequence": [						
+						{"run_command":{"command":["execute align xyz run tp @s ~0.5 ~0.5 ~0.5"]}},
+						{
+							"filters": {"none_of":[
+								{"{{#local_crops_loot}}":{"test":"in_block","value":"minecraft:{{item_name}}"}},
+								{"test":"in_block","value":"minecraft:air"}
+							]},
+							"trigger":"ev:despawn"
+						},
+						{							
+							//One Tick Delay
+							"filters": {"any_of":[
+								{"{{#local_crops_loot}}":{"test":"in_block","value":"minecraft:{{item_name}}"}},
+								{"test":"in_block","value":"minecraft:air"}
+							]},							
+							"add":{"component_groups":["cg:delay_timer_step_2"]}
+						}
+					]
+				},
+				"$ev:step_2_minion_process":{
+					"sequence": [							
+						// Horizontal summons only							
+						{	
+							"{{#squiggly_pos_XZ}}":{
+								"run_command":{"command":[
+									{"{{#local_crops_loot}}":"execute unless @e[family=crops_minion,x={{x}},y=~,z={{z}},dx=0,dy=0,dz=0] if block {{p75}} minecraft:{{item_name}} run summon dw623:crops_minion {{one}}"}
+								]}
+							}
+						},
+						{
+							// chop current position crops
+							"filters": {"any_of":[
+								{"{{#local_crops_loot}}":{"test":"in_block","value":"minecraft:{{item_name}}"}}
+							]},	
+							"run_command":{"command":["fill ~ ~ ~  ~ ~ ~ air destroy"]}
+						},
+						{
+							// Summon chest if none
+							"run_command":{"command":["execute unless entity @e[r=16,family=crops_chest,family=hungry] run summon dw623:crops_loot_chest ~ ~ ~ 0 0 ev:entity_spawned Crops-Loot"]}
+						},
+						// This makes a LAG difference, leave on
+						{"trigger":"ev:despawn"}
+					]
+				}
+			}
+		}
+	}
+}

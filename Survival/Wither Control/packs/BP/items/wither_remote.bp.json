@@ -8,7 +8,7 @@
 		"components": {			
 			"minecraft:creative_category": {"parent": "itemGroup.name.none"},
 			"minecraft:display_name": {"value": "Wither Remote"},
-            "minecraft:foil": false,
+            "minecraft:glint": false,
 			"minecraft:hand_equipped": true,
 			"minecraft:icon": {"texture": "wither_remote_stick"},
 			"minecraft:max_stack_size": 1,

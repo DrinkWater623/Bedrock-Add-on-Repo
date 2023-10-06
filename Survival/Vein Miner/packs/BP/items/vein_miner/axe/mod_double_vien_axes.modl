@@ -1,0 +1,292 @@
+{
+	"$module": "double_vein_axe",
+	"$scope":{
+		//"mod_landscape_axe_list":"{{global_nature_loot.filter(x => x.give_name == '' && x.bit_axe == 1)}}"
+		"local_leaf3":"{{global_log3.filter(x => x.leaf3_sfx > '')}}",
+		"local_leaf3_alt":"{{global_log3.filter(x => x.alt_give_leaf3 > '')}}",
+
+		"local_nature_axe_1_item_name" :"{{global_nature_loot.filter(x => x.is_block == 1 && (x.bit_axe == 1 || x.is_tree_loot == 1) && x.block_state_name == '' && x.give_name == '')}}",
+		"local_nature_axe_2_give_name" :"{{global_nature_loot.filter(x => x.is_block == 1 && (x.bit_axe == 1 || x.is_tree_loot == 1) && x.block_state_name == '' && x.give_name >  '')}}",
+		
+		"local_pickaxe_1_soft" :"{{pickaxe_digger_blocks.filter(x => x.speed > 1)}}",
+		"local_pickaxe_2_normal" :"{{pickaxe_digger_blocks.filter(x => x.speed == 1)}}",
+		"local_pickaxe_3_hard" :"{{pickaxe_digger_blocks.filter(x => x.speed == 0)}}",
+
+		"local_ptr_1_or_2":[
+			{"ptr":1,"addon":""},
+			{"ptr":2,"addon":"2"}
+		]
+		//"local_nature_soft_1_item_name":"{{global_nature_loot.filter(x => x.is_block == 1 && x.bit_axe == 0  && (x.bit_shovel == 1) && x.block_state_name == '' && x.give_name == '')}}",
+		//"local_nature_soft_2_give_name":"{{global_nature_loot.filter(x => x.is_block == 1 && x.bit_axe == 0  && (x.bit_shovel == 1) && x.block_state_name == '' && x.give_name >  '')}}"
+	},	
+	"$template":{
+		"$format_version": "{{settings.item_digger_version}}",
+		"minecraft:item": {
+			"description": {
+				"category": "equipment"
+				/*
+				This is 1.20.20+ so cannot use it
+				"menu_category": {  
+					"group": "itemGroup.name.axe",  
+					"category": "equipment", 
+					"is_hidden_in_commands": true 
+				}
+				*/
+			},
+			"components": {
+				//"tag:minecraft:is_tool": {},
+				//"tag:minecraft:is_axe": {}, // This may take away the on_use_on
+				"minecraft:cooldown":{"category":"attack","duration":"{{=cooldown_duration}}"},
+				"minecraft:creative_category": {"parent": "itemGroup.name.axe"},	
+				"minecraft:damage": "{{=attack_damage}}",					
+				// Since Digger can do the minion with a chop, maybe let right click on a leaf silk one leaf
+				// "minecraft:on_use_on": {"on_use_on": {"event": "ev:place_entity"}},
+				"minecraft:digger": {					
+					"destroy_speeds": [	
+						//Log Chopped
+						{"{{#global_wood_types}}":{"block":"minecraft:{{wood_name}}_{{log_sfx}}"		 ,"speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:summon_for_{{wood_name}}_log"}}},
+						{"{{#global_wood_types}}":{"block":"minecraft:stripped_{{wood_name}}_{{log_sfx}}","speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:summon_for_{{wood_name}}_log"}}},
+						{"block":"minecraft:bamboo","speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:summon_for_bamboo"}},
+						{"block":"minecraft:reeds","speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:summon_for_sugar_cane"}},
+						//=============================================================================================================
+						//Leaf Chopped - Silk Touch or Efficiency - both have the same process
+						{"block":"minecraft:leaves","speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:process_for_leaf_1"}},
+						{"block":"minecraft:leaves2","speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:process_for_leaf_2"}},
+						{"{{#local_leaf3}}":{"block":"minecraft:{{log3_name}}_{{leaf3_sfx}}","speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:process_for_{{log3_name}}_{{leaf3_sfx}}"}}},
+						{"{{#local_leaf3_alt}}":{"block":"minecraft:{{alt_give_leaf3}}","speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:process_for_{{alt_give_leaf3}}"}}},
+						//=============================================================================================================
+						//Bamboo Products
+						{"{{#digger_wood_products}}":{"block":{"name":"minecraft:bamboo_{{item_name}}"},"speed":"{{=wood_destroy_speed*2}}"}},					
+						//=============================================================================================================
+						//Other Wood and wood like - good for axe
+						{"{{#axe_digger_tags.filter(x => x.axe_item == 1)}}":{"block":{"tags":"query.any_tag('{{tag}}')"},"speed":"{{=wood_destroy_speed*2}}"}},
+						{"{{#axe_digger_blocks.filter(x => x.axe_item == 1)}}":{"block":"minecraft:{{block_name}}","speed":"{{=wood_destroy_speed*2}}"}},
+						//=============================================================================================================
+						// Axe-able Landscaping Blocks - MAY NEED TO FIGURE OUT SILK TOUCH FOR A FEW THINGS
+						{"{{#local_nature_axe_1_item_name}}":{"block":"minecraft:{{item_name}}","speed":"{{=wood_destroy_speed*2}}"}},
+						{"{{#local_nature_axe_2_give_name}}":{"block":"minecraft:{{give_name}}","speed":"{{=wood_destroy_speed*2}}"}},
+						//=============================================================================================================						
+						// soft like sand, something an axe would just sink into and not really do anything
+						{"{{#scooper_digger_tags}}"	 :{"block":{"tags":"query.any_tag('{{tag}}')"},"speed":"{{=wood_destroy_speed*0.1}}"}},
+						{"{{#scooper_digger_blocks}}":{"block":"minecraft:{{block_name}}","speed":"{{=wood_destroy_speed*0.1}}"}},
+						//=============================================================================================================
+						//plants
+						{"{{#sickle_digger_tags}}"		:{"block":{"tags":"query.any_tag('{{tag}}')"},"speed":"{{=wood_destroy_speed*0.25}}"}},						
+						//{"{{#local_nature_soft_1_item_name}}":{"block":"minecraft:{{item_name}}","speed":"{{=wood_destroy_speed*0.25}}"}},
+						//{"{{#local_nature_soft_2_give_name}}":{"block":"minecraft:{{give_name}}","speed":"{{=wood_destroy_speed*0.25}}"}},
+						//=============================================================================================================
+						//Pickaxe hard or metals - not really for Axe
+						{"{{#local_pickaxe_1_soft}}"	:{"block":"minecraft:{{block_name}}","speed":"{{=wood_destroy_speed*0.75}}"}},
+						{"{{#pickaxe_digger_tags}}"		:{"block":{"tags":"query.any_tag('{{tag}}')"},"speed":"{{=wood_destroy_speed*0.25}}"}},
+						{"{{#local_pickaxe_2_normal}}"	:{"block":"minecraft:{{block_name}}","speed":"{{=wood_destroy_speed*0.25}}"}},
+						{"{{#local_pickaxe_3_hard}}"	:{"block":"minecraft:{{block_name}}","speed":"{{=wood_destroy_speed*0.1}}"}}
+					],
+					"on_dig": {
+						"speed": 0.1 //,"event": "ev:damage_default"
+					}
+				},		
+				"minecraft:hand_equipped": true,
+				"minecraft:max_stack_size": 1
+			},
+			"events": {
+				//================================================================================================
+				// Needed because MC throw a content error log thingy if it does not exist if you use tag=is_axe
+				"on_tool_used":  {"run_command":{"command":["say on_tool_used event"],"target":"block"}},
+				//================================================================================================
+				"ev:summon_for_bamboo":{
+					"sequence":[
+						{
+							"{{? material != 'netherite'}}":	{
+								"run_command": {"command": [
+									"title @p title §aBamboo (r={{radius_max+1}})",
+									"summon dw623:bamboo_minion_{{radius_max}} ~ ~ ~"]
+									,"target":"block"
+								}
+							}
+						},
+						{
+							"{{? material == 'netherite'}}":	{
+								"run_command": {"command": [
+									"title @p title §aBamboo",
+									"summon dw623:bamboo_minion ~ ~ ~"]
+									,"target":"block"
+								}
+							}
+						}
+					]
+				},
+				"ev:summon_for_sugar_cane":{
+					"sequence":[
+						{
+							"{{? material != 'netherite'}}":	{
+								"run_command": {"command": [
+									"title @p title §eSugar Cane (r={{radius_max+1}})",
+									"summon dw623:sugar_cane_minion_{{radius_max}} ~ ~ ~"]
+									,"target":"block"
+								}
+							}
+						},
+						{
+							"{{? material == 'netherite'}}":	{
+								"run_command": {"command": [
+									"title @p title §eSugar Cane",
+									"summon dw623:sugar_cane_minion ~ ~ ~"]
+									,"target":"block"
+								}
+							}
+						}
+					]
+				},
+				"{{? material == 'netherite'}}":{		
+					"ev:summon_for_any_leaf":{
+						"sequence":[					
+							{
+								"run_command": {"command": [
+									"title @p title §aLeaves @ Radius {{radius_max}}",
+									"summon dw623:leaf_minion_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf"]
+									,"target":"block"
+								}
+							}
+						]
+					}
+				},
+				"ev:summon_for_any_log":{
+					"sequence":[					
+						{
+							"run_command": {"command": [
+								"title @p title §eTrees @ Radius {{radius_max}}",
+								"summon dw623:tree_minion_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_log"]
+								,"target":"block"
+							}
+						}
+					]
+				},
+				//=================================================
+				// Leaf Group 1 and 2 - best I can do until they are flattened o ut
+				//=================================================			
+				"{{#local_ptr_1_or_2}}":{
+					"ev:process_for_leaf_{{ptr}}": {
+						"sequence": [												
+							{"trigger":"ev:setblock_leaf_{{ptr}}"},
+							{"{{? material != 'netherite'}}":{"trigger":"ev:summon_for_leaf_{{ptr}}_specific_leaf"}},
+							{"{{? material == 'netherite'}}":{"trigger":"ev:summon_for_any_leaf"}}
+						]
+					},
+					"ev:setblock_leaf_{{ptr}}": {
+						//put leaf back from a surrounding leaf, in Y X Z order... if not a solitary leaf, then should match something, so use that.
+						"sequence": [						
+							// pos=y 1st
+							{															
+								"run_command":{"command":[
+									{"{{#squiggly_pos.filter(x => x.pos == 2)}}":
+										[
+											"execute unless ~ ~ ~  minecraft:leaves{{addon}} if block {{p75}} minecraft:leaves{{addon}} run tell @p[tag=debug] Clone Y Leaf-{{ptr}}",
+											"execute unless ~ ~ ~  minecraft:leaves{{addon}} if block {{p75}} minecraft:leaves{{addon}} run clone {{p75}}  {{p75}}  ~ ~ ~ "
+										]
+									}],
+									"target":"block"
+								}
+							},
+							{															
+								"run_command":{"command":[
+									{"{{#squiggly_pos.filter(x => x.pos != 2)}}":
+									[
+										"execute unless ~ ~ ~  minecraft:leaves{{addon}} unless block ~ ~-1 ~ minecraft:leaves{{addon}} unless block ~ ~1 ~ minecraft:leaves{{addon}} if block {{p75}} minecraft:leaves{{addon}} run tell @p[tag=debug] Clone X/Z Leaf-2",
+										"execute unless ~ ~ ~  minecraft:leaves{{addon}} unless block ~ ~-1 ~ minecraft:leaves{{addon}} unless block ~ ~1 ~ minecraft:leaves{{addon}} if block {{p75}} minecraft:leaves{{addon}} run clone {{p75}}  {{p75}}  ~ ~ ~ "
+									]
+									}],
+									"target":"block"
+								}
+							}						
+						]
+					}
+				},
+				//Idea... run specific leaf on all 6 sides and hope for the best...
+				"ev:summon_for_leaf_1_specific_leaf": {
+					"sequence": [						
+						// Test Each Surrounding Leaf-1 for summoning
+						{	
+							"{{#global_log1}}":{															
+								"run_command":{"command":[
+									// 1st - if still air, then do surrounding
+									{"{{#squiggly_pos}}":{"{{#leaf_persistent_bit}}":{"{{#leaf_update_bit}}":"execute unless block ~ ~ ~ minecraft:leaves if block {{p75}} minecraft:leaves [\"old_leaf_type\" = \"{{log1_name}}\", \"persistent_bit\" = {{persistent_bit}}, \"update_bit\" = {{update_bit}}] run summon dw623:leaf_minion_{{log1_name}}_{{radius_max}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"}}},
+									// 2nd - if setblock worked, do leaf in position - only draw back is if a gravity block was above the leaf
+									{"{{#leaf_persistent_bit}}":{"{{#leaf_update_bit}}":"execute if block ~ ~ ~ minecraft:leaves [\"old_leaf_type\" = \"{{log1_name}}\", \"persistent_bit\" = {{persistent_bit}}, \"update_bit\" = {{update_bit}}] run summon dw623:leaf_minion_{{log1_name}}_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf"}}
+								],"target":"block"}
+							}
+						}											
+					]
+				},				
+				//Idea... run specific leaf on all 6 sides and hope for the best...
+				"ev:summon_for_leaf_2_specific_leaf": {
+					"sequence": [						
+						// Test Each Surrounding Leaf-1 for summoning
+						{	
+							"{{#global_log2}}":{															
+								"run_command":{"command":[
+									// 1st - if still air, then do surrounding
+									{"{{#squiggly_pos}}":{"{{#leaf_persistent_bit}}":{"{{#leaf_update_bit}}":"execute unless block ~ ~ ~ minecraft:leaves2 if block {{p75}} minecraft:leaves2 [\"new_leaf_type\" = \"{{log2_name}}\", \"persistent_bit\" = {{persistent_bit}}, \"update_bit\" = {{update_bit}}] run summon dw623:leaf_minion_{{log2_name}}_{{radius_max}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"}}},
+									// 2nd - if setblock worked, do leaf in position - only draw back is if a gravity block was above the leaf
+									{"{{#leaf_persistent_bit}}":{"{{#leaf_update_bit}}":"execute if block ~ ~ ~ minecraft:leaves2 [\"new_leaf_type\" = \"{{log2_name}}\", \"persistent_bit\" = {{persistent_bit}}, \"update_bit\" = {{update_bit}}] run summon dw623:leaf_minion_{{log2_name}}_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf"}}
+								],"target":"block"}
+							}
+						}			
+					]
+				},
+				"{{#local_leaf3}}":{					
+					"ev:process_for_{{log3_name}}_{{leaf3_sfx}}":{
+						"sequence":[
+							{"{{?local_settings.enchantment == 'silk_touch'}}":{"run_command":{"command":["setblock ~ ~ ~ minecraft:{{log3_name}}_{{leaf3_sfx}}"],"target":"block"}}},							
+							{"{{? material != 'netherite'}}":
+								{										
+									"run_command": {"command": [
+										"title @p title {{realTitle(log3_name)}} Leaves (r={{radius_max+1}})",
+										"summon dw623:leaf_minion_{{log3_name}}_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf"]
+										,"target":"block"
+									}
+								}
+							},
+							{"{{? material == 'netherite'}}":{"trigger":"ev:summon_for_any_leaf"}}
+						]
+					}
+				},
+				"{{#local_leaf3_alt}}":{					
+					"ev:process_for_{{alt_give_leaf3}}":{
+						"sequence":[
+							{"{{?local_settings.enchantment == 'silk_touch'}}":{"run_command":{"command":["setblock ~ ~ ~ minecraft:{{alt_give_leaf3}}"],"target":"block"}}},							
+							{"{{?material != 'netherite'}}":
+								{										
+									"run_command": {"command": [
+										"title @p title {{realTitle(log3_name)}} Leaves (r={{radius_max+1}})",
+										"summon dw623:leaf_minion_{{log3_name}}_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf"]
+										,"target":"block"
+									}
+								}
+							},
+							{"{{? material == 'netherite'}}":{"trigger":"ev:summon_for_any_leaf"}}
+						]
+					}
+				},	
+				//=================================================
+				//===============================================================================================================
+				// This allows for the AXE to CHOP and because digger knows the wood/block, I can call directly
+				//SNeaking for for ANY wood, not sneaking/normal is for the type chopped
+				//===============================================================================================================			
+				"{{#global_wood_types}}":{
+					"ev:summon_for_{{wood_name}}_log":{
+						"sequence":[							
+							{"{{? material != 'netherite'}}": {
+								"run_command": {"command": [
+									"title @p title {{realTitle(wood_name)}} Tree{{radius_max > 4 ? 's' : ''}} (r={{radius_max+1}})",
+									"summon dw623:tree_minion_{{wood_name}}_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_log"]
+									,"target":"block"
+								}
+							}},
+							{"{{? material == 'netherite'}}": {"trigger":"ev:summon_for_any_log"}}
+						]
+					}
+				}
+			}
+		}
+	}
+}

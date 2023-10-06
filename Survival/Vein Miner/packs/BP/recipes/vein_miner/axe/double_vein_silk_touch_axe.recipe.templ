@@ -1,0 +1,26 @@
+{
+  // Only for Emerald and Diamond
+	"$files": {    
+      "array": "tool_material_list",
+      "fileName": "double_vein_silk_touch_axe_{{material}}.recipe"
+  },
+	"$template":{
+    "format_version": "1.12.0",
+    "minecraft:recipe_shaped": {
+      "description": {"identifier":"dw623:{{material}}_silk_touch_double_axe_recipe"},
+      "tags": ["crafting_table"],
+      "pattern": ["sss","!c!","sss"],
+      "key": {
+        "!":{"item": "dw623:{{material}}_efficiency_double_axe"},
+        "c":{"item": "dw623:copper_wire"},        
+        "s":{"item": "minecraft:shears"}
+        /* 
+        eff=15, looting=14 , fortune=18, silk=16, mending 26,
+        unbreaking=17 , sharp=9, thorns 5, fire=13
+        power=19, smite=10, riptide=30 , bane=11
+        */
+      },
+      "result": {"item":"dw623:{{material}}_silk_touch_double_axe","count":1}
+    }
+  }
+}

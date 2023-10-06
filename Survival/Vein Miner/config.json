@@ -11,7 +11,7 @@
 		"filterDefinitions": {
 			"jsonte": {
 				"url": "github.com/MCDevKit/regolith-library",
-				"version": "2.11.2"
+				"version": "2.12.0"
 			},
 			"dot_ignore": {
 				"runWith": "python",
@@ -43,7 +43,7 @@
 								"module": "11ee4067-4a9e-4997-8046-7768017b0f84"
 							},
 							"description": "Work in Progress",
-							"min_engine_version": [1,20,10],
+							"min_engine_version": [1,20,30],
 							"name": "Dev: Vein Miner"
 						}
 					}
@@ -62,7 +62,7 @@
 						"settings": {
 							"description": "Trees and more by DrinkWater623",
 							"getUUIDs": true,
-							"min_engine_version": [1,20,10],
+							"min_engine_version": [1,20,30],
 							"name": "Vein Miner"
 						}
 					}

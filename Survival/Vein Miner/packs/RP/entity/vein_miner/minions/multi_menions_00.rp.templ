@@ -1,0 +1,34 @@
+{
+    "$scope":{
+		"{{#0..24}}":{
+            "local_minion_list":[
+                //turn on when have BP ready
+                {"radius_ptr":"{{=value}}","minion_name":"bamboo"      },
+                //{"radius_ptr":"{{=value}}","minion_name":"crops"       },
+                {"radius_ptr":"{{=value}}","minion_name":"landscape"   },
+                {"radius_ptr":"{{=value}}","minion_name":"leaf"        },
+                {"radius_ptr":"{{=value}}","minion_name":"sugar_cane"  },
+                {"radius_ptr":"{{=value}}","minion_name":"tree"        }
+            ]            
+        }
+    },   
+    "$files": {    
+        "array": "local_minion_list",
+        "fileName": "./{{minion_name}}/{{minion_name}}_minion_{{radius_ptr}}.rp"
+    },
+    "$template": {
+        "format_version": "1.10.0",
+        "minecraft:client_entity": {
+            "description": {
+                "identifier": "dw623:{{minion_name}}_minion_{{radius_ptr}}",
+                "materials": {
+                    "default": "entity"
+                },
+                "textures": {"default":"textures/colors/color_{{mod(radius_ptr,16)}}"},
+                "geometry": {"default":"geometry.entity_box_8"},
+                "render_controllers": ["controller.render.default"]
+                
+            }
+        }
+    }
+}

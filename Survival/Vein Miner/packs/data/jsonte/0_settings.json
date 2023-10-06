@@ -1,0 +1,13 @@
+{
+    "settings": {
+        "ns": "dw623",
+        "addon": "vein_miner",
+        "canopy_max": 24,
+		// {{Title(replace(settings.main_bot,'_',' '))}}
+		// {{settings.main_bot}}
+        "format_version":"1.20.30",
+        "item_digger_version":"1.20.10",
+        "item_version":"1.20.30",
+        "entity_version":"1.20.30"
+    }
+}

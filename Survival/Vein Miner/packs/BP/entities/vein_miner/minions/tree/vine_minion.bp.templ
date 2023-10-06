@@ -1,0 +1,75 @@
+{
+	"$extend":["any_minion"],
+	//=====================================================================================	
+	"$scope":{
+
+	},
+	//=====================================================================================	
+    "$template": {
+		"format_version": {},
+		"minecraft:entity": {
+			"description": {"identifier":"dw623:vine_minion"},
+			"component_groups": {				
+				"cg:delay_timer_destroy_vine":{
+					"minecraft:timer": {
+						"time": 0.10,"looping": false,"randomInterval": false,
+						"time_down_event": {"event":"ev:step_3_destroy_vine"}
+					}
+				}
+			},
+			"components": {				
+				"$minecraft:despawn": {"filters":{"none_of":[{"{{#local_vine_list}}":{"test":"in_block","value":"minecraft:{{block_name}}"}}]}},			
+				"minecraft:type_family": {"family": ["vine_minion"]}		
+			},
+			"events": {				
+				"$minecraft:entity_spawned":  {
+					"sequence": [
+						{"run_command":{"command":["execute align xyz run tp @s ~0.5 ~0.5 ~0.5"]}},
+						{
+							"filters": {"any_of":[{"{{#local_vine_list}}":{"test":"in_block","value":"minecraft:{{block_name}}"}}]},
+							"trigger":"ev:step_2_minion_process"
+						},
+						{
+							"filters": {"none_of":[{"{{#local_vine_list}}":{"test":"in_block","value":"minecraft:{{block_name}}"}}]},
+							"trigger":"ev:despawn"
+						}
+					]
+				},
+				"$ev:step_2_minion_process":{
+					"sequence": [
+						{
+							"run_command":{"command":[
+								{
+									"{{#local_vine_list}}":
+									"execute if block ~ ~ ~ minecraft:{{block_name}} run loot spawn ~ ~ ~ loot \"{{settings.addon}}/tree_loot/{{block_name}}_loot\""
+								}
+							]}
+						},	
+						{	//vine grows from floor
+							"filters": {"test": "in_block","value": "minecraft:twisting_vines"},
+							"run_command":{"command":[
+								"execute if block ~ ~0.75 ~ minecraft:twisting_vines unless block ~ ~1 ~ air run summon dw623:vine_minion ~ ~1 ~"
+							]}
+							
+						},
+						{
+							//because if top is destroyed, bottom is too, so give time
+							"filters": {"none_of":[{"test":"in_block","value":"minecraft:twisting_vines"}]},
+							"run_command":{"command":[
+								"execute unless block ~ ~-1 ~ air run summon dw623:vine_minion ~ ~-1 ~"
+							]}					
+						},
+						{"add":{"component_groups":["cg:delay_timer_destroy_vine"]}}
+					]
+				},
+				"$ev:step_3_destroy_vine":  {
+					"sequence": [
+						{"run_command":{"command":["fill ~ ~ ~  ~ ~ ~ air destroy"]}},
+						{"trigger":"ev:despawn"}
+
+					]
+				}
+			}
+		}
+	}
+}

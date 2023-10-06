@@ -1,0 +1,43 @@
+{
+	"$extend": [
+		"sickle"
+	],
+//======================================================================================
+	"$scope":{
+		
+		//see if settings can be used to share more in the module
+		"local_settings":{
+			"description":"",	
+			"enchantment":"silk_touch"
+		}
+		,
+
+		//Not Shared
+		"local_leaf3":"{{global_log3.filter(x => x.leaf3_sfx > '')}}",
+		"local_leaf3_alt":"{{global_log3.filter(x => x.alt_give_leaf3 > '')}}"
+		
+	},
+//======================================================================================
+	//Cannot add to module - fails on material from array
+	"$files": {    
+		"array": "tool_material_list",
+		"fileName": "{{local_settings.enchantment}}_sickle_{{material}}.bp"
+	},
+//======================================================================================
+	"$template":{
+		"format_version": "1.16.100",
+		"minecraft:item": {
+			"description": {
+				"identifier": "dw623:{{material}}_vein_silk_touch_sickle"
+			},
+			"components": {				
+				"minecraft:digger": {},
+				"minecraft:display_name": {"value": "{{Title(material)}} Vein Sickle\n§d§oShears Landscape §7(Radius={{radius_max+1}})"},
+				"minecraft:durability":{"damage_chance":{"min":0,"max":1},"max_durability":"{{=max_durability*4}}"},
+				"minecraft:foil": true, //Glint in 1.20.3, but we must stay in 1.20.1 for digger events
+				"minecraft:icon": {"texture": "{{material}}_vein_sickle_purple"}
+			},
+			"events":{}
+		}
+	}
+}

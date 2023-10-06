@@ -1,0 +1,115 @@
+{
+	/*
+		Can Assume Log and Leaf because it only puts one in it's own kind or the related blocks.
+		in-block test for log/log2 leaves/leaves2 is not reliable... 
+		works for Oak
+		not for Birch
+	*/	
+	"$module":"tree_minion",
+	"$scope":{		
+		"minion_family":{"minion":"tree"}
+	},
+    "$template":{		
+		"minecraft:entity":{
+			"description":{								
+				"properties":{					
+					"bit:in_log":{"type": "bool","default": false}			
+				}
+			},
+			"components":{				
+				"minecraft:type_family":{"family":["tree_minion"]}
+			},
+			"events":{
+				/*=================================*/
+				// Step ONE - called by the summons
+				/*=================================*/
+				//summon with this event to activate silk touch and looting of vines/leaves
+				"{{#leaf_log_or_related_word}}":{
+					"$ev:efficiency_activate_{{llr_word}}":{
+						"sequence":[
+							{
+								"run_command":{"command":["tell @p[r=5,tag=debug_max] Efficiency Activated - {{llr_word}} - r{{radius_ptr}}"]},
+								"set_property":{"bit:in_{{llr_word}}": true}
+							},
+							{"add":{"component_groups":["cg:delay_timer_step_2_minion"]}}
+						]
+					},
+					"$ev:silk_touch_activate_{{llr_word}}":{
+						"sequence":[
+							{
+								"run_command":{"command":["tell @p[r=5,tag=debug_max] Silk Touch Activated - {{llr_word}} - r{{radius_ptr}}"]},
+								"set_property":{"bit:has_silk_touch": true,"bit:in_{{llr_word}}": true}
+							},
+							{"trigger":"ev:step_1b_loot_adjacent_vines"},
+							{"{{?llr_word == 'leaf'}}":{"trigger":"ev:step_1c_loot_leaves"}},
+							{"add":{"component_groups":["cg:delay_timer_step_2_minion"]}}
+						]
+					}
+				},			
+				/*======================================================*/
+				// Step TWO - called by the delay timer set by the above
+				/*======================================================*/										
+				"$ev:step_2_minion_process":{
+					"sequence":[						
+						// START
+						{
+							"filters":{
+								"none_of":[
+									{"test":"bool_property","domain":"bit:in_log", "value":true},
+									{"test":"bool_property","domain":"bit:in_leaf", "value":true},
+									{"test":"bool_property","domain":"bit:in_related", "value":true}
+								]
+							},		
+							//"run_command":{"command":["tell @p[r=5,tag=debug_max] Not {{wood_name}} related"]},
+							"trigger":"ev:despawn"
+						},
+						{
+							"filters":{
+								"any_of":[
+									{"test":"bool_property","domain":"bit:in_log", "value":true},
+									{"test":"bool_property","domain":"bit:in_leaf", "value":true},
+									{"test":"bool_property","domain":"bit:in_related", "value":true}
+								]
+							},
+							//"run_command":{"command":["tell @p[r=5,tag=debug_max] Delay Set for Summoning to Neighbors"]},		
+							"add":{"component_groups":["cg:delay_timer_step_3_summon"]}
+						}
+
+					]
+				},
+				// Called by Delay Timer
+				"ev:step_3_summon_to_neighbors":{
+					"sequence":[
+						/*
+						MOVED TO BOTH
+						{"add":{"component_groups":["cg:despawn_guarantee_timer"]}},
+						{"run_command":{"command":["tell @p[r=5,tag=debug_max] step_3_summon_to_neighbors"]}},	
+						{"trigger":"ev:step_4_debug"},//make sure for both					
+						{"trigger":"ev:step_4a_summon_vertical"},
+						*/
+						// Radius @ Zero
+						{	
+							"{{?value.radius_ptr == 0}}":{
+								"filters":{"test":"bool_property","domain":"bit:in_log", "value":true},
+								"trigger": "ev:step_4b_summon_log_horizontal_radius_zero"
+							}
+						},
+						// Radius One Plus
+						{"{{?value.radius_ptr > 0}}":{"trigger":"ev:step_4c_summon_horizontal_radius_one_plus"}},
+						/*
+						Done
+						*/
+						{
+							"filters":{"test": "in_block","operator":"not","value": "minecraft:air"},
+							"add":{"component_groups":["cg:despawn_if_air_after_summoning"]}
+						},
+						{"trigger":"ev:step_z_destroy_block_and_despawn"}
+					]
+				}
+				//===========================================
+				// See Templates for All Step 4 Summon events				
+				//===========================================				
+			}
+		}
+	}
+}

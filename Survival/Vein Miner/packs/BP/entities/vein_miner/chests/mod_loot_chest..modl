@@ -1,0 +1,136 @@
+{
+	"$module":"loot_chest",
+
+	"$scope":{
+		"loot_radius":{"radius":16},
+		"mod_leaves":"{{global_wood_types.filter(x => x.log_sfx > '')}}",
+		"mod_logs":"{{global_wood_types.filter(x => x.leaf_sfx > '')}}",
+		"mod_saplings":"{{global_wood_types.filter(x => x.sapling_sfx > '')}}",
+		"mod_tree_block_loot":"{{other_tree_block_loot}}",
+		
+		"mod_tree_item_loot":"{{global_nature_loot.filter(x => x.data_id >= 0 && x.is_tree_loot == 1)}}",
+
+		"mod_landscape_loot":"{{global_nature_loot.filter(x => x.data_id >= 0 && x.is_crop != 1)}}"
+	},
+
+	"$template":{
+		"$format_version": "{{settings.entity_version}}",
+		"minecraft:entity": {
+			"description": {	
+				// "runtime_identifier": "minecraft:shulker", // each type decides this part
+				"is_spawnable": false,
+				"is_summonable": true,
+				"is_experimental": false				
+			},
+			"component_groups": {			
+				"cg:despawn_when_empty":{
+					"minecraft:despawn": {
+						"filters": {"test":"all_slots_empty","subject":"self","operator":"equals","value":"inventory"}
+					}
+				},
+				"cg:collect_timer":{
+					"minecraft:timer": {"time":[0,0.25],"time_down_event":{"event":"ev:collect"},"looping":true,"randomInterval":true}
+				},
+				"cg:full_timer":{
+					"minecraft:timer": {"time":[2.0,5.0],"time_down_event":{"event":"ev:collect"},"looping":true,"randomInterval":true}
+				},
+				"cg:recruit_timer":{
+					"minecraft:timer": {"time":2.0,"time_down_event":{"event":"ev:recruit"},"looping":true,"randomInterval":false}
+				},
+				"cg:family_hungry":{
+					"minecraft:type_family": {"family": ["chest","hungry"]}
+				},
+				"cg:family_full":{
+					"minecraft:type_family": {"family": ["chest","full"]}
+				}   			
+			},
+			"components": {
+				"minecraft:breathable": {"breathes_air":true,"breathes_lava":true,"breathes_solids":true,"breathes_water":true,"generates_bubbles":false},
+				//"minecraft:collision_box": {"height": 0.75,"width":0.75},
+				"minecraft:damage_sensor":{"triggers":{"cause":"all","deals_damage":false}},
+				"minecraft:fire_immune":{},
+				"minecraft:health": {"value":1000,"max":1000},
+				"minecraft:inventory": {"can_be_siphoned_from":true,"container_type":"inventory","inventory_size":27,"private":false,"restrict_to_owner":false},
+				"minecraft:is_stackable": {},
+				"minecraft:item_hopper":{},
+				"minecraft:nameable": {"allow_name_tag_renaming":true,"always_show":true},
+				"minecraft:persistent":{},
+				"minecraft:physics": {"has_collision":true,"has_gravity":true},
+				//"minecraft:push_through": {"value":1},
+				"minecraft:pushable":{"is_pushable":true,"is_pushable_by_piston": false},
+				//"minecraft:scale": {"value":0.5},
+				"minecraft:timer": {
+					"time": 0.05,"time_down_event": {"event":"ev:collection_start"},
+					"looping": false,"randomInterval": false},
+				"minecraft:type_family": {"family": ["chest","hungry","new"]}
+			},
+			"events": {			
+				"ev:collection_start": {"add": {"component_groups":["cg:collect_timer"]}},
+				"ev:collect":  {
+					"sequence":[
+						//regardless try for stuff close to you
+						{
+							"trigger":"ev:gather_loot"
+						},
+						// I have one plus empty slots
+						{
+							"filters": {"test":"any_slot_empty","value":"inventory"},
+							"add": {"component_groups":["cg:family_hungry"]}
+						},
+						// I am newly full, I will slow down my tp=-ing of items and recruit another chest if loose items around me
+						{						
+							"filters": {
+								"all_of":[
+									{"none_of":[{"test":"any_slot_empty","value":"inventory"}]},
+									{"test":"is_family","value":"hungry"}
+								]
+							},
+							"add": {"component_groups":["cg:recruit_timer","cg:family_full"]}
+						},
+						// I am full and was full last time, but will check to make sure someone is hungry
+						{						
+							"filters": {
+								"all_of":[
+									{"none_of":[{"test":"any_slot_empty","value":"inventory"}]},
+									{"test":"is_family","value":"full"}
+								]
+							},
+							"trigger":"ev:summon_friend"
+						},
+						// I have been active, so now I can despawn when empty
+						{
+							"filters": {
+								"all_of":[
+									{"test":"is_family","operator":"!=","value":"new"},
+									{"test": "has_component", "operator": "not", "value": "minecraft:despawn" }
+								]
+							},
+							"add": {"component_groups":["cg:despawn_when_empty"]}
+						}
+					]
+				},
+				//center me in block  - called by caller, not auto, because of recruit...
+				"ev:entity_spawned": {
+					"sequence":[	
+						{"run_command":{"command":["execute align xz run tp @s ~0.5 ~ ~0.5"]}}
+					]
+				},
+				//Redone by Chest				
+				"ev:gather_loot": {},
+				// This event is only called when the chest slots are full, not that each slot is full
+				"ev:recruit":  {
+					"sequence":[					
+						//if slots are full... summon another if still stuff on the ground near
+						{						
+							"filters": {"test":"is_family","value":"hungry"},
+							"trigger":"ev:summon_friend"
+						},	
+						{"add": {"component_groups":["cg:full_timer"]}}
+					]				
+				},
+				//Redone by Chest
+				"ev:summon_friend": {}	
+			}
+		}
+	}
+}

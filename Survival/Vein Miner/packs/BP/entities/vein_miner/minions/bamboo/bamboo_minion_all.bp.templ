@@ -1,0 +1,79 @@
+{
+	// Bamboo should just mine horizontal
+	"$extend":["any_minion"],
+	//=====================================================================================	
+	"$scope":{
+		
+	},
+	//=====================================================================================	
+    "$template": {
+		"format_version": {},
+		"minecraft:entity": {
+			
+			"description": {"identifier":"dw623:bamboo_minion"},
+
+			"component_groups": {				
+				"cg:delay_timer_step_2":{
+					"minecraft:timer": {
+						"time": 0.05,"looping": false,"randomInterval": false,
+						"time_down_event": {"event":"ev:step_2_minion_process"}
+					}
+				}
+			},
+			"components": {				
+				"$minecraft:despawn": {
+					"filters": {"none_of":[
+						{"test":"in_block","value":"minecraft:bamboo"},
+						{"test":"in_block","value":"minecraft:air"}
+					]}
+				},
+				"minecraft:type_family": {"family": ["bamboo_minion"]}		
+			},
+			"events": {				
+				"$minecraft:entity_spawned":  {
+					"sequence": [						
+						{"run_command":{"command":["execute align xyz run tp @s ~0.5 ~0.5 ~0.5"]}},
+						{
+							"filters": {"none_of":[
+								{"test":"in_block","value":"minecraft:bamboo"},
+								{"test":"in_block","value":"minecraft:air"}
+							]},
+							"trigger":"ev:despawn"
+						},
+						{							
+							//One Tick Delay
+							"filters": {"any_of":[
+								{"test":"in_block","value":"minecraft:bamboo"},
+								{"test":"in_block","value":"minecraft:air"}
+							]},							
+							"add":{"component_groups":["cg:delay_timer_step_2"]}
+						}
+					]
+				},
+				"$ev:step_2_minion_process":{
+					"sequence": [							
+						{	
+							// Horizontal summons only							
+							"run_command":{"command":[
+								{"{{#squiggly_pos.filter(x => x.pos != 2)}}":
+									"execute if block {{p75}} minecraft:bamboo run summon dw623:bamboo_minion {{one}}"
+								}
+							]}
+						},
+						{
+							// chop current position bamboo
+							"filters": {"test":"in_block","value":"minecraft:bamboo"},
+							"run_command":{"command":["fill ~ ~ ~  ~ ~ ~ air destroy"]}
+						},
+						{
+							// Summon chest if none
+							"run_command":{"command":["execute unless entity @e[r=48,family=bamboo_chest,family=hungry] run summon dw623:bamboo_loot_chest ~ ~ ~ 0 0 ev:entity_spawned Tree-Loot"]}
+						},
+						// This makes a LAG difference, leave on
+						{"trigger":"ev:despawn"}
+					]
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,27 @@
+{
+    "$scope":{
+        "local_chest_list":[
+            {"uid":1,"name":"bamboo"},
+            {"uid":2,"name":"crops"},
+            {"uid":3,"name":"landscape"},
+            {"uid":4,"name":"sugar_cane"},
+            {"uid":5,"name":"tree"}
+            ]
+    }, 
+    "$files": {    
+        "array": "local_chest_list",
+        "fileName": "{{name}}_loot_chest.rp"
+    },
+	"$template":{
+		"format_version": "1.10.0",
+		"minecraft:client_entity": {
+			"description": {
+				"identifier": "dw623:{{name}}_loot_chest",			
+				"materials": {"default":"entity_emissive_alpha"},
+				"textures":{"default":"textures/entity/vein_miner/{{name}}_loot_chest_glow"},
+				"geometry": {"default":"geometry.entity_box"},				
+				"render_controllers": ["controller.render.default"]					
+			}
+		}
+	}
+}
