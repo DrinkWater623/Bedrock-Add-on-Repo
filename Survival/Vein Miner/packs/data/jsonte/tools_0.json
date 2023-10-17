@@ -3,6 +3,14 @@
 		{"toa":"any" ,"condition":"q.is_sneaking"},
 		{"toa":"this","condition":"!q.is_sneaking"}
 	],
+    "event_silk_touch":[
+		{"if":false ,"event_name":" 0 0 ev:efficiency_activate"},
+		{"if":true  ,"event_name":" 0 0 ev:silk_touch_activate"}
+	],
+    "enchant_efficiency_or_silk_touch":[
+		{"if":false ,"enchant_name":"efficiency"},
+		{"if":true  ,"enchant_name":"silk_touch"}
+	],
     //Reg values - multiply in usage for double axe or vein
     "tool_material_list": [
         {"material_id":0,"material":"wooden"	,"radius_max":0	,"desc":""				,"attack_damage":4,"max_durability":60	,"cooldown_duration":1.5,"wood_destroy_speed":2		},

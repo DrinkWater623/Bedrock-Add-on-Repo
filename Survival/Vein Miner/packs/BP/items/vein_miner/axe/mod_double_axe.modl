@@ -1,0 +1,194 @@
+{
+	"$module": "tool_double_axe",
+	"$scope":{
+		"local_nature_axe_1_item_name" :"{{global_nature_loot.filter(x => x.is_block == 1 && (x.bit_axe == 1 || x.is_tree_loot == 1) && x.block_state_name == '' && x.give_name == '')}}",
+		"local_nature_axe_2_give_name" :"{{global_nature_loot.filter(x => x.is_block == 1 && (x.bit_axe == 1 || x.is_tree_loot == 1) && x.block_state_name == '' && x.give_name >  '')}}",
+		
+		"local_pickaxe_1_soft" :"{{pickaxe_digger_blocks.filter(x => x.speed > 1)}}",
+		"local_pickaxe_2_normal" :"{{pickaxe_digger_blocks.filter(x => x.speed == 1)}}",
+		"local_pickaxe_3_hard" :"{{pickaxe_digger_blocks.filter(x => x.speed == 0)}}"		
+	},
+	"$template":{
+		"$format_version": "{{settings.item_digger_version}}",
+		"minecraft:item": {
+			"description": {},
+			"components": {
+				"tag:minecraft:is_axe": {}, // This may take away the on_use_on for logs only
+				"minecraft:creative_category": {"parent": "itemGroup.name.axe"},	
+				"minecraft:digger": {					
+					"destroy_speeds": [	
+						//Logs			
+						{"{{? material == 'netherite'}}":{"{{#global_trees}}":{"block":"minecraft:{{log_name}}_{{log_sfx}}"			,"speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:summon_all_sides_for_any_log"}}}},
+						{"{{? material == 'netherite'}}":{"{{#global_trees}}":{"block":"minecraft:stripped_{{log_name}}_{{log_sfx}}","speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:summon_all_sides_for_any_log"}}}},
+						{"{{? material != 'netherite'}}":{"{{#global_trees}}":{"block":"minecraft:{{log_name}}_{{log_sfx}}"			,"speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:summon_all_sides_for_{{log_name}}_log"}}}},
+						{"{{? material != 'netherite'}}":{"{{#global_trees}}":{"block":"minecraft:stripped_{{log_name}}_{{log_sfx}}","speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:summon_all_sides_for_{{log_name}}_log"}}}}
+					],
+					"on_dig": {"speed": 0.1}
+				},
+				"$minecraft:on_use_on": {"on_use_on": {"event": "ev:on_use_on_right_click"}}
+			},
+			"events": {
+				//for non-logs
+				"$ev:on_use_on_right_click":{
+					"sequence":[	
+						{	
+							// Non Leaves																	
+							"run_command":{
+								"command":[										
+									"execute if block ~ ~ ~ minecraft:bamboo unless entity @e[family=bamboo_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0]     run summon dw623:bamboo_minion_{{radius_max}} ~ ~ ~ ",
+									"execute if block ~ ~ ~ minecraft:reads  unless entity @e[family=sugar_cane_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:sugar_cane_minion_{{radius_max}} ~ ~ ~"
+								],
+								"target":"block"
+							}
+						},
+						{	
+							// Any Leaves										
+							"{{? material == 'netherite'}}":{								
+							"run_command":{
+								"command":[										
+									"execute if block ~ ~ ~ minecraft:leaves  unless entity @e[family=tree_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf",
+									"execute if block ~ ~ ~ minecraft:leaves2 unless entity @e[family=tree_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf",
+									{"{{#local_leaf3}}"    :"execute if block ~ ~ ~ minecraft:{{log3_name}}_{{leaf3_sfx}} unless entity @e[family=tree_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_{{radius_max}} ~ ~ ~} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"},
+									{"{{#local_leaf3_alt}}":"execute if block ~ ~ ~ minecraft:{{alt_give_leaf3}}          unless entity @e[family=tree_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_{{radius_max}} ~ ~ ~} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"}
+								],
+								"target":"block"
+							}}									
+						},
+						{	
+							// Specific Leaves										
+							"{{? material != 'netherite'}}":[								
+								{	
+									"{{#global_ptr_1_or_2}}":{"{{#global_trees.filter(x => x.leaf_group == leaves_ptr)}}":{							
+										"run_command":{
+											"command":[
+												{
+													"{{#leaf_persistent_bit}}":{"{{#leaf_update_bit}}":										
+														"execute if block ~ ~ ~ minecraft:leaves{{leaves_sfx}} [\"{{leaf_type}}_leaf_type\" = \"{{log_name}}\", \"persistent_bit\" = {{persistent_bit}}, \"update_bit\" = {{update_bit}}] unless entity @e[family=tree_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_{{log_name}}_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf"
+													}
+												}
+											],
+											"target":"block"
+										}
+									}}
+								},
+								{								
+									"run_command":{
+										"command":[										
+											{"{{#local_leaf3}}"    :"execute if block ~ ~ ~ minecraft:{{log3_name}}_{{leaf3_sfx}} unless entity @e[family=tree_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_{{log3_name}}_{{radius_max}} ~ ~ ~} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"},
+											{"{{#local_leaf3_alt}}":"execute if block ~ ~ ~ minecraft:{{alt_give_leaf3}}          unless entity @e[family=tree_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_{{log3_name}}_{{radius_max}} ~ ~ ~} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"}
+										],
+										"target":"block"
+									}
+								}
+							]									
+						}
+					]
+				},
+				"{{? material == 'netherite'}}":{							
+					"ev:summon_all_sides_for_any_log":{
+						"sequence":[					
+							{"run_command":{"command":["title @p title §eTrees @ Radius {{radius_max}}"],"target":"block"}},
+							{									
+								"{{#squiggly_pos_Y}}":{									
+									"run_command":{
+										"command":[
+											// Logs
+											{"{{#global_trees}}": [													
+													"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{log_name}}_{{log_sfx}} run summon dw623:tree_minion_{{radius_max}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_log",
+													"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:stripped_{{log_name}}_{{log_sfx}} run summon dw623:tree_minion_{{radius_max}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_log"
+											]},
+											// Leaves										
+											"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:leaves run summon dw623:tree_minion_{{radius_max}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_leaf",
+											"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:leaves2 run summon dw623:tree_minion_{{radius_max}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_leaf",
+											{"{{#local_leaf3}}":"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{log3_name}}_{{leaf3_sfx}} run summon dw623:tree_minion_{{radius_max}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"},
+											{"{{#local_leaf3_alt}}":"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{alt_give_leaf3}} run summon dw623:tree_minion_{{radius_max}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"},
+											// Related
+											{
+												"{{#related_loot.filter(x => x.related_wood_1 == log_name || x.related_wood_2 == log_name)}}":
+													"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{block_name}} run summon dw623:tree_minion_{{radius_max}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_related"
+											}
+										],
+										"target":"block"
+									}
+								},
+								"{{#squiggly_pos_XZ}}":{									
+									"run_command":{
+										"command":[
+											// Logs
+											{"{{#global_trees}}": [													
+													"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{log_name}}_{{log_sfx}} run summon dw623:tree_minion_{{radius_max-1}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_log",
+													"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:stripped_{{log_name}}_{{log_sfx}} run summon dw623:tree_minion_{{radius_max-1}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_log"
+											]},
+											// Leaves										
+											"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:leaves run summon dw623:tree_minion_{{radius_max-1}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_leaf",
+											"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:leaves2 run summon dw623:tree_minion_{{radius_max-1}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_leaf",
+											{"{{#local_leaf3}}":"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{log3_name}}_{{leaf3_sfx}} run summon dw623:tree_minion_{{radius_max-1}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"},
+											{"{{#local_leaf3_alt}}":"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{alt_give_leaf3}} run summon dw623:tree_minion_{{radius_max-1}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"},
+											// Related
+											{
+												"{{#related_loot.filter(x => x.related_wood_1 == log_name || x.related_wood_2 == log_name)}}":
+													"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{block_name}} run summon dw623:tree_minion_{{radius_max-1}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_related"
+											}
+										],
+										"target":"block"
+									}
+								}									
+							}
+						]
+					}
+				},
+				"{{? material != 'netherite'}}": {
+					"{{#global_trees}}":{
+						"ev:summon_all_sides_for_{{log_name}}_log":{
+							"sequence":[
+								{"run_command":{"command":["title @p title {{realTitle(log_name)}} Tree{{radius_max > 4 ? 's' : ''}} (r={{radius_max+1}})"]}},
+								{									
+									"{{#squiggly_pos_Y}}":{									
+										"run_command":{
+											"command":[
+												// Logs
+												"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{log_name}}_{{log_sfx}} run summon dw623:tree_minion_{{log_name}}_{{radius_max}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_log",
+												"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:stripped_{{log_name}}_{{log_sfx}} run summon dw623:tree_minion_{{log_name}}_{{radius_max}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_log",
+												// Leaves										
+												{"{{?leaf_group == 1}}"	:"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:leaves run summon dw623:tree_minion_{{log_name}}_{{radius_max}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"},
+												{"{{?leaf_group == 2}}"	:"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:leaves2 run summon dw623:tree_minion_{{log_name}}_{{radius_max}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"},
+												{"{{?leaf_group == 3}}" :"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{log_name}}_{{leaf_sfx}} run summon dw623:tree_minion_{{log_name}}_{{radius_max}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"},
+												{"{{?leaf_group == 4}}"	:"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{alt_give_leaf}} run summon dw623:tree_minion_{{log_name}}_{{radius_max}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"},
+												// Related
+												{
+													"{{#related_loot.filter(x => x.related_wood_1 == log_name || x.related_wood_2 == log_name)}}":
+														"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{block_name}} run summon dw623:tree_minion_{{log_name}}_{{radius_max}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_related"
+												}
+											],
+											"target":"block"
+										}
+									},
+									"{{#squiggly_pos_XZ}}":{									
+										"run_command":{
+											"command":[
+												// Logs
+												"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{log_name}}_{{log_sfx}} run summon dw623:tree_minion_{{log_name}}_{{radius_max-1}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_log",
+												"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:stripped_{{log_name}}_{{log_sfx}} run summon dw623:tree_minion_{{log_name}}_{{radius_max-1}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_log",
+												// Leaves										
+												{"{{?leaf_group == 1}}"	:"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:leaves run summon dw623:tree_minion_{{log_name}}_{{radius_max-1}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"},
+												{"{{?leaf_group == 2}}"	:"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:leaves2 run summon dw623:tree_minion_{{log_name}}_{{radius_max-1}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"},
+												{"{{?leaf_group == 3}}" :"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{log_name}}_{{leaf_sfx}} run summon dw623:tree_minion_{{log_name}}_{{radius_max-1}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"},
+												{"{{?leaf_group == 4}}"	:"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{alt_give_leaf}} run summon dw623:tree_minion_{{log_name}}_{{radius_max-1}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"},
+												// Related
+												{
+													"{{#related_loot.filter(x => x.related_wood_1 == log_name || x.related_wood_2 == log_name)}}":
+														"execute unless entity @e[family=tree_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{block_name}} run summon dw623:tree_minion_{{log_name}}_{{radius_max-1}} {{one}} 0 0 ev:{{local_settings.enchantment}}_activate_related"
+												}
+											],
+											"target":"block"
+										}
+									}									
+								}
+							]
+						}
+					}
+				}
+			}
+		}
+	}
+}

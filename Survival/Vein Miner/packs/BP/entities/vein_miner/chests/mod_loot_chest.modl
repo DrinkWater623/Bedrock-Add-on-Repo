@@ -3,9 +3,9 @@
 
 	"$scope":{
 		"loot_radius":{"radius":16},
-		"mod_leaves":"{{global_wood_types.filter(x => x.log_sfx > '')}}",
-		"mod_logs":"{{global_wood_types.filter(x => x.leaf_sfx > '')}}",
-		"mod_saplings":"{{global_wood_types.filter(x => x.sapling_sfx > '')}}",
+		"mod_leaves":"{{global_trees.filter(x => x.log_sfx > '')}}",
+		"mod_logs":"{{global_trees.filter(x => x.leaf_sfx > '')}}",
+		"mod_saplings":"{{global_trees.filter(x => x.sapling_sfx > '')}}",
 		"mod_tree_block_loot":"{{other_tree_block_loot}}",
 		
 		"mod_tree_item_loot":"{{global_nature_loot.filter(x => x.data_id >= 0 && x.is_tree_loot == 1)}}",

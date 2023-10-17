@@ -1,14 +1,14 @@
 {
     "squiggly_pos":[
         //X
-        {"pos":1  ,"xz_ptr":1,"ptr":"west" ,"p75":"~-0.75 ~ ~"    ,"one":"~-1 ~ ~" ,"x":"~-1" ,"y":"~"  ,"z":"~"  },                
-        {"pos":1  ,"xz_ptr":2,"ptr":"east" ,"p75":"~0.75 ~ ~"     ,"one":"~1 ~ ~"  ,"x":"~1"  ,"y":"~"  ,"z":"~"  },
+        {"pos":1  ,"xz_ptr":1,"direction_name":"west" ,"p75":"~-0.75 ~ ~"    ,"one":"~-1 ~ ~" ,"x":"~-1" ,"y":"~"  ,"z":"~" ,"direction_opposite":"east"  ,"direction_search_next":"up"  },                
+        {"pos":1  ,"xz_ptr":2,"direction_name":"east" ,"p75":"~0.75 ~ ~"     ,"one":"~1 ~ ~"  ,"x":"~1"  ,"y":"~"  ,"z":"~" ,"direction_opposite":"west"  ,"direction_search_next":"west"  },
         //Y
-        {"pos":2  ,"xz_ptr":0,"ptr":"down" ,"p75":"~ ~-0.75 ~"    ,"one":"~ ~-1 ~" ,"x":"~"  ,"y":"~-1" ,"z":"~"  },                
-        {"pos":2  ,"xz_ptr":0,"ptr":"up"   ,"p75":"~ ~0.75 ~"     ,"one":"~ ~1 ~"  ,"x":"~"  ,"y":"~1"  ,"z":"~"  },
+        {"pos":2  ,"xz_ptr":0,"direction_name":"down" ,"p75":"~ ~-0.75 ~"    ,"one":"~ ~-1 ~" ,"x":"~"  ,"y":"~-1" ,"z":"~"  ,"direction_opposite":"up"  ,"direction_search_next":"north"},                
+        {"pos":2  ,"xz_ptr":0,"direction_name":"up"   ,"p75":"~ ~0.75 ~"     ,"one":"~ ~1 ~"  ,"x":"~"  ,"y":"~1"  ,"z":"~"  ,"direction_opposite":"down","direction_search_next":"down" }, //start
         //Z
-        {"pos":3  ,"xz_ptr":3,"ptr":"north","p75":"~ ~ ~-0.75"    ,"one":"~ ~ ~-1" ,"x":"~"  ,"y":"~"  ,"z":"~-1" },                
-        {"pos":3  ,"xz_ptr":4,"ptr":"south","p75":"~ ~ ~0.75"     ,"one":"~ ~ ~1"  ,"x":"~"  ,"y":"~"  ,"z":"~1"  }
+        {"pos":3  ,"xz_ptr":3,"direction_name":"north","p75":"~ ~ ~-0.75"    ,"one":"~ ~ ~-1" ,"x":"~"  ,"y":"~"  ,"z":"~-1" ,"direction_opposite":"south","direction_search_next":"south"},
+        {"pos":3  ,"xz_ptr":4,"direction_name":"south","p75":"~ ~ ~0.75"     ,"one":"~ ~ ~1"  ,"x":"~"  ,"y":"~"  ,"z":"~1"  ,"direction_opposite":"north","direction_search_next":"east" }
     ],
     "xsquiggly_pos_XZ":[
         {"ptr":1    ,"p75":"~-0.75 ~ ~"    ,"one":"~-1 ~ ~"},                
@@ -16,10 +16,7 @@
         {"ptr":3    ,"p75":"~ ~ ~-0.75"    ,"one":"~ ~ ~-1"},                
         {"ptr":4    ,"p75":"~ ~ ~0.75"     ,"one":"~ ~ ~1" }
     ],
-    "event_silk_touch":[
-		{"if":false ,"event_name":" 0 0 ev:efficiency_activate"},
-		{"if":true  ,"event_name":" 0 0 ev:silk_touch_activate"}
-	],
+    
     "true_false":[{"if":false},{"if":true}],
     //not needed anymore... keep until sure
     "radius_ptrs":[

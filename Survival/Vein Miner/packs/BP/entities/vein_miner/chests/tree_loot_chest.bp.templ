@@ -6,9 +6,9 @@
 	"$scope":{
 		"me":{"name":"tree"},
 		"loot_radius":{"radius":32},
-		"local_logs":"{{global_wood_types.filter(x => x.log_sfx > '')}}",
-		"local_leaves":"{{global_wood_types.filter(x => x.leaf_sfx > '')}}",
-		"local_saplings":"{{global_wood_types.filter(x => x.sapling_sfx > '')}}",
+		"local_logs":"{{global_trees.filter(x => x.log_sfx > '')}}",
+		"local_leaves":"{{global_trees.filter(x => x.leaf_sfx > '')}}",
+		"local_saplings":"{{global_trees.filter(x => x.sapling_sfx > '')}}",
 		"local_tree_item_loot":"{{global_nature_loot.filter(x => x.data_id >= 0 && x.is_tree_loot == 1)}}"		
 	},
 	"$template":{
@@ -33,10 +33,10 @@
 				"$ev:gather_loot": {"trigger":"ev:gather_tree_loot"},
 				"$ev:gather_tree_loot": {
 					"sequence":[	
-						{"run_command":{"command":[{"{{#local_logs}}"			:"tp @e[r={{loot_radius.radius}},type=item,name=\"{{realTitle(wood_name + ' ' + log_sfx)}}\"] @s"}]}},
-						{"run_command":{"command":[{"{{#local_logs}}"			:"tp @e[r={{loot_radius.radius}},type=item,name=\"Stripped {{realTitle(wood_name + ' ' + log_sfx)}}\"] @s"}]}},
-						{"run_command":{"command":[{"{{#local_leaves}}"			:"tp @e[r={{loot_radius.radius}},type=item,name=\"{{realTitle(wood_name + ' ' + leaf_sfx)}}\"] @s"}]}},
-						{"run_command":{"command":[{"{{#local_saplings}}"		:"tp @e[r={{loot_radius.radius}},type=item,name=\"{{realTitle(wood_name + ' ' + sapling_sfx)}}\"] @s"}]}},						
+						{"run_command":{"command":[{"{{#local_logs}}"			:"tp @e[r={{loot_radius.radius}},type=item,name=\"{{realTitle(log_name + ' ' + log_sfx)}}\"] @s"}]}},
+						{"run_command":{"command":[{"{{#local_logs}}"			:"tp @e[r={{loot_radius.radius}},type=item,name=\"Stripped {{realTitle(log_name + ' ' + log_sfx)}}\"] @s"}]}},
+						{"run_command":{"command":[{"{{#local_leaves}}"			:"tp @e[r={{loot_radius.radius}},type=item,name=\"{{realTitle(log_name + ' ' + leaf_sfx)}}\"] @s"}]}},
+						{"run_command":{"command":[{"{{#local_saplings}}"		:"tp @e[r={{loot_radius.radius}},type=item,name=\"{{realTitle(log_name + ' ' + sapling_sfx)}}\"] @s"}]}},						
 						{"run_command":{"command":[{"{{#local_tree_item_loot}}"	:"tp @e[r={{loot_radius.radius}},type=item,name=\"{{realTitle(item_name)}}\"] @s"}]}}
 					]
 				},

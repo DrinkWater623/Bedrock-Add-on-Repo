@@ -1,0 +1,243 @@
+{
+	"$extend":["any_minion"],
+	"$scope":{
+		"minion_family":{"minion":"leaf"},
+		"{{#0..24}}":{"local_radius_ptr":[{"radius_ptr":"{{=value}}"}]}
+	},
+//======================================================================================
+"$files":{    
+	"array": "global_ptr_1_or_2",
+	"fileName": "./query/leaf_minion_query_{{leaves_ptr}}.bp"
+},
+//======================================================================================	
+    "$template":{
+		"format_version":{},
+		"minecraft:entity":{
+			"description":{
+				"identifier":"dw623:leaf_minion_query_leaf_group_{{leaves_ptr}}",
+				"properties":{
+					"bit:is_found":{"type": "bool","default": false},					
+					"bit:has_silk_touch":{"type": "bool","default": false},
+					"bit:has_efficiency":{"type": "bool","default": false},
+					//"int:leaves_id":{"type": "int","range": [-1,4],"default": -1},
+					//"int:leaves_ptr":{"type": "int","range": [1,2],"default": "{{=leaves_ptr}}"},
+					"int:radius_ptr":{"type": "int","range": [0,"{{=settings.radius_max}}"],"default": 0},
+					"bit:any_leaf_minion":{"type": "bool","default": false}
+				}
+			},
+			"component_groups":{				
+				"{{#squiggly_pos}}":{
+					"{{#global_trees.filter(x => x.leaf_group == leaves_ptr)}}":{
+						"cg:delay_look_in_leaves_{{leaves_ptr}}_{{direction_name}}":{
+							// 2 ticks
+							"minecraft:timer":{
+								"time":0.1,"looping": false,"randomInterval": false,
+								"time_down_event":{
+									"filters":{"test":"bool_property","domain":"bit:is_found", "value":false},
+									"event":"ev:look_in_leaves_{{leaves_ptr}}_{{direction_name}}"
+								}
+							}
+						},
+						"cg:delay_look_in_logs_{{leaves_ptr}}_{{direction_name}}":{
+							// 2 ticks
+							"minecraft:timer":{
+								"time":0.1,"looping": false,"randomInterval": false,
+								"time_down_event":{
+									"filters":{"test":"bool_property","domain":"bit:is_found", "value":false},
+									"event":"ev:look_in_logs_{{leaves_ptr}}_{{direction_name}}"
+								}
+							}
+						}
+					}
+				},
+				"$cg:delay_timer_despawn_if_not_found":{
+					"minecraft:timer":{
+						"time":0.50,"looping": false,"randomInterval": false,
+						"time_down_event":{
+							"filters":{"test":"bool_property","domain":"bit:is_found", "value":false},
+							"event":"ev:despawn"
+						}
+					}
+				},
+				"$cg:delay_timer_despawn_after_found":{
+					"minecraft:timer":{
+						"time":0.50,"looping": false,"randomInterval": false,
+						"time_down_event":{
+							"filters":{"test":"bool_property","domain":"bit:is_found", "value":true},
+							"event":"ev:despawn"
+						}
+					}
+				}
+			},
+			"components":{
+				"minecraft:type_family":{"family":["leaf_minion"]}
+			},
+			"events":{
+				//================================================================================================================
+				"{{#tool_material_list}}":{
+					"{{#enchant_efficiency_or_silk_touch}}":{						
+						"ev:query_leaf_group_{{leaves_ptr}}_r{{radius_max}}_{{enchant_name}}_any_leaf":{
+							"sequence":[							
+								{"set_property":{"bit:any_leaf_minion":true}},
+								{
+									"{{? enchant_name == 'silk_touch'}}":{
+										"trigger":"ev:query_leaf_group_{{leaves_ptr}}_r{{radius_max}}_{{enchant_name}}"
+									}
+								},
+								//if any-leaf and eff - skip finding what leaf type - does not matter
+								//technically should not come in here, but just in case
+								{
+									"{{? enchant_name != 'silk_touch'}}":{
+										"set_property":{"bit:is_found":true},
+										"add":{"component_groups":["cg:delay_timer_despawn_after_found"]},
+										"run_command":{"command":["summon dw623:leaf_minion_{{radius_max}} ~ ~ ~ 0 0 ev:{{enchant_name}}_activate_leaf_air"]}
+									}
+								}
+							]
+						},
+						"ev:query_leaf_group_{{leaves_ptr}}_r{{radius_max}}_{{enchant_name}}":{
+							"sequence":[
+								{"run_command":{"command":[
+									"tell @p[r=5,tag=debug_max] {{enchant_name}} - FIND LEAF {{leaves_ptr}} - r{{radius_max}}"
+								]}},
+								{
+									"set_property":{
+										"bit:has_{{enchant_name}}":true,
+										"int:radius_ptr":"{{=radius_max}}"
+									}
+								},
+								{"trigger":"ev:look_in_leaves_{{leaves_ptr}}_up"}
+							]
+						}
+						/*,						
+						"{{#global_trees.filter(x => x.leaf_group == leaves_ptr)}}":{
+							"ev:summon_leaf_minion_{{log_name}}_{{radius_max}}_{{enchant_name}}":{
+								"sequence":[							
+									{"run_command":{"command":["summon dw623:leaf_minion_{{log_name}}_{{radius_max}} ~ ~ ~ 0 0 ev:{{enchant_name}}_activate_leaf_air"]}}
+								]
+							}
+						}*/
+					}					
+				},				
+				//================================================================================================================
+				"{{#squiggly_pos}}":{
+					//=======================
+					// In Surrounding Leaves
+					//=======================
+					"ev:look_in_leaves_{{leaves_ptr}}_{{direction_name}}":{
+						"sequence":[
+							{
+								"{{#global_trees.filter(x => x.leaf_group == leaves_ptr)}}":{
+									"filters":{"test":"bool_property","domain":"bit:is_found", "value":false},
+									"run_command":{"command":[{
+										"{{#leaf_persistent_bit}}":{"{{#leaf_update_bit}}":
+											"execute if block {{one}} minecraft:leaves{{leaves_sfx}} [\"{{leaf_type}}_leaf_type\" = \"{{log_name}}\", \"persistent_bit\" = {{persistent_bit}}, \"update_bit\" = {{update_bit}}] run event entity @s ev:found_{{log_name}}_leaf"
+										}}
+									]}
+								}
+							},
+							//needs to go to a wait state for next leaf
+							{
+								"{{? direction_search_next != 'up'}}":{
+									"filters":{"test":"bool_property","domain":"bit:is_found", "value":false},
+									"add":{"component_groups":["cg:delay_look_in_leaves_{{leaves_ptr}}_{{direction_search_next}}"]}									
+								}
+							},
+							//needs to go to a wait state for first log							
+							{
+								"{{? direction_search_next == 'up'}}":{
+									"filters":{"test":"bool_property","domain":"bit:is_found", "value":false},
+									"add":{"component_groups":["cg:delay_look_in_logs_{{leaves_ptr}}_{{direction_search_next}}"]}
+								}
+							}
+						]
+					},
+					//=====================
+					// In Surrounding Logs
+					//=====================					
+					"ev:look_in_logs_{{leaves_ptr}}_{{direction_name}}":{
+						"sequence":[
+							{
+								"filters":{"test":"bool_property","domain":"bit:is_found", "value":false},
+								"run_command":{"command":[
+									{"{{#global_trees.filter(x => x.leaf_group == leaves_ptr)}}":["execute if block {{one}} minecraft:{{log_name}}_log run event entity @s ev:found_{{log_name}}_leaf"]}
+								]}
+							},
+							//needs to go to a wait state for next log
+							{
+								"{{? direction_search_next != 'up'}}":{
+									"filters":{"test":"bool_property","domain":"bit:is_found", "value":false},
+									"add":{"component_groups":["cg:delay_look_in_logs_{{leaves_ptr}}_{{direction_search_next}}"]}									
+								}
+							},
+							//May be Done
+							{
+								"filters":{"test":"bool_property","domain":"bit:is_found", "value":false},
+								"add":{"component_groups":["cg:delay_timer_despawn_if_not_found"]}
+							}
+						]
+					}					
+				}, // End of "{{#squiggly_pos}}"
+				//================================================================================================================				
+				"{{#global_trees.filter(x => x.leaf_group == leaves_ptr)}}":{
+					"ev:found_{{log_name}}_leaf":{						
+						"sequence":[
+							// 10 ticks is enough
+							{
+								"set_property":{"bit:is_found":true},
+								"add":{"component_groups":["cg:delay_timer_despawn_after_found"]}
+							},							
+							{
+								"filters":{"test":"bool_property","domain":"bit:has_silk_touch", "value":true},
+								"run_command":{"command":["loot spawn ~ ~ ~ loot \"{{settings.addon}}/tree_loot/{{log_name}}_leaf_loot\""]}
+							},
+							{
+								"filters":{"test":"bool_property","domain":"bit:any_leaf_minion", "value":true},
+								"trigger":"ev:summon_any_leaf_minion"								
+							},
+							{
+								"filters":{"test":"bool_property","domain":"bit:any_leaf_minion", "value":false},
+								"trigger":"ev:summon_{{log_name}}_leaf_minion"								
+							}
+						]
+					},					
+					"ev:summon_{{log_name}}_leaf_minion":{						
+						"sequence":[
+							{
+								"{{#tool_material_list}}":{"{{#enchant_efficiency_or_silk_touch}}":	{
+									"filters":[
+										{
+											"all_of":[																						
+												{"test":"bool_property","domain":"bit:has_{{enchant_name}}", "value":true},
+												{"test":"int_property","domain":"int:radius_max", "value":"{{=radius_max}}"}
+											]
+										}
+									],
+									"run_command":{"command":["summon dw623:leaf_minion_{{log_name}}_{{radius_max}} ~ ~ ~ 0 0 ev:{{enchant_name}}_activate_leaf_air"]}							
+								}}
+							}
+						]
+					}
+				},
+				"ev:summon_any_leaf_minion":{						
+					"sequence":[
+						{
+							"{{#tool_material_list}}":{"{{#enchant_efficiency_or_silk_touch}}":	{
+								"filters":[
+									{
+										"all_of":[																						
+											{"test":"bool_property","domain":"bit:has_{{enchant_name}}", "value":true},
+											{"test":"int_property","domain":"int:radius_max", "value":"{{=radius_max}}"}
+										]
+									}
+								],
+								"run_command":{"command":["summon dw623:leaf_minion_{{radius_max}} ~ ~ ~ 0 0 ev:{{enchant_name}}_activate_leaf_air"]}							
+							}}
+						}
+					]
+				}					
+				//================================================================================================================								
+			}
+		}
+	}
+}

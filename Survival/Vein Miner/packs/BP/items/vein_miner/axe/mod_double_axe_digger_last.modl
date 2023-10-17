@@ -1,0 +1,41 @@
+{
+	"$module": "digger_last_double_axe",	
+	"$template":{
+		"minecraft:item": {
+			"components": {
+				"minecraft:digger": {					
+					"destroy_speeds": [	
+						//Bamboo Products
+						{"{{#digger_wood_products}}":{"block":{"name":"minecraft:bamboo_{{item_name}}"},"speed":"{{=wood_destroy_speed*2}}"}},					
+						//=============================================================================================================
+						//Other Wood and wood like - good for axe
+						{"{{#axe_digger_tags.filter(x => x.axe_item == 1)}}":{"block":{"tags":"query.any_tag('{{tag}}')"},"speed":"{{=wood_destroy_speed*2}}"}},
+						{"{{#axe_digger_blocks.filter(x => x.axe_item == 1)}}":{"block":"minecraft:{{block_name}}","speed":"{{=wood_destroy_speed*2}}"}},
+						//=============================================================================================================
+						// Axe-able Landscaping Blocks - MAY NEED TO FIGURE OUT SILK TOUCH FOR A FEW THINGS
+						{"{{#local_nature_axe_1_item_name}}":{"block":"minecraft:{{item_name}}","speed":"{{=wood_destroy_speed*2}}"}},
+						{"{{#local_nature_axe_2_give_name}}":{"block":"minecraft:{{give_name}}","speed":"{{=wood_destroy_speed*2}}"}},
+						//=============================================================================================================						
+						// soft like sand, something an axe would just sink into and not really do anything
+						{"{{#scooper_digger_tags}}"	 :{"block":{"tags":"query.any_tag('{{tag}}')"},"speed":"{{=wood_destroy_speed*0.1}}"}},
+						{"{{#scooper_digger_blocks}}":{"block":"minecraft:{{block_name}}","speed":"{{=wood_destroy_speed*0.1}}"}},
+						//=============================================================================================================
+						//plants
+						{"{{#sickle_digger_tags}}"		:{"block":{"tags":"query.any_tag('{{tag}}')"},"speed":"{{=wood_destroy_speed*0.25}}"}},						
+						//{"{{#local_nature_soft_1_item_name}}":{"block":"minecraft:{{item_name}}","speed":"{{=wood_destroy_speed*0.25}}"}},
+						//{"{{#local_nature_soft_2_give_name}}":{"block":"minecraft:{{give_name}}","speed":"{{=wood_destroy_speed*0.25}}"}},
+						//=============================================================================================================
+						//Pickaxe hard or metals - not really for Axe
+						{"{{#local_pickaxe_1_soft}}"	:{"block":"minecraft:{{block_name}}","speed":"{{=wood_destroy_speed*0.75}}"}},
+						{"{{#pickaxe_digger_tags}}"		:{"block":{"tags":"query.any_tag('{{tag}}')"},"speed":"{{=wood_destroy_speed*0.25}}"}},
+						{"{{#local_pickaxe_2_normal}}"	:{"block":"minecraft:{{block_name}}","speed":"{{=wood_destroy_speed*0.25}}"}},
+						{"{{#local_pickaxe_3_hard}}"	:{"block":"minecraft:{{block_name}}","speed":"{{=wood_destroy_speed*0.1}}"}}
+					],
+					"on_dig": {
+						"speed": 0.1 //,"event": "ev:damage_default"
+					}
+				}
+			}
+		}
+	}
+}

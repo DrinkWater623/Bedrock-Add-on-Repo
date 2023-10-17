@@ -1,0 +1,39 @@
+{
+	"$module": "tool_summon_sugar_cane",	
+	"$template":{
+		"minecraft:item": {
+			"components": {
+				"minecraft:digger": {					
+					"destroy_speeds": [	
+						{"block":"minecraft:reeds","speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:summon_for_sugar_cane"}}						
+					]
+				}
+			},	
+			"events": {				
+				"ev:summon_for_sugar_cane":{
+					"sequence":[
+						{
+							"{{? material != 'netherite'}}":	{
+								"run_command": {"command": [
+									"title @p title §eSugar Cane (r={{radius_max+1}})",
+									"execute unless entity @e[family=sugar_cane_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:sugar_cane_minion_{{radius_max}} ~ ~ ~"]
+									,"target":"block"
+								}
+							}
+						},
+						{
+							"{{? material == 'netherite'}}":	{
+								"run_command": {"command": [
+									"title @p title §eSugar Cane",
+									"execute unless entity @e[family=sugar_cane_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:sugar_cane_minion ~ ~ ~"]
+									,"target":"block"
+								}
+							}
+						}
+					]
+				}
+				
+			}
+		}
+	}
+}

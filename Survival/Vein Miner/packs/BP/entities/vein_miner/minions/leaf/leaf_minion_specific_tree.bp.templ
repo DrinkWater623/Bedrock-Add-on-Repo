@@ -1,0 +1,154 @@
+{
+	"$extend":["any_minion","leaf_minion"],
+
+//======================================================================================
+	"$scope":{
+		"{{#0..24}}":{
+            "local_leaf_type_radius":[
+                // Paste Wood Types Array here and add "radius_ptr":"{{=value}}"  , in front of each line
+                {"radius_ptr":"{{=value}}"  ,"leaf_group":2	,"log_name":"acacia"	,"log_sfx":"log"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":null	,"leaf2_id":0		,"alt_give_leaf":""},
+                {"radius_ptr":"{{=value}}"  ,"leaf_group":1	,"log_name":"birch"		,"log_sfx":"log"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":2	,"leaf2_id":null	,"alt_give_leaf":""},
+                {"radius_ptr":"{{=value}}"  ,"leaf_group":3	,"log_name":"cherry"	,"log_sfx":"log"	,"leaf_sfx":"leaves"	,"give_leaf":1	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":""},
+                {"radius_ptr":"{{=value}}"  ,"leaf_group":2	,"log_name":"dark_oak"	,"log_sfx":"log"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":null	,"leaf2_id":1		,"alt_give_leaf":""},
+                {"radius_ptr":"{{=value}}"  ,"leaf_group":1	,"log_name":"jungle"	,"log_sfx":"log"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":3	,"leaf2_id":null	,"alt_give_leaf":""},
+                {"radius_ptr":"{{=value}}"  ,"leaf_group":3	,"log_name":"mangrove"	,"log_sfx":"log"	,"leaf_sfx":"leaves"	,"give_leaf":1	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":""},
+                {"radius_ptr":"{{=value}}"  ,"leaf_group":1	,"log_name":"oak"		,"log_sfx":"log"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":0	,"leaf2_id":null	,"alt_give_leaf":""},
+                {"radius_ptr":"{{=value}}"  ,"leaf_group":1	,"log_name":"spruce"	,"log_sfx":"log"	,"leaf_sfx":"leaves"	,"give_leaf":0	,"leaf_id":1	,"leaf2_id":null	,"alt_give_leaf":""},
+                {"radius_ptr":"{{=value}}"  ,"leaf_group":4	,"log_name":"crimson"	,"log_sfx":"stem"	,"leaf_sfx":""			,"give_leaf":0	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":"nether_wart_block"},
+                {"radius_ptr":"{{=value}}"  ,"leaf_group":3	,"log_name":"warped"	,"log_sfx":"stem"	,"leaf_sfx":"wart_block","give_leaf":1	,"leaf_id":null	,"leaf2_id":null	,"alt_give_leaf":""}        
+            ]
+        }
+	},
+//======================================================================================		
+	"$files":{    
+		"array": "local_leaf_type_radius",
+		"fileName": "./{{log_name}}/leaf_minion_{{log_name}}_{{radius_ptr}}.bp"
+	},
+//======================================================================================	
+    "$template":{
+		"format_version": {},
+		"minecraft:entity":{
+			"description":{"identifier":"dw623:leaf_minion_{{log_name}}_{{radius_ptr}}"},
+			"component_groups":{
+				"$cg:despawn_check":{
+					//for specific
+					"minecraft:despawn":{
+						"filters":[
+							{
+								"none_of":[										
+									{"{{?leaf_group==1}}":{"test": "in_block","value": "minecraft:leaves"}},
+									{"{{?leaf_group==2}}":{"test": "in_block","value": "minecraft:leaves2"}},
+									{"{{?leaf_group==3}}":{"test": "in_block","value": "minecraft:{{log_name}}_{{leaf_sfx}}"}},
+									{"{{?leaf_group==4}}":{"test": "in_block","value": "minecraft:{{alt_give_leaf}}"}}
+								]
+							}
+						]
+					}
+				}
+			},
+			"components":{
+				"minecraft:despawn":{
+					"filters":[
+						{
+							"none_of":[	
+								{"test": "in_block","value": "minecraft:air"},
+								{"{{?leaf_group==1}}":{"test": "in_block","value": "minecraft:leaves"}},
+								{"{{?leaf_group==2}}":{"test": "in_block","value": "minecraft:leaves2"}},
+								{"{{?leaf_group==3}}":{"test": "in_block","value": "minecraft:{{log_name}}_{{leaf_sfx}}"}},
+								{"{{?leaf_group==4}}":{"test": "in_block","value": "minecraft:{{alt_give_leaf}}"}}
+							]
+						}
+					]
+				}				
+			},
+			"events":{
+				//Adds on from Mod to loot the leaf - so no need to setblock the leaf
+				"ev:silk_touch_activate_leaf_air":{"sequence":[{"trigger":"ev:step_1c_loot_leaves"}]},
+				"$ev:step_1c_loot_leaves":{
+					// Note: This is only called when silk touch is on
+					"sequence":[
+						{
+							"run_command":{"command":[
+								"tell @p[r=5,tag=debug_max] Looting Leaf",
+								"loot spawn ~ ~ ~ loot \"{{settings.addon}}/tree_loot/{{log_name}}_leaf_loot\"",
+								"setblock ~ ~ ~ dead_brain_coral"
+							]}
+						}
+					]
+				},							
+				//======================================
+				// See Specific Module
+				"ev:step_2_minion_process":{},			
+				"ev:step_3_summon_to_neighbors":{},
+				//======================================
+				"$ev:step_4_debug":{ //Who is Around Me
+					"sequence":[
+						{"run_command":{"command":["tell @p[r=5,tag=debug_max] step_4a_debug - {{log_name}} - r{{radius_ptr}}"]}},
+						{	
+							"run_command":{"command":[{									
+								"{{#squiggly_pos}}"	:[
+									{"{{?leaf_group == 1}}":{"{{#leaf_persistent_bit}}":{"{{#leaf_update_bit}}":"execute if block {{p75}} minecraft:leaves [\"old_leaf_type\" = \"{{log_name}}\", \"persistent_bit\" = {{persistent_bit}}, \"update_bit\" = {{update_bit}}] run tell @p[tag=debug_max] §aFound {{log_name}} Leaf-1 @ {{one}}"}}},					
+									{"{{?leaf_group == 2}}":{"{{#leaf_persistent_bit}}":{"{{#leaf_update_bit}}":"execute if block {{p75}} minecraft:leaves2 [\"new_leaf_type\" = \"{{log_name}}\", \"persistent_bit\" = {{persistent_bit}}, \"update_bit\" = {{update_bit}}] run tell @p[tag=debug_max] §aFound {{log_name}} Leaf-2 @ {{one}}"}}},					
+									{"{{?leaf_group == 3}}"    :"execute if block {{p75}} minecraft:{{log_name + '_' + leaf_sfx}} run tell @p[tag=debug_max] §aFound Leaf-3 @ {{one}}"},
+									{"{{?leaf_group == 4}}":"execute if block {{p75}} minecraft:{alt_give_leaf}} run tell @p[tag=debug_max] §aFound {{log_name}} Leaf-3 @ {{one}}"}
+								]
+							}]}												
+						}
+					]
+				},
+				"$ev:step_4a_summon_vertical":{
+					"sequence":[
+						//Vertical, Either Leaves or Logs - Y
+						{"run_command":{"command":["tell @p[r=5,tag=debug_max] step_4a_summon_vertical"]}},
+						{	
+							"{{#event_silk_touch}}":{								
+								"filters":{"test":"bool_property","domain":"bit:has_silk_touch", "value":"{{if}}"},
+								"run_command":{"command":[{
+									"{{#squiggly_pos_Y}}":[										
+										// Leaves										
+										{"{{?leaf_group == 1}}":{"{{#leaf_persistent_bit}}":{"{{#leaf_update_bit}}":"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:leaves [\"old_leaf_type\" = \"{{log_name}}\", \"persistent_bit\" = {{persistent_bit}}, \"update_bit\" = {{update_bit}}] run summon dw623:leaf_minion_{{log_name}}_{{radius_ptr}} {{one}} {{event_name}}_leaf"}}},
+										{"{{?leaf_group == 2}}":{"{{#leaf_persistent_bit}}":{"{{#leaf_update_bit}}":"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:leaves2 [\"new_leaf_type\" = \"{{log_name}}\", \"persistent_bit\" = {{persistent_bit}}, \"update_bit\" = {{update_bit}}] run summon dw623:leaf_minion_{{log_name}}_{{radius_ptr}} {{one}} {{event_name}}_leaf"}}},
+										{"{{?leaf_group == 3}}":"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{log_name}}_{{leaf_sfx}} run summon dw623:leaf_minion_{{log_name}}_{{radius_ptr}} {{one}} {{event_name}}_leaf"},
+										{"{{?leaf_group == 4}}":"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{alt_give_leaf}} run summon dw623:leaf_minion_{{log_name}}_{{radius_ptr}} {{one}} {{event_name}}_leaf"},
+										// Related
+										{
+											"{{#related_loot.filter(x => x.related_wood_1 == log_name || x.related_wood_2 == log_name)}}":
+												"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{block_name}} run summon dw623:leaf_minion_{{log_name}}_{{radius_ptr}} {{one}} {{event_name}}_related"
+										}
+									]
+								}]}							
+							}
+						}	
+					]
+				},				
+				"{{?value.radius_ptr > 0}}":{
+					"$ev:step_4c_summon_horizontal_radius_one_plus":{ // X/Z
+						"sequence":[
+							{"run_command":{"command":["tell @p[r=5,tag=debug_max] step_4c_summon_horizontal_radius_one_plus"]}},				
+							// Leaves
+							{	
+								"{{#event_silk_touch}}":{									
+									"filters":{"test":"bool_property","domain":"bit:has_silk_touch", "value":"{{if}}"},
+									"run_command":{"command":[{
+										"{{#squiggly_pos_XZ}}":[
+											{"{{?leaf_group == 1}}":{"{{#leaf_persistent_bit}}":{"{{#leaf_update_bit}}":{"{{#global_log1}}":"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:leaves  [\"old_leaf_type\" = \"{{log_name}}\", \"persistent_bit\" = {{persistent_bit}}, \"update_bit\" = {{update_bit}}] run summon dw623:leaf_minion_{{log_name}}_{{radius_ptr-1}} {{one}} {{event_name}}_leaf"}}}},
+											{"{{?leaf_group == 2}}":{"{{#leaf_persistent_bit}}":{"{{#leaf_update_bit}}":{"{{#global_log2}}":"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:leaves2 [\"new_leaf_type\" = \"{{log2_name}}\", \"persistent_bit\" = {{persistent_bit}}, \"update_bit\" = {{update_bit}}] run summon dw623:leaf_minion_{{log_name}}_{{radius_ptr-1}} {{one}} {{event_name}}_leaf"}}}},
+											{"{{?leaf_group == 3}}":"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{log_name}}_{{leaf_sfx}} run summon dw623:leaf_minion_{{log_name}}_{{radius_ptr-1}} {{one}} {{event_name}}_leaf"},
+											{"{{?leaf_group == 4}}":"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{alt_give_leaf}} run summon dw623:leaf_minion_{{log_name}}_{{radius_ptr-1}} {{one}} {{event_name}}_leaf"},
+											// Related
+											{
+												"{{#related_loot.filter(x => x.related_wood_1 == log_name || x.related_wood_2 == log_name)}}":
+													"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{block_name}} run summon dw623:leaf_minion_{{log_name}}_{{radius_ptr-1}} {{one}} {{event_name}}_related"
+											}
+										]
+									}]}
+								}								
+							}									
+						]
+					}
+				},
+				"ev:step_z_destroy_block_and_despawn":{}
+			}
+		}
+	}
+}

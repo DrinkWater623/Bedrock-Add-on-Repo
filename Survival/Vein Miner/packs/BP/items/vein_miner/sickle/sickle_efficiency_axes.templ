@@ -1,25 +1,18 @@
 {
-	"$extend": [
-		"sickle"
-	],
+	"$extend": ["any_tool","tool_sickle","tool_summon_bamboo","tool_summon_leaf","tool_summon_sugar_cane","digger_last_sickle"],
 //======================================================================================
 	"$scope":{		
 
 		//see if settings can be used to share more in the module
 		"local_settings":{
-			"description":"",	
+			"tool":"sickle",	
 			"enchantment":"efficiency"
-		}
-		,
-		
-		"local_leaf3":"{{global_log3.filter(x => x.leaf3_sfx > '')}}",
-		"local_leaf3_alt":"{{global_log3.filter(x => x.alt_give_leaf3 > '')}}"
-		
+		}		
 	},
 //======================================================================================
 	//Cannot add to module - fails on material from array
 	"$files": {    
-        "array": "tool_material_list",
+        "array": "tool_material_list.filter(x => x.material_id >= 1)",
         "fileName": "{{local_settings.enchantment}}_sickle_{{material}}.bp"
     },
 //======================================================================================

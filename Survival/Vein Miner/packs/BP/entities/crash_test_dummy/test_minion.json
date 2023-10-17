@@ -27,13 +27,34 @@
       "minecraft:scale":{"value":0.5},
       "minecraft:health":{"value":100,"max":100},
       "minecraft:nameable": {"allow_name_tag_renaming":true,"always_show":true},
+      "minecraft:timer":{
+        "time":2,"looping": false,"randomInterval": true,
+        "time_down_event":{"event":"ev:test_in_block"}
+      },	
       "minecraft:type_family":{"family":["crash_test_dummy","ctd"]}
     },
     "events":{
       "ev:despawn":{"add":{"component_groups":["cg:despawn"]}},
       "minecraft:entity_spawned":  {
         "sequence": [
-          {"run_command":{"command":["say Aligning","execute align xyz run tp @s ~0.5 ~0.125 ~0.5"]}}          
+          {"run_command":{"command":["say Aligning","execute align xyz run tp @s ~0.5 ~0.125 ~0.5"]}},
+          {"trigger": "ev:test_in_block"}          
+        ]
+      },
+      "ev:test_in_block":{
+        "sequence":[						                   
+          {"filters":{"test":"in_block","value":"minecraft:leaves2:0"},"trigger":"ev:found"},
+          {"filters":{"test":"in_block","value":"minecraft:leaves2:1"},"trigger":"ev:found"},
+          {"filters":{"test":"in_block","value":"minecraft:leaves:0"},"trigger":"ev:found"},
+          {"filters":{"test":"in_block","value":"minecraft:leaves:1"},"trigger":"ev:found"},
+          {"filters":{"test":"in_block","value":"minecraft:leaves:2"},"trigger":"ev:found"},
+          {"filters":{"test":"in_block","value":"minecraft:leaves:3"},"trigger":"ev:found"}
+        ]
+      },
+      "ev:found":  {
+        "sequence": [
+          {"run_command":{"command":["say Found Leaf Type"]}},
+          {"trigger":"ev:despawn"}                    
         ]
       }
     }

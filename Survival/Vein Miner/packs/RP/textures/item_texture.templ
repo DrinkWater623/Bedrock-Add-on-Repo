@@ -8,17 +8,21 @@
          "sticky_string" : {"textures" : "textures/items/vein_miner/misc/gold_string"},
          // Double Axes - Plain
          "{{#tool_material_list}}":{
-            "{{material}}_vein_axe_purple"   : {"textures" : "textures/items/vein_miner/axe/{{material}}_double_axe"},   
-            "{{material}}_vein_axe_red"      : {"textures" : "textures/items/vein_miner/axe/{{material}}_double_axe_red"},   
-            "{{material}}_vein_pickaxe_purple": {"textures" : "textures/items/vein_miner/pickaxe/{{material}}_vein_pickaxe"},
+            "{{material}}_vein_axe_red"      : {"textures" : "textures/items/vein_miner/axe/{{material}}_double_axe_red"}
+         }, 
+         "{{#tool_material_list.filter(x => x.material_id >= 1)}}":{
             "{{material}}_vein_pickaxe_red"  : {"textures" : "textures/items/vein_miner/pickaxe/{{material}}_vein_pickaxe"},
-            "{{material}}_vein_shovel_purple": {"textures" : "textures/items/vein_miner/shovel/{{material}}_scoop_shovel"},   
             "{{material}}_vein_shovel_red"   : {"textures" : "textures/items/vein_miner/shovel/{{material}}_scoop_shovel"},   
-            "{{material}}_vein_sickle_purple": {"textures" : "textures/items/vein_miner/sickle/{{material}}_sickle"},
             "{{material}}_vein_sickle_red"   : {"textures" : "textures/items/vein_miner/sickle/{{material}}_sickle"}
          },        
+         "{{#tool_material_list.filter(x => x.material_id >= 2)}}":{
+            "{{material}}_vein_axe_purple"   : {"textures" : "textures/items/vein_miner/axe/{{material}}_double_axe"},   
+            "{{material}}_vein_pickaxe_purple": {"textures" : "textures/items/vein_miner/pickaxe/{{material}}_vein_pickaxe"},
+            "{{material}}_vein_shovel_purple": {"textures" : "textures/items/vein_miner/shovel/{{material}}_scoop_shovel"},   
+            "{{material}}_vein_sickle_purple": {"textures" : "textures/items/vein_miner/sickle/{{material}}_sickle_red_white"}
+         }        
          // Thick Pick Axes - Stone Vein Miners
-         "diamond_thick_pick" : {"textures" : "textures/items/vein_miner/pickaxe/diamond_thick_pickaxe"}
+        // "diamond_thick_pick" : {"textures" : "textures/items/vein_miner/pickaxe/diamond_thick_pickaxe"}
          
          // Hoes
 

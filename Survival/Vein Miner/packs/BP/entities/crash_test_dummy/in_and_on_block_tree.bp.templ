@@ -251,7 +251,7 @@
 								"execute if block ~ ~ ~ minecraft:log2 run tellraw @a[r=10] {\"rawtext\": [{\"text\":\"run_command / minecraft:log2\"}]}",						
 								{"{{#global_log1}}"  	 :"execute if block ~ ~ ~ minecraft:log   [\"old_log_type\" = \"{{log1_name}}\"] run tellraw @a[r=10] {\"rawtext\": [{\"text\":\"run_command / minecraft:log old_log_type={{log1_name}}\"}]}"},
 								{"{{#global_log2}}"  	 :"execute if block ~ ~ ~ minecraft:log2  [\"new_log_type\" = \"{{log2_name}}\"] run tellraw @a[r=10] {\"rawtext\": [{\"text\":\"run_command / minecraft:log2 new_log_type={{log2_name}}\"}]}"},
-								{"{{#global_wood_types}}":"execute if block ~ ~ ~ minecraft:{{wood_name}}_{{log_sfx}} run tellraw @a[r=10] {\"rawtext\": [{\"text\":\"run_command / minecraft:{{wood_name}}_{{log_sfx}}\"}]}"},
+								{"{{#global_trees}}":"execute if block ~ ~ ~ minecraft:{{log_name}}_{{log_sfx}} run tellraw @a[r=10] {\"rawtext\": [{\"text\":\"run_command / minecraft:{{log_name}}_{{log_sfx}}\"}]}"},
 								"function crash_test_dummy/in_block_log_query"
 							]}
 						},
@@ -303,7 +303,7 @@
 								"execute if block ~ ~-1 ~ minecraft:log2 run tellraw @a[r=10] {\"rawtext\": [{\"text\":\"run_command / minecraft:log2\"}]}",						
 								{"{{#global_log1}}"  	 :"execute if block ~ ~-1 ~ minecraft:log [\"old_log_type\" = \"{{log1_name}}\"] run tellraw @a[r=10] {\"rawtext\": [{\"text\":\"run_command / minecraft:log old_log_type={{log1_name}}\"}]}"},
 								{"{{#global_log2}}"  	 :"execute if block ~ ~-1 ~ minecraft:log2 [\"new_log_type\" = \"{{log2_name}}\"] run tellraw @a[r=10] {\"rawtext\": [{\"text\":\"run_command / minecraft:log2 new_log_type={{log2_name}}\"}]}"},
-								{"{{#global_wood_types}}":"execute if block ~ ~-1 ~ minecraft:{{wood_name}}_{{log_sfx}} run tellraw @a[r=10] {\"rawtext\": [{\"text\":\"run_command / minecraft:{{wood_name}}_{{log_sfx}}\"}]}"},
+								{"{{#global_trees}}":"execute if block ~ ~-1 ~ minecraft:{{log_name}}_{{log_sfx}} run tellraw @a[r=10] {\"rawtext\": [{\"text\":\"run_command / minecraft:{{log_name}}_{{log_sfx}}\"}]}"},
 								"function crash_test_dummy/on_block_log_query"
 								
 							]}

@@ -1,0 +1,17 @@
+{
+	"$module": "digger_last_sickle",	
+	"$template":{
+		"minecraft:item": {
+			"components": {
+				"minecraft:digger": {					
+					"destroy_speeds": [	
+						// soft like sand, something an axe would just sink into and not really do anything
+						{"{{#scooper_digger_tags}}"	 :{"block":{"tags":"query.any_tag('{{tag}}')"},"speed":"{{=wood_destroy_speed*0.1}}"}},
+						{"{{#scooper_digger_blocks}}":{"block":"minecraft:{{block_name}}","speed":"{{=wood_destroy_speed*0.1}}"}}
+						//=============================================================================================================						
+					]
+				}
+			}
+		}
+	}
+}

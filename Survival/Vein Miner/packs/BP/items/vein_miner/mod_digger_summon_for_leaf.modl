@@ -1,0 +1,130 @@
+{
+	"$module": "tool_summon_leaf",
+	"$scope":{
+	},
+	"$template":{
+		"minecraft:item": {
+			"components": {
+				"minecraft:digger": {					
+					"destroy_speeds": [	
+						//=============================================================================================================
+						//Leaf Chopped - Silk Touch or non-Sickle.  Must put back so that we can call the loot correctly or call the right leaf minion
+						{"{{?local_settings.enchantment == 'silk_touch' || !(material == 'netherite' || local_settings.tool == 'sickle')}}":{"block":"minecraft:leaves","speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:process_for_leaf_1"}}},
+						{"{{?local_settings.enchantment == 'silk_touch' || !(material == 'netherite' || local_settings.tool == 'sickle')}}":{"block":"minecraft:leaves2","speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:process_for_leaf_2"}}},
+						{"{{?local_settings.enchantment == 'silk_touch' || !(material == 'netherite' || local_settings.tool == 'sickle')}}":{"{{#local_leaf3}}":{"block":"minecraft:{{log3_name}}_{{leaf3_sfx}}","speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:process_for_{{log3_name}}_{{leaf3_sfx}}"}}}},
+						{"{{?local_settings.enchantment == 'silk_touch' || !(material == 'netherite' || local_settings.tool == 'sickle')}}":{"{{#local_leaf3_alt}}":{"block":"minecraft:{{alt_give_leaf3}}","speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:process_for_{{alt_give_leaf3}}"}}}},
+						//=============================================================================================================
+						//Leaf Chopped - Efficiency - no need to know the leaf - just summon leaf minion all around - any leaf destroyed
+						{"{{?local_settings.enchantment == 'efficiency' && (material == 'netherite' || local_settings.tool == 'sickle')}}":{"block":"minecraft:leaves","speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:summon_for_any_leaf"}}},
+						{"{{?local_settings.enchantment == 'efficiency' && (material == 'netherite' || local_settings.tool == 'sickle')}}":{"block":"minecraft:leaves2","speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:summon_for_any_leaf"}}},
+						{"{{?local_settings.enchantment == 'efficiency' && (material == 'netherite' || local_settings.tool == 'sickle')}}":{"{{#local_leaf3}}":{"block":"minecraft:{{log3_name}}_{{leaf3_sfx}}","speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:summon_for_any_leaf"}}}},
+						{"{{?local_settings.enchantment == 'efficiency' && (material == 'netherite' || local_settings.tool == 'sickle')}}":{"{{#local_leaf3_alt}}":{"block":"minecraft:{{alt_give_leaf3}}","speed":"{{=wood_destroy_speed*2}}","on_dig":{"event":"ev:summon_for_any_leaf"}}}}
+						//=============================================================================================================						
+					]
+				}
+			},
+			"events": {
+				// ===================================================================
+				// Process
+				// ===================================================================							
+				//=================================================
+				// Leaf Group 1 and 2 - best I can do until they are flattened o ut
+				//=================================================	
+				"{{? !(local_settings.enchantment == 'efficiency' && local_settings.tool == 'sickle')}}":{
+					"{{#global_ptr_1_or_2}}":{
+						//Hand off this to the leaf query minion
+						"ev:process_for_leaf_{{leaves_ptr}}": {
+							"sequence": [
+								{
+									"{{? !(material == 'netherite' || local_settings.tool == 'sickle')}}":
+									{
+										"run_command": {"command": [										
+											"execute unless entity @e[family=leaf_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_query_leaf_group_{{leaves_ptr}} ~ ~ ~ 0 0 ev:query_leaf_group_{{leaves_ptr}}_r{{radius_max}}_{{local_settings.enchantment}}"
+											],"target":"block"
+										}
+									}
+								},
+								{
+									"{{? material == 'netherite' || local_settings.tool == 'sickle'}}":
+									{
+										"run_command": {"command": [										
+											"execute unless entity @e[family=leaf_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_query_leaves_{{leaves_ptr}} ~ ~ ~ 0 0 ev:query_leaf_group_{{leaves_ptr}}_r{{radius_max}}_{{local_settings.enchantment}}_any_leaf"
+											],"target":"block"
+										}
+									}
+								}
+							]
+						}
+					},
+					"{{#local_leaf3}}":{					
+						"ev:process_for_{{log3_name}}_{{leaf3_sfx}}":{
+							"sequence":[														
+								{"{{? local_settings.enchantment == 'silk_touch'}}":
+									{
+										"run_command":{"command":[
+											"loot spawn ~ ~ ~ loot \"{{settings.addon}}/tree_loot/{{log3_name}}_leaf_loot\""
+											],"target":"block"
+										}
+									}
+								},
+								{"{{? !(material == 'netherite' || local_settings.tool == 'sickle')}}":
+									{										
+										"run_command": {"command": [
+											"title @p title {{realTitle(log3_name)}} Leaves (r={{radius_max+1}})",
+											"execute unless entity @e[family=leaf_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_{{log3_name}}_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf_air"
+											],"target":"block"
+										}
+									}
+								},
+								{"{{? material == 'netherite' || local_settings.tool == 'sickle'}}":{"trigger":"ev:summon_for_any_leaf"}}
+							]
+						}
+					},
+					"{{#local_leaf3_alt}}":{					
+						"ev:process_for_{{alt_give_leaf3}}":{
+							"sequence":[
+								
+								{"{{? local_settings.enchantment == 'silk_touch'}}":
+									{
+										"run_command":{"command":[
+											"loot spawn ~ ~ ~ loot \"{{settings.addon}}/tree_loot/{{log3_name}}_leaf_loot\""
+											],"target":"block"
+										}
+									}
+								},
+								
+								{"{{? !(material == 'netherite' || local_settings.tool == 'sickle')}}":
+									{										
+										"run_command": {"command": [
+											"title @p title {{realTitle(log3_name)}} Leaves (r={{radius_max+1}})",
+											"execute unless entity @e[family=leaf_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_{{log3_name}}_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf_air"
+											],"target":"block"
+										}
+									}
+								},
+								{"{{? material == 'netherite' || local_settings.tool == 'sickle'}}":{"trigger":"ev:summon_for_any_leaf"}}
+							]
+						}
+					}
+				},
+				
+				// ===================================================================
+				// Summons
+				// ===================================================================
+				"{{? material == 'netherite' || local_settings.tool == 'sickle'}}":{		
+					"ev:summon_for_any_leaf":{
+						"sequence":[					
+							{
+								"run_command": {"command": [
+									"title @p title §aLeaves @ Radius {{radius_max}}",
+									"execute unless entity @e[family=leaf_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf_air"
+									],"target":"block"
+								}
+							}
+						]
+					}
+				}							
+			}
+		}
+	}
+}

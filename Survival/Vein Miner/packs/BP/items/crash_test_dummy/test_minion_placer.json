@@ -6,23 +6,82 @@
 			"category": "Equipment"
 		},
 		"components": {
+			//"tag:minecraft:is_tool": {},
+			"tag:minecraft:is_axe": {},
+			"minecraft:digger": {					
+				"destroy_speeds": [	
+					{"block":"minecraft:leaves","speed":10,"on_dig":{"event":"ev:digger"}},
+					{"block":"minecraft:leaves2","speed":10,"on_dig":{"event":"ev:digger"}}
+				]
+			},
 			"minecraft:display_name": {"value":"Test Minion Placer"},
 			//"minecraft:entity_placer": {				"entity": "ctd:test_minion"			},
 			"minecraft:icon": {"texture":"blaze_rod"},
 			"minecraft:max_stack_size": 1,
-			"minecraft:on_use_on": {"on_use_on":{"event":"ev:place_entity"}}
+			"minecraft:on_use_on": {"on_use_on":{"event":"ev:on_use_on_right_click"}}
 		},
-		"events": {
-			"ev:place_entity": {
+		"events": {	
+			//=====================================================================================================
+			/*
+				Seems to activate for right click action on is_axe and log only
+					and will bypass on_use_on_right_click
+
+				Does not activate for 
+					breaking block
+					is_tool
+			*/
+			//"on_tool_used": {"run_command":{"command":["say on_tool_used event"],"target":"block"}},
+			"on_tool_used": {
+				"sequence": [					
+					{"run_command":{"command":["say minecraft:on_tool_used"]}}
+					,{"run_command":{"command":["say calling ev:query_has_block_info"]},"trigger":"ev:query_has_block_info"}
+				]
+			},
+			//=====================================================================================================
+			"ev:block_filters": {
+				"sequence":[						
+					{"run_command":{"command":["say ev:block_filters"]}}					                   
+				]
+			},			
+			"ev:digger": {
 				"sequence": [
+					{"run_command":{"command":["say ev:digger"]}}
+					//,{"run_command":{"command":["say calling ev:query_has_block_info"]},"trigger":"ev:query_has_block_info"}
+				]
+			},
+			"ev:found":  {"sequence":[{"run_command":{"command":["say ev:found"]}}]},
+			"ev:on_tool_used": {
+				"sequence": [					
+					{"run_command":{"command":["say ev:on_tool_used"]}}
+					,{"run_command":{"command":["say calling ev:query_has_block_info"]},"trigger":"ev:query_has_block_info"}
+				]
+			},
+			"ev:on_use_on_right_click": {
+				"sequence": [	
+					{"run_command":{"command":["say ev:on_use_on_right_click"]}},				
 					{
-						"condition": "q.is_sneaking",
-						"run_command": {"command":["summon ctd:test_minion ~ ~1 ~"]}
+						//"condition": "q.is_sneaking",
+						"run_command": {"command":["summon ctd:test_minion ~ ~ ~ 0 0 minecraft:entity_spawned \"Crash Test Dummy\""]}
 					},
 					{
-						"condition": "!q.is_sneaking",
-						"run_command": {"command":["summon ctd:test_minion ~ ~1 ~ 0 0 minecraft:entity_spawned Butch"]}
+						"run_command":{"command":["say calling ev:query_has_block_info"]},
+						"trigger":"ev:query_has_block_info"
 					}
+				]
+			},
+			"ev:query_has_block_info": {
+				"sequence": [
+					{"run_command":{"command":["say ev:query_has_block_info"]}},					
+					{
+						"condition": "q.has_block_property('old_leaf_type')",
+						"run_command": {"command":["say has_block_property - old_leaf_type"]}
+					},
+					{
+						"condition": "q.has_block_property('new_leaf_type')",
+						"run_command": {"command":["say has_block_property - new_leaf_type"]}
+					}
+					//content log error {"condition":"q.any_tags('wood')","run_command":{"command":["say q.any_tags('wood')"]}},					
+					//claims no block 	{"condition":"q.block_face == 1","run_command":{"command":["say q.block_face 1 up"]}}
 				]
 			}
 		}

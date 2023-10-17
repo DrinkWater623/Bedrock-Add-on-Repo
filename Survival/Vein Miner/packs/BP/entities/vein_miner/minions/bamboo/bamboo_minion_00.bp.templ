@@ -14,7 +14,7 @@
 		"format_version": {},
 		"minecraft:entity": {
 			
-			"description": {"identifier":"dw623:bamboo_minion"},
+			"description": {"identifier":"dw623:bamboo_minion_{{radius_ptr}}"},
 
 			"component_groups": {				
 				"cg:delay_timer_step_2":{
@@ -60,8 +60,8 @@
 							"{{?radius_ptr > 0}}":{
 							// Horizontal summons only							
 								"run_command":{"command":[
-									{"{{#squiggly_pos.filter(x => x.pos != 2)}}":
-										"execute if block {{p75}} minecraft:bamboo run summon dw623:bamboo_minion_{{radius_ptr-1}} {{one}}"
+									{"{{#squiggly_pos_XZ}}":
+										"execute unless entity @e[family=bamboo_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run summon dw623:bamboo_minion_{{radius_ptr-1}} {{one}}"
 									}
 								]}
 							}

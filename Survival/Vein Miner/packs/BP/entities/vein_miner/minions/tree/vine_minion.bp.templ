@@ -18,7 +18,7 @@
 				}
 			},
 			"components": {				
-				"$minecraft:despawn": {"filters":{"none_of":[{"{{#local_vine_list}}":{"test":"in_block","value":"minecraft:{{block_name}}"}}]}},			
+				"$minecraft:despawn": {"filters":{"none_of":[{"{{#global_vines_list}}":{"test":"in_block","value":"minecraft:{{block_name}}"}}]}},			
 				"minecraft:type_family": {"family": ["vine_minion"]}		
 			},
 			"events": {				
@@ -26,11 +26,11 @@
 					"sequence": [
 						{"run_command":{"command":["execute align xyz run tp @s ~0.5 ~0.5 ~0.5"]}},
 						{
-							"filters": {"any_of":[{"{{#local_vine_list}}":{"test":"in_block","value":"minecraft:{{block_name}}"}}]},
+							"filters": {"any_of":[{"{{#global_vines_list}}":{"test":"in_block","value":"minecraft:{{block_name}}"}}]},
 							"trigger":"ev:step_2_minion_process"
 						},
 						{
-							"filters": {"none_of":[{"{{#local_vine_list}}":{"test":"in_block","value":"minecraft:{{block_name}}"}}]},
+							"filters": {"none_of":[{"{{#global_vines_list}}":{"test":"in_block","value":"minecraft:{{block_name}}"}}]},
 							"trigger":"ev:despawn"
 						}
 					]
@@ -40,7 +40,7 @@
 						{
 							"run_command":{"command":[
 								{
-									"{{#local_vine_list}}":
+									"{{#global_vines_list}}":
 									"execute if block ~ ~ ~ minecraft:{{block_name}} run loot spawn ~ ~ ~ loot \"{{settings.addon}}/tree_loot/{{block_name}}_loot\""
 								}
 							]}
@@ -48,7 +48,7 @@
 						{	//vine grows from floor
 							"filters": {"test": "in_block","value": "minecraft:twisting_vines"},
 							"run_command":{"command":[
-								"execute if block ~ ~0.75 ~ minecraft:twisting_vines unless block ~ ~1 ~ air run summon dw623:vine_minion ~ ~1 ~"
+								"execute unless entity @e[family=vine_minion,x=~,y=~1,z=~,dx=0,dy=0,dz=0] run execute if block ~ ~0.75 ~ minecraft:twisting_vines unless block ~ ~1 ~ air run summon dw623:vine_minion ~ ~1 ~"
 							]}
 							
 						},
@@ -56,7 +56,7 @@
 							//because if top is destroyed, bottom is too, so give time
 							"filters": {"none_of":[{"test":"in_block","value":"minecraft:twisting_vines"}]},
 							"run_command":{"command":[
-								"execute unless block ~ ~-1 ~ air run summon dw623:vine_minion ~ ~-1 ~"
+								"execute unless entity @e[family=vine_minion,x=~,y=~-1,z=~,dx=0,dy=0,dz=0] run execute unless block ~ ~-1 ~ air run summon dw623:vine_minion ~ ~-1 ~"
 							]}					
 						},
 						{"add":{"component_groups":["cg:delay_timer_destroy_vine"]}}

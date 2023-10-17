@@ -1,1 +1,0 @@
-tellraw @p[tag=debug_max] {"rawtext":[{"text":"---------- not tree ---------"}]}

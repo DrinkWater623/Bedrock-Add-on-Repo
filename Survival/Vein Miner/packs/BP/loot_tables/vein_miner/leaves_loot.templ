@@ -1,7 +1,7 @@
 {
     "$files": {    
-        "array": "global_wood_types",
-        "fileName": "./tree_loot/{{wood_name}}_leaf_loot"
+        "array": "global_trees",
+        "fileName": "./tree_loot/{{log_name}}_leaf_loot"
     },
     "$template":{
         "pools": 
@@ -12,7 +12,7 @@
                 [
                     {
                         "type": "item",
-                        "name": "minecraft:{{give_leaf == 1 ? wood_name+'_'+leaf_sfx : alt_give_leaf >'' ? alt_give_leaf : leaf2_id >=0 ? 'leaves2:'+leaf2_id : 'leaves:'+leaf_id}}",
+                        "name": "minecraft:{{give_leaf == 1 ? log_name+'_'+leaf_sfx : alt_give_leaf >'' ? alt_give_leaf : leaf2_id >=0 ? 'leaves2:'+leaf2_id : 'leaves:'+leaf_id}}",
                         "functions": [{"function": "set_count","count": 1}]                    
                     }                
                 ]
