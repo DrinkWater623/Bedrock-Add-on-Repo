@@ -23,15 +23,17 @@
 				// called from tool - bypass air-despawn
 				"$ev:efficiency_activate_leaf_air":{
 					"sequence":[
-						{"run_command":{"command":["tell @p[r=5,tag=debug_max] Efficiency Activated - leaf - r{{radius_ptr}}"]}},
+						{"trigger":"ev:align"},
+						{"run_command":{"command":["tell @p[r=5,tag=debug_max] Efficiency Activated - leaf air - r{{radius_ptr}}"]}},						
 						{"add":{"component_groups":["cg:delay_timer_step_3_summon"]}}
 					]
 				},
 				// Loot added inside Specific Leaf Template - so no $
 				"ev:silk_touch_activate_leaf_air":{
 					"sequence":[
+						{"trigger":"ev:align"},
 						{
-							"run_command":{"command":["tell @p[r=5,tag=debug_max] Silk Touch Activated - leaf - r{{radius_ptr}}"]},
+							"run_command":{"command":["tell @p[r=5,tag=debug_max] Silk Touch Activated - leaf air - r{{radius_ptr}}"]},
 							"set_property":{"bit:has_silk_touch": true}							
 						},						
 						{"add":{"component_groups":["cg:delay_timer_step_3_summon"]}}
@@ -40,6 +42,7 @@
 				// called from a minion - removes air from none-of list
 				"$ev:efficiency_activate_leaf":{
 					"sequence":[
+						{"trigger":"ev:align"},
 						{"add":{"component_groups":["cg:despawn_check"]}},
 						{"run_command":{"command":["tell @p[r=5,tag=debug_max] Efficiency Activated - leaf - r{{radius_ptr}}"]}},
 						{"add":{"component_groups":["cg:delay_timer_step_2_minion"]}}
@@ -47,7 +50,8 @@
 				},
 				"$ev:silk_touch_activate_leaf":{
 					"sequence":[
-						{"add":{"component_groups":["cg:despawn_check"]}},
+						{"trigger":"ev:align"},
+						//{"add":{"component_groups":["cg:despawn_check"]}},
 						{
 							"run_command":{"command":["tell @p[r=5,tag=debug_max] Silk Touch Activated - leaf - r{{radius_ptr}}"]},
 							"set_property":{"bit:has_silk_touch": true}							
@@ -64,7 +68,7 @@
 						{
 							"{{#global_vines_list}}":{
 								"run_command":{"command":[
-									{"{{#squiggly_pos_XZ}}":"execute unless entity @e[family=vine_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{block_name}} run summon dw623:vine_minion {{one}}"}
+									{"{{#squiggly_pos_XZ}}":"execute positioned {{one}} run execute unless entity @e[family=vine_minion,r=0.5] run execute if block ~ ~ ~ minecraft:{{block_name}} run summon dw623:vine_minion ~ ~ ~"}
 							]}}
 						}
 					]
@@ -73,11 +77,14 @@
 				// Step TWO - called by the delay timer set by the above
 				/*======================================================*/										
 				"$ev:step_2_minion_process":{
+					"trigger":"ev:align",
 					"add":{"component_groups":["cg:delay_timer_step_3_summon"]}
 				},
 				// Called by Delay Timer
 				"$ev:step_3_summon_to_neighbors":{
-					"sequence":[										
+					"sequence":[	
+						{"trigger":"ev:align"},									
+						{"trigger":"ev:step_4_debug"},
 						{"trigger":"ev:step_4a_summon_vertical"},
 						//No Radius 0 Summons
 						// Radius One Plus
@@ -86,10 +93,22 @@
 						{"add":{"component_groups":["cg:despawn_if_air_after_summoning"]}},
 						{"trigger":"ev:step_z_destroy_block_and_despawn"}
 					]
-				}
+				},
 				//===========================================
 				// See Templates for All Step 4 Summon events				
-				//===========================================				
+				//===========================================
+				"$ev:step_z_destroy_block_and_despawn":{
+					"sequence":[
+						{
+							"run_command":{"command":[								
+								"execute unless entity @e[r=32,family=tree_chest,family=hungry] run summon dw623:tree_loot_chest ~ ~ ~ 0 0 ev:entity_spawned Tree-Loot",
+								"fill ~ ~ ~  ~ ~ ~ air destroy"
+							]}
+						},							
+						// This makes a LAG difference, leave on
+						{"add":{"component_groups":["cg:despawn"]}}
+					]
+				}				
 			}
 		}
 	}

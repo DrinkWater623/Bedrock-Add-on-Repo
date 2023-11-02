@@ -7,7 +7,7 @@
 			pointed dripstone  for stone
 		*/
 		"local_landscape_simple":"{{global_nature_loot.filter(x => x.group > 0 && x.data_id >=0 && x.block_state_name == '' && bit_silk == 0)}}",
-		"{{#0..24}}":{"local_radius_ptr":[{"radius_ptr":"{{=value}}"}]}
+		"{{#0..16}}":{"local_radius_ptr":[{"radius_ptr":"{{=value}}"}]}
 	},
     "$files":{    
         "array": "local_radius_ptr",
@@ -54,6 +54,7 @@
 				// Step One
 				"$ev:efficiency_activate_landscape":{
 					"sequence":[
+						{"trigger":"ev:align"},
 						{
 							//"run_command":{"command":["tell @p[r=5,tag=debug_max] Efficiency Activated - landscape - r{{radius_ptr}}"]},
 							"set_property":{"bit:in_landscape": true}
@@ -63,6 +64,7 @@
 				},
 				"$ev:silk_touch_activate_landscape":{
 					"sequence":[
+						{"trigger":"ev:align"},
 						{
 							//"run_command":{"command":["tell @p[r=5,tag=debug_max] Silk Touch Activated - landscape - r{{radius_ptr}}"]},
 							"set_property":{"bit:has_silk_touch": true,"bit:in_landscape": true}
@@ -72,7 +74,8 @@
 				},									
 				//======================================				
 				"$ev:step_2_minion_process":{
-					"sequence":[						
+					"sequence":[
+						{"trigger":"ev:align"},						
 						{
 							"filters":{
 								"none_of":[
@@ -109,11 +112,11 @@
 							{
 								"filters":{"test":"bool_property","domain":"bit:has_silk_touch", "value":false},
 								//hint execute as @e[name=main,type=armor_stand] at @s positioned ^^^1 as @e[r=0.99] run say w
-								"run_command":{"command":["execute unless entity @e[family=landscape_minion,x={{x}},y=~,z={{z}},dx=0,dy=0,dz=0] run summon dw623:landscape_minion_{{radius_ptr-1}} {{one}} 0 0 ev:efficiency_activate_landscape"]}
+								"run_command":{"command":["execute positioned {{one}} run execute unless entity @e[family=landscape_minion,r=0.5] run summon dw623:landscape_minion_{{radius_ptr-1}} ~ ~ ~ 0 0 ev:efficiency_activate_landscape"]}
 							},
 							{
 								"filters":{"test":"bool_property","domain":"bit:has_silk_touch", "value":true},
-								"run_command":{"command":["execute unless entity @e[family=landscape_minion,x={{x}},y=~,z={{z}},dx=0,dy=0,dz=0] run summon dw623:landscape_minion_{{radius_ptr-1}} {{one}} 0 0 ev:silk_touch_activate_landscape"]}
+								"run_command":{"command":["execute positioned {{one}} run execute unless entity @e[family=landscape_minion,r=0.5] run summon dw623:landscape_minion_{{radius_ptr-1}} ~ ~ ~ 0 0 ev:silk_touch_activate_landscape"]}
 							},
 							{"{{?xz_ptr <= 3}}":{"add":{"component_groups":["cg:summon_for_ptr_{{xz_ptr+1}}"]}}},
 							{"{{?xz_ptr == 4}}":{"trigger":"ev:despawn"}}
@@ -128,9 +131,10 @@
 								{"{{#local_landscape_simple}}":"execute if block ~ ~ ~ {{give_name > '' ? give_name : item_name}} run fill ~ ~ ~  ~ ~ ~ air destroy"}
 							]}								
 						},
-						{"run_command":{"command":["execute if entity @e[type=item,r={{radius_ptr}}] unless entity @e[r=24,family=landscape_chest,family=hungry] run summon dw623:landscape_loot_chest ~ ~ ~ 0 0 ev:entity_spawned Landscape-Loot"]}}
+						{"run_command":{"command":["execute if entity @e[type=item,r={{radius_ptr}}] unless entity @e[r=32,family=landscape_chest,family=hungry] run summon dw623:landscape_loot_chest ~ ~ ~ 0 0 ev:entity_spawned Landscape-Loot"]}}
 					]
 				},
+				//check this
 				"$ev:step_z_destroy_block_and_despawn":{}
 			}
 		}

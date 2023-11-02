@@ -1,0 +1,165 @@
+{
+	// Bamboo should just mine horizontal
+	"$extend":["any_minion","horizontal_minion"],
+	//=====================================================================================	
+	"$scope":{	
+		"{{#0..16}}":{"local_radius_ptr":[{"radius_ptr":"{{=value}}"}]}
+
+		//One Layer Horizontal
+		
+	},
+    "$files":{    
+        "array": "local_radius_ptr",
+        "fileName": "horizontal_minion_{{radius_ptr}}.bp"
+    },	
+	//=====================================================================================	
+    "$template": {
+		"format_version": {},
+		"minecraft:entity": {
+			
+			"description": {
+				"identifier":"dw623:horizontal_minion_{{radius_ptr}}"
+			},
+
+			"component_groups": {},
+			"components": {				
+				"$minecraft:despawn": {
+					"filters": {"none_of":[
+						{"test":"in_block","value":"minecraft:bamboo"},
+						{"test":"in_block","value":"minecraft:air"}
+					]}
+				},
+				"minecraft:type_family": {"family": ["horizontal_minion"]}		
+			},
+			"events": {
+				//=======================================================================
+				//  Spawn Events
+				//This is called with info in event name
+				//timer will despawn it if not called correctly anyway
+				"{{#block_list.filter(x => x.can_silk_touch == 1)}}":{
+					"ev:entity_spawned_{{block_name}}_silk_touch":{									
+						"set_property":{"bit:has_silk_touch": true},						
+						"trigger":"ev:entity_spawned_{{block_name}}_efficiency"
+					}					
+				},
+				"{{#block_list}}":{
+					"ev:entity_spawned_{{block_name}}_efficiency":{
+						"sequence": [						
+							{"trigger":"ev:align"},
+							{
+								"filters": {"none_of":[
+									{"test":"in_block","value":"minecraft:{{block_name}}"},
+									{"test":"in_block","value":"minecraft:air"}
+								]},
+								"trigger":"ev:despawn"
+							},
+							{	
+								"filters": {"any_of":[
+									{"test":"in_block","value":"minecraft:{{block_name}}"},
+									{"test":"in_block","value":"minecraft:air"}
+								]},	
+								"set_property":{"int:block_id": "{{=block_id}}"},						
+								"add":{"component_groups":["cg:delay_timer_step_2_minion"]}
+							}
+						]
+					}
+					
+				},
+				// End of Spawn Events
+				//=======================================================================
+				// in Mod - Common
+				"ev:step_2_minion_process":{},				
+				"ev:step_3_summon_to_neighbors":{},
+				//=======================================================================
+				"{{?value.radius_ptr > 0}}":{
+					"$ev:step_4c_summon_horizontal_radius_one_plus":{
+						"sequence":[
+							{	
+								"{{#block_list}}":{								
+									"filters":{"test":"int_property","domain":"int:block_id", "value":"{{block_ID}}"},
+									"trigger":"ev:step_4d_summon_for_{{block_name}}"									
+								}
+							}
+						]
+					},
+					"{{#block_list}}":{
+						"$ev:step_4d_summon_for_{{block_name}}": {
+							"{{? can_silk_touch == 0}}": {
+								"sequence": [
+									{
+										"run_command": {
+											"command": [
+												{
+													"{{#squiggly_pos_XZ}}": [
+														"execute positioned {{one}} run execute unless entity @e[family=horizontal_minion,r=0.5] run execute if block ~ ~ ~ minecraft:{{block_name}} run summon dw623:horizontal_minion_{{radius_ptr-1}} ~ ~ ~ 0 0 ev:entity_spawned_{{block_name}}_efficiency",
+														"execute positioned {{one}} run execute unless entity @e[family=horizontal_minion,r=0.5] run execute if block ~ ~ ~ minecraft:air run summon dw623:horizontal_minion_{{radius_ptr-1}} ~ ~ ~ 0 0 ev:entity_spawned_{{block_name}}_efficiency"
+													]
+												}
+											]
+										}
+									}
+								]
+							},
+							"{{? can_silk_touch == 1}}": {
+								"sequence": [
+									{
+										"{{#event_silk_touch}}": {
+											"filters":{"test":"bool_property","domain":"bit:has_silk_touch", "value":"{{if}}"},
+											"run_command": {
+												"command": [
+													{
+														"{{#squiggly_pos_XZ}}": [
+															"execute positioned {{one}} run execute unless entity @e[family=horizontal_minion,r=0.5] run execute if block ~ ~ ~ minecraft:{{block_name}} run summon dw623:horizontal_minion_{{radius_ptr-1}} ~ ~ ~ 0 0 ev:entity_spawned_{{block_name}}_{{enchant_name}}",
+															"execute positioned {{one}} run execute unless entity @e[family=horizontal_minion,r=0.5] run execute if block ~ ~ ~ minecraft:air run summon dw623:horizontal_minion_{{radius_ptr-1}} ~ ~ ~ 0 0 ev:entity_spawned_{{block_name}}_{{enchant_name}}"
+														]
+													}
+												]
+											}
+										}
+									}
+								]
+							}
+						}
+					}
+				},
+				"ev:step_z_destroy_block_and_despawn":{}
+			}
+		}
+	}
+}
+/*
+"{{?value.radius_ptr > 0}}":{
+					"$ev:step_4c_summon_horizontal_radius_one_plus":{
+						"sequence":[							
+							// Leaves				
+							{	
+								"{{#event_silk_touch}}":{
+									"{{#squiggly_pos_XZ}}":{								
+										"filters":{"test":"bool_property","domain":"bit:has_silk_touch", "value":"{{if}}"},
+										"run_command":{"command":[											
+											// Leaves
+											"execute positioned {{one}} run execute unless entity @e[family=leaf_minion,r=0.5] run execute if block ~ ~ ~ minecraft:leaves  run summon dw623:leaf_minion_{{radius_ptr-1}} ~ ~ ~ {{event_name}}_leaf",
+											"execute positioned {{one}} run execute unless entity @e[family=leaf_minion,r=0.5] run execute if block ~ ~ ~ minecraft:leaves2 run summon dw623:leaf_minion_{{radius_ptr-1}} ~ ~ ~ {{event_name}}_leaf",
+											{"{{#local_leaf3}}"		:"execute positioned {{one}} run execute unless entity @e[family=leaf_minion,r=0.5] run execute if block ~ ~ ~ minecraft:{{log3_name}}_{{leaf3_sfx}} run summon dw623:leaf_minion_{{radius_ptr-1}} ~ ~ ~ {{event_name}}_leaf"},
+											{"{{#local_leaf3_alt}}"	:"execute positioned {{one}} run execute unless entity @e[family=leaf_minion,r=0.5] run execute if block ~ ~ ~ minecraft:{{alt_give_leaf3}} run summon dw623:leaf_minion_{{radius_ptr-1}} ~ ~ ~ {{event_name}}_leaf"}
+										]}
+									}
+								}
+							},
+							// Related
+							{	
+								"{{#event_silk_touch}}":{
+									"{{#squiggly_pos_XZ}}":{								
+										"filters":{"test":"bool_property","domain":"bit:has_silk_touch", "value":"{{if}}"},
+										"run_command":{"command":[											
+											// Related blocks
+											{"{{#related_loot}}":"execute positioned {{one}} run execute unless entity @e[family=leaf_minion,r=0.5] run execute if block ~ ~ ~ minecraft:{{block_name}} run summon dw623:leaf_minion_{{radius_ptr-1}} ~ ~ ~ {{event_name}}_related"}
+										]}
+									}
+								}
+							}
+						]
+					}
+				},
+				"ev:step_z_destroy_block_and_despawn":{}
+*/

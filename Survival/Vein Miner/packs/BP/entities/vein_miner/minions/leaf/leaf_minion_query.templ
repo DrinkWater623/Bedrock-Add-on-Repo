@@ -2,7 +2,7 @@
 	"$extend":["any_minion"],
 	"$scope":{
 		"minion_family":{"minion":"leaf"},
-		"{{#0..24}}":{"local_radius_ptr":[{"radius_ptr":"{{=value}}"}]}
+		"{{#0..16}}":{"local_radius_ptr":[{"radius_ptr":"{{=value}}"}]}
 	},
 //======================================================================================
 "$files":{    
@@ -98,7 +98,7 @@
 						"ev:query_leaf_group_{{leaves_ptr}}_r{{radius_max}}_{{enchant_name}}":{
 							"sequence":[
 								{"run_command":{"command":[
-									"tell @p[r=5,tag=debug_max] {{enchant_name}} - FIND LEAF {{leaves_ptr}} - r{{radius_max}}"
+									"tell @p[r=5,tag=debug_max] {{enchant_name}} - FIND LEAF Group {{leaves_ptr}} - r{{radius_max}}"
 								]}},
 								{
 									"set_property":{
@@ -209,7 +209,7 @@
 										{
 											"all_of":[																						
 												{"test":"bool_property","domain":"bit:has_{{enchant_name}}", "value":true},
-												{"test":"int_property","domain":"int:radius_max", "value":"{{=radius_max}}"}
+												{"test":"int_property","domain":"int:radius_ptr", "value":"{{=radius_max}}"}
 											]
 										}
 									],
@@ -227,7 +227,7 @@
 									{
 										"all_of":[																						
 											{"test":"bool_property","domain":"bit:has_{{enchant_name}}", "value":true},
-											{"test":"int_property","domain":"int:radius_max", "value":"{{=radius_max}}"}
+											{"test":"int_property","domain":"int:radius_ptr", "value":"{{=radius_max}}"}
 										]
 									}
 								],

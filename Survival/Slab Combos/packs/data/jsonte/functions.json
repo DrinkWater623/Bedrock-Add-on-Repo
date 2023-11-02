@@ -1,0 +1,7 @@
+{
+    "realTitle": "(v) => Title(Replace(v, '_', ' '))",
+    "coloredTitle": "(v,c)=>'§'+c+Title(Replace(v, '_', ' '))+'§r'",
+    "blockNameAbbreviation": "(v) => replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(v,'polished','pol'),'stripped','strp'),'exposed','exp'),'oxidized','oxi'),'weathered','wth'),'_bricks','_brks'),'cobbled','cob'),'mossy','mos'),'slate','slt'),'stone','stn'),'smooth','smo')",
+    "removeVowels": "(v) => replace(replace(replace(replace(replace(v,'a',''),'e',''),'i',''),'o',''),'u','')"
+
+}

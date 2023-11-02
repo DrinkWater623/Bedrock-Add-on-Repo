@@ -1,0 +1,12 @@
+{
+    "dw623:slime_glue_block" : {
+        "sound" : "slime",
+        "textures" : "slime_glue_sheet",
+        "isotropic":true
+    },
+    "dw623:slime_glue_sheet" : {
+        "sound" : "slime",
+        //"textures" : "slime_glue_sheet",
+        "isotropic":true
+    }
+}

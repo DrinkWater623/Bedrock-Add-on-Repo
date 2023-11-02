@@ -1,0 +1,46 @@
+{
+	// Bamboo should just mine horizontal
+	"$extend":["any_minion","horizontal_minion"],
+	//=====================================================================================	
+	"$scope":{
+		
+	},
+	//=====================================================================================	
+    "$template": {
+		"format_version": {},
+		"minecraft:entity": {
+			
+			"description": {"identifier":"dw623:horizontal_minion"},
+
+			"component_groups": {},
+			"components": {
+				//This one is for netherite, no radius, so stop when reach air
+				"$minecraft:despawn": {
+					"filters": {"none_of":[
+						{"test":"in_block","value":"minecraft:bamboo"}						
+					]}
+				}
+			},
+			"events": {				
+				"$minecraft:entity_spawned":  {
+					"sequence": [						
+						{"trigger":"ev:align"},
+						{
+							"filters": {"none_of":[
+								{"test":"in_block","value":"minecraft:bamboo"}
+							]},
+							"trigger":"ev:despawn"
+						},
+						{							
+							"filters": {"test":"in_block","value":"minecraft:bamboo"},							
+							"add":{"component_groups":["cg:delay_timer_step_2_minion"]}
+						}
+					]
+				},
+				"ev:step_2_minion_process":{},				
+				"ev:step_3_summon_to_neighbors":{}
+				
+			}
+		}
+	}
+}

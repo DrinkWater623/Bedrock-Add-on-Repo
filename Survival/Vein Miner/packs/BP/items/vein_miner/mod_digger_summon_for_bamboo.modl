@@ -16,7 +16,7 @@
 							"{{? material != 'netherite'}}":	{
 								"run_command": {"command": [
 									"title @p title §aBamboo (r={{radius_max+1}})",
-									"execute unless entity @e[family=bamboo_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:bamboo_minion_{{radius_max}} ~ ~ ~"]
+									"execute unless entity @e[family=bamboo_minion,r=0.5] run summon dw623:bamboo_minion_{{radius_max}} ~ ~ ~"]
 									,"target":"block"
 								}
 							}
@@ -25,7 +25,7 @@
 							"{{? material == 'netherite'}}":	{
 								"run_command": {"command": [
 									"title @p title §aBamboo",
-									"execute unless entity @e[family=bamboo_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:bamboo_minion ~ ~ ~"]
+									"execute unless entity @e[family=bamboo_minion,r=0.5] run summon dw623:bamboo_minion ~ ~ ~"]
 									,"target":"block"
 								}
 							}

@@ -1,0 +1,29 @@
+{
+	"$template":
+	{
+		"format_version": "1.20.0",
+		"minecraft:item": {
+			"description": {
+				"identifier": "dw623:{{settings.main_bot}}_stick",
+				"category": "equipment"
+			},
+			"components": {			
+				"minecraft:creative_category": {"parent": "itemGroup.name.none"},
+				"minecraft:display_name": {"value": "{{settings.main_bot_display}} Stick"},
+				"minecraft:glint": false,
+				"minecraft:hand_equipped": true,
+				"minecraft:icon": {"texture": "{{settings.main_bot}}_stick"},
+				"minecraft:max_stack_size": 1,
+				"minecraft:on_use": {"on_use": {"event": "ev:bot_summon"}}
+			},
+			"events": {
+				"ev:bot_summon": {
+					// minecraft:entity_spawned is needed for random skin
+					// name is via the en_lang file, so no need to specify
+					"run_command": {"command":["execute unless entity @e[r=8,family={{settings.main_bot}}] run summon dw623:{{settings.main_bot}} ^ ^1 ^1 facing @s ev:none \"{{settings.main_bot_display}}\""]},
+					"swing": {}				
+				}			
+			}
+		}
+	}
+}

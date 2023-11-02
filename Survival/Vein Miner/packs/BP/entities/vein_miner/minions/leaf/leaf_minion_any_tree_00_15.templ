@@ -3,7 +3,7 @@
 
 //======================================================================================	
 	"$scope":{
-		"{{#0..24}}":{"local_radius_ptr":[{"radius_ptr":"{{=value}}"}]}		
+		"{{#0..16}}":{"local_radius_ptr":[{"radius_ptr":"{{=value}}"}]}		
 	},
 //======================================================================================	
     "$files":{    
@@ -20,7 +20,8 @@
 					"minecraft:despawn":{
 						"filters":[
 							{
-								"none_of":[										
+								"none_of":[
+									{"test": "in_block","value": "minecraft:dead_brain_coral"},										
 									{"test": "in_block","value": "minecraft:leaves"},
 									{"test": "in_block","value": "minecraft:leaves2"},
 									{"{{#local_leaf3}}"		:{"test": "in_block","value": "minecraft:{{log3_name}}_{{leaf3_sfx}}"}},
@@ -38,6 +39,7 @@
 						{
 							"none_of":[	
 								{"test": "in_block","value": "minecraft:air"},
+								{"test": "in_block","value": "minecraft:dead_brain_coral"},
 								{"test": "in_block","value": "minecraft:leaves"},
 								{"test": "in_block","value": "minecraft:leaves2"},
 								{"{{#local_leaf3}}"		:{"test": "in_block","value": "minecraft:{{log3_name}}_{{leaf3_sfx}}"}},
@@ -115,12 +117,12 @@
 									"filters":{"test":"bool_property","domain":"bit:has_silk_touch", "value":"{{if}}"},
 									"run_command":{"command":[
 										// Leaves
-										"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:leaves run summon dw623:leaf_minion_{{radius_ptr}} {{one}} {{event_name}}_leaf",
-										"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:leaves2 run summon dw623:leaf_minion_{{radius_ptr}} {{one}} {{event_name}}_leaf",
-										{"{{#local_leaf3}}":"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{log3_name}}_{{leaf3_sfx}} run summon dw623:leaf_minion_{{radius_ptr}} {{one}} {{event_name}}_leaf"},
-										{"{{#local_leaf3_alt}}":"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{alt_give_leaf3}} run summon dw623:leaf_minion_{{radius_ptr}} {{one}} {{event_name}}_leaf"},
+										"execute positioned {{one}} run execute unless entity @e[family=leaf_minion,r=0.5] run execute if block ~ ~ ~ minecraft:leaves  run summon dw623:leaf_minion_{{radius_ptr}} ~ ~ ~ {{event_name}}_leaf",
+										"execute positioned {{one}} run execute unless entity @e[family=leaf_minion,r=0.5] run execute if block ~ ~ ~ minecraft:leaves2 run summon dw623:leaf_minion_{{radius_ptr}} ~ ~ ~ {{event_name}}_leaf",
+										{"{{#local_leaf3}}"    :"execute positioned {{one}} run execute unless entity @e[family=leaf_minion,r=0.5] run execute if block ~ ~ ~ minecraft:{{log3_name}}_{{leaf3_sfx}} run summon dw623:leaf_minion_{{radius_ptr}} ~ ~ ~ {{event_name}}_leaf"},
+										{"{{#local_leaf3_alt}}":"execute positioned {{one}} run execute unless entity @e[family=leaf_minion,r=0.5] run execute if block ~ ~ ~ minecraft:{{alt_give_leaf3}} run summon dw623:leaf_minion_{{radius_ptr}} ~ ~ ~ {{event_name}}_leaf"},
 										// Other - not sure this should do other loot
-										{"{{#related_loot}}":"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}}  minecraft:{{block_name}} run summon dw623:leaf_minion_{{radius_ptr}} {{one}} {{event_name}}_related"}
+										{"{{#related_loot}}":"execute positioned {{one}} run execute unless entity @e[family=leaf_minion,r=0.5] run execute if block ~ ~ ~ minecraft:{{block_name}} run summon dw623:leaf_minion_{{radius_ptr}} ~ ~ ~ {{event_name}}_related"}
 									]}
 								}
 							}
@@ -137,10 +139,10 @@
 										"filters":{"test":"bool_property","domain":"bit:has_silk_touch", "value":"{{if}}"},
 										"run_command":{"command":[											
 											// Leaves
-											"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:leaves run summon dw623:leaf_minion_{{radius_ptr-1}} {{one}} {{event_name}}_leaf",
-											"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:leaves2 run summon dw623:leaf_minion_{{radius_ptr-1}} {{one}} {{event_name}}_leaf",
-											{"{{#local_leaf3}}"		:"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{log3_name}}_{{leaf3_sfx}} run summon dw623:leaf_minion_{{radius_ptr-1}} {{one}} {{event_name}}_leaf"},
-											{"{{#local_leaf3_alt}}"	:"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:{{alt_give_leaf3}} run summon dw623:leaf_minion_{{radius_ptr-1}} {{one}} {{event_name}}_leaf"}
+											"execute positioned {{one}} run execute unless entity @e[family=leaf_minion,r=0.5] run execute if block ~ ~ ~ minecraft:leaves  run summon dw623:leaf_minion_{{radius_ptr-1}} ~ ~ ~ {{event_name}}_leaf",
+											"execute positioned {{one}} run execute unless entity @e[family=leaf_minion,r=0.5] run execute if block ~ ~ ~ minecraft:leaves2 run summon dw623:leaf_minion_{{radius_ptr-1}} ~ ~ ~ {{event_name}}_leaf",
+											{"{{#local_leaf3}}"		:"execute positioned {{one}} run execute unless entity @e[family=leaf_minion,r=0.5] run execute if block ~ ~ ~ minecraft:{{log3_name}}_{{leaf3_sfx}} run summon dw623:leaf_minion_{{radius_ptr-1}} ~ ~ ~ {{event_name}}_leaf"},
+											{"{{#local_leaf3_alt}}"	:"execute positioned {{one}} run execute unless entity @e[family=leaf_minion,r=0.5] run execute if block ~ ~ ~ minecraft:{{alt_give_leaf3}} run summon dw623:leaf_minion_{{radius_ptr-1}} ~ ~ ~ {{event_name}}_leaf"}
 										]}
 									}
 								}
@@ -152,7 +154,7 @@
 										"filters":{"test":"bool_property","domain":"bit:has_silk_touch", "value":"{{if}}"},
 										"run_command":{"command":[											
 											// Related blocks
-											{"{{#related_loot}}":"execute unless entity @e[family=leaf_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}}  minecraft:{{block_name}} run summon dw623:leaf_minion_{{radius_ptr-1}} {{one}} {{event_name}}_related"}
+											{"{{#related_loot}}":"execute positioned {{one}} run execute unless entity @e[family=leaf_minion,r=0.5] run execute if block ~ ~ ~ minecraft:{{block_name}} run summon dw623:leaf_minion_{{radius_ptr-1}} ~ ~ ~ {{event_name}}_related"}
 										]}
 									}
 								}

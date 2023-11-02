@@ -39,7 +39,7 @@
 									"{{? !(material == 'netherite' || local_settings.tool == 'sickle')}}":
 									{
 										"run_command": {"command": [										
-											"execute unless entity @e[family=leaf_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_query_leaf_group_{{leaves_ptr}} ~ ~ ~ 0 0 ev:query_leaf_group_{{leaves_ptr}}_r{{radius_max}}_{{local_settings.enchantment}}"
+											"execute unless entity @e[family=leaf_minion,r=0.5] run summon dw623:leaf_minion_query_leaf_group_{{leaves_ptr}} ~ ~ ~ 0 0 ev:query_leaf_group_{{leaves_ptr}}_r{{radius_max}}_{{local_settings.enchantment}}"
 											],"target":"block"
 										}
 									}
@@ -48,7 +48,7 @@
 									"{{? material == 'netherite' || local_settings.tool == 'sickle'}}":
 									{
 										"run_command": {"command": [										
-											"execute unless entity @e[family=leaf_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_query_leaves_{{leaves_ptr}} ~ ~ ~ 0 0 ev:query_leaf_group_{{leaves_ptr}}_r{{radius_max}}_{{local_settings.enchantment}}_any_leaf"
+											"execute unless entity @e[family=leaf_minion,r=0.5] run summon dw623:leaf_minion_query_leaves_{{leaves_ptr}} ~ ~ ~ 0 0 ev:query_leaf_group_{{leaves_ptr}}_r{{radius_max}}_{{local_settings.enchantment}}_any_leaf"
 											],"target":"block"
 										}
 									}
@@ -71,7 +71,7 @@
 									{										
 										"run_command": {"command": [
 											"title @p title {{realTitle(log3_name)}} Leaves (r={{radius_max+1}})",
-											"execute unless entity @e[family=leaf_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_{{log3_name}}_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf_air"
+											"execute unless entity @e[family=leaf_minion,r=0.5] run summon dw623:leaf_minion_{{log3_name}}_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf_air"
 											],"target":"block"
 										}
 									}
@@ -97,7 +97,7 @@
 									{										
 										"run_command": {"command": [
 											"title @p title {{realTitle(log3_name)}} Leaves (r={{radius_max+1}})",
-											"execute unless entity @e[family=leaf_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_{{log3_name}}_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf_air"
+											"execute unless entity @e[family=leaf_minion,r=0.5] run summon dw623:leaf_minion_{{log3_name}}_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf_air"
 											],"target":"block"
 										}
 									}
@@ -117,7 +117,7 @@
 							{
 								"run_command": {"command": [
 									"title @p title §aLeaves @ Radius {{radius_max}}",
-									"execute unless entity @e[family=leaf_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf_air"
+									"execute unless entity @e[family=leaf_minion,r=0.5] run summon dw623:leaf_minion_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf_air"
 									],"target":"block"
 								}
 							}

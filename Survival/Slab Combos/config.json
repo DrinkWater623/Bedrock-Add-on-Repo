@@ -1,0 +1,74 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.1.json",
+	"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
+	"name": "Slab_Combos",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"jsonte": {
+				"url": "github.com/MCDevKit/regolith-library",
+				"version": "2.12.0"
+			},
+			"dot_ignore": {
+				"runWith": "python",
+				"script": "./filters/dot_ignore.py"
+			},			
+			"empty_ignore": {
+				"runWith": "python",
+				"script": "./filters/empty_ignore.py"
+			},
+			"mani_fest": {
+				"runWith": "nodejs",
+				"script": "./filters/mani_fest.js"
+			} 
+			//,"name_ninja": {"url":"github.com/Bedrock-OSS/regolith-filters","version":"1.2.3"}
+		},
+		"profiles": {
+			"build": {
+				"export": {"readOnly":false,"target":"local"},
+				"filters": [
+					{"filter":"dot_ignore"},
+					{"filter":"jsonte"},					
+					{"filter":"empty_ignore"},
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"name": "Slab Combinations",
+							"description": "Every SLab Combination by DW623",
+							"getUUIDs": true,
+							"min_engine_version": [1,20,40]
+						}
+					}
+				]
+			},
+			"default": {				
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"filter":"dot_ignore"},
+					{"filter":"jsonte"},					
+					{"filter":"empty_ignore"},				
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"BP": {
+								"UUID": "626db246-3357-4309-b3ab-05fe2e21d16f",
+								"module": "04ae80af-77b9-47bc-bfca-fa692798861a"
+							},
+							"RP": {
+								"UUID": "b3e60a09-e8b3-48fa-a799-490b6825ff67",
+								"module": "a5d727a0-0a12-4b42-aeec-88d3ebd5fd5a"
+							},
+							"name": "Dev: Slab Combos",
+							"description": "Work in Progress",
+							"min_engine_version": [1,20,40]
+						}
+					}
+				]
+			}
+		}
+	}
+}

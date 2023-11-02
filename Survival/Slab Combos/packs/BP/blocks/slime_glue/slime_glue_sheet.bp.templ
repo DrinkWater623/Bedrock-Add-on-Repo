@@ -1,0 +1,30 @@
+{
+    "$template": {
+        "format_version": "{{settings.block_version}}",
+        "minecraft:block": 
+        {
+            "description": {
+                "identifier": "dw623:slime_glue_sheet",
+                "menu_category": {
+                    "category": "items",
+                    // "group": "itemGroup.name.slab",
+                    "is_hidden_in_commands": false
+                } 
+            },
+            "components": {
+                "minecraft:collision_box":{"origin": [-8,0,-8],"size": [16,1,16]},
+                "minecraft:destructible_by_explosion": true,
+                "minecraft:destructible_by_mining": true,
+                "minecraft:display_name":"Slime Glue Sheet",			            
+                "minecraft:friction": 0.9,
+                "minecraft:flammable":true,
+                "minecraft:geometry": "geometry.block_16x1x16_ceiling",
+                "minecraft:material_instances": {"*": {"texture":"slime_glue_sheet","render_method":"alpha_test"}},    
+                "minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,1,16]},
+                //"minecraft:placement_filter": {"conditions":[{"allowed_faces": ["up"]}]}
+                "minecraft:placement_filter": {"conditions":[{"block_filter":[{"tags":"q.any_tag('x')"}]}]}
+               // "minecraft:scale": 0.75
+            }
+        }
+    }
+}

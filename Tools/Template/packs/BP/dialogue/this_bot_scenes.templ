@@ -1,0 +1,47 @@
+{
+	//to do - give remove ?? if select despawn now
+	"$template":
+	{
+		"format_version": "1.17.0",
+		"minecraft:npc_dialogue": {
+			"scenes": [										
+				{
+					"scene_tag": "menu_{{settings.main_bot}}_control",
+					"npc_name": "{{settings.main_bot_display}} Control",
+					"text": "Control whether or not this Bot can:\n\n1)Despawn when player walks away\nFollow Physics\n3)Open menu when close\n4)Despawn Now" ,
+					"buttons": [	
+						{
+							"name": "§2§lStay Put",
+							"commands": [
+								"/tag @s remove despawn",
+								"/tag @s add persistent",
+								"/dialogue open @s @initiator menu_{{settings.main_bot}}_control"
+							]
+						},
+						{
+							"name": "§e§lDespawns",
+							"commands": [
+								"/tag @s remove despawn",
+								"/tag @s remove persistent",
+								"/dialogue open @s @initiator menu_{{settings.main_bot}}_control"
+							]
+						},
+						{
+							"name": "§c§lDespawn Now",
+							"commands": ["/tag @s add despawn"]
+						},
+						{"name":"« Back","commands":["/dialogue open @s @initiator menu_{{settings.main_bot}}_control"]},
+						{"name":"§lGravity §aON","commands":[
+							"/event entity @s ev:gravity_on",
+							"/dialogue open @s @initiator menu_{{settings.main_bot}}_control"
+						]},					
+						{"name":"§lGravity §cOFF","commands":[
+							"/event entity @s ev:gravity_off",
+							"/dialogue open @s @initiator menu_{{settings.main_bot}}_control"
+						]}
+					]
+				}
+			]
+		}
+	}
+}

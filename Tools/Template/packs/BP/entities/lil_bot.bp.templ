@@ -1,0 +1,95 @@
+{ // This is altered from Vanilla NPC for just the robot looking ones
+  "$template":{
+    "format_version": "1.19.70",
+    "minecraft:entity": {
+      "description": {
+        "identifier": "dw623:lil_bot",
+        "is_spawnable": false,
+        "is_summonable": true,
+        "is_experimental": false,
+        "properties": {	
+          "bool:initialized":{"type":"bool","default":false},			
+					"bit:gravity":{"type":"int","range":[0,1],"default":1}					
+				}
+      },
+      "component_groups": {
+        "{{#0..6}}": {"cg:bot_skin_{{value}}":{"minecraft:variant":{"value":"{{=value}}"}}},
+        "cg:instant_despawn": {"minecraft:instant_despawn": {}},
+        "cg:gravity_on" : {"minecraft:physics": {"has_collision":true,"has_gravity":true}},
+        "cg:gravity_off" : {"minecraft:physics": {"has_collision":true,"has_gravity":false}}
+      },
+      "components": {  
+        "minecraft:behavior.look_at_player": {"priority":0,"look_distance":6,"probability":0.02},
+        "minecraft:collision_box": {"width":0.6,"height":2.1},
+        "minecraft:damage_sensor": {"triggers":[{"cause":"all","deals_damage":false}]},
+        "minecraft:fire_immune": {},      
+        "minecraft:loot": {"table":"loot_tables/empty.json"},
+        "minecraft:movement": {"value":0.5},
+        "minecraft:persistent": {},
+        "minecraft:physics": {"has_collision":true,"has_gravity":true,"push_towards_closest_space":true},
+        "minecraft:nameable": {"always_show":true,"allow_name_tag_renaming":false},
+        "minecraft:npc": {
+          "npc_data": {
+            "portrait_offsets": {"translate":[-7,50,0],"scale":[1.75,1.75,1.75]},
+            "picker_offsets": {"translate":[0,20,0],"scale":[1.7,1.7,1.7]},
+            "skin_list": [{"{{#0..6}}":{"variant":"{{=value}}"}}]
+          }
+        },
+        "minecraft:type_family": {"family":["dw623_bot","dw623_lil_bot","mob"]},
+        //DW623 Added        
+        "minecraft:despawn": {
+          "filters": {
+            "all_of":[
+              {
+                "any_of": [
+                  {"test":"distance_to_nearest_player","operator":">","value":16},
+                  {"test":"has_tag","value":"despawn"}
+                ]
+              },
+              {"test":"has_tag","operator":"!=","value":"persistent"}
+            ]            
+          }
+        },      
+        "minecraft:interact": {"interactions":[{"on_interact":{"filters":{"test":"is_family","subject":"other","value":"player"},"event":"ev:dialogue_open"},"swing":true}]}     
+        //"minecraft:timer": {"looping":false,"time":1,"time_down_event":{"event":"ev:dialogue_open"}}
+      },
+      "events": {
+        "ev:despawn":{"add":{"component_groups":["cg:instant_despawn"]}},
+        "ev:dialogue_open": {
+          "sequence": [{"run_command":{"target":"self","command":["dialogue open @s @p[r=3,}] main_menu"]}}]
+        },              
+        "ev:entity_spawned": {
+          "sequence":[
+            { 
+              //"filter":{"test":"bool_property","value":false},
+              "randomize":[{"{{#0..6}}":{"weight":1,"add":{"component_groups":["cg:bot_skin_{{value}}"]}}}]
+            },
+            {
+              ,,"filter":{"test":"bool_property","value":false},
+              "trigger":"ev:dialogue_open"
+            },
+            {"set_property": {"bool:initialized": true}}
+          ]
+        },
+        "ev:gravity_off": {
+          "filters":{"test":"int_property","domain":"bit:gravity","value":1},
+          "set_property": {"bit:gravity":0},
+          "add":{"component_groups":["cg:gravity_off"]},
+          "run_command":{"command":["tellraw @a[r=4] {\"rawtext\":[{\"text\":\"*Bot Gravity §cOff\"}]}"]}
+        },
+        "ev:gravity_on": {
+          "filters":{"test":"int_property","domain":"bit:gravity","value":0},
+          "set_property": {"bit:gravity":1},
+          "add":{"component_groups":["cg:gravity_on"]},
+          "run_command":{"command":["tellraw @a[r=4] {\"rawtext\":[{\"text\":\"*Bot Gravity §aOn\"}]}"]}
+        },
+        "ev:gravity_toggle" : {
+          "sequence": [
+            {"filters":{"test":"int_property","domain":"bit:gravity","value":0},"trigger":"ev:gravity_on"},
+            {"filters":{"test":"int_property","domain":"bit:gravity","value":1},"trigger":"ev:gravity_off"}
+          ]
+        }
+      } 
+    }
+  }
+}

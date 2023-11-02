@@ -27,7 +27,7 @@
 				"minecraft:creative_category": {},	
 				"minecraft:damage": {},	
 				"minecraft:digger": {},
-				"minecraft:display_name": {"value": "{{Title(material)}} Double Vein Axe\n§c§oSuper Efficient §7(Radius={{radius_max+1}})"},
+				"minecraft:display_name": {"value": "{{Title(material)}} Double {{material == 'wooden' ? '' : 'Vein'}} Axe\n§c§o{{material == 'wooden' ? 'Durable' : 'Super Efficient'}} §7(Radius={{radius_max+1}})"},
 				"minecraft:durability":{"damage_chance":{"min":0,"max":1},"max_durability":"{{=max_durability*3}}"},
 				"minecraft:icon": {"texture": "{{material}}_vein_axe_red"}		
 			},

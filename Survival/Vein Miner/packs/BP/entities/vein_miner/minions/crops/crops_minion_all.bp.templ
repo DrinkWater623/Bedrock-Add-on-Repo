@@ -32,7 +32,7 @@
 			"events": {				
 				"$minecraft:entity_spawned":  {
 					"sequence": [						
-						{"run_command":{"command":["execute align xyz run tp @s ~0.5 ~0.5 ~0.5"]}},
+						{"trigger":"ev:align"},
 						{
 							"filters": {"none_of":[
 								{"{{#local_crops_loot}}":{"test":"in_block","value":"minecraft:{{item_name}}"}},
@@ -51,12 +51,13 @@
 					]
 				},
 				"$ev:step_2_minion_process":{
-					"sequence": [							
+					"sequence": [
+						{"trigger":"ev:align"},							
 						// Horizontal summons only							
 						{	
 							"{{#squiggly_pos_XZ}}":{
 								"run_command":{"command":[
-									{"{{#local_crops_loot}}":"execute unless entity @e[family=crops_minion,x={{x}},y=~,z={{z}},dx=0,dy=0,dz=0] if block {{p75}} minecraft:{{item_name}} run summon dw623:crops_minion {{one}}"}
+									{"{{#local_crops_loot}}":"execute positioned {{one}} run execute unless entity @e[family=crops_minion,r=0.5] run execute if block ~ ~ ~ minecraft:{{item_name}} run summon dw623:crops_minion ~ ~ ~"}
 								]}
 							}
 						},

@@ -17,6 +17,10 @@
 				"runWith": "python",
 				"script": "./filters/dot_ignore.py"
 			},
+			"empty_ignore": {
+				"runWith": "python",
+				"script": "./filters/empty_ignore.py"
+			},
 			"mani_fest": {
 				"runWith": "nodejs",
 				"script": "./filters/mani_fest.js"
@@ -46,7 +50,8 @@
 							"min_engine_version": [1,20,30],
 							"name": "Dev: Vein Miner"
 						}
-					}
+					},					
+					{"filter":"empty_ignore"}
 				]
 			},
 			"build": {

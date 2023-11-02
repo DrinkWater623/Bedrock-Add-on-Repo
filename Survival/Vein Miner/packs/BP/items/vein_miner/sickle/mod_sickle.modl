@@ -32,8 +32,8 @@
 							// Non Leaves																	
 							"run_command":{
 								"command":[										
-									"execute if block ~ ~ ~ minecraft:bamboo unless entity @e[family=bamboo_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0]     run summon dw623:bamboo_minion_{{radius_max}} ~ ~ ~ ",
-									"execute if block ~ ~ ~ minecraft:reads  unless entity @e[family=sugar_cane_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:sugar_cane_minion_{{radius_max}} ~ ~ ~"
+									"execute if block ~ ~ ~ minecraft:bamboo unless entity @e[family=bamboo_minion,r=0.5]     run summon dw623:bamboo_minion_{{radius_max}} ~ ~ ~ ",
+									"execute if block ~ ~ ~ minecraft:reeds  unless entity @e[family=sugar_cane_minion,r=0.5] run summon dw623:sugar_cane_minion_{{radius_max}} ~ ~ ~"
 								],
 								"target":"block"
 							}
@@ -42,10 +42,10 @@
 							"run_command":{
 								"command":[										
 									// Leaves										
-									"execute if block ~ ~ ~ minecraft:leaves  unless entity @e[family=tree_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf",
-									"execute if block ~ ~ ~ minecraft:leaves2 unless entity @e[family=tree_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf",
-									{"{{#local_leaf3}}"    :"execute if block ~ ~ ~ minecraft:{{log3_name}}_{{leaf3_sfx}} unless entity @e[family=tree_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_{{radius_max}} ~ ~ ~} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"},
-									{"{{#local_leaf3_alt}}":"execute if block ~ ~ ~ minecraft:{{alt_give_leaf3}}          unless entity @e[family=tree_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:leaf_minion_{{radius_max}} ~ ~ ~} 0 0 ev:{{local_settings.enchantment}}_activate_leaf"}
+									"execute if block ~ ~ ~ minecraft:leaves  unless entity @e[family=tree_minion,r=0.5] run summon dw623:leaf_minion_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf",
+									"execute if block ~ ~ ~ minecraft:leaves2 unless entity @e[family=tree_minion,r=0.5] run summon dw623:leaf_minion_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf",
+									{"{{#local_leaf3}}"    :"execute if block ~ ~ ~ minecraft:{{log3_name}}_{{leaf3_sfx}} unless entity @e[family=tree_minion,r=0.5] run summon dw623:leaf_minion_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf"},
+									{"{{#local_leaf3_alt}}":"execute if block ~ ~ ~ minecraft:{{alt_give_leaf3}}          unless entity @e[family=tree_minion,r=0.5] run summon dw623:leaf_minion_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_leaf"}
 								],
 								"target":"block"
 							}
@@ -58,7 +58,7 @@
 						{
 							"run_command": {"command": [
 								"title @p title §bLandscaping",
-								"execute unless entity @e[family=landscape_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:landscape_minion_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_landscape"]
+								"execute unless entity @e[family=landscape_minion,r=0.5] run summon dw623:landscape_minion_{{radius_max}} ~ ~ ~ 0 0 ev:{{local_settings.enchantment}}_activate_landscape"]
 								,"target":"block"
 							}
 						}
@@ -69,7 +69,7 @@
 						{
 							"run_command": {"command": [
 								"title @p title §eCrops",
-								"execute unless entity @e[family=crops_minion,x=~,y=~,z=~,dx=0,dy=0,dz=0] run summon dw623:crops_minion ~ ~ ~"]
+								"execute unless entity @e[family=crops_minion,r=0.5] run summon dw623:crops_minion ~ ~ ~"]
 								,"target":"block"
 							}
 						}

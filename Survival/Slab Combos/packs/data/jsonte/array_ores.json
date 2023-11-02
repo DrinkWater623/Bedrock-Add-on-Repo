@@ -1,0 +1,12 @@
+{
+    "ore_blocks":[
+        {"name":"coal"	   ,"ore":1  ,"deepslate_ore":1   ,"raw":0 ,"nugget":0   ,"gem":0 ,"ingot":0	,"raw_block":0  ,"block":1	,"ns":"dw623"},
+        {"name":"redstone" ,"ore":1  ,"deepslate_ore":1   ,"raw":0 ,"nugget":0   ,"gem":0 ,"ingot":0	,"raw_block":0  ,"block":1	,"ns":"dw623"},
+        {"name":"copper"   ,"ore":1  ,"deepslate_ore":1   ,"raw":1 ,"nugget":0   ,"gem":0 ,"ingot":1	,"raw_block":1  ,"block":1	,"ns":"dw623"},
+        {"name":"iron"	   ,"ore":1  ,"deepslate_ore":1   ,"raw":1 ,"nugget":1   ,"gem":0 ,"ingot":1	,"raw_block":1  ,"block":1	,"ns":"dw623"},
+		{"name":"gold"	   ,"ore":1  ,"deepslate_ore":1   ,"raw":1 ,"nugget":1   ,"gem":0 ,"ingot":1	,"raw_block":1 	,"block":1  ,"ns":"dw623"},
+		{"name":"netherite","ore":0  ,"deepslate_ore":0   ,"raw":0 ,"nugget":0   ,"gem":0 ,"ingot":1	,"raw_block":0 	,"block":1  ,"ns":"dw623"},
+		{"name":"diamond"  ,"ore":1  ,"deepslate_ore":1   ,"raw":0 ,"nugget":0   ,"gem":1 ,"ingot":0	,"raw_block":0 	,"block":1  ,"ns":"dw623"},
+		{"name":"emerald"  ,"ore":1  ,"deepslate_ore":1   ,"raw":0 ,"nugget":0   ,"gem":1 ,"ingot":0	,"raw_block":0 	,"block":1  ,"ns":"dw623"}
+    ]
+}

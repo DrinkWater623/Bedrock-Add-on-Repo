@@ -3,7 +3,7 @@
 	"$extend":["any_minion"],
 	//=====================================================================================	
 	"$scope":{	
-		"{{#0..24}}":{"local_radius_ptr":[{"radius_ptr":"{{=value}}"}]}
+		"{{#0..16}}":{"local_radius_ptr":[{"radius_ptr":"{{=value}}"}]}
 	},
     "$files":{    
         "array": "local_radius_ptr",
@@ -14,7 +14,7 @@
 		"format_version": {},
 		"minecraft:entity": {
 			
-			"description": {"identifier":"dw623:sugar_cane_minion__{{radius_ptr}}"},
+			"description": {"identifier":"dw623:sugar_cane_minion_{{radius_ptr}}"},
 
 			"component_groups": {				
 				"cg:delay_timer_step_2":{
@@ -36,7 +36,7 @@
 			"events": {				
 				"$minecraft:entity_spawned":  {
 					"sequence": [						
-						{"run_command":{"command":["execute align xyz run tp @s ~0.5 ~0.5 ~0.5"]}},
+						{"trigger":"ev:align"},
 						{
 							"filters": {"none_of":[
 								{"test":"in_block","value":"minecraft:reeds"},
@@ -55,13 +55,14 @@
 					]
 				},
 				"$ev:step_2_minion_process":{
-					"sequence": [							
+					"sequence": [	
+						{"trigger":"ev:align"},						
 						{	
 							"{{?radius_ptr > 0}}":{
 							// Horizontal summons only							
 								"run_command":{"command":[
 									{"{{#squiggly_pos_XZ}}":
-										"execute unless entity @e[family=sugar_cane_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run summon dw623:sugar_cane_minion_{{radius_ptr-1}} {{one}}"
+										"execute positioned {{one}} run execute unless entity @e[family=sugar_cane_minion,r=0.5] run summon dw623:sugar_cane_minion_{{radius_ptr-1}} ~ ~ ~"
 									}
 								]}
 							}
@@ -73,7 +74,7 @@
 						},
 						{
 							// Summon chest if none
-							"run_command":{"command":["execute unless entity @e[r=48,family=sugar_cane_chest,family=hungry] run summon dw623:sugar_cane_loot_chest ~ ~ ~ 0 0 ev:entity_spawned Sugar-Cane-Loot"]}
+							"run_command":{"command":["execute unless entity @e[r=32,family=sugar_cane_chest,family=hungry] run summon dw623:sugar_cane_loot_chest ~ ~ ~ 0 0 ev:entity_spawned Sugar-Cane-Loot"]}
 						},
 						// This makes a LAG difference, leave on
 						{"trigger":"ev:despawn"}

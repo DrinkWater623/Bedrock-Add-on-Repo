@@ -24,7 +24,7 @@
 			"events": {				
 				"$minecraft:entity_spawned":  {
 					"sequence": [
-						{"run_command":{"command":["execute align xyz run tp @s ~0.5 ~0.5 ~0.5"]}},
+						{"trigger":"ev:align"},
 						{
 							"filters": {"any_of":[{"{{#global_vines_list}}":{"test":"in_block","value":"minecraft:{{block_name}}"}}]},
 							"trigger":"ev:step_2_minion_process"
@@ -37,6 +37,7 @@
 				},
 				"$ev:step_2_minion_process":{
 					"sequence": [
+						{"trigger":"ev:align"},
 						{
 							"run_command":{"command":[
 								{
@@ -47,16 +48,16 @@
 						},	
 						{	//vine grows from floor
 							"filters": {"test": "in_block","value": "minecraft:twisting_vines"},
-							"run_command":{"command":[
-								"execute unless entity @e[family=vine_minion,x=~,y=~1,z=~,dx=0,dy=0,dz=0] run execute if block ~ ~0.75 ~ minecraft:twisting_vines unless block ~ ~1 ~ air run summon dw623:vine_minion ~ ~1 ~"
+							"run_command":{"command":[								
+								"execute positioned ~ ~1 ~ run execute unless entity @e[family=vine_minion,r=0.5] run execute if block ~ ~ ~ minecraft:twisting_vines unless block ~ ~ ~ air run summon dw623:vine_minion ~ ~ ~"
 							]}
 							
 						},
 						{
 							//because if top is destroyed, bottom is too, so give time
 							"filters": {"none_of":[{"test":"in_block","value":"minecraft:twisting_vines"}]},
-							"run_command":{"command":[
-								"execute unless entity @e[family=vine_minion,x=~,y=~-1,z=~,dx=0,dy=0,dz=0] run execute unless block ~ ~-1 ~ air run summon dw623:vine_minion ~ ~-1 ~"
+							"run_command":{"command":[								
+								"execute positioned ~ ~-1 ~ run execute unless entity @e[family=vine_minion,r=0.5] run execute unless block ~ ~ ~ air run summon dw623:vine_minion ~ ~ ~"
 							]}					
 						},
 						{"add":{"component_groups":["cg:delay_timer_destroy_vine"]}}

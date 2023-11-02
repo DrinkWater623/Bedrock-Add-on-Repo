@@ -1,0 +1,122 @@
+{
+    /*  By DrinkWater623 (Ms DW623)
+
+        This is the template file to build the block bp files using Regolith (& the jsonte filter) in VSCode...
+        Work smarter, not harder...
+
+        You can learn more about Regolith @ https://bedrock-oss.github.io/regolith/
+        and Jsonte @ https://mcdevkit.com/tutorial 
+        and on the Bedrock OSS discord where the creators hang out.
+        Yes, I am, I am a die hard Regolith and jsonte FAN-Girl...
+
+        To-Do
+            1) Recipe to make
+            2) Loot (breaks back apart) (maybe make a strong glue that does not break)
+            3) turnable so less blocks
+            4) hide in menu
+    */
+    "$scope":{        
+        "rotations":[
+            {"rotation_order":0,"on_block_face":"down" ,"on_place":0,"on_sneak":1,"x":0     ,"y":0      ,"z":180   },
+            {"rotation_order":1,"on_block_face":"up"   ,"on_place":1,"on_sneak":0,"x":0     ,"y":0      ,"z":0     },
+            {"rotation_order":2,"on_block_face":"west" ,"on_place":2,"on_sneak":3,"x":0     ,"y":0      ,"z":90    },
+            {"rotation_order":3,"on_block_face":"east" ,"on_place":3,"on_sneak":2,"x":0     ,"y":0      ,"z":-90   },
+            {"rotation_order":4,"on_block_face":"south","on_place":4,"on_sneak":5,"x":90    ,"y":0      ,"z":0     },
+            {"rotation_order":5,"on_block_face":"north","on_place":5,"on_sneak":4,"x":90    ,"y":180    ,"z":0     }
+        ],
+        "slab_data_v1":"{{slab_combos_unique.filter(x => x.is_vanilla == 1)}}",
+        "slab_test_data":"slab_combos_unique.filter(x => x.uid1 == 1 && x.uid2 <= 10)"
+    },
+    "$files": {
+        "array":"slab_data_v1",
+        //"fileName":"./{{blockNameAbbreviation(full_block_name1)}}/slab_combo_{{uid1}}_and_{{uid2}}.bp"
+        "fileName":"./{{removeVowels(full_block_name1)}}/slab_combo_{{uid1}}_and_{{uid2}}.bp"
+    },
+    "$template": {
+        "format_version": "{{settings.block_version}}",
+        "minecraft:block": 
+        {
+            "description": 
+            {
+                //"identifier": "slab_combo:{{slab1}}_{{id1}}_and_{{slab2}}_{{id2}}",
+                //cannot use uid as identifier because it could change after adding new blocks
+                //"identifier": "dw623:slab_combo_{{blockNameAbbreviation(full_block_name1+'_and_'+full_block_name2)}}", //
+                "identifier": "dw623:slab_combo_{{full_block_name1+'_and_'+full_block_name2}}", //
+                "menu_category": {                
+                    "category": "construction",
+                    "group": "itemGroup.name.stoneBrick",
+                    "is_hidden_in_commands": false
+                },
+                "states": {"ptr:block_orientation":[0,1,2,3,4,5]},
+                "traits": {
+                    "minecraft:placement_position": {
+                        "enabled_states": ["minecraft:block_face"]
+                    }
+                }
+            },
+            "components": {
+                "tag:stone": {},
+                "minecraft:collision_box":true,
+                "minecraft:destructible_by_explosion": true,
+                "minecraft:destructible_by_mining": true,
+                "minecraft:display_name":"{{title(replace(full_block_name1,'_',' '))}} & {{title(replace(full_block_name2,'_',' '))}} Slab Combo",                
+                "minecraft:geometry": "geometry.block_2_slabs",
+                "minecraft:material_instances": {
+                    "*": {"texture":"invisible","render_method":"opaque"},
+                    "top_slab":         {"texture":"{{texture_top1}}"   ,"render_method":"opaque","ambient_occlusion": true,"face_dimming":true},
+                    "top_slab_side":    {"texture":"{{texture_sides1}}" ,"render_method":"opaque","ambient_occlusion": true,"face_dimming":true},
+                    "bottom_slab":      {"texture":"{{texture_top2}}"   ,"render_method":"opaque","ambient_occlusion": true,"face_dimming":true},
+                    "bottom_slab_side": {"texture":"{{texture_sides2}}" ,"render_method":"opaque","ambient_occlusion": true,"face_dimming":true}
+                },    
+                "minecraft:selection_box":true,
+                "minecraft:on_interact": {"condition":"q.is_item_name_any('slot.weapon.mainhand','minecraft:stick','minecraft:arrow')","event":"ev:on_interact"},
+                "minecraft:on_player_placing": {"event":"ev:on_player_placing"}
+            },
+            "events":{
+                "ev:on_interact": {
+                    "sequence":[
+                        {
+                            "condition":"q.is_sneaking",
+                            "set_block_state":{"ptr:block_orientation":"q.block_state('ptr:block_orientation') == 0 ? 5 : q.block_state('ptr:block_orientation') - 1"}
+                        },
+                        {
+                            "condition":"!q.is_sneaking",
+                            "set_block_state":{"ptr:block_orientation":"q.block_state('ptr:block_orientation') == 5 ? 0 : q.block_state('ptr:block_orientation') + 1"}
+                        }
+                    ]                
+                },
+                "ev:on_player_placing": {
+                    "sequence":[
+                        {"condition":"q.is_sneaking" ,"trigger":"ev:on_player_placing_sneaking"},
+                        {"condition":"!q.is_sneaking","trigger":"ev:on_player_placing_normal"}
+                    ]
+                },
+                "ev:on_player_placing_normal": {
+                    "sequence":[                        
+                        {
+                            "{{#rotations}}":{
+                                "condition":"q.block_state ('minecraft:block_face') == '{{on_block_face}}'","set_block_state":{"ptr:block_orientation":"{{=on_place}}"}
+                            }
+                        }
+                    ]
+                },
+                "ev:on_player_placing_sneaking": {
+                    "sequence":[
+                        {
+                            "{{#rotations}}":{
+                                "condition":"q.block_state ('minecraft:block_face') == '{{on_block_face}}'","set_block_state":{"ptr:block_orientation":"{{=on_sneak}}"}
+                            }
+                        }
+                    ]
+                }
+            },
+            "permutations": [
+                {
+                    "{{#rotations}}":{
+                        "condition": "q.block_state ('ptr:block_orientation') == {{rotation_order}}","components": {"minecraft:transformation": {"rotation": ["{{=x}}","{{=y}}","{{=z}}"]}}
+                    }
+                }               
+            ]            
+        }
+    }
+}

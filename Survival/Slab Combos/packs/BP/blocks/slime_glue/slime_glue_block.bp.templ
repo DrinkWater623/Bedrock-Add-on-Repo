@@ -1,0 +1,31 @@
+{
+    //made a non-placeable block... maybe an item later...
+    "$template": {
+        "format_version": "{{settings.block_version}}",
+        "minecraft:block": 
+        {
+            "description": {
+                "identifier": "dw623:slime_glue_block",               
+                "menu_category": {
+                    "category": "items",
+                    //"group": "itemGroup.name.none",
+                    "is_hidden_in_commands": false
+                } 
+            },
+            "components": {
+                "minecraft:collision_box":true,
+                "minecraft:destructible_by_explosion": true,
+                "minecraft:destructible_by_mining": true,
+                "minecraft:display_name":"Slime Glue Block",			
+                "minecraft:flammable":true,
+                "minecraft:friction": 0.9,
+                "minecraft:geometry": "geometry.block_16x16x16",
+                "minecraft:material_instances": {"*": {"texture":"slime_glue_sheet","render_method":"alpha_test"}},    
+                //Pretend to be item
+                "minecraft:placement_filter": {"conditions":[{"block_filter":[{"tags":"q.any_tag('x')"}]}]},
+               // "minecraft:scale": 0.75,
+                "minecraft:selection_box": true                
+            }        
+        }
+    }
+}

@@ -25,7 +25,7 @@
 			"events": {				
 				"$minecraft:entity_spawned":  {
 					"sequence": [						
-						{"run_command":{"command":["execute align xyz run tp @s ~0.5 ~0.5 ~0.5"]}},
+						{"trigger":"ev:align"},
 						{
 							"filters": {"none_of":[
 								{"test":"in_block","value":"minecraft:bamboo"}
@@ -39,12 +39,13 @@
 					]
 				},
 				"$ev:step_2_minion_process":{
-					"sequence": [							
+					"sequence": [
+						{"trigger":"ev:align"},							
 						{	
 							// Horizontal summons only							
 							"run_command":{"command":[
 								{"{{#squiggly_pos_XZ}}":
-									"execute unless entity @e[family=bamboo_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:bamboo run summon dw623:bamboo_minion {{one}}"
+									"execute positioned {{one}} run execute unless entity @e[family=bamboo_minion,r=0.5] run execute if block ~ ~ ~ minecraft:bamboo run summon dw623:bamboo_minion ~ ~ ~"
 								}
 							]}
 						},
@@ -55,7 +56,7 @@
 						},
 						{
 							// Summon chest if none
-							"run_command":{"command":["execute unless entity @e[r=48,family=bamboo_chest,family=hungry] run summon dw623:bamboo_loot_chest ~ ~ ~ 0 0 ev:entity_spawned Tree-Loot"]}
+							"run_command":{"command":["execute unless entity @e[r=32,family=bamboo_chest,family=hungry] run summon dw623:bamboo_loot_chest ~ ~ ~ 0 0 ev:entity_spawned Tree-Loot"]}
 						},
 						// This makes a LAG difference, leave on
 						{"trigger":"ev:despawn"}

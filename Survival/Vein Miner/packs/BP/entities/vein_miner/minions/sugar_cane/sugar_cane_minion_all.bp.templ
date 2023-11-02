@@ -25,7 +25,7 @@
 			"events": {				
 				"$minecraft:entity_spawned":  {
 					"sequence": [						
-						{"run_command":{"command":["execute align xyz run tp @s ~0.5 ~0.5 ~0.5"]}},
+						{"trigger":"ev:align"},
 						{
 							"filters": {"none_of":[
 								{"test":"in_block","value":"minecraft:reeds"}
@@ -39,12 +39,13 @@
 					]
 				},
 				"$ev:step_2_minion_process":{
-					"sequence": [							
+					"sequence": [
+						{"trigger":"ev:align"},							
 						{	
 							// Horizontal summons only							
 							"run_command":{"command":[
 								{"{{#squiggly_pos_XZ}}":
-									"execute unless entity @e[family=sugar_cane_minion,x={{x}},y={{y}},z={{z}},dx=0,dy=0,dz=0] run execute if block {{p75}} minecraft:reeds run summon dw623:sugar_cane_minion {{one}}"
+									"execute positioned {{one}} run execute unless entity @e[family=sugar_cane_minion,r=0.5] run execute if block ~ ~ ~ minecraft:reeds run summon dw623:sugar_cane_minion ~ ~ ~"
 								}
 							]}
 						},

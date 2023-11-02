@@ -1,0 +1,117 @@
+{
+	// Bamboo should just mine horizontal
+	"$extend":["any_minion","horizontal_minion"],
+	//=====================================================================================	
+	"$scope":{	
+		
+	},   
+	//=====================================================================================	
+    "$template": {
+		"format_version": {},
+		"minecraft:entity": {
+			
+			"description": {
+				"identifier":"dw623:horizontal_minion_query",
+				"properties":{
+					"bit:has_silk_touch":{"type": "bool","default": false},
+					"int:block_id":{"type": "int","range": [0,5],"default": 0},
+					"int:radius_ptr":{"type": "int","range": [-1,15],"default": -1}
+				}
+			},
+
+			"component_groups": {},
+			"components": {				
+				
+			},
+			"events": {
+				//=======================================================================
+				//  Spawn Events
+				//This is called if the entity is called without any specs
+				//What is closest player holding - can get radius and if silk-touchable
+				//What block in can get that part - to call the correct spawn event				
+				"$minecraft:entity_spawned":  {
+					"sequence": [						
+						{"trigger":"ev:align"},
+						{
+							"filters": {"none_of":[
+								{"test":"in_block","value":"minecraft:bamboo"},
+								{"test":"in_block","value":"minecraft:air"}
+							]},
+							"trigger":"ev:despawn"
+						},
+						{							
+							//One Tick Delay
+							"filters": {"any_of":[
+								{"test":"in_block","value":"minecraft:bamboo"},
+								{"test":"in_block","value":"minecraft:air"}
+							]},							
+							"add":{"component_groups":["cg:delay_timer_step_2_minion"]}
+						}
+					]
+				},
+				// Otherwise all calls should hold the info needed to continue down to zero
+				"{{#block_list.filter(x => x.can_silk_touch == 1)}}":{
+					"{{#0..15}}":{
+						"ev:entity_spawned_{{block_name}}_{{radius_max}}_silk_touch":{									
+							"set_property":{"bit:has_silk_touch": true},						
+							"trigger":"ev:entity_spawned_{{block_name}}_{{radius_max}}"
+						}
+					}					
+				},
+				"{{#block_list}}":{
+					"{{#0..15}}":{
+						"ev:entity_spawned_{{block_name}}_{{radius_max}}":{
+							"sequence": [						
+								{"trigger":"ev:align"},
+								{
+									"filters": {"none_of":[
+										{"test":"in_block","value":"minecraft:{{block_name}}"},
+										{"test":"in_block","value":"minecraft:air"}
+									]},
+									"trigger":"ev:despawn"
+								},
+								{							
+									//One Tick Delay
+									"filters": {"any_of":[
+										{"test":"in_block","value":"minecraft:{{block_name}}"},
+										{"test":"in_block","value":"minecraft:air"}
+									]},	
+									"set_property":{"int:block_id": "{{=block_id}}"},						
+									"add":{"component_groups":["cg:delay_timer_step_2_minion"]}
+								}
+							]
+						}
+					}
+				},
+				// End of Spawn Events
+				//=======================================================================
+				"$ev:step_2_minion_process":{
+					"sequence": [
+						{"trigger":"ev:align"},							
+						{	
+							"{{?radius_ptr > 0}}":{
+							// Horizontal summons only							
+								"run_command":{"command":[
+									{"{{#squiggly_pos_XZ}}":									
+										"execute positioned {{one}} run execute unless entity @e[family=bamboo_minion,r=0.5] run summon dw623:bamboo_minion_{{radius_ptr-1}} ~ ~ ~"
+									}
+								]}
+							}
+						},
+						{
+							// chop current position bamboo
+							"filters": {"test":"in_block","value":"minecraft:bamboo"},
+							"run_command":{"command":["fill ~ ~ ~  ~ ~ ~ air destroy"]}
+						},
+						{
+							// Summon chest if none
+							"run_command":{"command":["execute unless entity @e[r=32,family=bamboo_chest,family=hungry] run summon dw623:bamboo_loot_chest ~ ~ ~ 0 0 ev:entity_spawned Bamboo-Loot"]}
+						},
+						// This makes a LAG difference, leave on
+						{"trigger":"ev:despawn"}
+					]
+				}
+			}
+		}
+	}
+}

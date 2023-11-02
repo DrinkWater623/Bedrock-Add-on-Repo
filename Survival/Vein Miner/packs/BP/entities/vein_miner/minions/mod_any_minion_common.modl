@@ -89,7 +89,7 @@
 					"suffocate_time": 10,
 					"total_supply": 10
 				},
-				"minecraft:collision_box":{"height":0.125,"width":0.125},
+				"minecraft:collision_box":{"height":0.5,"width":0.5},
 				"minecraft:damage_sensor":{"triggers":{"cause":"all","deals_damage":false}},	
 				"minecraft:health":{"value":10,"max":10}				,
 				"minecraft:physics":{"has_gravity": false,"has_collision": false},
@@ -101,7 +101,8 @@
 			"events":{			
 				//if called without an event, it will despawn immediately	
 				"minecraft:entity_spawned":{"add":{"component_groups":["cg:despawn"]}},
-				"$ev:despawn":{"add":{"component_groups":["cg:despawn"]}}
+				"$ev:despawn":{"add":{"component_groups":["cg:despawn"]}},
+				"ev:align": {"sequence":[{"run_command":{"command":["execute align xyz run tp @s ~0.5 ~0.375 ~0.5"]}}]}
 			}
 		}
 	}
