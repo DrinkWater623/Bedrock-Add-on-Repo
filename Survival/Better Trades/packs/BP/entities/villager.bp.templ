@@ -1,0 +1,41 @@
+{
+	"$copy": "{{getLatestBPFile('entities/villager.json')}}",
+	"$template": {
+    "minecraft:entity": {
+      "component_groups": {
+        "baby": {         
+          "minecraft:ageable": {"duration": 8400} //7 days
+        },
+        "become_witch$": {},
+        "unskilled": {
+          "minecraft:behavior.trade_interest": {
+            "priority": 5,
+            "within_radius": 6.0,
+            "interest_time": 45.0,
+            "remove_item_time": 1.0,
+            "carried_item_switch_time": 2.0,
+            "cooldown": 2.0
+          },
+          "minecraft:economy_trade_table": {
+            "display_name": "Junkman",
+            "table": "trading/economy_trades/wandering_trader_trades.json",
+            "max_nearby_cured_discount": -500,
+            "nearby_cured_discount": -100,
+            "new_screen": true,
+            "persist_trades": false,
+            "cured_discount": [-25, -20],
+            "max_cured_discount": [-25, -20]
+          }
+        }
+      },
+      "components": {
+        "minecraft:health": {
+          "value": 100,
+          "max": 100
+        }   
+      },
+      "events": {  
+      }
+    }
+  }
+}

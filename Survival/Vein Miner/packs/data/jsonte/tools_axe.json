@@ -38,7 +38,12 @@
 		//{"axe_item":1    ,"block_name":"melon_block"			,"speed":7	},
         //{"axe_item":1    ,"block_name":"nether_wart_block","speed":7	},
 		{"axe_item":1    ,"block_name":"noteblock"		,"speed":7	},
-		{"axe_item":1    ,"block_name":"planks"			,"speed":7	},
+		{"axe_item":1    ,"block_name":"oak_planks"			,"speed":7	},
+		{"axe_item":1    ,"block_name":"spruce_planks"			,"speed":7	},
+		{"axe_item":1    ,"block_name":"birch_planks"			,"speed":7	},
+		{"axe_item":1    ,"block_name":"acacia_planks"			,"speed":7	},
+		{"axe_item":1    ,"block_name":"jungle_planks"			,"speed":7	},
+		{"axe_item":1    ,"block_name":"dark_oak_planks"			,"speed":7	},
         {"axe_item":1    ,"block_name":"scaffolding"		,"speed":7	},
 		{"axe_item":1    ,"block_name":"soul_campfire"	,"speed":7	},
 		{"axe_item":1    ,"block_name":"target"			,"speed":7	},
@@ -54,7 +59,6 @@
         ,{"item_name":"fence"}			
         ,{"item_name":"fence_gate"}		
         ,{"item_name":"hanging_sign"}	
-        //,{"item_name":"planks"}			
         ,{"item_name":"pressure_plate"}
        // ,{"item_name":"sign"}			
        // ,{"item_name":"slab"}			
@@ -69,8 +73,7 @@
         ,{"item_name":"door"}			
         ,{"item_name":"fence"}			
         ,{"item_name":"fence_gate"}		
-        ,{"item_name":"hanging_sign"}	
-        //,{"item_name":"planks"}			
+        ,{"item_name":"hanging_sign"}		
         ,{"item_name":"pressure_plate"}
        // ,{"item_name":"sign"}			
        // ,{"item_name":"slab"}			
@@ -85,7 +88,6 @@
         	{"item_name":"fence"}			
         //,{"item_name":"fence_gate"}plain fence_gate	
         ,{"item_name":"hanging_sign"}	
-        //,{"item_name":"planks"}			
        // ,{"item_name":"sign"}			
         ,{"item_name":"stairs"}			
         //,{"item_name":"standing_sign"}			

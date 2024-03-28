@@ -15,6 +15,6 @@
 	],
 	"stonecutter_custom":[
 		{"folder":"misc"	,"ns_in":"minecraft","input":"iron_block"	,"count":1	,"ns_out":"dw623","output":"iron_block_anvil"},
-		{"folder":"misc"	,"ns_in":"minecraft","input":"magma"		,"count":64	,"ns_out":"dw623","output":"magma_rod"		}
+		{"folder":"misc"	,"ns_in":"minecraft","input":"magma"		,"count":16	,"ns_out":"dw623","output":"magma_rod"		}
 	]
 }

@@ -5,7 +5,6 @@
       "identifier": "shaped:compass_toggle"
     },
     "tags": ["crafting_table"],
-    "group": "planks",
     "pattern": [
       "s s",
       " s ",

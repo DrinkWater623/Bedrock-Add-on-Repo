@@ -1,0 +1,76 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.1.json",
+	"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
+	"name": "Better_Trades",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"jsonte": {
+				"url": "github.com/MCDevKit/regolith-library",
+				"version": "2.12.0"
+			},
+			"dot_ignore": {
+				"runWith": "python",
+				"script": "./filters/dot_ignore.py"
+			},
+			"empty_ignore": {
+				"runWith": "python",
+				"script": "./filters/empty_ignore.py"
+			},
+			"mani_fest": {
+				"runWith": "nodejs",
+				"script": "./filters/mani_fest.js"
+			}
+		},
+		"profiles": {
+			"build": {
+				"export": {
+					"readOnly": false,
+					"target": "local"
+				},
+				"filters": [
+					{"filter":"dot_ignore"},
+					{"filter":"jsonte"},
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"name": "Better Trades by DW623",
+							"description": "More Useful and Better Trades",
+							"min_engine_version": [1,20,0]
+						}
+					}
+				]
+			},
+			"default": {
+				"export": {
+					"readOnly": false,
+					"target": "development"
+				},
+				"filters": [
+					{"filter":"dot_ignore"},
+					{"filter":"jsonte"},
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"BP": {
+								"UUID": "5f8dfd22-2703-46ca-a088-e94186d9b0f3",
+								"module": "e69355e9-66dc-48e8-9fcd-ea9dc0c7e208"
+							},
+							"RP": {
+								"UUID": "5566c468-c421-4423-b726-a321e7179827",
+								"module": "b3d2e2ad-efd0-4f66-b23b-137763d90111"
+							},
+							"name": "Dev: Better Trades",
+							"description": "WIP",
+							"min_engine_version": [1,20,0]
+						}
+					}
+				]
+			}
+		}
+	}
+}

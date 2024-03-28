@@ -1,7 +1,7 @@
 {
 	//Use this table in the sql to generate all the combinations
 	//Added tops and sides for when I add the custom log slabs to this list
-	//mcns = minecraft namesplace for the conditional - either minecraft:  or slab:
+	//mcns = minecraft namespace for the conditional - either minecraft:  or slab:
 	//type is the name, part of the name
 	
 	"slab_data_version1":"{{slab_combos_unique.filter(x => x.is_vanilla == 1)}}",
@@ -13,12 +13,12 @@
 		{"ns":"minecraft"  ,"slab":"stone_block_slab"				,"id":1 ,"full_block_name":"sandstone"					,"texture_top":"dw_sandstone_top"			,"texture_sides":"dw_sandstone_bottom"			},	
 		{"ns":"minecraft"  ,"slab":"stone_block_slab"				,"id":3 ,"full_block_name":"cobblestone"				,"texture_top":"cobblestone"				,"texture_sides":"cobblestone"					},
 		{"ns":"minecraft"  ,"slab":"stone_block_slab"				,"id":4 ,"full_block_name":"brick"						,"texture_top":"brick"						,"texture_sides":"brick"						},
-		{"ns":"minecraft"  ,"slab":"stone_block_slab"				,"id":5 ,"full_block_name":"stone_bricks"				,"texture_top":"dw_stone_brick"				,"texture_sides":"dw_stone_brick"				},
+		{"ns":"minecraft"  ,"slab":"stone_block_slab"				,"id":5 ,"full_block_name":"stonebrick"					,"texture_top":"dw_stone_brick"				,"texture_sides":"dw_stone_brick"				},
 		{"ns":"minecraft"  ,"slab":"stone_block_slab"				,"id":6 ,"full_block_name":"quartz"						,"texture_top":"dw_quartz_block_top"		,"texture_sides":"dw_quartz_block_side"			},
 		{"ns":"minecraft"  ,"slab":"stone_block_slab"				,"id":7 ,"full_block_name":"nether_bricks"				,"texture_top":"nether_brick"				,"texture_sides":"nether_brick"					},
 
 		{"ns":"minecraft"  ,"slab":"stone_block_slab2"				,"id":0 ,"full_block_name":"red_sandstone"				,"texture_top":"dw_red_sandstone_top"		,"texture_sides":"dw_red_sandstone_bottom"		},
-		{"ns":"minecraft"  ,"slab":"stone_block_slab2"				,"id":1 ,"full_block_name":"purpur"						,"texture_top":"dw_purpur"					,"texture_sides":"dw_purpur"					},
+		{"ns":"minecraft"  ,"slab":"stone_block_slab2"				,"id":1 ,"full_block_name":"purpur_block"				,"texture_top":"dw_purpur"					,"texture_sides":"dw_purpur"					},
 		{"ns":"minecraft"  ,"slab":"stone_block_slab2"				,"id":2 ,"full_block_name":"prismarine"					,"texture_top":"dw_prismarine"				,"texture_sides":"dw_prismarine"				},
 		{"ns":"minecraft"  ,"slab":"stone_block_slab2"				,"id":3 ,"full_block_name":"dark_prismarine"			,"texture_top":"dw_prismarine_dark"			,"texture_sides":"dw_prismarine_dark"			},
 		{"ns":"minecraft"  ,"slab":"stone_block_slab2"				,"id":4 ,"full_block_name":"prismarine_bricks"			,"texture_top":"prismarine_bricks"			,"texture_sides":"prismarine_bricks"			},
@@ -26,7 +26,7 @@
 		{"ns":"minecraft"  ,"slab":"stone_block_slab2"				,"id":6 ,"full_block_name":"smooth_sandstone"			,"texture_top":"dw_sandstone_top"			,"texture_sides":"dw_sandstone_top"				},
 		{"ns":"minecraft"  ,"slab":"stone_block_slab2"				,"id":7 ,"full_block_name":"red_nether_bricks"			,"texture_top":"red_nether_brick"			,"texture_sides":"red_nether_brick"				},
 
-		{"ns":"minecraft"  ,"slab":"stone_block_slab3"				,"id":0 ,"full_block_name":"end_stone_bricks"			,"texture_top":"end_bricks"					,"texture_sides":"end_bricks"					},
+		{"ns":"minecraft"  ,"slab":"stone_block_slab3"				,"id":0 ,"full_block_name":"end_bricks"					,"texture_top":"end_bricks"					,"texture_sides":"end_bricks"					},
 		{"ns":"minecraft"  ,"slab":"stone_block_slab3"				,"id":1 ,"full_block_name":"smooth_red_sandstone"		,"texture_top":"dw_red_sandstone_top"		,"texture_sides":"dw_red_sandstone_top"			},
 		{"ns":"minecraft"  ,"slab":"stone_block_slab3"				,"id":2 ,"full_block_name":"polished_andesite"			,"texture_top":"polished_andesite"			,"texture_sides":"polished_andesite"			},
 		{"ns":"minecraft"  ,"slab":"stone_block_slab3"				,"id":3 ,"full_block_name":"andesite"					,"texture_top":"andesite"					,"texture_sides":"andesite"						},
@@ -35,7 +35,7 @@
 		{"ns":"minecraft"  ,"slab":"stone_block_slab3"				,"id":6 ,"full_block_name":"granite"				,"texture_top":"granite"					,"texture_sides":"granite"						},
 		{"ns":"minecraft"  ,"slab":"stone_block_slab3"				,"id":7 ,"full_block_name":"polished_granite"		,"texture_top":"polished_granite"			,"texture_sides":"polished_granite"				},
 
-		{"ns":"minecraft"  ,"slab":"stone_block_slab4"				,"id":0 ,"full_block_name":"mossy_stone_brick"		,"texture_top":"mossy_stone_brick"			,"texture_sides":"mossy_stone_brick"			},
+		{"ns":"minecraft"  ,"slab":"stone_block_slab4"				,"id":0 ,"full_block_name":"mossy_stone_bricks"		,"texture_top":"mossy_stone_brick"			,"texture_sides":"mossy_stone_brick"			},
 		{"ns":"minecraft"  ,"slab":"stone_block_slab4"				,"id":1 ,"full_block_name":"smooth_quartz"			,"texture_top":"dw_quartz_block_bottom"		,"texture_sides":"dw_quartz_block_bottom"				},
 		{"ns":"minecraft"  ,"slab":"stone_block_slab4"				,"id":2 ,"full_block_name":"stone"					,"texture_top":"dw_stone_slab_top"			,"texture_sides":"dw_stone_slab_side"						},
 		{"ns":"minecraft"  ,"slab":"stone_block_slab4"				,"id":3 ,"full_block_name":"cut_sandstone"			,"texture_top":"dw_sandstone_top"			,"texture_sides":"dw_sandstone_smooth"			},
@@ -56,17 +56,17 @@
 		{"ns":"minecraft"  ,"slab":"oxidized_cut_copper_slab"		,"id":0,"full_block_name":"oxidized_cut_copper"		,"texture_top":"oxidized_cut_copper"		,"texture_sides":"oxidized_cut_copper"			},
 		{"ns":"minecraft"  ,"slab":"weathered_cut_copper_slab"		,"id":0,"full_block_name":"weathered_cut_copper"	,"texture_top":"weathered_cut_copper"		,"texture_sides":"weathered_cut_copper"			},
 
-		{"ns":"minecraft"  ,"slab":"wooden_slab"					,"id":0 ,"full_block_name":"oak_plank"				,"texture_top":"wood_oak"					,"texture_sides":"wood_oak"						},
-		{"ns":"minecraft"  ,"slab":"wooden_slab"					,"id":1 ,"full_block_name":"spruce_plank"			,"texture_top":"spruce_planks"				,"texture_sides":"spruce_planks"				},
-		{"ns":"minecraft"  ,"slab":"wooden_slab"					,"id":2 ,"full_block_name":"birch_plank"			,"texture_top":"birch_planks"				,"texture_sides":"birch_planks"					},
-		{"ns":"minecraft"  ,"slab":"wooden_slab"					,"id":3 ,"full_block_name":"jungle_plank"			,"texture_top":"jungle_planks"				,"texture_sides":"jungle_planks"				},
-		{"ns":"minecraft"  ,"slab":"wooden_slab"					,"id":4 ,"full_block_name":"acacia_plank"			,"texture_top":"acacia_planks"				,"texture_sides":"acacia_planks"				},		
-		{"ns":"minecraft"  ,"slab":"wooden_slab"					,"id":5 ,"full_block_name":"dark_oak_plank"			,"texture_top":"dark_oak_planks"			,"texture_sides":"dark_oak_planks"				},
-		{"ns":"minecraft"  ,"slab":"bamboo_slab"					,"id":0 ,"full_block_name":"bamboo_plank"			,"texture_top":"bamboo_planks"				,"texture_sides":"bamboo_planks"				},
-		{"ns":"minecraft"  ,"slab":"cherry_slab"					,"id":0 ,"full_block_name":"cherry_plank"			,"texture_top":"cherry_planks"				,"texture_sides":"cherry_planks"				},
-		{"ns":"minecraft"  ,"slab":"crimson_slab"					,"id":0 ,"full_block_name":"crimson_plank"			,"texture_top":"crimson_planks"				,"texture_sides":"crimson_planks"				},
-		{"ns":"minecraft"  ,"slab":"mangrove_slab"					,"id":0 ,"full_block_name":"mangrove_plank"			,"texture_top":"mangrove_planks"			,"texture_sides":"mangrove_planks"				},
-		{"ns":"minecraft"  ,"slab":"warped_slab"					,"id":0 ,"full_block_name":"warped_plank"			,"texture_top":"warped_planks"				,"texture_sides":"warped_planks"				},
+		{"ns":"minecraft"  ,"slab":"wooden_slab"					,"id":0 ,"full_block_name":"oak_planks"				,"texture_top":"wood_oak"					,"texture_sides":"wood_oak"						},
+		{"ns":"minecraft"  ,"slab":"wooden_slab"					,"id":1 ,"full_block_name":"spruce_planks"			,"texture_top":"spruce_planks"				,"texture_sides":"spruce_planks"				},
+		{"ns":"minecraft"  ,"slab":"wooden_slab"					,"id":2 ,"full_block_name":"birch_planks"			,"texture_top":"birch_planks"				,"texture_sides":"birch_planks"					},
+		{"ns":"minecraft"  ,"slab":"wooden_slab"					,"id":3 ,"full_block_name":"jungle_planks"			,"texture_top":"jungle_planks"				,"texture_sides":"jungle_planks"				},
+		{"ns":"minecraft"  ,"slab":"wooden_slab"					,"id":4 ,"full_block_name":"acacia_planks"			,"texture_top":"acacia_planks"				,"texture_sides":"acacia_planks"				},		
+		{"ns":"minecraft"  ,"slab":"wooden_slab"					,"id":5 ,"full_block_name":"dark_oak_pks"			,"texture_top":"dark_oak_planks"			,"texture_sides":"dark_oak_planks"				},
+		{"ns":"minecraft"  ,"slab":"bamboo_slab"					,"id":0 ,"full_block_name":"bamboo_planks"			,"texture_top":"bamboo_planks"				,"texture_sides":"bamboo_planks"				},
+		{"ns":"minecraft"  ,"slab":"cherry_slab"					,"id":0 ,"full_block_name":"cherry_planks"			,"texture_top":"cherry_planks"				,"texture_sides":"cherry_planks"				},
+		{"ns":"minecraft"  ,"slab":"crimson_slab"					,"id":0 ,"full_block_name":"crimson_planks"			,"texture_top":"crimson_planks"				,"texture_sides":"crimson_planks"				},
+		{"ns":"minecraft"  ,"slab":"mangrove_slab"					,"id":0 ,"full_block_name":"mangrove_planks"		,"texture_top":"mangrove_planks"			,"texture_sides":"mangrove_planks"				},
+		{"ns":"minecraft"  ,"slab":"warped_slab"					,"id":0 ,"full_block_name":"warped_planks"			,"texture_top":"warped_planks"				,"texture_sides":"warped_planks"				},
 //NON Vanilla from here		
 		{"ns":"dw623"  ,"slab":"oak_log_slab"						,"id":0 ,"full_block_name":"oak_log"				,"texture_top":"oak_log_top"				,"texture_sides":"oak_log_side"			},
 		{"ns":"dw623"  ,"slab":"spruce_log_slab"					,"id":0 ,"full_block_name":"spruce_log"				,"texture_top":"spruce_log_top"				,"texture_sides":"spruce_log_side"		},

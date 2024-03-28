@@ -1,0 +1,68 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.1.json",
+	"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
+	"name": "DW_Template",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {			
+			"dot_ignore": {
+				"runWith": "python",
+				"script": "./filters/dot_ignore.py"
+			},
+			"empty_ignore": {
+				"runWith": "python",
+				"script": "./filters/empty_ignore.py"
+			},
+			"mani_fest": {
+				"runWith": "nodejs",
+				"script": "./filters/mani_fest.js"
+			}
+		},
+		"profiles": {
+			"build": {
+				"export": {"readOnly":false,"target":"local"},
+				"filters": [
+					{"filter":"dot_ignore"},
+					{"filter":"empty_ignore"},				
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"name": "DW's Sorter for Axe Template",
+							"description": "Learning Copy",
+							"getUUIDs": true,
+							"min_engine_version": [1,20,70],
+							"version": [2,0,1]
+						}
+					}
+				]
+			},
+			"default": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"filter":"dot_ignore"},
+					{"filter":"empty_ignore"},				
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"BP": {
+								"UUID": "2636282f-37ce-49e8-a131-d1faa421f5ea",
+								"module": "d4a940c5-76c3-46fe-82bb-3121686c5c92"
+							},
+							"RP": {
+								"UUID": "64e4273a-6cab-4271-b88a-58f2fb6ac3d1",
+								"module": "9aee24a2-9067-4402-b621-12736d9fd28b"
+							},
+							"name": "DW's Sorter for Axe Template",
+							"description": "Learning Copy",
+							"min_engine_version": [1,20,70]
+						}
+					}
+				]
+			}
+		}
+	}
+}

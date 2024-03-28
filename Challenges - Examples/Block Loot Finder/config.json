@@ -1,0 +1,74 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.1.json",
+	"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
+	"name": "Block_Loot_Finder",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"jsonte": {
+				"url": "github.com/MCDevKit/regolith-library",
+				"version": "2.12.0"
+			},
+			"dot_ignore": {
+				"runWith": "python",
+				"script": "./filters/dot_ignore.py"
+			},
+			"empty_ignore": {
+				"runWith": "python",
+				"script": "./filters/empty_ignore.py"
+			},
+			"mani_fest": {
+				"runWith": "nodejs",
+				"script": "./filters/mani_fest.js"
+			}
+		},
+		"profiles": {
+			"build": {
+				"export": {"readOnly":false,"target":"local"},
+				"filters": [
+					{"filter":"dot_ignore"},
+					{"filter":"jsonte"},
+					{"filter":"empty_ignore"},				
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"name": "Block Loot Finder",
+							"description": "Cause I want to know Exactly where it is",
+							"getUUIDs": true,
+							"min_engine_version": [1,20,10],
+							"version": [2,0,1]
+						}
+					}
+				]
+			},
+			"default": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"filter":"dot_ignore"},
+					{"filter":"jsonte"},
+					{"filter":"empty_ignore"},				
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"BP": {
+								"UUID": "eed16273-345e-4eef-b0f9-33997df1b457",
+								"module": "b1e68068-4d35-4195-9e27-cc887ca04aa9"
+							},
+							"RP": {
+								"UUID": "21e4ef6e-5d19-4634-9738-4e3e5b230b04",
+								"module": "92420cd5-650c-4658-ae05-ab4db9005dc5"
+							},
+							"name": "Dev:Block Loot Finder",
+							"description": "Cause I want to know Exactly where it is",
+							"min_engine_version": [1,20,10]
+						}
+					}
+				]
+			}
+		}
+	}
+}

@@ -25,12 +25,12 @@
             {"rotation_order":5,"on_block_face":"north","on_place":5,"on_sneak":4,"x":90    ,"y":180    ,"z":0     }
         ],
         "slab_data_v1":"{{slab_combos_unique.filter(x => x.is_vanilla == 1)}}",
-        "slab_test_data":"slab_combos_unique.filter(x => x.uid1 == 1 && x.uid2 <= 10)"
+        "slab_test_data":"{{slab_combos_unique.filter(x => x.uid1 == 1 && x.uid2 <= 10)}}"
     },
     "$files": {
         "array":"slab_data_v1",
-        //"fileName":"./{{blockNameAbbreviation(full_block_name1)}}/slab_combo_{{uid1}}_and_{{uid2}}.bp"
-        "fileName":"./{{removeVowels(full_block_name1)}}/slab_combo_{{uid1}}_and_{{uid2}}.bp"
+        //"fileName":"./{{blockNameAbbreviation(full_block_name1)}}/{{uid1}}_and_{{uid2}}.bp"
+        "fileName":"./{{full_block_name1}}/{{uid1}}_and_{{uid2}}.bp"
     },
     "$template": {
         "format_version": "{{settings.block_version}}",
@@ -41,7 +41,7 @@
                 //"identifier": "slab_combo:{{slab1}}_{{id1}}_and_{{slab2}}_{{id2}}",
                 //cannot use uid as identifier because it could change after adding new blocks
                 //"identifier": "dw623:slab_combo_{{blockNameAbbreviation(full_block_name1+'_and_'+full_block_name2)}}", //
-                "identifier": "dw623:slab_combo_{{full_block_name1+'_and_'+full_block_name2}}", //
+                "identifier": "{{settings.block_ns}}:{{full_block_name1+'_and_'+full_block_name2}}", //
                 "menu_category": {                
                     "category": "construction",
                     "group": "itemGroup.name.stoneBrick",
@@ -70,7 +70,8 @@
                 },    
                 "minecraft:selection_box":true,
                 "minecraft:on_interact": {"condition":"q.is_item_name_any('slot.weapon.mainhand','minecraft:stick','minecraft:arrow')","event":"ev:on_interact"},
-                "minecraft:on_player_placing": {"event":"ev:on_player_placing"}
+                "minecraft:on_player_placing": {"event":"ev:on_player_placing"},
+                "minecraft:transformation": {"rotation": [0,0,0]}
             },
             "events":{
                 "ev:on_interact": {
@@ -112,7 +113,7 @@
             },
             "permutations": [
                 {
-                    "{{#rotations}}":{
+                    "{{#rotations.filter(x => x.rotation_order != 1)}}":{
                         "condition": "q.block_state ('ptr:block_orientation') == {{rotation_order}}","components": {"minecraft:transformation": {"rotation": ["{{=x}}","{{=y}}","{{=z}}"]}}
                     }
                 }               

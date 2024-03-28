@@ -1,0 +1,18 @@
+{
+  "$copy": "{{getLatestBPFile('entities/npc.json')}}",
+  "$template":{ 
+    "minecraft:entity": {
+      "description":{"identifier":"dw623:npc"},
+      "component_groups":{
+        "{{#0..59}}": {"cg:bot_skin_{{value}}":{"minecraft:variant":{"value":"{{=value}}"}}}
+      },
+      "components":{
+        "$minecraft:type_family": {"family":["dw623_bot","dw623_npc"]},
+        "minecraft:timer": {"looping":false,"time":0.25,"time_down_event":{"event":"minecraft:entity_spawned"}}
+      },
+      "events":{
+        "minecraft:entity_spawned": {"sequence":[{"randomize":[{"{{#0..59}}":{"weight":1,"add":{"component_groups":["cg:bot_skin_{{value}}"]}}}]}]}
+      }
+    }
+  }
+}

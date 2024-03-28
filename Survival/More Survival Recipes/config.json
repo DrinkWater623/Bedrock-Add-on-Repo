@@ -44,10 +44,10 @@
 					{
 						"filter": "mani_fest",
 						"settings": {
+							"name": "More Survival Recipes",
 							"description": "Recipes Economized and More Fair by DW623",
 							"getUUIDs": true,
-							"min_engine_version": [1,20,10],
-							"name": "More Survival Recipes"
+							"min_engine_version": [1,20,50]
 						}
 					},
 					/*One More Time*/
@@ -73,9 +73,9 @@
 								"UUID": "bd733592-f101-4da5-9d28-34a9cc9dbe60",
 								"module": "11a6f2dc-000d-42f8-8af7-c2f7c57ccd53"
 							},
+							"name": "Dev: More Recipes",
 							"description": "Work in Progress",
-							"min_engine_version": [1,20,10],
-							"name": "Dev: More Recipes"
+							"min_engine_version": [1,20,50]
 						}
 					}
 				]

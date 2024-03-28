@@ -1,6 +1,7 @@
 {
     "settings": {
         "ns": "dw623",
+        "block_ns": "slab_combo",
         "addon": "slab_combos",        
         "block_version":"1.20.40",
         "item_version":"1.20.30",

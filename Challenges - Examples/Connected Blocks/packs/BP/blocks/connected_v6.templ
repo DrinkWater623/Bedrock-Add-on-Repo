@@ -1,0 +1,152 @@
+{
+    "$template":{
+        "format_version": "1.20.40",
+        "minecraft:block": {
+            "description": {
+                "identifier": "dw623:connected_v6",
+                "menu_category": {
+                    //"group":"itemGroup.name.brick",
+                    "category":"construction"
+                },            
+                "states": 
+                {			
+                    "bit:neighbor_top":[false,true],
+                    "bit:neighbor_bottom":[false,true],
+
+                    "bit:neighbor_north":[false,true],
+                    "bit:neighbor_east" :[false,true],
+                    "bit:neighbor_south":[false,true],
+                    "bit:neighbor_west" :[false,true],
+
+                    //need these 4 for perfection
+                    //"bit:neighbor_bt_ne":[false,true],
+                    //"bit:neighbor_bt_nw":[false,true],
+                    //"bit:neighbor_bt_se":[false,true],
+                    //"bit:neighbor_bt_sw":[false,true],
+
+                    "bit:neighbor_ew_b_n":[false,true],
+                    "bit:neighbor_ew_b_s":[false,true],
+                    "bit:neighbor_ew_t_n" :[false,true],
+                    "bit:neighbor_ew_t_s" :[false,true],
+
+                    "bit:neighbor_ns_b_e":[false,true],
+                    "bit:neighbor_ns_b_w":[false,true],
+                    "bit:neighbor_ns_t_e" :[false,true],
+                    "bit:neighbor_ns_t_w" :[false,true]
+                }
+            },
+            "components": 
+            {
+                "tag:connected":{},
+                "minecraft:display_name":"Connected Block v6",                            
+                "minecraft:collision_box": true,
+                "minecraft:selection_box": true,
+                "minecraft:light_emission": 10,                                
+                "minecraft:geometry": { 
+                    "identifier": "geometry.connected_block", 
+                    "bone_visibility": { 
+                        "sides":true,
+                        //Borders On
+                        "nt" : "!(q.block_state('bit:neighbor_top') || q.block_state('bit:neighbor_north') )", 
+                        "st" : "!(q.block_state('bit:neighbor_top') || q.block_state('bit:neighbor_south') )", 
+                        "et" : "!(q.block_state('bit:neighbor_top') || q.block_state('bit:neighbor_east')  )", 
+                        "wt" : "!(q.block_state('bit:neighbor_top') || q.block_state('bit:neighbor_west')  )", 
+
+                        "nb" : "!( q.block_state('bit:neighbor_bottom') || q.block_state('bit:neighbor_north') )", 
+                        "sb" : "!( q.block_state('bit:neighbor_bottom') || q.block_state('bit:neighbor_south') )", 
+                        "eb" : "!( q.block_state('bit:neighbor_bottom') || q.block_state('bit:neighbor_east')  )", 
+                        "wb" : "!( q.block_state('bit:neighbor_bottom') || q.block_state('bit:neighbor_west')  )", 
+
+                        "ne" : "!(q.block_state('bit:neighbor_north') || q.block_state('bit:neighbor_east') )",  
+                        "nw" : "!(q.block_state('bit:neighbor_north') || q.block_state('bit:neighbor_west') )",  
+                        "se" : "!(q.block_state('bit:neighbor_south') || q.block_state('bit:neighbor_east') )",  
+                        "sw" : "!(q.block_state('bit:neighbor_south') || q.block_state('bit:neighbor_west') )",
+
+                        "neb": "!(q.block_state('bit:neighbor_ns_b_e') || q.block_state('bit:neighbor_ew_b_n') )", 
+                        "nwb": "!(q.block_state('bit:neighbor_ns_b_w') || q.block_state('bit:neighbor_ew_b_n') )", 
+                        "seb": "!(q.block_state('bit:neighbor_ns_b_e') || q.block_state('bit:neighbor_ew_b_s') )", 
+                        "swb": "!(q.block_state('bit:neighbor_ns_b_w') || q.block_state('bit:neighbor_ew_b_s') )", 
+
+                        "net": "!(q.block_state('bit:neighbor_ns_t_e') || q.block_state('bit:neighbor_ew_t_n') )", 
+                        "nwt": "!(q.block_state('bit:neighbor_ns_t_w') || q.block_state('bit:neighbor_ew_t_n') )", 
+                        "set": "!(q.block_state('bit:neighbor_ns_t_e') || q.block_state('bit:neighbor_ew_t_s') )", 
+                        "swt": "!(q.block_state('bit:neighbor_ns_t_w') || q.block_state('bit:neighbor_ew_t_s') )", 
+                        //Borders Off
+                        "neb2": "(q.block_state('bit:neighbor_ns_b_e') || q.block_state('bit:neighbor_ew_b_n') )", 
+                        "nwb2": "(q.block_state('bit:neighbor_ns_b_w') || q.block_state('bit:neighbor_ew_b_n') )", 
+                        "seb2": "(q.block_state('bit:neighbor_ns_b_e') || q.block_state('bit:neighbor_ew_b_s') )", 
+                        "swb2": "(q.block_state('bit:neighbor_ns_b_w') || q.block_state('bit:neighbor_ew_b_s') )", 
+
+                        "net2": "(q.block_state('bit:neighbor_ns_t_e') || q.block_state('bit:neighbor_ew_t_n') )", 
+                        "nwt2": "(q.block_state('bit:neighbor_ns_t_w') || q.block_state('bit:neighbor_ew_t_n') )", 
+                        "set2": "(q.block_state('bit:neighbor_ns_t_e') || q.block_state('bit:neighbor_ew_t_s') )", 
+                        "swt2": "(q.block_state('bit:neighbor_ns_t_w') || q.block_state('bit:neighbor_ew_t_s') )", 
+
+                        "nt2" : "(q.block_state('bit:neighbor_top') || q.block_state('bit:neighbor_north') )", 
+                        "st2" : "(q.block_state('bit:neighbor_top') || q.block_state('bit:neighbor_south') )", 
+                        "et2" : "(q.block_state('bit:neighbor_top') || q.block_state('bit:neighbor_east')  )", 
+                        "wt2" : "(q.block_state('bit:neighbor_top') || q.block_state('bit:neighbor_west')  )", 
+
+                        "nb2" : "(q.block_state('bit:neighbor_bottom') || q.block_state('bit:neighbor_north') )", 
+                        "sb2" : "(q.block_state('bit:neighbor_bottom') || q.block_state('bit:neighbor_south') )", 
+                        "eb2" : "(q.block_state('bit:neighbor_bottom') || q.block_state('bit:neighbor_east')  )", 
+                        "wb2" : "(q.block_state('bit:neighbor_bottom') || q.block_state('bit:neighbor_west')  )", 
+                        
+                        "ne2" : "(q.block_state('bit:neighbor_north') || q.block_state('bit:neighbor_east') )",  
+                        "nw2" : "(q.block_state('bit:neighbor_north') || q.block_state('bit:neighbor_west') )",  
+                        "se2" : "(q.block_state('bit:neighbor_south') || q.block_state('bit:neighbor_east') )",  
+                        "sw2" : "(q.block_state('bit:neighbor_south') || q.block_state('bit:neighbor_west') )"
+                    }                 
+                },
+                "minecraft:material_instances": {
+                    "*":{"texture":"cobblestone"        ,"render_method": "alpha_test","ambient_occlusion": false,"face_dimming": false},
+                    "border": {"texture":"obsidian"     ,"render_method": "alpha_test","ambient_occlusion": false,"face_dimming": false},
+                    "inside": {"texture":"calcite"  ,"render_method": "alpha_test","ambient_occlusion": false,"face_dimming": false}
+                    
+                },               
+                "minecraft:queued_ticking": {
+                    "looping": true,
+                    "interval_range": [1,1],
+                    "on_tick": {"event": "ev:tag_check"}
+                }
+            }
+            ,
+            "events":{               
+                "ev:tag_check":{
+                    "sequence":[
+                        {
+                            "set_block_state": {
+                                "bit:neighbor_top"    : "q.block_neighbor_has_any_tag( 0,  1,  0, 'connected')",
+                                "bit:neighbor_bottom" : "q.block_neighbor_has_any_tag( 0, -1,  0, 'connected')"
+                            }
+                        },
+                        {
+                            "set_block_state": {
+                                "bit:neighbor_north": "q.block_neighbor_has_any_tag( 0,  0, -1, 'connected')",
+                                "bit:neighbor_south": "q.block_neighbor_has_any_tag( 0,  0,  1, 'connected')",
+                                "bit:neighbor_west" : "q.block_neighbor_has_any_tag(-1,  0,  0, 'connected')",
+                                "bit:neighbor_east" : "q.block_neighbor_has_any_tag( 1,  0,  0, 'connected')"
+                            }
+                        },
+                        {
+                            "set_block_state": {
+                                "bit:neighbor_ns_b_e": "q.block_neighbor_has_any_tag( 0, -1,  0, 'connected') && q.block_neighbor_has_any_tag(  1,  0,  0, 'connected') && q.block_neighbor_has_any_tag(  1, -1,  0, 'connected')",
+                                "bit:neighbor_ns_b_w": "q.block_neighbor_has_any_tag( 0, -1,  0, 'connected') && q.block_neighbor_has_any_tag( -1,  0,  0, 'connected') && q.block_neighbor_has_any_tag( -1, -1,  0, 'connected')",
+                                "bit:neighbor_ns_t_e": "q.block_neighbor_has_any_tag( 0,  1,  0, 'connected') && q.block_neighbor_has_any_tag(  1,  0,  0, 'connected') && q.block_neighbor_has_any_tag(  1,  1,  0, 'connected')",
+                                "bit:neighbor_ns_t_w": "q.block_neighbor_has_any_tag( 0,  1,  0, 'connected') && q.block_neighbor_has_any_tag( -1,  0,  0, 'connected') && q.block_neighbor_has_any_tag( -1,  1,  0, 'connected')"
+                            }
+                        },
+                        {
+                            "set_block_state": {
+                                "bit:neighbor_ew_b_n": "q.block_neighbor_has_any_tag( 0, -1,  0, 'connected') && q.block_neighbor_has_any_tag(  0,  0, -1, 'connected') && q.block_neighbor_has_any_tag(  0, -1, -1, 'connected')",
+                                "bit:neighbor_ew_b_s": "q.block_neighbor_has_any_tag( 0, -1,  0, 'connected') && q.block_neighbor_has_any_tag(  0,  0,  1, 'connected') && q.block_neighbor_has_any_tag(  0, -1,  1, 'connected')",
+                                "bit:neighbor_ew_t_n": "q.block_neighbor_has_any_tag( 0,  1,  0, 'connected') && q.block_neighbor_has_any_tag(  0,  0, -1, 'connected') && q.block_neighbor_has_any_tag(  0,  1, -1, 'connected')",
+                                "bit:neighbor_ew_t_s": "q.block_neighbor_has_any_tag( 0,  1,  0, 'connected') && q.block_neighbor_has_any_tag(  0,  0,  1, 'connected') && q.block_neighbor_has_any_tag(  0,  1,  1, 'connected')"
+                            }
+                        }                        
+                    ]
+                }
+            }        
+        }   
+    }
+}
