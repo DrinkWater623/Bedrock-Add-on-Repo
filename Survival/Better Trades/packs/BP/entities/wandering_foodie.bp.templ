@@ -1,0 +1,24 @@
+{
+	"$copy": "{{getLatestBPFile('entities/wandering_trader.json')}}",
+	"$template": {
+    "minecraft:entity": {
+      "description": {
+        "identifier": "dw623:wandering_foodie"
+      },
+      "component_groups": {
+      },
+      "components": {
+        "minecraft:health": {
+          "value": 100,
+          "max": 100
+        },
+        "minecraft:economy_trade_table": {
+          "display_name": "Wandering Foodie",
+          "table": "trading/economy_trades/wandering_foodie_trades.json",
+          "new_screen": true
+        },
+        "minecraft:spawn_entity": null
+      }
+    }
+  }
+}

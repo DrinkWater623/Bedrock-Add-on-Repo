@@ -1,0 +1,46 @@
+{
+    "enchantments": [
+        {"type":"all",                "max":1,    "enchantment":"mending"       },     
+        {"type":"all",                "max":3,    "enchantment":"unbreaking"    },  
+
+        {"type":"armor",    "body":"all",       "max":4,    "enchantment":"blast_protection"       },     
+        {"type":"armor",    "body":"all",       "max":4,    "enchantment":"fire_protection "       },     
+        {"type":"armor",    "body":"all",       "max":4,    "enchantment":"projectile_protection"  },
+        {"type":"armor",    "body":"all",       "max":4,    "enchantment":"protection"             },           
+        {"type":"armor",    "body":"all",       "max":3,    "enchantment":"thorns"                 },                       
+
+        {"type":"armor",    "body":"head",      "max":1,    "enchantment":"aqua_affinity"          },        
+        {"type":"armor",    "body":"head",      "max":3,    "enchantment":"respiration"            },          
+        
+        {"type":"armor",    "body":"feet",      "max":4,    "enchantment":"depth_strider"          },        
+        {"type":"armor",    "body":"feet",      "max":4,    "enchantment":"feather_falling"        },      
+        {"type":"armor",    "body":"feet",      "max":2,    "enchantment":"frost_walker"           },         
+        {"type":"armor",    "body":"feet",      "max":3,    "enchantment":"soul_speed"             },           
+        {"type":"armor",    "body":"feet",      "max":3,    "enchantment":"swift_sneak"            }, 
+
+        {"type":"tool",     "tools":"tool",     "max":5,    "enchantment":"efficiency"     },     
+        {"type":"tool",     "tools":"tool",     "max":1,    "enchantment":"silk_touch"     },     
+        
+        {"type":"tool",  "tools":"bow",         "max":1,    "enchantment":"flame"          },
+        {"type":"tool",  "tools":"bow",         "max":1,    "enchantment":"infinity"       },
+        {"type":"tool",  "tools":"bow",         "max":5,    "enchantment":"power"          },
+        {"type":"tool",  "tools":"bow",         "max":2,    "enchantment":"punch"          },
+        {"type":"tool",  "tools":"crossbow",    "max":1,    "enchantment":"multishot"      },
+        {"type":"tool",  "tools":"crossbow",    "max":4,    "enchantment":"piercing"       },
+        {"type":"tool",  "tools":"crossbow",    "max":3,    "enchantment":"quick_charge"   },
+        {"type":"tool",  "tools":"rod",         "max":3,    "enchantment":"luck_of_the_sea"},
+        {"type":"tool",  "tools":"rod",         "max":3,    "enchantment":"lure"           }, 
+        {"type":"tool",  "tools":"trident",     "max":5,    "enchantment":"impaling"       },
+        {"type":"tool",  "tools":"trident",     "max":1,    "enchantment":"channeling"     },
+        {"type":"tool",  "tools":"trident",     "max":3,    "enchantment":"loyalty"        },
+        {"type":"tool",  "tools":"trident",     "max":3,    "enchantment":"riptide"        },
+        
+        {"type":"tool",  "tools":"pickaxe",     "max":3,    "enchantment":"fortune"           },        
+        {"type":"tool",  "tools":"sword",       "max":2,    "enchantment":"fire_aspect"       },      
+        {"type":"tool",  "tools":"sword",       "max":3,    "enchantment":"looting"           },           
+        {"type":"tool",  "tools":"sword",       "max":2,    "enchantment":"knockback"         },         
+        {"type":"tool",  "tools":"sword,axe",   "max":5,    "enchantment":"sharpness"         },         
+        {"type":"tool",  "tools":"sword,axe",   "max":5,    "enchantment":"smite"             },
+        {"type":"tool",  "tools":"sword,axe",   "max":5,    "enchantment":"bane_of_arthropods"}       
+    ]
+}

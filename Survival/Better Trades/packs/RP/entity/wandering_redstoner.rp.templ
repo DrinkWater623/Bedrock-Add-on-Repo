@@ -1,0 +1,18 @@
+{
+	"$copy": "{{getLatestRPFile('entity/wandering_trader.entity.json')}}",
+	"$template": {
+    "minecraft:client_entity": {
+      "description": {
+        "identifier": "dw623:wandering_redstoner",
+        "textures": {
+          "default": "textures/entity/wandering_red"
+        },
+        "scripts": {          
+          "pre_animation": [            
+            "variable.raise_arms = 0;"            
+          ]
+        }
+      }     
+    }
+  }
+}
