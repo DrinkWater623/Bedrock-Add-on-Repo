@@ -1,0 +1,65 @@
+{	
+	/*
+		
+	*/
+	"global_items_list":	[
+		
+		{"priority":0,"give":"elytra"					},
+		{"priority":0,"give":"shulker_shell"			},
+		
+		{"priority":1,"give":"bedrock"					},
+
+		{"priority":1,"give":"netherite_scrap"			},
+		{"priority":1,"give":"ancient_debris"			},
+		{"priority":1,"give":"netherite_ingot"			},
+
+		{"priority":1,"give":"diamond"					},
+		{"priority":1,"give":"diamond_ore"				},
+		{"priority":1,"give":"deepslate_diamond_ore"	},
+
+		{"priority":1,"give":"emerald"					},
+		{"priority":1,"give":"deepslate_emerald_ore"	},
+		{"priority":1,"give":"emerald_ore"				},
+		
+		{"priority":3,"give":"raw_iron"					},		
+		{"priority":3,"give":"iron_ingot"				},
+		{"priority":3,"give":"iron_ore"					},
+		{"priority":3,"give":"deepslate_iron_ore"		},
+		
+		{"priority":3,"give":"coal"						},
+		{"priority":3,"give":"crying_obsidian"			},
+		{"priority":3,"give":"obsidian"					},
+		{"priority":3,"give":"firework_rocket"			},
+		
+		{"priority":4,"give":"raw_gold"					},
+		{"priority":4,"give":"gold_ingot"				},
+		{"priority":4,"give":"gold_ore"					},
+		{"priority":4,"give":"deepslate_gold_ore"		},
+		
+		{"priority":4,"give":"blue_ice"					},
+		{"priority":4,"give":"packed_ice"				},
+		{"priority":4,"give":"bee_nest"					},
+		{"priority":4,"give":"sea_lantern"				},		
+		{"priority":4,"give":"shroomlight"				},		
+		{"priority":4,"give":"pearlescent_froglight"	},		
+		{"priority":4,"give":"ochre_froglight"			},		
+		{"priority":4,"give":"verdant_froglight"		},		
+		{"priority":4,"give":"sponge"					},		
+
+		{"priority":5,"give":"lapis_lazuli"				},			
+		{"priority":5,"give":"lapis_ore"				},
+		{"priority":5,"give":"deepslate_lapis_ore"		},
+		
+		{"priority":5,"give":"redstone"			},	
+		{"priority":5,"give":"redstone_ore"				},
+		{"priority":5,"give":"deepslate_redstone_ore"	},
+
+		//{"priority":5,"give":"quartz"			},
+		//{"priority":5,"give":"nether_quartz_ore"		},		
+		
+		{"priority":6,"give":"raw_copper"				},				
+		{"priority":6,"give":"copper_ingot"				},
+		{"priority":6,"give":"copper_ore"				},
+		{"priority":6,"give":"deepslate_copper_ore"		}		
+	]		
+}

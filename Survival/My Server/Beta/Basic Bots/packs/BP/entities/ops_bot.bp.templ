@@ -1,0 +1,54 @@
+{
+  "$template": {
+    "format_version": "1.20.10",
+    "minecraft:entity": {
+      "description": {
+        "identifier": "dw623:ops_bot",
+        "runtime_identifier": "minecraft:minecart",
+        "is_spawnable": false,
+        "is_summonable": true,
+        "is_experimental": false
+      },
+      "component_groups": {       
+        "cg:despawn":{"minecraft:instant_despawn":{}}        
+      },
+      "components": {
+        "minecraft:breathable": {
+          "breathes_air":true,
+          "breathes_lava":true,
+          "breathes_solids":true,
+          "breathes_water":true,
+          "generates_bubbles":false
+        },
+        "minecraft:collision_box": {"height": 0,"width":0},
+        "minecraft:damage_sensor":{"triggers":{"cause":"all","deals_damage":false}},            
+        "minecraft:physics": {"has_collision":false,"has_gravity":false},
+        "minecraft:pushable":{"is_pushable":false},
+        "minecraft:push_through": {"value":0},
+        "minecraft:scale": {"value":0.125},
+        "minecraft:timer": {"looping":false,"time":2,"time_down_event":{"event":"ev:ops_activate"}},
+        "minecraft:type_family": {"family":["inanimate","bot","dw623_ops_bot"]}
+      },
+      "events": {
+        //=====================================================       
+        "ev:ops_activate":{
+          "sequence":[
+            { 
+              "filters": {"test": "is_daytime", "value": false },
+              "run_command": {
+                "command": [
+                  "execute as @p run me §6has activated One-Player-Sleep",
+                  "time set 100",
+                  "weather clear 48000",
+                  "effect @a instant_health 2 255 true",
+                  "effect @a saturation 2 255 true"
+                ]
+              }
+            },
+            { "add":{"component_groups":["cg:despawn"]}}
+          ]
+        }
+      } //end events
+    }
+  }
+}  

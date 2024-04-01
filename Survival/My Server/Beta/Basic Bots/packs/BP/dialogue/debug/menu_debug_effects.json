@@ -1,0 +1,40 @@
+{
+	"format_version": "1.17.0",
+	"minecraft:npc_dialogue": {
+		"scenes": [						
+			{
+				"scene_tag": "menu_debug_effects",
+				"npc_name": "Admin Effects Menu",
+				"text": "Admin Level; Alter Effects",				
+				"buttons": [																			
+					{
+						"name": "§aClear Effects" ,
+						"commands": [
+							"/effect @initiator clear",
+							"/dialogue open @s @initiator menu_debug_effects"
+							
+						]
+					},
+					{
+						"name": "Night Vision" ,
+						"commands": [
+							"/effect @initiator night_vision 9999 255 true",
+							"/dialogue open @s @initiator menu_debug_effects"
+						]
+					},
+					{
+						"name": "Invisible" ,
+						"commands": [
+							"/effect @initiator invisibility 9999 255 true",
+							"/dialogue open @s @initiator menu_debug_effects"
+						]
+					},
+					{
+						"name": "§4« Back",
+						"commands": ["/dialogue open @s @initiator menu_debug_debugger"]
+					}
+				]
+			}
+		]
+	}
+}

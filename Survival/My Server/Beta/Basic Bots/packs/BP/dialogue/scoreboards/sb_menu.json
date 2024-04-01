@@ -1,0 +1,39 @@
+{
+	"format_version": "1.17.0",
+	"minecraft:npc_dialogue": {
+		"scenes": [
+			{
+				"scene_tag": "sb_survival_menu",
+				"npc_name": "Scoreboards",
+				"text": "Game Settings are what are running this system\n\nTimers & Counters are the various scoreboards\n\nToggle Random is to turn off/on the Random Display (Try to get a consensus or vote before just changing it for everyone.)",				
+				"buttons": [
+					{
+						"name": "Timers",
+						"commands": ["/dialogue open @s @initiator sb_survival_time"]
+					},			
+					{
+						"name": "Counters",
+						"commands": ["/dialogue open @s @initiator sb_survival_ctrs"]
+					},
+					{
+						"name": "§4« Back",
+						"commands": ["/dialogue open @s @initiator menu_player"]
+					},
+					{
+						"name": "§5View G-Settings",
+						"commands": [
+							"/scoreboard objectives setdisplay sidebar game_settings",
+							"/scoreboard objectives setdisplay list game_settings"
+						]
+					},
+					{
+						"name": "Toggle Sidebar",
+						"commands": [
+							"/function dw623/scoreboards/display/sidebar/sidebar_toggle"
+						]
+					}
+				]
+			}		
+		]
+	}
+}

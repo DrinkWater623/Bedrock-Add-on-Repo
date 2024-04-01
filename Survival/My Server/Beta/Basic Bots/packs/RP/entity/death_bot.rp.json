@@ -1,0 +1,16 @@
+{
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "dw623:death_bot",			
+			"materials": {"default":"entity_emissive_alpha"},
+			"textures":{"default":"textures/entity/bots/death_box_glow"},
+			"geometry": {"default":"geometry.entity_box"},
+			"spawn_egg": {
+				"base_color": "#fc0505",
+				"overlay_color": "#f7f3f3"
+			},
+			"render_controllers": ["controller.render.default"]					
+		}
+	}
+}

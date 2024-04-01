@@ -1,0 +1,19 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.nothing_query": {
+			"initial_state": "wide_awake",
+			"states": {
+				"wide_awake": {					
+					"transitions": [{"night_night":"return 0;"}]
+					//"transitions": [{"night_night":"return q.is_sleeping;"}]
+					,"on_exit": ["/summon dw623:ops_bot ~ ~ ~"]
+				},
+				"night_night": {										
+					//"transitions": [{"wide_awake":"return 0;"}]
+					"transitions": [{"wide_awake":"return !q.is_sleeping;"}]
+				}
+			}
+		}
+	}
+}

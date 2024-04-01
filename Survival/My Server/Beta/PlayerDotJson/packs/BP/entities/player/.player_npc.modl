@@ -1,0 +1,13 @@
+{
+  "$module":"player.npc",
+  "$template": {
+    "minecraft:entity": {  
+      "components": {   
+        //Added NPC for Dialogue Scenes
+        "minecraft:npc": {},
+        //Added so other player cannot use a players dialogue
+        "minecraft:interact": {"interactions": [ {} ] }
+      }
+    }
+  }
+}

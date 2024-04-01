@@ -1,0 +1,43 @@
+{
+	/*
+		Add Entity Counter Here
+	*/	
+	"$template":{
+		"format_version": "1.17.0",
+		"minecraft:npc_dialogue": {
+			"scenes": [			
+				{
+					"scene_tag": "entity_menu_admin",
+					"npc_name": "Admin Entity Settings",
+					"text": "Admin Level: Select a Sub-Menu for World Entity Settings to Toggle.\n\nIf the Wither Control Add-on is loaded, that menu can be reached from here",
+					"buttons": [
+						{
+							"name": "Count Menu",
+							"commands": ["/dialogue open @s @initiator scoreboard_entity_ctr"]
+						},
+						{
+							"name": "Wither Menu",
+							"commands": ["/dialogue open @s @initiator wither_settings"]
+						},
+						{
+							"name": "§l",
+							"commands": ["/dialogue open @s @initiator entity_settings_admin"]
+						},
+						{
+							"name": "§4« Back",
+							"commands": ["/dialogue open @s @initiator menu_admin"]
+						},
+						{
+							"name": "View E-Settings",
+							"commands": ["/scoreboard objectives setdisplay sidebar entity_settings"]
+						},
+						{
+							"name": "§2Game »",
+							"commands": ["/dialogue open @s @initiator game_settings_menu_admin"]
+						}
+					]
+				}						
+			]
+		}
+	}
+}

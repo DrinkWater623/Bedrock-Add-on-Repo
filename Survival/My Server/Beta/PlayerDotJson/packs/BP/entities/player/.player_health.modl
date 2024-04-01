@@ -1,0 +1,11 @@
+{
+  "$module":"player.health",
+  "$template": {
+    "minecraft:entity": {
+      "description": {
+        "scripts": {"animate":["health"]},
+        "animations": {"health":"controller.animation.health"}   
+      }
+    }
+  }
+}

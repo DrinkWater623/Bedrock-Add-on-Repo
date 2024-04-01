@@ -1,0 +1,81 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.1.json",
+	"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
+	"name": "Survival_Plus_PlayerDotJson",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	/*
+	"authors": ["DrinkWater623 aka PinkSalt623 aka Nikki DW"],
+	*/
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"jsonte": {
+				"url": "github.com/MCDevKit/regolith-library",
+				"version": "2.11.2"
+			},
+			"mani_fest": {
+				"runWith": "nodejs",
+				"script": "./filters/mani_fest.js"
+			},
+			"dot_ignore": {
+				"runWith": "python",
+				"script": "./filters/dot_ignore.py"
+			}
+		},
+		"profiles": {
+			"build": {
+				"export": {
+					"readOnly": false,
+					"target": "local"
+				},
+				"filters": [
+					{"filter":"dot_ignore"},
+					{"filter":"jsonte"},
+					{
+						"filter": "mani_fest",
+						"settings": {
+							//Keep these UUIDs - see if it can just install over the version
+							"BP": {
+								"UUID": "4507133a-2449-4cc9-abca-2c255cd617f2",
+								"module": "d3b5441a-cc91-4050-9bc0-8e12ecd88004"
+							},
+							"RP": {
+								"UUID": "6f2c69ee-a2ff-4f6f-91d9-f43a56fa87f9",
+								"module": "38b5e64a-991a-49ec-af47-10fa76bd8183"
+							},
+							"name": "DW's Survival Plus Villagers",
+							"description": "for DW's Survival Plus System",
+							"min_engine_version": [1,20,60]
+						}
+					}					
+				]
+			},
+			"default": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"filter":"dot_ignore"},
+					{"filter":"jsonte"},
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"BP": {
+								"UUID": "ed2bb749-0e38-40c9-899d-458533732c3a",
+								"module": "13fc5d1a-973e-489c-b811-527a55490bbc"
+							},
+							"RP": {
+								"UUID": "ee96f838-e05a-46dd-8001-d9e31d356389",
+								"module": "3225c41d-1d86-4038-82b7-0b60f191ad16"
+							},
+							"name": "Dev:DW's Survival Plus Villagers",
+							"description": "Dev:for DW's Survival Plus System",
+							"min_engine_version": [1,20,60]
+						}
+					}
+				]
+			}
+		}
+	}
+}

@@ -1,0 +1,37 @@
+{
+	"$template":
+	{
+		"format_version": "1.19.80",
+		"minecraft:item": {
+			"description": {
+				"identifier": "dw623:da_bot_stick",
+				"category": "equipment"
+			},
+			"components": {			
+				"minecraft:creative_category": {"parent": "itemGroup.name.none"},
+				"minecraft:display_name": {"value": "da Bot Stick"},
+				"minecraft:glint": false,
+				"minecraft:hand_equipped": true,
+				"minecraft:icon": {"texture": "da_bot_stick"},
+				"minecraft:max_stack_size": 1,
+				/*
+				"minecraft:render_offsets":{"main_hand":[0,0,0],"off_hand":[0,0.5,0]}
+				*/			
+				"minecraft:on_use": {"on_use": {"event": "ev:bot_summon"}}
+			},
+			"events": {
+				/*If not one close by, summon a new one*/
+				"ev:bot_summon": {
+					// minecraft:entity_spawned is needed for random skin
+					// name is via the en_lang file, so no need to specify
+					"run_command": {
+						"command": ["execute unless entity @e[r=16,family=da_bot] run summon dw623:da_bot ^ ^1 ^1 facing @s minecraft:entity_spawned \"da Bot\""],
+						
+						"target": "self"
+					},
+					"swing": {}				
+				}			
+			}
+		}
+	}
+}

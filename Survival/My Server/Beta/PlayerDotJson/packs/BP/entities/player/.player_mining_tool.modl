@@ -1,0 +1,43 @@
+{
+  "$module": "player.mining_tool",
+  "$template": {
+    "minecraft:entity": {
+      "description": {
+        "scripts": {
+          "animate": [           
+            "mining_tool"
+          ]
+        },
+        "animations": {"mining_tool":"controller.animation.mining_tool"}
+       // "properties": {"bit:has_block_target":{"type":"int","default":0,"range":[0,1]}}
+      }
+      /*,
+      "components": {
+        "minecraft:environment_sensor": {
+          "triggers": [
+            {
+              "filters": {
+                "all_of": [
+                  {"test":"has_target"} 
+                  //,                  {"test":"is_target","subject":"block"}
+                ]
+              },
+              "event": "ev:set_block_aim"
+            }
+          ]
+        }           
+      },
+      "events":{
+        "ev:set_block_aim":{          
+          "sequence": [
+            {
+              "set_property": {"bit:has_block_target":1},
+              "run_command":{"command":["scoreboard players add Block_Targeted Player_Info 1"]}
+            }
+          ]
+        }
+      }
+      */
+    }
+  }
+}

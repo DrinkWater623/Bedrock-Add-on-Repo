@@ -1,0 +1,11 @@
+{
+  "$module":"player.one_person_sleep",
+  "$template": {
+    "minecraft:entity": {
+      "description": {
+        "scripts": {"animate":["ac_ops"]},
+        "animations": {"ac_ops":"controller.animation.nothing_query"}    
+      }
+    }
+  }
+}

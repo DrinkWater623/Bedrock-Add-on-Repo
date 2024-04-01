@@ -1,0 +1,11 @@
+{
+  "$module":"player.afk",
+  "$template": {
+    "minecraft:entity": {
+      "description": {
+        "scripts": {"animate":["ac_afk"]},
+        "animations": {"ac_afk":"controller.animation.player.afk_query"}   
+      }
+    }
+  }
+}

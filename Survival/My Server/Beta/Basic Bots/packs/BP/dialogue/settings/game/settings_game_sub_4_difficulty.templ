@@ -1,0 +1,66 @@
+{
+	/*
+		Sub Menu Filter
+		"{{#scoreboards.filter(x => x.version == 2)}}"
+		Button Style
+		"{{#scoreboards.filter(x => x.version == 1 && x.scene =='sb_admin')}}"
+
+		Version
+			1=just show sb = full list
+			2=can be full list or online players - gets a sub menu
+			3=online players only
+	*/
+	"$scope":{		
+		"difficulty":
+		[
+			{"scene":3,"level":0,"name":"peaceful"	},
+			{"scene":3,"level":1,"name":"easy"		},
+			{"scene":3,"level":2,"name":"normal"	},
+			{"scene":3,"level":3,"name":"hard"		}
+		]
+	},
+	"$template":{
+		"format_version": "1.17.0",
+		"minecraft:npc_dialogue": {
+			"scenes": [							
+				{
+					"scene_tag": "game_difficulty",
+					"npc_name": "Admin Game Difficulty Menu",
+					"text": "Select Options Below",
+					"buttons": [											
+						{
+							"{{#difficulty.filter(x => x.level <= 2)}}":{
+								"name": "{{Title(name)}}",
+								"commands": [
+									"/execute unless score Difficulty game_settings matches {{level}} run scoreboard objectives setdisplay sidebar game_settings",
+									"/execute unless score Difficulty game_settings matches {{level}} run me §cset the game's difficulty to {{name}}",
+									"/scoreboard players set Difficulty game_settings {{level}}",
+									"/difficulty {{name}}"
+								]
+							}
+						},
+						{
+							"name": "§4« Back",
+							"commands": ["/dialogue open @e[c=1,family=bot] @initiator game_settings_w"]
+						},
+						{
+							"{{#difficulty.filter(x => x.level >= 3)}}":{
+								"name": "{{Title(name)}}",
+								"commands": [
+									"/execute unless score Difficulty game_settings matches {{level}} run scoreboard objectives setdisplay sidebar game_settings",
+									"/execute unless score Difficulty game_settings matches {{level}} run me §cset the game's difficulty to {{name}}",
+									"/scoreboard players set Difficulty game_settings {{level}}",
+									"/difficulty {{name}}"
+								]
+							}
+						},
+						{
+							"name": "§2Next »",
+							"commands": ["/dialogue open @e[c=1,family=bot] @initiator game_settings_a_d"]
+						}							
+					]
+				}			
+			]
+		}
+	}
+}

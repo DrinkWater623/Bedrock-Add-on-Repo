@@ -1,0 +1,26 @@
+
+{
+  "$copy": "{{getLatestBPFile('entities/player.json')}}",
+  "$extend": [
+    //---- testing
+    //"player.xyz",
+    //"player.mining_tool",
+    //"player.level",
+    //"player.health",
+    //----
+    "player.monster_immunity",
+    "player.pvp_rules",    
+    "player.death_and_kill_ctrs",
+    "player.afk",
+    "player.one_person_sleep"
+  ],  
+  "$template": {
+    "minecraft:entity": {
+      "description": {"scripts":{},"animations":{}},
+      "events":{},           
+      "components": {   
+        "minecraft:type_family": {"family":["dw623_player"]}              
+      }
+    }
+  }
+}

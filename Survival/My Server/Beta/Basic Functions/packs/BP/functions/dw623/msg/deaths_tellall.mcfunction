@@ -1,0 +1,1 @@
+tellraw @a {"rawtext":[{"text":"§6Player's Death Count: "},{"score":{"name":"@s","objective":"death_ctr"}}]}

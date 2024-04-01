@@ -1,0 +1,76 @@
+{
+  "$scope":{
+    "clock_time":[
+      {"time":0     ,"display":"§6Sunrise"},
+      {"time":3000  ,"display":"§g9am"},
+      {"time":6000  ,"display":"§eNoon"},
+      {"time":9000  ,"display":"§63pm"},
+      {"time":12000 ,"display":"§cSunset"},
+      {"time":15000 ,"display":"§d9pm"},
+      {"time":18000 ,"display":"§fMidnight"},
+      {"time":21000 ,"display":"§b3am"}
+    ]
+  },
+  "$template": {
+    "format_version": "1.20.0",
+    "minecraft:entity": {
+      "description": {
+        "identifier": "dw623:clock_bot_static",        
+        "is_spawnable": false,
+        "is_summonable": true,
+        "is_experimental": false
+      },
+      "component_groups": {
+        "cg:despawn":{"minecraft:instant_despawn":{}}
+      },
+      "components": {
+        "minecraft:breathable": {
+          "breathes_air":true,
+          "breathes_lava":true,
+          "breathes_solids":true,
+          "breathes_water":true,
+          "generates_bubbles":false
+        },
+        "minecraft:collision_box": {"height": 0,"width":0},
+        "minecraft:damage_sensor":{"triggers":{"cause":"all","deals_damage":false}},            
+        "minecraft:physics": {"has_collision":false,"has_gravity":false},
+        "minecraft:pushable":{"is_pushable":false},
+        "minecraft:push_through": {"value":0},
+        "minecraft:scale": {"value":0.5},
+        "minecraft:scheduler":{
+          "scheduled_events": [
+              //Announce Time every 3 hours
+              {
+                "{{#clock_time}}":{"filters":[{"test":"hourly_clock_time","value":"{{=time}}"}],"event":"ev:announce_time_{{time}}"}
+                ,"{{#1..23}}":{"filters":[{"test":"hourly_clock_time","value":"{{=value*1000}}"}],"event":"ev:set_time_{{value}}k"}
+              }
+            ]
+        },  
+        "minecraft:type_family": {"family":["bot","dw623_clock_bot"]}
+      },
+      "events": {
+        //=====================================================
+        //This is moving to it's own add-on or the compass one
+        "{{#clock_time}}":{
+          "ev:announce_time_{{time}}":{
+            "run_command":{"command":[
+              "tellraw @a {\"rawtext\":[{\"text\":\"* Time: {{display}}\"}]}"
+              ,"scoreboard objectives add clock_bot dummy \"World Clock\" "
+              ,"scoreboard players set time clock_bot {{time}}"              
+            ]}
+          }
+        },
+        "{{#1..23}}":{
+          "ev:set_time_{{value}}k":{
+            "run_command":{"command":[              
+              "scoreboard objectives add clock_bot dummy \"World Clock\" ",
+              "scoreboard players set time clock_bot {{value*1000}}"              
+            ]}
+          }
+        },          
+        //========================================================
+        "ev:despawn": {"add":{"component_groups":["cg:despawn"]}}
+      } //end events
+    }
+  }
+}  

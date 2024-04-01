@@ -1,0 +1,42 @@
+{
+    "$template":
+    {
+    "format_version": "1.10.0",
+    "minecraft:client_entity": {
+      "description": {
+        "identifier": "dw623:da_bot",
+        "materials": {"default":"npc"},
+        "textures": {    
+          "npc_Kiosk_3": "textures/entity/npc/npc_Kiosk_3",
+          "npc_scientist_10": "textures/entity/npc/npc_scientist_10",
+          "npc_Kiosk_1": "textures/entity/npc/npc_Kiosk_1",
+          "npc_Kiosk_2": "textures/entity/npc/npc_Kiosk_2",
+          "npc_Kiosk_4": "textures/entity/npc/npc_Kiosk_4",
+          "npc_Kiosk_5": "textures/entity/npc/npc_Kiosk_5"
+        },
+        "geometry": {
+          "default": "geometry.npc"
+        },
+        "scripts": {
+          "animate": [
+            "general",
+            { "move": "query.modified_move_speed" },
+            "look_at_target",
+            { "baby_transform": "query.is_baby" }
+          ]
+        },
+        "animations": {
+          "general": "animation.npc.general",
+          "look_at_target": "animation.common.look_at_target",
+          "move": "animation.npc.move",
+          "baby_transform": "animation.npc.baby_transform"
+        },
+        "render_controllers": [ "controller.render.da_bot" ],
+        "spawn_egg": {
+          "texture": "spawn_egg",
+          "texture_index": 35
+        }
+      }
+    }
+  }
+}

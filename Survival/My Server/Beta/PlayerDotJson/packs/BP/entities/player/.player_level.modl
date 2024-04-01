@@ -1,0 +1,11 @@
+{
+  "$module":"player.level",
+  "$template": {
+    "minecraft:entity": {
+      "description": {
+        "scripts": {"animate":["player_level"]},
+        "animations": {"player_level":"controller.animation.player_level"}   
+      }
+    }
+  }
+}

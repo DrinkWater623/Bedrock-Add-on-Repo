@@ -1,0 +1,47 @@
+{
+	"$template":
+	{
+		"format_version": "1.17.0",
+		"minecraft:npc_dialogue": {
+			"scenes": [						
+				{
+					"scene_tag": "menu_settings",
+					"npc_name": "Admin Settings Menu",				
+					"text": {"rawtext": [{"text":"Choose a Settings Sub-Menu"}]},	
+					"buttons": [										
+						{
+							"name": "§lThis Bot" ,
+							"commands": ["/dialogue open @s @initiator menu_da_bot_control"]
+						},
+						{
+							"name": "Game Settings",
+							"commands": ["/dialogue open @e[c=1,family=bot] @initiator game_settings_menu_admin"]
+						},
+						{
+							"name": "Entity Settings",
+							"commands": ["/dialogue open @e[c=1,family=bot] @initiator entity_menu_admin"]
+						},
+						{
+							"name": "§4« Back",
+							"commands": ["/dialogue open @e[c=1,family=bot] @initiator menu_admin"]
+						},
+						{
+							"name": "§5View G-Settings",
+							"commands": [
+								"/scoreboard objectives setdisplay sidebar game_settings",
+								"/scoreboard objectives setdisplay list game_settings"
+							]
+						},					
+						{
+							"name": "§5View E-Settings",
+							"commands": [
+								"/scoreboard objectives setdisplay sidebar entity_settings",
+								"/scoreboard objectives setdisplay list game_settings"
+							]
+						}					
+					]
+				}
+			]
+		}
+	}
+}

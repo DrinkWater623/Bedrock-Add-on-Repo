@@ -1,0 +1,39 @@
+{
+	
+	"$scope":{
+		"sb_survival_ctrs":
+		[
+			{"menu":1,"oid":1,"sb":"death_ctr"		,"button":"§c§lDeaths§r"	},
+			{"menu":2,"oid":2,"sb":"kill_ctr"		,"button":"§b§lKills§r"	}
+		]
+	},	
+	"$template":{
+		"format_version": "1.17.0",
+		"minecraft:npc_dialogue": {
+			"scenes": [					
+				{
+					"scene_tag": "sb_survival_ctrs",
+					"npc_name": "Player Counts",
+					"text": "Player Tracked Counters",			
+					"buttons": [	
+						{
+							"name": "§4« Back",
+							"commands": ["/dialogue open @s @initiator sb_survival_menu"]
+						},
+						{
+							"{{#sb_survival_ctrs.filter(x => x.menu == 1 && x.oid <= 3)}}":
+							{
+								"name": "{{button}}",
+								"commands": [
+									"/scoreboard players add @a {{sb}} 0",									
+									"/execute unless entity @a[scores={ {{xsb}}=1..}] run tellraw @p {\"rawtext\": [{\"text\":\"No one online has {{button}} Counts records yet - See Full List in Esc\"}]}",
+									"/function dw623/scoreboards/display/sidebar/ctr/{{toLowerCase(sb)}}"
+								]
+							}
+						}							
+					]
+				}
+			]
+		}
+	}
+}

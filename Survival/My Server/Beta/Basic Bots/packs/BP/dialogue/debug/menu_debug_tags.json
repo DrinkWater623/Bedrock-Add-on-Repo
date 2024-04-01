@@ -1,0 +1,47 @@
+{
+	"format_version": "1.17.0",
+	"minecraft:npc_dialogue": {
+		"scenes": [						
+			{
+				"scene_tag": "menu_debug_tags",
+				"npc_name": "Admin Tag Menu",
+				"text": "Adjust Tags",				
+				"buttons": [															
+					{
+						"name": "Debug Tag",
+						"commands": [
+							"/function dw623/debug/dw623/debug/toggle_debug_tag",
+							"/dialogue open @s @initiator menu_debug_tags"
+						]
+						
+					},
+					{
+						"name": "Monster Immunity",
+						"commands": [
+							"/function dw623/debug/dw623/debug/toggle_monster_immunity_tag",
+							"/dialogue open @s @initiator menu_debug_tags"
+						]
+					},
+					{
+						"name": "Undead Immunity",
+						"commands": [
+							"/function dw623/debug/dw623/debug/toggle_undead_immunity_tag",
+							"/dialogue open @s @initiator menu_debug_tags"
+						]
+					},
+					{
+						"name": "§4« Back",
+						"commands": ["/dialogue open @s @initiator menu_debug_debugger"]
+					},					
+					{
+						"name": "Creeper Immunity",
+						"commands": [
+							"/function dw623/debug/dw623/debug/toggle_creeper_immunity_tag",
+							"/dialogue open @s @initiator menu_debug_tags"
+						]
+					}
+				]
+			}			
+		]
+	}
+}

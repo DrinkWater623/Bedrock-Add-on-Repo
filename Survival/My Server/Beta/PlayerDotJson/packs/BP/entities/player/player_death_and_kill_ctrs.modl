@@ -1,0 +1,40 @@
+{
+  "$module":"player.death_and_kill_ctrs",
+  "$template": {
+    "minecraft:entity": {
+      "description": {
+        "scripts": {"animate":["ac_death"]},
+        "animations": {"ac_death":"controller.animation.death_query"}
+      }, 
+      "components": {   
+        "minecraft:damage_sensor": {
+          "triggers": [
+            {
+              "on_damage": {
+                "filters": {
+                  "all_of":[
+                    {"test":"has_damage","value":"fatal"},
+                    {"test":"is_family","subject":"damager","value":"player"}
+                  ]
+                },
+                "event": "ev:kill_ctr_update"
+              }
+            }
+          ]
+        } 
+      },
+      "events": {
+        "ev:kill_ctr_update": {
+          "sequence": [
+            {
+              "run_command": {
+                "target": "other",
+                "command": ["scoreboard players add @s kill_ctr 1"]
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

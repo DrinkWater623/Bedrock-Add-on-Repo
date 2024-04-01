@@ -1,0 +1,93 @@
+{
+	/*
+		Sub Menu Filter
+		"{{#scoreboards.filter(x => x.version == 2)}}"
+		Button Style
+		"{{#scoreboards.filter(x => x.version == 1 && x.scene =='sb_admin')}}"
+
+		Version
+			1=just show sb = full list
+			2=can be full list or online players - gets a sub menu
+			3=online players only
+	*/
+	"$scope":{
+		"sb_survival_time":
+		[
+			{"menu":1,"oid":1,"sb":"active_min"		,"button":"§a§lActive§r"	},
+			{"menu":1,"oid":2,"sb":"alive_min"		,"button":"§d§lAlive§r"		},
+			{"menu":1,"oid":3,"sb":"afk_min"		,"button":"§c§lAFK§r"		},
+			{"menu":1,"oid":4,"sb":"alive_max_min"	,"button":"§lAlive Max§r"	},
+			{"menu":2,"oid":1,"sb":"login_min"		,"button":"Logged In§r"		},
+			{"menu":2,"oid":2,"sb":"total_min"		,"button":"§2§lActive (T)§r"},
+			{"menu":2,"oid":2,"sb":"afk_total_min"	,"button":"§4§lAFK (T)§r"	}
+		]
+	},	
+	"$template":{
+		"format_version": "1.17.0",
+		"minecraft:npc_dialogue": {
+			"scenes": [						
+				{
+					"scene_tag": "sb_survival_time",
+					"npc_name": "Time Tracking",
+					"text": "Player Time Tracked Information",				
+					"buttons": [
+						{
+							"{{#sb_survival_time.filter(x => x.menu == 1 && x.oid <= 3)}}":{
+								"name": "{{button}}",
+								"commands": [
+									"/scoreboard players add @a {{sb}} 0",
+									"/execute unless entity @a[scores={ {{sb}}=1..}] run tellraw @p {\"rawtext\": [{\"text\":\"No one online has {{button}} Minutes yet - See Full List in Esc\"}]}",
+									"/function dw623/scoreboards/display/sidebar/time/{{toLowerCase(sb)}}"
+								]
+							}
+						},				
+						{
+							"name": "§4« Back",
+							"commands": ["/dialogue open @s @initiator sb_survival_menu"]
+						},
+						{
+							"{{#sb_survival_time.filter(x => x.menu == 1 && x.oid == 4)}}":{
+								"name": "{{button}}",
+								"commands": [
+									"/scoreboard players add @a {{sb}} 0",
+									"/execute unless entity @a[scores={ {{sb}}=1..}] run tellraw @p {\"rawtext\": [{\"text\":\"No one online has {{button}} Minutes yet - See Full List in Esc\"}]}",
+									"/function dw623/scoreboards/display/sidebar/time/{{toLowerCase(sb)}}"
+								]
+							}
+						},
+						{
+							"name": "§2Next »",
+							"commands": ["/dialogue open @s @initiator sb_survival_time_2"]
+						}							
+					]
+				},
+				//only has 3
+				{
+					"scene_tag": "sb_survival_time_2",
+					"npc_name": "Time Tracking",
+					"text": "Player Time Tracked Information",				
+					"buttons": [											
+						{
+							"{{#sb_survival_time.filter(x => x.menu == 2)}}":{
+								"name": "{{button}}",
+								"commands": [
+									"/scoreboard players add @a {{sb}} 0",
+									"/execute unless entity @a[scores={ {{sb}}=1..}] run tellraw @p {\"rawtext\": [{\"text\":\"No one online has {{button}} Minutes yet - See Full List in Esc\"}]}",
+									"/function dw623/scoreboards/display/sidebar/time/{{toLowerCase(sb)}}"
+								]
+							}
+						},
+						{
+							"name": "§4« Back",
+							"commands": ["/dialogue open @s @initiator sb_survival_time"]
+						},
+						{
+							"name": "§2Front »",
+							"commands": ["/dialogue open @s @initiator sb_survival_time"]
+						}							
+					]
+				}				
+			]
+		}
+	}
+}
