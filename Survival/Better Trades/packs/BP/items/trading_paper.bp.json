@@ -1,0 +1,16 @@
+{
+    "format_version": "1.20.70",
+    "minecraft:item": {
+        "description": {
+            "identifier": "dw623:trading_paper",
+            "menu_category": {  
+                "category": "items", 
+                "is_hidden_in_commands": true 
+            }
+        },
+        "components": {
+            "minecraft:icon": {"textures": {"default":"trading_paper"}},
+            "minecraft:display_name": {"value": "Trading Paper"}
+        }
+    }
+}

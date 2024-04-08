@@ -1,0 +1,147 @@
+{
+	"$template":{
+		"format_version": "1.16.0",
+		"minecraft:entity": {
+			"description": {
+				"identifier": "dw623:my_ghost",
+				"runtime_identifier": "minecraft:wolf",
+				"is_spawnable": false,
+				"is_summonable": true,
+				"is_experimental": false
+			},
+			"component_groups": {							
+				"minecraft:ghost_wild": {					
+					"minecraft:tameable": {
+						"probability": 1,
+						"tame_items": "bonemeal",
+						"tame_event": {
+							"event": "minecraft:on_tame",
+							"target": "self"
+						}
+					}					
+				},
+				"minecraft:ghost_tame": {
+					"minecraft:is_tamed": {},					
+					"minecraft:behavior.follow_owner": {
+						"priority": 6,
+						"speed_multiplier": 1,
+						"start_distance": 10,
+						"stop_distance": 2
+					},
+					"minecraft:attack": {
+						"damage": 4
+					},
+					"minecraft:behavior.breed": {
+						"priority": 2,
+						"speed_multiplier": 1
+					},
+					"minecraft:behavior.owner_hurt_by_target": {
+						"priority": 1
+					},
+					"minecraft:behavior.owner_hurt_target": {
+						"priority": 2
+					},
+					"minecraft:behavior.nearest_attackable_target": {
+						"priority": 5,
+						"must_see": true,
+						"entity_types": [
+							{
+								"filters": {
+									"test": "is_family",
+									"subject": "other",
+									"value": "creeper"
+								},
+								"max_dist": 16
+							}
+						]
+					},
+					"minecraft:sittable": {},
+					"minecraft:leashable": {
+						"soft_distance": 4,
+						"hard_distance": 6,
+						"max_distance": 10,
+						"on_leash": {
+							"event": "minecraft:on_leash",
+							"target": "self"
+						},
+						"on_unleash": {
+							"event": "minecraft:on_unleash",
+							"target": "self"
+						}
+					}
+				}
+			},
+			"components": {
+				//"minecraft:scale": {"value":0.5},
+				"minecraft:nameable": {},
+				"minecraft:type_family": {
+					"family": ["ghost", "mob"]
+				},
+				"minecraft:health": {"value":1000,"max":1000},
+				"minecraft:breathable": {"total_supply":1000,"suffocate_time":0},
+				"minecraft:collision_box": {"width":0.6,"height":0.8},						
+				"minecraft:movement": {"value":0.3},
+				"minecraft:navigation.walk": {
+					"can_path_over_water": true,
+					"avoid_damage_blocks": true
+				},
+				"minecraft:movement.basic": {},
+				"minecraft:jump.static": {},
+				"minecraft:can_climb": {},
+				"minecraft:attack": {"damage":3},
+				"minecraft:healable": {"items":[{"item":"bonemeal","heal_amount":50}]},
+				"minecraft:persistent": {},
+				"minecraft:behavior.float": {"priority":0},
+				"minecraft:behavior.mount_pathing": {
+					"priority": 1,
+					"speed_multiplier": 1.25,
+					"target_dist": 0,
+					"track_target": true
+				},
+				"minecraft:behavior.stay_while_sitting": {"priority":3},
+				"minecraft:behavior.leap_at_target": {"priority":4,"target_dist":0.4},
+				"minecraft:behavior.melee_attack": {"priority":5},
+				"minecraft:behavior.random_stroll": {
+					"priority": 8,
+					"speed_multiplier": 1
+				},
+				"minecraft:behavior.look_at_player": {"priority":6,"target_distance":6,"probability":0.02},
+				"minecraft:behavior.beg": {
+					"priority": 9,
+					"look_distance": 8,
+					"look_time": [2, 4],
+					"items": [
+						"bone",
+						"rotten_flesh",
+						"spider_eye",
+						"bonemeal"
+					]
+				},
+				"minecraft:behavior.hurt_by_target": {
+					"priority": 3
+				},
+				"minecraft:physics": {},
+				"minecraft:pushable": {
+					"is_pushable": true,
+					"is_pushable_by_piston": true
+				},
+				"minecraft:conditional_bandwidth_optimization": {}
+			},
+			"events": {
+				"minecraft:entity_spawned": {
+					"add": {
+						"component_groups": ["minecraft:ghost_wild"]
+					}
+				},				
+				"minecraft:on_tame": {
+					"remove": {
+						"component_groups": ["minecraft:ghost_wild"]
+					},
+					"add": {
+						"component_groups": ["minecraft:ghost_tame"]
+					}
+				}
+			}
+		}
+	}
+}

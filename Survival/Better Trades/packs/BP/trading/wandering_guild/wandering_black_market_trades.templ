@@ -1,0 +1,181 @@
+{
+  "$scope":{
+    "trade_list":[
+      //select 1
+      //select 2 or 3 
+      /*    
+
+        echo shard
+   
+      */
+      {"quantity_wants":1   ,"item_wants":"minecraft:diamond",    "quantity_gives":16 ,"item_gives":"minecraft:blaze_rod"},
+      {"quantity_wants":1   ,"item_wants":"minecraft:diamond",    "quantity_gives":1  ,"item_gives":"minecraft:powder_snow_bucket"},
+      {"quantity_wants":1   ,"item_wants":"minecraft:diamond",    "quantity_gives":1  ,"item_gives":"minecraft:respawn_anchor"},
+      {"quantity_wants":1   ,"item_wants":"minecraft:emerald",    "quantity_gives":8  ,"item_gives":"minecraft:crying_obsidian"},
+      {"quantity_wants":1   ,"item_wants":"minecraft:diamond",    "quantity_gives":64 ,"item_gives":"minecraft:firework_rocket"},
+      {"quantity_wants":1   ,"item_wants":"minecraft:diamond",    "quantity_gives":1  ,"item_gives":"minecraft:recovery_compass"},
+      {"quantity_wants":1   ,"item_wants":"minecraft:diamond",    "quantity_gives":1  ,"item_gives":"minecraft:dragon_breath"},      
+      {"quantity_wants":2   ,"item_wants":"minecraft:diamond",    "quantity_gives":1  ,"item_gives":"minecraft:calibrated_sculk_sensor"},
+      {"quantity_wants":4   ,"item_wants":"minecraft:diamond",    "quantity_gives":1  ,"item_gives":"minecraft:heart_of_the_sea"},
+      {"quantity_wants":16  ,"item_wants":"minecraft:diamond",    "quantity_gives":1  ,"item_gives":"minecraft:beacon"},
+      {"quantity_wants":1   ,"item_wants":"minecraft:diamond",    "quantity_gives":1  ,"item_gives":"minecraft:totem_of_undying"},
+      {"quantity_wants":4   ,"item_wants":"minecraft:diamond",    "quantity_gives":16 ,"item_gives":"minecraft:reinforced_deepslate"},
+      {"quantity_wants":50  ,"item_wants":"dw623:trading_paper",  "quantity_gives":16  ,"item_gives":"minecraft:bedrock"},
+      {"quantity_wants":2   ,"item_wants":"minecraft:diamond",    "quantity_gives":1  ,"item_gives":"minecraft:netherite_upgrade_smithing_template"},
+      {"quantity_wants":1   ,"item_wants":"minecraft:diamond",    "quantity_gives":1  ,"item_gives":"minecraft:echo_shard"},
+      {"quantity_wants":10  ,"item_wants":"dw623:trading_paper",  "quantity_gives":1  ,"item_gives":"minecraft:end_portal_frame"},
+      {"quantity_wants":10  ,"item_wants":"dw623:trading_paper",  "quantity_gives":1  ,"item_gives":"minecraft:allay_spawn_egg"},
+      {"quantity_wants":5  , "item_wants":"dw623:trading_paper",  "quantity_gives":1  ,"item_gives":"minecraft:tadpole_bucket"}
+    ]
+//ad bedrock
+  
+  },
+  "$template": {
+    "tiers": [
+      {
+        "groups": [    
+          //banners     
+          {"num_to_select":3,"trades":[{"{{#trade_list}}":{"max_uses":12,"reward_exp":true,"wants":[{"item":"{{item_wants}}","quantity":"{{=quantity_wants}}"}],"gives":[{"item":"{{item_gives}}","quantity":"{{=quantity_gives}}"}]}}]},
+          {"num_to_select":1,"trades":[
+            {"{{#banner_list}}":{"max_uses":12,"reward_exp":true,"wants":[{"item":"dw623:trading_coin","quantity":25}],"gives":[{"item":"minecraft:{{value}}_banner_pattern","quantity":1}]}},
+            {"{{#sherds}}"     :{"wants":[{"item":"dw623:trading_coin","quantity":25}],"gives":[{"item":"minecraft:{{name}}_pottery_sherd","quantity":1}],"max_uses":12,"reward_exp":true}},
+            //discs
+            {"{{#discs}}":{"wants":[{"item":"dw623:trading_paper","quantity":1}],"gives":[{"item":"minecraft:music_disc_{{name}}","quantity":1}],"max_uses":12,"reward_exp":true}},              
+            {"wants":[{"item":"dw623:trading_paper","quantity":1}],"gives":[{"item":"minecraft:disc_fragment_5","quantity":1}],"max_uses":12,"reward_exp":true},
+            {"wants":[{"item":"minecraft:diamond","quantity":1,"price_multiplier":0.05}],"gives":[{"item":"minecraft:black_shulker_box","quantity":1}],"trader_exp":5,"max_uses":2,"reward_exp":true}
+            ]},                       
+          {
+            "num_to_select":1,
+            "trades":[
+              {"{{#armor_trims}}":{"wants":[{"item":"dw623:trading_paper","quantity":1}],"gives":[{"item":"minecraft:{{name}}_armor_trim_smithing_template","quantity":1}],"max_uses":12,"reward_exp":true}},
+              //goat horn
+              {"max_uses":5,"reward_exp":true,"wants":[{"item":"minecraft:emerald","quantity":1}],"gives":[{"type":"item","item":"minecraft:goat_horn","quantity":1,"functions":[{"function":"random_aux_value","values":{"min":0,"max":7}}]}]},
+              //skull
+              {"{{#0..4}}":{"max_uses":5,"reward_exp":true,"wants":[{"item":"minecraft:emerald","quantity":1}],"gives":[{"type":"item","item":"minecraft:skull","quantity":1,"functions":[{"function":"set_data","data":"{{=value}}"}]}]}}              
+            ]
+          },                    
+          { //Armor
+            "num_to_select": 1,
+            "trades": [
+              {
+                "{{#armor_list}}":  {
+                  "{{#armor_material_list.filter(x => x.level >= 4)}}":  {
+                  "max_uses":5,"reward_exp":true,
+                  "wants": [{"item":"{{=enchanted_armor_currency}}","quantity":"{{=enchanted_armor_cost}}","price_multiplier":0.0},{"item":"dw623:trading_coin","quantity":1,"price_multiplier":0.00}],
+                  "gives": [{"item":"minecraft:{{ore_name}}_{{armor_name}}","quantity":1,
+                  "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
+                  }
+                }
+              },
+              {
+                "{{#armor_list}}":  {
+                  "{{#armor_material_list.filter(x => x.level == 5)}}":  {
+                  "max_uses":5,"reward_exp":true,
+                  "wants": [{"item":"{{armor_currency}}","quantity":"{{=armor_cost}}","price_multiplier":0.00}],
+                  "gives": [{"item":"minecraft:{{ore_name}}_{{armor_name}}","quantity":1}]                   
+                  }
+                }
+              }
+            ]
+          },
+          {//tools 
+            "num_to_select": 1,
+            "trades": [
+              { //wood - iron
+                "{{#tool_material_list.filter(x => x.level <= 4)}}": {
+                  "{{#tool_list.filter(x => x.tool_group <= 4)}}": {
+                  "trader_exp":10,"max_uses":3,"reward_exp":true,
+                  "wants": [
+                    {
+                      "choice": [
+                        {"item":"minecraft:lapis_lazuli","quantity":1,"price_multiplier":0.05},
+                        {"item":"dw623:trading_coin","quantity":1,"price_multiplier":0.05}
+                      ]
+                    }
+                  ],
+                  "gives": [{"item":"minecraft:{{ore_name}}_{{tool_name}}","quantity":1,
+                  "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
+                }}
+              },
+              { //diamonds
+                "{{#tool_material_list.filter(x => x.level == 5)}}": {
+                  "{{#tool_list.filter(x => x.tool_group <= 4)}}": {
+                  "trader_exp":10,"max_uses":3,"reward_exp":true,
+                  "wants": [
+                    {
+                      "choice": [
+                        {"item":"minecraft:lapis_block","quantity":1,"price_multiplier":0.05},
+                        {"item":"dw623:trading_coin","quantity":1,"price_multiplier":0.05},
+                        {"item":"minecraft:emerald","quantity":1,"price_multiplier":0.05},
+                        {"item":"dw623:trading_paper","quantity":1,"price_multiplier":0.05}
+                      ]
+                    }
+                  ],
+                  "gives": [{"item":"minecraft:{{ore_name}}_{{tool_name}}","quantity":1,
+                  "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
+                }}
+              },
+              { //netherite
+                "{{#tool_material_list.filter(x => x.level == 6)}}": {
+                  "{{#tool_list.filter(x => x.tool_group <= 4)}}": {
+                  "trader_exp":10,"max_uses":3,"reward_exp":true,
+                  "wants": [
+                    {
+                      "choice": [
+                        {"item":"minecraft:emerald","quantity":1,"price_multiplier":0.05},
+                        {"item":"dw623:trading_paper","quantity":1,"price_multiplier":0.05}
+                      ]
+                    }
+                  ],
+                  "gives": [{"item":"minecraft:{{ore_name}}_{{tool_name}}","quantity":1,
+                  "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
+                }}
+              } 
+            ]
+          },                   
+          {
+            "num_to_select": 1,
+            "trades": [
+              {
+                "max_uses":5,"reward_exp":true,
+                "wants": [{"item":"minecraft:diamond","quantity":1,"price_multiplier":0.0},{"item":"dw623:trading_coin","quantity":1,"price_multiplier":0.00}],
+                "gives": [{"item":"minecraft:elytra","quantity":1,
+                "functions":[{"function":"specific_enchants","enchants":[{"id":"unbreaking","level":3},{"id":"mending","level":1}]}]}]
+              },
+              {
+                "max_uses":5,"reward_exp":true,
+                "wants": [{"item":"minecraft:diamond","quantity":10}],
+                "gives": [{"item":"minecraft:elytra","quantity":1}]
+              },
+              {
+                "{{#other_tools}}":  {
+                  "max_uses":5,"reward_exp":true,
+                  "wants": [{"item":"minecraft:emerald","quantity":1,"price_multiplier":0.0}],
+                  "gives": [{"item":"minecraft:{{value}}","quantity":1,
+                  "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
+                }
+              }               
+            ]
+          },
+          {
+            "num_to_select": 1,
+            "trades": [
+              {
+                "max_uses":5,"reward_exp":true,
+                "wants": [{"item":"dw623:trading_paper","quantity":3,"price_multiplier":0.00}],
+                "gives": [{"item":"minecraft:book","quantity":1,
+                "functions":[{"function":"specific_enchants","enchants":[{"id":"unbreaking","level":3},{"id":"mending","level":1},{"id":"silk_touch","level":1}]}]}]              
+              },             
+              {
+                "max_uses":5,"reward_exp":true,
+                "wants": [{"item":"dw623:trading_paper","quantity":2,"price_multiplier":0.00}],
+                "gives": [{"item":"minecraft:book","quantity":1,
+                "functions":[{"function":"specific_enchants","enchants":[{"id":"unbreaking","level":3},{"id":"mending","level":1}]}]}]              
+              }               
+            ]
+          }         
+        ]
+      }
+    ]
+  }
+}

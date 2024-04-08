@@ -1,0 +1,19 @@
+{
+  "$copy": "{{getLatestRPFile('render_controllers/wolf.render_controllers.json')}}",
+  "$template": {
+    "render_controllers": {
+      "controller.render.wolf": {
+        "$textures": [
+          "query.is_angry ? Array.angry[query.skin_id] : query.is_tamed ? Array.tame[query.skin_id] : Array.default[query.skin_id]"
+        ],
+        "$arrays": {
+          "textures": {
+            "Array.default" : [{"{{#wolf_colors}}":"Texture.{{color}}_wolf_default"}],
+            "Array.tame"    : [{"{{#wolf_colors}}":"Texture.{{color}}_wolf_tame"}],
+            "Array.angry"   : [{"{{#wolf_colors}}":"Texture.{{color}}_wolf_angry"}]
+          }
+        }
+      }
+    }
+  }
+}

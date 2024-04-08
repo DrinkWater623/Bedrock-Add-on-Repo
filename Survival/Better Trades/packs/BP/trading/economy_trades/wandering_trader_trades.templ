@@ -1,54 +1,74 @@
 {
   "$scope":{
     "trade_list":[
-      {"group":1  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:gold_ingot",      "quantity_gives":3  ,"item_gives":"minecraft:emerald"},
-      {"group":1  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:iron_ingot",      "quantity_gives":4  ,"item_gives":"minecraft:emerald"},
-      {"group":1  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond",         "quantity_gives":1  ,"item_gives":"minecraft:emerald_block"},
-      {"group":1  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald_block",   "quantity_gives":1  ,"item_gives":"minecraft:diamond_ore"},
-      //blocks
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond_block",   "quantity_gives":1  ,"item_gives":"minecraft:ancient_debris"},
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",         "quantity_gives":1  ,"item_gives":"minecraft:clay"},
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond",         "quantity_gives":32 ,"item_gives":"minecraft:obsidian"},
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond",         "quantity_gives":32 ,"item_gives":"minecraft:crying_obsidian"},
-
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",         "quantity_gives":1  ,"item_gives":"minecraft:coal_ore"},
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",         "quantity_gives":2  ,"item_gives":"minecraft:copper_ore"},
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond",         "quantity_gives":1  ,"item_gives":"minecraft:diamond_ore"},
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",         "quantity_gives":2  ,"item_gives":"minecraft:lapis_ore"},
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",         "quantity_gives":1  ,"item_gives":"minecraft:gold_ore"},
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",         "quantity_gives":1  ,"item_gives":"minecraft:iron_ore"},
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",         "quantity_gives":1  ,"item_gives":"minecraft:redstone_ore"},
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",         "quantity_gives":2  ,"item_gives":"minecraft:quartz_ore"},
-
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",         "quantity_gives":1  ,"item_gives":"minecraft:deepslate_coal_ore"},
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",         "quantity_gives":2  ,"item_gives":"minecraft:deepslate_copper_ore"},
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond",         "quantity_gives":1  ,"item_gives":"minecraft:deepslate_diamond_ore"},
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",         "quantity_gives":2  ,"item_gives":"minecraft:deepslate_lapis_ore"},
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",         "quantity_gives":1  ,"item_gives":"minecraft:deepslate_gold_ore"},
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",         "quantity_gives":1  ,"item_gives":"minecraft:deepslate_iron_ore"},
-      {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",         "quantity_gives":1  ,"item_gives":"minecraft:deepslate_redstone_ore"},
+      //as em
+      {"group":5  ,"max_uses":12  ,"quantity_wants":1   ,"item_wants":"minecraft:emerald"         ,"quantity_gives":16  ,"item_gives":"minecraft:coal"}, //base
+      {"group":5  ,"max_uses":12  ,"quantity_wants":1   ,"item_wants":"minecraft:emerald"         ,"quantity_gives":15  ,"item_gives":"minecraft:lapis_block"}, //base
+      {"group":5  ,"max_uses":12  ,"quantity_wants":1   ,"item_wants":"minecraft:emerald"         ,"quantity_gives":1   ,"item_gives":"minecraft:redstone_block"}, //base
+      {"group":5  ,"max_uses":12  ,"quantity_wants":1   ,"item_wants":"minecraft:emerald"         ,"quantity_gives":5   ,"item_gives":"minecraft:raw_gold"}, //base because can sell 4 to cleric for em
+      {"group":5  ,"max_uses":12  ,"quantity_wants":1   ,"item_wants":"minecraft:emerald"         ,"quantity_gives":4   ,"item_gives":"minecraft:raw_iron"}, //base
+      {"group":5  ,"max_uses":12  ,"quantity_wants":7   ,"item_wants":"minecraft:emerald"         ,"quantity_gives":1   ,"item_gives":"minecraft:raw_copper_block"}, //base
+      {"group":5  ,"max_uses":12  ,"quantity_wants":9   ,"item_wants":"minecraft:emerald"         ,"quantity_gives":1   ,"item_gives":"minecraft:diamond"}, //base
+      {"group":5  ,"max_uses":12  ,"quantity_wants":4   ,"item_wants":"minecraft:emerald_block"   ,"quantity_gives":1   ,"item_gives":"minecraft:ancient_debris"}, //base
+      //as diam 1 dia = 9 em = 32 coin 
+      {"group":2  ,"max_uses":12  ,"quantity_wants":1   ,"item_wants":"minecraft:diamond"  ,"quantity_gives":16  ,"item_gives":"minecraft:coal_block"}, //base
+      {"group":2  ,"max_uses":12  ,"quantity_wants":1   ,"item_wants":"minecraft:diamond"  ,"quantity_gives":9   ,"item_gives":"minecraft:redstone_block"}, //base
+      {"group":2  ,"max_uses":12  ,"quantity_wants":1   ,"item_wants":"minecraft:diamond"  ,"quantity_gives":45  ,"item_gives":"minecraft:raw_gold"}, //base because can sell 4 to cleric for em
+      {"group":2  ,"max_uses":12  ,"quantity_wants":1   ,"item_wants":"minecraft:diamond"  ,"quantity_gives":36  ,"item_gives":"minecraft:raw_iron"}, //base
+      {"group":2  ,"max_uses":12  ,"quantity_wants":1   ,"item_wants":"minecraft:diamond"  ,"quantity_gives":63  ,"item_gives":"minecraft:raw_copper_block"}, //base
+      {"group":2  ,"max_uses":12  ,"quantity_wants":4   ,"item_wants":"minecraft:diamond"  ,"quantity_gives":1   ,"item_gives":"minecraft:ancient_debris"}, //base
+      {"group":2  ,"max_uses":12  ,"quantity_wants":16  ,"item_wants":"minecraft:diamond"  ,"quantity_gives":1   ,"item_gives":"minecraft:netherite_ingot"}, //base
+//not using group 3 - not reallyu needed since banker does conversions
+      {"group":3  ,"max_uses":12  ,"quantity_wants":63  ,"item_wants":"minecraft:raw_copper_block" ,"quantity_gives":1  ,"item_gives":"minecraft:diamond"},
+      {"group":3  ,"max_uses":12  ,"quantity_wants":5   ,"item_wants":"minecraft:raw_gold_block"   ,"quantity_gives":1  ,"item_gives":"minecraft:diamond"},
+      {"group":3  ,"max_uses":12  ,"quantity_wants":4   ,"item_wants":"minecraft:raw_iron_block"   ,"quantity_gives":1  ,"item_gives":"minecraft:diamond"},
+      {"group":3  ,"max_uses":12  ,"quantity_wants":9   ,"item_wants":"minecraft:redstone_block"   ,"quantity_gives":1  ,"item_gives":"minecraft:diamond"},
+      {"group":3  ,"max_uses":12  ,"quantity_wants":16  ,"item_wants":"minecraft:coal_block"       ,"quantity_gives":1  ,"item_gives":"minecraft:diamond"},
+      //blocks     
+      {"group":4  ,"max_uses":12  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond",         "quantity_gives":64 ,"item_gives":"minecraft:quartz"},
+      {"group":4  ,"max_uses":12  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond",         "quantity_gives":32 ,"item_gives":"minecraft:amethyst_block"},
+      {"group":4  ,"max_uses":12  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond",         "quantity_gives":8  ,"item_gives":"minecraft:amethyst_cluster"},
+      {"group":4  ,"max_uses":12  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond",         "quantity_gives":8  ,"item_gives":"minecraft:small_amethyst_bud"},
+      {"group":4  ,"max_uses":12  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond",         "quantity_gives":8  ,"item_gives":"minecraft:medium_amethyst_bud"},
+      {"group":4  ,"max_uses":12  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond",         "quantity_gives":8  ,"item_gives":"minecraft:large_amethyst_bud"},
 
       //items
-      {"group":3  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",       "quantity_gives":2  ,"item_gives":"minecraft:lead"},
-      {"group":3  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald_block", "quantity_gives":32 ,"item_gives":"minecraft:firework_rocket"},
-      {"group":3  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",       "quantity_gives":8  ,"item_gives":"minecraft:glow_ink_sac"},
-      {"group":3  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",       "quantity_gives":8  ,"item_gives":"minecraft:nametag"},
-      {"group":3  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:iron_block",    "quantity_gives":1  ,"item_gives":"minecraft:anvil"}
+      {"group":1  ,"max_uses":12  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond",       "quantity_gives":4  ,"item_gives":"minecraft:sponge"},
+      {"group":1  ,"max_uses":12  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",       "quantity_gives":1  ,"item_gives":"minecraft:spyglass"},
+      {"group":1  ,"max_uses":12  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",       "quantity_gives":1  ,"item_gives":"minecraft:saddle"},
+      {"group":1  ,"max_uses":12  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond",       "quantity_gives":32 ,"item_gives":"minecraft:snow_layer"},
+      {"group":1  ,"max_uses":12  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond",       "quantity_gives":32 ,"item_gives":"minecraft:snowball"},
+      {"group":1  ,"max_uses":12  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond",       "quantity_gives":32 ,"item_gives":"minecraft:slime_ball"},
+      {"group":1  ,"max_uses":12  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond",       "quantity_gives":32 ,"item_gives":"minecraft:magma_cream"},
+      {"group":1  ,"max_uses":12  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond",       "quantity_gives":8  ,"item_gives":"minecraft:ender_pearl"},
+      {"group":1  ,"max_uses":12  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",       "quantity_gives":2  ,"item_gives":"minecraft:ender_chest"},
+      {"group":1  ,"max_uses":12  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",       "quantity_gives":2  ,"item_gives":"minecraft:lead"},
+      {"group":1  ,"max_uses":12  ,"quantity_wants":9  ,"item_wants":"minecraft:emerald",       "quantity_gives":32 ,"item_gives":"minecraft:firework_rocket"},
+      {"group":1  ,"max_uses":12  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",       "quantity_gives":8  ,"item_gives":"minecraft:glow_ink_sac"},
+      {"group":1  ,"max_uses":12  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",       "quantity_gives":8  ,"item_gives":"minecraft:nametag"},
+      {"group":1  ,"max_uses":12  ,"quantity_wants":9  ,"item_wants":"minecraft:raw_iron",      "quantity_gives":1  ,"item_gives":"minecraft:anvil"}
         ]
   },
   "$template": {
     "tiers": [
       {
         "groups": [
-          {"num_to_select":1,"trades":[{"{{#trade_list.filter(x => x.group == 1)}}":{"max_uses":"{{=max_uses}}","reward_exp":true,"wants":[{"item":"{{item_wants}}","quantity":"{{=quantity_wants}}"}],"gives":[{"item":"{{item_gives}}","quantity":"{{=quantity_gives}}"}]}}]},
+          {"num_to_select":2,"trades":[{"{{#trade_list.filter(x => x.group == 1)}}":{"max_uses":"{{=max_uses}}","reward_exp":true,"wants":[{"item":"{{item_wants}}","quantity":"{{=quantity_wants}}"}],"gives":[{"item":"{{item_gives}}","quantity":"{{=quantity_gives}}"}]}}]},
           {"num_to_select":2,"trades":[{"{{#trade_list.filter(x => x.group == 2)}}":{"max_uses":"{{=max_uses}}","reward_exp":true,"wants":[{"item":"{{item_wants}}","quantity":"{{=quantity_wants}}"}],"gives":[{"item":"{{item_gives}}","quantity":"{{=quantity_gives}}"}]}}]},
-
+          //{"num_to_select":2,"trades":[{"{{#trade_list.filter(x => x.group == 3)}}":{"max_uses":"{{=max_uses}}","reward_exp":true,"wants":[{"item":"{{item_wants}}","quantity":"{{=quantity_wants}}"}],"gives":[{"item":"{{item_gives}}","quantity":"{{=quantity_gives}}"}]}}]},
+          {"num_to_select":1,"trades":[{"{{#trade_list.filter(x => x.group == 4)}}":{"max_uses":"{{=max_uses}}","reward_exp":true,"wants":[{"item":"{{item_wants}}","quantity":"{{=quantity_wants}}"}],"gives":[{"item":"{{item_gives}}","quantity":"{{=quantity_gives}}"}]}}]},
+          {"num_to_select":3,"trades":[{"{{#trade_list.filter(x => x.group == 5)}}":{"max_uses":"{{=max_uses}}","reward_exp":true,"wants":[{"item":"{{item_wants}}","quantity":"{{=quantity_wants}}"}],"gives":[{"item":"{{item_gives}}","quantity":"{{=quantity_gives}}"}]}}]},
           {
             "num_to_select": 1,
-            "trades": [                           
+            "trades": [
               {
-                "max_uses": 10,"reward_exp":true,
-                "wants": [{"item":"minecraft:emerald_block","quantity":1}],
+                "max_uses": 5,"reward_exp":true,
+                "wants": [{"item":"minecraft:emerald","quantity":8}],
+                "gives": [{"item":"minecraft:shulker_shell","quantity":2}]
+              },                                             
+              {
+                "max_uses": 5,"reward_exp":true,
+                "wants": [{"item":"minecraft:diamond","quantity":1}],
                 "gives": [
                   {
                     "choice": [
@@ -71,27 +91,19 @@
                     ]
                   }
                 ]
-              }            
+              }          
             ]
           },
-          {
-            "num_to_select": 2,
+          {            
             "trades": [              
               {
                 "max_uses": 5,
-                "wants": [{"item":"minecraft:raw_gold_block","quantity":1}],
+                "wants": [{"item":"dw623:trading_paper","quantity":1,"price_multiplier":0.05}],
                 "gives": [{"item":"minecraft:book","quantity":1,
                 "functions":[{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                                
-              }             ,
-              {
-                "max_uses": 5,
-                "wants": [{"item":"minecraft:raw_gold_block","quantity":1}],
-                "gives": [{"item":"minecraft:book","quantity":1,
-                "functions":[{"function":"enchant_book_for_trading","treasure":false,"levels":{"min":39,"max":39}}]}]                                
-              }             
+              }        
             ]
-          },          
-          {"num_to_select":2,"trades":[{"{{#trade_list.filter(x => x.group == 3)}}":{"max_uses":"{{=max_uses}}","reward_exp":true,"wants":[{"item":"{{item_wants}}","quantity":"{{=quantity_wants}}"}],"gives":[{"item":"{{item_gives}}","quantity":"{{=quantity_gives}}"}]}}]}
+          }
         ]
       }
     ]

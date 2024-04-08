@@ -48,7 +48,7 @@
 							},
 							"name": "DW's Survival Plus Basic Functions",
 							"description": "for DW's Survival Plus System",
-							"min_engine_version": [1,20,60]
+							"min_engine_version": [1,20,70]
 						}
 					}					
 				]
@@ -62,16 +62,16 @@
 						"filter": "mani_fest",
 						"settings": {
 							"BP": {
-								"UUID": "409d054f-062f-4ac4-8101-ec7d055745ef",
-								"module": "75b80fc6-a318-4d79-bf76-474a77e347f0"
+								"UUID": "d62a35ff-172a-463b-8668-5112fae9e4c4",
+								"module": "d73bb9cc-29a8-452c-8fe1-31eb99667d06"
 							},
 							"RP": {
-								"UUID": "1afed113-2bdc-41b5-a5a7-a8d06d82d3a2",
-								"module": "ad472c59-ad64-4ed3-b381-b753c23ecf35"
+								"UUID": "5160c193-c01f-4ebe-b59b-239a9d6ed258",
+								"module": "e02be32f-fe2f-44dd-af55-f52d2535dced"
 							},
 							"name": "Dev:DW's Survival Plus Basic Functions",
 							"description": "Dev:for DW's Survival Plus System",
-							"min_engine_version": [1,20,60]
+							"min_engine_version": [1,20,70]
 						}
 					}
 				]

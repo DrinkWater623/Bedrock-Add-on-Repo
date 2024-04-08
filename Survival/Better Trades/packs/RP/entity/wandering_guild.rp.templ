@@ -1,0 +1,22 @@
+{
+	"$copy": "{{getLatestRPFile('entity/wandering_trader.entity.json')}}",
+  "$files": {
+    "array": "traders.filter(x => x.active == 1)",
+    "fileName": "wandering_{{trader}}.rp"
+  },  
+	"$template": {
+    "minecraft:client_entity": {
+      "description": {
+        "identifier": "dw623:wandering_{{trader}}",
+        "textures": {
+          "default": "textures/entity/wandering_{{color}}"
+        },
+        "scripts": {          
+          "pre_animation": [            
+            "variable.raise_arms = 0;"            
+          ]
+        }
+      }     
+    }
+  }
+}

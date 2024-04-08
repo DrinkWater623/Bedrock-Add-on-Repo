@@ -1,0 +1,23 @@
+{
+	"$copy": "{{getLatestBPFile('entities/xp_bottle.json')}}",
+	"$template": {
+    "minecraft:entity": {
+      "components": {
+        "minecraft:projectile": {
+          "on_hit": {
+            "grant_xp": {
+              "minXP": 10,
+              "maxXP": 15
+            }
+          }
+        },
+        "minecraft:physics": {
+        },
+        "minecraft:pushable": {
+          "is_pushable": true,
+          "is_pushable_by_piston": true
+        }        
+      }
+    }
+  }
+}

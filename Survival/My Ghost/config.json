@@ -1,0 +1,65 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.1.json",
+	"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
+	"name": "My_Ghost",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"jsonte": {"url":"github.com/MCDevKit/regolith-library","version":"2.11.2"},
+			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"},
+			"dot_ignore": {
+				"runWith": "python",
+				"script": "./filters/dot_ignore.py"
+			},
+			"empty_ignore": {
+				"runWith": "python",
+				"script": "./filters/empty_ignore.py"
+			}
+		},
+		"profiles": {
+			"build": {
+				"export": {"readOnly":false,"target":"local"},
+				"filters": [
+					{"filter":"dot_ignore"},
+					{"filter":"jsonte"},				
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"getUUIDs": true,
+							"name": "My Ghost",
+							"description": "Your Ghost after 1st Death",
+							"min_engine_version": [1,20,70]
+						}
+					}
+				]
+			},
+			"default": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"filter":"dot_ignore"},
+					{"filter":"jsonte"},				
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"BP": {
+								"UUID": "51df8412-3960-4622-8efa-083101285213",
+								"module": "d955b94e-69b1-47a0-b5bb-157ba802b0d4"
+							},
+							"RP": {
+								"UUID": "df5d4ef6-43ee-48a4-96c5-275850241921",
+								"module": "b1820ae4-f64d-4cb9-86f6-7545a879bc73"
+							},
+							"name": "Dev: My Ghost",
+							"description": "Dev: Your Ghost after 1st Death",
+							"min_engine_version": [1,20,70]
+						}
+					}
+				]
+			}
+		}
+	}
+}

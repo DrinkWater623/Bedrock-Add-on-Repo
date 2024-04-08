@@ -1,7 +1,7 @@
 #
 kill @e[family=wither,family=!dw623_wither]
 #######################################################################################
-execute as @e[type=creeper] at @s[tag=creeperNoise] run execute as @a[r=8] run playsound random.fuse @s
+##execute as @e[type=creeper] at @s[tag=creeperNoise] run execute as @a[r=8] run playsound random.fuse @s
 #######################################################################################
 #Protection Around a Base or something from Withers or Ghasts or Explodey Things
 execute as @e[type=armor_stand,name="Home"] at @s run kill @e[family=monster,r=32]

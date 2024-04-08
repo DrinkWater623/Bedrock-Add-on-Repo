@@ -1,0 +1,70 @@
+{ 
+  "tool_material_list":[ //tool based on 2
+    {"level":1  ,"ore":"oak_planks","ore_name":"wooden"    ,"tool_cost":1    ,"tool_currency":"dw623:trading_coin"   ,"enchanted_tool_cost":2   ,"enchanted_tool_currency":"dw623:trading_coin"     },
+    {"level":2  ,"ore":"stone"     ,"ore_name":"stone"     ,"tool_cost":1    ,"tool_currency":"dw623:trading_coin"   ,"enchanted_tool_cost":8   ,"enchanted_tool_currency":"dw623:trading_coin"     },
+    {"level":3  ,"ore":"raw_gold"  ,"ore_name":"golden"    ,"tool_cost":2    ,"tool_currency":"dw623:trading_coin"   ,"enchanted_tool_cost":16  ,"enchanted_tool_currency":"dw623:trading_coin"     },
+    {"level":4  ,"ore":"raw_iron"  ,"ore_name":"iron"      ,"tool_cost":2    ,"tool_currency":"dw623:trading_coin"   ,"enchanted_tool_cost":1   ,"enchanted_tool_currency":"minecraft:diamond"   }, //3
+    {"level":5  ,"ore":"diamond"   ,"ore_name":"diamond"   ,"tool_cost":2    ,"tool_currency":"minecraft:diamond"    ,"enchanted_tool_cost":1   ,"enchanted_tool_currency":"minecraft:diamond"   }, //6
+    {"level":6  ,"ore":"netherite_ingot" ,"ore_name":"netherite" ,"tool_cost":8    ,"tool_currency":"minecraft:diamond"    ,"enchanted_tool_cost":1   ,"enchanted_tool_currency":"minecraft:diamond"   } //10
+  ],     
+ //for stone weapons
+  "stone_tool_stones":[
+    {"stone":"stone"},
+    {"stone":"cobblestone"},
+    {"stone":"andesite"}
+    ],
+  //for wooden weapons
+    "wooden_tool_woods":[
+      {"wood":"oak"},
+      {"wood":"spruce"},
+      {"wood":"jungle"}
+    ],  
+  "tool_smith_list":[
+    {"ore_count":2, "tool_name":"hoe"   },
+    {"ore_count":1, "tool_name":"shovel"},
+    {"ore_count":3, "tool_name":"pickaxe"},
+    {"ore_count":3, "tool_name":"axe"}
+  ],
+  "weapon_smith_list":[
+    {"ore_count":3, "tool_name":"axe"},
+    {"ore_count":2, "tool_name":"sword"}
+  ],
+  "tool_list":[
+    {"tool_group":1  ,"ore_count":2, "tool_name":"hoe"   },
+    {"tool_group":1  ,"ore_count":1, "tool_name":"shovel"},
+    {"tool_group":2  ,"ore_count":3, "tool_name":"pickaxe"},
+    {"tool_group":3  ,"ore_count":3, "tool_name":"axe"},
+    {"tool_group":4  ,"ore_count":2, "tool_name":"sword"},
+    
+    {"tool_group":5  ,"ore_count":0, "tool_name":"trident"},
+    {"tool_group":6  ,"ore_count":0, "tool_name":"bow"},
+    {"tool_group":6  ,"ore_count":0, "tool_name":"crossbow"},
+    {"tool_group":6  ,"ore_count":0, "tool_name":"fishing_rod"}
+  ],    
+  "other_tools":["fishing_rod","bow","crossbow","trident"],
+  "smiths_trade_list":[      
+    {"group":0    ,"quantity_wants":8   ,"item_wants":"minecraft:charcoal"     ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+    {"group":0    ,"quantity_wants":8   ,"item_wants":"minecraft:coal"         ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+    {"group":0    ,"quantity_wants":1   ,"item_wants":"minecraft:lava_bucket"  ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+    {"group":0    ,"quantity_wants":16  ,"item_wants":"minecraft:stick"       ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+    
+    {"group":3    ,"quantity_wants":5   ,"item_wants":"minecraft:raw_gold"           ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+    {"group":3    ,"quantity_wants":10   ,"item_wants":"minecraft:nether_gold_ore"    ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+    {"group":3    ,"quantity_wants":2   ,"item_wants":"minecraft:gold_ore"           ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+    {"group":3    ,"quantity_wants":2   ,"item_wants":"minecraft:deepslate_gold_ore" ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+
+    {"group":4    ,"quantity_wants":4   ,"item_wants":"minecraft:raw_iron"           ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+    {"group":4    ,"quantity_wants":2   ,"item_wants":"minecraft:iron_ore"           ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+    {"group":4    ,"quantity_wants":2   ,"item_wants":"minecraft:deepslate_iron_ore" ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+
+    {"group":5    ,"quantity_wants":1   ,"item_wants":"minecraft:diamond_block"         ,"quantity_gives":9    ,"item_gives":"minecraft:emerald_block"},
+    {"group":5    ,"quantity_wants":1   ,"item_wants":"minecraft:diamond_ore"           ,"quantity_gives":3   ,"item_gives":"minecraft:emerald_block"},
+    {"group":5    ,"quantity_wants":1   ,"item_wants":"minecraft:deepslate_diamond_ore" ,"quantity_gives":3   ,"item_gives":"minecraft:emerald_block"},
+
+    {"group":6    ,"quantity_wants":1   ,"item_wants":"minecraft:netherite_ingot"   ,"quantity_gives":16  ,"item_gives":"minecraft:emerald_block"},
+    {"group":6    ,"quantity_wants":1   ,"item_wants":"minecraft:ancient_debris"    ,"quantity_gives":4   ,"item_gives":"minecraft:emerald_block"},
+    {"group":6    ,"quantity_wants":1   ,"item_wants":"minecraft:netherite_scrap"   ,"quantity_gives":4   ,"item_gives":"minecraft:emerald_block"}
+  ]  
+
+          
+}

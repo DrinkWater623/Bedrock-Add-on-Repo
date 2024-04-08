@@ -1,0 +1,30 @@
+{
+	"format_version": 2,
+	"header": {
+		"name": "MyGhost",
+		"description": "MyGhost Behavior Pack",
+		"uuid": "f00177f4-bceb-dc00-fd23-91b3e2158894",
+		"version": [1, 0, 0],
+		"min_engine_version": [1, 16, 0]
+	},
+	"metadata": {
+		"authors": ["DW623"],
+		"generated_with": {
+			"blockbench_entity_wizard": ["1.3.2"]
+		}
+	},
+	"modules": [
+		{
+			"description": "Behavior",
+			"version": [1, 0, 0],
+			"uuid": "e7dfa5ab-05c3-1aa1-4622-4d4f6311feea",
+			"type": "data"
+		}
+	],
+	"dependencies": [
+		{
+			"uuid": "71d18a43-655a-f907-ece9-d0bbb342f23b",
+			"version": [1, 0, 0]
+		}
+	]
+}

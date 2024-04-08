@@ -34,7 +34,7 @@
     clear @a[scores={is_op=0}] structure_void
     clear @a[scores={is_op=0}] barrier
     clear @a[scores={is_op=0}] light_block
-    clear @a[scores={is_op=0}] villager_spawn_egg
+    ## clear @a[scores={is_op=0}] villager_spawn_egg OKAY for this world
     clear @a[scores={is_op=0}] zombie_villager_spawn_egg
 
 #RealmAdmin and above only
@@ -66,7 +66,7 @@
     clear @a[scores={is_op=0}] vex_spawn_egg
     clear @a[scores={is_op=0}] zombie_pigman_spawn_egg
     #and Him
-    clear @a[scores={is_op=0}] wandering_trader_spawn_egg
+    ## OKay for this word clear @a[scores={is_op=0}] wandering_trader_spawn_egg
     #######################################################################################
     clear @a[scores={is_trusted=..0}] tnt 
     clear @a[scores={is_trusted=..0}] end_crystal

@@ -1,0 +1,12 @@
+{
+    "traders":[
+        {"active":1     ,"trader":"tester"          ,"color":"white"}, //later white for doctor
+        {"active":1     ,"trader":"banker"          ,"color":"lime"},
+        {"active":1     ,"trader":"black_market"    ,"color":"black"},
+        {"active":1     ,"trader":"builder"         ,"color":"yellow"},
+        {"active":1     ,"trader":"casino"          ,"color":"burgundy"},
+        {"active":1     ,"trader":"foodie"          ,"color":"pink"},
+        {"active":1     ,"trader":"gardener"        ,"color":"green"},
+        {"active":1     ,"trader":"redstoner"       ,"color":"red"}
+    ]
+}

@@ -1,0 +1,123 @@
+{
+  /*
+    stuff found only
+      monster stuff
+      nautilus shell
+      mob droppings      
+      
+      ink
+      leaves
+      trident      
+      later can customize per location - so can only have things that it can find in its village area
+  */
+  "$scope":{
+    "trade_list":[
+      //monsters/mobs near villages
+      {"item_gives":"minecraft:rotten_flesh"},
+      {"item_gives":"minecraft:spider_eye"},
+      {"item_gives":"minecraft:string"},
+      {"item_gives":"minecraft:ink_sac"},
+      {"item_gives":"minecraft:nautilus_shell"},
+      {"item_gives":"minecraft:bone"},
+      {"item_gives":"minecraft:phantom_membrane"},
+      {"item_gives":"minecraft:gunpowder"},
+      {"item_gives":"minecraft:lead"},
+      {"item_gives":"minecraft:trident"},
+      {"item_gives":"minecraft:leather"},
+      {"item_gives":"minecraft:rabbit_foot"},
+      {"item_gives":"minecraft:rabbit_hide"},
+
+      //other nature
+      {"item_gives":"minecraft:stick"},
+      {"item_gives":"minecraft:dirt"},
+      {"item_gives":"minecraft:sand"},
+      {"item_gives":"minecraft:sand:1"},
+      {"item_gives":"minecraft:snowball"},
+
+      //edible plants
+      {"item_gives":"minecraft:apple"},
+      {"item_gives":"minecraft:carrot"},
+      {"item_gives":"minecraft:potato"},
+      {"item_gives":"minecraft:beetroot"},
+      {"item_gives":"minecraft:wheat"},
+      //add seeds
+
+      //tree droppings
+      {"item_gives":"minecraft:cherry_sapling"},
+      {"item_gives":"minecraft:sapling"},
+      {"item_gives":"minecraft:sapling:1"},
+      {"item_gives":"minecraft:sapling:2"},
+      {"item_gives":"minecraft:sapling:3"},
+      {"item_gives":"minecraft:sapling:4"},
+      {"item_gives":"minecraft:sapling:5"},
+
+      //leaves
+
+      //plants      
+      {"item_gives":"minecraft:flowering_azalea"},
+      {"item_gives":"minecraft:yellow_flower"},
+      {"item_gives":"minecraft:red_flower:0"},
+      {"item_gives":"minecraft:red_flower:1"},
+      {"item_gives":"minecraft:red_flower:2"},
+      {"item_gives":"minecraft:red_flower:3"},
+      {"item_gives":"minecraft:red_flower:4"},
+      {"item_gives":"minecraft:red_flower:5"},
+      {"item_gives":"minecraft:red_flower:6"},
+      {"item_gives":"minecraft:red_flower:7"},
+      {"item_gives":"minecraft:red_flower:8"},
+      {"item_gives":"minecraft:red_flower:9"},
+      {"item_gives":"minecraft:red_flower:10"},
+      ///*
+      //not working in trades, workes in entity bp file for feed
+      //try function on it
+      {"item_gives":"minecraft:double_plant:0"},
+      {"item_gives":"minecraft:double_plant:1"},
+      {"item_gives":"minecraft:double_plant:2"},
+      {"item_gives":"minecraft:double_plant:3"},
+      {"item_gives":"minecraft:double_plant:4"},
+      {"item_gives":"minecraft:double_plant:5"},
+      //*/
+      {"item_gives":"minecraft:bamboo"},
+      {"item_gives":"minecraft:sugar_cane"},
+      {"item_gives":"minecraft:cocoa_beans"},
+      {"item_gives":"minecraft:wheat_seeds"},
+      {"item_gives":"minecraft:beetroot_seeds"},
+      {"item_gives":"minecraft:pumpkin_seeds"},
+      {"item_gives":"minecraft:melon_seeds"}, 
+      {"item_gives":"minecraft:kelp"},
+      {"item_gives":"minecraft:vine"},
+      {"item_gives":"minecraft:waterlily"},
+      {"item_gives":"minecraft:deadbush"},
+      {"item_gives":"minecraft:brown_mushroom"},
+      {"item_gives":"minecraft:red_mushroom"},
+      //animal droppings
+      {"item_gives":"minecraft:chicken"},
+      {"item_gives":"minecraft:beef"},
+      {"item_gives":"minecraft:porkchop"},
+      {"item_gives":"minecraft:rabbit"},
+      {"item_gives":"minecraft:mutton"},
+      {"item_gives":"minecraft:cod"},
+      {"item_gives":"minecraft:salmon"}
+    ]
+  },
+  "$template": {
+    "tiers": [
+      {
+        "groups": [
+          {
+            "num_to_select":8,
+            "trades":[
+              {
+                "{{#trade_list}}":{
+                  "max_uses":32,"reward_exp":true,
+                  "wants":[{"item":"dw623:trading_coin","quantity":1}],
+                  "gives":[{"item":"{{item_gives}}","quantity":1}]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

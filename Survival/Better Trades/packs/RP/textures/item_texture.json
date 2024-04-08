@@ -1,0 +1,8 @@
+{
+  "resource_pack_name": "dw623",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "trading_coin": {"textures": "textures/items/trading_coin"},  
+    "trading_paper": {"textures": "textures/items/trading_paper"}  
+  }
+}

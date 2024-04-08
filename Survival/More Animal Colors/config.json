@@ -10,12 +10,21 @@
 		"dataPath": "./packs/data",
 		"filterDefinitions": {
 			"jsonte": {"url":"github.com/MCDevKit/regolith-library","version":"2.11.2"},
-			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}
+			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"},
+			"dot_ignore": {
+				"runWith": "python",
+				"script": "./filters/dot_ignore.py"
+			},
+			"empty_ignore": {
+				"runWith": "python",
+				"script": "./filters/empty_ignore.py"
+			}
 		},
 		"profiles": {
 			"build": {
 				"export": {"readOnly":false,"target":"local"},
 				"filters": [
+					{"filter":"dot_ignore"},
 					{"filter":"jsonte"},				
 					{
 						"filter": "mani_fest",
@@ -31,6 +40,7 @@
 			"default": {
 				"export": {"readOnly":false,"target":"development"},
 				"filters": [
+					{"filter":"dot_ignore"},
 					{"filter":"jsonte"},				
 					{
 						"filter": "mani_fest",
