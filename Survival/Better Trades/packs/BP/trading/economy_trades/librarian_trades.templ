@@ -1,0 +1,404 @@
+{
+  "$template": {
+    "tiers": [
+      {
+        "total_exp_required": 0,
+        "groups": [
+          {
+            "num_to_select":1,
+            "trades":[
+              {
+                "wants":[{"item":"minecraft:paper","quantity":16,"price_multiplier":0.05}],
+                "gives":[{"item":"minecraft:emerald","quantity":1}],
+                "trader_exp":5,"max_uses":16,"reward_exp":true
+              },
+              {
+                "wants":[{"item":"minecraft:book","quantity":1,"price_multiplier":0.01}],
+                "gives":[{"item":"minecraft:emerald","quantity":1}],
+                "trader_exp":5,"max_uses":12,"reward_exp":true
+              },            
+              {
+                "wants": [{"item":"minecraft:emerald","quantity":1,"price_multiplier":0.01}],
+                "gives":[{"item":"minecraft:bookshelf","quantity":1}],
+                "trader_exp": 5,"max_uses": 5,"reward_exp": true
+              }
+            ]
+          },
+          {
+            "num_to_select": 1,
+            "trades": [
+              {
+                "{{#enchantments.filter(x => x.max == 1)}}":{
+                  "wants": [
+                    {
+                      "choice": [ 
+                        //cured
+                        {
+                          "{{#3..5}}":{
+                            "item":"minecraft:lapis_block","quantity":"{{=value}}",
+                            "filters": { "test": "has_component", "value": "minecraft:color"}
+                          }
+                        },
+                        {
+                          "{{#2..3}}":{
+                            "item":"minecraft:emerald","quantity":"{{=value}}",
+                            "filters": { "test": "has_component", "value": "minecraft:color"}
+                          }
+                        },
+                        { //give 50% weight to 1 emerald for cured to match vanilla
+                          "{{#1..5}}":{
+                            "item":"minecraft:emerald","quantity":1,
+                            "filters": { "test": "has_component", "value": "minecraft:color"}
+                          }
+                        },                                                                      
+                        //normal
+                        {
+                          "{{#1..3}}":{
+                            "item":"minecraft:emerald_block","quantity":"{{=value}}",
+                            "filters": { "none_of":{"test": "has_component", "value": "minecraft:color"}}
+                          }
+                        },
+                        {
+                          "{{#1..3}}":{
+                            "item":"minecraft:diamond","quantity":"{{=value}}",
+                            "filters": { "none_of":{"test": "has_component", "value": "minecraft:color"}}
+                          }
+                        }
+                      ]
+                    },
+                    {"item":"minecraft:book","quantity":1}
+                  ],
+                  "gives": [{"item":"minecraft:book","quantity":1,
+                  "functions":[{"function":"specific_enchants","enchants":[{"id":"{{enchantment}}","level":"{{=max}}"}]}]
+                  }]
+                }
+              },
+              //chance for old way
+              {
+                "trader_exp": 10,"max_uses": 5,"reward_exp": true,
+                "wants": [{"item":"minecraft:emerald","price_multiplier":0.05},{"item":"minecraft:book","quantity":1,"price_multiplier":0.05}],
+                "gives": [{"item":"minecraft:book","quantity":1,
+                "functions":[{"function":"enchant_book_for_trading","base_cost":1,"base_random_cost":1,"per_level_random_cost":1,"per_level_cost":1}]}]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "total_exp_required": 10,
+        "groups": [
+          {          
+            "trades": [            
+              {
+                "wants": [{"item":"minecraft:emerald","quantity":1,"price_multiplier":0.05}],
+                "gives": [{"item":"minecraft:lantern","quantity":4}],
+                "trader_exp": 5,"max_uses": 12,"reward_exp": true
+              }
+            ]
+          },
+          {
+            "num_to_select": 1,
+            "trades": [
+              {
+                "{{#enchantments.filter(x => x.max == 2)}}":{
+                  "wants": [
+                    {
+                      "choice": [ 
+                        //cured
+                        {
+                          "{{#3..5}}":{
+                            "item":"minecraft:lapis_block","quantity":"{{=value}}",
+                            "filters": { "test": "has_component", "value": "minecraft:color"}
+                          }
+                        },
+                        {
+                          "{{#2..3}}":{
+                            "item":"minecraft:emerald","quantity":"{{=value}}",
+                            "filters": { "test": "has_component", "value": "minecraft:color"}
+                          }
+                        },
+                        { //give 50% weight to 1 emerald for cured to match vanilla
+                          "{{#1..5}}":{
+                            "item":"minecraft:emerald","quantity":1,
+                            "filters": { "test": "has_component", "value": "minecraft:color"}
+                          }
+                        },                                                                      
+                        //normal
+                        {
+                          "{{#1..3}}":{
+                            "item":"minecraft:emerald_block","quantity":"{{=value}}",
+                            "filters": { "none_of":{"test": "has_component", "value": "minecraft:color"}}
+                          }
+                        },
+                        {
+                          "{{#1..3}}":{
+                            "item":"minecraft:diamond","quantity":"{{=value}}",
+                            "filters": { "none_of":{"test": "has_component", "value": "minecraft:color"}}
+                          }
+                        }
+                      ]
+                    },
+                    {"item":"minecraft:book","quantity":1}
+                  ],
+                  "gives": [{"item":"minecraft:book","quantity":1,
+                  "functions":[{"function":"specific_enchants","enchants":[{"id":"{{enchantment}}","level":"{{=max}}"}]}]
+                  }]
+                }
+              },
+              //chance for old way
+              {
+                "trader_exp": 10,"max_uses": 5,"reward_exp": true,
+                "wants": [{"item":"minecraft:emerald","price_multiplier":0.05},{"item":"minecraft:book","quantity":1,"price_multiplier":0.05}],
+                "gives": [{"item":"minecraft:book","quantity":1,
+                "functions":[{"function":"enchant_book_for_trading","base_cost":1,"base_random_cost":1,"per_level_random_cost":1,"per_level_cost":1}]}]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "total_exp_required": 70,
+        "groups": [
+          {
+            "num_to_select": 1,
+            "trades": [   
+              {
+                "wants": [{"item":"minecraft:emerald","quantity":1,"price_multiplier":0.05}],
+                "gives": [{"item":"minecraft:leather","quantity":16}],
+                "trader_exp": 5,"max_uses": 12,"reward_exp": true
+              },
+              {
+                "wants": [{"item":"minecraft:dye:0","quantity":1,"price_multiplier":0.05}],
+                "gives": [{"item":"minecraft:emerald","quantity":1}],
+                "trader_exp": 5,"max_uses": 12,"reward_exp": true
+              }
+            ]
+          },
+          {
+            "num_to_select": 1,
+            "trades": [
+              {
+                "{{#enchantments.filter(x => x.max == 3)}}":{
+                  "wants": [
+                    {
+                      "choice": [ 
+                        //cured
+                        {
+                          "{{#3..5}}":{
+                            "item":"minecraft:lapis_block","quantity":"{{=value}}",
+                            "filters": { "test": "has_component", "value": "minecraft:color"}
+                          }
+                        },
+                        {
+                          "{{#2..3}}":{
+                            "item":"minecraft:emerald","quantity":"{{=value}}",
+                            "filters": { "test": "has_component", "value": "minecraft:color"}
+                          }
+                        },
+                        { //give 50% weight to 1 emerald for cured to match vanilla
+                          "{{#1..5}}":{
+                            "item":"minecraft:emerald","quantity":1,
+                            "filters": { "test": "has_component", "value": "minecraft:color"}
+                          }
+                        },                                                                      
+                        //normal
+                        {
+                          "{{#1..3}}":{
+                            "item":"minecraft:emerald_block","quantity":"{{=value}}",
+                            "filters": { "none_of":{"test": "has_component", "value": "minecraft:color"}}
+                          }
+                        },
+                        {
+                          "{{#1..3}}":{
+                            "item":"minecraft:diamond","quantity":"{{=value}}",
+                            "filters": { "none_of":{"test": "has_component", "value": "minecraft:color"}}
+                          }
+                        }
+                      ]
+                    },
+                    {"item":"minecraft:book","quantity":1}
+                  ],
+                  "gives": [{"item":"minecraft:book","quantity":1,
+                  "functions":[{"function":"specific_enchants","enchants":[{"id":"{{enchantment}}","level":"{{=max}}"}]}]
+                  }]
+                }
+              },
+              //chance for old way
+              {
+                "trader_exp": 10,"max_uses": 5,"reward_exp": true,
+                "wants": [{"item":"minecraft:emerald","price_multiplier":0.05},{"item":"minecraft:book","quantity":1,"price_multiplier":0.05}],
+                "gives": [{"item":"minecraft:book","quantity":1,
+                "functions":[{"function":"enchant_book_for_trading","base_cost":1,"base_random_cost":1,"per_level_random_cost":1,"per_level_cost":1}]}]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "total_exp_required": 150,
+        "groups": [
+          {          
+            "trades": [
+              {
+                "wants":[{"item":"minecraft:diamond","quantity":1,"price_multiplier":0.05}],
+                "gives":[{"item":"minecraft:purple_shulker_box","quantity":1}],
+                "trader_exp":5,"max_uses":2,"reward_exp":true
+              }            
+            ]
+          },
+          {
+            "num_to_select": 1,
+            "trades": [
+              {
+                "{{#enchantments.filter(x => x.max == 4)}}":{
+                  "wants": [
+                    { //add cured and not cured
+                      "wants": [{"item":"minecraft:diamond","price_multiplier":0.05},{"item":"minecraft:book","quantity":2,"price_multiplier":0.05}],
+                      "gives": [{"item":"minecraft:book","quantity":1,
+                      "functions":[{"function":"specific_enchants","enchants":[{"id":"unbreaking","level":3},{"id":"mending","level":1}]}]}],
+                      "trader_exp": 25,"max_uses": 5,"reward_exp": true
+                    },
+                    {
+                      "wants": [{"item":"minecraft:diamond","price_multiplier":0.05},{"item":"minecraft:book","quantity":3,"price_multiplier":0.05}],
+                      "gives": [{"item":"minecraft:book","quantity":1,
+                      "functions":[{"function":"specific_enchants","enchants":[{"id":"unbreaking","level":3},{"id":"silk_touch","level":1},{"id":"mending","level":1}]}]}],
+                      "trader_exp": 25,"max_uses": 5,"reward_exp": true
+                    },
+                    {
+                      "choice": [ 
+                        //cured
+                        {
+                          "{{#3..5}}":{
+                            "item":"minecraft:lapis_block","quantity":"{{=value}}",
+                            "filters": { "test": "has_component", "value": "minecraft:color"}
+                          }
+                        },
+                        {
+                          "{{#2..3}}":{
+                            "item":"minecraft:emerald","quantity":"{{=value}}",
+                            "filters": { "test": "has_component", "value": "minecraft:color"}
+                          }
+                        },
+                        { //give 50% weight to 1 emerald for cured to match vanilla
+                          "{{#1..5}}":{
+                            "item":"minecraft:emerald","quantity":1,
+                            "filters": { "test": "has_component", "value": "minecraft:color"}
+                          }
+                        },                                                                      
+                        //normal
+                        {
+                          "{{#1..3}}":{
+                            "item":"minecraft:emerald_block","quantity":"{{=value}}",
+                            "filters": { "none_of":{"test": "has_component", "value": "minecraft:color"}}
+                          }
+                        },
+                        {
+                          "{{#1..3}}":{
+                            "item":"minecraft:diamond","quantity":"{{=value}}",
+                            "filters": { "none_of":{"test": "has_component", "value": "minecraft:color"}}
+                          }
+                        }
+                      ]
+                    },
+                    {"item":"minecraft:book","quantity":1}
+                  ],
+                  "gives": [{"item":"minecraft:book","quantity":1,
+                  "functions":[{"function":"specific_enchants","enchants":[{"id":"{{enchantment}}","level":"{{=max}}"}]}]
+                  }]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "total_exp_required": 250,
+        "groups": [
+          {          
+            "num_to_select": 1,
+            "trades": [
+              {
+                "wants": [{"item":"minecraft:emerald","quantity":1,"price_multiplier":0.05}],
+                "gives": [{"item":"minecraft:glass","quantity":32}],
+                "trader_exp": 10,"max_uses": 8,"reward_exp": true
+              },
+              {
+                "wants": [{"item":"minecraft:emerald","quantity":1,"price_multiplier":0.05}],
+                "gives": [{"item":"minecraft:glowstone","quantity":32}],
+                "trader_exp": 10,"max_uses": 8,"reward_exp": true
+              },
+              {
+                "wants": [{"item":"minecraft:emerald","quantity":1,"price_multiplier":0.05}],
+                "gives": [{"item":"minecraft:book","quantity":16}],
+                "trader_exp": 10,"max_uses": 8,"reward_exp": true
+              }
+            ]
+          },
+          {
+            "num_to_select": 1,
+            "trades": [
+              {
+                "wants": [{"item":"minecraft:diamond","price_multiplier":0.05},{"item":"minecraft:book","quantity":2,"price_multiplier":0.05}],
+                "gives": [{"item":"minecraft:book","quantity":1,
+                "functions":[{"function":"specific_enchants","enchants":[{"id":"unbreaking","level":3},{"id":"mending","level":1}]}]}],
+                "trader_exp": 25,"max_uses": 5,"reward_exp": true
+              },
+              {
+                "wants": [{"item":"minecraft:diamond","price_multiplier":0.05},{"item":"minecraft:book","quantity":3,"price_multiplier":0.05}],
+                "gives": [{"item":"minecraft:book","quantity":1,
+                "functions":[{"function":"specific_enchants","enchants":[{"id":"unbreaking","level":3},{"id":"silk_touch","level":1},{"id":"mending","level":1}]}]}],
+                "trader_exp": 25,"max_uses": 5,"reward_exp": true
+              },
+              {
+                "{{#enchantments.filter(x => x.max == 5)}}":{
+                  "wants": [
+                    {
+                      "choice": [ 
+                        //cured
+                        {
+                          "{{#3..5}}":{
+                            "item":"minecraft:lapis_block","quantity":"{{=value}}",
+                            "filters": { "test": "has_component", "value": "minecraft:color"}
+                          }
+                        },
+                        {
+                          "{{#2..3}}":{
+                            "item":"minecraft:emerald","quantity":"{{=value}}",
+                            "filters": { "test": "has_component", "value": "minecraft:color"}
+                          }
+                        },
+                        { //give 50% weight to 1 emerald for cured to match vanilla
+                          "{{#1..5}}":{
+                            "item":"minecraft:emerald","quantity":1,
+                            "filters": { "test": "has_component", "value": "minecraft:color"}
+                          }
+                        },                                                                      
+                        //normal
+                        {
+                          "{{#1..3}}":{
+                            "item":"minecraft:emerald_block","quantity":"{{=value}}",
+                            "filters": { "none_of":{"test": "has_component", "value": "minecraft:color"}}
+                          }
+                        },
+                        {
+                          "{{#1..3}}":{
+                            "item":"minecraft:diamond","quantity":"{{=value}}",
+                            "filters": { "none_of":{"test": "has_component", "value": "minecraft:color"}}
+                          }
+                        }
+                      ]
+                    },
+                    {"item":"minecraft:book","quantity":1}
+                  ],
+                  "gives": [{"item":"minecraft:book","quantity":1,
+                  "functions":[{"function":"specific_enchants","enchants":[{"id":"{{enchantment}}","level":"{{=max}}"}]}]
+                  }]
+                }
+              }
+            ]
+          }
+        ]      
+      }
+    ]
+  }
+}  

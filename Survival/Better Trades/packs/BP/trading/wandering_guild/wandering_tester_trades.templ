@@ -6,39 +6,53 @@
     "tiers": [
       {
         "groups": [  
-          {"num_to_select":1,"trades":[{"{{#smiths_trade_list.filter(x => x.group == 6)}}":{"trader_exp":5,"max_uses":16,"reward_exp":true,"wants":[{"item":"{{item_wants}}","quantity":"{{=quantity_wants}}"}],"gives":[{"item":"{{item_gives}}","quantity":"{{=quantity_gives}}"}]}}]},          
-          {
-            "num_to_select": 1,
-            "trades": [
-              
-                      
-              { //cheaper trident
-                "trader_exp":10,"max_uses":3,"reward_exp":true,
-                "wants": [
-                  {
-                    "choice": [                      
-                      {"item":"minecraft:lapis_block","quantity":1,"price_multiplier":0.05},
-                      {"item":"dw623:trading_coin","quantity":1,"price_multiplier":0.05}
-                    ]
-                  },
-                  {"item":"minecraft:trident","quantity":1}
-                ],
-                "gives": [{"item":"minecraft:trident","quantity":1,
-                "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]
-              },
-              { // expensive trident
-                "trader_exp":10,"max_uses":3,"reward_exp":true,
-                "wants": [
-                  {
-                    "choice": [                      
-                      {"item":"dw623:trading_paper","quantity":1,"price_multiplier":0.05},
-                      {"item":"dw623:trading_paper","quantity":3,"price_multiplier":0.05},
-                      {"item":"minecraft:emerald","quantity":36,"price_multiplier":0.05}
-                    ]
-                  }
-                ],
-                "gives": [{"item":"minecraft:trident","quantity":1,                
-                "functions":[{"function":"specific_enchants","enchants":[{"id":"unbreaking","level":3},{"id":"mending","level":1},{"id":"loyalty","level":3},{"id":"impaling","level":5}]}]}]
+          {           
+            "trades": [   
+              {
+                "{{#enchantments.filter(x => x.max == 2)}}":{
+                  "wants": [
+                    {
+                      "choice": [ 
+                        //cured
+                        {
+                          "{{#3..5}}":{
+                            "item":"minecraft:lapis_block","quantity":"{{=value}}",
+                            "filters": { "test": "has_component", "value": "minecraft:color"}
+                          }
+                        },
+                        {
+                          "{{#2..3}}":{
+                            "item":"minecraft:emerald","quantity":"{{=value}}",
+                            "filters": { "test": "has_component", "value": "minecraft:color"}
+                          }
+                        },
+                        { //give 50% weight to 1 emerald for cured to match vanilla
+                          "{{#1..5}}":{
+                            "item":"minecraft:emerald","quantity":1,
+                            "filters": { "test": "has_component", "value": "minecraft:color"}
+                          }
+                        },                                                                      
+                        //normal
+                        {
+                          "{{#1..3}}":{
+                            "item":"minecraft:emerald_block","quantity":"{{=value}}",
+                            "filters": { "none_of":{"test": "has_component", "value": "minecraft:color"}}
+                          }
+                        },
+                        {
+                          "{{#1..3}}":{
+                            "item":"minecraft:diamond","quantity":"{{=value}}",
+                            "filters": { "none_of":{"test": "has_component", "value": "minecraft:color"}}
+                          }
+                        }
+                      ]
+                    },
+                    {"item":"minecraft:book","quantity":1}
+                  ],
+                  "gives": [{"item":"minecraft:book","quantity":1,
+                  "functions":[{"function":"specific_enchants","enchants":[{"id":"{{enchantment}}","level":"{{=max}}"}]}]
+                  }]
+                }
               }
             ]
           }          

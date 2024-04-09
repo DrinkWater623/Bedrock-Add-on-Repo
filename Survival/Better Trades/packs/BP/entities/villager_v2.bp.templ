@@ -137,7 +137,7 @@
                   "filters": {
                     "all_of": [
                       {"test":"is_family","subject":"other","value":"player"},
-                      {"test":"has_equipment","domain":"hand","subject":"other","value":"puffer_fish"}
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"dried_kelp"}
                     ]
                   },
                   "event": "minecraft:ageable_grow_up","target": "self"
@@ -145,7 +145,7 @@
                 "use_item": true,                
                 "health_amount": 100,
                 "play_sounds": "eat",  
-                "interact_text": "Kid Drinks Honey",
+                "interact_text": "Kid Eats Dried Kelp",
                 "particle_on_start": {
                   "particle_type": "largeexplode",
                   "particle_y_offset": 0.75
@@ -207,8 +207,10 @@
             ]
           }        
         },       
-        "$become_witch": {          
+        "cg:is_cured": {
+          "minecraft:color":{}
         },
+        "$become_witch": {},
         "unskilled": {
           "minecraft:behavior.trade_interest": {
             "priority": 10,
@@ -220,7 +222,7 @@
           },
           "minecraft:economy_trade_table": {
             "display_name": "Jack of all Trades",
-            "table": "trading/wandering_guild/villager_unskilled_trades.json",
+            "table": "trading/economy_trades/villager_unskilled_trades.json",
             "max_nearby_cured_discount": -500,
             "nearby_cured_discount": -100,
             "new_screen": true,
@@ -240,7 +242,7 @@
           },
           "minecraft:economy_trade_table": {
             "display_name": "Junkman",
-            "table": "trading/wandering_guild/villager_nitwit_trades.json",
+            "table": "trading/economy_trades/villager_nitwit_trades.json",
             "max_nearby_cured_discount": -500,
             "nearby_cured_discount": -100,
             "new_screen": true,
@@ -260,8 +262,8 @@
         },
         "ev:baby_lose_hyper": {
           "remove":{"component_groups":["cg:baby_become_hyper"]},"add":{"component_groups":["cg:baby_lose_hyper"]}
-
         },
+        "ev:as_cured": {"add":{"component_groups":["cg:is_cured"]}},
         "ev:get_villager_type_and_skin": {
           "sequence": [            
             {
