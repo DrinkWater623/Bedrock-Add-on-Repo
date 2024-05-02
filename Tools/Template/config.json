@@ -1,5 +1,5 @@
 {
-	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.1.json",
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
 	"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
 	"name": "DW_Template",
 	"packs": {
@@ -31,11 +31,14 @@
 				"export": {"readOnly":false,"target":"local"},
 				"filters": [
 					{"filter":"dot_ignore"},
-					{"filter":"jsonte"},
+					//{"filter":"jsonte"},
 					{"filter":"empty_ignore"},				
 					{
 						"filter": "mani_fest",
 						"settings": {
+							"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
+							"bp_only":true,
+							"scripting":true,
 							"name": "My Template Add-On",
 							"description": "It is done and It Does Nothing!!!",
 							"getUUIDs": true,

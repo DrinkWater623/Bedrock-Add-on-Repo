@@ -1,0 +1,38 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
+	"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
+	"name": "DW_Template",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"mani_fest": {
+				"runWith": "nodejs",
+				"script": "./filters/mani_fest.js"
+			}
+		},
+		"profiles": {
+			"build": {
+				"export": {"readOnly":false,"target":"local"},
+				"filters": [								
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
+							"bp_only":true,
+							"scripting":true,
+							"name": "My Template Add-On",
+							"description": "It is done and It Does Nothing!!!",
+							"getUUIDs": true,
+							"min_engine_version": [1,20,40],
+							"version": [2,0,1]
+						}
+					}
+				]
+			}			
+		}
+	}
+}

@@ -1,0 +1,11 @@
+{  
+  "$template": {
+    "resource_pack_name": "dw623",
+    "texture_name": "atlas.items",
+    "texture_data": {      
+      "{{#currencies.filter(x => x.active == 1)}}": {
+        "{{item_name}}": {"textures": "textures/items/{{item_name}}"}
+      }
+    }
+  }
+}

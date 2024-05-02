@@ -62,7 +62,7 @@
       {"group":1  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",       "quantity_gives":1  ,"item_gives":"minecraft:orange_tulip"},
       {"group":1  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",       "quantity_gives":1  ,"item_gives":"minecraft:sunflower"},
       {"group":1  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",       "quantity_gives":1  ,"item_gives":"minecraft:white_tulip"},*/
-      {"group":1  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald_block", "quantity_gives":16  ,"item_gives":"minecraft:wither_rose"},
+      {"group":1  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:diamond", "quantity_gives":16  ,"item_gives":"minecraft:wither_rose"},
       
       {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",   "quantity_gives":16  ,"item_gives":"minecraft:cactus"},
       {"group":2  ,"max_uses":25  ,"quantity_wants":1  ,"item_wants":"minecraft:emerald",   "quantity_gives":16  ,"item_gives":"minecraft:bamboo"},
@@ -124,15 +124,17 @@
           {
             "num_to_select": 1,
             "trades": [
-              {
-                "{{#tool_material_list.filter(x => x.level <= 3)}}": {
+              { //wood/stone
+                "{{#tool_material_list.filter(x => x.level <= 2)}}": {
                   "trader_exp":10,"max_uses":10,"reward_exp":true,
                   "wants": [
                     {
                       "choice": [
-                        {"item":"minecraft:lapis_lazuli","quantity":1,"price_multiplier":0.05},
-                        {"item":"dw623:trading_coin","quantity":1,"price_multiplier":0.05},
-                        {"item":"minecraft:emerald","quantity":1,"price_multiplier":0.05}
+                        {"item":"minecraft:copper_ingot","quantity":1},
+                        {"item":"minecraft:raw_copper","quantity":1},
+                        {"item":"minecraft:lapis_block","quantity":1},
+                        {"item":"minecraft:copper_block","quantity":1},
+                        {"item":"minecraft:raw_copper_block","quantity":1}
                       ]
                     }
                   ],
@@ -140,13 +142,33 @@
                   "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
                 }
               },
+              { //iron
+                "{{#tool_material_list.filter(x => x.level == 3)}}": {
+                  "trader_exp":10,"max_uses":10,"reward_exp":true,
+                  "wants": [
+                    {
+                      "choice": [
+                        {"item":"minecraft:copper_block","quantity":1},
+                        {"item":"dw623:emerald_nugget","quantity":1},
+                        {"item":"dw623:trading_coin","quantity":1}
+                      ]
+                    }
+                  ],
+                  "gives": [{"item":"minecraft:{{ore_name}}_hoe","quantity":1,
+                  "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
+                }
+              }
+            ]
+          },
+          {            
+            "trades": [              
               {
-                "wants":[{"item":"minecraft:diamond","quantity":1,"price_multiplier":0.0}],
+                "wants":[{"item":"minecraft:diamond","quantity":1}],
                 "gives":[{"item":"minecraft:green_shulker_box","quantity":1}],
                 "trader_exp":5,"max_uses":2,"reward_exp":true
               }                         
             ]
-          }      
+          }
         ]
       }
     ]

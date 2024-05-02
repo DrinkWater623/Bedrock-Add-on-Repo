@@ -1,0 +1,208 @@
+{
+  /*
+      To Do - better recipes mixed in
+  
+  */  
+  "$template": {
+    "tiers": [
+      {
+        "groups": [
+          {
+            "num_to_select": 2,
+            "trades": [                         
+              //From list
+              {
+                "{{#enchantments}}":{
+                  "max_uses": 3,"reward_exp": true,
+                  "wants": [
+                    {"item":"minecraft:lapis_lazuli","functions":[{"function":"set_count","count":{"min":3,"max":10}}]},
+                    {"item":"minecraft:book","quantity":1}
+                  ],
+                  "gives": [{"item":"minecraft:book","quantity":1,
+                  "functions":[{"function":"specific_enchants","enchants":[{"id":"{{enchantment}}","level":"{{=max}}"}]}]
+                  }]
+                }
+              },
+              // specific combined
+              {
+                "max_uses":3,"reward_exp":true,
+                "wants": [
+                  {"item":"minecraft:lapis_lazuli","functions":[{"function":"set_count","count":{"min":3,"max":10}}]},
+                  {"item":"minecraft:book","quantity":1}
+                ],
+                "gives": [{"item":"minecraft:book","quantity":1,
+                "functions":[{"function":"specific_enchants",
+                "enchants":[{"id":"unbreaking","level":3},{"id":"mending","level":1},{"id":"silk_touch","level":1}]}]}]              
+              },             
+              {
+                "max_uses":3,"reward_exp":true,
+                "wants": [
+                  {"item":"minecraft:lapis_lazuli","functions":[{"function":"set_count","count":{"min":3,"max":10}}]},
+                  {"item":"minecraft:book","quantity":1}
+                ],
+                "gives": [{"item":"minecraft:book","quantity":1,
+                "functions":[{"function":"specific_enchants",
+                "enchants":[{"id":"unbreaking","level":3},{"id":"mending","level":1}]}]}]              
+              }
+            ]
+          },
+          {
+            "trades": [                         
+              //random
+              {
+                "max_uses":3,"reward_exp":true,
+                "wants": [
+                  {"item":"minecraft:lapis_lazuli","functions":[{"function":"set_count","count":{"min":3,"max":10}}]},
+                  {"item":"minecraft:book","quantity":1}
+                ],
+                "gives": [{"item":"minecraft:book","quantity":1,
+                "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
+              }              
+            ]
+          },
+          //armor
+          {
+            "num_to_select": 2,
+            "trades": [
+              {
+                "{{#armor_material_list.filter(x => x.level >= 2)}}": {
+                "{{#armor_list}}": {
+                  "max_uses":3,"reward_exp":true,
+                  "wants": [
+                    {"item":"minecraft:{{ore_name}}_{{armor_name}}","quantity":1},
+                    {"item":"minecraft:lapis_lazuli","quantity":"{{=ore_count * level}}"}
+                  ],
+                  "gives": [{"item":"minecraft:{{ore_name}}_{{armor_name}}","quantity":1,
+                  "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
+                }}
+              }
+            ]
+          },
+          { //elytra  and shield              
+            "num_to_select": 1,
+            "trades": [
+              { 
+                "max_uses":3,"reward_exp":true,
+                "wants": [
+                  {"item":"minecraft:lapis_lazuli","functions":[{"function":"set_count","count":{"min":3,"max":10}}]}, 
+                  {"item":"minecraft:elytra","quantity":1}
+                ],
+                "gives": [{"item":"minecraft:elytra","quantity":1,
+                "functions":[{"function":"specific_enchants","enchants":[{"id":"mending","level":1}]}]}]
+              },
+              { 
+                "max_uses":3,"reward_exp":true,
+                "wants": [
+                  {"item":"minecraft:lapis_lazuli","functions":[{"function":"set_count","count":{"min":3,"max":10}}]}, 
+                  {"item":"minecraft:elytra","quantity":1}
+                ],
+                "gives": [{"item":"minecraft:elytra","quantity":1,
+                "functions":[{"function":"specific_enchants","enchants":[{"id":"unbreaking","level":3}]}]}]
+              },
+              { 
+                "max_uses":3,"reward_exp":true,
+                "wants": [
+                  {"item":"minecraft:lapis_lazuli","functions":[{"function":"set_count","count":{"min":3,"max":10}}]},
+                  {"item":"minecraft:elytra","quantity":1}
+                ],
+                "gives": [{"item":"minecraft:elytra","quantity":1,
+                "functions":[{"function":"specific_enchants","enchants":[{"id":"unbreaking","level":3},{"id":"mending","level":1}]}]}]
+              },
+              { // shield
+                "{{#tool_list.filter(x => x.tool_group == 8)}}": {
+                  "max_uses":3,"reward_exp":true,
+                  "wants": [
+                    {"item":"minecraft:lapis_lazuli","functions":[{"function":"set_count","count":{"min":3,"max":10}}]},
+                    {"item":"minecraft:{{tool_name}}","quantity":1}
+                  ],
+                  "gives": [{"item":"minecraft:{{tool_name}}","quantity":1,
+                  "functions":[{"function":"specific_enchants","enchants":[{"id":"unbreaking","level":3},{"id":"mending","level":1}]}]}]
+                }
+              },
+              { // shield
+                "{{#tool_list.filter(x => x.tool_group == 8)}}": {
+                  "max_uses":3,"reward_exp":true,
+                  "wants": [
+                    {"item":"minecraft:lapis_lazuli","functions":[{"function":"set_count","count":{"min":3,"max":10}}]},
+                    {"item":"minecraft:{{tool_name}}","quantity":1}
+                  ],
+                  "gives": [{"item":"minecraft:{{tool_name}}","quantity":1,
+                  "functions":[{"function":"specific_enchants","enchants":[{"id":"mending","level":1}]}]}]
+                }
+              },
+              { // shield
+                "{{#tool_list.filter(x => x.tool_group == 8)}}": {
+                  "max_uses":3,"reward_exp":true,
+                  "wants": [
+                    {"item":"minecraft:lapis_lazuli","functions":[{"function":"set_count","count":{"min":3,"max":10}}]},
+                    {"item":"minecraft:{{tool_name}}","quantity":1}
+                  ],
+                  "gives": [{"item":"minecraft:{{tool_name}}","quantity":1,
+                  "functions":[{"function":"specific_enchants","enchants":[{"id":"unbreaking","level":1}]}]}]
+                }
+              }
+            ]
+          },    
+           //---------tools - 3
+          {
+            "num_to_select": 1,
+            "trades": [
+              { // shovel, hoe, pick
+                "{{#tool_material_list.filter(x => x.level >= 3)}}": {
+                "{{#tool_list.filter(x => x.tool_group <= 3)}}": {
+                  "max_uses":3,"reward_exp":true,
+                  "wants": [
+                    {"item":"minecraft:{{ore_name}}_{{tool_name}}","quantity":1},
+                    {"item":"minecraft:lapis_lazuli","quantity":"{{=ore_count * level}}"}],
+                  "gives": [{"item":"minecraft:{{ore_name}}_{{tool_name}}","quantity":1,
+                  "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
+                }}
+              },
+              { //rod
+                "{{#tool_list.filter(x => x.tool_group == 7)}}": {
+                  "max_uses":3,"reward_exp":true,
+                  "wants": [
+                    {"item":"minecraft:{{tool_name}}","quantity":1},
+                    {"item":"minecraft:lapis_lazuli","quantity":10} 
+                  ],
+                  "gives": [{"item":"minecraft:{{tool_name}}","quantity":1,
+                  "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
+                }
+              }               
+            ]
+          },
+          {
+            "num_to_select": 1,
+            "trades": [
+              { //pick, axe sword
+                "{{#tool_material_list.filter(x => x.level >= 3)}}": {
+                "{{#tool_list.filter(x => x.tool_group >= 3 && x.tool_group <= 4)}}": {
+                  "max_uses":3,"reward_exp":true,
+                  "wants": [
+                    {"item":"minecraft:{{ore_name}}_{{tool_name}}","quantity":1},
+                    //{"item":"minecraft:lapis_lazuli","functions":[{"function":"set_count","count":{"min":3,"max":10}}]} 
+                    {"item":"minecraft:lapis_lazuli","quantity":"{{=ore_count * level}}"}
+                  ],
+                  "gives": [{"item":"minecraft:{{ore_name}}_{{tool_name}}","quantity":1,
+                  "functions": [{"function":"enchant_with_levels","treasure":true,"levels":{"min":39,"max":39}}]}]                   
+                }}
+              },
+              { //bows or trident
+                "{{#tool_list.filter(x => x.tool_group >= 5 && x.tool_group <= 6)}}": {
+                  "max_uses":3,"reward_exp":true,
+                  "wants": [
+                    {"item":"minecraft:{{tool_name}}","quantity":1},
+                    {"item":"minecraft:lapis_lazuli","quantity":10} 
+                  ],
+                  "gives": [{"item":"minecraft:{{tool_name}}","quantity":1,
+                  "functions": [{"function":"enchant_with_levels","treasure":true,"levels":{"min":39,"max":39}}]}]                   
+                }
+              }               
+            ]
+          }
+          // end tools                   
+        ]
+      }
+    ]
+  }
+}

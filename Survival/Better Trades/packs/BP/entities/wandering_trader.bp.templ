@@ -23,13 +23,13 @@
           //Spawn the Guild
           "minecraft:spawn_entity": {
             "entities": [
-              {"min_wait_time":5,"max_wait_time":15,"spawn_entity":"dw623:wandering_banker","single_use":true,"num_to_spawn":1},
-              {"min_wait_time":5,"max_wait_time":15,"spawn_entity":"dw623:wandering_foodie","single_use":true,"num_to_spawn":1},
-              {"min_wait_time":5,"max_wait_time":15,"spawn_entity":"dw623:wandering_redstoner","single_use":true,"num_to_spawn":1},
-              {"min_wait_time":5,"max_wait_time":15,"spawn_entity":"dw623:wandering_gardener","single_use":true,"num_to_spawn":1},
-              {"min_wait_time":5,"max_wait_time":15,"spawn_entity":"dw623:wandering_black_market","single_use":true,"num_to_spawn":1},
-              {"min_wait_time":5,"max_wait_time":15,"spawn_entity":"dw623:wandering_builder","single_use":true,"num_to_spawn":1},
-              {"min_wait_time":5,"max_wait_time":15,"spawn_entity":"dw623:wandering_casino","single_use":true,"num_to_spawn":1}              
+              {
+                "{{#traders.filter(x => x.active == 1 && x.test == 0)}}": {
+                  "min_wait_time":5,"max_wait_time":15,
+                  "spawn_entity":"dw623:wandering_{{trader}}",
+                  "single_use":true,"num_to_spawn":1
+                }
+              }
             ]
           } 
         }

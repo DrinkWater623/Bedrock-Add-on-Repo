@@ -8,7 +8,7 @@
       {"group":1    ,"quantity_wants":16  ,"item_wants":"minecraft:leather"       ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
       
       {"group":2    ,"quantity_wants":5   ,"item_wants":"minecraft:raw_gold"           ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
-      {"group":2    ,"quantity_wants":10   ,"item_wants":"minecraft:nether_gold_ore"    ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+      {"group":2    ,"quantity_wants":10  ,"item_wants":"minecraft:nether_gold_ore"    ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
       {"group":2    ,"quantity_wants":2   ,"item_wants":"minecraft:gold_ore"           ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
       {"group":2    ,"quantity_wants":2   ,"item_wants":"minecraft:deepslate_gold_ore" ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
 
@@ -24,8 +24,6 @@
       {"group":5    ,"quantity_wants":1   ,"item_wants":"minecraft:ancient_debris"    ,"quantity_gives":4   ,"item_gives":"minecraft:emerald_block"},
       {"group":5    ,"quantity_wants":1   ,"item_wants":"minecraft:netherite_scrap"   ,"quantity_gives":4   ,"item_gives":"minecraft:emerald_block"}
     ]
-//ad bedrock
-  
   },
   "$template": 
       {"tiers": [
@@ -50,9 +48,14 @@
                 "{{#armor_list}}": {
                   "trader_exp":10,"max_uses":10,"reward_exp":true,
                   "wants": [
-                            {"item":"dw623:trading_paper","quantity":1},
-                            {"item":"minecraft:raw_gold","quantity":"{{=ore_count}}"}
-                          ],
+                    {
+                      "choice": [
+                        {"item":"minecraft:lapis_lazuli","quantity":1,"price_multiplier":0.05},
+                        {"item":"minecraft:lapis_block","quantity":1,"price_multiplier":0.05}
+                      ]
+                    },
+                    {"item":"minecraft:{{ore}}","quantity":"{{=ore_count}}"}
+                  ],
                   "gives": [{"item":"minecraft:{{ore_name}}_{{armor_name}}","quantity":1,
                   "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
                 }}
@@ -76,30 +79,17 @@
                     {
                       "choice": [
                         {"item":"minecraft:lapis_lazuli","quantity":1,"price_multiplier":0.05},
-                        {"item":"dw623:trading_coin","quantity":1,"price_multiplier":0.05},
+                        {"item":"minecraft:lapis_block","quantity":1,"price_multiplier":0.05},
+                        //{"item":"dw623:trading_coin","quantity":1,"price_multiplier":0.05},
                         {"item":"minecraft:emerald","quantity":1,"price_multiplier":0.05}
                       ]
                     },
-                    {"item":"minecraft:raw_iron","quantity":"{{=ore_count}}"}
+                    {"item":"minecraft:{{ore}}","quantity":"{{=ore_count}}"}
                   ],
                   "gives": [{"item":"minecraft:{{ore_name}}_{{armor_name}}","quantity":1,
                   "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
                 }}
-              },
-              {
-                "trader_exp":10,"max_uses":10,"reward_exp":true,
-                "wants": [
-                  {
-                    "choice": [
-                      {"item":"minecraft:lapis_block","quantity":32,"price_multiplier":0.05},
-                      {"item":"minecraft:emerald","quantity":3,"price_multiplier":0.05}
-                    ]
-                  },
-                  {"item":"minecraft:raw_iron","quantity":2}
-                ],
-                "gives": [{"item":"minecraft:shears","quantity":1,
-                "functions":[{"function":"specific_enchants","enchants":[{"id":"unbreaking","level":3},{"id":"mending","level":1}]}]}]
-              },
+              },              
               {    
                 "trader_exp":10,"max_uses":3,"reward_exp":true,
                 "wants": [
@@ -107,9 +97,7 @@
                     "choice": [
                       {"item":"minecraft:lapis_block","quantity":64,"price_multiplier":0.05},
                       {"item":"minecraft:emerald","quantity":5,"price_multiplier":0.05},
-                      {"item":"minecraft:diamond","quantity":1,"price_multiplier":0.05},
-                      {"item":"dw623:trading_coin","quantity":48,"price_multiplier":0.05},
-                      {"item":"dw623:trading_paper","quantity":1,"price_multiplier":0.05}
+                      {"item":"minecraft:diamond","quantity":1,"price_multiplier":0.05}
                     ]
                   },
                   {"item":"minecraft:raw_iron","quantity":1}
@@ -137,14 +125,40 @@
           {
             "num_to_select": 2,
             "trades": [
-              {
+              { //cheap - provide your own diamonds
+                "{{#armor_material_list.filter(x => x.level == 4)}}": {
+                "{{#armor_list}}": {
+                  "trader_exp":10,"max_uses":5,"reward_exp":true,
+                  "wants": [
+                    {
+                      "choice": [                        
+                        {"item":"minecraft:lapis_block","quantity":1,"price_multiplier":0.05},
+                        {"item":"minecraft:copper_block","quantity":1,"price_multiplier":0.05}
+                      ]
+                    },
+                    {"item":"minecraft:{{ore}}","quantity":"{{=ore_count}}"}
+                  ],
+                  "gives": [{"item":"minecraft:{{ore_name}}_{{armor_name}}","quantity":1,
+                  "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
+                }}
+              },
+              { //normal - provide your own diamonds
                 "{{#armor_material_list.filter(x => x.level == 4)}}": {
                 "{{#armor_list}}": {
                   "trader_exp":10,"max_uses":10,"reward_exp":true,
                   "wants": [
-                            {"item":"dw623:trading_paper","quantity":2},
-                            {"item":"minecraft:diamond","quantity":"{{=ore_count}}"}
-                          ],
+                    {"item":"minecraft:emerald","quantity":1,"price_multiplier":0.05},
+                    {"item":"minecraft:{{ore}}","quantity":"{{=ore_count}}"}
+                  ],
+                  "gives": [{"item":"minecraft:{{ore_name}}_{{armor_name}}","quantity":1,
+                  "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
+                }}
+              },
+              { //normal 
+                "{{#armor_material_list.filter(x => x.level == 4)}}": {
+                "{{#armor_list}}": {
+                  "trader_exp":10,"max_uses":10,"reward_exp":true,
+                  "wants": [{"item":"minecraft:emerald","quantity":1,"price_multiplier":0.05}],
                   "gives": [{"item":"minecraft:{{ore_name}}_{{armor_name}}","quantity":1,
                   "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
                 }}
@@ -165,7 +179,7 @@
                 "{{#armor_list}}": {
                   "trader_exp":10,"max_uses":10,"reward_exp":true,
                   "wants": [
-                            {"item":"dw623:trading_paper","quantity":10},
+                            {"item":"dw623:trading_paper","quantity":10}, //CHANGE out so no dw623 items locked inTO VILLAGER
                             {"item":"minecraft:diamond","quantity":"{{=ore_count}}"}
                           ],
                   "gives": [{"item":"minecraft:{{ore_name}}_{{armor_name}}","quantity":1,
@@ -177,10 +191,11 @@
                 "{{#armor_list}}": {
                   "trader_exp":10,"max_uses":10,"reward_exp":true,
                   "wants": [
-                            {"item":"dw623:trading_paper","quantity":8},
+                            {"item":"minecraft:netherite_ingot","quantity":1},
                             {"item":"minecraft:diamond","quantity":"{{=ore_count}}"}
                           ],
                   "gives": [{"item":"minecraft:{{ore_name}}_{{armor_name}}","quantity":1}]                   
+                  // REMEMBER TO ADD PLAIN (NON ENCHANTED) TO EACH
                 }}
               }
             ]

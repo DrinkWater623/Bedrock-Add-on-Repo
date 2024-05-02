@@ -7,31 +7,18 @@
         "groups": [
           {"num_to_select":1,"trades":[{"{{#smiths_trade_list.filter(x => x.group == 0)}}":{"trader_exp":5,"max_uses":16,"reward_exp":true,"wants":[{"item":"{{item_wants}}","quantity":"{{=quantity_wants}}"}],"gives":[{"item":"{{item_gives}}","quantity":"{{=quantity_gives}}"}]}}]},
           {"num_to_select":1,"trades":[{"{{#wooden_tool_woods}}":{"trader_exp":5,"max_uses":16,"reward_exp":true,"wants":[{"item":"minecraft:{{wood}}_log","quantity":8}],"gives":[{"item":"minecraft:emerald","quantity":1}]}}]},
-          {
-            "num_to_select":1,
-            "trades":[
-              {
-                "{{#stone_tool_stones}}":{
-                  "trader_exp":5,"max_uses":16,"reward_exp":true,
-                  "wants":[{"item":"minecraft:{{stone}}","quantity":8}],
-                  "gives":[{"item":"minecraft:emerald","quantity":1}]
-                }
-              }
-            ]
-          },
-          {
+          {"num_to_select":1,"trades":[{"{{#stone_tool_stones}}":{"trader_exp":5,"max_uses":16,"reward_exp":true,"wants":[{"item":"minecraft:{{stone}}","quantity":16}],"gives":[{"item":"minecraft:emerald","quantity":1}]}}]},
+          { 
             "num_to_select": 1,
             "trades": [
-              {                
+              { // wooden tool               
                 "{{#tool_list.filter(x => x.tool_group <= 3)}}": {
                   "trader_exp":10,"max_uses":5,"reward_exp":true,
                   "wants": [
                     {
                       "choice": [
                         {"item":"minecraft:lapis_lazuli","quantity":1,"price_multiplier":0.05},
-                        {"item":"minecraft:lapis_block","quantity":1,"price_multiplier":0.05},
-                        {"item":"dw623:trading_coin","quantity":1,"price_multiplier":0.05},
-                        {"item":"minecraft:emerald","quantity":1,"price_multiplier":0.05}
+                        {"item":"minecraft:lapis_block","quantity":1,"price_multiplier":0.05}
                       ]
                     },                    
                     {
@@ -45,7 +32,7 @@
                   "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
                 }
               },
-              {
+              { //stone
                 "{{#tool_list.filter(x => x.tool_group <= 3)}}": {
                   "trader_exp":10,"max_uses":5,"reward_exp":true,
                   "wants": [
@@ -53,8 +40,7 @@
                       "choice": [
                         {"item":"minecraft:lapis_lazuli","quantity":1,"price_multiplier":0.05},
                         {"item":"minecraft:lapis_block","quantity":1,"price_multiplier":0.05},
-                        {"item":"dw623:trading_coin","quantity":1,"price_multiplier":0.05},
-                        {"item":"minecraft:emerald","quantity":1,"price_multiplier":0.05}
+                        {"item":"dw623:trading_coin","quantity":1,"price_multiplier":0.05}
                       ]
                     },
                     {"choice":[{"{{#stone_tool_stones}}":{"item":"minecraft:{{stone}}","quantity":"{{=ore_count}}","price_multiplier":0.05}}]}
@@ -75,7 +61,7 @@
           {
             "num_to_select": 1,
             "trades": [
-              {
+              { //cheap - provide own gold
                 "{{#tool_material_list.filter(x => x.level == 3)}}": {
                 "{{#tool_list.filter(x => x.tool_group <= 3)}}": {
                   "trader_exp":10,"max_uses":10,"reward_exp":true,
@@ -83,11 +69,26 @@
                     {
                       "choice": [
                         {"item":"minecraft:lapis_lazuli","quantity":1,"price_multiplier":0.05},
-                        {"item":"minecraft:lapis_block","quantity":1,"price_multiplier":0.05},
-                        {"item":"dw623:trading_coin","quantity":1,"price_multiplier":0.05}
+                        {"item":"minecraft:lapis_block","quantity":1,"price_multiplier":0.05}
                       ]
                     },
                     {"item":"minecraft:{{ore}}","quantity":"{{=ore_count}}"}
+                  ],
+                  "gives": [{"item":"minecraft:{{ore_name}}_{{tool_name}}","quantity":1,
+                  "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
+                }}
+              },
+              { //max 
+                "{{#tool_material_list.filter(x => x.level == 3)}}": {
+                "{{#tool_list.filter(x => x.tool_group <= 3)}}": {
+                  "trader_exp":10,"max_uses":10,"reward_exp":true,
+                  "wants": [
+                    {
+                      "choice": [                        
+                        {"item":"minecraft:lapis_block","quantity":1,"price_multiplier":0.05},
+                        {"item":"dw623:trading_coin","quantity":1,"price_multiplier":0.05}
+                      ]
+                    }
                   ],
                   "gives": [{"item":"minecraft:{{ore_name}}_{{tool_name}}","quantity":1,
                   "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
@@ -101,23 +102,53 @@
         "total_exp_required": 70,
         "groups": [
           {"num_to_select":1,"trades":[{"{{#smiths_trade_list.filter(x => x.group == 4)}}":{"trader_exp":5,"max_uses":16,"reward_exp":true,"wants":[{"item":"{{item_wants}}","quantity":"{{=quantity_wants}}"}],"gives":[{"item":"{{item_gives}}","quantity":"{{=quantity_gives}}"}]}}]},
-          {
+          { 
             "num_to_select": 1,
             "trades": [
               {
+                "trader_exp":10,"max_uses":10,"reward_exp":true,
+                "wants": [
+                  {
+                    "choice": [
+                      {"item":"minecraft:lapis_block","quantity":32,"price_multiplier":0.05},
+                      {"item":"minecraft:emerald","quantity":3,"price_multiplier":0.05}
+                    ]
+                  },
+                  {"item":"minecraft:raw_iron","quantity":2}
+                ],
+                "gives": [{"item":"minecraft:shears","quantity":1,
+                "functions":[{"function":"specific_enchants","enchants":[{"id":"unbreaking","level":3},{"id":"mending","level":1}]}]}]
+              },
+              { //cheap - provide own iron
                 "{{#tool_material_list.filter(x => x.level == 4)}}": {
                 "{{#tool_list.filter(x => x.tool_group <= 3)}}": {
                   "trader_exp":10,"max_uses":10,"reward_exp":true,
                   "wants": [
                     {
                       "choice": [
-                        {"item":"minecraft:lapis_lazuli","quantity":1,"price_multiplier":0.05},
+                        {"item":"minecraft:lapis_lazuli","quantity":64,"price_multiplier":0.05},
                         {"item":"minecraft:lapis_block","quantity":1,"price_multiplier":0.05},
-                        {"item":"dw623:trading_coin","quantity":1,"price_multiplier":0.05},
-                        {"item":"minecraft:emerald","quantity":1,"price_multiplier":0.05}
+                        {"item":"dw623:trading_coin","quantity":1,"price_multiplier":0.05}
                       ]
                     },
                     {"item":"minecraft:{{ore}}","quantity":"{{=ore_count}}"}
+                  ],
+                  "gives": [{"item":"minecraft:{{ore_name}}_{{tool_name}}","quantity":1,
+                  "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
+                }}
+              },
+              { //max - pre-made
+                "{{#tool_material_list.filter(x => x.level == 4)}}": {
+                "{{#tool_list.filter(x => x.tool_group <= 3)}}": {
+                  "trader_exp":10,"max_uses":5,"reward_exp":true,
+                  "wants": [
+                    {
+                      "choice": [
+                        {"item":"minecraft:lapis_block","quantity":64,"price_multiplier":0.05},
+                        {"item":"dw623:trading_coin","quantity":1,"price_multiplier":0.05},
+                        {"item":"minecraft:emerald","quantity":1,"price_multiplier":0.05}
+                      ]
+                    }
                   ],
                   "gives": [{"item":"minecraft:{{ore_name}}_{{tool_name}}","quantity":1,
                   "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
@@ -156,10 +187,21 @@
                     {
                       "choice": [                        
                         {"item":"minecraft:lapis_block","quantity":1,"price_multiplier":0.05},
-                        {"item":"dw623:trading_coin","quantity":1,"price_multiplier":0.05},
-                        {"item":"minecraft:emerald","quantity":1,"price_multiplier":0.05}
+                        {"item":"dw623:trading_coin","quantity":1,"price_multiplier":0.05}
                       ]
                     },
+                    {"item":"minecraft:{{ore}}","quantity":"{{=ore_count}}"}
+                  ],
+                  "gives": [{"item":"minecraft:{{ore_name}}_{{tool_name}}","quantity":1,
+                  "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
+                }}
+              },
+              { //normal - provide your own diamonds
+                "{{#tool_material_list.filter(x => x.level == 5)}}": {
+                "{{#tool_list.filter(x => x.tool_group <= 3)}}": {
+                  "trader_exp":10,"max_uses":3,"reward_exp":true,
+                  "wants": [
+                    {"item":"minecraft:emerald","quantity":1,"price_multiplier":0.05},
                     {"item":"minecraft:{{ore}}","quantity":"{{=ore_count}}"}
                   ],
                   "gives": [{"item":"minecraft:{{ore_name}}_{{tool_name}}","quantity":1,
@@ -170,7 +212,7 @@
                 "{{#tool_material_list.filter(x => x.level == 5)}}": {
                 "{{#tool_list.filter(x => x.tool_group <= 3)}}": {
                   "trader_exp":10,"max_uses":10,"reward_exp":true,
-                  "wants": [{"item":"dw623:trading_paper","quantity":1,"price_multiplier":0.05}],
+                  "wants": [{"item":"minecraft:diamond","quantity":1,"price_multiplier":0.05}],
                   "gives": [{"item":"minecraft:{{ore_name}}_{{tool_name}}","quantity":1,
                   "functions": [{"function":"enchant_with_levels","treasure":false,"levels":{"min":39,"max":39}}]}]                   
                 }}

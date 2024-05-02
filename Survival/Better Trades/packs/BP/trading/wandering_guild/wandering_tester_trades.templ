@@ -1,61 +1,47 @@
 {
   "$scope":{
-    
+    "trade_list":[      
+      {"group":0    ,"quantity_wants":8   ,"item_wants":"minecraft:charcoal"     ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+      {"group":0    ,"quantity_wants":8   ,"item_wants":"minecraft:coal"         ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+      {"group":0    ,"quantity_wants":1   ,"item_wants":"minecraft:lava_bucket"  ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+
+      {"group":1    ,"quantity_wants":16  ,"item_wants":"minecraft:leather"       ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+      
+      {"group":2    ,"quantity_wants":5   ,"item_wants":"minecraft:raw_gold"           ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+      {"group":2    ,"quantity_wants":10  ,"item_wants":"minecraft:nether_gold_ore"    ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+      {"group":2    ,"quantity_wants":2   ,"item_wants":"minecraft:gold_ore"           ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+      {"group":2    ,"quantity_wants":2   ,"item_wants":"minecraft:deepslate_gold_ore" ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+
+      {"group":3    ,"quantity_wants":4   ,"item_wants":"minecraft:raw_iron"           ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+      {"group":3    ,"quantity_wants":2   ,"item_wants":"minecraft:iron_ore"           ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+      {"group":3    ,"quantity_wants":2   ,"item_wants":"minecraft:deepslate_iron_ore" ,"quantity_gives":1    ,"item_gives":"minecraft:emerald"},
+
+      {"group":4    ,"quantity_wants":1   ,"item_wants":"minecraft:diamond_block"         ,"quantity_gives":9    ,"item_gives":"minecraft:emerald_block"},
+      {"group":4    ,"quantity_wants":1   ,"item_wants":"minecraft:diamond_ore"           ,"quantity_gives":3   ,"item_gives":"minecraft:emerald_block"},
+      {"group":4    ,"quantity_wants":1   ,"item_wants":"minecraft:deepslate_diamond_ore" ,"quantity_gives":3   ,"item_gives":"minecraft:emerald_block"},
+
+      {"group":5    ,"quantity_wants":1   ,"item_wants":"minecraft:netherite_ingot"   ,"quantity_gives":16  ,"item_gives":"minecraft:emerald_block"},
+      {"group":5    ,"quantity_wants":1   ,"item_wants":"minecraft:ancient_debris"    ,"quantity_gives":4   ,"item_gives":"minecraft:emerald_block"},
+      {"group":5    ,"quantity_wants":1   ,"item_wants":"minecraft:netherite_scrap"   ,"quantity_gives":4   ,"item_gives":"minecraft:emerald_block"}
+    ]
   },
   "$template": {
     "tiers": [
       {
+        //TEST IF CAN GET ENCHANT LIST IN THERE
         "groups": [  
-          {           
-            "trades": [   
-              {
-                "{{#enchantments.filter(x => x.max == 2)}}":{
-                  "wants": [
-                    {
-                      "choice": [ 
-                        //cured
-                        {
-                          "{{#3..5}}":{
-                            "item":"minecraft:lapis_block","quantity":"{{=value}}",
-                            "filters": { "test": "has_component", "value": "minecraft:color"}
-                          }
-                        },
-                        {
-                          "{{#2..3}}":{
-                            "item":"minecraft:emerald","quantity":"{{=value}}",
-                            "filters": { "test": "has_component", "value": "minecraft:color"}
-                          }
-                        },
-                        { //give 50% weight to 1 emerald for cured to match vanilla
-                          "{{#1..5}}":{
-                            "item":"minecraft:emerald","quantity":1,
-                            "filters": { "test": "has_component", "value": "minecraft:color"}
-                          }
-                        },                                                                      
-                        //normal
-                        {
-                          "{{#1..3}}":{
-                            "item":"minecraft:emerald_block","quantity":"{{=value}}",
-                            "filters": { "none_of":{"test": "has_component", "value": "minecraft:color"}}
-                          }
-                        },
-                        {
-                          "{{#1..3}}":{
-                            "item":"minecraft:diamond","quantity":"{{=value}}",
-                            "filters": { "none_of":{"test": "has_component", "value": "minecraft:color"}}
-                          }
-                        }
-                      ]
-                    },
-                    {"item":"minecraft:book","quantity":1}
-                  ],
-                  "gives": [{"item":"minecraft:book","quantity":1,
-                  "functions":[{"function":"specific_enchants","enchants":[{"id":"{{enchantment}}","level":"{{=max}}"}]}]
-                  }]
-                }
-              }
-            ]
-          }          
+          { 
+            "{{#a_test.filter(x => x.words == 'a')}}": {
+            "trader_exp":10,"max_uses":10,"reward_exp":true,
+            "wants": [
+              {"item":"minecraft:emerald","quantity":3},
+              {"item":"minecraft:diamond_hoe","quantity":1}
+            ],
+            "gives": [{"item":"minecraft:shears","quantity":1,
+            "functions":[{"function":"specific_enchants",
+            "enchants":["{{list}}"]              
+            }]}]
+          }}                
         ]
       }
     ]
