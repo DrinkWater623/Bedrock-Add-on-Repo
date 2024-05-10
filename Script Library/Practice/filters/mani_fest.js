@@ -26,10 +26,8 @@ Change Log:
     20230304 - NAA - Added Julian Style Build Date to the Description (make optional Later)
                     Added default version is [yy,m,d] DW Style
     20240429 - NAA - Added Scripting stuff
-    20240509 Working on multi @minecraft modules
 
-To Do:
-    () multi-ser server in settings, take in as array and get versions for each    
+To Do:    
     () Make code efficient - Nikki style 
     () Make is so I can have a dev and rel pack icon - prob can use the data section to hold and use by name or settings has filename
     () maybe grab the project and author from config for Meta Data

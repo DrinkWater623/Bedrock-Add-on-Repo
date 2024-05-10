@@ -8,11 +8,7 @@
 	},
 	"regolith": {
 		"dataPath": "./packs/data",
-		"filterDefinitions": {
-			"jsonte": {
-				"url": "github.com/MCDevKit/regolith-library",
-				"version": "2.12.0"
-			},
+		"filterDefinitions": {			
 			"dot_ignore": {
 				"runWith": "python",
 				"script": "./filters/dot_ignore.py"
@@ -39,8 +35,8 @@
 						"settings": {
 							"src": "all",
 							"ignoreFileRegEx":[],
-							"copyJsFiles": true,			//true means same folders as src
-							"dest": "from-ts"
+							"copyJsFiles": true,			
+							"dest": "default"
 						}
 					}
 				]
@@ -54,7 +50,7 @@
 							"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
 							//"rp_only":true,
 							//"bp_only":true,
-							//"scripting":false,  turn off even if you have files
+							"scripting":true,
 							"name": "My Template Add-On",
 							"description": "It is done and It Does Nothing!!!",
 							"getUUIDs": true,
@@ -71,22 +67,21 @@
 				"export": {"readOnly":false,"target":"development"},
 				"filters": [
 					{"filter":"dot_ignore"},
-					{"filter":"jsonte"},
 					{"filter":"empty_ignore"},				
 					{
 						"filter": "mani_fest",
 						"settings": {
 							"BP": {
-								"UUID": "e95ade4e-1e32-4418-a0ff-00a3dea5a442",
-								"module": "5177c861-bd36-4809-b33d-82c28ff6ed74"
+								"UUID": "3b9dd728-b56c-4a6c-9e6e-44078f3128e9",
+								"module": "24198277-54c1-4e78-83ce-77329927a9ff"
 							},
 							"RP": {
-								"UUID": "bd733592-f101-4da5-9d28-34a9cc9dbe60",
-								"module": "11a6f2dc-000d-42f8-8af7-c2f7c57ccd53"
+								"UUID": "490810eb-739f-4047-8c02-2b4f008c8bbb",
+								"module": "ba0df930-4607-4d4d-a2d7-94f90704d5fd"
 							},
 							"name": "Dev: ?",
 							"description": "Work in Progress",
-							"min_engine_version": [1,20,40]
+							"min_engine_version": "get"
 						}
 					}
 				]
