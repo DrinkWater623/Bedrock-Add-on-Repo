@@ -35,6 +35,7 @@ Change Log:
     20240429 - NAA - Added Scripting stuff
     20240509 Working on multi @minecraft dependencies
     20240512 - NAA - Ability to grab author from config.json
+    20240513 - Naa - Multi-Server
 
 To Do:
     () multi-ser server in settings, take in as array and get versions for each    
