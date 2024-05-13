@@ -1,7 +1,7 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
-	"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
-	"name": "DW_Template",
+	"author": "DrinkWater623/PinkSalt623 aka Nikki DW (BAO/OSS)",	
+	"name": "DW_Template",	
 	"packs": {
 		"behaviorPack": "./packs/BP",
 		"resourcePack": "./packs/RP"
@@ -45,19 +45,19 @@
 					}
 				]
 			},
-			"build": {
+			"test_mani": {
 				"export": {"readOnly":false,"target":"local","rpName": "'RP'","bpName": "'BP'"},				
 				"filters": [							
 					{
 						"filter": "mani_fest",
-						"settings": {
-							"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
+						"settings": {							
 							//"rp_only":true,
 							//"bp_only":true,
 							//"scripting":false,  turn off even if you have files
+							//"getUUIDs": true, //default is true. Use false for those you did not provide a default for, to not auto get a new one
+							"getUUIDs": true,
 							"name": "My Template Add-On",
 							"description": "It is done and It Does Nothing!!!",
-							"getUUIDs": true,
 							"min_engine_version": "get-1",
 							"version": [2,0,1],
 							"BP": {
@@ -86,7 +86,7 @@
 							},
 							"name": "Dev: ?",
 							"description": "Work in Progress",
-							"min_engine_version": [1,20,40]
+							"min_engine_version": "get"
 						}
 					}
 				]

@@ -31,8 +31,11 @@ To Do:
 //VS Code Colors
 const fg_Reset = '\x1b[0m'
 const fg_Error = '\x1b[91m%s'
+const fg_ErrorNext = fg_Error+fg_Reset
 const fg_Warning = '\x1b[31m%s'
+const fg_WarningNext = fg_Warning+fg_Reset
 const fg_Success = '\x1b[32m%s'
+const fg_SuccessNext = fg_Success+fg_Reset
 const fg_General = '\x1b[36m%s'
 const fg_GeneralNext = fg_General+fg_Reset
 const fg_Debug = '\x1b[95m%s'
@@ -87,7 +90,7 @@ function fileTreeGet(path, onlyExt = "", minFileSize = 0){
         fs.readdirSync(path)
     }
     catch {
-        console.log(fg_Warning,"Error: Folder =",path,"Does Not Exist, Skipping")
+        console.log(fg_Warning,"Error: Folder =",path,"Does Not Exist, Skipping",fg_Reset)
         return []
     }
     const tempFileList = fs.readdirSync(path)
@@ -167,7 +170,7 @@ function programSettings(){
         
         if (!(folder.startsWith(pathsAllowed[0]) || folder.startsWith(pathsAllowed[1]))) {
             let errMsg = `Settings Error: all src TS paths must be within "`+pathsAllowed[0]+`" or "`+pathsAllowed[0]+`"  xxx> `+folder+` <xxx`;
-            console.log(fg_Error,errMsg)
+            console.log(fg_ErrorNext,errMsg)
             throw new Error (errMsg);
         }
 
@@ -201,7 +204,7 @@ function programSettings(){
             prgSettings.dest = "BP/"+prgSettings.dest;
         }
         else {
-            console.log(fg_Warning,`Adding ${bpScriptsPath} to dest=` + prgSettings.dest,fg_Reset);
+            console.log(fg_Warning,`Adding ${bpScriptsPath} to dest =`,prgSettings.dest,fg_Reset);
             prgSettings.dest = bpScriptsPath+"/"+prgSettings.dest;
         }
     }
@@ -228,7 +231,7 @@ function programSettings(){
 
         if (!folder.startsWith(pathsAllowed[0])) {            
             let errMsg = `Settings Error: all copy JS paths must be within "`+pathsAllowed[0]+`"  xxx> `+folder+` <xxx`;
-            console.log(fg_Error,errMsg)
+            console.log(fg_ErrorNext,errMsg)
             throw new Error(errMsg);
         }
 
@@ -326,7 +329,7 @@ function compile_ts_files(){
             let dest = src.replace(path,prgSettings.dest).replace('//','/').replace('.ts','.js');
             dest = fileInfo.parse(dest).dir;
             compile_ts_src(src,dest);
-            console.log(fg_Success,"<>",src,"==>",dest,fg_Reset);
+            console.log(fg_SuccessNext,"<>",src,"==>",dest);
         }
     }
 }
@@ -370,7 +373,7 @@ function main(){
     getJsFileList();
 
     if(prgSettings.jsFileList.length + prgSettings.tsFileList.length == 0) {
-        console.log(fg_Success,"No TS or JS Scripts, Nothing to Do");
+        console.log(fg_SuccessNext,"No TS or JS Scripts, Nothing to Do");
         return;
     }
     
