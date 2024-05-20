@@ -45,7 +45,7 @@
 					}
 				]
 			},
-			"test_mani": {
+			"test-mani": {
 				"export": {"readOnly":false,"target":"local","rpName": "'RP'","bpName": "'BP'"},				
 				"filters": [							
 					{
@@ -61,7 +61,7 @@
 							"min_engine_version": "get-1",
 							"version": [2,0,1],
 							"BP": {
-								"scripting_version": "get"
+								"scripting": true
 							}
 						}
 					}

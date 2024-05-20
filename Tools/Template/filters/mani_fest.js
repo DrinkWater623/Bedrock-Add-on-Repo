@@ -1,18 +1,8 @@
 // @ts-check
+let isDebug = true;
+let isDebugMax = false;
 //WORK IN PROGRESS to Add Multiple servers and scrape for version numbers
-let isDebug = false
-//VS Code Colors
-const fg_Reset = '\x1b[0m'
-const fg_Error = '\x1b[91m%s'
-const fg_ErrorNext = fg_Error+fg_Reset
-const fg_Warning = '\x1b[31m%s'
-const fg_WarningNext = fg_Warning+fg_Reset
-const fg_Success = '\x1b[32m%s'
-const fg_SuccessNext = fg_Success+fg_Reset
-const fg_General = '\x1b[36m%s'
-const fg_GeneralNext = fg_General+fg_Reset
-const fg_Debug = '\x1b[95m%s'
-const fg_DebugNext = fg_Debug+fg_Reset
+//=====================================================================
 /*
 Information:
     Author:     DrinkWater623/PinkSalt623
@@ -46,18 +36,404 @@ To Do:
 //=====================================================================
 const fs = require("fs");
 const myUUID = require("crypto");
+//=====================================================================
+// Classes
+//=====================================================================
+class FetchSiteJsonStack{    
+    constructor(sites=[]){
+        this.fetchStack = sites
+        .filter(v=> typeof v === "string")
+        .filter(v => v.length > 0)
+        .map(site => this.#siteObj(site));
+    }    
+    promiseStack = [];
+    //--------------------------------------
+    debugOn = false;
+    #colorReset = '\x1b[0m';
+    #colorMap = new Map(
+        [
+            ["bold"     ,97],
+            ["error"    ,91],
+            ["highlight",47],
+            ["log"      ,38],
+            ["success"  ,92],
+            ["warn"     ,93]
+        ]
+    )
+    #colorString(colorName) {
+        return "\x1b[" +this. #colorMap.get(colorName) + "m%s"
+    }    
+    //--------------------------------------    
+    #siteObj(site) {
+        return{
+            site: site,            
+            success: false,
+            data:{},
+            dataType: "Unknown",
+            err: ""
+        }
+    }
+    //add fetchSiteDel....
+    fetchAdd(...sites){
+        sites
+            .filter(v=> typeof v === "string")
+            .filter(v => v.length > 0)
+            .forEach(site => this.fetchStack.push(this.#siteObj(site)))        
+    }  
+    #fetchNext(){
+        if ( this.fetchStack.length === 0 ) return;
+
+        let errCode = this.#colorString("error");
+        let warnCode = this.#colorString("warn");
+        let successCode = this.#colorString("success");
+        
+        let newFetch = this.fetchStack.pop()
+        if(typeof newFetch != "object") return;
+        
+        //should this be b4 the pop?  not sure
+        this._preFetchEach(newFetch);
+        //because user could alter the object
+        if (!("site" in newFetch) || newFetch.site.length === 0) {                
+            if(this.fetchStack.length) this.#fetchNext();            
+            return;
+        }
+
+        if (this.debugOn) console.log(this.#colorString("bold"),"==> Fetching Site:",newFetch.site,this.#colorReset)
+        
+        fetch(newFetch.site)
+            .then(response => {    
+                let returnedJson = {}
+
+                if (response.ok) {
+                    newFetch.success = true;  
+                    //FIXME:              
+                    try {
+                        returnedJson = response.json();
+                        newFetch.dataType = 'json'
+                    }
+                    catch(err) {                        
+                        console.error(this.#colorString("error"),"xx> Not a JSON Site:",newFetch.site,this.#colorReset)                    
+                    }
+                }
+                else {
+                    newFetch.success = false;
+                    if (this.debugOn) console.warn(this.#colorString("warn"),"xx> Fetch Response Not-Ok");
+                }
+                return returnedJson;
+            })
+            .then(data => { //note: keep this part sep from above, works better
+                if (newFetch.success)
+                    newFetch.data = data;                
+            })            
+            .catch(error => {
+                newFetch.err = error;
+                if (this.debugOn) console.error(this.#colorString("error"),"xx> Fetch Error:", error,this.#colorReset)
+            })
+            .finally(() => {        
+                this.promiseStack.push(newFetch);        
+                
+                this._postPromiseEach();
+
+                if (this.fetchStack.length) 
+                    this.#fetchNext();
+                else {
+                    console.log(this.#colorString("success"),"==> Fetch Stack is Now Empty!");
+                    this._postPromiseAll();
+                }
+            });   
+    }
+    fetchesStart(){
+        if (this.debugOn) console.log("**> fetchStart()")
+        if ( this.fetchStack.length > 0 ) 
+            this.#fetchNext()
+        else 
+            console.warn(this.#colorString("warn"),"xx> Fetch List is Empty")
+    }
+    consoleLogFetchList(){
+        if (this.debugOn) console.log(this.#colorString("bold"),"* consoleLogFetchList()","length:",this.fetchStack.length);
+        let list = [];
+        this.fetchStack.forEach(v => list.push(v.site));
+        if (list.length > 0) console.table (list);
+        else if (this.debugOn) console.warn(this.#colorString("warn"),"Fetch List is Empty")        
+    }          
+    consoleLogPromiseList(){
+        if (this.debugOn) console.log(this.#colorString("bold"),"* consoleLogPromiseList()","length:",this.promiseStack.length);
+        let list = [];
+        this.promiseStack.forEach(v => list.push(
+            {
+                Retrieved: v.success,
+                DataType: v.dataType,
+                Site: v.site
+            }));
+        if (list.length > 0) console.table (list); 
+        else if (this.debugOn) console.warn(this.#colorString("warn"),"==> Response List is Empty")
+    }    
+    //for Json Data Only else will fail
+    consoleLogPromiseKeys(){
+        if (this.debugOn) console.log(this.#colorString("bold"),"* consoleLogPromiseKeys()","length:",this.promiseStack.length);
+        if (this.promiseStack.length == 0) {
+            if (this.debugOn) console.warn(this.#colorString("warn"),"==> Response List is Empty")
+            return;
+        }
+        for(let i in this.promiseStack) {
+            let obj = this.promiseStack[i]
+            
+            if (obj.success) {            
+                console.info(this.#colorString("success"),"Site:",obj.site,this.#colorReset)
+                const keys = Object.keys(obj.data);
+                console.table(keys);
+            }
+            else
+                console.error(this.#colorString("error"),"Failed Site:",obj.site,"Err:",obj.err,this.#colorReset)
+        }        
+    }
+    //--------------------------------------------------------------
+    //Expecting Class user to Overwrite these in their extended copy
+    //--------------------------------------------------------------
+    /*
+    This is called after each fetch is done whether it failed or not.  
+    This is how you can use your extend class functions in between fetches
+    i.e. you extended the constructor and want to add properties and update them
+    i.e. change the fetch stack based on response information
+    */
+    _preFetchEach(fetchObj){     
+        if (this.promiseStack.length === 0) {
+            console.warn(this.#colorString("warn"),"* _preFetchEach(fetchObj) is called before every site fetch.")
+            console.warn(this.#colorString("warn"),"\tReplace it in your Extended class")
+        }
+    }
+    /*
+    This is called after each promise is returned, whether it failed or not.  
+    This is how you can use your extend class functions in between fetches
+    i.e. you extended the constructor and want to add properties and update them
+    i.e. change the fetch stack based on response information
+    */
+    _postPromiseEach(){     
+        if (this.promiseStack.length === 1) {
+            console.warn(this.#colorString("warn"),"* _postPromiseEach() is called after the returned promise of every fetch.")
+            console.warn(this.#colorString("warn"),"\tReplace it in your Extended class")
+        }
+    }
+    /*
+    This is called after last fetch in stack is done.  
+    This is how you can continue your node program, making it wait until all the promises are fulfilled
+    before it continues to your next function
+    */
+    _postPromiseAll(){        
+        console.warn(this.#colorString("warn"),"* _postPromiseAll() is called after all promises are returned.")
+        console.warn(this.#colorString("warn"),"\tReplace it in your Extended class, to keep processing alive in Node JS")
+        this.consoleLogPromiseList()
+    }
+}
+//=====================================================================
+class McModuleFetchStack extends FetchSiteJsonStack{
+    //If I wanted to add to the constructor
+    /*
+        constructor(sites=[]){
+            super(sites);
+            this.newVariable = 0;
+        }    
+    */
+    _preFetchEach(){}
+    _postPromiseEach(){}
+    _postPromiseAll(){                
+        mainAfterFetch();
+    }
+}
+let myFetch;
+//=====================================================================
+class Debug {
+    constructor(booleanValue = true){
+        this.debugOn = booleanValue;
+    }
+    //-------------------------------------- 
+    //TODO: Add methods to show keys and values   
+    colorsAdded = new Map(
+        [
+            ["userExample"  ,44]
+        ]
+    )
+    #colorDefaultAssignments = new Map(
+        [
+            ["bold"     ,97],
+            ["error"    ,91],
+            ["highlight",107],
+            ["log"      ,38],
+            ["mute"     ,90],
+            ["success"  ,92],
+            ["underline",52],
+            ["warn"     ,93]
+        ]
+    )     
+    #colorMap = new Map(
+        [           
+            ["red"      ,91],
+            ["yellow"   ,93],
+            ["green"    ,92],
+            ["blue"     ,94],
+            ["purple"   ,95],
+            ["cyan"     ,96],
+            ["white"    ,97],
+            ["gray"     ,90],
+            ["black-bg"    ,40],
+            ["red-bg"      ,41],
+            ["yellow-bg"   ,103],
+            ["green-bg"    ,102],
+            ["blue-bg"     ,104],
+            ["magenta-bg"  ,105],
+            ["cyan-bg"     ,106],
+            ["white-bg"    ,107],
+            ["gray-bg"     ,100]
+        ]
+    )
+    #colorReset = '\x1b[0m';
+    //--------------------------------------
+    off() {this.debugOn = false;}
+    on()  {this.debugOn = true;}
+    //--------------------------------------
+    color(colorPtr,...args) {if (this.debugOn && args.length) this.#log(colorPtr,args)}
+    bold(...args)           {if (this.debugOn && args.length) this.#log("bold",args)}
+    error(...args)          {if (this.debugOn && args.length) this.#log("error",args)}
+    highlight(...args)      {if (this.debugOn && args.length) this.#log("highlight",args)}
+    log(...args)            {if (this.debugOn && args.length) this.#log("log",args)}
+    mute(...args)           {if (this.debugOn && args.length) this.#log("mute",args)}
+    success(...args)        {if (this.debugOn && args.length) this.#log("success",args)}
+    underline(...args)      {if (this.debugOn && args.length) this.#log("underline",args)}
+    warn(...args)           {if (this.debugOn && args.length) this.#log("warn",args)}
+    colorsList() {        
+        if (this.colorsAdded.size > 0) {
+            this.highlight("User Defined Colors (Overrides Defaults)")
+            this.colorsAdded.forEach(
+                (value,key) => {
+                    let colorString = "\x1b[" + value + "m%s"
+                    console.log(colorString,"User Defined Color:",key,value,this.#colorReset)
+                }
+            )            
+        }
+        
+        this.highlight("Default Assignments")
+        this.#colorDefaultAssignments.forEach(
+            (value,key) => {
+                let colorString = "\x1b[" + value + "m%s"
+                console.log(colorString,"Color Default Assignments:",key,value,this.#colorReset)
+            }
+        )
+        
+        this.highlight("Colors")
+        this.#colorMap.forEach(
+            (value,key) => {
+                let colorString = "\x1b[" + value + "m%s"
+                console.log(colorString,"Color:",key,value,this.#colorReset)
+            }
+        ) 
+    }
+    //--------------------------------------
+    #colorNumberGet(color) {       
+
+        if (typeof color === "number") return color;
+        else
+        if (typeof color === "string") {
+            //@ts-ignore
+            if (this.colorsAdded.has(color)) return  this.colorsAdded.get(color)                            
+            //@ts-ignore
+            else if (this.#colorDefaultAssignments.has(color)) return this.#colorDefaultAssignments.get(color)
+            //@ts-ignore
+            else if (this.#colorMap.has(color)) return this.#colorMap.get(color)
+            //@ts-ignore
+            else return this.#colorMap.get("gray-bg")
+        }
+        //@ts-ignore
+        else return this.#colorMap.get("gray-bg")
+    }
+    #log(color,args) {
+        let isWarning = false;
+        let isError = false;
+        let isSuccess = false;
+        let asTable = false;
+        let colorNumber = this.#colorNumberGet(color);
+
+        if (typeof color === "string") {
+            isError = (color === "error");
+            isWarning = (color === "warn");
+            isSuccess = (color === "success");
+            asTable = (color === "table");  //force table and table cannot use color anyway
+        }
+
+        let colorString = "\x1b[" + colorNumber + "m%s"
+        let colorReset = '\x1b[0m';
+
+        while (Array.isArray(args) && args.length === 1) args = args[0];        
+        if (asTable) if(typeof args === "string") args = [...args];
+
+        if (Array.isArray(args) || asTable) {
+            if(isError)     this.error("Error:");
+            if(isWarning)   this.error("Warning:");
+            if(isSuccess)   this.error("Success:");
+            console.table(args);
+        }
+        else {
+            if (isWarning) console.warn(colorString,args,this.#colorReset)
+            else if (isError) console.error(colorString,args,this.#colorReset)
+            else console.log(colorString,args,this.#colorReset)
+        }
+    }       
+    //------------------------------------------    
+    static error(...args)       {let temp = new Debug(true); temp.error(args)}
+    static success(...args)     {let temp = new Debug(true); temp.success(args)}
+    static warn(...args)        {let temp = new Debug(true); temp.warn(args)}
+    static log(...args)         {let temp = new Debug(true); temp.log(args)}
+    static mute(...args)        {let temp = new Debug(true); temp.mute(args)}
+    static highlight(...args)   {let temp = new Debug(true); temp.highlight(args)}
+    static color(color,...args) {let temp = new Debug(true); temp.color(color,args)}
+}
+let debug = new Debug(isDebugMax || isDebug);
+//My Changed
+debug.colorsAdded.set("functionStart",95)
+debug.colorsAdded.set("functionEnd",90)
+debug.colorsAdded.set("tableTitle",96)
+debug.colorsAdded.set("list",36)
+debug.colorsAdded.set("log",90)
+//=====================================================================
+// Global variables
 var argPath = process.argv[1];
 var argSettings = process.argv[2];
 const cmdLineSettingsJson = JSON.parse(argSettings);
 var minecraftScrapeData;
 var scrapeServer;
-var configFile;
-//var latestStableScriptingVersion
-
-main();
-
+let scriptingModuleData
+let scriptingModuleList = []
 //=======================================================================
-function newUUID() { return myUUID.randomUUID() }
+function isArrayOfObjects(array) { 
+    if (Array.isArray(array))
+        return array.every((item) => typeof item === "object"); 
+
+    return false;
+}
+function isArrayOfStrings(array) { 
+    if (Array.isArray(array))
+        return array.every((item) => typeof item === "string"); 
+
+    return false
+}  
+function isArrayOfArrays(array) { 
+    if (Array.isArray(array))
+        return array.every((item) => Array.isArray(item)); 
+    
+    return false;
+}
+function isArrayOfSameTypes(array) { 
+    if (!Array.isArray(array)) return false
+
+    let firstType = typeof array[0]
+    return array.every((item) => typeof item === firstType); 
+}
+function isArrayOfMixedTypes(array) { 
+    if (!Array.isArray(array)) return false
+
+    return !isArrayOfSameTypes(array); 
+}   
+//=======================================================================
+function newUUID() { return myUUID.randomUUID(); }
 //=======================================================================
 function isEmptyFolder(path){
     
@@ -75,11 +451,11 @@ function containFilesWithExt(path,ext){
 }
 //=======================================================================
 function masterDefaultSettings(){
-    if(isDebug) console.log(fg_Debug,"* Master Default Settings",fg_Reset)    
+    debug.color("functionStart","* masterDefaultSettings()")    
 
     //conform - later add FORCE
-    cmdLineSettingsJson.bp_only = false || cmdLineSettingsJson.bp_only
-    cmdLineSettingsJson.rp_only = false || cmdLineSettingsJson.rp_only
+    cmdLineSettingsJson.bp_only = !!cmdLineSettingsJson.bp_only
+    cmdLineSettingsJson.rp_only = !!cmdLineSettingsJson.rp_only
     
     //per User
     if (cmdLineSettingsJson.rp_only && cmdLineSettingsJson.bp_only) {            
@@ -112,10 +488,9 @@ function masterDefaultSettings(){
     if(!("dependencies" in cmdLineSettingsJson)) cmdLineSettingsJson.dependencies = true;
     //Reasons to cancel/deny
     if(cmdLineSettingsJson.dependencies){
-        //later go get the UUID from those manifest... 
-        cmdLineSettingsJson.dependencies = !fs.existsSync("BP/manifest.json")
-        cmdLineSettingsJson.dependencies = cmdLineSettingsJson.dependencies && !fs.existsSync("RP/manifest.json")        
-        if(!cmdLineSettingsJson.dependencies) console.log("==> Cannot do dependencies if you make your own manifest.json!")
+        //later, be able to go get the UUID from those manifest... 
+        cmdLineSettingsJson.dependencies = !fs.existsSync("BP/manifest.json") && !fs.existsSync("RP/manifest.json")
+        if(!cmdLineSettingsJson.dependencies) Debug.warn("==> Cannot do dependencies if you make your own manifest.json!")
     }
     console.log("==> Dependencies:",cmdLineSettingsJson.dependencies ? "Verified" : "None")
     
@@ -123,28 +498,21 @@ function masterDefaultSettings(){
     //default to true since it will not override user provided UUIDs, user must specify false to exclude
     cmdLineSettingsJson.getUUIDs =  !!cmdLineSettingsJson.getUUIDs
     //------------------------------------------------------------------------------------------
+    if (!cmdLineSettingsJson.rp_only) cmdLineSettingsJson.isScriptingFiles = fs.existsSync("BP/scripts")     
+    if (cmdLineSettingsJson.isScriptingFiles) cmdLineSettingsJson.isScriptingFiles = containFilesWithExt("BP/scripts","js");
+    if (!cmdLineSettingsJson.rp_only) console.log("==> Scripting Files:",cmdLineSettingsJson.isScriptingFiles ? "Found" : "None")
+    //------------------------------------------------------------------------------------------
+    cmdLineSettingsJson.author = cmdLineSettingsJson.author || getConfigFileAuthor() || "Add Author Name Here";        
+    //------------------------------------------------------------------------------------------
     if (!("BP" in cmdLineSettingsJson)) { cmdLineSettingsJson.BP = {} };
     if (!("RP" in cmdLineSettingsJson)) { cmdLineSettingsJson.RP = {} }; 
     cmdLineSettingsJson.BP.type = "BP"
-    cmdLineSettingsJson.RP.type = "RP"
-    //------------------------------------------------------------------------------------------
-    // User wants me to be detective    
-    if (!("scripting" in cmdLineSettingsJson)) cmdLineSettingsJson.scripting = fs.existsSync("BP/scripts")
-     //reasons to deny
-    if (cmdLineSettingsJson.scripting){                    
-        cmdLineSettingsJson.scripting = containFilesWithExt("BP/scripts","js");
-        if(!cmdLineSettingsJson.scripting) console.log("==> No JS Files - Scripting Module is Denied!")  
-    }
-
-    console.log("==> Scripting:",cmdLineSettingsJson.scripting ? "Verified" : "None")
-    cmdLineSettingsJson.BP.scripting = cmdLineSettingsJson.scripting;
-    cmdLineSettingsJson.RP.scripting = false;
-
-    cmdLineSettingsJson.author = cmdLineSettingsJson.author || getConfigFileAuthor() || "Add Author Name Here";        
-}
+    cmdLineSettingsJson.RP.type = "RP"    
+} //end of masterDefaultSettings
 //================================================================================================
 function ApplyDefaultSettings(pSettings) {
-    if(isDebug) console.log(fg_Debug,"* ApplyDefaultSettings(",pSettings.type,")",fg_Reset)    
+    debug.color("functionStart","* ApplyDefaultSettings("+pSettings.type+")")
+
     let p = pSettings.type;
     const d = new Date();
     //@ts-ignore
@@ -169,84 +537,211 @@ function ApplyDefaultSettings(pSettings) {
         console.log("==>",pSettings.type,"New Module UUID")
         pSettings.module = newUUID() 
     }
-    
-    //only a BP can have this be true
-    if (pSettings.scripting){        
+    if(pSettings.min_engine_version.startsWith("get")) {
+        if (!scriptingModuleList.includes("@minecraft/server")) scriptingModuleList.push("@minecraft/server")
+    }
+    debug.mute("x ApplyDefaultSettings()")
+}//end of ApplyDefaultSettings
+//=============================================================================================
+function ApplyScriptingSettings(pSettings) {   
+    debug.color("functionStart","* ApplyScriptingSettings("+pSettings.type+")") 
+    let mcPrefix = "@minecraft/"
 
-        let mcPrefix = "@minecraft/"
+    //Verification of files already done
+    //-----------------------------------------------------------
+    if (!('scripting' in pSettings)) { pSettings.scripting = {}; }
 
-        let list = {
-            script_uuid:"get",
-            script_entry:"scripts/main.js",  //need to check for alt names
-            scripting_module_name:mcPrefix + "server", //may need to have more than one of these (server/version key/pair)
-            scripting_version:"get"
+    if (typeof pSettings.scripting === 'boolean') {
+        if(pSettings.scripting)  pSettings.scripting = {};
+        else {
+            cmdLineSettingsJson.isScriptingFiles = false;
+            delete pSettings.scripting;
+            return;
         }
-        /*
-            need it to look like this and be able to handle all of these scenarios
-            1) string
-                "@minecraft/server"
-            3) object
-                {
-                    module:@minecraft/server,
-                    version : "get"  or actual version
-                }
-            2) array of string
-                ["@minecraft/server","@minecraft/server-uid",@minecraft/common]
-            4) array of objects
-            [
-                {
-                    module:@minecraft/server,
-                    version : "get"  or actual version
-                },
-                {
-                    module:@minecraft/server-ui,
-                    version : "get"  or actual version
-                }
+    }  
+    if (typeof pSettings.scripting === 'string') {
+        let stringValue = pSettings.scripting
 
-            ]
-            5) just an idea, but scrape scripts and look for which to get.
-        */
-        for (const property in list){
-            // omitted
-            if (!(property in pSettings)) pSettings[property] = list[property]
-
-            //if empty, set default
-            if(!pSettings[property]) pSettings[property] = list[property]
-        }
-
-        if (pSettings.script_uuid == "get") { 
-            console.log("==>",pSettings.type,"New Script UUID")
-            pSettings.script_uuid = newUUID() 
-        }
-        let serverList = ["server","server-ui"]
-        //correct simple name
-        if(serverList.includes(pSettings.scripting_module_name)) {
-            pSettings.scripting_version_mod = pSettings.scripting_module_name
-            pSettings.scripting_module_name = mcPrefix+pSettings.scripting_module_name
+        if(["default","all"].includes(stringValue))  {
+            pSettings.scripting = {}
+            pSettings.scripting.modules = stringValue;
         }
         else
-        if (pSettings.scripting_module_name.substring(0,11) !== mcPrefix)
-            throw new Error('scripting_module_name should start with ' + mcPrefix);
+        if(stringValue.includes("server"))  {
+            pSettings.scripting = {}
+            pSettings.scripting.modules = [...stringValue];
+            debug.log( pSettings.scripting.modules)
+        }
+        else
+        if(stringValue.includes(".js"))  {
+            pSettings.scripting = {}
+            pSettings.scripting.entry = stringValue;
+        }
+        else {
+            Debug.error("xx> Error: Invalid string for BP.scripting, skipping scripting.","User Value: "+stringValue)
+            cmdLineSettingsJson.isScriptingFiles = false;
+            delete pSettings.scripting;
+            return;
+        }
+    }  
+    else
+    if(Array.isArray(pSettings.scripting)){
+        const array = [...pSettings.scripting]
+        pSettings.scripting = {}
+        pSettings.scripting.modules = Object.assign({},array)
+    }
+    else
+    if (typeof pSettings.scripting != 'object') {
+        Debug.error("xx> Error: Invalid Value Type: BP.scripting","Value: "+pSettings.scripting)
+        cmdLineSettingsJson.isScriptingFiles = false;
+        delete pSettings.scripting;
+        return
+    }
+    //-----------------------------------------------------------
+    const scriptSettings = pSettings.scripting;
+    //-----------------------------------------------------------
+    let defaultList = {
+        uuid:"get",
+        entry:fs.existsSync("BP/scripts/index.js") ? "scripts/index.js" : fs.existsSync("BP/scripts/main.js") ? "scripts/main.js" : false  
+    }
 
-        let mod = pSettings.scripting_module_name.substring(mcPrefix.length);
-        pSettings.scripting_version_mod = mod;
+    for (const property in defaultList){
+        if (!(property in scriptSettings)) scriptSettings[property] = defaultList[property]
+        else        
+        if(!scriptSettings[property]) scriptSettings[property] = defaultList[property]
+    }
 
-        //can only retrieve non-beta versions for now - verify correct server
-        //just confirm server types, it will be gotten later
-        if(pSettings.scripting_version === "get"){          
-            if(!serverList.includes(mod))
-                throw new Error('module types server/server-ui only');
+    if (scriptSettings.uuid == "get") { 
+        console.log("==> New Script UUID")
+        scriptSettings.uuid = newUUID() 
+    }
+    //----------------------------------------------------------- 
+    if(!("modules" in scriptSettings)) scriptSettings.modules = "default"  
+
+    if (typeof scriptSettings.modules === "boolean") scriptSettings.modules = "default"  //later false cancels     
+    else
+    if (typeof scriptSettings.modules === "number") scriptSettings.modules = "default"         
+    //----------------------------------------------------------- 
+    
+    if (typeof scriptSettings.modules == "string") {
+        let stringValue = scriptSettings.modules;
+
+        if (stringValue == "default")
+            scriptSettings.modules = ["@minecraft/server","@minecraft/server-ui"]
+        else
+        if (stringValue == "all")
+            scriptSettings.modules = ["@minecraft/server","@minecraft/server-ui"]
+        else
+        if (stringValue == "stable")
+            scriptSettings.modules = ["@minecraft/server","@minecraft/server-ui"]
+        else
+        if (stringValue.includes("server")) {           
+            let servers = stringValue.split(",");
+            scriptSettings.modules = []
+            for (let server of servers) 
+                scriptSettings.modules.push({module: server,version : "get"})
+        }
+        else {
+            Debug.error("Invalid Value Type: BP.scripting.modules",stringValue )
+            cmdLineSettingsJson.isScriptingFiles = false;
+            delete pSettings.scripting;
+            return 
         }
     }
-    //remove all references - just in case
-    else {
-        let list = ["script_entry","scripting_module_name","scripting_version","script_uuid"];    
-        for(let v of list) if (v in pSettings) delete pSettings[v];
+    // Reminder: modules is supposed to be an array of objects {module: "server",version : "x-x-x"}
+    if (Array.isArray(scriptSettings.modules)){        
+
+        if(isArrayOfMixedTypes(scriptSettings.modules)) {
+            //TODO: later see if can deal with this... if string and objects only
+            Debug.error("BP.scripting.modules array is of mixed types","Cannot create scripting information",scriptSettings.modules)
+            cmdLineSettingsJson.isScriptingFiles = false;
+            delete pSettings.scripting;
+            return
+        }
+        else
+        if(isArrayOfStrings(scriptSettings.modules)) {
+            let modules = [...scriptSettings.modules];
+            //TODO: should dedupe and fix words if wrong
+            scriptSettings.modules = [];
+            modules.forEach(server => scriptSettings.modules.push({module: server,version : "get"}))
+        }
+        else
+        if(!isArrayOfObjects(scriptSettings.modules)) {
+            //TODO: later see if can deal with this... if string and objects only
+            Debug.error(" BP.scripting.modules s/b array of objects","Cannot create scripting information",scriptSettings.modules)
+            cmdLineSettingsJson.isScriptingFiles = false;
+            delete pSettings.scripting;
+            return
+        }
     }
-} //end of ApplyDefaultSettings
+    else
+    if (typeof scriptSettings.module == "object"){
+        let tempModule = Object.assign({},scriptSettings.modules);
+        scriptSettings.modules = [];
+        scriptSettings.modules.push(tempModule)
+    }
+    else {
+        Debug.error("BP.scripting.modules s/b array of objects","Cannot create scripting information",scriptSettings.modules)
+        cmdLineSettingsJson.isScriptingFiles = false;
+        delete pSettings.scripting;
+        return
+    }
+    //---------------------------
+    // Validate Array of Objects
+    //---------------------------
+    for (let mod of scriptSettings.modules) {
+        if(!("version" in mod)) mod.version = "get";
+        if(!("module" in mod) && "server" in mod) {
+            mod.module = mod.server;
+            delete mod.version;
+        }
+        //TODO: also verify typeofs
+        if(!("module" in mod)) {
+            Debug.error("BP.scripting.modules[] is missing member module","Cannot create scripting information",mod)
+            cmdLineSettingsJson.isScriptingFiles = false;
+            delete pSettings.scripting;
+            return
+        }
+        //confirm and/or fix - valid servers
+        let allowedServerList = ["@minecraft/server","@minecraft/server-ui"]
+
+        if (!allowedServerList.includes(mod.module)) {
+            
+            if (allowedServerList.includes("@minecraft/" + mod.module)) {
+                mod.module = "@minecraft/" + mod.module;      
+                mod.valid = true;
+            }      
+            else
+            if (allowedServerList.includes("@minecraft" + +mod.module)) {
+                mod.module = "@minecraft" + mod.module;
+                mod.valid = true;
+            } 
+            else
+            if (allowedServerList.includes('@'+mod.module)) {
+                mod.module = "@" + mod.module;
+                mod.valid = true;
+            } 
+            else            
+            {
+                Debug.error("Invalid Scripting Module",mod.module)
+                mod.valid = false;
+            }
+        } 
+        else mod.valid = true;       
+    } // end for loop
+        
+    //TODO: Dedupe 
+
+    //Add to fetch list
+    for (let mod of scriptSettings.modules){
+        if (!scriptingModuleList.includes(mod.module)) scriptingModuleList.push(mod.module);
+    }
+    debug.mute("x ApplyScriptingSettings")
+} //end of ApplyScriptingSettings
 //=============================================================================================
 function buildManifest(pSettings) {
-    if(isDebug) console.log(fg_Debug,"* buildManifest(",pSettings.type,")",fg_Reset)    
+    debug.color("functionStart","* buildManifest("+pSettings.type+")")  
+
     let p = pSettings.type;
     const manifest = {
         "format_version": 2,
@@ -305,12 +800,12 @@ function buildManifest(pSettings) {
     }
 
     fs.writeFileSync(p + "/manifest.json", JSON.stringify(manifest, null, 4));
-    console.log(fg_Success,"==>",pSettings.type,"manifest.json exported",fg_Reset)
-
+    Debug.success("==> "+pSettings.type+" manifest.json exported")
+    debug.mute("x buildManifest")
 } //end of buildManifest
 //=======================================================================
 function manifests(fromFetch = false){    
-    if (isDebug) console.log(fg_Debug,"* Start manifests( fromFetch = ",fromFetch,")",fg_Reset)    
+    debug.color("functionStart","* Start manifests( fromFetch = "+fromFetch+")")    
     
     /**
      * This is the last main function called.
@@ -321,13 +816,13 @@ function manifests(fromFetch = false){
     if (!cmdLineSettingsJson.bp_only) buildManifest(cmdLineSettingsJson.RP);    
     if (!cmdLineSettingsJson.rp_only) buildManifest(cmdLineSettingsJson.BP);    
 
-    if(fromFetch) mainEnd() // because of possible async fetch.then
+    if(fromFetch) mainAfterFetch() // because of possible async fetch.then
 
-    if (isDebug) console.log(fg_Debug,"x manifests()",fg_Reset)   
+    debug.mute("x manifests()")   
 }
 //=======================================================================
 function manifestRedirect(){
-    if (isDebug) console.log(fg_Debug,"* Start manifestRedirect()",fg_Reset)    
+    debug.color("functionStart","* Start manifestRedirect()")    
 
     const bpSettings = cmdLineSettingsJson.BP;
     const rpSettings = cmdLineSettingsJson.RP;
@@ -356,12 +851,12 @@ function manifestRedirect(){
                 }
                 else {
                     verNum = 0                    
-                    console.log(fg_Warning,"xx> Invalid get-# for stable version, using latest instead",json.type,json.min_engine_version.substring(0,4),fg_Reset)
+                    Debug.warn("Invalid get-# for stable version","using latest instead",json.type,json.min_engine_version.substring(0,4))
                 }
                 
                 if (verNum >= orderedKeys.length){
                     verNum = orderedKeys.length - 1
-                    console.log(fg_Warning,"xx> get-# exceeds number of stable versions, using last instead",json.type,json.min_engine_version,fg_Reset)
+                    Debug.warn("get-# exceeds number of stable versions","Using last instead",json.type,json.min_engine_version)
                 }
             }
             
@@ -402,7 +897,7 @@ function manifestRedirect(){
             
 
             if(ErrMsg.length > 0)
-                console.log(fg_Warning,"xx>",ErrMsg,bpSettings.type,bpSettings.scripting_version,fg_Reset)
+                Debug.warn(ErrMsg,bpSettings.type,bpSettings.scripting_version)
         }
 
         bpSettings.scripting_version = latest;
@@ -414,11 +909,11 @@ function manifestRedirect(){
 
     manifests(true);
 
-    if (isDebug) console.log(fg_Debug,"x manifestRedirect()",fg_Reset)  
+    debug.mute("x manifestRedirect()")  
 }
 //=======================================================================
 function minecraft_scrape(){
-    if (isDebug) console.log(fg_Debug,"* Start minecraft_scrape()",fg_Reset)
+    debug.color("functionStart","* Start minecraft_scrape()")
     /**
      * server, server-ui   NO common
      * 
@@ -430,7 +925,7 @@ function minecraft_scrape(){
     scrapeServer = "@minecraft/" + (cmdLineSettingsJson.BP.scripting_version_mod || "server")
     let site = "https://registry.npmjs.org/" + scrapeServer
 
-    console.log(fg_Warning,"==> scraping site :",site,fg_Reset)
+    console.log("==> scraping site:",site)
 
     fetch(site)
         .then(response => {    
@@ -438,19 +933,20 @@ function minecraft_scrape(){
             return response.json();
         })
         .then(data => {
-            console.log(fg_SuccessNext,"==> Data Retrieved")    
+            Debug.success("==> Data Retrieved")    
             minecraftScrapeData = data;                        
             manifestRedirect();
         })       
         .catch(error => {
             console.error('Fetch error:', error);
         });
-    if (isDebug) console.log(fg_DebugNext,"x Out-Of-Sync minecraft_scrape()")
+
+    debug.mute("x Out-Of-Sync minecraft_scrape()")
 }
 //=======================================================================
 function jsonParseRemovingComments(text){
-    let isDebugMe = false;
-    if(isDebugMe) console.log(fg_DebugNext,"* jsonParseRemovingComments()")
+    let debugMe = new Debug(false);
+    debugMe.underline("* jsonParseRemovingComments()")
     //text is a string, not JSON.. which obviously does not need this function
     let dataString = text;
 
@@ -480,7 +976,7 @@ function jsonParseRemovingComments(text){
             dataJson = JSON.parse(dataString);;
         } catch (err) {
             more = true;
-            if(isDebugMe) console.log(fg_Error,"err.name",err.name,"err.message=",err.message,fg_Reset)
+            debugMe.error("err.name: "+err.name,err.message)
             let errTrapArray = [
                 "Expected double-quoted property name in JSON at position ",
                 "Expected property name or '}' in JSON at position "
@@ -509,21 +1005,22 @@ function jsonParseRemovingComments(text){
                 }                
             }
             else {
-                console.log(fg_WarningNext,"Error: JSON Parse Error Not Configured",err.message);
-                if(isDebugMe) console.log(fg_WarningNext,"x jsonParseRemovingComments()")
+                Debug.error("JSON Parse Error Not Configured");
+                Debug.error(err.message);
+                debugMe.error("x jsonParseRemovingComments()")
                 return null;
             }
         }
     }
     while(more);
 
-    if(isDebugMe) console.log(fg_SuccessNext,"x jsonParseRemovingComments()")
+    debugMe.success("x jsonParseRemovingComments()")
     return dataJson
 }
 //=======================================================================
 function getConfigFileAuthor(){
-    let isDebugMe=false;
-    if(isDebugMe) console.log(fg_DebugNext,"* getConfigFileAuthor()")
+    let debugMe = new Debug(false);
+    debugMe.underline("* getConfigFileAuthor()")
     /*
         Known, this filter is either under 
             ./.regolith or
@@ -535,8 +1032,8 @@ function getConfigFileAuthor(){
     let ptr = (argPath.lastIndexOf(path_1) > 0 ? argPath.lastIndexOf(path_1) : argPath.lastIndexOf(path_2)) + 1;
 
     if (!ptr) {
-        console.log(fg_WarningNext,"Error: Cannot find path to config.sys to get author, skipping");
-        if(isDebugMe) console.log(fg_DebugNext,"x getConfigFileAuthor()")
+        Debug.warn("Error: Cannot find path to config.sys to get author, skipping");
+        debugMe.error("x getConfigFileAuthor()")
         return null;
     }
 
@@ -546,40 +1043,41 @@ function getConfigFileAuthor(){
         const data = fs.readFileSync(configPathFilename, 'utf8');
         configData = data;
     } catch (err) {
-        console.log(fg_WarningNext,"Error: Cannot read config.sys to get author, skipping");
-        if(isDebugMe) console.log(fg_DebugNext,"x getConfigFileAuthor()")
+        Debug.warn("Error: Cannot read config.sys to get author, skipping");
+        debugMe.warn("x getConfigFileAuthor()")
         return null;
     }
 
     if(!configData.search("\"author\"")) {
-        console.log(fg_WarningNext,"Error: Cannot find word author in config.sys to get author, skipping");
-        if(isDebugMe) console.log(fg_DebugNext,"x getConfigFileAuthor()")
+        Debug.warn("Error: Cannot find word author in config.sys to get author, skipping");
+        debugMe.warn("x getConfigFileAuthor()")
         return null;
     }
 
     let configJson
     configJson = jsonParseRemovingComments(configData)
     if(!configJson) {
-        console.log(fg_WarningNext,"Error: Cannot parse config.sys to get author, skipping");
-        if(isDebugMe) console.log(fg_DebugNext,"x getConfigFileAuthor()")
+        Debug.warn("Error: Cannot parse config.sys to get author, skipping");
+        debugMe.warn("x getConfigFileAuthor()")
         return null;
     }
 
-    console.log(fg_SuccessNext,"==> found author =",configJson.author)
+    Debug.success("==> found author: "+configJson.author)
+    debugMe.success("x getConfigFileAuthor()")
+
     return configJson.author;
 }
 //=======================================================================
-function main(){
-    isDebug = !!cmdLineSettingsJson.debug || isDebug;    
-    if (isDebug) console.log(fg_DebugNext,"* main()")
-    
+function main(){    
+    debug.color("functionStart","* main()")
+debug.off()
     masterDefaultSettings();
 
-    //Append Setting Defaults
     const bpSettings = cmdLineSettingsJson.BP;
     if (!cmdLineSettingsJson.rp_only) {
         bpSettings.ModuleType = "data";
         ApplyDefaultSettings(bpSettings);
+        if(cmdLineSettingsJson.isScriptingFiles) ApplyScriptingSettings(bpSettings) 
     }
 
     const rpSettings = cmdLineSettingsJson.RP
@@ -594,42 +1092,69 @@ function main(){
         rpSettings.depUUID = bpSettings.UUID
         rpSettings.depVersion = bpSettings.version
     }
+    /**
+     * TODO:
+     * if scriptingModuleList is not empty, 
+     *      go fetch
+     *      from there call next step to process modules
+     *      above process will call 
+     */
+debug.on()
+    if (scriptingModuleList.length) {
+        debug.color("tableTitle","* List of Modules to Fetch")
+        const siteList = scriptingModuleList.map(v => "https://registry.npmjs.org/" + v)
+        myFetch = new McModuleFetchStack(siteList);
+        
+        //TODO: add readable property to debug to show if on or not, can use to turn on and off stuff
+        //like below
+        myFetch.debugOn = true;
+        myFetch.consoleLogFetchList();
+        myFetch.fetchesStart();
 
-    //---------------------------
-    let goScrape = false
-    if(bpSettings.min_engine_version.startsWith("get")) goScrape = true;
-    else
-    if(rpSettings.min_engine_version.startsWith("get")) goScrape = true;
-    else
-    if(bpSettings.scripting && bpSettings.scripting_version.startsWith("get")) goScrape = true;
-    
-    if (goScrape) {
-        minecraft_scrape();
-        if (isDebug) console.log(fg_Debug,"x Out-Of-Sync main()",fg_Reset)
+        debug.highlight("x fake end of main() due to scripting module fetches")
     }
     else {
-        manifests();
-        mainEnd();
+        mainAfterFetch();
+        debug.success("x main()");
     }
-
-    if (isDebug) console.log(fg_DebugNext,"x main()")
-    
+     
+    //debug.colorsList()   
 }
 //=======================================================================
-function mainEnd(){
-    if (isDebug) {
-        if (!cmdLineSettingsJson.rp_only) fs.writeFileSync("BP/debug.bpSettings.json", JSON.stringify(cmdLineSettingsJson.BP));
-        if (!cmdLineSettingsJson.bp_only) fs.writeFileSync("RP/debug.rpSettings.json", JSON.stringify(cmdLineSettingsJson.RP));
+function mainAfterFetch(){
+    debug.color("functionStart","* mainAfterFetch()")
 
-        if (cmdLineSettingsJson.bp_only || !cmdLineSettingsJson.rp_only) fs.writeFileSync("BP/debug.ConfigSettings.json", JSON.stringify(cmdLineSettingsJson));
-        else
-        if (cmdLineSettingsJson.rp_only) fs.writeFileSync("RP/debug.ConfigSettings.json", JSON.stringify(cmdLineSettingsJson));
+    myFetch.consoleLogPromiseList();
+    //myFetch.consoleLogPromiseKeys();
 
-        console.log(fg_DebugNext,"Debug Files Exported");
+    for(let obj of myFetch.promiseStack){
+        //console.log(obj.data['dist-tags']);
+        obj.latest = obj.data['dist-tags']['latest']
+        obj.beta = obj.data['dist-tags']['beta']
+        obj.preview = obj.data['dist-tags']['preview']
+        obj.stableVersions = Object.keys(obj.data.versions).filter(v => v.includes('stable')).sort().reverse();
+        obj.betaVersions = Object.keys(obj.data.versions).filter(v => !v.includes('stable') && v.includes('beta') && v.includes('preview')).sort().reverse();
+
+        console.table([obj.site,obj.latest,obj.beta])
+        console.table(obj.stableVersions)
+        console.table(obj.betaVersions)
     }
+    
+   
+    // if (isDebug) {
+        // if (!cmdLineSettingsJson.rp_only) fs.writeFileSync("BP/debug.bpSettings.json", JSON.stringify(cmdLineSettingsJson.BP));
+        // if (!cmdLineSettingsJson.bp_only) fs.writeFileSync("RP/debug.rpSettings.json", JSON.stringify(cmdLineSettingsJson.RP));
 
-    console.log(fg_SuccessNext,"x Mani-Fest Regolith Filter")
+        // if (cmdLineSettingsJson.bp_only || !cmdLineSettingsJson.rp_only) fs.writeFileSync("BP/debug.ConfigSettings.json", JSON.stringify(cmdLineSettingsJson));
+        // else
+        // if (cmdLineSettingsJson.rp_only) fs.writeFileSync("RP/debug.ConfigSettings.json", JSON.stringify(cmdLineSettingsJson));
+
+        // Debug.success("* Debug Files Exported");
+    // }
+
+    Debug.success("x mainAfterFetch()")
 }
 // End of Main   
 //============================================================================
+main();
 //Go Home, the show is over
