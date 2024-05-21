@@ -1129,13 +1129,23 @@ function mainAfterFetch(){
 
     for(let obj of myFetch.promiseStack){
         //console.log(obj.data['dist-tags']);
-        obj.latest = obj.data['dist-tags']['latest']
-        obj.beta = obj.data['dist-tags']['beta']
-        obj.preview = obj.data['dist-tags']['preview']
-        obj.stableVersions = Object.keys(obj.data.versions).filter(v => v.includes('stable')).sort().reverse();
-        obj.betaVersions = Object.keys(obj.data.versions).filter(v => !v.includes('stable') && v.includes('beta') && v.includes('preview')).sort().reverse();
+        obj.moduleVersion = {
+            latest: obj.data['dist-tags']['latest'],
+            beta: obj.data['dist-tags']['beta'],
+            preview: obj.data['dist-tags']['preview']
+        }
+        obj.stableVersions = Object.keys(obj.data.versions)
+            .filter(v => v.endsWith('stable'))
+            .map(v => v.substring(v.indexOf("-beta.")+6).replace("-stable",""))
+            .sort()
+            .reverse();
+        obj.betaVersions = Object.keys(obj.data.versions)
+            .filter(v => !v.includes('stable') && v.includes('beta') && v.includes('preview') && !v.includes('beta.preview'))
+            .map(v => v.substring(v.indexOf("-beta.")+6).replace("-preview",""))
+            .sort()
+            .reverse();
 
-        console.table([obj.site,obj.latest,obj.beta])
+        //console.table([obj.site,obj.moduleVersion])
         console.table(obj.stableVersions)
         console.table(obj.betaVersions)
     }
