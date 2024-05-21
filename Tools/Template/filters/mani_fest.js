@@ -1134,7 +1134,7 @@ function mainAfterFetch(){
             beta: obj.data['dist-tags']['beta'],
             preview: obj.data['dist-tags']['preview']
         }
-        obj.stableVersions = Object.keys(obj.data.versions)
+        obj.stableEngines = Object.keys(obj.data.versions)
             .filter(v => v.endsWith('stable'))
             .map(v => v.substring(v.indexOf("-beta.")+6).replace("-stable",""))
             .sort()
@@ -1146,8 +1146,12 @@ function mainAfterFetch(){
             .reverse();
 
         //console.table([obj.site,obj.moduleVersion])
-        console.table(obj.stableVersions)
+        Debug.highlight(obj.site)
+        Object.entries(obj.moduleVersion).forEach((value,key) => Debug.color("list",key+": "+value))
+        console.table(obj.stableEngines)
+        //TODO: decipher later for beta versions
         console.table(obj.betaVersions)
+        console.table(Object.keys(obj.data.versions).filter(v => v.includes("preview")))
     }
     
    
