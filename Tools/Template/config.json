@@ -50,19 +50,12 @@
 				"filters": [							
 					{
 						"filter": "mani_fest",
-						"settings": {							
-							//"rp_only":true,
-							//"bp_only":true,
-							//"scripting":false,  turn off even if you have files
-							//"getUUIDs": true, //default is true. Use false for those you did not provide a default for, to not auto get a new one
-							"getUUIDs": true,
+						"settings": {	
+							"Debug":true,						
 							"name": "My Template Add-On",
 							"description": "It is done and It Does Nothing!!!",
-							"min_engine_version": "get-1",
-							"version": [2,0,1],
-							"BP": {
-								"scripting": true
-							}
+							"min_engine_version": "stable",	
+							"dependencies":"stable"
 						}
 					}
 				]
