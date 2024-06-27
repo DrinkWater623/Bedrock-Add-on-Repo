@@ -1,0 +1,150 @@
+{ //TO DO - if an entity within a radius is ignited or a creeper around
+//dang the other things too...  have to load entity, then can unload when no one
+//so maybe make not persistent, until active
+    /*
+        The reason why this installs the entity upon placement, is because I need the entity to detect being shot
+        with an arrow or any projectile.  Cannot do that with the block.
+
+        Maybe later see if can test for arrow entity at perimeter of block.  But what about fireballs...
+        If that works, can convert back to just being a block until activated by flint/steal....
+        except, it needs to respond to an explosion and being on fire, the entity can do that.
+
+        To do
+
+        1) no entity if tnt is not on, but means this has to tick, so that if ever turned on, it gets one
+            else entity is only thing that controls, but what if lost?
+            Maybe the interact can install it if tnt allowed and it is not there.
+            I am not sure this can pick up the interact if the TNT is there, that might work.
+            Especially if I make the collision of the entity bigger.
+
+        2) placement - sideways ????    
+    
+    */
+	"$files": {
+        "array": "tnt_types.filter(x => x.level >= 0)",
+        "fileName": "./{{settings.addon}}/{{identifier}}_block.bp"
+    },
+	"$template": {
+        "format_version": "1.20.10",
+        "minecraft:block": {
+            "description": {
+                "identifier": "{{settings.ns}}:{{identifier}}_block",
+                "register_to_creative_menu": true,
+                "menu_category": {"category":"items","group":"itemGroup.name.items","is_hidden_in_commands":false},
+                "states:" {
+                    "bit:ignited":[0,1],
+                    "bit:allowed":[0,1], //<-- reset by ev:permissions using setblock
+                    "int:blast_level":[0,1,2,3,4,5,6]
+                }
+            },
+            "components": {
+                "tag:tnt":{},
+                "tag:dw623_tnt":{},
+                //"tag:{{identifier}}":{},
+                "minecraft:collision_box":true,
+                //?? Test under zero
+                "minecraft:destructible_by_explosion": {"explosion_resistance":0},
+                "minecraft:destructible_by_mining": true,
+                "minecraft:display_name":"{{display}}",
+                // ?? test over 100
+                "minecraft:flammable": {"catch_chance_modifier":100,"destroy_chance_modifier":100},
+                "minecraft:light_emission": 0,
+                //==================================================
+                "minecraft:geometry": "geometry.box",
+                "minecraft:material_instances": {
+                    "*": {
+                        "texture":"tnt_{{color}}_band",
+                        "ambient_occlusion": false,
+                        "face_dimming": false,
+                        "render_method": "{{render}}"
+                    }
+                },                
+                //==================================================
+                "minecraft:map_color":"{{map_color}}",
+                "minecraft:selection_box": true,
+                //==================================================
+                "minecraft:on_interact": {
+                    "condition": "query.is_item_name_any('slot.weapon.mainhand', 0, 'minecraft:flint_and_steel','minecraft:torch')",
+                    "event":"ev:fuse_lit_short"
+                },
+//see if inner entity can handle the flint and steel, if so remove interaction and make  flammable
+//entity is not picking it up on interact, so having block call event for it                
+                "minecraft:on_placed": {"event": "ev:on_placed"},
+                "minecraft:queued_ticking": {
+                    "looping":true,
+                    "interval_range":[5,5],
+                    "on_tick":{"event":"ev:summon_inner_tnt"}
+                }
+            }, 
+            "events": {
+                /*
+                "ev:environment_sensor":{
+                    "sequence":[
+                        //{"trigger":"ev:query_fire"},
+                        //{"trigger":"ev:query_torch"},
+                        //on purpose last
+                        {"trigger": "ev:summon_inner_tnt"}
+                    ]                
+                },
+                */
+                //ignite with flint/steal or torch
+                "ev:fuse_lit_short":{
+                    "sequence":[                        
+                        //{"set_block_property":{"bit:ignited":1},"trigger":"ev:summon_inner_tnt"},
+                        {
+                            "run_command":{
+                                "command":[
+                                    "tell @a[tag=Debug_Better_TNT,r=16] §eShort Fuse Lit",
+                                    "playsound random.fuse @a[r=16]",
+                                    "event entity @e[r=0.5, family={{identifier}}] ev:explode_from_fuse_short"
+                            ]}
+                        }
+                    ]
+                },
+                "ev:on_placed":{
+                    "sequence":[
+                        {"set_block_property":{"int:blast_level":"{{=level}}"}},
+                        {
+                            "run_command":{"command":[
+                                "title @a[tag=Debug_Better_TNT,r=8] title §c{{display}} §aPlaced"
+                            ]}
+                        }
+                    ]                
+                },                              
+                "ev:summon_inner_tnt":{
+                    //"condition": "q.block_property('bit:ignited') == 0 && q.block_property('bit:allowed') == 1",
+                    "run_command":{
+                        "command":[
+                            "execute if score {{identifier}} bt_status matches 3 unless entity @e[r=0.5,family=dw623_tnt] unless entity @e[r=64,tag=tnt_guard] run tell @a[tag=Debug_Better_TNT,r=10] §aInstalling Inner TNT",
+                            "execute if score {{identifier}} bt_status matches 3 unless entity @e[r=0.5,family=dw623_tnt] unless entity @e[r=64,tag=tnt_guard] run summon {{settings.ns}}:{{identifier}}_entity ^ ^-0.5 ^ 0 0 ev:via_block_placement"
+                        ]
+                    }
+                }
+            }
+            /*,
+            "permutations":[
+                {
+                    "condition": "q.block_property('bit:ignited') == 0 && q.block_property('bit:allowed') == 1",
+                    "components": {
+                        "minecraft:queued_ticking": {
+                            "looping":true,
+                            "interval_range":[5,5],
+                            "on_tick":{"event":"ev:environment_sensor"}
+                        }
+                    }
+                },
+                {
+                    "condition": "q.block_property('bit:ignited') == 0 && q.block_property('bit:allowed') == 0",
+                    "components": {
+                        "minecraft:queued_ticking": {
+                            "looping":true,
+                            "interval_range":[40,40],
+                            "on_tick":{"event":"ev:environment_sensor"}
+                        }
+                    }
+                }
+            ]        
+            */    
+        }
+    }
+}

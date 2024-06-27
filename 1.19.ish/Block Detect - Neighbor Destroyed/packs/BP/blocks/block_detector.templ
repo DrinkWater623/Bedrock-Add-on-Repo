@@ -1,0 +1,179 @@
+{
+    /*
+        By DrinkWater623 (Ms DW623)
+        This block will detect if an adjacent block is destroyed.
+
+        This is the template file to build the block bp file using Regolith (& the jsonte filter) in VSCode...
+        So that I do not have to manually do all 6 block locations for the 6 block sides in several events
+        Work smarter, not harder...
+
+        You can learn more about Regolith @ https://bedrock-oss.github.io/regolith/
+        and Jsonte @ https://mcdevkit.com/tutorial 
+        and on the Bedrock OSS discord where the creators hang out.
+        Yes, I am, I am a die hard Regolith and jsonte FAN...
+    */
+    "$scope":{
+		"block_location":[
+            {"id":0,"face":"bottom"	,"rx":0	,"ry":-1,"rz":0 },
+            {"id":1,"face":"top"	,"rx":0	,"ry":1	,"rz":0 },
+            {"id":2,"face":"north"	,"rx":0 ,"ry":0	,"rz":-1},
+            {"id":3,"face":"south"	,"rx":0 ,"ry":0	,"rz":1	},
+            {"id":4,"face":"west"	,"rx":-1,"ry":0	,"rz":0 },
+            {"id":5,"face":"east"	,"rx":1	,"ry":0	,"rz":0 }
+        ]
+	},
+    "$template": {
+        "format_version": "1.19.70",
+        "minecraft:block": 
+        {
+            "description": 
+            {
+                "identifier": "block:detector",			
+                "menu_category": {
+                    "category": "construction",
+                    "is_hidden_in_commands": false
+                },
+                "states:" {
+                    "bit:is_initialized":[0,1],
+                    "bit:toggle":[0,1],
+                    "bit:is_block_0":[1,0],
+                    "bit:is_block_1":[1,0],
+                    "bit:is_block_2":[1,0],
+                    "bit:is_block_3":[1,0],
+                    "bit:is_block_4":[1,0],
+                    "bit:is_block_5":[1,0],
+                    "bit:is_tag_block":[0,1]
+                }
+                /*
+                    Only way for the bit:is_tag_block=1 is for it to be setblocked with the state set
+                    This is done by the block if the is_block_# is true and now there is no block there.
+                */
+            },
+            "components": {
+                "minecraft:unit_cube": {}                
+            },
+            "events":{
+                "ev:on_tick":{
+                    "sequence":[
+                        //Continue if I am not a tag block (bit:is_tag_block)   
+                        //I do not want the everything in the same tick with the update to the properties between certain events
+                        //So added a toggle                    
+                        {
+                            "condition":"q.block_property('bit:toggle')==0 && q.block_property('bit:is_tag_block')==0",
+                            "trigger":"ev:toggle_0",
+                            "set_block_property":{"bit:toggle":1}
+                        },
+                        {
+                            "condition":"q.block_property('bit:toggle')==1",
+                            "trigger":"ev:toggle_1",
+                            "set_block_property":{"bit:toggle":0}
+                        }
+                    ]
+                },
+                "ev:toggle_0":{
+                    "condition":"q.block_property('bit:is_tag_block')==0",
+                    "trigger":"ev:query_if_neighbor_still_there"
+                },
+                "ev:toggle_1":{
+                    "sequence":[ 
+                        {
+                            "condition":"q.block_property('bit:is_initialized')==0",
+                            "trigger":"ev:initialize",
+                            "set_block_property":{"bit:is_initialized":1}
+                        },                       
+                        {
+                            "condition":"q.block_property('bit:is_initialized')==1",
+                            "trigger":"ev:tag_checks"
+                        }                        
+                    ]
+                },
+                "ev:initialize":{
+                    //same as tag check - without the say or other action because a block is broken
+                    //when not initialized, it is just setting the bits as to whether or not a block is there
+                    "sequence":[                       
+                        //Process any pulses from tagged block                        
+                        {
+                            "{{#block_location}}":{
+                                "condition": "query.block_neighbor_has_any_tag({{rx}}, {{ry}}, {{rz}}, 'dw.block.detector')",
+                                "set_block_property": {"bit:is_block_{{id}}":0},
+                                // comment out after testing initialization - not needed
+                                // "run_command": {"command": ["say Initialized {{face}} block ({{id}}) as AIR"]},
+                                "set_block_at_pos":{"block_offset": ["{{=rx}}", "{{=ry}}", "{{=rz}}"],"block_type" : "air"}
+                            }
+                        }
+                    ]
+                },       
+                "ev:tag_checks":{
+                    "sequence":[                       
+                        //Process any pulses from tagged block
+                        {
+                            "{{#block_location}}":{
+                                "condition": "query.block_neighbor_has_any_tag({{rx}}, {{ry}}, {{rz}}, 'dw.block.detector')",
+                                "set_block_property": {"bit:is_block_{{id}}":0},
+                                //command for what you really want to do if a block is broken would go here
+                                "run_command": {"command": ["title @a[r=10] title {{face}} block has been destroyed"]},
+                                "set_block_at_pos":{"block_offset": ["{{=rx}}", "{{=ry}}", "{{=rz}}"],"block_type" : "air"}
+                            }
+                        }                        
+                    ]
+                },
+                "ev:query_if_neighbor_still_there":{
+                        // Confirm still has neighbor  - only run if it thinks it has a neighbor 
+                        // so that it is NOT setting the block-tag each tick
+                        // this is also used to get initial state of each side
+                        // default is 1 (there is a block) - easy to test for block missing and use detector mode tag to update to zero
+                    "sequence":[
+                        {
+                            "{{#block_location}}":{
+                                "condition": "q.block_property('bit:is_block_{{id}}')==1",                                
+                                "run_command": {"command": [
+                                    "execute if block ~{{rx}} ~{{ry}} ~{{rz}} air run setblock ~{{rx}} ~{{ry}} ~{{rz}} block:detector [\"bit:is_tag_block\":1]"
+                                ]}                        
+                            }
+                        },
+                        {
+                            //if a block side has air per the bit, then if that side is not air, replace self block - it will do all checks again
+                            "{{#block_location}}":{
+                                "condition": "q.block_property('bit:is_block_{{id}}')==0",                                
+                                "run_command": {"command": [
+                                    "execute unless block ~{{rx}} ~{{ry}} ~{{rz}} air unless block ~{{rx}} ~{{ry}} ~{{rz}} block:detector run setblock ~ ~ ~ block:detector [\"bit:is_tag_block\":0]"
+                                ]}                        
+                            }
+                        }
+                    ]
+                }
+            },
+            "permutations":[
+                {
+                    /*
+                        a block that is just for indicating the block in this position is air
+                    */
+                    "condition":"q.block_property('bit:is_tag_block')==1",
+                    "components":{
+                        "tag:dw.block.detector": {},
+                        "minecraft:collision_box":false,
+                        "minecraft:destructible_by_explosion": true,
+                        "minecraft:destructible_by_mining": true,
+                        "minecraft:material_instances": {"*":{"texture":"invisible","render_method": "alpha_test","ambient_occlusion": false,"face_dimming":false}},                   
+                        "minecraft:selection_box":false
+                    }
+                },
+                {            
+                    "condition":"q.block_property('bit:is_tag_block')==0",
+                    "components":{
+                        "minecraft:queued_ticking": {
+                            "looping": true,
+                            "interval_range": [0,0],
+                            "on_tick": {"event": "ev:on_tick"}
+                        },
+                        "minecraft:material_instances": {"*":{"texture":"test_block"}},
+                        "minecraft:collision_box":true,
+                        "minecraft:destructible_by_explosion": false,
+                        "minecraft:destructible_by_mining": false,
+                        "minecraft:selection_box":true
+                    }
+                }
+            ]
+        }
+    }
+}

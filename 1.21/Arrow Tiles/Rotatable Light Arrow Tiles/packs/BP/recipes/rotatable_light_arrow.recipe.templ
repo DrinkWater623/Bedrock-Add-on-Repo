@@ -1,0 +1,28 @@
+{
+    "$files": {
+        "array": "arrows",
+        "fileName": "{{name}}_arrow.recipe"
+    },
+    "$template":{
+        "format_version": "1.20.10",
+        "minecraft:recipe_shapeless": {
+            "description": {
+                "identifier": "dw623:rotatable_{{name}}_arrow_recipe"
+            },
+            "tags": ["crafting_table"],
+            "ingredients": [
+                {"data":0,"item":"minecraft:{{name}}"},
+                {"data":0,"item":"dw623:rotatable_light_arrow_template"}
+            ],
+            "priority": 0,
+            "result": {
+                "count": 16,
+                "data": 0,
+                "item": "dw623:rotatable_{{name}}_arrow"
+            },
+            "unlock": [
+                {"data":0,"item":"dw623:rotatable_light_arrow_template"}
+            ]
+        }
+    }
+}

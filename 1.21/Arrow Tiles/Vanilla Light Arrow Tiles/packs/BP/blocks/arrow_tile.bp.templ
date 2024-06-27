@@ -1,0 +1,81 @@
+{    
+    /*
+        This is the basic one to work out the rotation details... no rotating
+        Getting the 1st placement to work correctly
+
+        Then can add rotating, by altering block-state minecraft:cardinal_direction in scripts
+        Note: cannot get vertical half information, so still need to add the downs for the sides, so can set the cardinal
+                to the weird position of block and player facing same way 
+                (like it is behind him... will not or should never be naturally that)
+    */
+    "$scope":{
+		"horizontal": "{{rotations_view_1.filter(x => x.id <= 1)}}",
+        "vertical_half": "{{rotations_view_2.filter(x => x.type =='side')}}",  // initial placement     
+        "vertical_side": "{{rotations_view_1.filter(x => x.type =='side' && (x.position == 'left' || x.position == 'right'))}}"
+    },
+    "$files": {
+        "array": "arrows",
+        "fileName": "{{name}}_arrow.bp"
+    },
+    "$template":{
+        "format_version": "1.20.80",
+        "minecraft:block": {
+            "description": {
+                "identifier": "dw623:{{name}}_arrow",
+                "menu_category": {"category":"items"},
+                "traits": {
+                    "minecraft:placement_position": {"enabled_states":["minecraft:block_face","minecraft:vertical_half"]},
+                    "minecraft:placement_direction": {"enabled_states":["minecraft:cardinal_direction"]}
+                }
+            },
+            "components": {
+                //"minecraft:custom_components": ["dw623:rotating_arrow_tile_components"],
+                "minecraft:display_name":"{{Title(Replace(name, '_', ' '))}} Arrow",
+                "minecraft:light_emission":8,                                            
+                "minecraft:material_instances": {
+                    "*":{
+                        "texture":"{{texture}}",
+                        "render_method": "alpha_test",
+                        "face_dimming": false,
+                        "ambient_occlusion": false
+                    }
+                },
+                "minecraft:geometry": {"identifier":"geometry.arrow"},                
+                "minecraft:collision_box": {"origin": [-8,0,-8],"size": [16,1,16]},
+                "minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,1,16]}
+            },    
+            "permutations": [
+                //========================================================================================================= 
+                // Rotations using x,y,z for block-face and player-facing, with sides, vertical half determines down
+                //=========================================================================================================                          
+                //ceiling / floor - pointing where player is facing
+                {
+                    "{{#horizontal}}":{
+                        "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' && q.block_state('minecraft:cardinal_direction') == '{{playerFace}}'",
+                        "components": {"minecraft:transformation":{"rotation": "{{rotation}}"      }}
+                    }                    
+                },
+                //wall - point up and down
+                {
+                    "{{#vertical_half}}":[
+                        {
+                            "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' && q.block_state('minecraft:cardinal_direction') == '{{opposite}}' && q.block_state('minecraft:vertical_half') == 'top'",
+                            "components": {"minecraft:transformation":{"rotation": "{{up}}"  }}
+                        },
+                        {
+                            "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' && q.block_state('minecraft:cardinal_direction') == '{{opposite}}' && q.block_state('minecraft:vertical_half') == 'bottom'",
+                            "components": {"minecraft:transformation":{"rotation": "{{down}}" }}
+                        }
+                ]
+                },
+                //wall - point sideways
+                {
+                    "{{#vertical_side}}":{
+                        "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' && q.block_state('minecraft:cardinal_direction') == '{{playerFace}}'",
+                        "components": {"minecraft:transformation":{"rotation": "{{rotation}}"      }}
+                    }                    
+                }
+            ]
+        }
+    }
+}

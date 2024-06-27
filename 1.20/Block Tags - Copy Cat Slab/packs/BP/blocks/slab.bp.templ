@@ -1,0 +1,202 @@
+{
+	"$scope":{
+		"geo_list":[
+			{"pos_id": 0,"pos_name":"ceiling" ,"y_origin":12},
+			{"pos_id": 1,"pos_name":"center"  ,"y_origin":6},
+			{"pos_id": 2,"pos_name":"floor"   ,"y_origin":0}
+		]
+	},
+	"$template":
+	{
+		"format_version": "1.20.0",
+		"minecraft:block": 
+		{
+			"description": 
+			{
+				"identifier": "dw623:copy_cat_slab",
+				"register_to_creative_menu": true,
+				"is_experimental": false,
+				"menu_category": {
+						"group": "itemGroup.name.stoneBrick",
+						"category": "construction",
+						"is_hidden_in_commands": false
+				},
+				"states:" {
+					"int:color_id":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
+					"int:geo_ptr":[0,1,2]
+				},
+				"traits": {
+					"minecraft:placement_position": {
+						"enabled_states": ["minecraft:block_face", "minecraft:vertical_half"]
+					}
+				}
+			},
+			"components": 
+			{			
+				"tag:cc_slab":{},
+				"minecraft:collision_box": {"origin": [-8,0,-8],"size": [16,4,16]},
+				"minecraft:display_name":"Copy Cat Slab",	
+				//"minecraft:geometry":{"identifier": "geometry.block_16x4x16_floor"},
+				//"minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,4,16]},
+				//"minecraft:material_instances": {"*":{"texture":"white_glazed_terracotta"}},
+				"minecraft:on_interact": {
+					"condition":"!(q.block_neighbor_has_any_tag(-1, 0, 0, 'cc_slab') || q.block_neighbor_has_any_tag(0, 0, -1, 'cc_slab'))",
+					"event": "ev:interaction"
+				},
+				"minecraft:on_player_placing": {"event": "ev:placement_initialize"},			
+				"minecraft:queued_ticking": {
+					"looping": true,
+					"interval_range": [5,5],
+					"on_tick": {
+						"condition":"q.block_neighbor_has_any_tag(-1, 0, 0, 'cc_slab') || q.block_neighbor_has_any_tag(0, 0, -1, 'cc_slab')",
+						"event": "ev:tag_check"
+					}
+				}
+				
+			},
+			"events": {
+				"ev:interaction":{
+					"sequence":[
+						{
+							"condition":"q.is_item_name_any('slot.weapon.mainhand','minecraft:stick')",
+							"set_block_property":{
+								"int:geo_ptr": "q.block_property('int:geo_ptr') == 2 ? 0 : q.block_property('int:geo_ptr')+1 "
+							}
+						},
+						{
+							"{{#colors}}": {
+								"condition":"q.is_item_name_any('slot.weapon.mainhand','minecraft:{{color}}_dye')",
+								"set_block_property":{"int:color_id":"{{=color_id}}"}
+							}
+						}
+					]					
+				},
+				"ev:placement_initialize":{
+					"set_block_property":{"int:geo_ptr":"q.block_property('minecraft:block_face') == 'up' ? 2 : q.block_property('minecraft:block_face') == 'down' ? 0 : q.is_sneaking ? 1 : q.block_property('minecraft:vertical_half') == 'top' ? 0 : 2"}
+					/*
+					"sequence":[						
+						{
+							"condition":"q.block_property('minecraft:block_face') == 'up' || q.block_property('minecraft:block_face') == 'down'",
+							"set_block_property":{"int:geo_ptr":"q.block_property('minecraft:block_face') == 'up' ? 2 : 0"}
+						},
+						{
+							"condition":"q.is_sneaking && !(q.block_property('minecraft:block_face') == 'up' || q.block_property('minecraft:block_face') == 'down')",	
+							"set_block_property":{"int:geo_ptr":1}
+						},
+						{
+							"condition":"!(q.is_sneaking || q.block_property('minecraft:block_face') == 'up' || q.block_property('minecraft:block_face') == 'down')",	
+							"set_block_property":{"int:geo_ptr":"q.block_property('minecraft:vertical_half') == 'top' ? 0 : 2"}
+						}
+					]
+					*/
+				},
+				"ev:tag_check":{
+					"sequence":[
+						{"condition": "q.block_neighbor_has_any_tag(-1, 0, 0, 'cc_slab')","trigger":"ev:tag_check_x"},
+						{"condition":"!q.block_neighbor_has_any_tag(-1, 0, 0, 'cc_slab')","trigger":"ev:tag_check_z"}
+					]					
+				},
+				"ev:tag_check_x":{
+					"sequence":[
+						{
+							"{{#geo_list}}": {
+								"condition":"q.block_neighbor_has_any_tag(-1, 0, 0, 'cc_slab_pos_{{pos_id}}')",
+								//"run_command":{"command":["say X-{{pos_id}}"]},
+								"set_block_property":{"int:geo_ptr":"{{=pos_id}}"}
+							}
+						},
+						{
+							"{{#colors}}": {
+								"condition":"q.block_neighbor_has_any_tag(-1, 0, 0, 'cc_slab_color_id_{{color_id}}')",
+								"set_block_property":{"int:color_id":"{{=color_id}}"}
+							}
+						}
+					]					
+				},
+				"ev:tag_check_z":{
+					"sequence":[
+						{
+							"{{#geo_list}}": {
+								"condition":"q.block_neighbor_has_any_tag(0, 0, -1, 'cc_slab_pos_{{pos_id}}')",
+								//"run_command":{"command":["say Z-{{pos_id}}"]},
+								"set_block_property":{"int:geo_ptr":"{{=pos_id}}"}
+							}
+						},
+						{
+							"{{#colors}}": {
+								"condition":"q.block_neighbor_has_any_tag(0, 0, -1, 'cc_slab_color_id_{{color_id}}')",
+								"set_block_property":{"int:color_id":"{{=color_id}}"}
+							}
+						}
+					]					
+				}
+			},
+			"permutations": [
+				{
+					"{{#colors}}": {
+						"condition": "q.block_property('int:color_id') == {{color_id}}",
+						"components": {
+							"tag:cc_slab_color_id_{{color_id}}":{},
+							"minecraft:material_instances": {"*":{"texture":"{{color}}_glazed_terracotta"}}
+						}
+					}
+				},			
+				{
+					"{{#geo_list}}": {
+						"condition": "q.block_property('int:geo_ptr') == {{pos_id}}",
+						"components": {
+							"tag:cc_slab_pos_{{pos_id}}":{},
+							"minecraft:geometry":{"identifier": "geometry.block_16x4x16_{{pos_name}}"},
+							"minecraft:collision_box": {"origin": [-8,"{{=y_origin}}",-8],"size": [16,4,16]},
+							"minecraft:selection_box": {"origin": [-8,"{{=y_origin}}",-8],"size": [16,4,16]}
+						}
+					}
+				}
+			]
+		}
+	}
+}
+/*
+				{
+					"{{#geo_list}}": {
+						"condition": "q.block_property('int:geo_ptr') == {{pos_id}}",
+						"components": {
+							//"tag:cc_slab":{},
+							"tag:cc_slab_pos_{{pos_id}}":{},
+							"minecraft:geometry":{"identifier": "geometry.block_16x4x16_{{pos_name}}"},
+							"minecraft:collision_box": {"origin": [-8,"{{=y_origin}}",-8],"size": [16,4,16]},
+							"minecraft:selection_box": {"origin": [-8,"{{=y_origin}}",-8],"size": [16,4,16]}
+						}
+					}
+				}
+				*/
+
+				/*
+{
+					"condition": "q.block_property('int:geo_ptr') == 0",
+					"components": {
+						"minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,5,16]},
+						"minecraft:geometry":{"identifier": "geometry.block_16x4x16_ceiling"},
+						//"minecraft:transformation": {"rotation": [0, 0, 0]},
+						"tag:cc_slab_pos_0":{}
+					}
+				},
+				{
+					"condition": "q.block_property('int:geo_ptr') == 1",
+					"components": {
+						"minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,8,16]},
+						"minecraft:geometry":{"identifier": "geometry.block_16x4x16_center"},
+						//"minecraft:transformation": {"rotation": [0, 0, 90]},
+						"tag:cc_slab_pos_1":{}
+					}
+				},
+				{
+					"condition": "q.block_property('int:geo_ptr') == 2",
+					"components": {
+						"minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,16,16]},
+						"minecraft:geometry":{"identifier": "geometry.block_16x4x16_floor"},
+						//"minecraft:transformation": {"rotation": [90, 0, 0]},
+						"tag:cc_slab_pos_2":{}
+					}
+				}				
+				*/

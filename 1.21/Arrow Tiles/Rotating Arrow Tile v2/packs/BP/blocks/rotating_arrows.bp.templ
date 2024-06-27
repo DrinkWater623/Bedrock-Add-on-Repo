@@ -1,0 +1,72 @@
+{       
+    "$files": {
+        "array": "colors",
+        "fileName": "rotating_{{color}}_arrow_tile.bp.json"
+    },
+    "$template":{
+        "format_version": "1.20.80",
+        "minecraft:block": {
+            "description": {
+                "identifier": "dw623:rotating_{{color}}_arrow_tile",
+                "menu_category": {"category":"items","is_hidden_in_commands":false},
+                "states": {
+                    //0-7 for array 
+                    "int:direction":[0,1,2,3,4,5,6,7]
+                },
+                "traits": {
+                    "minecraft:placement_position": {"enabled_states":["minecraft:block_face"]}
+                }
+            },
+            "components": {
+                "minecraft:custom_components": ["dw623:rotating_arrow_tile_components"],
+                "minecraft:display_name":"Rotating {{display}} Arrow Tile",
+                "minecraft:light_emission":10,                                            
+                "minecraft:material_instances": {"*":{"texture":"south","render_method":"opaque"}}
+            },    
+            "permutations": [
+                //========================================================================================================= 
+                // Geometry
+                //=========================================================================================================          
+                //floor (face=up of floor block)
+                {
+                    "condition": "query.block_state('minecraft:block_face') == 'up'",
+                    "components": {
+                        "minecraft:geometry": {"identifier":"geometry.block_16x1x16_floor"},
+                        "minecraft:collision_box": {"origin": [-8,0,-8],"size": [16,1,16]},
+                        "minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,1,16]}
+                    }
+                },
+                //ceiling (face=down of ground block)   
+                {
+                    "condition": "query.block_state('minecraft:block_face') == 'down'",
+                    "components": {
+                        "minecraft:geometry": {"identifier":"geometry.block_16x1x16_ceiling"},
+                        "minecraft:collision_box": {"origin": [-8,15,-8],"size": [16,1,16]},
+                        "minecraft:selection_box": {"origin": [-8,15,-8],"size": [16,1,16]}
+                    }
+                },
+                //wall (face is vertical N.S.E.W.)
+                {
+                    "condition": "!(query.block_state('minecraft:block_face') == 'up' || query.block_state('minecraft:block_face') == 'down')",
+                    "components": {
+                        "minecraft:geometry": {"identifier":"geometry.block_16x1x16_vertical"},
+                        "minecraft:collision_box": {"origin": [-8,0,-8],"size": [1,16,16]},
+                        "minecraft:selection_box": {"origin": [-8,0,-8],"size": [1,16,16]}
+                    }
+                },                 
+                //========================================================================================================= 
+                // Which way is the arrow pointing
+                //=========================================================================================================
+                //ceiling / floor
+                {
+                    "{{#direction}}":{
+                        "condition": "query.block_state('int:direction') == {{id}}",
+                        "components": {"minecraft:material_instances": {
+                            "*":{"texture": "{{dir}}","render_method": "opaque"}
+                        }}
+                    }                    
+                }
+            ]
+        }
+    }
+}

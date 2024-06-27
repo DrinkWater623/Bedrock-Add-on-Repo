@@ -1,0 +1,30 @@
+{
+  "resource_pack_name": "dw623",
+  "texture_name": "atlas.terrain",
+  "num_mip_levels": 4,
+  "padding": 8,
+  "texture_data": {
+    "test_block": {"textures":"textures/blocks/phrase_test_block.png"},
+    //"arrow_tile": {"textures":"textures/blocks/compass.png"},
+
+    "up": {"textures":"textures/blocks/arrows/up.png"},
+    "down": {"textures":"textures/blocks/arrows/down.png"},
+    "right": {"textures":"textures/blocks/arrows/right.png"},
+    "left": {"textures":"textures/blocks/arrows/left.png"},
+
+    "up_left": {"textures":"textures/blocks/arrows/up_left.png"},
+    "up_right": {"textures":"textures/blocks/arrows/up_right.png"},
+    "down_left": {"textures":"textures/blocks/arrows/down_left.png"},
+    "down_right": {"textures":"textures/blocks/arrows/down_right.png"},
+
+    "north": {"textures":"textures/blocks/arrows/up.png"},
+    "south": {"textures":"textures/blocks/arrows/down.png"},
+    "east": {"textures":"textures/blocks/arrows/right.png"},
+    "west": {"textures":"textures/blocks/arrows/left.png"},
+
+    "northeast": {"textures":"textures/blocks/arrows/up_right.png"},
+    "northwest": {"textures":"textures/blocks/arrows/up_left.png"},
+    "southeast": {"textures":"textures/blocks/arrows/down_right.png"},
+    "southwest": {"textures":"textures/blocks/arrows/down_left.png"}
+  }
+}

@@ -1,0 +1,60 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
+	"author": "DrinkWater623/PinkSalt623 aka Nikki DW (BAO/OSS)",	
+	"name": "Clear_Screen",	
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
+			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
+			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}
+		},
+		"profiles": {
+			
+			"build": {
+				"export": {"readOnly":false,"target":"local","rpName": "'RP'","bpName": "'BP'"},				
+				"filters": [							
+					{"filter":"dot_ignore"},
+					{"filter":"empty_ignore"},	
+					{
+						"filter": "mani_fest",
+						"settings": {	
+							"Debug":false,						
+							"name": "Build: Clear Screen",
+							"description": ":cls or :cls w to run.  Requires Beta API",
+							"min_engine_version": [1,21,0],								
+							"script_eval":false,
+							"BP":{"dependencies":{"module_name":"@minecraft/server","version":"1.12.0-beta"}}						
+						}
+					}
+				]
+			},
+			"default": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"filter":"dot_ignore"},					
+					{"filter":"empty_ignore"},				
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"Debug":false,
+							"name": "Dev: Clear Screen",
+							"description": ":cls or :cls w to run.  Requires Beta API",
+							"min_engine_version": [1,21,0],	
+							"BP":{
+								"header_uuid": "2b353b2b-59c0-4d6d-8a1c-d8f26e1c150c",
+								"module_uuid": "e904f9f6-7755-45ec-9eb5-0e893513d2e1",
+								"dependencies":{"module_name":"@minecraft/server","version":"1.12.0-beta"},
+								"script_eval":false
+							}					
+						}
+					}
+				]
+			}
+		}
+	}
+}

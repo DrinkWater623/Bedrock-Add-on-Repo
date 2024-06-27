@@ -1,0 +1,71 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
+	"author": "DrinkWater623/PinkSalt623 aka Nikki DW (BAO/OSS)",	
+	"name": "Rotatable_Light_Arrow_Tiles",	
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"jsonte": {"url":"github.com/MCDevKit/regolith-library","version":"2.12.0"},
+			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
+			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
+			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}
+		},
+		"profiles": {
+			
+			"build": {
+				"export": {"readOnly":false,"target":"local","rpName": "'RP'","bpName": "'BP'"},				
+				"filters": [							
+					{"filter":"dot_ignore"},
+					{"filter":"jsonte"},
+					{"filter":"empty_ignore"},	
+					{
+						"filter": "mani_fest",
+						"settings": {	
+							"Debug":false,						
+							"name": "Rotatable Light Arrow Tiles §6by DrinkWater623§r",
+							"description": "Requires Beta API. Arrow Tiles - 4 Directions",
+							"min_engine_version": [1,21,0],
+							"noPackDependencies":false,
+							"BP":{								
+								"dependencies":{"module_name":"@minecraft/server","version":"1.12.0-beta"},
+								"script_eval":true
+							}
+						}
+					}
+				]
+			},
+			"default": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"filter":"dot_ignore"},
+					{"filter":"jsonte"},
+					{"filter":"empty_ignore"},				
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"Debug":false,
+							"name": "§6Dev:§r Rotatable Light Arrow Tiles",
+							"description": "Requires Beta API. Arrow Tiles - 4 Directions",
+							"min_engine_version": [1,21,0],
+							"noPackDependencies":false,
+							"BP":{
+								"header_uuid": "9f3ea236-484c-4999-b34b-1dbfdf07c724",
+								"module_uuid": "d7fee505-dcae-465b-9a8d-9f90716a4c70",
+								"dependencies":{"module_name":"@minecraft/server","version":"1.12.0-beta"},
+								"script_eval":true
+							},
+							"RP": {
+								"header_uuid":"caf1a58d-8d1f-4994-83a1-5c5c8addb272",
+								"module_uuid":"85a9352a-fe05-464e-9eb1-aa5e21932353"
+							}							
+						}
+					}
+				]
+			}
+		}
+	}
+}

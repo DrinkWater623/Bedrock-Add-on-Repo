@@ -1,0 +1,62 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
+	"author": "DrinkWater623/PinkSalt623 aka Nikki DW (BAO/OSS)",	
+	"name": "Chat_Cmds",	
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
+			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
+			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}
+		},
+		"profiles": {
+			
+			"build": {
+				"export": {"readOnly":false,"target":"local","rpName": "'RP'","bpName": "'BP'"},				
+				"filters": [							
+					{"filter":"dot_ignore"},
+					{"filter":"empty_ignore"},	
+					{
+						"filter": "mani_fest",
+						"settings": {	
+							"Debug":false,						
+							"name": "Build: Chat Commands by DrinkWater623",
+							"description": "Requires Beta API",
+							"min_engine_version": [1,21,0],	
+							"BP":{
+								"script_eval":true,
+								"dependencies":{"module_name":"@minecraft/server","version":"1.12.0-beta"}
+							}
+						}
+					}
+				]
+			},
+			"default": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"filter":"dot_ignore"},					
+					{"filter":"empty_ignore"},				
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"Debug":false,
+							"name": "Dev: Chat Commands",
+							"description": ":admin to run.  Requires Beta API",
+							"min_engine_version": [1,21,0],	
+							"BP":{
+								"header_uuid": "f63bb656-206b-4c25-b040-d9c7b56d5b93",
+								"module_uuid": "cc0155c2-f709-4707-b7ad-539ed005a63b",
+								"dependencies":{"module_name":"@minecraft/server","version":"1.12.0-beta"},
+								"script_eval":false
+							}					
+						}
+					}
+				]
+			}
+		}
+	}
+}

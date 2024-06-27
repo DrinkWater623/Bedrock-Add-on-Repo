@@ -4,7 +4,7 @@
 		"description": {
 			"identifier": "tool:sound_key",
 			"name":"Sound Key",
-			"category": "equipment"
+			"menu_category": {"category":"equipment"}
 		},
 		"components": {
 			"minecraft:creative_category": {"parent": "itemGroup.name.none"},

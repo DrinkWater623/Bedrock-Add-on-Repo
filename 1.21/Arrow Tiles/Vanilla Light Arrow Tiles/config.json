@@ -1,0 +1,63 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
+	"author": "DrinkWater623/PinkSalt623 aka Nikki DW (BAO/OSS)",	
+	"name": "Vanilla_Light_Arrow_Tiles",	
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"jsonte": {"url":"github.com/MCDevKit/regolith-library","version":"2.12.0"},
+			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
+			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
+			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}
+		},
+		"profiles": {
+			
+			"build": {
+				"export": {"readOnly":false,"target":"local","rpName": "'RP'","bpName": "'BP'"},				
+				"filters": [							
+					{"filter":"dot_ignore"},
+					{"filter":"jsonte"},
+					{"filter":"empty_ignore"},	
+					{
+						"filter": "mani_fest",
+						"settings": {	
+							"Debug":false,						
+							"name": "Light Arrow Tiles §aby DrinkWater623",
+							"description": "Vanilla Style Arrow Tiles - 4 Directions",
+							"min_engine_version": [1,21,0]			
+						}
+					}
+				]
+			},
+			"default": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"filter":"dot_ignore"},
+					{"filter":"jsonte"},
+					{"filter":"empty_ignore"},				
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"Debug":false,
+							"name": "§6Dev:§r Light Arrow Tiles",
+							"description": "Vanilla Style Arrow Tiles - 4 Directions",
+							"min_engine_version": [1,21,0],
+							"BP":{
+								"header_uuid": "bba9abb8-3c98-40e4-af55-f980fefc111c",
+								"module_uuid": "c4394149-030e-4af9-b81e-22ca6dd245fd"								
+							},
+							"RP": {
+								"header_uuid":"fc001ecd-2f2b-4c0d-9a94-2836effb7deb",
+								"module_uuid":"d81ededf-d16f-4b85-85ff-9b09d6a2e3fa"
+							}							
+						}
+					}
+				]
+			}
+		}
+	}
+}

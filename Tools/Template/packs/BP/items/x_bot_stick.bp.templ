@@ -5,14 +5,14 @@
 		"minecraft:item": {
 			"description": {
 				"identifier": "dw623:{{settings.main_bot}}_stick",
-				"category": "equipment"
+				"menu_category": {"category":"equipment","is_hidden_in_commands":false}
 			},
 			"components": {			
 				"minecraft:creative_category": {"parent": "itemGroup.name.none"},
 				"minecraft:display_name": {"value": "{{settings.main_bot_display}} Stick"},
 				"minecraft:glint": false,
 				"minecraft:hand_equipped": true,
-				"minecraft:icon": {"texture": "{{settings.main_bot}}_stick"},
+				"minecraft:icon": "{{settings.main_bot}}_stick",
 				"minecraft:max_stack_size": 1,
 				"minecraft:on_use": {"on_use": {"event": "ev:bot_summon"}}
 			},

@@ -1,0 +1,73 @@
+{    
+    "$scope":{
+		"horizontal": "{{rotations_view_1.filter(x => x.id <= 1)}}",
+        "vertical_half": "{{rotations_view_2.filter(x => x.type == 'side')}}",       
+        "vertical_side": "{{rotations_view_1.filter(x => x.type == 'side' && (x.position == 'left' || x.position == 'right'))}}"
+    },
+    "$template":{
+        "format_version": "1.20.80",
+        "minecraft:block": {
+            "description": {
+                "identifier": "dw623:rotating_arrow_tile",
+                "menu_category": {"category":"items","is_hidden_in_commands":false},
+                "states": {                    
+                    "int:direction":[0,1,2,3]
+                },
+                "traits": {
+                    "minecraft:placement_position": {"enabled_states":["minecraft:block_face","minecraft:vertical_half"]},
+                    "minecraft:placement_direction": {"enabled_states":["minecraft:cardinal_direction"]}
+                }
+            },
+            "components": {
+                //"minecraft:custom_components": ["dw623:rotating_arrow_tile_components"],
+                "minecraft:display_name":"Rotating Arrow Tile",
+                "minecraft:light_emission":10,                                            
+                "minecraft:material_instances": {"*":{"texture":"arrow_tile_pink","render_method":"opaque"}},
+                "minecraft:geometry": {"identifier":"geometry.tile_floor_double_sided"},
+                "minecraft:collision_box": {"origin": [-8,0,-8],"size": [16,1,16]},
+                "minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,1,16]}
+            },    
+            "permutations": [
+                //========================================================================================================= 
+                // Rotations using x,y,z for block-face and player-facing, with sides, vertical half determines down
+                //=========================================================================================================                          
+                //ceiling / floor - pointing where player is facing
+                {
+                    "{{#horizontal}}":{
+                        "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' && q.block_state('minecraft:cardinal_direction') == '{{playerFace}}'",
+                        "components": {"minecraft:transformation":{"rotation": "={{rotation}}"      }}
+                    }                    
+                },
+                //wall - point up and down
+                {
+                    "{{#vertical_half}}":[
+                        {
+                            "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' && q.block_state('minecraft:cardinal_direction') == '{{opposite}}' && q.block_state('minecraft:vertical_half') == 'top'",
+                            "components": {"minecraft:transformation":{"rotation": "={{up}}"  }}
+                        },
+                        {
+                            "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' && q.block_state('minecraft:cardinal_direction') == '{{opposite}}' && q.block_state('minecraft:vertical_half') == 'down'",
+                            "components": {"minecraft:transformation":{"rotation": "={{down}}" }}
+                        }
+                ]
+                },
+                //wall - point sideways
+                {
+                    "{{#vertical_side}}":{
+                        "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' && q.block_state('minecraft:cardinal_direction') == '{{playerFace}}'",
+                        "components": {"minecraft:transformation":{"rotation": "={{rotation}}"      }}
+                    }                    
+                },
+/*  from wall paper - rotation hints
+                {"condition": "q.block_state('minecraft:block_face') == 0","components": {"minecraft:transformation":{"rotation": [180,0,0]      }}}, 
+                {"condition": "q.block_state('minecraft:block_face') == 2","components": {"minecraft:transformation":{"rotation": [-90,0,180]    }}},
+                {"condition": "q.block_state('minecraft:block_face') == 3","components": {"minecraft:transformation":{"rotation": [90,0,0]       }}},
+                {"condition": "q.block_state('minecraft:block_face') == 4","components": {"minecraft:transformation":{"rotation": [0,-90,90]     }}},
+                {"condition": "q.block_state('minecraft:block_face') == 5","components": {"minecraft:transformation":{"rotation": [0,90,-90]     }}}
+ 
+
+*/
+            ]
+        }
+    }
+}

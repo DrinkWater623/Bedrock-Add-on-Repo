@@ -1,0 +1,83 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
+	"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
+	"name": "Script_Practice",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {			
+			"dot_ignore": {
+				"runWith": "python",
+				"script": "./filters/dot_ignore.py"
+			},
+			"empty_ignore": {
+				"runWith": "python",
+				"script": "./filters/empty_ignore.py"
+			},
+			"mani_fest": {
+				"runWith": "nodejs",
+				"script": "./filters/mani_fest.js"
+			},
+			"ts-compile": {
+				"runWith": "nodejs",
+				"script": "./filters/ts-compile.js"
+			}
+		},
+		"profiles": {
+			"test_ts2js": {
+				"export": {"readOnly":false,"target":"local","rpName": "'RP'","bpName": "'BP'"},				
+				"filters": [
+					{
+						"filter":"ts-compile",
+						"settings": {
+							"src": "all",
+							"ignoreFileRegEx":[],
+							"copyJsFiles": true,			
+							"dest": "default"
+						}
+					}
+				]
+			},
+			"build": {
+				"export": {"readOnly":false,"target":"local","rpName": "'RP'","bpName": "'BP'"},				
+				"filters": [							
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"Debug":true,
+							"name": "Build: Script Practice",
+							"description": "It is done and It Does Nothing!!!"							
+						}
+					}
+				]
+			},
+			"default": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"filter":"dot_ignore"},
+					{"filter":"empty_ignore"},				
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"Debug":false,
+							"name": "Dev: Script Practice",
+							"description": "It is done and It Does Nothing!!!",							
+							"BP": {
+								"header_uuid": "b1c2db4c-ce45-4989-af70-ff4f83106cc1",
+								"module_uuid": "e8d7e1f8-798c-4f03-89eb-bf3170c1bf20",
+								"script_eval":true
+							},
+							"RP": {
+								"header_uuid": "3c0bf9a1-b3ff-4fc2-8564-fbf644c0d117",
+								"module_uuid": "6b0cc8bf-a744-48b9-8176-54ff4f793351"
+							}							
+						}
+					}
+				]
+			}
+		}
+	}
+}

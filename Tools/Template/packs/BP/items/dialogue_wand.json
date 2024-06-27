@@ -3,13 +3,13 @@
 	"minecraft:item": {
 		"description": {
 			"identifier": "dw623:dialogue_wand",
-			"category": "equipment"
+			"menu_category": {"category":"equipment","is_hidden_in_commands":false}
 		},
 		"components": {
 			"minecraft:creative_category": {"parent": "itemGroup.name.none"},
 			"minecraft:display_name": {"value": "Dialogue Wand"},
 			"minecraft:hand_equipped": true,
-			"minecraft:icon": {"texture": "wand"},
+			"minecraft:icon": "wand",
 			"minecraft:max_stack_size": 1,
 			"minecraft:on_use": {"on_use": {"event": "ev:open_dialogue"}}
 		},

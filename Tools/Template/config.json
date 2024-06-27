@@ -9,53 +9,26 @@
 	"regolith": {
 		"dataPath": "./packs/data",
 		"filterDefinitions": {
-			"jsonte": {
-				"url": "github.com/MCDevKit/regolith-library",
-				"version": "2.12.0"
-			},
-			"dot_ignore": {
-				"runWith": "python",
-				"script": "./filters/dot_ignore.py"
-			},
-			"empty_ignore": {
-				"runWith": "python",
-				"script": "./filters/empty_ignore.py"
-			},
-			"mani_fest": {
-				"runWith": "nodejs",
-				"script": "./filters/mani_fest.js"
-			},
-			"ts-compile": {
-				"runWith": "nodejs",
-				"script": "./filters/ts-compile.js"
-			}
+			"jsonte": {"url":"github.com/MCDevKit/regolith-library","version":"2.12.0"},
+			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
+			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
+			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"},
+			"ts-compile": {"runWith":"nodejs","script":"./filters/ts-compile.js"}
 		},
-		"profiles": {
-			"test_ts2js": {
+		"profiles": {			
+			"build": {
 				"export": {"readOnly":false,"target":"local","rpName": "'RP'","bpName": "'BP'"},				
 				"filters": [
-					{
-						"filter":"ts-compile",
-						"settings": {
-							"src": "all",
-							"ignoreFileRegEx":[],
-							"copyJsFiles": true,			//true means same folders as src
-							"dest": "from-ts"
-						}
-					}
-				]
-			},
-			"test-mani": {
-				"export": {"readOnly":false,"target":"local","rpName": "'RP'","bpName": "'BP'"},				
-				"filters": [							
+					{"filter":"dot_ignore"},
+					{"filter":"jsonte"},
+					{"filter":"empty_ignore"},								
 					{
 						"filter": "mani_fest",
 						"settings": {	
 							"Debug":true,						
-							"name": "My Template Add-On",
+							"name": "Build: My Template Add-On",
 							"description": "It is done and It Does Nothing!!!",
-							"min_engine_version": "stable",	
-							"dependencies":"stable"
+							"min_engine_version": "stable"							
 						}
 					}
 				]
@@ -69,17 +42,32 @@
 					{
 						"filter": "mani_fest",
 						"settings": {
-							"BP": {
-								"UUID": "e95ade4e-1e32-4418-a0ff-00a3dea5a442",
-								"module": "5177c861-bd36-4809-b33d-82c28ff6ed74"
-							},
-							"RP": {
-								"UUID": "bd733592-f101-4da5-9d28-34a9cc9dbe60",
-								"module": "11a6f2dc-000d-42f8-8af7-c2f7c57ccd53"
-							},
+							"Debug":true,
 							"name": "Dev: ?",
 							"description": "Work in Progress",
-							"min_engine_version": "get"
+							"min_engine_version": "stable",
+							"BP":{
+								"header_uuid": "6bd6fb93-cbdf-4e98-b304-af6843c5e8c7",
+								"module_uuid": "09ffc5f0-11a7-4cbe-a512-c7fe636534f3"
+							},
+							"RP": {
+								"header_uuid":"de8c36d9-f282-42bd-9845-22f4c8d92b33",
+								"module_uuid":"eee1594c-7e69-4b89-ab78-30f00438c0df"
+							}							
+						}
+					}
+				]
+			},
+			"test_ts2js": {
+				"export": {"readOnly":false,"target":"local","rpName": "'RP'","bpName": "'BP'"},				
+				"filters": [
+					{
+						"filter":"ts-compile",
+						"settings": {
+							"src": "all",
+							"ignoreFileRegEx":[],
+							"copyJsFiles": true,			//true means same folders as src
+							"dest": "from-ts"
 						}
 					}
 				]

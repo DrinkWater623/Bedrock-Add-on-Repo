@@ -1,0 +1,17 @@
+{
+	"format_version": "1.20.50",
+	"minecraft:item": {
+		"description": {
+			"identifier": "dw623:rotatable_light_arrow_template",
+			"menu_category": {
+				"category": "items"
+			}
+		},
+		"components": {
+			"minecraft:display_name": {"value": "Rotatable Light Arrow Template"},
+			"minecraft:max_stack_size": 64,
+			"minecraft:icon": "iron_arrow_template",
+			"minecraft:glint": true
+		}
+	}
+}

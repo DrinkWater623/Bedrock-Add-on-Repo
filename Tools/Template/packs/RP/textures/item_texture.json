@@ -4,7 +4,7 @@
    "texture_data" : {
       "menu_remote" : {"textures" : "textures/items/menu_remote"},
       "menu_remote_stick" : {"textures" : "textures/items/menu_remote_stick"},
-      "menu_remote_tablet" : {"textures" : "textures/items/menu_remote_tablet"},
+      "menu_remote_tablet" : {"textures" : "textures/items/menu_tablet"},
       "wand" : {"textures" : "textures/items/wand"}
    }
 }

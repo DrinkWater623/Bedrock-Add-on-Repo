@@ -1,0 +1,7 @@
+{
+   "resource_pack_name" : "dw623",
+   "texture_name" : "atlas.items",
+   "texture_data" : {
+      "iron_arrow_template" : {"textures" : "textures/items/iron_arrow_template"}
+   }
+}

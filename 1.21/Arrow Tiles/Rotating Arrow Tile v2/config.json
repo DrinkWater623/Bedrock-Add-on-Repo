@@ -1,0 +1,71 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
+	"author": "DrinkWater623/PinkSalt623 aka Nikki DW (BAO/OSS)",	
+	"name": "Rotating_Arrows_v2",	
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"jsonte": {"url":"github.com/MCDevKit/regolith-library","version":"2.12.0"},
+			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
+			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
+			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}
+		},
+		"profiles": {
+			
+			"build": {
+				"export": {"readOnly":false,"target":"local","rpName": "'RP'","bpName": "'BP'"},				
+				"filters": [							
+					{"filter":"dot_ignore"},
+					{"filter":"jsonte"},
+					{"filter":"empty_ignore"},	
+					{
+						"filter": "mani_fest",
+						"settings": {	
+							"Debug":false,						
+							"name": "Rotation Arrow Tiles v2",
+							"description": "Rotatable Arrow Tiles - 8 Directions",
+							"min_engine_version": "stable",
+							"noPackDependencies":true,
+							"script_eval":true							
+						}
+					}
+				]
+			},
+			"default": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"filter":"dot_ignore"},
+					{"filter":"jsonte"},
+					{"filter":"empty_ignore"},				
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"Debug":false,
+							"name": "Dev: Rotation Arrow Tiles v2",
+							"description": "Rotatable Arrow Tiles - 8 Directions",
+							"min_engine_version": "stable",
+							"noPackDependencies":true,
+							"BP":{
+								"script_eval":true,
+								"header_uuid": "78384371-f114-4e89-b7e3-a4dffecb235b",
+								"module_uuid": "17096a63-5e2e-4200-b407-c3bb766ff107",
+								"dependencies":{
+									"module_name": "@minecraft/server",
+									"version": "1.12.0-beta"
+								}
+							},
+							"RP": {
+								"header_uuid":"7e2bb6e7-99fd-4a73-8f30-99d189380745",
+								"module_uuid":"376f6db0-ff1b-4e20-9448-bef09f425ad5"
+							}							
+						}
+					}
+				]
+			}
+		}
+	}
+}

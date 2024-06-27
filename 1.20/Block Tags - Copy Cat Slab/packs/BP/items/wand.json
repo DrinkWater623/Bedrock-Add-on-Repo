@@ -1,0 +1,35 @@
+{
+	"format_version": "1.19.50",
+	"minecraft:item": {
+		"description": {
+			"identifier": "item:new",
+			//"name":"for Name Ninja",
+			"menu_category": {"category":"equipment"}
+		},
+		"components": {
+			//"minecraft:entity_placer": {"dispense_on": [],"entity":"entity:dummy","use_on": []},
+			//"minecraft:on_use_on": {"on_use_on": {"event": "place_entity","type":"block"}},
+			"minecraft:icon": {"texture": "wand"},
+			"minecraft:max_stack_size": 1,
+			"minecraft:display_name": {"value": "My Wand"},
+			"minecraft:hand_equipped": true,
+			"minecraft:creative_category": {"parent": "itemGroup.name.none"}
+		},
+		"events": 
+		{
+			//Note: run_command is experimental
+			"place_entity": 
+			{
+				"sequence": [
+					{
+						"run_command": {
+							"command": [
+								"say =================================================="
+							]
+						}
+					}
+				]
+			}
+		}
+	}
+}
