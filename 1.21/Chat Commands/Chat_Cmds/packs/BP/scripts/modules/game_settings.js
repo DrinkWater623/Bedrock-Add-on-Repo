@@ -1,4 +1,4 @@
-import { system, TicksPerSecond, Dimension, DimensionTypes, MinecraftDimensionTypes } from '@minecraft/server';
+import {world, system, TicksPerSecond } from '@minecraft/server';
 
 
 //These function are share between modules

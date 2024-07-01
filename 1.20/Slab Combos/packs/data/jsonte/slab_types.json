@@ -5,17 +5,19 @@
 	//type is the name, part of the name
 	
 	"slab_data_version1":"{{slab_combos_unique.filter(x => x.is_vanilla == 1)}}",
-
+/*
+tuff
+*/
 	"slab_types":[
 		{"ns":"minecraft"  ,"slab":"mud_brick_slab"					,"id":0 ,"full_block_name":"mud_bricks"				,"texture_top":"mud_bricks"					,"texture_sides":"mud_bricks"					},
 
-		{"ns":"minecraft"  ,"slab":"stone_block_slab"				,"id":0 ,"full_block_name":"smooth_stone"				,"texture_top":"smooth_stone"				,"texture_sides":"smooth_stone"					},
-		{"ns":"minecraft"  ,"slab":"stone_block_slab"				,"id":1 ,"full_block_name":"sandstone"					,"texture_top":"dw_sandstone_top"			,"texture_sides":"dw_sandstone_bottom"			},	
-		{"ns":"minecraft"  ,"slab":"stone_block_slab"				,"id":3 ,"full_block_name":"cobblestone"				,"texture_top":"cobblestone"				,"texture_sides":"cobblestone"					},
-		{"ns":"minecraft"  ,"slab":"stone_block_slab"				,"id":4 ,"full_block_name":"brick"						,"texture_top":"brick"						,"texture_sides":"brick"						},
-		{"ns":"minecraft"  ,"slab":"stone_block_slab"				,"id":5 ,"full_block_name":"stonebrick"					,"texture_top":"dw_stone_brick"				,"texture_sides":"dw_stone_brick"				},
-		{"ns":"minecraft"  ,"slab":"stone_block_slab"				,"id":6 ,"full_block_name":"quartz"						,"texture_top":"dw_quartz_block_top"		,"texture_sides":"dw_quartz_block_side"			},
-		{"ns":"minecraft"  ,"slab":"stone_block_slab"				,"id":7 ,"full_block_name":"nether_bricks"				,"texture_top":"nether_brick"				,"texture_sides":"nether_brick"					},
+		{"ns":"minecraft"  ,"slab":"smooth_stone"					,"id":0 ,"full_block_name":"smooth_stone"				,"texture_top":"smooth_stone"				,"texture_sides":"smooth_stone"					},
+		{"ns":"minecraft"  ,"slab":"sandstone_slab"					,"id":0 ,"full_block_name":"sandstone"					,"texture_top":"dw_sandstone_top"			,"texture_sides":"dw_sandstone_bottom"			},	
+		{"ns":"minecraft"  ,"slab":"cobblestone_slab"				,"id":0 ,"full_block_name":"cobblestone"				,"texture_top":"cobblestone"				,"texture_sides":"cobblestone"					},
+		{"ns":"minecraft"  ,"slab":"brick_slab"						,"id":0 ,"full_block_name":"brick"						,"texture_top":"brick"						,"texture_sides":"brick"						},
+		{"ns":"minecraft"  ,"slab":"stonebrick_slab"				,"id":0 ,"full_block_name":"stonebrick"					,"texture_top":"dw_stone_brick"				,"texture_sides":"dw_stone_brick"				},
+		{"ns":"minecraft"  ,"slab":"quartz_slab"					,"id":0 ,"full_block_name":"quartz"						,"texture_top":"dw_quartz_block_top"		,"texture_sides":"dw_quartz_block_side"			},
+		{"ns":"minecraft"  ,"slab":"nether_brick_slab"				,"id":0 ,"full_block_name":"nether_bricks"				,"texture_top":"nether_brick"				,"texture_sides":"nether_brick"					},
 
 		{"ns":"minecraft"  ,"slab":"stone_block_slab2"				,"id":0 ,"full_block_name":"red_sandstone"				,"texture_top":"dw_red_sandstone_top"		,"texture_sides":"dw_red_sandstone_bottom"		},
 		{"ns":"minecraft"  ,"slab":"stone_block_slab2"				,"id":1 ,"full_block_name":"purpur_block"				,"texture_top":"dw_purpur"					,"texture_sides":"dw_purpur"					},
@@ -63,6 +65,7 @@
 		{"ns":"minecraft"  ,"slab":"acacia_slab"					,"id":0 ,"full_block_name":"acacia_planks"			,"texture_top":"acacia_planks"				,"texture_sides":"acacia_planks"				},		
 		{"ns":"minecraft"  ,"slab":"dark_oak_slab"					,"id":0 ,"full_block_name":"dark_oak_pks"			,"texture_top":"dark_oak_planks"			,"texture_sides":"dark_oak_planks"				},
 		{"ns":"minecraft"  ,"slab":"bamboo_slab"					,"id":0 ,"full_block_name":"bamboo_planks"			,"texture_top":"bamboo_planks"				,"texture_sides":"bamboo_planks"				},
+		{"ns":"minecraft"  ,"slab":"bamboo_mosaic_slab"				,"id":0 ,"full_block_name":"bamboo_planks"			,"texture_top":"bamboo_planks"				,"texture_sides":"bamboo_planks"				},
 		{"ns":"minecraft"  ,"slab":"cherry_slab"					,"id":0 ,"full_block_name":"cherry_planks"			,"texture_top":"cherry_planks"				,"texture_sides":"cherry_planks"				},
 		{"ns":"minecraft"  ,"slab":"crimson_slab"					,"id":0 ,"full_block_name":"crimson_planks"			,"texture_top":"crimson_planks"				,"texture_sides":"crimson_planks"				},
 		{"ns":"minecraft"  ,"slab":"mangrove_slab"					,"id":0 ,"full_block_name":"mangrove_planks"		,"texture_top":"mangrove_planks"			,"texture_sides":"mangrove_planks"				},

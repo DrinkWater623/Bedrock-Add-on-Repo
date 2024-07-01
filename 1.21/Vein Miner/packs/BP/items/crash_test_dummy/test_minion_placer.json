@@ -1,0 +1,36 @@
+{
+	"format_version": "1.20.80",
+	"minecraft:item": {
+		"description": {
+			"identifier": "ctd:wand_test_minion",
+			"menu_category": {
+				"category": "equipment"
+			}
+		},
+		"components": {
+			"minecraft:display_name": {
+				"value": "Test Minion Placer"
+			},
+			//"minecraft:entity_placer": {"entity": "ctd:test_minion"}, //need inside block, this places randomly outside of block
+			"minecraft:icon": "blaze_rod",
+			"minecraft:max_stack_size": 1,
+			"minecraft:custom_components": [
+				"ctd:place_entity_inside_block"
+			]			
+		}
+		// ,
+		// "events": {
+		// "ev:on_use_on_right_click": {
+		// "sequence": [
+		// {
+		// "queue_command": {
+		// "command": [
+		// "summon ctd:test_minion.50 ~ ~ ~ 0 0 minecraft:entity_spawned ctd"
+		// ]
+		// }
+		// }
+		// ]
+		// }
+		// }
+	}
+}

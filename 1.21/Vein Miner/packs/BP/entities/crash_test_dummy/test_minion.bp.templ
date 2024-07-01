@@ -1,0 +1,101 @@
+{
+  "$scope":{		
+    //======================================================================================
+        "local_leaf1":"{{global_trees.filter(x => x.leaf_group == 1)}}",
+        "local_leaf4_alt":"{{global_trees.filter(x => x.leaf_group == 4)}}",
+        "related_loot":"{{other_tree_block_loot.filter(x => x.is_vine == 0 && (x.related_wood_1 > '' || x.related_wood_2 > ''))}}"
+      },
+ //======================================================================================	
+ "$files":{    
+  "array": "scales",
+  "fileName": "test_minion.{{scale}}.bp"
+},
+//======================================================================================	
+
+  "$template":{
+    "format_version": "1.20.10",
+    "minecraft:entity":{
+      "description":{
+        "identifier": "ctd:test_minion.{{scale}}",
+        "is_spawnable": false,
+        "is_summonable": true,
+        "is_experimental": false
+      },
+      "component_groups":{
+        "cg:despawn":{"minecraft:instant_despawn":{}},
+        "cg:transform":{"minecraft:transformation":{"into":"ctd:test_minion.{{next}}"}}
+      },
+      "components":{
+        "minecraft:breathable":{
+          "breathes_air": true,
+          "breathes_lava": true,
+          "breathes_solids": true,
+          "breathes_water": true,
+          "generates_bubbles": false,
+          "inhale_time": 1.0,
+          "suffocate_time": 100,
+          "total_supply": 100
+        },
+        /*
+          For:
+
+          scale 0.25 - center tp @s ~0.5 ~0.375 ~0.5
+        */
+        "minecraft:collision_box":{"height":"{{=touch}}","width":"{{=touch}}"},
+        "minecraft:damage_sensor":{"triggers":{"cause":"all","deals_damage":false}},      
+        "minecraft:physics":{"has_gravity": false,"has_collision": false},
+        "minecraft:scale":{"value":"{{=pt}}"},
+        "minecraft:health":{"value":10,"max":10},
+        "minecraft:interact": {
+          "interactions":[          
+            {
+              "on_interact": {              
+                "filters": { "test": "is_sneaking", "subject": "other"},
+                "event":"ev:despawn"
+              },
+              "swing": true,"use_item": false           
+            },
+            {
+              "on_interact": {              
+                "filters": { "test": "has_equipment", "subject": "other", "domain": "hand", "value": "stick"},
+                "event":"ev:transform"
+              },
+              "swing": true,"use_item": false           
+            },
+            {"on_interact":{"event":"ev:test_in_block"},"swing":true}
+          ]
+        },
+        "minecraft:nameable": {"allow_name_tag_renaming":true,"always_show":true},
+        //"minecraft:timer":{"time":2,"looping":false,"randomInterval":true,"time_down_event":{"event":"ev:test_in_block"}},	
+        "minecraft:type_family":{"family":["crash_test_dummy","ctd","ctd_minion"]}
+      },
+      "events":{
+        "minecraft:entity_spawned":  {"trigger": "ev:align"},
+        "ev:align": {"sequence":[{"queue_command":{"command":["say Aligning {{align}}","execute align xyz run tp @s ~0.5 ~{{align}} ~0.5"]}}]},
+        "ev:despawn":{"add":{"component_groups":["cg:despawn"]}},
+        "ev:transform":{"add":{"component_groups":["cg:transform"]}},
+        //Failed Test
+        "ev:test_in_block":{
+          "sequence":[		            
+            {"{{#global_trees}}"	  :{"filters":{"test":"in_block","value":"minecraft:{{log_name}}_{{log_sfx}}"},"trigger":"ev:found_log"}},
+						{"{{#global_trees}}"	  :{"filters":{"test":"in_block","value":"minecraft:stripped_{{log_name}}_{{log_sfx}}"},"trigger":"ev:found_log"}},
+						{"{{#local_leaf1}}"		  :{"filters":{"test":"in_block","value":"minecraft:{{log_name}}_{{leaf_sfx}}"},"trigger":"ev:found_leaf"}},
+						{"{{#local_leaf4_alt}}"	:{"filters":{"test":"in_block","value":"minecraft:{{alt_give_leaf}}"},"trigger":"ev:found_leaf"}}
+          ]
+        },
+        "ev:found_leaf":  {
+          "sequence": [
+            {"queue_command":{"command":["say Found Leaf Type"]}},
+            {"trigger":"ev:despawn"}                    
+          ]
+        },
+        "ev:found_log":  {
+          "sequence": [
+            {"queue_command":{"command":["say Found log Type"]}},
+            {"trigger":"ev:despawn"}                    
+          ]
+        }
+      }
+    }
+  }
+}

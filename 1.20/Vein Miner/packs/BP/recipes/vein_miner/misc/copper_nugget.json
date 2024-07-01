@@ -1,0 +1,28 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shapeless": {
+    "description": {
+      "identifier": "dw623:copper_nugget"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "ingredients": [
+      {
+        "item": "minecraft:copper_ingot",
+        "data": 0
+      }
+    ],
+    "unlock": [
+      {
+        "item": "minecraft:copper_ingot",
+        "data": 0
+      }
+    ],
+    "result": {
+      "item": "dw623:copper_nugget",
+      "count": 9
+    },
+    "priority": 2
+  }
+}

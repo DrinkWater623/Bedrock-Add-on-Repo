@@ -1,0 +1,30 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:copper_ingot"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "ccc",
+      "ccc",
+      "ccc"
+    ],
+    "key": {
+      "c": {
+        "item": "dw623:copper_nugget"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:copper_ingot"
+      }
+    ],
+    "result": {
+      "item": "minecraft:copper_ingot",
+      "count": 1
+    }
+  }
+}
