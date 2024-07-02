@@ -1,7 +1,7 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
 	"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
-	"name": "Vein_Miner_Script",
+	"name": "Vein_Miner_Custom",
 	"packs": {
 		"behaviorPack": "./packs/BP",
 		"resourcePack": "./packs/RP"
@@ -25,8 +25,8 @@
 						"filter": "mani_fest",
 						"settings": {	
 							"Debug":false,						
-							"name": "Build: Vein Miner with Vanilla Tools",
-							"description": "Must have Efficiency 5 and added Silk Touch for that effect",
+							"name": "Build: Vein Miner - Custom Tools",
+							"description": "Vein Miner with Custom Tools",
 							"min_engine_version": [1,21,0],	
 							//"noPackDependencies":false,
 							"script_eval":true,
@@ -45,19 +45,19 @@
 						"filter": "mani_fest",
 						"settings": {
 							"Debug":false,
-							"name": "Dev: Vein Miner with Vanilla Tools",
-							"description": "Must have Efficiency 5 and added Silk Touch for that effect",
+							"name": "Dev: Vein Miner - Custom Tools",
+							"description": "Vein Miner with Custom Tools",
 							"min_engine_version": [1,21,0],							
 							//"noPackDependencies":true,
 							"BP":{
-								"header_uuid": "3bd2ec80-df91-428b-be0e-60a34f7b926e",
-								"module_uuid": "cb74e385-f0d6-4239-ae2a-049c1bd64524",
+								"header_uuid": "f8a79fe9-4d3e-423d-a0a4-2748f21123f6",
+								"module_uuid": "32b4bfa2-45d9-445e-816e-df40e36be458",
 								"dependencies":{"module_name":"@minecraft/server","version":"1.12.0-beta"},
 								"script_eval":true
 							},
 							"RP": {
-								"header_uuid":"7e0b1ae8-c5dd-4083-9e9b-6c58253c94fb",
-								"module_uuid":"53d69e35-d6b4-48b9-a4ad-964cc0e4aad5"
+								"header_uuid":"9ef02a4f-bebf-403b-8253-eac0725c0ddc",
+								"module_uuid":"62453733-0732-4b12-b32b-e98a13d23d60"
 							}							
 						}
 					}

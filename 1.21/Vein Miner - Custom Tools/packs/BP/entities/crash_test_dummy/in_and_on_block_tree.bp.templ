@@ -1,0 +1,235 @@
+{
+	"$scope":{
+		"local_leaf1":"{{global_trees.filter(x => x.leaf_group == 1)}}",
+		"local_leaf4_alt":"{{global_trees.filter(x => x.leaf_group == 4)}}"		
+	},
+    "$template":{
+		"format_version": "1.20.10",
+		"minecraft:entity":{
+			"description":{
+				"identifier": "ctd:tree_block_reference_checker",
+				"is_spawnable": false,
+				"is_summonable": true,
+				"is_experimental": false
+				//,"properties":{"bit:in_block":{"type":"bool","default":false}}
+			},
+			"component_groups":{
+				"cg:despawn":{"minecraft:instant_despawn":{}},
+				"cg:rescale_bigger":{"minecraft:scale":{"value":1.25}},
+				"cg:rescale_smaller":{"minecraft:scale":{"value":0.5}},
+				"cg:delay_timer_spawn":{
+					"minecraft:timer":{
+						"time":0.1,"looping": false,"randomInterval": false,
+						"time_down_event":{"event":"minecraft:entity_spawn"}
+					}
+				}
+			},
+			"components":{
+				"minecraft:breathable":{
+					"breathes_air": true,
+					"breathes_lava": true,
+					"breathes_solids": true,
+					"breathes_water": true,
+					"generates_bubbles": false,
+					"inhale_time": 1.0,
+					"suffocate_time": 100,
+					"total_supply": 100
+				},
+				//"minecraft:collision_box":{"height":1,"width":1},
+				"minecraft:despawn":{
+					"filters":[
+						{
+							"any_of":[
+								{"test":"has_tag","value":"despawn"},
+								{ "test": "is_altitude", "operator": "<", "value": 0 }
+								//change to 0 for overworld only
+							]
+						}
+					]
+				},
+				"minecraft:interact": {
+					"interactions": [
+						{
+							"on_interact": {
+								"filters":[
+									{
+										"all_of":[
+											{"test":"is_family","subject":"other","value":"player"},
+											{"test": "is_sneaking", "subject": "player", "value": false},
+											{"test": "in_block","operator":"!=","value": "minecraft:air"}
+										]
+									}
+								],
+								"event":"ev:where_am_i"
+							},
+							"swing": true
+						},
+						{
+							"on_interact": {
+								"filters":[
+									{
+										"all_of":[
+											{"test":"is_family","subject":"other","value":"player"},
+											{"test": "is_sneaking", "subject": "player", "value": false},
+											{"test": "in_block","value": "minecraft:air"}
+										]
+									}
+								],
+								"event":"ev:what_block_is_below_me"
+							},
+							"swing": true
+						},
+						// Sneak to move entity up or down... so can test on or in block
+						{
+							"on_interact": {
+								"filters":[
+									{
+										"all_of":[
+											{"test":"is_family","subject":"other","value":"player"},
+											{"test": "is_sneaking", "subject": "player", "value": true},
+											{"test": "in_block","value": "minecraft:air"}
+										]
+									}
+								],
+								"event":"ev:move_down"
+							},
+							"swing": true
+						},
+						{
+							"on_interact": {
+								"filters":[
+									{
+										"all_of":[
+											{"test":"is_family","subject":"other","value":"player"},
+											{"test": "is_sneaking", "subject": "player", "value": true},
+											{"test": "in_block","operator":"!=","value": "minecraft:air"}
+										]
+									}
+								],
+								"event":"ev:move_up"
+							},
+							"swing": true
+						}
+					]
+				},
+				"minecraft:physics":{"has_gravity": true,"has_collision": true},
+				//"minecraft:pushable":{"is_pushable":false,"is_pushable_by_piston": false},
+				//"minecraft:scale":{"value":0.5},
+				"minecraft:health":{"value":100,"max":100},
+				"minecraft:type_family":{"family":["crash_test_dummy"]}
+			},
+			"events":{
+				"ev:despawn":{"add":{"component_groups":["cg:despawn"]}},
+				"minecraft:entity_spawned":{
+					"sequence":[
+						{
+							"queue_command":{"command":["say setting up"]}
+						},
+						{
+							"filters": {"test": "in_block","operator":"!=","value": "minecraft:air"},
+							"queue_command":{"command":["say I am in a block"]},
+							"add":{"component_groups":["cg:rescale_bigger"]},
+							"trigger":"ev:where_am_i"
+						},
+						{
+							"filters": {"test": "in_block","value": "minecraft:air"},
+							"queue_command":{"command":["say I am in air"]},
+							"add":{"component_groups":["cg:rescale_smaller"]},
+							"trigger":"ev:what_block_is_below_me"
+						}
+					]
+				},
+				"ev:move_down":{
+					"sequence":[
+						{
+							"filters": {"test": "in_block","value": "minecraft:air"},
+							"queue_command":{"command":["say moving down","tp ~ ~-1 ~"]},		
+							"add":{"component_groups":["cg:rescale_bigger"]},
+							"trigger":"ev:where_am_i"
+						}
+					]
+				},
+				"ev:move_up":{
+					"sequence":[
+						{
+							"filters": {"test": "in_block","operator":"!=","value": "minecraft:air"},
+							"queue_command":{"command":["say moving iup","tp ~ ~1 ~"]},
+							"add":{"component_groups":["cg:rescale_smaller"]},
+							"trigger":"ev:what_block_is_below_me"
+						}
+					]
+				},
+				"ev:where_am_i":{
+					"sequence":[
+						// Leaves
+						{
+							"filters":[
+								{
+									"none_of":[										
+										{"{{#global_trees}}":{"test": "in_block","value": "minecraft:{{log_name}}_{{log_sfx}}"}}
+									]
+								}
+							],
+							"trigger":"ev:where_am_i_leaves"
+						},
+						{
+							"filters":[
+								{
+									"none_of":[										
+										{"{{#local_leaf1}}":{"test": "in_block","value": "minecraft:{{log_name}}_{{leaf_sfx}}"}},
+										{"{{#local_leaf4_alt}}":{"test": "in_block","value": "minecraft:{{alt_give_leaf}}"}}
+									]
+								}
+							],
+							"trigger":"ev:where_am_i_logs"
+						}
+					]
+				},
+				"ev:where_am_i_leaves":{
+					"sequence":[
+						{
+							"queue_command":{"command":[
+								"tellraw @a[r=10] {\"rawtext\": [{\"text\":\"§aIn Leaf Results\"}]}",																
+								{"{{#local_leaf1}}"	:"execute if block ~ ~ ~ minecraft:{{log_name}}_{{leaf_sfx}} run tellraw @a[r=10] {\"rawtext\": [{\"text\":\"queue_command / minecraft:{{log_name}}_{{leaf_sfx}}\"}]}"},
+								{"{{#local_leaf4_alt}}":"execute if block ~ ~ ~ minecraft:{{alt_give_leaf}} run tellraw @a[r=10] {\"rawtext\": [{\"text\":\"queue_command / minecraft:{{alt_give_leaf}}\"}]}"},
+								"function crash_test_dummy/in_block_leaf_query"								
+							]}
+						}											
+					]
+				},
+				"ev:where_am_i_logs":{
+					"sequence":[						
+						{
+							"queue_command":{"command":[
+								"tellraw @a[r=10] {\"rawtext\": [{\"text\":\"§bIn Log Results\"}]}",
+								{"{{#global_trees}}":"execute if block ~ ~ ~ minecraft:{{log_name}}_{{log_sfx}} run tellraw @a[r=10] {\"rawtext\": [{\"text\":\"queue_command / minecraft:{{log_name}}_{{log_sfx}}\"}]}"},
+								"function crash_test_dummy/in_block_log_query"
+							]}
+						}										
+					]
+				},
+				"ev:what_block_is_below_me":{
+					"sequence":[
+						{
+							"queue_command":{"command":[
+								// Leaf								
+								{"{{#local_leaf1}}"	  :"execute if block ~ ~-1 ~ minecraft:{{log_name}}_{{leaf_sfx}} run tellraw @a[r=10] {\"rawtext\": [{\"text\":\"queue_command / minecraft:{{log_name}}_{{leaf_sfx}}\"}]}"},
+								{"{{#local_leaf4_alt}}":"execute if block ~ ~-1 ~ minecraft:{{alt_give_leaf}} run tellraw @a[r=10] {\"rawtext\": [{\"text\":\"queue_command / minecraft:{{alt_give_leaf}}\"}]}"},
+								"function crash_test_dummy/on_block_leaf_query"
+								//run function here for same as above								
+							]}
+						},
+						{
+							"queue_command":{"command":[
+								// Log
+								{"{{#global_trees}}":"execute if block ~ ~-1 ~ minecraft:{{log_name}}_{{log_sfx}} run tellraw @a[r=10] {\"rawtext\": [{\"text\":\"queue_command / minecraft:{{log_name}}_{{log_sfx}}\"}]}"},
+								"function crash_test_dummy/on_block_log_query"
+								
+							]}
+						}						
+					]
+				}
+			}
+		}
+	}
+}

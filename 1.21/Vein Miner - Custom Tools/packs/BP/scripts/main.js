@@ -12,7 +12,7 @@ world.beforeEvents.worldInitialize.subscribe((event) => {
     if (debug)
         event.itemComponentRegistry
             .registerCustomComponent(
-                "ctd:place_entity_inside_block",
+                "ctd:minion_placer_component",
                 { onMineBlock: e => { onBlock.ctd_placeEntityTest(e.block, e.minedBlockPermutation, e.source); } }
             );
     //add-on code

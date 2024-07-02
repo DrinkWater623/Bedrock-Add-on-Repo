@@ -1,0 +1,174 @@
+{
+    "global_nature_loot":[        
+        /* 
+        =================================================================================
+            //Some stuff needs to be silk touched to get it.
+
+            Filters
+                block test  x => x.block_state_name==''
+                            block's official give name is give_name > '' ? give_name : item_name
+                floating item entity test x => x.data_id >= 0  != x.item_name
+
+            Group   0 is non-blocks = items
+                    1 - solid blocks
+                    2 - flowers
+                    3 - plants
+        =================================================================================
+        */
+        
+        // Seeds
+        {"is_block":0,"group":0	,"item_name":"apple"        	    ,"bit_pick":1,"bit_axe":0,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""	            ,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"cocoa_seeds"		    ,"bit_pick":1,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":2,"is_tree_loot":1,"data_id":0	,"give_name":""	            ,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"pitcher_pod"		    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""	            ,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"seeds"		        ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""	            ,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"clay_ball"		    ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":"snow_layer"   ,"block_state_name":""}, //not sure
+        {"is_block":0,"group":0	,"item_name":"snowball"			    ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":"snow_layer"   ,"block_state_name":""}, //not sure
+        {"is_block":0,"group":0	,"item_name":"stick"		        ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""	            ,"block_state_name":""},
+        //glow berries seems to have no block to place - test to see if that is the block name
+        //{"is_block":0,"group":3	,"item_name":"glow_berries" 	    ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":1,"is_crop":2,"is_tree_loot":0,"data_id":0	,"give_name":""		        ,"block_state_name":""},
+        //do not add sweet_berry_bush to this list, not minable with silk touch, is just a player crop
+        //{"is_block":0,"group":3	,"item_name":"sweet_berries"	    ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":1,"is_crop":2,"is_tree_loot":0,"data_id":0	,"give_name":""		        ,"block_state_name":""},
+        // Saplings
+        {"is_block":0,"group":0	,"item_name":"acacia_sapling"       ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""	            ,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"birch_sapling"        ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""	            ,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"cherry_sapling"       ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""	            ,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"crimson_fungus"	    ,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"dark_oak_sapling"     ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""	            ,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"jungle_sapling"       ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""	            ,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"mangrove_propagule"   ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""	            ,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"oak_sapling"          ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""	            ,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"spruce_sapling"       ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""	            ,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"warped_fungus"	    ,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""		,"block_state_name":""},
+
+        
+        // Ground/Dirt Types
+        {"is_block":1,"group":1	,"item_name":"top_snow"			    ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":3	,"give_name":"tallgrass"	,"block_state_name":"snow"  },
+
+        {"is_block":1,"group":1	,"item_name":"dirt"				    ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":-1	,"give_name":""             ,"block_state_name":""      }, 
+        {"is_block":1,"group":1	,"item_name":"dirt"				    ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":"dirt"         ,"block_state_name":"normal"},
+        {"is_block":1,"group":1	,"item_name":"coarse_dirt"		    ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":1	,"give_name":"dirt"	        ,"block_state_name":"coarse"},
+        
+        {"is_block":1,"group":1	,"item_name":"grass_block"		    ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":1,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":"grass" 	    ,"block_state_name":""      },
+        {"is_block":1,"group":1	,"item_name":"crimson_nylium"	    ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""     	    ,"block_state_name":""      },
+        {"is_block":1,"group":1	,"item_name":"dirt_path"            ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":1,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":"grass_path"   ,"block_state_name":""      },
+        {"is_block":1,"group":3	,"item_name":"mangrove_roots"	    ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""		        ,"block_state_name":""},
+        {"is_block":1,"group":1	,"item_name":"moss_block"		    ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		        ,"block_state_name":""      },
+        {"is_block":1,"group":1	,"item_name":"moss_carpet"	        ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		        ,"block_state_name":""      },
+        {"is_block":1,"group":1	,"item_name":"mud"		            ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""     	    ,"block_state_name":""      },
+        {"is_block":1,"group":3	,"item_name":"muddy_mangrove_roots" ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""		        ,"block_state_name":""},
+        {"is_block":1,"group":1	,"item_name":"mycelium"		        ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":1,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		        ,"block_state_name":""      },
+        {"is_block":1,"group":1	,"item_name":"podzol"			    ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":1,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""	            ,"block_state_name":""      },
+        {"is_block":1,"group":1	,"item_name":"rooted_dirt"          ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""     	    ,"block_state_name":""      },
+        {"is_block":1,"group":1	,"item_name":"snow"			        ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":1,"is_crop":0,"is_tree_loot":0,"data_id":3	,"give_name":""	            ,"block_state_name":""      },
+        {"is_block":1,"group":1	,"item_name":"soul_sand"            ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""     	    ,"block_state_name":""      },
+        {"is_block":1,"group":1	,"item_name":"warped_nylium"	    ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""     	    ,"block_state_name":""      },
+        
+        {"is_block":1,"group":1	,"item_name":"soul_soil"            ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""     	    ,"block_state_name":""      },
+        {"is_block":1,"group":1	,"item_name":"sand"			        ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":-1	,"give_name":""	            ,"block_state_name":"" },
+        {"is_block":1,"group":1	,"item_name":"sand"			        ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":"sand"	        ,"block_state_name":"normal" },
+        {"is_block":1,"group":1	,"item_name":"red_sand"		        ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":1,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":1	,"give_name":"sand"	        ,"block_state_name":"red"    },
+
+        {"is_block":1,"group":1	,"item_name":"shroomlight"	        ,"bit_pick":1,"bit_axe":0,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":3	,"give_name":""	            ,"block_state_name":""      },
+
+        //Red Flower Group
+        {"is_block":1,"group":2	,"item_name":"red_flower"			,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":-1	,"give_name":"red_flower"	,"block_state_name":""				    },
+        {"is_block":1,"group":2	,"item_name":"poppy"				,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":"red_flower"	,"block_state_name":"poppy"				},
+        {"is_block":1,"group":2	,"item_name":"blue_orchid"		    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":1	,"give_name":"red_flower"	,"block_state_name":"orchid"			},
+        {"is_block":1,"group":2	,"item_name":"allium"				,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":2	,"give_name":"red_flower"	,"block_state_name":"allium"			},
+        {"is_block":1,"group":2	,"item_name":"houstonia"			,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":3	,"give_name":"red_flower"	,"block_state_name":"houstonia"			},
+        {"is_block":1,"group":2	,"item_name":"red_tulip"			,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":4	,"give_name":"red_flower"	,"block_state_name":"tulip_red"			},
+        {"is_block":1,"group":2	,"item_name":"orange_tulip"		    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":5	,"give_name":"red_flower"	,"block_state_name":"tulip_orange"		},
+        {"is_block":1,"group":2	,"item_name":"white_tulip"		    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":6	,"give_name":"red_flower"	,"block_state_name":"tulip_white"		},
+        {"is_block":1,"group":2	,"item_name":"pink_tulip"			,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":7	,"give_name":"red_flower"	,"block_state_name":"tulip_pink"		},
+        {"is_block":1,"group":2	,"item_name":"oxeye_daisy"		    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":8	,"give_name":"red_flower"	,"block_state_name":"oxeye"				},
+        {"is_block":1,"group":2	,"item_name":"cornflower"			,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":9	,"give_name":"red_flower"	,"block_state_name":"cornflower"		},
+        {"is_block":1,"group":2	,"item_name":"lily_of_the_valley"	,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":10	,"give_name":"red_flower"	,"block_state_name":"lily_of_the_valley"},
+        // Yellow Flower Group			
+        {"is_block":1,"group":2	,"item_name":"yellow_flower"		,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":-1	,"give_name":"yellow_flower","block_state_name":""	            },
+        {"is_block":1,"group":2	,"item_name":"dandelion"			,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":"yellow_flower","block_state_name":"dandelion"	    },
+
+        // Singles-2
+        {"is_block":0,"group":2	,"item_name":"chorus_flower"	    ,"bit_pick":1,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":2	,"item_name":"chorus_plant"	    ,"bit_pick":1,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":0,"group":2	,"item_name":"azure_bluet"		    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":0,"group":2	,"item_name":"lilac"      		    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":2	,"item_name":"pink_petals"		    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":2	,"item_name":"torchflower"		    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        
+        // Double Plant Group
+        {"is_block":1,"group":2	,"item_name":"double_plant"		    ,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":-1	,"give_name":""	            ,"block_state_name":""		            },
+        {"is_block":1,"group":2	,"item_name":"sunflower"			,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":"double_plant"	,"block_state_name":"sunflower"			},
+        {"is_block":1,"group":2	,"item_name":"syringa"			    ,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":1	,"give_name":"double_plant"	,"block_state_name":"syringa"			},
+
+        {"is_block":1,"group":2	,"item_name":"rose"				    ,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":4	,"give_name":"double_plant"	,"block_state_name":"rose"				},
+        {"is_block":1,"group":2	,"item_name":"peony"	    		,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":5	,"give_name":"double_plant"	,"block_state_name":"paeonia"			},
+        {"is_block":1,"group":3	,"item_name":"double_tallgrass"	    ,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":2	,"give_name":"double_plant"	,"block_state_name":"grass"				},
+        {"is_block":1,"group":3	,"item_name":"large_fern"			,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":3	,"give_name":"double_plant"	,"block_state_name":"fern"				},
+        //  Tall Grass
+        {"is_block":1,"group":3	,"item_name":"tallgrass"	        ,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":1,"is_crop":0,"is_tree_loot":0,"data_id":-1	,"give_name":""             ,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"tall"				    ,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":1,"is_crop":0,"is_tree_loot":0,"data_id":1	,"give_name":"tallgrass"	,"block_state_name":"tall"},
+        {"is_block":1,"group":3	,"item_name":"fern"				    ,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":1,"is_crop":0,"is_tree_loot":0,"data_id":2	,"give_name":"tallgrass"	,"block_state_name":"fern"},
+
+        // Singles-3
+        {"is_block":1,"group":3	,"item_name":"brown_mushroom" 	    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"crimson_roots"	    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"deadbush"		    ,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":1,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"hanging_roots"	    ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""		,"block_state_name":""},
+        //{"is_block":1,"group":3	,"item_name":"kelp"				    ,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":2,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"nether_sprouts"	    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"pitcher_plant"	    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"red_mushroom" 	    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"seagrass"			    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        //{"is_block":1,"group":3	,"item_name":"tallgrass"		    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"twisting_vines"	    ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"vines"			    ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":"vine"	,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"warped_roots"		    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"weeping_vines"	    ,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""		,"block_state_name":""},
+
+        {"is_block":1,"group":3	,"item_name":"azalea"   		    ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"flowering_azalea"	    ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":1,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"big_dripleaf"		    ,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"small_dripleaf"       ,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":"small_dripleaf_block"		,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"spore_blossom"	    ,"bit_pick":1,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":0,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+    //],
+    //=========================================================================================
+   // "crop_list":[
+        {"is_block":1,"group":3	,"item_name":"bamboo"				,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":2,"is_tree_loot":1,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"cactus"     		    ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":2,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"glow_berries"	        ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":2,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":0	,"item_name":"melon"	    	    ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":1,"is_crop":2,"is_tree_loot":0,"data_id":0	,"give_name":""	    ,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"melon_seeds"		    ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":2,"is_tree_loot":0,"data_id":0	,"give_name":""	    ,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"nether_wart"		    ,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":2,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":0	,"item_name":"pumpkin"      	    ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":2,"is_tree_loot":0,"data_id":0	,"give_name":""	    ,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"pumpkin_seeds"	    ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":2,"is_tree_loot":0,"data_id":0	,"give_name":""	    ,"block_state_name":""},
+        {"is_block":0,"group":3	,"item_name":"sugar_cane"			,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":2,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"reeds"			    ,"bit_pick":0,"bit_axe":1,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":2,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"sweet_berries"	    ,"bit_pick":1,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":2,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        {"is_block":1,"group":3	,"item_name":"sweet_berry_bush"     ,"bit_pick":0,"bit_axe":1,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":2,"is_tree_loot":0,"data_id":0	,"give_name":""		,"block_state_name":""},
+        // Villager Crops
+        {"is_block":0,"group":0	,"item_name":"beetroot"     	    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":1,"is_tree_loot":0,"data_id":0	,"give_name":""	    ,"block_state_name":""},
+        {"is_block":1,"group":0	,"item_name":"beetroot"     	    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":1,"is_tree_loot":0,"data_id":0	,"give_name":""	    ,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"beetroot_seeds"	    ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":1,"is_tree_loot":0,"data_id":0	,"give_name":""	    ,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"poisonous_potato"	    ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":1,"is_tree_loot":0,"data_id":0	,"give_name":""	    ,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"carrot"       	    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":1,"is_tree_loot":0,"data_id":0	,"give_name":""	    ,"block_state_name":""},
+        {"is_block":1,"group":0	,"item_name":"carrots"       	    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":1,"is_tree_loot":0,"data_id":0	,"give_name":""	    ,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"potato"       	    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":1,"is_tree_loot":0,"data_id":0	,"give_name":""	    ,"block_state_name":""},
+        {"is_block":1,"group":0	,"item_name":"potatoes"       	    ,"bit_pick":0,"bit_axe":0,"bit_hoe":1,"bit_shovel":0,"bit_silk":0,"is_crop":1,"is_tree_loot":0,"data_id":0	,"give_name":""	    ,"block_state_name":""},
+        {"is_block":0,"group":0	,"item_name":"wheat"           	    ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":1,"is_tree_loot":0,"data_id":0	,"give_name":""	    ,"block_state_name":""},
+        {"is_block":1,"group":0	,"item_name":"wheat"           	    ,"bit_pick":0,"bit_axe":0,"bit_hoe":0,"bit_shovel":0,"bit_silk":0,"is_crop":1,"is_tree_loot":0,"data_id":0	,"give_name":""	    ,"block_state_name":""}
+    ],
+    "other_tree_block_loot":[
+		//make sure roots is shears
+		{"block_name":"mangrove_roots"	,"tool":"pickaxe"	,"is_vine":0	,"related_wood_1":"mangrove"	,"related_wood_2":""},
+		{"block_name":"shroomlight"		,"tool":"pickaxe"	,"is_vine":0	,"related_wood_1":"crimson"		,"related_wood_2":"warped"},
+		{"block_name":"twisting_vines"	,"tool":"sword"		,"is_vine":1	,"related_wood_1":"warped"		,"related_wood_2":""},
+		{"block_name":"weeping_vines"	,"tool":"sword"		,"is_vine":1	,"related_wood_1":"crimson"		,"related_wood_2":""},
+		{"block_name":"vine"			,"tool":"shears"	,"is_vine":1	,"related_wood_1":""			,"related_wood_2":""}
+	],
+    "global_vines_list":[
+		//make sure roots is shears
+		{"block_name":"twisting_vines"	,"tool":"sword"		,"is_vine":1	,"related_wood_1":"warped"		,"related_wood_2":""},
+		{"block_name":"weeping_vines"	,"tool":"sword"		,"is_vine":1	,"related_wood_1":"crimson"		,"related_wood_2":""},
+		{"block_name":"vine"			,"tool":"shears"	,"is_vine":1	,"related_wood_1":""			,"related_wood_2":""}
+	]
+}

@@ -2,21 +2,18 @@
 	"format_version": "1.20.80",
 	"minecraft:item": {
 		"description": {
-			"identifier": "ctd:minion_placer",
+			"identifier": "ctd:player_break_block_info",
 			"menu_category": {
 				"category": "equipment"
 			}
 		},
 		"components": {
 			"minecraft:display_name": {
-				"value": "Test Minion Placer"
+				"value": "PlayerBreakBlock Info"
 			},
 			//"minecraft:entity_placer": {"entity": "ctd:test_minion"}, //need inside block, this places randomly outside of block
-			"minecraft:icon": "blaze_rod",
-			"minecraft:max_stack_size": 1,
-			"minecraft:custom_components": [
-				"ctd:minion_placer_component"
-			]			
-		}
+			"minecraft:icon": "orange_rod",
+			"minecraft:max_stack_size": 1
+		}		
 	}
 }

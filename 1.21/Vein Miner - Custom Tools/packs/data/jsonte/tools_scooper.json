@@ -1,0 +1,12 @@
+{   	
+	"scooper_digger_tags":[
+		{"tag":"dirt"	},
+		{"tag":"gravel"	},
+		{"tag":"grass"	},
+		{"tag":"sand"	}
+	],
+	"scooper_digger_blocks":[
+		{"block_name":"clay"	},
+		{"block_name":"mud"	}
+	]
+}

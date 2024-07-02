@@ -1,0 +1,9 @@
+{
+   "resource_pack_name" : "dw623",
+   "texture_name" : "atlas.items",
+   "texture_data" : {
+      "wand" : {"textures" : "textures/items/crash_test_dummy/wand_magic"},
+      "orange_rod" : {"textures" : "textures/items/crash_test_dummy/orange_rod"}
+      
+   }
+}
