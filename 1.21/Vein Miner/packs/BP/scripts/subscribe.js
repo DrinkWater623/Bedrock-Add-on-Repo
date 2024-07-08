@@ -1,6 +1,8 @@
 //==============================================================================
 import { world } from "@minecraft/server";
 import { McDebug } from './library/McDebug.js';
+import { ItemHas } from './library/item.js';
+
 const bug = new McDebug(false, world); // <<< --- turn off when done testing
 //==============================================================================
 export function chatSend_before (debug = false) {
@@ -42,9 +44,19 @@ export function playerBreakBlock_after (debug = false) {
         if (debug) bug.playerBreakBlockAfterEventInfo(event);
 
         //Axe ends with _axe, non-stackable, has enchantable component, has efficiency (any level)
-        if (event.itemStackBeforeBreak.typeId.endsWith("_axe")) {
-            event.player.sendMessage("§fYou Used an Axe");
-            return;
+        if (ItemHas.tags(event.itemStackBeforeBreak, [ "minecraft:is_axe" ])) {
+
+            if (ItemHas.enchantments(event.itemStackBeforeBreak, [ { type: "efficiency", level: 3 } ])) {
+
+                let msg = "";
+                if (ItemHas.enchantments(event.itemStackBeforeBreak, [ { type: "silk_touch", level: 1 } ]))
+                    msg = "§fYou Used an Efficiency Silk Touch Axe";
+                else
+                    msg = "§fYou Used an Efficiency Axe";
+
+                event.player.sendMessage(msg);
+                return;
+            }
         }
     });
 }
@@ -100,7 +112,7 @@ export function itemUse_before (debug) {
         if (!(event.source instanceof Player)) return;
 
         if (debug) {
-            bug.itemInfo(event.itemStack,event.source);
+            bug.itemInfo(event.itemStack, event.source);
             const blockHit = event.source?.getBlockFromViewDirection({ maxDistance: 7 });
             if (blockHit.block) {
                 bug.blockInfo(blockHit.block, event.source, "§1Block-Hit Info");

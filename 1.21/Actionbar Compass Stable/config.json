@@ -1,7 +1,7 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
 	"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
-	"name": "Actionbar_Compass",
+	"name": "Actionbar_Compass_Stable",
 	"packs": {
 		"behaviorPack": "./packs/BP",
 		"resourcePack": "./packs/RP"
@@ -26,9 +26,12 @@
 					{
 						"filter": "mani_fest",
 						"settings": {							
-							"name": "Clear Screen by DW623",
-							"description": ":cls or :clsw to run Requires Beta API.",							
-							"script_eval":true
+							"name": "Build: Stable: ActionBar Compass by DW623",
+							"description": "No Commands Available in Stable",							
+							"BP": {								
+								"dependencies": [{"module_name":"@minecraft/server","version":"stable"}],
+								"script_eval":true
+							}
 						}
 					}
 				]
@@ -43,15 +46,15 @@
 							"BP": {
 								"header_uuid": "888ea32d-cee2-426e-bb2e-2622648d3d37",
 								"module_uuid": "ab297376-90c2-4d0c-84a0-8276e5c898bb",
-								"dependencies": [{"module_name":"@minecraft/server","version":"1.12.0-beta"}],
+								"dependencies": [{"module_name":"@minecraft/server","version":"stable"}],
 								"script_eval":true
 							},
 							"RP": {
 								"header_uuid": "6fb2964d-0fd8-40e4-9990-a21280c950da",
 								"module_uuid": "c6868292-c3a6-425f-a37d-81600cd988e2"
 							},
-							"name": "Dev: Clear Screen by DW623",
-							"description": ":cls or :clsw to run Requires Beta API.",							
+							"name": "Dev: Stable: ActionBar Compass by DW623",
+							"description": "No Commands Available in Stable",								
 							"min_engine_version": [1,21,0]							
 						}
 					}

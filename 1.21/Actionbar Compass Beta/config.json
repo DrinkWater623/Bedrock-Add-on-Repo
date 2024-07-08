@@ -1,0 +1,62 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
+	"author": "DrinkWater623/PinkSalt623 aka Nikki DW",
+	"name": "Actionbar_Compass_Beta",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {	
+			"dot_ignore": {
+				"runWith": "python",
+				"script": "./filters/dot_ignore.py"
+			},		
+			"mani_fest": {
+				"runWith": "nodejs",
+				"script": "./filters/mani_fest.js"
+			}
+		},
+		"profiles": {
+			"build": {
+				"export": {"readOnly":false,"target":"local","rpName": "'RP'","bpName": "'BP'"},
+				"filters": [	
+					{"filter":"dot_ignore"},								
+					{
+						"filter": "mani_fest",
+						"settings": {							
+							"name": "Beta: ActionBar Compass by DW623",
+							"description": ":cls or :clsw to run",							
+							"script_eval":true
+						}
+					}
+				]
+			},
+			"default": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"filter":"dot_ignore"},								
+					{
+						"filter": "mani_fest",
+						"settings": {
+							"BP": {
+								"header_uuid": "e17f27b0-6cf7-4a26-850f-b42cb051fdfe",
+								"module_uuid": "749922a6-e641-4ec8-9116-49007c0b712f",
+								"dependencies": [{"module_name":"@minecraft/server","version":"1.12.0-beta"}],
+								"script_eval":true
+							},
+							"RP": {
+								"header_uuid": "6e1d1820-82fc-4d05-b7b3-fcd59811581c",
+								"module_uuid": "1e815be4-8fa3-4ad4-8218-4d0fc062c18d"
+							},
+							"name": "Dev: Beta: ActionBar Compass by DW623",
+							"description": ":cls or :clsw to run.",							
+							"min_engine_version": [1,21,0]							
+						}
+					}
+				]
+			}
+		}
+	}
+}

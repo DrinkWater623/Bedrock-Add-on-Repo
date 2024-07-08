@@ -1,0 +1,22 @@
+            "{{#leaf_log_or_related_word}}":{
+					"ev:efficiency_activate_{{llr_word}}":{
+						"sequence":[
+							{
+								"run_command":{"command":["tell @p[r=5,tag=debug_max] Efficiency Activated - {{llr_word}} - r{{radius_ptr}}"]},
+								"set_property":{"bit:in_{{llr_word}}": true}
+							},
+							{"add":{"component_groups":["cg:delay_timer_step_2_minion"]}}
+						]
+					},
+					"$ev:silk_touch_activate_{{llr_word}}":{
+						"sequence":[
+							{
+								"run_command":{"command":["tell @p[r=5,tag=debug_max] Silk Touch Activated - {{llr_word}} - r{{radius_ptr}}"]},
+								"set_property":{"bit:has_silk_touch": true,"bit:in_{{llr_word}}": true}
+							},
+							{"trigger":"ev:step_1b_loot_adjacent_vines"},
+							{"{{?llr_word == 'leaf'}}":{"trigger":"ev:step_1c_loot_leaves"}},
+							{"add":{"component_groups":["cg:delay_timer_step_2_minion"]}}
+						]
+					}
+				},

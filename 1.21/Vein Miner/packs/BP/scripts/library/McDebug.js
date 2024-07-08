@@ -160,9 +160,11 @@ export class McDebug {
         this.blockAndItemStackEventInfo(event, "\n§a* PlayerInteractWithBlock§gAfterEvent");
     };
 }
-class is {
+export class is {
 
     static array (candidate) { return Array.isArray(candidate); }
+    static arrayOfObjects (candidate) { return Array.isArray(candidate) && candidate.every(o => typeof o === "object"); }
+    static arrayOfStrings (candidate) { return Array.isArray(candidate) && candidate.every(s => typeof s === "string"); }
     static boolean (candidate) { return typeof candidate === "boolean"; }
     static function (candidate) { return typeof candidate === "function"; }
     static null (candidate) { return Object.is(candidate, null); }
@@ -231,7 +233,7 @@ class is {
     }
     static notEqual (arg, compareArg) { return !is.equal(arg, compareArg); }
 }
-class has {
+export class has {
     static key (object = {}, keyName = "") {
         return (typeof object === "object") && Object.hasOwn(object, keyName);
     }
