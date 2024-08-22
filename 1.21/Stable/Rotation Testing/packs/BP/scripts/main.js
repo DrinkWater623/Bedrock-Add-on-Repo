@@ -31,17 +31,20 @@ const angleStateZ = 'int:z_id';
         Many ways to do this.  
         1) Code can be in the event
         2) Code can be in a function, and the subscribe calls it.
-        3) Like 2, but function can be in another file or part of a class
-        4) There are a few more ways.  It will depend on your preference
+        3) Like #2, but function can be in another file or part of a class
+        4) There are a few more ways.  It will depend on your preference and coding style
 
         I put it in an ID so I can cancel subscription 
         if block States are not there or the numbers are out of range
+        best to cancel subscription.
 */
 //=============================================================================
 const blockStatesValidated = new Map();
+//=============================================================================
 /**
  * 
  * @param {Block} block 
+ * @returns {boolean}
  */
 function validateBlockStates (block) {
     const typeId = block.typeId;
@@ -77,7 +80,7 @@ function validateBlockStates (block) {
     return true;
 }
 //=============================================================================
-//TODO: test changing a block to see what happens
+//TODO: test changing a block's Json to be have wrong states to see what happens
 const rotationBlockCustomComponentSubscriptionId =
     world.beforeEvents.worldInitialize.subscribe((event) => {
 

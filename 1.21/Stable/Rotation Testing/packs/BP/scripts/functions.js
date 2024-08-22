@@ -5,7 +5,7 @@
 */
 //=============================================================================
 import { world, system, Block, Player, EquipmentSlot } from '@minecraft/server';
-const debug = true;
+const debug = false;
 const debugMsg = function (msg = "", preFormatting = "") { if (debug && msg) world.sendMessage(`${preFormatting}@${system.currentTick}: §cDebug Log:§r ${msg}`); };
 //=============================================================================
 // Library Function that are needed for the subscribes
@@ -14,7 +14,7 @@ const debugMsg = function (msg = "", preFormatting = "") { if (debug && msg) wor
  * 
  * @param {Block} block 
  * @param {Player} player 
- * @returns 
+ * @returns {boolean}
  */
 export function isPlayerHoldingBlock (block, player) {
     return isPlayerHoldingTypeId(block.typeId, player);
@@ -23,7 +23,7 @@ export function isPlayerHoldingBlock (block, player) {
  * 
  * @param {string} typeId 
  * @param {Player} player 
- * @returns boolean
+ * @returns {boolean}
  */
 export function isPlayerHoldingTypeId (typeId, player) {
     const equipment = player.getComponent('equippable');
@@ -43,7 +43,7 @@ export function isPlayerHoldingTypeId (typeId, player) {
  * @param {number} minReturnLength 
  * @param {number} minBase10Value 
  * @param {number} maxBase10Value 
- * @returns number[]
+ * @returns {number[]}
  */
 export function bitArrayAdd (numberArray, numberToAdd = 0, base = 10, minReturnLength = 1, minBase10Value = (Infinity * -1), maxBase10Value = Infinity) {
 
