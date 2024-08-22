@@ -1,0 +1,91 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
+	"author": "https://github.com/DrinkWater623",
+	"name": "Better Trades",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"mani_fest":{
+		"Debug":false,
+		"preview":false,
+		"beta":false,
+		"name": "Better Trades",
+		"description": "Better Trades",													
+		"min_engine_version": [1,21,0],
+		"BP": {
+			"header_uuid": "5f8dfd22-2703-46ca-a088-e94186d9b0f3",
+			"module_uuid": "e69355e9-66dc-48e8-9fcd-ea9dc0c7e208"
+		},
+		"RP": {
+			"header_uuid": "5566c468-c421-4423-b726-a321e7179827",
+			"module_uuid": "b3d2e2ad-efd0-4f66-b23b-137763d90111"
+		}
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"jsonte": {"url":"github.com/MCDevKit/regolith-library","version":"2.14.0"},
+			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
+			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
+			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}
+		},
+		"profiles": {
+			"template": {
+				"export": {"readOnly":false,"target":"local"},				
+				"filters": [											
+					{"filter":"dot_ignore"},					
+					{"filter":"jsonte"},
+					{"filter":"empty_ignore"}
+				]
+			},			
+			"build": {
+				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
+				"filters": [	
+					{"profile":"template"},												
+					{"filter":"mani_fest","settings":{"beta":false,"preview":false}}
+				]
+			},
+			"build-beta": {
+				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
+				"filters": [	
+					{"profile":"template"},												
+					{"filter":"mani_fest","settings":{"beta":true,"preview":false}}
+				]
+			},	
+			"stable": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"profile":"template"},		
+					{"filter":"mani_fest","settings":{"beta":false}}
+				]
+			},
+			"beta": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"profile":"template"},			
+					{"filter":"mani_fest","settings":{"beta":true}}
+				]
+			},
+			"preview": {
+				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
+				"filters": [
+					{"profile":"template"},	
+					{"filter":"mani_fest","settings":{"preview":true,"min_engine_version":[1,21,0]}}
+				]
+			},
+			"preview-beta": {
+				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
+				"filters": [
+					{"profile":"template"},	
+					{"filter":"mani_fest",
+						"settings":{
+							"preview":true,"beta":true,"min_engine_version":[1,21,0],
+							"BP":{"dependencies":{"module_name":"@minecraft/server","version":"get"}}
+						}
+					}
+				]
+			}
+		}
+	}
+}

@@ -1,0 +1,414 @@
+{
+    "vanilla_logs": [
+        {
+            "sound": "wood",
+            "textures": {
+                "down": "acacia_log_top",
+                "side": "acacia_log_side",
+                "up": "acacia_log_top"
+            },
+            "index": 7,
+            "tag_group": "block",
+            "tag": "log",
+            "identifier": "acacia_log",
+            "title": "Acacia Log",
+            "nameParts": [
+                "acacia",
+                "log"
+            ],
+            "wordCount": 2,
+            "firstWord": "acacia",
+            "lastWord": "log",
+            "last2Words": "",
+            "uniqueShortKey": "acacia_log",
+            "material": "wood",
+            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_material_tier_tags": "minecraft:wood_tier_destructible"
+        },
+        {
+            "sound": "wood",
+            "textures": {
+                "down": "birch_log_top",
+                "side": "birch_log_side",
+                "up": "birch_log_top"
+            },
+            "index": 67,
+            "tag_group": "block",
+            "tag": "log",
+            "identifier": "birch_log",
+            "title": "Birch Log",
+            "nameParts": [
+                "birch",
+                "log"
+            ],
+            "wordCount": 2,
+            "firstWord": "birch",
+            "lastWord": "log",
+            "last2Words": "",
+            "uniqueShortKey": "birch_log",
+            "material": "wood",
+            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_material_tier_tags": "minecraft:wood_tier_destructible"
+        },
+        {
+            "sound": "cherry_wood",
+            "textures": {
+                "down": "cherry_log_top",
+                "side": "cherry_log_side",
+                "up": "cherry_log_top"
+            },
+            "index": 159,
+            "tag_group": "block",
+            "tag": "log",
+            "identifier": "cherry_log",
+            "title": "Cherry Log",
+            "nameParts": [
+                "cherry",
+                "log"
+            ],
+            "wordCount": 2,
+            "firstWord": "cherry",
+            "lastWord": "log",
+            "last2Words": "",
+            "uniqueShortKey": "cherry_log",
+            "material": "wood",
+            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_material_tier_tags": "minecraft:wood_tier_destructible"
+        },
+        {
+            "sound": "wood",
+            "textures": {
+                "down": "dark_oak_log_top",
+                "side": "dark_oak_log_side",
+                "up": "dark_oak_log_top"
+            },
+            "index": 256,
+            "tag_group": "block",
+            "tag": "log",
+            "identifier": "dark_oak_log",
+            "title": "Dark Oak_log",
+            "nameParts": [
+                "dark",
+                "oak",
+                "log"
+            ],
+            "wordCount": 3,
+            "firstWord": "dark",
+            "lastWord": "log",
+            "last2Words": "oak_log",
+            "uniqueShortKey": "dark_oak_log",
+            "material": "wood",
+            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_material_tier_tags": "minecraft:wood_tier_destructible"
+        },
+        {
+            "sound": "wood",
+            "textures": {
+                "down": "jungle_log_top",
+                "side": "jungle_log_side",
+                "up": "jungle_log_top"
+            },
+            "index": 429,
+            "tag_group": "block",
+            "tag": "log",
+            "identifier": "jungle_log",
+            "title": "Jungle Log",
+            "nameParts": [
+                "jungle",
+                "log"
+            ],
+            "wordCount": 2,
+            "firstWord": "jungle",
+            "lastWord": "log",
+            "last2Words": "",
+            "uniqueShortKey": "jungle_log",
+            "material": "wood",
+            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_material_tier_tags": "minecraft:wood_tier_destructible"
+        },
+        {
+            "sound": "wood",
+            "textures": {
+                "down": "mangrove_log_top",
+                "side": "mangrove_log_side",
+                "up": "mangrove_log_top"
+            },
+            "index": 518,
+            "tag_group": "block",
+            "tag": "log",
+            "identifier": "mangrove_log",
+            "title": "Mangrove Log",
+            "nameParts": [
+                "mangrove",
+                "log"
+            ],
+            "wordCount": 2,
+            "firstWord": "mangrove",
+            "lastWord": "log",
+            "last2Words": "",
+            "uniqueShortKey": "mangrove_log",
+            "material": "wood",
+            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_material_tier_tags": "minecraft:wood_tier_destructible"
+        },
+        {
+            "sound": "wood",
+            "textures": {
+                "down": "oak_log_top",
+                "side": "oak_log_side",
+                "up": "oak_log_top"
+            },
+            "index": 565,
+            "tag_group": "block",
+            "tag": "log",
+            "identifier": "oak_log",
+            "title": "Oak Log",
+            "nameParts": [
+                "oak",
+                "log"
+            ],
+            "wordCount": 2,
+            "firstWord": "oak",
+            "lastWord": "log",
+            "last2Words": "",
+            "uniqueShortKey": "oak_log",
+            "material": "wood",
+            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_material_tier_tags": "minecraft:wood_tier_destructible"
+        },
+        {
+            "sound": "wood",
+            "textures": {
+                "down": "spruce_log_top",
+                "side": "spruce_log_side",
+                "up": "spruce_log_top"
+            },
+            "index": 758,
+            "tag_group": "block",
+            "tag": "log",
+            "identifier": "spruce_log",
+            "title": "Spruce Log",
+            "nameParts": [
+                "spruce",
+                "log"
+            ],
+            "wordCount": 2,
+            "firstWord": "spruce",
+            "lastWord": "log",
+            "last2Words": "",
+            "uniqueShortKey": "spruce_log",
+            "material": "wood",
+            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_material_tier_tags": "minecraft:wood_tier_destructible"
+        },
+        {
+            "sound": "wood",
+            "textures": {
+                "down": "stripped_acacia_log_top",
+                "side": "stripped_acacia_log_side",
+                "up": "stripped_acacia_log_top"
+            },
+            "index": 787,
+            "tag_group": "block",
+            "tag": "log",
+            "identifier": "stripped_acacia_log",
+            "title": "Stripped Acacia_log",
+            "nameParts": [
+                "stripped",
+                "acacia",
+                "log"
+            ],
+            "wordCount": 3,
+            "firstWord": "stripped",
+            "lastWord": "log",
+            "last2Words": "acacia_log",
+            "uniqueShortKey": "stripped_a6a_log",
+            "material": "wood",
+            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_material_tier_tags": "minecraft:wood_tier_destructible"
+        },
+        {
+            "sound": "wood",
+            "textures": {
+                "down": "stripped_birch_log_top",
+                "side": "stripped_birch_log_side",
+                "up": "stripped_birch_log_top"
+            },
+            "index": 790,
+            "tag_group": "block",
+            "tag": "log",
+            "identifier": "stripped_birch_log",
+            "title": "Stripped Birch_log",
+            "nameParts": [
+                "stripped",
+                "birch",
+                "log"
+            ],
+            "wordCount": 3,
+            "firstWord": "stripped",
+            "lastWord": "log",
+            "last2Words": "birch_log",
+            "uniqueShortKey": "stripped_b5h_log",
+            "material": "wood",
+            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_material_tier_tags": "minecraft:wood_tier_destructible"
+        },
+        {
+            "sound": "cherry_wood",
+            "textures": {
+                "down": "stripped_cherry_log_top",
+                "side": "stripped_cherry_log_side",
+                "up": "stripped_cherry_log_top"
+            },
+            "index": 792,
+            "tag_group": "block",
+            "tag": "log",
+            "identifier": "stripped_cherry_log",
+            "title": "Stripped Cherry_log",
+            "nameParts": [
+                "stripped",
+                "cherry",
+                "log"
+            ],
+            "wordCount": 3,
+            "firstWord": "stripped",
+            "lastWord": "log",
+            "last2Words": "cherry_log",
+            "uniqueShortKey": "stripped_c6y_log",
+            "material": "wood",
+            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_material_tier_tags": "minecraft:wood_tier_destructible"
+        },
+        {
+            "sound": "wood",
+            "textures": {
+                "down": "stripped_dark_oak_log_top",
+                "side": "stripped_dark_oak_log_side",
+                "up": "stripped_dark_oak_log_top"
+            },
+            "index": 796,
+            "tag_group": "block",
+            "tag": "log",
+            "identifier": "stripped_dark_oak_log",
+            "title": "Stripped Dark_oak_log",
+            "nameParts": [
+                "stripped",
+                "dark",
+                "oak",
+                "log"
+            ],
+            "wordCount": 4,
+            "firstWord": "stripped",
+            "lastWord": "log",
+            "last2Words": "oak_log",
+            "uniqueShortKey": "stripped_d4ko3k_log",
+            "material": "wood",
+            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_material_tier_tags": "minecraft:wood_tier_destructible"
+        },
+        {
+            "sound": "wood",
+            "textures": {
+                "down": "stripped_jungle_log_top",
+                "side": "stripped_jungle_log_side",
+                "up": "stripped_jungle_log_top"
+            },
+            "index": 798,
+            "tag_group": "block",
+            "tag": "log",
+            "identifier": "stripped_jungle_log",
+            "title": "Stripped Jungle_log",
+            "nameParts": [
+                "stripped",
+                "jungle",
+                "log"
+            ],
+            "wordCount": 3,
+            "firstWord": "stripped",
+            "lastWord": "log",
+            "last2Words": "jungle_log",
+            "uniqueShortKey": "stripped_j6e_log",
+            "material": "wood",
+            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_material_tier_tags": "minecraft:wood_tier_destructible"
+        },
+        {
+            "sound": "wood",
+            "textures": {
+                "down": "stripped_mangrove_log_top",
+                "side": "stripped_mangrove_log_side",
+                "up": "stripped_mangrove_log_top"
+            },
+            "index": 800,
+            "tag_group": "block",
+            "tag": "log",
+            "identifier": "stripped_mangrove_log",
+            "title": "Stripped Mangrove_log",
+            "nameParts": [
+                "stripped",
+                "mangrove",
+                "log"
+            ],
+            "wordCount": 3,
+            "firstWord": "stripped",
+            "lastWord": "log",
+            "last2Words": "mangrove_log",
+            "uniqueShortKey": "stripped_m8e_log",
+            "material": "wood",
+            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_material_tier_tags": "minecraft:wood_tier_destructible"
+        },
+        {
+            "sound": "wood",
+            "textures": {
+                "down": "stripped_oak_log_top",
+                "side": "stripped_oak_log_side",
+                "up": "stripped_oak_log_top"
+            },
+            "index": 802,
+            "tag_group": "block",
+            "tag": "log",
+            "identifier": "stripped_oak_log",
+            "title": "Stripped Oak_log",
+            "nameParts": [
+                "stripped",
+                "oak",
+                "log"
+            ],
+            "wordCount": 3,
+            "firstWord": "stripped",
+            "lastWord": "log",
+            "last2Words": "oak_log",
+            "uniqueShortKey": "stripped_oak_log",
+            "material": "wood",
+            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_material_tier_tags": "minecraft:wood_tier_destructible"
+        },
+        {
+            "sound": "wood",
+            "textures": {
+                "down": "stripped_spruce_log_top",
+                "side": "stripped_spruce_log_side",
+                "up": "stripped_spruce_log_top"
+            },
+            "index": 804,
+            "tag_group": "block",
+            "tag": "log",
+            "identifier": "stripped_spruce_log",
+            "title": "Stripped Spruce_log",
+            "nameParts": [
+                "stripped",
+                "spruce",
+                "log"
+            ],
+            "wordCount": 3,
+            "firstWord": "stripped",
+            "lastWord": "log",
+            "last2Words": "spruce_log",
+            "uniqueShortKey": "stripped_s6e_log",
+            "material": "wood",
+            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_material_tier_tags": "minecraft:wood_tier_destructible"
+        }
+    ]
+}

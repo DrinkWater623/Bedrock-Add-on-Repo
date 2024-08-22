@@ -1,0 +1,23 @@
+{
+    "$template": {
+        "format_version" : "1.21.20",
+        "dw623:slime_glue_block": {
+            "sound": "slime",
+            "textures": "slime_glue_sheet",
+            "isotropic": true
+        },
+        "dw623:slime_glue_sheet": {
+            "sound": "slime",
+            "isotropic": true
+        },
+        //         vanilla_slab_combos.filter(s => settings.debug == false || s.obj1.identifier == settings.test_slab1 || s.obj1.identifier == settings.test_slab2)
+
+        //"{{#vanilla_slab_combos.filter(s => (settings.debug == false || s.obj1.identifier == settings.test_slab1 || s.obj1.identifier == settings.test_slab2))}}": {
+        "{{#vanilla_slab_combos}}": {
+            "{{settings.block_ns}}:{{identifier}}": {
+                "sound": "{{sound > '' ? sound : length(obj2.sound) > 0 ? obj2.sound : length(obj1.sound) > 0 ? obj1.sound : 'stone'}}"
+            }
+        }
+    }
+}
+//"array":"vanilla_slab_combos.filter(x => x.obj1.identifier == 'warped_slab')",        

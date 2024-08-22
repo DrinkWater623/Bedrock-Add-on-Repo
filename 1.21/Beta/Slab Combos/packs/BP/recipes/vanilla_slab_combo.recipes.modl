@@ -1,0 +1,22 @@
+{  
+  "$module": "slab_recipe",
+  "$template": {
+    "format_version": "1.20.10",
+    "minecraft:recipe_shaped": {      
+      "tags": ["crafting_table"],      
+      "key": {      
+        "1": {"item":"minecraft:{{obj1.identifier}}"},
+        "g": {"item":"{{settings.ns}}:slime_glue_sheet"},
+        "2": {"item":"minecraft:{{obj2.identifier}}"}
+    },
+    "unlock": [
+      {"item": "minecraft:{{obj1.identifier}}"},
+      {"item": "minecraft:{{obj2.identifier}}"}
+    ],
+      "result": {        
+        "item": "{{settings.block_ns}}:{{identifier}}",
+        "count": 3
+      }
+    }
+  }
+}

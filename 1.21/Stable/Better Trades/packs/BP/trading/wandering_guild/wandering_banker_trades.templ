@@ -1,0 +1,66 @@
+{
+  "$scope":{
+    "buy_list":[     
+      //also sells emeralds
+      //emeralds - not worth a lot because of raid farms - until they are harder to get - then give better price
+      {"group":1, "want":1  ,"want_min":1  ,"want_max":1    ,"item_wants":"dw623:trading_paper"        ,"base":64  ,"give_min":60  ,"give_max":64  ,"item_gives":"dw623:trading_coin"},
+
+      {"group":2, "base":64  ,"want_min":60 ,"want_max":64   ,"item_wants":"dw623:trading_coin"        ,"give":1   ,"give_min":1   ,"give_max":1   ,"item_gives":"dw623:trading_paper"},      
+      {"group":2, "base":32  ,"want_min":25 ,"want_max":38   ,"item_wants":"dw623:trading_coin"        ,"give":1   ,"give_min":1   ,"give_max":1   ,"item_gives":"minecraft:diamond"},
+      {"group":2, "base":3.6 ,"want_min":2  ,"want_max":4    ,"item_wants":"dw623:trading_coin"        ,"give":1   ,"give_min":1   ,"give_max":1   ,"item_gives":"minecraft:emerald"},
+
+      //gem trade for money
+      {"group":3, "want":5    ,"want_min":5  ,"want_max":5    ,"item_wants":"minecraft:emerald"         ,"base":18  ,"give_min":14  ,"give_max":21  ,"item_gives":"dw623:trading_coin"},
+      {"group":3, "want":1    ,"want_min":1  ,"want_max":1    ,"item_wants":"minecraft:diamond"         ,"base":32  ,"give_min":25  ,"give_max":38  ,"item_gives":"dw623:trading_coin"},
+      {"group":3, "want":5    ,"want_min":5  ,"want_max":5   ,"item_wants":"minecraft:raw_iron"        ,"base":7   ,"give_min":4   ,"give_max":6  ,"item_gives":"dw623:trading_coin"},
+      {"group":3, "want":10   ,"want_min":10  ,"want_max":10    ,"item_wants":"minecraft:raw_gold"       ,"base":7   ,"give_min":6   ,"give_max":8   ,"item_gives":"dw623:trading_coin"},
+
+      //
+      {"group":4, "base":38   ,"want_min":30 ,"want_max":45   ,"item_wants":"minecraft:lapis_lazuli"    ,"give":1   ,"give_min":1   ,"give_max":1   ,"item_gives":"dw623:trading_coin"},
+      {"group":4, "base":20   ,"want_min":16 ,"want_max":24   ,"item_wants":"minecraft:raw_copper"      ,"give":2   ,"give_min":2   ,"give_max":2   ,"item_gives":"dw623:trading_coin"},
+      {"group":4, "base":10   ,"want_min":8  ,"want_max":12    ,"item_wants":"minecraft:redstone"       ,"give":4  ,"give_min":2   ,"give_max":2   ,"item_gives":"dw623:trading_coin"},
+      {"group":4, "base":10   ,"want_min":8  ,"want_max":12   ,"item_wants":"minecraft:coal"            ,"give":2   ,"give_min":2   ,"give_max":2   ,"item_gives":"dw623:trading_coin"},      
+
+      //select one
+      {"group":5, "want":2  ,"want_min":2  ,"want_max":2    ,"item_wants":"minecraft:ancient_debris"  ,"give":4   ,"give_min":3   ,"give_max":5   ,"item_gives":"dw623:trading_paper"},      
+      {"group":5, "want":1  ,"want_min":1  ,"want_max":1    ,"item_wants":"minecraft:netherite_ingot" ,"give":8   ,"give_min":7   ,"give_max":9   ,"item_gives":"dw623:trading_paper"}
+    ]
+  },  
+  "$template": {
+    "tiers": [
+      {
+        "groups": 
+        [ 
+          {
+            "{{#buy_list.filter(x => x.group == 1)}}":{
+              "num_to_select":1,
+              "trades":[
+                {
+                  "{{#this.give_min..this.give_max}}":{
+                    "max_uses":32,"reward_exp":true,
+                    "wants":[{"item":"{{item_wants}}","quantity":"{{=want}}"}]  ,
+                    "gives":[{"item":"{{item_gives}}","quantity":"{{=value}}"}]
+                  }
+                }
+              ]
+            }
+          },
+          {"{{#buy_list.filter(x => x.group == 2)}}":{"num_to_select":1,"trades":[{"{{#this.want_min..this.want_max}}":{"max_uses":32,"reward_exp":true,"wants":[{"item":"{{item_wants}}","quantity":"{{=value}}"}] ,"gives":[{"item":"{{item_gives}}","quantity":"{{=give}}"}]}}]}},             
+          {"{{#buy_list.filter(x => x.group == 3)}}":{"num_to_select":1,"trades":[{"{{#this.give_min..this.give_max}}":{"max_uses":12,"reward_exp":true,"wants":[{"item":"{{item_wants}}","quantity":"{{=want}}"}]  ,"gives":[{"item":"{{item_gives}}","quantity":"{{=value}}"}]}}]}},
+          {"{{#buy_list.filter(x => x.group == 4)}}":{"num_to_select":1,"trades":[{"{{#this.want_min..this.want_max}}":{"max_uses":12,"reward_exp":true,"wants":[{"item":"{{item_wants}}","quantity":"{{=value}}"}] ,"gives":[{"item":"{{item_gives}}","quantity":"{{=give}}"}]}}]}},             
+          {"{{#buy_list.filter(x => x.group == 5)}}":{"num_to_select":1,"trades":[{"{{#this.give_min..this.give_max}}":{"max_uses":12,"reward_exp":true,"wants":[{"item":"{{item_wants}}","quantity":"{{=want}}"}]  ,"gives":[{"item":"{{item_gives}}","quantity":"{{=value}}"}]}}]}},
+          {
+            "num_to_select": 1,
+            "trades": [              
+              {
+                "wants":[{"item":"minecraft:diamond","quantity":1,"price_multiplier":0.05}],
+                "gives":[{"item":"minecraft:lime_shulker_box","quantity":1}],
+                "trader_exp":5,"max_uses":2,"reward_exp":true
+              }                         
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

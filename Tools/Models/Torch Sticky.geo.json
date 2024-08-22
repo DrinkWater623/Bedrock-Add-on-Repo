@@ -1,0 +1,47 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.torch",
+				"texture_width": 16,
+				"texture_height": 16,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "bb_main",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{
+							"origin": [-2, 1, -2],
+							"size": [4, 4, 4],
+							"uv": {
+								"north": {"uv": [6, 5], "uv_size": [4, 4], "material_instance": "flame"},
+								"east": {"uv": [6, 5], "uv_size": [4, 4], "material_instance": "flame"},
+								"south": {"uv": [6, 5], "uv_size": [4, 4], "material_instance": "flame"},
+								"west": {"uv": [6, 5], "uv_size": [4, 4], "material_instance": "flame"},
+								"up": {"uv": [10, 9], "uv_size": [-4, -4], "material_instance": "flame"},
+								"down": {"uv": [10, 9], "uv_size": [-4, -4], "material_instance": "flame"}
+							}
+						},
+						{
+							"origin": [-1, 0, -1],
+							"size": [2, 1, 2],
+							"uv": {
+								"north": {"uv": [0, 0], "uv_size": [2, 1], "material_instance": "wick"},
+								"east": {"uv": [0, 0], "uv_size": [2, 1], "material_instance": "wick"},
+								"south": {"uv": [0, 0], "uv_size": [2, 1], "material_instance": "wick"},
+								"west": {"uv": [0, 0], "uv_size": [2, 1], "material_instance": "wick"},
+								"up": {"uv": [2, 2], "uv_size": [-2, -2], "material_instance": "wick"},
+								"down": {"uv": [2, 2], "uv_size": [-2, -2], "material_instance": "wick"}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

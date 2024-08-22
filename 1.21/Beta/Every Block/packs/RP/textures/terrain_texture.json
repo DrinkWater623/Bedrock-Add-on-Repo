@@ -1,0 +1,10 @@
+{
+  "resource_pack_name": "dw623",
+  "texture_name": "atlas.terrain",
+  "num_mip_levels": 4,
+  "padding": 8,
+  "texture_data": {
+    "every_block": {"textures":"textures/blocks/phrase_every_block.png"},
+     "test_block": {"textures":"textures/blocks/phrase_test_block.png"}
+  }
+}

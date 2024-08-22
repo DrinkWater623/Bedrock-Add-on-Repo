@@ -1,0 +1,21 @@
+{ 
+    "$files": {
+        "array": "currencies.filter(x => x.active == 1 && x.can_upgrade == 9)",
+        "fileName": "{{upgrade_item_name}}_from_{{item_name}}s"
+    },    
+    "$template": {
+    "format_version": "1.20.10",
+    "minecraft:recipe_shaped": {
+      "description": {"identifier":"dw623:{{upgrade_item_name}}_from_{{item_name}}s"},      
+      "tags": [ "crafting_table" ],      
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "key":    {"#":{"item":"{{item_namespace}}:{{item_name}}"}},
+      "unlock": [{"item":"{{item_namespace}}:{{item_name}}"}],
+      "result": {"item":"{{upgrade_namespace}}:{{upgrade_item_name}}"}
+    }
+  }
+}

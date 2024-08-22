@@ -1,0 +1,99 @@
+{
+    // Requires UpcomingFeatures Experiment
+    /*  By DrinkWater623 (Ms DW623)
+
+        This is the template file to build the block bp files using Regolith (& the jsonte filter) in VSCode...
+        Work smarter, not harder...
+
+        You can learn more about Regolith @ https://bedrock-oss.github.io/regolith/
+        and Jsonte @ https://mcdevkit.com/tutorial 
+        and on the Bedrock OSS discord where the creators hang out.
+        Yes, I am, I am a die hard Regolith and jsonte FAN-Girl...
+        //"array":"vanilla_slab_combos.filter(s => settings.debug == false || s.obj1.identifier == settings.test_slab1 || s.obj1.identifier == settings.test_slab2)",
+
+        TODO: 
+        1) each slab by itself needs to be test to make sure valid in game 
+            - clear inventory then give slab - if did not get - not real
+        2) fix geo in hand and floating - upside down from what it is, and in menu turn sideways
+            - see "item_display_transforms" - my discord and BAO
+        3) idea - change mining speeds on the fly in permutatins after I know what side they are mining, in permutaions
+
+    */    
+    "$files": {
+        "array":"vanilla_slab_combos",        
+        "fileName":"./{{obj1.identifier[0]}}/{{obj2.identifier[0]}}/{{identifier}}.bp"
+    },
+    "$template": {
+        "format_version": "{{settings.block_format_version}}",
+        "minecraft:block": 
+        {
+            "description": 
+            {
+                "identifier": "{{settings.block_ns}}:{{identifier}}", 
+                "menu_category": {                
+                    "category": "construction",
+                    "group": "itemGroup.name.slab",
+                    "is_hidden_in_commands": false
+                },
+                //"states": {"ptr:sound_tag":[0,1,2]},                
+                "traits": {"minecraft:placement_position":{"enabled_states":["minecraft:block_face"]}}
+            },
+            "components": {
+                "minecraft:collision_box":true,
+                "minecraft:custom_components": [ "{{settings.block_ns}}:slab_combo_components" ],
+                "minecraft:destructible_by_explosion": true,
+                //This needs UpcomingFeatures 
+                "minecraft:destructible_by_mining": {
+                    //use 5 for wood and 8 for stone
+                    "seconds_to_destroy": 3, //this is really hardness... not seconds
+                    "item_specific_speeds":[
+                        {"item":"wooden_axe","destroy_speed": 2},
+                        {"item":"stone_axe","destroy_speed": 1.5},
+                        {"item":"iron_axe","destroy_speed": 1},
+                        {"item":"diamond_axe","destroy_speed": 0.75},
+                        {"item":"netherite_axe","destroy_speed": 0.6},
+
+                        {"item":"wooden_pickaxe","destroy_speed": 3},
+                        {"item":"stone_pickaxe","destroy_speed": 2.5},
+                        {"item":"iron_pickaxe","destroy_speed": 2},
+                        {"item":"diamond_pickaxe","destroy_speed": 1.5},
+                        {"item":"netherite_pickaxe","destroy_speed": 1.2}
+                    ]
+                },
+                /*      "minecraft:destructible_by_mining": {
+                            "seconds_to_destroy": 5,  // <<<---hardness not speed
+                            "item_specific_speeds": [
+                            {
+                                "item": {"tags": "q.any_tag('minecraft:iron_tier')"},
+                                "destroy_speed": 0.5
+                            }
+                            ]
+                        }*/
+                "minecraft:display_name":"{{title}}",                
+                "minecraft:flammable":"{{=(contains(obj1.sound,'wood') || contains(obj2.sound,'wood') ? true : false)}}",                
+                "minecraft:geometry": "geometry.block_2_slabs",
+                "minecraft:material_instances": {
+                    "*": {"texture":"invisible","render_method":"opaque"},
+                    "top_slab":         {"texture":"{{obj1.textureList.up}}"   ,"render_method":"opaque","ambient_occlusion": true,"face_dimming":true},
+                    "top_slab_side":    {"texture":"{{obj1.textureList.side}}" ,"render_method":"opaque","ambient_occlusion": true,"face_dimming":true},
+                    "bottom_slab":      {"texture":"{{obj2.textureList.up}}"   ,"render_method":"opaque","ambient_occlusion": true,"face_dimming":true},
+                    "bottom_slab_side": {"texture":"{{obj2.textureList.side}}" ,"render_method":"opaque","ambient_occlusion": true,"face_dimming":true}
+                },    
+                "minecraft:selection_box":true,                
+                "minecraft:transformation": {"rotation": [0,0,0]}
+            },           
+            "permutations": [               
+                {
+                    "{{#rotate_block_face}}":{
+                        "condition": "query.block_state('minecraft:block_face') == '{{block_face}}'",
+                        "components": {
+                            "minecraft:transformation":{"rotation": "{{rotation}}"},
+                            "tag:{{block_face == 'up' ? obj1.tool_type_tags : block_face == 'down' ? obj2.tool_type_tags : obj1.tool_type_tags}}":{},
+                            "tag:{{block_face == 'up' ? obj1.tool_material_tier_tags : block_face == 'down' ? obj2.tool_material_tier_tags : obj1.tool_material_tier_tags}}":{}
+                        }
+                    }                    
+                }
+            ]           
+        }
+    }
+}

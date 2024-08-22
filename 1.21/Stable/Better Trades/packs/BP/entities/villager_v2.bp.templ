@@ -1,0 +1,480 @@
+{
+	"$copy": "{{getLatestBPFile('entities/villager_v2.json')}}",
+	"$template": {
+    "minecraft:entity": {
+      "component_groups": {
+        "baby": {                   
+          "$minecraft:ageable": {
+            "duration": -1,
+            "feed_items": ["cookie", "cake","pumpkin_pie","honey_bottle","sugar"],
+            "grow_up": {
+              "event": "minecraft:ageable_grow_up",
+              "target": "self"
+            }
+          },
+          //does not work
+         //"minecraft:shareables": {
+         //  "items": [
+         //    {"item":"minecraft:string","want_amount":12,"surplus_amount":24,"stored_in_inventory":true},
+         //    {"item":"minecraft:apple" ,"want_amount":12,"surplus_amount":24,"stored_in_inventory":true},
+         //    {"item":"minecraft:torch" ,"want_amount":12,"surplus_amount":24,"stored_in_inventory":true},
+         //    {"item":"minecraft:carrot","want_amount":12,"surplus_amount":24,"stored_in_inventory":true}
+         //  ]
+         //},
+          "minecraft:interact": {
+            "interactions": [
+              {
+                "on_interact": {
+                  "filters": {
+                    "all_of": [
+                      {"test":"is_family","subject":"other","value":"player"},
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"honey_bottle"}
+                    ]
+                  },
+                  "event": "ev:baby_become_hyper","target": "self"
+                },
+                "use_item": true,
+                "transform_to_item": "glass_bottle",
+                "health_amount": 100,
+                "play_sounds": "drink.honey", 
+                "interact_text": "Kid Drinks Honey",
+                "particle_on_start": {"particle_type":"heart","particle_y_offset":0.75}
+              },
+              {
+                "on_interact": {
+                  "filters": {
+                    "all_of": [
+                      {"test":"is_family","subject":"other","value":"player"},
+                      {
+                        "any_of": [                                                    
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"sugar"},
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"pumpkin_pie"},
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"cookie"},
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"cake"}
+                        ]
+                      }
+                    ]
+                  },
+                  "event": "ev:baby_become_hyper","target": "self"
+                },
+                "use_item": true,
+                "health_amount": 10,
+                "play_sounds": "eat",  
+                "interact_text": "Feed Kid Sweets",
+                "particle_on_start": {"particle_type":"heart","particle_y_offset":0.65}
+              },
+              {
+                "on_interact": {
+                  "filters": {
+                    "all_of": [
+                      {"test":"is_family","subject":"other","value":"player"},
+                      {
+                        "any_of": [
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"carrot"          },
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"apple"           },
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"baked_potato"    },
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"cooked_chicken"  },
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"cooked_beef"     },
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"cooked_porkchop" },
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"cooked_rabbit"   },
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"cooked_mutton"   },
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"cooked_cod"      },
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"cooked_salmon"   },
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"golden_carrot"   },
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"golden_apple"    }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "use_item": true,
+                "health_amount": 20,
+                "play_sounds": "eat",  //burp
+                "interact_text": "Feed Kid Food",
+                "particle_on_start": {"particle_type":"snowballpoof","particle_y_offset":0.65}
+              },
+              {
+                "on_interact": {
+                  "filters": {
+                    "all_of": [
+                      {"test":"is_family","subject":"other","value":"player"},
+                      {
+                        "any_of": [
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"beetroot_soup"},
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"rabbit_stew"},
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"mushroom_stew"},
+                          {"test":"has_equipment","domain":"hand","subject":"other","value":"suspicious_stew"}
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "use_item": true,
+                "health_amount": 20,
+                "play_sounds": "burp",  //burp
+                "interact_text": "Feed Kid Soup",
+                "particle_on_start": {"particle_type":"villagerangry","particle_y_offset":0.65}
+              },
+              {
+                "on_interact": {
+                  "filters": {
+                    "all_of": [
+                      {"test":"is_family","subject":"other","value":"player"},
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"milk_bucket"}
+                    ]
+                  },
+                  "event": "minecraft:ageable_grow_up","target": "self"
+                },
+                "use_item": true,
+                "transform_to_item": "bucket:0",
+                "health_amount": 100,
+                "play_sounds": "drink.milk",  
+                "interact_text": "Kid Drinks Milk",
+                "particle_on_start": {"particle_type":"hugeexplosion","particle_y_offset":0.5}
+              },
+              {
+                "on_interact": {
+                  "filters": {
+                    "all_of": [
+                      {"test":"is_family","subject":"other","value":"player"},
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"dried_kelp"}
+                    ]
+                  },
+                  "event": "minecraft:ageable_grow_up","target": "self"
+                },
+                "use_item": true,                
+                "health_amount": 100,
+                "play_sounds": "eat",  
+                "interact_text": "Kid Eats Dried Kelp",
+                "particle_on_start": {
+                  "particle_type": "largeexplode",
+                  "particle_y_offset": 0.75
+                }
+              }
+            ]
+          }
+        },
+        "cg:baby_become_hyper": {  
+          "minecraft:timer": {"looping":false,"randomInterval":true,"time":[20,60],"time_down_event":{"event":"ev:baby_lose_hyper","target":"self"}},
+          "minecraft:behavior.avoid_mob_type": {
+            "priority": 100,
+            "entity_types": [
+              {
+                "filters": { "test" : "is_family", "subject" : "other", "value" : "player"},
+                "max_dist": 10,
+                "max_flee":15,
+                "sprint_distance": 5,
+                "walk_speed_multiplier": 1.5,
+                "sprint_speed_multiplier": 2.0
+                //"avoid_target_y":
+              },
+              {
+                "filters": { 
+                    "any_of": [                    
+                      { "test" : "is_family", "subject" : "other", "value" : "zombie"},
+                      { "test" : "is_family", "subject" : "other", "value" : "zombie_villager"},
+                      { "test" : "is_family", "subject" : "other", "value" : "illager"},
+                      { "test" : "is_family", "subject" : "other", "value" : "vex"},
+                      { "test" : "is_family", "subject" : "other", "value" : "zoglin" }
+                    ]
+                },
+                "max_dist": 8,
+                "walk_speed_multiplier": 0.6,
+                "sprint_speed_multiplier": 0.6
+              }
+            ]
+          }        
+        },
+        "cg:baby_lose_hyper": {  
+          //Just return to normal
+          "minecraft:behavior.avoid_mob_type": {
+            "priority": 4,
+            "entity_types": [
+              {
+                "filters": { 
+                    "any_of": [                      
+                      { "test" : "is_family", "subject" : "other", "value" : "zombie"},
+                      { "test" : "is_family", "subject" : "other", "value" : "zombie_villager"},
+                      { "test" : "is_family", "subject" : "other", "value" : "illager"},
+                      { "test" : "is_family", "subject" : "other", "value" : "vex"},
+                      { "test" : "is_family", "subject" : "other", "value" : "zoglin" }
+                    ]
+                },
+                "max_dist": 8,
+                "walk_speed_multiplier": 0.6,
+                "sprint_speed_multiplier": 0.6
+              }
+            ]
+          }        
+        },       
+        "cg:is_cured": {
+          "minecraft:color":{}
+        },
+        "$become_witch": {},
+        "unskilled": {
+          "minecraft:behavior.trade_interest": {
+            "priority": 10,
+            "within_radius": 5.0,
+            "interest_time": 45.0,
+            "remove_item_time": 1.0,
+            "carried_item_switch_time": 2.0,
+            "cooldown": 2.0
+          },
+          "minecraft:economy_trade_table": {
+            "display_name": "Jack of all Trades",
+            "table": "trading/economy_trades/villager_unskilled_trades.json",
+            "max_nearby_cured_discount": -500,
+            "nearby_cured_discount": -100,
+            "new_screen": true,
+            "persist_trades": false,
+            "cured_discount": [-25, -20],
+            "max_cured_discount": [-25, -20]
+          }
+        },
+        "nitwit": {
+          "minecraft:behavior.trade_interest": {
+            "priority": 10,
+            "within_radius": 5.0,
+            "interest_time": 45.0,
+            "remove_item_time": 1.0,
+            "carried_item_switch_time": 2.0,
+            "cooldown": 2.0
+          },
+          "minecraft:economy_trade_table": {
+            "display_name": "Junkman",
+            "table": "trading/economy_trades/villager_nitwit_trades.json",
+            "max_nearby_cured_discount": -500,
+            "nearby_cured_discount": -100,
+            "new_screen": true,
+            "persist_trades": false,
+            "cured_discount": [-25, -20],
+            "max_cured_discount": [-25, -20]
+          }
+        }        
+      },
+      "components": {
+        "minecraft:health": {"value":100,"max":100}   
+      },
+      "events": {
+        "ev:baby_become_hyper": {
+          "queue_command":{"command":["tellraw @a[r=16] {\"rawtext\":[{\"text\":\"*§bI'm hyper now!\"}]}"]},
+          "add":{"component_groups":["cg:baby_become_hyper"]}
+        },
+        "ev:baby_lose_hyper": {
+          "remove":{"component_groups":["cg:baby_become_hyper"]},"add":{"component_groups":["cg:baby_lose_hyper"]}
+        },
+        "ev:as_cured": {"add":{"component_groups":["cg:is_cured"]}},
+        "ev:get_villager_type_and_skin": {
+          "sequence": [            
+            {
+              "filters": { "test": "has_component", "operator": "!=", "value": "minecraft:skin_id" },
+              "randomize": [
+                {
+                  "weight": 1,
+                  "add": { "component_groups": [ "villager_skin_0" ] }
+                },
+                {
+                  "weight": 1,
+                  "add": { "component_groups": [ "villager_skin_1" ] }
+                },
+                {
+                  "weight": 1,
+                  "add": { "component_groups": [ "villager_skin_2" ] }
+                },
+                {
+                  "weight": 1,
+                  "add": { "component_groups": [ "villager_skin_3" ] }
+                },
+                {
+                  "weight": 1,
+                  "add": { "component_groups": [ "villager_skin_4" ] }
+                },
+                {
+                  "weight": 1,
+                  "add": { "component_groups": [ "villager_skin_5" ] }
+                }
+              ]
+            },
+            {
+              "filters": { 
+                "any_of": [
+                  { "test": "has_biome_tag", "value": "desert" },
+                  { "test": "has_biome_tag", "value": "mesa" }
+                ]
+              },
+              "add": { "component_groups": [ "desert_villager" ] }
+            },
+            {
+              "filters": { "test": "has_biome_tag", "value": "jungle" },
+              "add": { "component_groups": [ "jungle_villager" ] }
+            },
+            {
+              "filters": { "test": "has_biome_tag", "value": "savanna" },
+              "add": { "component_groups": [ "savanna_villager" ] }
+            },
+            {
+              "filters": {
+                "any_of": [
+                  { 
+                    "all_of": [
+                      { "test": "has_biome_tag", "value": "cold" },
+                      { "test": "has_biome_tag", "operator": "!=", "value": "ocean" }
+                    ]
+                  },
+                  { "test": "has_biome_tag", "value": "frozen" }
+                ]
+              },
+              "add": { "component_groups": [ "snow_villager" ] }
+            },
+            {
+              "filters": {
+                "any_of": [
+                  {
+                    "test": "has_biome_tag",
+                    "value": "swamp"
+                  },
+                  {
+                    "test": "has_biome_tag",
+                    "value": "mangrove_swamp"
+                  }
+                ]
+              },
+              "add": { "component_groups": [ "swamp_villager" ] }
+            },
+            {
+              "filters": {
+                "all_of": [
+                  {
+                    "any_of": [
+                      { "test": "has_biome_tag", "value": "taiga" },
+                      { "test": "has_biome_tag", "value": "extreme_hills" }
+                    ]
+                  },
+                  { "test": "has_biome_tag", "operator": "!=", "value": "cold" }
+                ]
+              },
+              "add": { "component_groups": [ "taiga_villager" ] }
+            }
+          ]
+        },
+        "ev:get_villager_random_job":{
+          "randomize": [
+            {
+              "weight": 1,
+              "add": { "component_groups": [ "farmer", "behavior_peasant", "basic_schedule" ] }
+            },
+            {
+              "weight": 1,
+              "add": { "component_groups": [ "fisherman", "behavior_peasant", "basic_schedule" ] }
+            },
+            {
+              "weight": 1,
+              "add": { "component_groups": [ "shepherd", "behavior_peasant", "basic_schedule" ] }
+            },
+            {
+              "weight": 1,
+              "add": { "component_groups": [ "fletcher", "behavior_peasant", "basic_schedule" ] }
+            },
+            {
+              "weight": 1,
+              "add": { "component_groups": [ "librarian", "behavior_non_peasant", "basic_schedule" ] }
+            },
+            {
+              "weight": 1,
+              "add": { "component_groups": [ "cartographer", "behavior_non_peasant", "basic_schedule" ] }
+            },
+            {
+              "weight": 1,
+              "add": { "component_groups": [ "cleric", "behavior_non_peasant", "basic_schedule" ] }
+            },
+            {
+              "weight": 1,
+              "add": { "component_groups": [ "armorer", "behavior_non_peasant", "basic_schedule" ] }
+            },
+            {
+              "weight": 1,
+              "add": { "component_groups": [ "weaponsmith", "behavior_non_peasant", "basic_schedule" ] }
+            },
+            {
+              "weight": 1,
+              "add": { "component_groups": [ "toolsmith", "behavior_non_peasant", "basic_schedule" ] }
+            },
+            {
+              "weight": 1,
+              "add": { "component_groups": [ "butcher", "behavior_non_peasant", "basic_schedule" ] }
+            },
+            {
+              "weight": 1,
+              "add": { "component_groups": [ "leatherworker", "behavior_non_peasant", "basic_schedule" ] }
+            },
+            {
+              "weight": 1,
+              "add": { "component_groups": [ "mason", "behavior_non_peasant", "basic_schedule" ] }
+            },
+            {
+              "weight": 1,
+              "add": { "component_groups": [ "nitwit", "behavior_peasant", "jobless_schedule" ] }
+            }
+          ]
+        },
+        "$minecraft:entity_spawned": {
+          "sequence": [            
+            {
+              "filters": {"test":"has_component","operator":"!=","value":"minecraft:variant"},
+              "randomize": [
+                {
+                  "weight": 95,
+                  "add": { "component_groups": [ "baby", "child_schedule" ] }
+                },
+                {
+                  "weight": 5,
+                  "sequence": [
+                    {
+                      "add": { "component_groups": [ "adult", "make_and_receive_love" ] }
+                    },
+                    {
+                      "trigger":"ev:get_villager_random_job"
+                    }
+                  ]
+                }
+              ]
+            },            
+            {"trigger":"ev:get_villager_type_and_skin"}
+          ]
+        },
+        "$minecraft:spawn_from_village": {
+          "sequence": [
+            {
+              "filters": { "test": "has_component", "operator": "!=", "value": "minecraft:variant" },
+              "randomize": [
+                {
+                  "weight": 95,
+                  "add": { "component_groups": [ "baby", "child_schedule" ] }
+                },
+                {
+                  "weight": 5,
+                  "add": { "component_groups": [ "adult", "make_and_receive_love" ] },
+                  "sequence": [
+                    {
+                      "randomize": [
+                        {
+                          "weight": 90,
+                          "add": { "component_groups": [ "unskilled", "behavior_peasant", "basic_schedule" ] }
+                        },
+                        {
+                          "weight": 10,
+                          "add": { "component_groups": [ "nitwit", "behavior_peasant", "jobless_schedule" ] }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {"trigger":"ev:get_villager_type_and_skin"}
+          ]
+        }  
+      }
+    }
+  }
+}

@@ -1,0 +1,194 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
+	"author": "https://github.com/DrinkWater623",
+	"name": "Slab_Combos",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"mani_fest":{
+		"Debug":false,
+		"preview":false,
+		"beta":false,
+		"name": "Slab Combos (vanilla)",
+		"description": "Every Vanilla Slab Combo.  Requires UCF for block tags", 											
+		/*"min_engine_version": [1,20,80], 					*/
+		"BP":{
+			"header_uuid": "33cc59a6-824d-4870-b22e-7e1f3c7892c0",
+			"module_uuid": "2b8bf79b-b0e9-45a2-824e-d9e89a4feabe"							
+		},
+		"RP": {
+			"header_uuid": "fc7ac183-0664-48cd-8ce2-06f43e9b14c2",
+			"module_uuid": "38d9792d-1a63-4a94-802f-db722ce0a12b"
+		}
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"jsonte": {"url":"github.com/MCDevKit/regolith-library","version":"2.14.0"},
+			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
+			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
+			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"},
+			"vanilla-data": {"runWith":"nodejs","script":"./filters/vanilla-data.js"},
+			"time":{"runWith": "shell",	"command": "date" }
+		},
+		"profiles": {
+			"template": {
+				"export": {"readOnly":false,"target":"local"}, 		
+				"filters": [											
+					{"filter":"dot_ignore"},
+					{"filter":"vanilla-data","settings":{
+						"branch":"preview",	
+						"excludeBlocks":[							
+							"stone_slab",
+							"wooden_slab",
+							"yellow_flower" 
+						], 									
+						"excludeEndsWith":["2","3","4"], 									
+						"slabCombos":true,
+						/*blocks only - for the display name only*/
+						"nameAlias":[
+							{"identifierAlias":"wooden","trueName":"oak"},
+							{"identifierAlias":"normal_stone","trueName":"stone"}
+						]
+						}},
+					{"filter":"jsonte"},
+					{"filter":"empty_ignore"}
+				]
+			},
+			"template-test": {
+				"export": {"readOnly":false,"target":"local"}, 		
+				"filters": [											
+					{"filter":"dot_ignore"},
+					{"filter":"vanilla-data","settings":{
+						"branch":"preview",
+						"includeBlocks":[],
+						"includeStartsWith":["m","w"],
+						/*"includeContains":["quartz"],*/
+						"includeEndsWith":[],
+						"excludeBlocks":[	
+							/*"stone_slab",*/
+							"wooden_slab",
+							"yellow_flower" 						
+							/*"cut_red_sandstone_slab",
+							"cut_sandstone_slab",
+							"red_sandstone_slab",
+							"sandstone_slab",
+							"smooth_stone_slab"
+							*/
+						],
+						"excludeStartsWith":["wooden"],
+						"excludeContains":[],
+						"excludeEndsWith":["2","3","4"],
+						"slabCombos":true,
+						/*Because of weirdness - need this*/
+						"blockDataOverride":[
+							{
+								"stone_slab" : {
+									"sound" : "stone",
+									"textures" : "stone"
+								}
+							}
+						]
+					}},
+					{"filter":"jsonte"},
+					{"filter":"empty_ignore"}
+				]
+			},
+			"vd": {
+				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"}, 		
+				"filters": [	
+					{
+						"filter":"vanilla-data",
+						"settings":{
+							
+							/*"includeBlocks":["mud_brick_slab","warped_slab"],*/
+							"includeStartsWith":["a"],
+							"includeContains":[],
+							"includeEndsWith":[],
+							"excludeBlocks":[
+								"stone_slab",
+								"smooth_stone_slab",
+								"sandstone_slab",
+								"quartz_slab",
+								"red_sandstone_slab"],
+							"excludeStartsWith":[],
+							"excludeContains":[],
+							"excludeEndsWith":[],
+						
+							"debug": true,
+							"branch": "preview",
+							"slabCombos":true,
+							/*"sounds":true,
+							 "slabs":true,
+							 "logs":true,
+							 "glass":true,
+							 "plants":true,
+							*/
+							"inputPath": "data/vanilla-data",  /*detault path*/
+							"outputPath": "data/vanilla-data/output"
+						}
+					}
+				]
+			},
+			/* playerInteractWithBlock still beta 	
+			"build": {
+				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"}, 		
+				"filters": [	
+					{"profile":"template-test"}, 										
+					{
+						"filter":"mani_fest",
+						"settings":{
+							"beta":false,"preview":false,
+							"description": "Every Vanilla Slab Combo by DW623\nRequires UCF for block tags"
+						}}
+				]
+			},
+			*/
+			"build-beta": {
+				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"}, 		
+				"filters": [	
+					{"profile":"template"}, 										
+					{"filter":"mani_fest","settings":{"beta":true,"preview":false}}
+				]
+			},
+			/* playerInteractWithBlock still beta	
+			"stable": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"profile":"template"}, 
+					{"filter":"mani_fest","settings":{"beta":false}}
+				]
+			},
+			*/
+			"beta": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"profile":"template"}, 	
+					{"filter":"mani_fest","settings":{"beta":true}}
+				]
+			},
+			/* playerInteractWithBlock still beta
+			"preview": {
+				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
+				"filters": [
+					{"profile":"template-test"},	
+					{"filter":"mani_fest","settings":{"preview":true}}
+				]
+			},
+			*/
+			"preview-beta": {
+				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
+				"filters": [
+					{"profile":"template-test"},	
+					{"filter":"mani_fest",
+						"settings":{
+							"preview":true,"beta":true,
+							"BP":{"dependencies":{"module_name":"@minecraft/server","version":"1.15.0-beta"}}
+						}
+					}
+				]
+			}
+		}
+	}
+}

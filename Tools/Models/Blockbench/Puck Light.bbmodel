@@ -1,0 +1,309 @@
+{
+	"meta": {
+		"format_version": "4.5",
+		"model_format": "bedrock_block",
+		"box_uv": false
+	},
+	"name": "Torch Sticky v2.geo",
+	"model_identifier": "torch",
+	"visible_box": [2, 2.5, 0.75],
+	"variable_placeholders": "",
+	"variable_placeholder_buttons": [],
+	"unhandled_root_fields": {},
+	"resolution": {
+		"width": 16,
+		"height": 16
+	},
+	"elements": [
+		{
+			"name": "wick",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"from": [-1, 0, -1],
+			"to": [1, 0.5, 1],
+			"autouv": 1,
+			"color": 9,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 2, 0.5],
+					"material_name": "wick"
+				},
+				"east": {
+					"uv": [0, 0, 2, 0.5],
+					"material_name": "wick"
+				},
+				"south": {
+					"uv": [0, 0, 2, 0.5],
+					"material_name": "wick"
+				},
+				"west": {
+					"uv": [0, 0, 2, 0.5],
+					"material_name": "wick"
+				},
+				"up": {
+					"uv": [0, 0, 2, 2],
+					"material_name": "wick"
+				},
+				"down": {
+					"uv": [0, 0, 2, 2],
+					"material_name": "wick"
+				}
+			},
+			"type": "cube",
+			"uuid": "d4119e7a-da7e-a10b-3349-2074fb56b246"
+		},
+		{
+			"name": "light",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"from": [-1.5, 0.5, -1.5],
+			"to": [1.5, 1.5, 1.5],
+			"autouv": 1,
+			"color": 1,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 3, 1],
+					"material_name": "light"
+				},
+				"east": {
+					"uv": [0, 0, 3, 1],
+					"material_name": "light"
+				},
+				"south": {
+					"uv": [0, 0, 3, 1],
+					"material_name": "light"
+				},
+				"west": {
+					"uv": [0, 0, 3, 1],
+					"material_name": "light"
+				},
+				"up": {
+					"uv": [0, 0, 3, 3],
+					"material_name": "light"
+				},
+				"down": {
+					"uv": [0, 0, 3, 3],
+					"material_name": "light"
+				}
+			},
+			"type": "cube",
+			"uuid": "ce114105-e777-7db9-baf5-2ac926a2169c"
+		},
+		{
+			"name": "south",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"from": [-2, 0.5, 1.5],
+			"to": [2, 1.5, 2],
+			"autouv": 1,
+			"color": 2,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 4, 1],
+					"material_name": "frame"
+				},
+				"east": {
+					"uv": [0, 0, 0.5, 1],
+					"material_name": "frame"
+				},
+				"south": {
+					"uv": [0, 0, 4, 1],
+					"material_name": "frame"
+				},
+				"west": {
+					"uv": [0, 0, 0.5, 1],
+					"material_name": "frame"
+				},
+				"up": {
+					"uv": [0, 0, 4, 0.5],
+					"material_name": "frame"
+				},
+				"down": {
+					"uv": [0, 0, 4, 0.5],
+					"material_name": "frame"
+				}
+			},
+			"type": "cube",
+			"uuid": "920a9b56-c4ce-c563-a18c-081e8a12401e"
+		},
+		{
+			"name": "north",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"from": [-2, 0.5, -2],
+			"to": [2, 1.5, -1.5],
+			"autouv": 1,
+			"color": 2,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 4, 1],
+					"material_name": "frame"
+				},
+				"east": {
+					"uv": [0, 0, 0.5, 1],
+					"material_name": "frame"
+				},
+				"south": {
+					"uv": [0, 0, 4, 1],
+					"material_name": "frame"
+				},
+				"west": {
+					"uv": [0, 0, 0.5, 1],
+					"material_name": "frame"
+				},
+				"up": {
+					"uv": [0, 0, 4, 0.5],
+					"material_name": "frame"
+				},
+				"down": {
+					"uv": [0, 0, 4, 0.5],
+					"material_name": "frame"
+				}
+			},
+			"type": "cube",
+			"uuid": "406cdc14-d637-b099-41f3-fd8bed0a4be2"
+		},
+		{
+			"name": "east",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"from": [1.5, 0.5, -1.5],
+			"to": [2, 1.5, 1.5],
+			"autouv": 1,
+			"color": 2,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 0.5, 1],
+					"material_name": "frame"
+				},
+				"east": {
+					"uv": [0, 0, 3, 1],
+					"material_name": "frame"
+				},
+				"south": {
+					"uv": [0, 0, 0.5, 1],
+					"material_name": "frame"
+				},
+				"west": {
+					"uv": [0, 0, 3, 1],
+					"material_name": "frame"
+				},
+				"up": {
+					"uv": [0, 0, 0.5, 3],
+					"material_name": "frame"
+				},
+				"down": {
+					"uv": [0, 0, 0.5, 3],
+					"material_name": "frame"
+				}
+			},
+			"type": "cube",
+			"uuid": "a9de9a4a-e031-4f5f-26cf-bdb79b380002"
+		},
+		{
+			"name": "west",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"from": [-2, 0.5, -1.5],
+			"to": [-1.5, 1.5, 1.5],
+			"autouv": 1,
+			"color": 2,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 0.5, 1],
+					"material_name": "frame"
+				},
+				"east": {
+					"uv": [0, 0, 3, 1],
+					"material_name": "frame"
+				},
+				"south": {
+					"uv": [0, 0, 0.5, 1],
+					"material_name": "frame"
+				},
+				"west": {
+					"uv": [0, 0, 3, 1],
+					"material_name": "frame"
+				},
+				"up": {
+					"uv": [0, 0, 0.5, 3],
+					"material_name": "frame"
+				},
+				"down": {
+					"uv": [0, 0, 0.5, 3],
+					"material_name": "frame"
+				}
+			},
+			"type": "cube",
+			"uuid": "df92f1a6-c7a9-32e8-40dc-c48ed793831a"
+		}
+	],
+	"outliner": [
+		"d4119e7a-da7e-a10b-3349-2074fb56b246",
+		{
+			"name": "frame",
+			"origin": [0, 0, 0],
+			"color": 2,
+			"uuid": "183bd429-8de8-dfb4-e08b-ed65dcd70460",
+			"export": true,
+			"mirror_uv": false,
+			"isOpen": false,
+			"locked": false,
+			"visibility": true,
+			"autouv": 0,
+			"children": [
+				"406cdc14-d637-b099-41f3-fd8bed0a4be2",
+				"920a9b56-c4ce-c563-a18c-081e8a12401e",
+				"df92f1a6-c7a9-32e8-40dc-c48ed793831a",
+				"a9de9a4a-e031-4f5f-26cf-bdb79b380002"
+			]
+		},
+		{
+			"name": "light",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"uuid": "eecc875c-a9a1-fdb1-35cc-b0551b67957d",
+			"export": true,
+			"mirror_uv": false,
+			"isOpen": false,
+			"locked": false,
+			"visibility": true,
+			"autouv": 0,
+			"children": ["ce114105-e777-7db9-baf5-2ac926a2169c"]
+		}
+	],
+	"textures": [
+		{
+			"path": "C:\\Users\\lafem\\Projects\\Minecraft\\Regolith\\Challenge\\Torch - Drop if Detached\\packs\\RP\\textures\\blocks\\violet_torch_on.png",
+			"name": "violet_torch_on.png",
+			"folder": "",
+			"namespace": "",
+			"id": "0",
+			"particle": false,
+			"render_mode": "default",
+			"render_sides": "auto",
+			"frame_time": 1,
+			"frame_order_type": "loop",
+			"frame_order": "",
+			"frame_interpolate": false,
+			"visible": true,
+			"mode": "bitmap",
+			"saved": true,
+			"uuid": "883839a8-7ef7-19b7-6d36-b964b4403b54",
+			"relative_path": "../../Regolith/Challenge/Torch - Drop if Detached/packs/RP/textures/blocks/violet_torch_on.png",
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAJVJREFUOE9jZKAQMFKon2G4G7DDdtd/UBh5HHbD6VWcEiDN7odcGR7GnWW48eAdTkPwG1DIx8AQaM6w02436QaAnE6RF0AGTC11+3/gwguG1bsvkR4GIAPm1wf8X7ztEsO+0/fIN2DbsXvku4BiL+SGm/2/cPM5w+ELj8n3wpz1pxmOXnpKngEgF5y6/JDh5LWXOA0AAMogShFWDT1yAAAAAElFTkSuQmCC"
+		}
+	]
+}

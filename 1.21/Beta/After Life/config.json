@@ -1,0 +1,86 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
+	"author": "https://github.com/DrinkWater623",
+	"name": "After_Life",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"mani_fest":{
+		"Debug":false,
+		"preview":false,
+		"beta":false,
+		"name": "After Life",
+		"description": "Gives Death Coordinates and Tries to save your stuff",													
+		"min_engine_version": [1,21,0],							
+		"BP":{
+			"header_uuid": "161140f3-e042-414d-83ca-d01ccb9fe555",
+			"module_uuid": "adc098d3-ef78-4c39-bafa-8c49553cd778",
+			"dependencies":{"module_name":"@minecraft/server","version":"get"}								
+		},
+		"RP": {
+			"header_uuid":"50344189-3c2a-4871-9e49-fcc2d1bef893",
+			"module_uuid":"0d8ebcf1-dca2-425f-9d94-5c824291d116"
+		}
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			/*"jsonte": {"url":"github.com/MCDevKit/regolith-library","version":"2.14.0"},*/
+			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
+			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
+			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}			
+		},
+		"profiles": {
+			"template": {
+				"export": {"readOnly":false,"target":"local"},				
+				"filters": [											
+					{"filter":"dot_ignore"},					
+					{"filter":"empty_ignore"}
+				]
+			},
+			"build": {
+				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
+				"filters": [	
+					{"profile":"template"},												
+					{"filter":"mani_fest","settings":{"beta":false,"preview":true}}
+				]
+			},
+			"build-beta": {
+				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
+				"filters": [	
+					{"profile":"template"},												
+					{"filter":"mani_fest","settings":{"beta":true}}
+				]
+			},	
+			"stable": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"profile":"template"},		
+					{"filter":"mani_fest","settings":{"beta":false}}
+				]
+			},
+			"beta": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"profile":"template"},			
+					{"filter":"mani_fest","settings":{"beta":true}}
+				]
+			},
+			"preview": {
+				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
+				"filters": [
+					{"profile":"template"},	
+					{"filter":"mani_fest","settings":{"preview":true,"min_engine_version":[1,21,0]}}
+				]
+			},
+			"preview-beta": {
+				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
+				"filters": [
+					{"profile":"template"},	
+					{"filter":"mani_fest","settings":{"preview":true,"beta":true,"min_engine_version":[1,21,0]}}
+				]
+			}
+		}
+	}
+}

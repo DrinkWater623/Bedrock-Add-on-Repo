@@ -1,0 +1,101 @@
+/**
+ * @param { import("@minecraft/server").Player } player
+ */
+export function blocksInfoGet (player) {
+    if (!(player instanceof Player)) {
+        errorMsg('blocksInfoGet', `player is not instanceof Player`);
+        return;
+    }
+    if (!vanillaBlocks.initialized) placeBlocks(player);
+
+    blocksInfoGetRange(player, 0, vanillaBlocks.count() - 1);
+}
+/**
+ * @param { import("@minecraft/server").Player } player
+ * @param { number} from
+ * @param { number} to
+ */
+export function blocksInfoGetRange (player, from = 0, to = vanillaBlocks.count() - 1) {
+    if (!(player instanceof Player)) {
+        errorMsg('blocksInfoGetRange', `player is not instanceof Player`);
+        return;
+    }
+    if (!vanillaBlocks.initialized) {
+        errorMsg('blocksInfoGetRange', 'vanillaBlocks is not initialized/set - call initializeBlocks or setBlocks first');
+        return;
+    }
+    if (from < 0 || from > to || to >= vanillaBlocks.count()) {
+        errorMsg('blocksInfoGetRange', `From (${from}) / To (${to}) : out of range`);
+        return;
+    }
+    chatMsg(`§g* Getting Block Info into ${to - from} vanillaBlocks[${from}-${to}]`);
+
+    const dimension = vanillaBlocks.baseDimension;
+    if (dimension.id != player.dimension.id) player.teleport(vanillaBlocks.baseLocation, { dimension: dimension, rotation: yRotations[ 0 ] });
+    const savePlayerLocation = player.location;
+    let tickDelay = 0;
+
+    for (let i = from; i <= to; i++) {
+
+        system.runTimeout(() => {
+            const blockInfo = vanillaBlocks.blocks[ i ];
+            let tickDelay2 = 0;
+
+            if (blockInfo) {
+                if (Math.abs(player.location.x - blockInfo.xyz.x) > 32 || Math.abs(player.location.z - blockInfo.xyz.z) > 32) tickDelay2++;
+                if (Math.abs(player.location.x - blockInfo.xyz.x) > 16 || Math.abs(player.location.z - blockInfo.xyz.z) > 16) {
+                    const location = Object.assign({}, blockInfo.xyz);
+                    location.y += 2;
+                    player.teleport(location, { rotation: yRotations[ vanillaBlocks.blocks[ i ].displayGroup ] });
+                }
+
+                system.runTimeout(() => {
+                    const block = dimension.getBlock(blockInfo.xyz);
+                    if (block) {
+                        if (block.typeId === "minecraft:air") {
+                            let msg = `BLOCK is AIR @ ${blockInfo.x()},${blockInfo.y()},${blockInfo.z()} - index: ${blockInfo.index}`;
+                            msg += `, key: ${blockInfo.key}`;
+                            msg += `, typeId: ${blockInfo.typeId}`;
+                            //warningMsg('blocksInfoGetRange', msg);
+                        }
+                        else {
+
+                            blockInfo.isAir = block.isAir;
+                            blockInfo.isLiquid = block.isLiquid;
+                            blockInfo.isSolid = block.isSolid;
+                            block.getTags().forEach(tag => blockInfo.tags.push(tag));
+                            blockInfo.hasTags = !!blockInfo.tags.length;
+                        }
+                    }
+                    else {
+                        let msg = `NO BLOCK @ ${blockInfo.xyz.x},${blockInfo.xyz.y},${blockInfo.xyz.z} - index: ${blockInfo.index}`;
+                        msg += `, key: ${blockInfo.key}`;
+                        msg += `, typeId: ${blockInfo.typeId}`;
+                        warningMsg('blocksInfoGetRange', msg);
+                    }
+                }, tickDelay2);
+            }
+        }, tickDelay++);
+    }
+    //put player back    
+    system.runTimeout(() => {
+        player.teleport(savePlayerLocation);
+        chatMsg(`§aDone vanillaBlocks[${from}-${to}]`);
+    }, tickDelay);
+}
+
+// function blockInfoDisplay (i = 0) {
+//     const blockInfo = vanillaBlocks.blocks[ i ];
+//     const direction = Math.floor(i / 8);
+//     let msg = `§${direction}index: ${blockInfo.index}`;
+//     msg += `, key: ${blockInfo.key}`;
+//     msg += `, typeId: ${blockInfo.typeId}`;
+//     msg += `, isAir: ${blockInfo.isAir}`;
+//     msg += `, isLiquid: ${blockInfo.isLiquid}`;
+//     msg += `, isSolid: ${blockInfo.isSolid}`;
+//     msg += `, hasTag: ${blockInfo.hasTags}`;
+//     msg += `, tags[`;
+//     blockInfo.tags.forEach((tag, index) => { msg += `${index === 0 ? '' : ','} ${tag}`; });
+//     msg += ` ]`;
+//     console.warn(msg);
+// }

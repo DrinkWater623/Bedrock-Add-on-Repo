@@ -1,0 +1,42 @@
+{  
+  "$template":{
+    "format_version": "1.20.80",
+    "minecraft:block": {
+      "description": {
+        "identifier": "ubd:conveyor_belt_slab",
+        "menu_category": {"category": "items"},
+        "traits": {
+          "minecraft:placement_direction": {"enabled_states": ["minecraft:cardinal_direction"]} //for rotation       
+        }
+      },
+      "components": {
+        "minecraft:custom_components": ["ubd:conveyor_belt_slab_components"],
+        //companion components
+        "minecraft:tick":{"interval_range": [6,6],"looping": true},
+        "minecraft:geometry":{"identifier": "geometry.conveyor_belt_block"}, 
+        //"minecraft:selection_box":{"origin":[0,0,0],"size":[16,8,16]}, // TODO: do I need a collision alteration     ??
+        "minecraft:collision_box": {"origin":[-8,0,-8],"size":[16,16,16]},
+        "minecraft:selection_box": {"origin":[-8,0,-8],"size":[16,16,16]},
+        "minecraft:material_instances": {"*":{"texture":"conveyor_belt","render_method": "alpha_test","face_dimming": false,"ambient_occlusion": false}},        
+        "minecraft:light_emission": 3,
+        "minecraft:friction": 0.3,      
+        "minecraft:display_name": "Conveyor Belt",
+        "minecraft:placement_filter":{"conditions":[{"allowed_faces":["up","side"]}]}
+      },
+      "permutations": [        
+        {
+          "{{#rotation_3}}":{
+              "condition": "q.block_state('minecraft:cardinal_direction') == '{{playerFace}}'",
+              "components": {
+                "minecraft:transformation":{
+                  "rotation": "{{rotation}}",
+                  "scale": [1,0.5,1],
+                  "translation": [0,-0.25,0]
+                }
+              }
+          }                    
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+    /*
+        Geo is duplex on long edge... so same top on front and back
+    */
+    "$scope": {
+        "angles": "{{degrees.map(a => { x_id: a.x/90,y_id: a.y/90,z_id: a.z/90, rotation:[a.x,a.y,a.z] }) }}"
+    },
+    "$template": {
+        "format_version": "1.21.20",
+        "minecraft:block": {
+            "description": {
+                "identifier": "dw623:rotation_angle_full_block",
+                "menu_category": {
+                    "category": "items",
+                    "is_hidden_in_commands": false
+                },
+                "states": {
+                    "int:x_id": {
+                        "values": {
+                            "min": 0,
+                            "max": 3
+                        }
+                    },
+                    "int:y_id": {
+                        "values": {
+                            "min": 0,
+                            "max": 3
+                        }
+                    },
+                    "int:z_id": {
+                        "values": {
+                            "min": 0,
+                            "max": 3
+                        }
+                    }
+                }
+            },
+            "components": {
+                "minecraft:custom_components": [
+                    "dw623:rotation_angles_components"
+                ],
+                "minecraft:display_name": "Rotation Angle Full Block",
+                "minecraft:light_emission": 10,
+                "minecraft:material_instances": {
+                    "*": {"texture":"test_block","render_method":"opaque"},
+                    "up": {"texture":"word_up","render_method":"opaque","ambient_occlusion":true,"face_dimming":true},
+                    "down": {"texture":"word_down","render_method":"opaque","ambient_occlusion":true,"face_dimming":true},
+                    "north": {"texture":"word_north","render_method":"opaque","ambient_occlusion":true,"face_dimming":true},
+                    "south": {"texture":"word_south","render_method":"opaque","ambient_occlusion":true,"face_dimming":true},
+                    "east": {"texture":"word_east","render_method":"opaque","ambient_occlusion":true,"face_dimming":true},
+                    "west": {"texture":"word_west","render_method":"opaque","ambient_occlusion":true,"face_dimming":true}
+                },
+                "minecraft:geometry":{"identifier": "minecraft:geometry.full_block"},
+                "minecraft:collision_box":true,
+                "minecraft:selection_box":true
+            },
+            "permutations": [
+                {
+                    "{{#angles}}": {
+                        "condition": "q.block_state('int:x_id') == {{x_id}} && q.block_state('int:y_id') == {{y_id}} && q.block_state('int:z_id') == {{z_id}}",
+                        "components": {
+                            "minecraft:transformation": {
+                                "rotation": "{{rotation}}"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

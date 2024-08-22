@@ -1,0 +1,16 @@
+{
+  "format_version": "1.20.80",
+  "minecraft:block": {
+    "description": {
+      "identifier": "ctd:every_block",
+      "menu_category": {"category": "items"}
+    },
+    "components": {
+      "minecraft:display_name": "Every Block",
+      "minecraft:geometry":{"identifier": "minecraft:geometry.full_block"},
+      "minecraft:material_instances": {"*":{"texture":"every_block"}},
+      "minecraft:collision_box": true,
+      "minecraft:light_emission": 15
+    }
+  }
+}

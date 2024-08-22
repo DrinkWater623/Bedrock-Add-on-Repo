@@ -1,0 +1,45 @@
+{
+  "format_version": "1.20.80",
+  "minecraft:block": {
+    "description": {
+      "identifier": "ubd:convey_belt_block",
+      "menu_category": {"category": "items"},
+      "traits": {
+        "minecraft:placement_direction": {"enabled_states": ["minecraft:cardinal_direction"]} //for rotation       
+      }
+    },
+    "components": {
+      "minecraft:custom_components": ["ubd:conveyor_belt_components"],
+      //companion components
+      "minecraft:tick":{"interval_range": [10,10],"looping": true},
+      "minecraft:geometry":{"identifier": "minecraft:geometry.conveyor_belt"},      
+      "minecraft:material_instances": {"*":{"texture":"conveyor_belt","render_method": "alpha_test","face_dimming": false,"ambient_occlusion": false}},        
+      "minecraft:light_emission": 3,
+      "minecraft:friction": 0.5,      
+      "minecraft:display_name": "Conveyor Belt",
+      "minecraft:placement_filter":{"conditions":[{"allowed_faces":["up","side"]}]},
+      "minecraft:selection_box":{"origin":[0,0,0],"size":[16,8,16]}
+
+      //"minecraft:geometry":{"identifier": "minecraft:geometry.full_block"}, using this causes that fun machine weirdness
+      //"minecraft:material_instances": {"*":{"texture":"conveyor_belt","render_method": "opaque","face_dimming": false,"ambient_occlusion": false}},        
+    },
+    "permutations": [
+      {
+        "condition": "q.block_state('minecraft:cardinal_direction') == 'north'",
+        "components": {"minecraft:transformation":{"rotation":[0,270,0],"scale":[1,0.5,1],"translation": [0,-0.25,0]}}
+      },
+      {
+        "condition": "q.block_state('minecraft:cardinal_direction') == 'west'",
+        "components": {"minecraft:transformation":{"rotation":[0,180,0],"scale":[1,0.5,1]}}
+      },
+      {
+        "condition": "q.block_state('minecraft:cardinal_direction') == 'south'",
+        "components": {"minecraft:transformation":{"rotation":[0,90,0],"scale":[1,0.5,1]}}
+      },
+      {
+        "condition": "q.block_state('minecraft:cardinal_direction') == 'east'",
+        "components": {"minecraft:transformation":{"rotation":[0,0,0],"scale":[1,0.5,1]}}
+      }
+    ]
+  }
+}

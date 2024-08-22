@@ -1,0 +1,125 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
+	"author": "https://github.com/DrinkWater623",
+	"name": "Actionbar_Compass",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"mani_fest":{
+		"Debug":false,
+		"preview":false,
+		"beta":false,
+		"name": "ActionBar Compass",
+		"description": "Tells you which direction you are facing on the Action Bar",
+		"min_engine_version": [1,21,0],							
+		"BP":{
+			"header_uuid": "888ea32d-cee2-426e-bb2e-2622648d3d37",
+			"module_uuid": "ab297376-90c2-4d0c-84a0-8276e5c898bb",
+			"dependencies":{"module_name":"@minecraft/server","version":"get"}								
+		},
+		"RP": {
+			"header_uuid": "6fb2964d-0fd8-40e4-9990-a21280c950da",
+			"module_uuid": "c6868292-c3a6-425f-a37d-81600cd988e2"
+		}
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {	
+			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
+			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
+			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}	
+		},
+		"profiles": {
+			"template": {
+				"export": {"readOnly":false,"target":"local"},				
+				"filters": [											
+					{"filter":"dot_ignore"},					
+					{"filter":"empty_ignore"}
+				]
+			},
+			"build": {
+				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
+				"filters": [	
+					{"profile":"template"},												
+					{
+						"filter":"mani_fest",
+						"settings":{
+							"name": "DW ABC : ActionBar Compass",
+							"beta":false,"preview":false,
+							"BP":{
+								"js":"stable.js",
+								"header_uuid": "8cdf17c7-d7b9-4981-993e-c1866c48d1e9",
+								"module_uuid": "a41a51b7-3dc9-4871-be4d-80bef444d24a"
+							},
+							"RP": {
+								"header_uuid": "7addd738-1e5a-48c9-9fee-eb3b79419a12",
+								"module_uuid": "3d32dbc3-47e4-47d9-af3b-c4afacff968c"
+							}
+						}
+					}
+				]
+			},
+			"build-beta": {
+				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
+				"filters": [	
+					{"profile":"template"},												
+					{
+						"filter":"mani_fest",
+						"settings":{
+							"name": "DW ABC : ActionBar Compass with Chat Commands",
+							"description": "Tells you which direction you are facing and/or XYZ Coords on the Action Bar. Use :abc & :xyz to toggle on/off",
+							"beta":true,"preview":false,
+							"BP":{
+								"js":"stable.js",
+								"header_uuid": "7616846d-de80-4c4a-92ce-5ef5cbd5809b",
+								"module_uuid": "67f4cb17-f9d9-4d71-86e9-0ec6a38a3772"
+							},
+							"RP": {
+								"header_uuid": "45485d03-941f-48a7-bd45-2776d35594c6",
+								"module_uuid": "cda4f7ab-97db-4133-99d9-b33bc58b6d9f"
+							}
+						}
+					}
+				]
+			},	
+			"stable": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"profile":"template"},		
+					{"filter":"mani_fest","settings":{"beta":false,"BP":{"js":"stable.js"}}}
+				]
+			},
+			"beta": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"profile":"template"},			
+					{"filter":"mani_fest","settings":{"name": "ActionBar Compass with Chat Commands","beta":true,"BP":{"js":"beta.js"}}}
+				]
+			},
+			"preview": {
+				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
+				"filters": [
+					{"profile":"template"},	
+					{"filter":"mani_fest","settings":{"preview":true,"BP":{"js":"beta.js"}}}
+				]
+			},
+			"preview-beta": {
+				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
+				"filters": [
+					{"profile":"template"},	
+					{"filter":"mani_fest",
+						"settings":{
+							"name": "ActionBar Compass with Chat Commands",
+							"preview":true,"beta":true,"min_engine_version":[1,21,0],
+							"BP":{
+								"js":"beta.js",
+								"dependencies":{"module_name":"@minecraft/server","version":"1.14.0-beta"}
+							}
+						}
+					}
+				]
+			}
+		}
+	}
+}

@@ -1,0 +1,37 @@
+{  
+  "$template":{
+    "format_version": "1.20.80",
+    "minecraft:block": {
+      "description": {
+        "identifier": "ubd:conveyor_belt_block",
+        "menu_category": {"category": "items"},
+        "traits": {
+          "minecraft:placement_direction": {"enabled_states": ["minecraft:cardinal_direction"]} //for rotation       
+        }
+      },
+      "components": {
+        "minecraft:custom_components": ["ubd:conveyor_belt_block_components"],
+        //companion components
+        "minecraft:tick":{"interval_range": [5,5],"looping": true},
+
+        "minecraft:geometry":{"identifier": "geometry.conveyor_belt_block"},  
+        "minecraft:collision_box": {"origin":[-8,0,-8],"size":[16,16,16]},    
+        "minecraft:material_instances": {"*":{"texture":"conveyor_belt","render_method": "alpha_test","face_dimming": false,"ambient_occlusion": false}},        
+        "minecraft:light_emission": 3,
+        "minecraft:friction": 0.5,      
+        "minecraft:display_name": "Conveyor Belt",
+        "minecraft:placement_filter":{"conditions":[{"allowed_faces":["up","side"]}]}
+        //"minecraft:geometry":{"identifier": "minecraft:geometry.full_block"}, using this causes that fun machine weirdness
+        //"minecraft:material_instances": {"*":{"texture":"conveyor_belt","render_method": "opaque","face_dimming": false,"ambient_occlusion": false}},        
+      },
+      "permutations": [        
+        {
+          "{{#rotation_3}}":{
+              "condition": "q.block_state('minecraft:cardinal_direction') == '{{playerFace}}'",
+              "components": {"minecraft:transformation":{"rotation": "{{rotation}}"}}
+          }                    
+        }
+      ]
+    }
+  }
+}
