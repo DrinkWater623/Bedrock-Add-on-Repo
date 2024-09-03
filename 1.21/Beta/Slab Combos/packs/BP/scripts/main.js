@@ -1,82 +1,11 @@
 //@ts-check
 // beta because of chatSend
 import { world, system } from "@minecraft/server";
+import { Vector3Lib as vec3 } from './vectorClass.js';
 //==============================================================================
 const debug = false;
 const debugMsg = function (msg = "", preFormatting = "") { if (debug && msg) world.sendMessage(`${preFormatting}@${system.currentTick}: §cDebug Log:§r ${msg}`); };
 //==============================================================================
-/**@param {number} number  */
-function round (number, place = 0) {
-    if (place <= 0) return Math.round(number);
-    let multiplier = parseInt('1' + ('0'.repeat(place)));
-    return Math.round(number * multiplier) / multiplier;
-}
-//==============================================================================
-/**
-* @param { import("@minecraft/server").Vector3 } location
-*/
-function vector3Msg (location, places = 0, showXYZ = false) {
-    let vector = location;
-    if (places == 0) vector = vectorFloor(location);
-    if (places > 0) vector = vectorRound(location, places);
-
-    if (showXYZ) return `x: ${vector.x}  y: ${vector.y}  z: ${vector.z}`;
-    return `${vector.x}, ${vector.y}, ${vector.z}`;
-}
-//==============================================================================
-/**
-* @param { import("@minecraft/server").Vector2 } location
-*/
-function vector2Msg (location, places = 0) {
-    if (places < 0) return `${location.x}, ${location.y}}`;
-    if (places == 0) return `${Math.floor(location.x)}, ${Math.floor(location.y)}`;
-    return `${round(location.x, places)}, ${round(location.y, places)}`;
-}
-//==============================================================================
-/**
-* @param { import("@minecraft/server").Vector3 } location1
- @param { import("@minecraft/server").Vector3 } location2
-*/
-function vectorDelta (location1, location2, places = 0) {
-    return {
-        x: round(location1.x - location2.x, places),
-        y: round(location1.y - location2.y, places),
-        z: round(location1.z - location2.z, places)
-    };
-}
-//==============================================================================
-/**
-* @param { import("@minecraft/server").Vector3 } location
-*/
-function vectorFloor (location) {
-    return {
-        x: Math.floor(location.x),
-        y: Math.floor(location.y),
-        z: Math.floor(location.z)
-    };
-}
-//==============================================================================
-/**
-* @param { import("@minecraft/server").Vector3 } location
-*/
-function vectorCeiling (location) {
-    return {
-        x: Math.ceil(location.x),
-        y: Math.ceil(location.y),
-        z: Math.ceil(location.z)
-    };
-}
-//==============================================================================
-/**
-* @param { import("@minecraft/server").Vector3 } location
-*/
-function vectorRound (location, places = 0) {
-    return {
-        x: round(location.x, places),
-        y: round(location.y, places),
-        z: round(location.z, places)
-    };
-}
 function playBlockSound (event) {
 
 }
@@ -225,8 +154,8 @@ world.beforeEvents.playerInteractWithBlock.subscribe((event) => {
             {
                 block: block,
                 blockFace: event.blockFace,
-                faceLocation: vectorRound(faceLocation, 1),
-                vectorDelta: vectorDelta(faceLocation, block.center(), 1)
+                faceLocation: vec3.round(faceLocation, 1),
+                vectorDelta: vec3.delta(faceLocation, block.center(), 1)
             });
     }
 });

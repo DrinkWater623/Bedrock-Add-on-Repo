@@ -1,7 +1,7 @@
 //@ts-check
-import { world, Player, } from '@minecraft/server';
+import { world, Player, BlockTypes } from '@minecraft/server';
 import * as vanillaBlocks from './vanillaBlocks.js';
-
+const listBlockTypes = BlockTypes.getAll();
 //to stay in chat screen
 world.afterEvents.chatSend.subscribe(  //Chat Command Code Testing
     (event) => {
@@ -93,6 +93,27 @@ world.afterEvents.chatSend.subscribe(  //Chat Command Code Testing
         }
         if (msg_lc === ":missing") {
             vanillaBlocks.missingBlockList();
+            return;
+        }
+
+        // what??? - did not know this existed
+        if (msg_lc.startsWith(":blocktypesclass ")) {
+            const parts = msg.split(' ');
+            if (!Array.isArray(listBlockTypes)) return;
+
+            if (!Number.isNaN(parts[ 1 ]) && (parts.length == 2 || !Number.isNaN(parts[ 2 ]))) {
+                var ptr = Number(parts[ 1 ]);
+                var ptr2 = parts.length == 2 ? listBlockTypes.length - 1 : Number(parts[ 2 ]);
+                if (ptr > listBlockTypes.length - 1) ptr = Math.floor(listBlockTypes.length/2)
+                if (ptr > ptr2) ptr2=ptr+10
+                if (ptr2 > listBlockTypes.length - 1) ptr2 = listBlockTypes.length - 1;
+                const showList = listBlockTypes.filter((b, i) => i >= ptr && i <= ptr2).map(b => b.id);
+                world.sendMessage(`\n\n$bVanilla Block Types Class (${ptr}-${ptr2}):`)
+                showList.forEach((b) => world.sendMessage(`==> ${b}`))
+                return;
+            }
+
+            player.sendMessage(`§cInvalid Command Format: usage => ${parts[ 0 ]} from#  [to#]`);
             return;
         }
     }

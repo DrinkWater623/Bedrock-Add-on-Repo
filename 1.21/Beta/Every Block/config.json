@@ -40,13 +40,13 @@
 					{"filter":"empty_ignore"}
 				]
 			},
-			"build": {
-				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
-				"filters": [	
-					{"profile":"template"},												
-					{"filter":"mani_fest","settings":{"beta":false,"preview":false}}
-				]
-			},
+			//"build": {
+			//	"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
+			//	"filters": [	
+			//		{"profile":"template"},												
+			//		{"filter":"mani_fest","settings":{"beta":false,"preview":false}}
+			//	]
+			//},
 			"build-beta": {
 				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
 				"filters": [	
@@ -54,13 +54,13 @@
 					{"filter":"mani_fest","settings":{"beta":true,"preview":false}}
 				]
 			},	
-			"stable": {
-				"export": {"readOnly":false,"target":"development"},
-				"filters": [
-					{"profile":"template"},		
-					{"filter":"mani_fest","settings":{"beta":false}}
-				]
-			},
+			//"stable": {
+			//	"export": {"readOnly":false,"target":"development"},
+			//	"filters": [
+			//		{"profile":"template"},		
+			//		{"filter":"mani_fest","settings":{"beta":false}}
+			//	]
+			//},
 			"beta": {
 				"export": {"readOnly":false,"target":"development"},
 				"filters": [
@@ -68,20 +68,21 @@
 					{"filter":"mani_fest","settings":{"beta":true}}
 				]
 			},
-			"preview": {
-				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
-				"filters": [
-					{"profile":"template"},	
-					{"filter":"mani_fest","settings":{"preview":true,"min_engine_version":[1,21,0]}}
-				]
-			},
+			//"preview": {
+			//	"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
+			//	"filters": [
+			//		{"profile":"template"},	
+			//		{"filter":"mani_fest","settings":{"preview":true,"min_engine_version":[1,21,0]}}
+			//	]
+			//},
 			"preview-beta": {
 				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
 				"filters": [
 					{"profile":"template"},	
 					{"filter":"mani_fest",
 						"settings":{
-							"preview":true,"beta":true,"min_engine_version":[1,21,0],
+							"preview":true,"beta":true,
+							//"min_engine_version":[1,21,0],
 							"BP":{"dependencies":{"module_name":"@minecraft/server","version":"1.15.0-beta"}}
 						}
 					}

@@ -1464,20 +1464,22 @@ function manifestHeaders_set (pSettings) {
     const d = new Date();
     const DateTime = [ d.getFullYear(), d.getMonth() + 1, d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds() ].join('.');
 
-    const packType = ((cmdLineSettingsJson.preview ? "§cPreview§r: " : "") + (cmdLineSettingsJson.beta ? "§6Beta§r: " : "")).trim();
+    const packType = ((cmdLineSettingsJson.preview ? " : §cPreview§r" : "") + (cmdLineSettingsJson.beta ? " : §6Beta§r" : " : §aStable§r")).trim();
 
     const defaultHeader = {
         name: (
-            pSettings.name ||
-            packType + ' ' + cmdLineSettingsJson.name + ' ' + pSettings.type ||
-            packType + ' ' + configFileSettings.name + pSettings.type
+            (pSettings.name ||
+                cmdLineSettingsJson.name ||
+                configFileSettings.name) + ' ' + pSettings.type + ' ' + packType
         ).trim().replace('  ', ' '),
         description: (
             (
                 pSettings.description ||
-                    pSettings.isScriptingFiles && cmdLineSettingsJson.beta ? "§6Requires Beta API§r" : '' + cmdLineSettingsJson.description + ' ' + pSettings.type ||
+                (cmdLineSettingsJson.description + ' ' + pSettings.type) ||
                 "<" + pSettings.type + " pack description here>")
-            + "\n§aBuild Date: " + DateTime+"§r"
+                + (pSettings.isScriptingFiles && cmdLineSettingsJson.beta ? "\n§6Requires Beta API§r" : '')
+                + "\n§aBuild Date: " + DateTime + "§r"
+                + ` §gby ${pSettings.author || cmdLineSettingsJson.author}§r`
         ).trim().replace('  ', ' '),
         uuid: pSettings.header_uuid || "new",
         version: pSettings.version || cmdLineSettingsJson.version || [ d.getFullYear() - 2000, d.getMonth() + 1, d.getDate() ],
@@ -1573,10 +1575,10 @@ function manifestScriptModule_set (bpSettings) {
             language: "javascript",
             uuid: bpSettings.module_uuid || "get",
             version: [ 1, 0, 0 ],
-            entry:  !!bpSettings.js ? (`scripts/${bpSettings.js}.js`).replace('.js.js','.js') : 
-                    isFile("BP/scripts/index.js") ? "scripts/index.js" : 
-                    isFile("BP/scripts/main.js") ? "scripts/main.js" : 
-                    "Name/Path of your entry Script File Here"
+            entry: !!bpSettings.js ? (`scripts/${bpSettings.js}.js`).replace('.js.js', '.js') :
+                isFile("BP/scripts/index.js") ? "scripts/index.js" :
+                    isFile("BP/scripts/main.js") ? "scripts/main.js" :
+                        "Name/Path of your entry Script File Here"
         };
 
         bpSettings.module_script = objectsMerge(configScriptModule, defaultScriptModule);
@@ -1628,7 +1630,7 @@ function manifestParts_control (pSettings) {
 //=======================================================================
 function manifestBuild (pSettings) {
     debug.color("functionStart", "* buildManifest(" + pSettings.type + ")");
-
+    
     const manifest = {
         format_version: 2,
         header: pSettings.header,

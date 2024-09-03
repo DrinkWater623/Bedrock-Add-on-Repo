@@ -1,10 +1,6 @@
 {
     "settings": {
         "ns": "dw623",
-        "addon": "new",
-        "main_bot":"x_bot",
-		"main_bot_display":"X Bot"
-		// {{Title(replace(settings.main_bot,'_',' '))}}
-		// {{settings.main_bot}}
+        "addon": "Rotation Testing"
     }	
 }

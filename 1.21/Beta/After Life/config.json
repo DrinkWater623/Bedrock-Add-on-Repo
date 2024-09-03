@@ -12,7 +12,7 @@
 		"beta":false,
 		"name": "After Life",
 		"description": "Gives Death Coordinates and Tries to save your stuff",													
-		"min_engine_version": [1,21,0],							
+		/*"min_engine_version": [1,21,0], use at version chat cmds stable*/ 
 		"BP":{
 			"header_uuid": "161140f3-e042-414d-83ca-d01ccb9fe555",
 			"module_uuid": "adc098d3-ef78-4c39-bafa-8c49553cd778",
@@ -43,7 +43,7 @@
 				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
 				"filters": [	
 					{"profile":"template"},												
-					{"filter":"mani_fest","settings":{"beta":false,"preview":true}}
+					{"filter":"mani_fest","settings":{"beta":false,"preview":false}}
 				]
 			},
 			"build-beta": {
@@ -71,14 +71,14 @@
 				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
 				"filters": [
 					{"profile":"template"},	
-					{"filter":"mani_fest","settings":{"preview":true,"min_engine_version":[1,21,0]}}
+					{"filter":"mani_fest","settings":{"preview":true}}
 				]
 			},
 			"preview-beta": {
 				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
 				"filters": [
 					{"profile":"template"},	
-					{"filter":"mani_fest","settings":{"preview":true,"beta":true,"min_engine_version":[1,21,0]}}
+					{"filter":"mani_fest","settings":{"preview":true,"beta":true}}
 				]
 			}
 		}

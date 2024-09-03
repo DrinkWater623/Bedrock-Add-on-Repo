@@ -2,10 +2,8 @@ import { world, system, Player } from '@minecraft/server';
 //=============================================================================
 world.beforeEvents.chatSend.subscribe((event) => {
 
-    const spamEmptyLines = function (numOfLines = 40, chatSend = world) {
-        let msg = "";
-        for (let i = 0; i < numOfLines; i++) msg += "\n";       
-        chatSend.sendMessage(msg);
+    const spamEmptyLines = function (numOfLines = 40, chatSend = world) {   
+        chatSend.sendMessage("\n".repeat(numOfLines));
     };
 
     if (event.message.toLowerCase().startsWith(":cls")) {

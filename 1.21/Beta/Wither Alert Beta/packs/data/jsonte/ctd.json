@@ -1,7 +1,0 @@
-{
-    "scales":[
-        {"scale":25,"pt":0.25,"next":50,"touch":0.5,"align":0.375},
-        {"scale":50,"pt":0.50,"next":75,"touch":0.5,"align":0.1875},
-        {"scale":75,"pt":0.75,"next":25,"touch":0.5,"align":0}
-      ]
-}

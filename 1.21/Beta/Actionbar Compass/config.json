@@ -26,29 +26,38 @@
 	"regolith": {
 		"dataPath": "./packs/data",
 		"filterDefinitions": {	
+			"beta_js_ignore": {"runWith":"python","script":"./filters/beta_js_ignore.py"},
 			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
 			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
 			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}	
 		},
 		"profiles": {
-			"template": {
+			"template-beta": {
 				"export": {"readOnly":false,"target":"local"},				
 				"filters": [											
 					{"filter":"dot_ignore"},					
 					{"filter":"empty_ignore"}
 				]
 			},
+			"template-stable": {
+				"export": {"readOnly":false,"target":"local"},				
+				"filters": [
+					{"filter":"beta_js_ignore"},
+					{"filter":"dot_ignore"},											
+					{"filter":"empty_ignore"}
+				]
+			},			
 			"build": {
-				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
+				"export": {"readOnly":false,"target":"local","bpName":"'DW_ABC_stable_bp'","rpName": "'DW_ABC_stable_rp'"},
 				"filters": [	
-					{"profile":"template"},												
+					{"profile":"template-stable"},
 					{
 						"filter":"mani_fest",
 						"settings":{
 							"name": "DW ABC : ActionBar Compass",
 							"beta":false,"preview":false,
 							"BP":{
-								"js":"stable.js",
+								"js":"main.js",
 								"header_uuid": "8cdf17c7-d7b9-4981-993e-c1866c48d1e9",
 								"module_uuid": "a41a51b7-3dc9-4871-be4d-80bef444d24a"
 							},
@@ -61,17 +70,17 @@
 				]
 			},
 			"build-beta": {
-				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
+				"export": {"readOnly":false,"target":"local","bpName":"'DW_ABC_beta_bp'","rpName": "'DW_ABC_beta_rp'"},
 				"filters": [	
-					{"profile":"template"},												
+					{"profile":"template-beta"},												
 					{
 						"filter":"mani_fest",
 						"settings":{
-							"name": "DW ABC : ActionBar Compass with Chat Commands",
+							"name": "DW ABC : ActionBar Compass w/ Chat Toggle Commands",
 							"description": "Tells you which direction you are facing and/or XYZ Coords on the Action Bar. Use :abc & :xyz to toggle on/off",
 							"beta":true,"preview":false,
 							"BP":{
-								"js":"stable.js",
+								"js":"main-beta.js",
 								"header_uuid": "7616846d-de80-4c4a-92ce-5ef5cbd5809b",
 								"module_uuid": "67f4cb17-f9d9-4d71-86e9-0ec6a38a3772"
 							},
@@ -86,35 +95,35 @@
 			"stable": {
 				"export": {"readOnly":false,"target":"development"},
 				"filters": [
-					{"profile":"template"},		
-					{"filter":"mani_fest","settings":{"beta":false,"BP":{"js":"stable.js"}}}
+					{"profile":"template-stable"},		
+					{"filter":"mani_fest","settings":{"beta":false,"BP":{"js":"main.js"}}}
 				]
 			},
 			"beta": {
 				"export": {"readOnly":false,"target":"development"},
 				"filters": [
-					{"profile":"template"},			
-					{"filter":"mani_fest","settings":{"name": "ActionBar Compass with Chat Commands","beta":true,"BP":{"js":"beta.js"}}}
+					{"profile":"template-beta"},
+					{"filter":"mani_fest","settings":{"name": "ActionBar Compass w/ Chat Toggle Commands","beta":true,"BP":{"js":"main-beta.js"}}}
 				]
 			},
 			"preview": {
 				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
 				"filters": [
-					{"profile":"template"},	
-					{"filter":"mani_fest","settings":{"preview":true,"BP":{"js":"beta.js"}}}
+					{"profile":"template-stable"},
+					{"filter":"mani_fest","settings":{"preview":true,"BP":{"js":"main.js"}}}
 				]
 			},
 			"preview-beta": {
 				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
 				"filters": [
-					{"profile":"template"},	
+					{"profile":"template-beta"},
 					{"filter":"mani_fest",
 						"settings":{
 							"name": "ActionBar Compass with Chat Commands",
-							"preview":true,"beta":true,"min_engine_version":[1,21,0],
+							"preview":true,"beta":true,
 							"BP":{
-								"js":"beta.js",
-								"dependencies":{"module_name":"@minecraft/server","version":"1.14.0-beta"}
+								"js":"main-beta.js",
+								"dependencies":{"module_name":"@minecraft/server","version":"1.15.0-beta"}
 							}
 						}
 					}

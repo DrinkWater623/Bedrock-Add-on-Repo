@@ -26,8 +26,7 @@
 						"settings": {	
 							"Debug":false,						
 							"name": "Latest: Conveyor Belt",
-							"description": "",
-							"min_engine_version": [1,21,0],							
+							"description": "",							
 							"BP":{
 								"header_uuid": "b72a7241-d7b5-481a-8e4f-113c5e68f818",
 								"module_uuid": "2b6093dd-e8ff-48cf-9f24-51591b5558ce",

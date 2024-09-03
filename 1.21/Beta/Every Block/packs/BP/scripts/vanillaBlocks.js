@@ -79,6 +79,8 @@ class BlockInfo {
     y = () => this.xyz.y;
     z = () => this.xyz.z;
 }
+//has all blocks, custom too... so filter
+//Change this... there is a BlockTypes Class, use getAll(), and map id... which is minecraft:typeId
 const vbKeys = Object.keys(MinecraftBlockTypes)   
     .filter((k) => { return !k.startsWith("Chemistry"); })
     .filter((k) => { return !k.startsWith("Chemical"); })
