@@ -1,7 +1,7 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
 	"author": "https://github.com/DrinkWater623",
-	"name": "Wither_Alert",
+	"name": "Access_Tamed_Player",
 	"packs": {
 		"behaviorPack": "./packs/BP",
 		"resourcePack": "./packs/RP"
@@ -9,18 +9,19 @@
 	"mani_fest":{
 		"Debug":false,
 		"preview":false,
-		"beta":false,
-		"name": "Wither Alert",
-		"description": "Gives Locations of Withers",													
+		"beta":true,
+		"bp_only":true,
+		"name": "Access Tamed Player",
+		"description": "Adds tameable component to _is_tamed component group",
 		"min_engine_version": [1,21,0],							
 		"BP":{
-			"header_uuid": "ea61f455-31fd-4659-8607-5e7f3788c144",
-			"module_uuid": "ef06f6ca-d207-4b6b-8ffb-3456a4ed3032",
+			"header_uuid": "0c4c332c-8e1d-4a30-8fb9-4e76140a30dc",
+			"module_uuid": "38b5a08c-4799-4a6b-b9fc-c41fda368353",
 			"dependencies":{"module_name":"@minecraft/server","version":"get"}								
 		},
 		"RP": {
-			"header_uuid":"5073d92a-fd38-4dc6-a462-5f689dac7742",
-			"module_uuid":"286222b2-87b0-4678-89f8-67ff07b40e69"
+			"header_uuid":"63939f17-0252-431d-9fc6-092e6655313e",
+			"module_uuid":"c26992a1-16b1-4f0f-ab9c-ce6c53146d00"
 }
 	},
 	"regolith": {
@@ -73,7 +74,7 @@
 					{"profile":"template-beta"},
 					{"filter":"mani_fest",
 						"settings":{
-							"name": "ActionBar Compass with Chat Commands",
+							//"name": "ActionBar Compass with Chat Commands",
 							"preview":true,"beta":true,
 							"BP":{
 								"js":"main-beta.js",

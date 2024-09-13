@@ -2,7 +2,7 @@
 import { world, EntityTypes } from "@minecraft/server";
 import { watchFor, dev, pack, alertLog, chatLog, gamePlay } from './settings.js';
 import { subscriptionsActivate } from './subscribes.js';
-import './temp.js';
+
 //==============================================================================
 /**
  * List of properties

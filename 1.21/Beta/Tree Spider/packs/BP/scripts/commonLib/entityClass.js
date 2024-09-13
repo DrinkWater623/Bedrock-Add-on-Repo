@@ -4,7 +4,6 @@
  * 
  * Change Log
  *  20240827 - Created - to hold functions related to entities
- *  20240903 - added closestPlayers
  */
 //==============================================================================
 import { world, system, Player, Entity } from "@minecraft/server";
@@ -51,22 +50,4 @@ export class EntityLib {
         msg += "\n\n";
         chatSend.sendMessage(msg);
     }
-    //==============================================================================
-    /**
-     * 
-     * @param {Entity} entity 
-     * @param {number} max 
-     * @returns {Entity[]}
-     */
-    static closestPlayers(entity,max=1,distance=8){
-        if(max<1)max=Infinity
-        if (distance<0)distance=0
-        if (max==Infinity && distance==Infinity){
-            max=1
-            distance=8
-        }
-
-        return entity.dimension.getPlayers({ "closest": max, "location": entity.location, "maxDistance": distance });
-    }
-    //==============================================================================
 }

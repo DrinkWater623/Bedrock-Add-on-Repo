@@ -18,7 +18,7 @@ export function chatSend_before_fn (event) {
 
     if (event.message.toLowerCase().startsWith(gamePlay.commandPrefix)) {
         event.cancel;
-        if (dev.debugGamePlay) event.sender.sendMessage(`§9Processing ${watchFor.display} Alert Chat Command (before)`);
+        if (dev.debugGamePlay) event.sender.sendMessage(`§9Processing ${pack.packName} Chat Command (before)`);
 
         let command = event.message.toLowerCase().replace(gamePlay.commandPrefix, '').trim().replace("  ", ' ');
         processCommand(event.sender, command);
@@ -36,7 +36,7 @@ export function chatSend_after_fn (event) {
     //TODO: maybe some boosts
 
     if (event.message.toLowerCase().startsWith(gamePlay.commandPrefix)) {
-        if (dev.debugGamePlay) event.sender.sendMessage(`§9Processing ${watchFor.display} Alert Command (after)`);
+        if (dev.debugGamePlay) event.sender.sendMessage(`§9Processing ${pack.packName} Command (after)`);
 
         let command = event.message.toLowerCase().replace(gamePlay.commandPrefix, '').trim().replace("  ", ' ');
         processCommand(event.sender, command);
@@ -117,7 +117,7 @@ function processCommand (player, command) {
         }
 
         if (command === `tp me 2 ${watchFor.display.toLowerCase()}`) {
-            player.sendMessage(`§ctp-ing you to the closest ${watchFor.display}s`);
+            player.sendMessage(`§ctp-ing you to the closest ${watchFor.display}`);
             system.runTimeout(() => {
                 player.addEffect(MinecraftEffectTypes.Slow_Falling, 200, { amplifier: 255, showParticles: true });
                 if (!gamePlay.boostsAllowed) { }

@@ -21,7 +21,7 @@
 		"RP": {
 			"header_uuid":"5073d92a-fd38-4dc6-a462-5f689dac7742",
 			"module_uuid":"286222b2-87b0-4678-89f8-67ff07b40e69"
-}
+		}
 	},
 	"regolith": {
 		"dataPath": "./packs/data",
@@ -71,8 +71,7 @@
 				"filters": [
 					{"profile":"template-beta"},
 					{"filter":"mani_fest",
-						"settings":{
-							"name": "ActionBar Compass with Chat Commands",
+						"settings":{							
 							"preview":true,"beta":true,
 							"BP":{
 								"js":"main-beta.js",

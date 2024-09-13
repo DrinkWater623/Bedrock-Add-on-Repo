@@ -1,0 +1,13 @@
+{
+    "entities":[
+        {"active": true, "pet":1,"vanilla_entity":"wolf","is_tame_cg":"wolf_tame"},
+        {"active": true, "pet":1,"vanilla_entity":"cat","is_tame_cg":"cat_tame"},
+        {"active": true, "pet":1,"vanilla_entity":"parrot","is_tame_cg":"parrot_tame"},
+        //the other ones -see if can get info, no minecraft:tameable in the _wild --see if info
+        {"active": true, "pet":0,"vanilla_entity":"donkey","is_tame_cg":"donkey_tame"},
+        {"active": true, "pet":0,"vanilla_entity":"horse","is_tame_cg":"horse_tame"},
+        {"active": true, "pet":0,"vanilla_entity":"llama","is_tame_cg":"llama_tame"},
+        {"active": true, "pet":0,"vanilla_entity":"mule","is_tame_cg":"mule_tame"},
+        {"active": true, "pet":0,"vanilla_entity":"ocelot","is_tame_cg":"ocelot_tame"}
+    ]
+}

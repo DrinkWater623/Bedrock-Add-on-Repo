@@ -1,0 +1,58 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:spawn_rules": {
+    "description": {
+      "identifier": "dw623:tree_spider",
+      "population_control": "animal"
+    },
+    "conditions": [
+      {
+        //"
+        "minecraft:spawns_on_surface": {},
+        "minecraft:spawns_on_block_filter": [
+          // "minecraft:short_grass",
+          // "minecraft:tall_grass",
+          // "minecraft:fern",
+          // "minecraft:large_fern",
+          "minecraft:acacia_leaves",
+          "minecraft:birch_leaves",
+          "minecraft:cherry_leaves",
+          "minecraft:jungle_leaves",
+          "minecraft:dark_oak_leaves",
+          "minecraft:mangrove_leaves",
+          "minecraft:oak_leaves",
+          "minecraft:spruce_leaves",
+          "minecraft:vine",
+          "minecraft:sweet_berry_bush",
+          "minecraft:mangrove_roots",
+          //add logs and planks and maybe add wooden stairs and slabs maybe not
+          "minecraft:acacia_log",
+          "minecraft:birch_log",
+          "minecraft:cherry_log",
+          "minecraft:dark_oak_log",
+          "minecraft:jungle_log",
+          "minecraft:mangrove_log",
+          "minecraft:oak_log",
+          "minecraft:spruce_log"
+        ],
+        "minecraft:brightness_filter": {"min":0,"max":15,"adjust_for_weather":false},
+        "minecraft:weight": {"default":25},
+        "minecraft:herd": {"min_size":2,"max_size":4},
+        "minecraft:density_limit": {"surface":5},        
+        "minecraft:biome_filter": {
+          "all_of":{
+            "all_of": [
+              {"test":"has_biome_tag","operator":"==","value":"animal"},
+              {"test":"is_biome","operator":"!=","value":"ocean"}
+            ]
+          }
+          
+        },
+        "minecraft:distance_filter": {
+          "min": 24,
+          "max": 32
+        }        
+      }
+    ]
+  }
+}

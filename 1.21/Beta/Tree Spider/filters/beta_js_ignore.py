@@ -3,12 +3,12 @@ import os
 import stat
 import shutil
 
-def delete_folders_starting_with_dot(branch: Path):    
+def delete_folders_with_beta_in_name(branch: Path):    
     
     for leaf in branch.iterdir():        
 
         if leaf.is_dir():
-            if leaf.stem.startswith('.'):
+            if leaf.stem.find('beta') > 0:
                 print(color_format_yellow+f"* Removing Folder: {leaf}"+color_format_end)
 
                 shutil.rmtree(leaf, ignore_errors = True)
@@ -19,9 +19,9 @@ def delete_folders_starting_with_dot(branch: Path):
                     except Exception as e:
                         print(color_format_red+f"xxxx ERROR: {e}"+color_format_end)         
             else:
-                delete_folders_starting_with_dot(leaf)
+                delete_folders_with_beta_in_name(leaf)
         else:
-            if leaf.stem.startswith('.'):
+            if leaf.stem.find('beta') > 0:
                 print(color_format_yellow+f"* Deleting File: {leaf}"+color_format_end)
 
                 try:                    
@@ -42,5 +42,4 @@ if __name__ == "__main__":
     color_format_red = '\033[91m'
     color_format_end = '\033[0m'  
     
-    delete_folders_starting_with_dot(Path('./BP'))
-    delete_folders_starting_with_dot(Path('./RP'))
+    delete_folders_with_beta_in_name(Path('./BP/scripts'))
