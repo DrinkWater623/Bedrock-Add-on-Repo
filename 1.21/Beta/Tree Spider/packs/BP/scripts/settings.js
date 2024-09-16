@@ -14,16 +14,21 @@ export const pack = {
 //==============================================================================
 //Change this to change the entity
 export const dev = {
-    debugAll: false,
-    debugCallBackEvents: false,
     debugChatCmds: true,
+    debugEntityActivity: false,
     debugEntityAlert: true,
     debugGamePlay: true,
+    //--
     debugPackLoad: false,
     debugSubscriptions: false,
-    debugScoreboardName: `Debug_${pack.packName.replaceAll(' ', '_').toLowerCase()}`,
-    debugScoreboardDisplayName: `§cDebug_${pack.packName.replaceAll(' ', '_').replace('_', '§r §b').replace('_', '§r §a')}`,
-    debugScoreboard: world.scoreboard.getObjective(`Debug_${pack.packName.replaceAll(' ', '_').toLowerCase()}`)
+    debugLoadAndSpawn: true,
+    //---
+    debugScoreboardName: 'tree_spider_debug', //`Debug_${pack.packName.replaceAll(' ', '_').toLowerCase()}`,
+    debugScoreboardDisplayName: '§aTree Spider §6Debug',    
+    debugScoreboard: world.scoreboard.getObjective(`tree_spider_debug`),
+    //---
+    debugTimeCountersOn: false,
+    debugTimeCountersRunId:0
 };
 //==============================================================================
 //for this pack, this is works when debugEntityAlert or debugGamePlay are true
@@ -36,11 +41,16 @@ export const watchFor = {
     typeId: "dw623:tree_spider",
     family: "tree_spider",
     display: "Tree Spider",
+    despawnEventName:'despawn_me',
+    replaceEventName:'replace_me',
+    stalledCheckInterval : 5,
+    stalledCheckStartDelay : 10,
     explosiveProjectiles: [  ],
     validated: false,  //TODO: - validate exists when pack loaded
-    intervalTimer: 400, 
-    intervalMin: 100,
-    intervalMax: (24000 / 4)
+    scoreboardName: 'tree_spider_monitor', 
+    scoreboardDisplayName: '§aTree Spider §bMonitor',    
+    scoreboard: world.scoreboard.getObjective(`tree_spider_monitor`)
+
 };
 //==============================================================================
 export const alertLog = new ConsoleAlert(`§d${pack.packName}§r`)

@@ -4,12 +4,13 @@ import { main_stable } from './main-stable.js';
 import * as subsBeta from './subscribes-beta.js'
 //==============================================================================
 function main_beta () {
-    subsBeta.chatSend();
     subsBeta.afterEvents_scriptEventReceive ();
+    subsBeta.chatSend();
+    
 }
 
 //==============================================================================
-alertLog.success(`§aInstalling Add-on ${pack.packName} - §6Beta Chat Commands and Block Volume ${pack.isLoadAlertsOn ? '§c(Debug Mode)' : ''}`, pack.isLoadAlertsOn || dev.debugAll || dev.debugPackLoad);
+alertLog.success(`§aInstalling Add-on ${pack.packName} - §6Beta Chat Commands and Block Volume ${pack.isLoadAlertsOn ? '§c(Debug Mode)' : ''}`, pack.isLoadAlertsOn || dev.debugPackLoad);
 pack.hasChatCmd = 1;
 //==============================================================================
 alertLog.log(`§bCalling main_stable()  §c(Debug Mode)`, dev.debugPackLoad);

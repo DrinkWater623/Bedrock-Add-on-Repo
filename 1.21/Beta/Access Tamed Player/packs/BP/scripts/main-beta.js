@@ -6,7 +6,7 @@ import { main_stable } from './main-stable.js';
 import { PlayerLib } from './commonLib/playerClass.js';
 //==============================================================================
 function main_beta () {
-    const debugMsg = pack.isLoadAlertsOn || dev.debugPackLoad || dev.debugAll || dev.debugSubscriptions;
+    const debugMsg = pack.isLoadAlertsOn || dev.debugPackLoad || dev.debugSubscriptions;
 
     alertLog.success(`§aActivating Chat Commands§r - §6Beta§r`, debugMsg);
     world.beforeEvents.chatSend.subscribe(

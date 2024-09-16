@@ -8,7 +8,7 @@ import { EntityLib } from './commonLib/entityClass.js';
  */
 //==============================================================================
 export function main_stable () {
-  const debugMsg = pack.isLoadAlertsOn || dev.debugPackLoad || dev.debugAll;
+  const debugMsg = pack.isLoadAlertsOn || dev.debugPackLoad;
 
   const entityList = gamePlay.entityList
     .map(e => 'minecraft:' + e)
@@ -16,7 +16,7 @@ export function main_stable () {
   if (entityList.length == 0) return;
   const on_tame_event = "minecraft:on_tame";
 
-  alertLog.success(`Installing world.afterEvents.dataDrivenEntityTrigger: ${on_tame_event} `, dev.debugPackLoad || dev.debugAll);
+  alertLog.success(`Installing world.afterEvents.dataDrivenEntityTrigger: ${on_tame_event} `, dev.debugPackLoad);
 
   world.afterEvents.dataDrivenEntityTrigger.subscribe((event) => {
     //filter by the options to exactly those animals and that event (but this is after)

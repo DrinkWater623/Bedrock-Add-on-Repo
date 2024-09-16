@@ -1,6 +1,6 @@
 //@ts-check
-import { system, world, DisplaySlotId, DimensionType } from '@minecraft/server';
-import { worldRun, worldRunInterval } from './runCommandClass.js';
+import { system, world, DisplaySlotId, TicksPerSecond } from '@minecraft/server';
+import { worldRun } from './runCommandClass.js';
 //===================================================================
 export class ScoreboardLib {
 
@@ -8,20 +8,20 @@ export class ScoreboardLib {
     /**
          * 
          * @param {string} scoreboardName 
-         * @param {string} playerName 
+         * @param {string} entryName 
          * @param {string} [verb='add']
          * @param {number} [qty=0]
          * @param {number} [tickDelay=1]  
          */
-    static do (scoreboardName, playerName, verb = 'add', qty = 0, tickDelay = 1) {
+    static do (scoreboardName, entryName, verb = 'add', qty = 0, tickDelay = 1) {
 
-        if (!playerName) return false;
+        if (!entryName) return false;
         if (![ 'add', 'remove', 'set' ].includes(verb)) return false;
 
         const sb = world.scoreboard.getObjective(scoreboardName);
         if (!sb) return false;
 
-        const cmd = `scoreboard players ${verb}  ${playerName}  ${scoreboardName}  ${qty}`;
+        const cmd = `scoreboard players ${verb}  ${entryName}  ${scoreboardName}  ${qty}`;
         //console.warn(`COMMAND: §a${cmd}`)
         return worldRun(cmd, 'overworld', tickDelay);
     }
@@ -29,47 +29,47 @@ export class ScoreboardLib {
     /**
      * 
      * @param {string} scoreboardName 
-     * @param {string} playerName 
+     * @param {string} entryName 
      * @param {number} qty
      * @param {number} [tickDelay=1]  
      */
-    static add (scoreboardName, playerName, qty = 0, tickDelay = 1) {
-        return ScoreboardLib.do(scoreboardName, playerName, 'add', qty, tickDelay);
+    static add (scoreboardName, entryName, qty = 0, tickDelay = 1) {
+        return ScoreboardLib.do(scoreboardName, entryName, 'add', qty, tickDelay);
     }
     //===================================================================
     /**
      * 
      * @param {string} scoreboardName 
-     * @param {string} playerName 
+     * @param {string} entryName 
      * @param {number} qty 
      * @param {number} [tickDelay=1] 
      */
-    static sub (scoreboardName, playerName, qty = 0, tickDelay = 1) {
-        return ScoreboardLib.do(scoreboardName, playerName, 'remove', qty, tickDelay);
+    static sub (scoreboardName, entryName, qty = 0, tickDelay = 1) {
+        return ScoreboardLib.do(scoreboardName, entryName, 'remove', qty, tickDelay);
     }
     //===================================================================
     /**
      * 
      * @param {string} scoreboardName 
-     * @param {string} playerName 
+     * @param {string} entryName 
      * @param {number} qty 
      */
-    static set (scoreboardName, playerName, qty = 0, tickDelay = 1) {
-        return ScoreboardLib.do(scoreboardName, playerName, 'set', qty, tickDelay);
+    static set (scoreboardName, entryName, qty = 0, tickDelay = 1) {
+        return ScoreboardLib.do(scoreboardName, entryName, 'set', qty, tickDelay);
     }
     //===================================================================
     /**
      * 
      * @param {string} scoreboardName 
-     * @param {string} playerName 
+     * @param {string} entryName 
      * @param {number} [tickDelay=1] 
      */
-    static reset (scoreboardName, playerName, tickDelay = 1) {
+    static reset (scoreboardName, entryName, tickDelay = 1) {
         const sb = world.scoreboard.getObjective(scoreboardName);
-        if (!sb || !playerName) return false;
-        if (!sb.hasParticipant(playerName)) return;
+        if (!sb || !entryName) return false;
+        if (!sb.hasParticipant(entryName)) return;
 
-        system.runTimeout(() => { sb.removeParticipant(playerName); }, tickDelay);
+        system.runTimeout(() => { sb.removeParticipant(entryName); }, tickDelay);
         return true;
     }
     /**
@@ -108,11 +108,11 @@ export class ScoreboardLib {
         system.run(() => { players.forEach(p => { sb.setScore(p, 0); }); });
 
     }
+    //===================================================================
     /**
      * 
      * @param {string} scoreboardName
      */
-    //===================================================================
     static delete (scoreboardName) {
         const sb = world.scoreboard.getObjective(scoreboardName);
         if (!sb) return false;
@@ -127,7 +127,7 @@ export class ScoreboardLib {
     static sideBar_set (scoreboardName) {
         const sb = world.scoreboard.getObjective(scoreboardName);
         if (!sb) return false;
-        world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.Sidebar, { objective: sb });
+        system.run(() => { world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.Sidebar, { objective: sb }); });
         return true;
     }
     static sideBar_clear () {
@@ -143,29 +143,86 @@ export class ScoreboardLib {
     static create (scoreboardName, displayName = '') {
         if (!world.scoreboard.getObjective(scoreboardName))
             world.scoreboard.addObjective(scoreboardName, displayName || scoreboardName);
-        return true;
+        return world.scoreboard.getObjective(scoreboardName);
     }
     //===================================================================
     /**
      * 
      * @param {string} scoreboardName 
-     * @param {string} playerName 
+     * @param {string} entryName 
      * @param {number} addAmount 
      * @param {number} tickInterval 
      * @returns 
      */
-    static tickCounterStart (scoreboardName, playerName, addAmount = 1, tickInterval = 1) {
-        if (!scoreboardName || !playerName) return 0;
+    static tickCounterStart (scoreboardName, entryName, addAmount = 1, tickInterval = 1) {
+        if (!scoreboardName || !entryName) return 0;
         ScoreboardLib.create(scoreboardName);
-        
-        let job=0;
+
+        let job = 0;
         system.runTimeout(() => {
 
             const sb = world.scoreboard.getObjective(scoreboardName);
             if (sb) {
                 job = system.runInterval(() => {
-                    sb.addScore(playerName, addAmount);
-                }, tickInterval);                
+                    sb.addScore(entryName, addAmount);
+                }, tickInterval);
+            }
+        }, 0);
+        // const cmd = `scoreboard players add  ${playerName}  ${scoreboardName} ${addAmount}`;
+        return job;
+    }
+    //===================================================================
+    /**
+     * 
+     * @param {string} scoreboardName 
+     * @param {string} entryName 
+     * @returns 
+     */
+    static secondsCounterStart (scoreboardName, entryName) {
+        return ScoreboardLib.tickCounterStart(scoreboardName, entryName, 1, TicksPerSecond);
+    }
+    //===================================================================
+    /**
+     * 
+     * @param {string} scoreboardName 
+     * @param {string} entryName 
+     * @returns 
+     */
+    static minutesCounterStart (scoreboardName, entryName) {
+        return ScoreboardLib.tickCounterStart(scoreboardName, entryName, 1, TicksPerSecond * 60);
+    }
+    //===================================================================
+    /**
+     * 
+     * @param {string} scoreboardName 
+     * @param {string} entryName 
+     * @returns 
+     */
+    static hoursCounterStart (scoreboardName, entryName) {
+        return ScoreboardLib.tickCounterStart(scoreboardName, entryName, 1, TicksPerSecond * 60 * 60);
+    }
+    //===================================================================
+    /**
+     * 
+     * @param {string} scoreboardName 
+     * @returns 
+     */
+    static systemTimeCountersStart (scoreboardName) {
+        if (!scoreboardName) return 0;
+        ScoreboardLib.create(scoreboardName);
+
+        let job = 0;
+        system.runTimeout(() => {
+
+            const sb = world.scoreboard.getObjective(scoreboardName);
+            if (sb) {
+                const tickOffset = system.currentTick
+                job = system.runInterval(() => {
+                    sb.setScore('System Seconds', Math.trunc((system.currentTick - tickOffset) / 20));
+                    sb.setScore('System Minutes', Math.trunc((system.currentTick - tickOffset) / (20 * 60)));
+                    sb.setScore('System Hours', Math.trunc((system.currentTick - tickOffset) / (20 * 60 * 60)));
+                    sb.setScore('System Days', Math.trunc((system.currentTick - tickOffset) / (20 * 60 * 60 * 24)));
+                }, TicksPerSecond);
             }
         }, 0);
         // const cmd = `scoreboard players add  ${playerName}  ${scoreboardName} ${addAmount}`;

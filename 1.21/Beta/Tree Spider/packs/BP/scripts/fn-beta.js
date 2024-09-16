@@ -12,17 +12,16 @@ import { setWebAndEnter, teleportAndCenter } from "./fn-stable.js";
  */
 export function enterWeb (entity) {
     const dimension = entity.dimension;
-    const inBlock = dimension.getBlock(entity.location);
-    //chatLog.log(`§a*enterWeb() @ ${Vector3Lib.toString(entity.location)} ${inBlock ? 'inBlock: ' + inBlock.typeId : ''}`, dev.debugEntityAlert);
+    const inBlock = dimension.getBlock(entity.location);    
 
-    if (!inBlock) { chatLog.error('Cannot NOT be in a block, even air', dev.debugEntityAlert); return; }
+    if (!inBlock) { chatLog.error('Cannot NOT be in a block, even air', dev.debugEntityActivity); return; }
     if (inBlock.typeId == 'minecraft:web') { system.run(()=>{entity.teleport(inBlock.center())}); return; }
 
     const blockLocations = BlockLib.blocksAround_locations(entity.dimension, entity.location, 2, { includeTypes: [ "minecraft:web" ] });
     if (blockLocations.length === 0) return;
 
     //for now just go into [0]
-    chatLog.success('Entered Web', dev.debugEntityAlert);
+    chatLog.success('Entered Web', dev.debugEntityActivity);
     ScoreboardLib.add(dev.debugScoreboardName, 'enteredWeb', 1);
     system.runTimeout(() => { teleportAndCenter(entity, blockLocations[ Math.trunc(blockLocations.length / 2) ]); }, 1);
 }
@@ -34,7 +33,7 @@ export function enterWeb (entity) {
 export function expandWeb (entity) {
     const dimension = entity.dimension;
     const inBlock = dimension.getBlock(entity.location);
-    chatLog.log(`§a*expandWeb() @ ${Vector3Lib.toString(entity.location)} ${inBlock ? 'inBlock: ' + inBlock.typeId : ''}`, dev.debugEntityAlert);
+    chatLog.log(`§a*expandWeb() @ ${Vector3Lib.toString(entity.location)} ${inBlock ? 'inBlock: ' + inBlock.typeId : ''}`, dev.debugEntityActivity);
 
     if (inBlock && inBlock.typeId != 'minecraft:web') return;
 
@@ -48,7 +47,7 @@ export function expandWeb (entity) {
         if (blockLocations.length === 0) return;
     };
 
-    chatLog.success(`Expanded Web @ ${Vector3Lib.toString(blockLocations[ 0 ], 0, true)}`, dev.debugEntityAlert);
+    chatLog.success(`Expanded Web @ ${Vector3Lib.toString(blockLocations[ 0 ], 0, true)}`, dev.debugEntityActivity);
     ScoreboardLib.add(dev.debugScoreboardName, 'expandWeb', 1);
     setWebAndEnter(entity, blockLocations[ 0 ]);
 }
