@@ -1,5 +1,5 @@
 //@ts-check
-import { Scoreboard, world } from "@minecraft/server";
+import { world } from "@minecraft/server";
 import { ConsoleAlert ,ChatMsg} from "./commonLib/consoleClass";
 //==============================================================================
 /**
@@ -9,7 +9,8 @@ import { ConsoleAlert ,ChatMsg} from "./commonLib/consoleClass";
 export const pack = {
     packName: 'Tree Spider',
     isLoadAlertsOn: false,    
-    hasChatCmd: -1 
+    hasChatCmd: -1 ,
+    commandPrefix: "ts:"
 };
 //==============================================================================
 //Change this to change the entity
@@ -32,9 +33,9 @@ export const dev = {
 };
 //==============================================================================
 //for this pack, this is works when debugEntityAlert or debugGamePlay are true
-export const gamePlay = {    
-    commandPrefix: "ts:"
-};
+// export const gamePlay = {    
+//     commandPrefix: "ts:"
+// };
 //==============================================================================
 //Change this to change the entity
 export const watchFor = {

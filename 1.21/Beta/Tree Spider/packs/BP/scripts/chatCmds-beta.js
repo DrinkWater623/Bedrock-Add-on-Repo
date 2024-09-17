@@ -4,7 +4,7 @@
  * TODO: User Form for some of this
  */
 import { world, system, Player, Entity, ChatSendBeforeEvent, ChatSendAfterEvent, GameMode } from "@minecraft/server";
-import { gamePlay, dev, pack, watchFor } from './settings.js';
+import { dev, pack, watchFor } from './settings.js';
 import { MinecraftEffectTypes } from './commonLib/vanillaData.js';
 import { ScoreboardLib } from "./commonLib/scoreboardClass.js";
 import { counts } from "./fn-stable.js";
@@ -35,8 +35,8 @@ export function chatSend_before_fn (event) {
 
     if (!(event.sender instanceof Player)) return;
 
-    if (event.message.toLowerCase().startsWith(gamePlay.commandPrefix)) {
-        let command = event.message.toLowerCase().replace(gamePlay.commandPrefix, '').trim().replace("  ", ' ');
+    if (event.message.toLowerCase().startsWith(pack.commandPrefix)) {
+        let command = event.message.toLowerCase().replace(pack.commandPrefix, '').trim().replace("  ", ' ');
         if (cmdList.includes(command)) {
             event.cancel;
             if (dev.debugGamePlay) event.sender.sendMessage(`§9Processing ${pack.packName} Chat Command (before)`);
@@ -53,9 +53,9 @@ export function chatSend_before_fn (event) {
 
 //     if (!(event.sender instanceof Player)) return;
 
-//     if (event.message.toLowerCase().startsWith(gamePlay.commandPrefix)) {
+//     if (event.message.toLowerCase().startsWith(pack.commandPrefix)) {
 
-//         let command = event.message.toLowerCase().replace(gamePlay.commandPrefix, '').trim().replace("  ", ' ');
+//         let command = event.message.toLowerCase().replace(pack.commandPrefix, '').trim().replace("  ", ' ');
 //         if ([ "?", "help" ].includes(command)) {
 //             if (dev.debugGamePlay) event.sender.sendMessage(`§9Processing ${pack.packName} Command (after)`);
 //             processCommand(event.sender, command);
@@ -255,7 +255,7 @@ function processCommand (player, command) {
     if (command === 'sb monitor') { ScoreboardLib.sideBar_set(watchFor.scoreboardName); return; }
     // 'sb load', 'sb spawn', 'sb monitor', 'sb debug'
 
-    player.sendMessage(`§cInvalid Command -> ${gamePlay.commandPrefix} ${command}`);
+    player.sendMessage(`§cInvalid Command -> ${pack.commandPrefix} ${command}`);
     commandList(player);
 }
 //==============================================================================

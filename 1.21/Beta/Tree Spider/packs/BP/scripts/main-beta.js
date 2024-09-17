@@ -1,12 +1,11 @@
 //@ts-check
-import { alertLog, pack, dev, watchFor, chatLog } from './settings.js';
+import { alertLog, pack, dev } from './settings.js';
 import { main_stable } from './main-stable.js';
 import * as subsBeta from './subscribes-beta.js'
 //==============================================================================
 function main_beta () {
     subsBeta.afterEvents_scriptEventReceive ();
-    subsBeta.chatSend();
-    
+    subsBeta.chatSend();    
 }
 
 //==============================================================================

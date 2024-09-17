@@ -1,0 +1,41 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "dw623:tree_spider_egg_sac",
+      "is_spawnable": false,
+      "is_summonable": true,
+      "is_experimental": false
+    },
+    "component_groups": {
+      "instant_despawn":{"minecraft:instant_despawn":{}},
+      "hatchlings":{
+        "minecraft:timer": {"looping":false,"time":[30,600],"time_down_event":{"event":"despawn_me"}},
+        "minecraft:spawn_entity": {
+          "entities": [
+            {
+                "min_wait_time": 90,"max_wait_time": 300,
+                "spawn_entity": "dw623:tree_spider",
+                "single_use": false,
+                "num_to_spawn": 1,
+                "spawn_event": "minecraft:entity_born"
+            }
+          ]
+        }        
+      } 
+    },
+    "components": {
+      "minecraft:type_family": {"family":["tree_spider_egg_sac","mob"]},
+      "minecraft:collision_box": {"width":0.25,"height":0.25},      
+      "minecraft:physics":{"has_collision":false,"has_gravity":false},
+      "minecraft:pushable": {"is_pushable":false,"is_pushable_by_piston":true},
+      "minecraft:conditional_bandwidth_optimization": {"default_values":{"max_optimized_distance":80,"max_dropped_ticks":7,"use_motion_prediction_hints":true}},
+      //=======================================
+      "minecraft:timer": {"looping":false,"time":[300,600],"time_down_event":{"event":"hatch"}}      
+    },
+    "events": {
+      "hatch":{"add":{"component_groups":["hatchlings"]}},
+      "despawn_me": {"add":{"component_groups":["instant_despawn"]}}
+    }
+  }
+}
