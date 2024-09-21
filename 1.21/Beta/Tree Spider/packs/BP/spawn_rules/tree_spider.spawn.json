@@ -9,7 +9,8 @@
       { 
         "minecraft:spawns_on_surface": {},
         "minecraft:distance_filter": {"min": 8,"max": 24},
-        "minecraft:weight": {"default":75,"rarity": 1},
+        "minecraft:weight": {"default":100,"rarity": 0},
+        //"minecraft:density_limit": {},
         //"minecraft:herd": {"min_size":2,"max_size":8}, NO, not in same spot like that
         "minecraft:biome_filter": 
         {

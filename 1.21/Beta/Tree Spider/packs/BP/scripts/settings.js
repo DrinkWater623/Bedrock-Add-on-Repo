@@ -10,25 +10,36 @@ export const pack = {
     packName: 'Tree Spider',
     isLoadAlertsOn: false,    
     hasChatCmd: -1 ,
-    commandPrefix: "ts:"
+    commandPrefix: "ts:",
+    //-- Dynamic Properties --
+    lastActiveTick:'lastActiveTick',
+    lastWebActivityTick:'lastWebActivityTick',
+    websCreated:'websCreated'
 };
 //==============================================================================
 //Change this to change the entity
 export const dev = {
-    debugChatCmds: true,
+    debugChatCmds: false,
+    debugGamePlay: true,
     debugEntityActivity: false,
     debugEntityAlert: true,
-    debugGamePlay: true,
+    debugBabyActivity: false,
+    debugBabyAlert: true,
     //--
     debugPackLoad: false,
     debugSubscriptions: false,
-    debugLoadAndSpawn: true,
+    debugLoadAndSpawn: false,
     //---
-    debugScoreboardName: 'tree_spider_debug', //`Debug_${pack.packName.replaceAll(' ', '_').toLowerCase()}`,
+    debugScoreboardName: 'tree_spider_debug', 
     debugScoreboardDisplayName: '§aTree Spider §6Debug',    
     debugScoreboard: world.scoreboard.getObjective(`tree_spider_debug`),
     //---
+    debugBabyScoreboardName: 'baby_tree_spider_debug', 
+    debugBabyScoreboardDisplayName: '§bBaby §aTree Spider §6Debug',    
+    debugBabyScoreboard: world.scoreboard.getObjective(`baby_tree_spider_debug`),
+    //---
     debugTimeCountersOn: false,
+    debugTimers: 'smh',
     debugTimeCountersRunId:0
 };
 //==============================================================================
@@ -42,6 +53,7 @@ export const watchFor = {
     typeId: "dw623:tree_spider",
     family: "tree_spider",
     display: "Tree Spider",
+    egg_typeId: "dw623:tree_spider_egg_sac",
     despawnEventName:'despawn_me',
     replaceEventName:'replace_me',
     stalledCheckInterval : 5,

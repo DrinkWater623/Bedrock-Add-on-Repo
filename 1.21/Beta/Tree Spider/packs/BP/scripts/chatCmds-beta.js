@@ -22,7 +22,7 @@ const cmdList = [
     "reset web random",
     'reset wander',
     'sb reset', 'sb show', 'sb hide',
-    'sb load', 'sb spawn', 'sb monitor', 'sb debug',
+    'sb load', 'sb spawn', 'sb monitor', 'sb debug','sb baby',
     'tp ts', 'tp all ts',
     'tp me',
     'kill', '?', 'help' ];
@@ -102,15 +102,12 @@ function processCommand (player, command) {
 
     if (player.isOp()) {
 
-        const entities_all = world.getDimension("overworld").getEntities({ type: watchFor.typeId });
-
-        //system.run(() => { dev.debugScoreboard?.setScore("spiders", entities_all.length); });
+        const entities_all = world.getDimension("overworld").getEntities({ type: watchFor.typeId });        
 
         if (entities_all.length === 0) {
             player.sendMessage(`§cNo Loaded entity=${watchFor.display}`);            
             return;
         }
-
 
         if (command === "kill") {
             player.sendMessage(`§aCommand to kill loaded ${watchFor.display}s sent`);
@@ -118,25 +115,16 @@ function processCommand (player, command) {
             return;
         }
 
-        const entities = entities_all.filter(e => { return !e.hasComponent('minecraft:is_baby'); });
-        //system.run(() => { dev.debugScoreboard?.setScore("adult spiders", entities.length); });
+        const entities = entities_all.filter(e => { return !e.hasComponent('minecraft:is_baby'); });        
 
         if (entities.length === 0) {
             player.sendMessage(`§cNo Loaded Adult entity=${watchFor.display}`);
-            //system.run(() => { dev.debugScoreboard?.setScore("baby spiders", entities_all.length); });
             return;
         }
 
-        //system.run(() => { dev.debugScoreboard?.setScore("baby spiders", entities_all.length - entities.length); });
 
         if (command === "count") {
             player.sendMessage(`§aUpdating Counts for ${watchFor.display}s`);
-            // let webCount = 0;
-            // entities.forEach(e => {
-            //     const myWebs = e.getDynamicProperty('webs');
-            //     if (typeof myWebs == 'number') webCount += myWebs;
-            // });
-            // system.run(() => { dev.debugScoreboard?.setScore('webs', webCount); });
             return;
         }
 
@@ -233,23 +221,9 @@ function processCommand (player, command) {
 
     if (command === 'sb reset') { ScoreboardLib.setZeroAll(dev.debugScoreboardName); return; }
     if (command === 'sb show') { ScoreboardLib.sideBar_set(dev.debugScoreboardName); return; }
-    if (command === 'sb hide') { ScoreboardLib.sideBar_clear(); return; }
-    // if (command === 'sb remake') {
-
-    //     system.runInterval(() => {
-    //         ScoreboardLib.delete(dev.debugScoreboardName);
-    //         system.runInterval(() => {
-    //             ScoreboardLib.create(dev.debugScoreboardName, dev.debugScoreboardDisplayName);
-    //             system.runInterval(() => {
-    //                 ScoreboardLib.sideBar_set(dev.debugScoreboardName);
-    //             }, 1);
-    //         }, 1);
-    //     }, 1);
-
-    // }
-
-
+    if (command === 'sb hide') { ScoreboardLib.sideBar_clear(); return; }    
     if (command === 'sb debug') { ScoreboardLib.sideBar_set(dev.debugScoreboardName); return; }
+    if (command === 'sb baby') { ScoreboardLib.sideBar_set(dev.debugBabyScoreboardName); return; }
     if (command === 'sb load') { ScoreboardLib.sideBar_set(watchFor.scoreboardName + '_load_tick'); return; }
     if (command === 'sb spawn') { ScoreboardLib.sideBar_set(watchFor.scoreboardName + '_spawn_tick'); return; }
     if (command === 'sb monitor') { ScoreboardLib.sideBar_set(watchFor.scoreboardName); return; }

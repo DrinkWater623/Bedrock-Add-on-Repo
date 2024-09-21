@@ -9,9 +9,11 @@ export class BlockLib {
      * @param {Dimension} dimension  
      * @param {import("@minecraft/server").Vector3} location 
      * @param {number} [radius=1] 
+     * @param {{}} filter
+     * @param {boolean} [adjacentOnly=false] 
      * @returns {import("@minecraft/server").Vector3[]}
      */
-    static blocksAround_locations (dimension, location, radius = 1, filter = {}) {
+    static blocksAround_locations (dimension, location, radius = 1, filter = {}, adjacentOnly = false) {
         const atBlock = dimension.getBlock(location);
         if (!atBlock) return [];
         if (radius === 0) radius = 1;
@@ -22,7 +24,12 @@ export class BlockLib {
 
         const blockVolumeDef = new BlockVolume(bottomOffset.location, topOffset.location);
         const blockVolumes = dimension.getBlocks(blockVolumeDef, filter, true);
-        return [ ...blockVolumes.getBlockLocationIterator() ];
+
+        if (!adjacentOnly) return [ ...blockVolumes.getBlockLocationIterator() ];
+
+        //x or y or z must be the same to be touch a face - plus symbol
+        return [ ...blockVolumes.getBlockLocationIterator() ]
+            .filter(loc => { return loc.x === atBlock.location.x || loc.y === atBlock.location.y || loc.z === atBlock.location.z; });        
     }
     //=========================================================================
     /**
@@ -58,15 +65,15 @@ export class BlockLib {
         const blockObjects = [];
 
         for (let i = 0; i < blockLocations.length; i++) {
-            const block = dimension.getBlock(blockLocations[ i ]);            
+            const block = dimension.getBlock(blockLocations[ i ]);
             if (block) blockObjects.push({
-                block: block,                
+                block: block,
                 offset: Vector3Lib.delta(location, block.location, 0, false),
-                radius: 0  
+                radius: 0
             });
         }
-        
-        blockObjects.forEach(b => {b.radius = Math.max(Math.abs(b.offset.x),Math.abs(b.offset.y),Math.abs(b.offset.z))})
+
+        blockObjects.forEach(b => { b.radius = Math.max(Math.abs(b.offset.x), Math.abs(b.offset.y), Math.abs(b.offset.z)); });
         return blockObjects;
     }
 }

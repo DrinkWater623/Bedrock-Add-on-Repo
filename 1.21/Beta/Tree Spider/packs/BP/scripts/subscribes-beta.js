@@ -3,7 +3,7 @@ import { world, system } from "@minecraft/server";
 import { alertLog, dev, watchFor, chatLog } from './settings.js';
 import { chatSend_before_fn } from './chatCmds-beta.js';
 import { enterWeb, expandWeb } from './fn-beta.js';
-import { placeWeb, entityActivityUpdate, newSpawn } from './fn-stable.js';
+import { placeWeb, entityLastActiveTickUpdate } from './fn-stable.js';
 //import { ScoreboardLib } from "./commonLib/scoreboardClass.js";
 //==============================================================================
 export function chatSend () {
@@ -25,37 +25,48 @@ export function afterEvents_scriptEventReceive () {
     system.afterEvents.scriptEventReceive.subscribe((event) => {
         const { id, message, sourceEntity: entity } = event;
 
-        if (!entity || entity.typeId != watchFor.typeId) return;
+        if (!entity) return;
+        if (![ watchFor.typeId, watchFor.egg_typeId ].includes(entity.typeId)) return;
         if (!id) return;
 
-        entityActivityUpdate(entity);
+        //if (id != 'debug:Stick') entityLastActiveTickUpdate(entity);
 
         if (id.startsWith(watchFor.family)) {
             if (id === `${watchFor.family}:placeWeb`) { placeWeb(entity); return; }
-            if (id === `${watchFor.family}:enterWeb`) { enterWeb(entity); return; }
+            if (id === `${watchFor.family}:enterWeb`) { enterWeb(entity, message == 'baby' ? true : false); return; }
             if (id === `${watchFor.family}:expandWeb`) { expandWeb(entity); return; }
-            if (id === `${watchFor.family}:newSpawn`) { newSpawn(entity); return; }
         }
 
-        if (id === 'debug:EntityActivity' && dev.debugEntityActivity) {
-            chatLog.log(message, true);
-            return;
+        if (id.startsWith('register') && id.endsWith('Activity')) entityLastActiveTickUpdate(entity);
+
+        if (id === 'registerSB:EntityActivity') { dev.debugScoreboard?.addScore(message, 1); return; }
+        if (id === 'registerSB:BabyActivity') { dev.debugBabyScoreboard?.addScore(message, 1); return; }
+        if (id === 'registerSB:Activity') { 
+            dev.debugBabyScoreboard?.addScore(message, 1); 
+            dev.debugScoreboard?.addScore(message, 1);
+            return; 
         }
 
-        if (id === 'debug:EntityAlert' && dev.debugEntityAlert) {
-            chatLog.log(message, true);
-            return;
-        }
+        //no sb for message after this point - add entity id to message
+        const note = `${message} - ${entity.id}`;
 
-        if (id === 'debug:GamePlay' && dev.debugGamePlay) {
-            chatLog.log(message, true);
-            return;
+        if (id === 'register:Activity') { 
+            chatLog.log(note, dev.debugEntityActivity || dev.debugBabyActivity); 
+            return; 
         }
+        if (id === 'register:EntityActivity') { chatLog.log(note, dev.debugEntityActivity); return; }
+        if (id === 'register:BabyActivity') { chatLog.log(note, dev.debugBabyActivity); return; }
 
-        if (id === 'debug:Stick') {
-            chatLog.log(message, true);
-            return;
-        }
+        if (id === 'chatOnly:EntityActivity') { chatLog.log(note, dev.debugEntityActivity); return; }
+        if (id === 'chatOnly:BabyActivity') { chatLog.log(note, dev.debugBabyActivity); return; }
+        if (id === 'chatOnly:EntityAlert') { chatLog.log(note, dev.debugEntityAlert); return; }
+        if (id === 'chatOnly:BabyAlert') { chatLog.log(note, dev.debugBabyAlert); return; }
+        //Not used for anything yet...
+        if (id === 'chatOnly:GamePlay') { chatLog.log(note, dev.debugGamePlay); return; }
+        if (id === 'debug:Stick') { chatLog.log(note, true); return; }
+
+        //if (dev.debugEntityActivity || dev.debugEntityAlert || dev.debugGamePlay)
+        chatLog.error(`Unhandled Entity JSON Communication:\nId: ${id}\nMessage: ${note}`, true);
     });
 }
 //==============================================================================

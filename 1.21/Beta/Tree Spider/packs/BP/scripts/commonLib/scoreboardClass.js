@@ -1,6 +1,7 @@
 //@ts-check
 import { system, world, DisplaySlotId, TicksPerSecond } from '@minecraft/server';
 import { worldRun } from './runCommandClass.js';
+import { globalConstantsLib } from './globalConstantsClass.js';
 //===================================================================
 export class ScoreboardLib {
 
@@ -204,25 +205,27 @@ export class ScoreboardLib {
     //===================================================================
     /**
      * 
-     * @param {string} scoreboardName 
+     * @param {string} scoreboardName
+     * @param {string} [initialsWhich='tsmhd']  t,s,m,h,d (t=ticks, m=minutes, guess the rest)
      * @returns 
      */
-    static systemTimeCountersStart (scoreboardName) {
+    static systemTimeCountersStart (scoreboardName, initialsWhich = 'tsmhd') {
         if (!scoreboardName) return 0;
         ScoreboardLib.create(scoreboardName);
 
         let job = 0;
+        const interval = initialsWhich.includes('t') ? 1 : initialsWhich.includes('s') ? TicksPerSecond : initialsWhich.includes('m') ? globalConstantsLib.TicksPerMinute : globalConstantsLib.TicksPerHour;
         system.runTimeout(() => {
-
             const sb = world.scoreboard.getObjective(scoreboardName);
             if (sb) {
-                const tickOffset = system.currentTick
+                const tickOffset = system.currentTick;
                 job = system.runInterval(() => {
-                    sb.setScore('System Seconds', Math.trunc((system.currentTick - tickOffset) / 20));
-                    sb.setScore('System Minutes', Math.trunc((system.currentTick - tickOffset) / (20 * 60)));
-                    sb.setScore('System Hours', Math.trunc((system.currentTick - tickOffset) / (20 * 60 * 60)));
-                    sb.setScore('System Days', Math.trunc((system.currentTick - tickOffset) / (20 * 60 * 60 * 24)));
-                }, TicksPerSecond);
+                    if (initialsWhich.includes('t')) sb.setScore('System Ticks', system.currentTick - tickOffset);
+                    if (initialsWhich.includes('s')) sb.setScore('System Seconds', Math.trunc((system.currentTick - tickOffset) / TicksPerSecond));
+                    if (initialsWhich.includes('m')) sb.setScore('System Minutes', Math.trunc((system.currentTick - tickOffset) / globalConstantsLib.TicksPerMinute));
+                    if (initialsWhich.includes('h')) sb.setScore('System Hours', Math.trunc((system.currentTick - tickOffset) / globalConstantsLib.TicksPerHour));
+                    if (initialsWhich.includes('d')) sb.setScore('System Days', Math.trunc((system.currentTick - tickOffset) / globalConstantsLib.TicksPerDay));
+                }, interval);
             }
         }, 0);
         // const cmd = `scoreboard players add  ${playerName}  ${scoreboardName} ${addAmount}`;

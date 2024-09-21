@@ -1,8 +1,10 @@
 //@ts-check
-import { world, system, TicksPerSecond } from "@minecraft/server";
-import { dev, alertLog, watchFor } from './settings.js';
+import { world, system, TicksPerSecond, Entity, ScoreboardObjective } from "@minecraft/server";
+import { dev, alertLog, watchFor, pack } from './settings.js';
 import { ScoreboardLib } from "./commonLib/scoreboardClass.js";
-import { entityActivityUpdate, timersToggle, stalledEntityFix, counts } from './fn-stable.js';
+import { stalledEntityFix, counts } from './fn-stable.js';
+import { DynamicPropertyLib } from "./commonLib/dynamicPropertyClass.js";
+import { globalConstantsLib } from "./commonLib/globalConstantsClass.js";
 //==============================================================================
 const sbName_load = dev.debugScoreboardName + '_load_tick';
 const sbName_spawn = dev.debugScoreboardName + '_spawn_tick';
@@ -17,12 +19,10 @@ export function beforeEvents_worldInitialize () {
         //list of scoreboards to reset
         const scoreboards = world.scoreboard.getObjectives();
         scoreboards.forEach(sb => {
-            if ([ dev.debugScoreboardName, watchFor.scoreboardName, sbName_load, sbName_spawn ].includes(sb.id)) {
+            if ([ dev.debugScoreboardName,dev.debugBabyScoreboardName, watchFor.scoreboardName, sbName_load, sbName_spawn ].includes(sb.id)) {
                 const participants = sb.getParticipants();
-                world.sendMessage(`clearing sb ${sb.displayName}`);
-                participants.forEach(p => {
-                    system.run(() => { sb.removeParticipant(p); });
-                });
+                alertLog.success(`Clearing Scoreboard ${sb.displayName}`, dev.debugPackLoad && (dev.debugEntityActivity || dev.debugEntityAlert));
+                participants.forEach(p => { system.run(() => { sb.removeParticipant(p); }); });
             }
         });
     });
@@ -39,27 +39,36 @@ export function afterEvents_worldInitialize () {
         if (!watchFor.scoreboard) {
             watchFor.scoreboard = ScoreboardLib.create(watchFor.scoreboardName, watchFor.scoreboardDisplayName);
         }
-
         //---        
         dev.debugScoreboard = world.scoreboard.getObjective(dev.debugScoreboardName);
         if (!dev.debugScoreboard)
             dev.debugScoreboard = ScoreboardLib.create(dev.debugScoreboardName, dev.debugScoreboardDisplayName);
 
-        // dev.debugScoreboard?.setScore('loadedSpiders', 0);
-        // dev.debugScoreboard?.setScore('stalledSpiders', 0);
-
+        dev.debugBabyScoreboard = world.scoreboard.getObjective(dev.debugBabyScoreboardName);
+        if (!dev.debugBabyScoreboard)
+            dev.debugBabyScoreboard = ScoreboardLib.create(dev.debugBabyScoreboardName, dev.debugBabyScoreboardDisplayName);
         //---
-        //so I can toggle on/off
-        dev.debugTimeCountersRunId = ScoreboardLib.systemTimeCountersStart(dev.debugScoreboardName);
-        dev.debugTimeCountersOn = !!dev.debugTimeCountersRunId;
-        //TODO: add to chat cmds to toggle;
-        if (dev.debugGamePlay || dev.debugEntityAlert || dev.debugEntityActivity)
-            system.runTimeout(() => { ScoreboardLib.sideBar_set(dev.debugScoreboardName); }, 5);
-        else {
-            ScoreboardLib.sideBar_clear();
-            timersToggle(); //off
+        if (dev.debugEntityAlert || dev.debugEntityActivity) {
+            dev.debugTimeCountersRunId = ScoreboardLib.systemTimeCountersStart(dev.debugScoreboardName, dev.debugTimers);
+            system.runTimeout(() => { system.runInterval(() => { counts(); }, globalConstantsLib.TicksPerMinute); }, TicksPerSecond * 6);
+            system.runTimeout(() => { ScoreboardLib.sideBar_set(dev.debugScoreboardName); }, TicksPerSecond * 7);
         }
-
+        else if (dev.debugBabyAlert || dev.debugBabyActivity) {
+            dev.debugTimeCountersRunId = ScoreboardLib.systemTimeCountersStart(dev.debugBabyScoreboardName, dev.debugTimers);
+            system.runTimeout(() => { system.runInterval(() => { counts(); }, globalConstantsLib.TicksPerMinute); }, TicksPerSecond * 6);
+            system.runTimeout(() => { ScoreboardLib.sideBar_set(dev.debugBabyScoreboardName); }, TicksPerSecond * 7);
+        }
+        else if (dev.debugGamePlay) {
+            dev.debugTimeCountersRunId = ScoreboardLib.systemTimeCountersStart(dev.debugScoreboardName, dev.debugTimers);
+            system.runTimeout(() => { system.runInterval(() => { counts(); }, globalConstantsLib.TicksPerMinute); }, TicksPerSecond * 6);
+            system.runTimeout(() => { ScoreboardLib.sideBar_clear(); }, 4);
+        }
+        else {
+            dev.debugTimeCountersRunId = 0;
+            system.runTimeout(() => { ScoreboardLib.sideBar_clear(); }, 4);
+        }
+        dev.debugTimeCountersOn = !!dev.debugTimeCountersRunId;
+        //---
         if (dev.debugLoadAndSpawn) {
 
             sb_load = world.scoreboard.getObjective(sbName_load);
@@ -74,35 +83,26 @@ export function afterEvents_worldInitialize () {
                 sb_load = world.scoreboard.getObjective(sbName_spawn);
             }
         }
-
+        //---
         //Start testing for stalled entities every x min after y delay 
         system.runTimeout(() => {
-            system.runInterval(() => { stalledEntityFix(); }, TicksPerSecond * 60 * watchFor.stalledCheckInterval);
-        }, TicksPerSecond * 60 * watchFor.stalledCheckStartDelay);
-
-        system.runTimeout(() => { counts(); }, TicksPerSecond * 10);
+            system.runInterval(() => { stalledEntityFix(); }, globalConstantsLib.TicksPerMinute * watchFor.stalledCheckInterval);
+        }, globalConstantsLib.TicksPerMinute * watchFor.stalledCheckStartDelay);
     });
 }
 //==============================================================================
 export function afterEvents_entityLoad () {
-    //Load (195 ticks or so )is after Spawn
-    //not needed unless
-    if (dev.debugLoadAndSpawn) {
-        alertLog.success("§aInstalling afterEvents.entityLoad §c(debug mode : tick scoreboard)", dev.debugSubscriptions);
+    //Load (195 ticks or so )is after Spawn    
+    //if (dev.debugLoadAndSpawn) {
+    alertLog.success("§aInstalling afterEvents.entityLoad §c(debug mode : tick scoreboard)", dev.debugSubscriptions);
 
-        world.afterEvents.entityLoad.subscribe((event) => {
-
-            if (!event.entity) return;
-
-            if ([ 'player', watchFor.typeId ].includes(event.entity.typeId))
-                if (dev.debugLoadAndSpawn) sb_load?.setScore(event.entity, system.currentTick);
-
-            if (event.entity.typeId === watchFor.typeId) {
-                entityActivityUpdate(event.entity);
-            }
-
-        });
-    }
+    world.afterEvents.entityLoad.subscribe((event) => {
+        if (event.entity && event.entity.typeId === watchFor.typeId) {
+            welcomeBack(event.entity, sb_load);
+            system.runTimeout(() => { counts(); }, 1);
+        }
+    });
+    //}
 }
 //==============================================================================
 export function afterEvents_entitySpawn () {
@@ -110,39 +110,45 @@ export function afterEvents_entitySpawn () {
     alertLog.success("§aInstalling afterEvents.entitySpawn §c(debug mode : tick scoreboard)", dev.debugSubscriptions);
 
     world.afterEvents.entitySpawn.subscribe((event) => {
-
-        if (!event.entity) return;
-
-        if ([ 'player', watchFor.typeId ].includes(event.entity.typeId))
-            if (dev.debugLoadAndSpawn) sb_load?.setScore(event.entity, system.currentTick);
-
-        if (event.entity.typeId === watchFor.typeId) entityActivityUpdate(event.entity);
-
+        if (event.entity && event.entity.typeId === watchFor.typeId) {
+            welcomeBack(event.entity, sb_spawn);
+        }
     });
 }
 //==============================================================================
 export function beforeEvents_entityRemove () {
-
+    // Does NOT mean Died
     alertLog.success("§aInstalling beforeEvents.entityRemove §c(debug mode : tick scoreboard)", dev.debugSubscriptions);
 
     world.beforeEvents.entityRemove.subscribe((event) => {
-        //does not mean died 
 
         if (event.removedEntity)
             if (event.removedEntity.typeId === watchFor.typeId)
-                system.run(() => {
-                    if (watchFor.scoreboard && watchFor.scoreboard.isValid())
-                        watchFor.scoreboard.removeParticipant(event.removedEntity);
-                });
-
+                if (watchFor.scoreboard && watchFor.scoreboard.isValid())
+                    system.runTimeout(() => {
+                        watchFor.scoreboard?.removeParticipant(event.removedEntity);
+                    }, 1);
     });
 }
+//==============================================================================
 export function afterEvents_entityRemove () {
 
     if (dev.debugEntityActivity || dev.debugEntityAlert || dev.debugGamePlay || dev.debugLoadAndSpawn) {
         alertLog.success("§aInstalling beforeEvents.entityRemove §c(debug mode : tick scoreboard)", dev.debugSubscriptions);
         world.afterEvents.entityRemove.subscribe((event) => {
-            if (event.typeId === watchFor.typeId) counts();
-        });
+            system.runTimeout(() => { counts(); }, 1);
+        }, { entityTypes: [ watchFor.typeId ] });
     }
+}
+//==============================================================================
+/**
+ * 
+ * @param {Entity} entity
+ * @param {ScoreboardObjective|undefined} sbUpdate  
+ */
+function welcomeBack (entity, sbUpdate) {
+    entity.setDynamicProperty(pack.lastActiveTick, system.currentTick);
+    entity.setDynamicProperty(pack.lastWebActivityTick, 0);
+    DynamicPropertyLib.add(entity, pack.websCreated, 0);  //initializes if undefined
+    if (dev.debugLoadAndSpawn) sbUpdate?.setScore(entity, system.currentTick);
 }

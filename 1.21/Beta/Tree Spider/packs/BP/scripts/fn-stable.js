@@ -1,18 +1,20 @@
 //@ts-check
 import { world, Entity, system } from "@minecraft/server";
-import { dev, chatLog, watchFor } from './settings.js';
+import { dev, chatLog, watchFor, pack } from './settings.js';
 import { Vector3Lib } from './commonLib/vectorClass.js';
 import { ScoreboardLib } from "./commonLib/scoreboardClass.js";
+import { DynamicPropertyLib } from "./commonLib/dynamicPropertyClass.js";
+import { EntityLib } from "./commonLib/entityClass.js";
 //==============================================================================
 /**
  * 
  * @param {Entity} entity 
  */
-export function newSpawn (entity) {
-    const { location } = entity;
-    chatLog.success(`New ${watchFor.display} (${entity.id}) Spawn @ ${Vector3Lib.toString(location)}`, dev.debugEntityAlert);
-    dev.debugScoreboard?.addScore('spawned spiders', 1)    
-}
+// export function newSpawn (entity) {
+//     const { location } = entity;
+//     chatLog.success(`New ${watchFor.display} (${entity.id}) Spawn @ ${Vector3Lib.toString(location)}`, dev.debugEntityAlert);
+//     dev.debugScoreboard?.addScore('spawned spiders', 1)    
+// }
 //==============================================================================
 /**
  * 
@@ -33,7 +35,7 @@ export function placeWeb (entity) {
         entity.teleport(inBlock.center());
         return;
     }
-    
+
     const location = entity.location;
     //const rotation = Math.trunc(((Math.trunc(entity.getRotation().y) + 360) % 360) / 90);
     let webLocationOffset = location;
@@ -57,8 +59,7 @@ export function placeWeb (entity) {
     //Place Web
     if (resolved) {
         chatLog.success(`${entity.id} Placed Web @ ${Vector3Lib.toString(webLocationOffset, 0, true)}`, dev.debugEntityAlert);
-        ScoreboardLib.add(dev.debugScoreboardName, 'placedWeb', 1);
-        setWebAndEnter(entity, webLocationOffset);
+        setWebAndEnter(entity, webLocationOffset, 'placedWeb');
     }
 }
 //===================================================================
@@ -66,11 +67,19 @@ export function placeWeb (entity) {
  * 
  * @param {Entity} entity 
  * @param {import("@minecraft/server").Vector3} location 
+ * @param {string} sbEntry
  */
-export function setWebAndEnter (entity, location) {
+export function setWebAndEnter (entity, location, sbEntry) {
     system.run(() => {
         entity.dimension.setBlockType(location, 'minecraft:web');
-        addOneToDynamicWebCount(entity);
+
+        if (dev.debugEntityActivity) dev.debugScoreboard?.addScore(sbEntry, 1);
+        else dev.debugScoreboard?.addScore('§dNew Web', 1),
+
+        DynamicPropertyLib.add(entity, pack.websCreated, 1);
+        entity.setDynamicProperty(pack.lastWebActivityTick, system.currentTick);
+        entity.setDynamicProperty(pack.lastActiveTick, system.currentTick);
+
         system.runTimeout(() => { teleportAndCenter(entity, location); }, 1);
     });
 
@@ -97,24 +106,15 @@ export function centerAlign (entity) {
 //===================================================================
 /**
  * 
- * @param {Entity} entity  
- */
-// export function entityCleanUp (entity) { //TODO: the code if needed
-//     system.run(() => {
-//         if (watchFor.scoreboard && watchFor.scoreboard.isValid())
-//             watchFor.scoreboard.setScore(entity, system.currentTick);
-//     });
-// }
-//===================================================================
-/**
- * 
  * @param {Entity} entity 
  */
-export function entityActivityUpdate (entity) {
-    system.run(() => {
-        if (watchFor.scoreboard && watchFor.scoreboard.isValid())
-            watchFor.scoreboard.setScore(entity, system.currentTick);
-    });
+export function entityLastActiveTickUpdate (entity) {
+    entity.setDynamicProperty(pack.lastActiveTick, system.currentTick);
+    // system.run(() => {
+    //     if (watchFor.scoreboard && watchFor.scoreboard.isValid()) {
+    //         watchFor.scoreboard.setScore(entity, system.currentTick);
+    //     }
+    // });
 }
 //===================================================================
 /**
@@ -122,32 +122,31 @@ export function entityActivityUpdate (entity) {
  * Current tick .... 5 min off from Last Updated Tick
  */
 export function stalledEntityFix () {
-    //this scoreboard keeps the last activity tick.. so if diff is over 5 min, it is stalled or out of range
+    //this sb keeps the last activity tick.. so if diff is over 5 min, it is stalled or out of range
     const sb = watchFor.scoreboard;
-    if (!sb) return; 
+    if (!sb) return;
 
-    counts();
+    //counts();
 
-    const entities = world.getDimension("overworld").getEntities({ type: watchFor.typeId });
-    dev.debugScoreboard?.setScore("spiders", entities.length);
+    const entities = EntityLib.getAllEntities({ type: watchFor.typeId });
     if (entities.length === 0) return;
 
-    dev.debugScoreboard?.addScore('stalled spiders', 0);
+    dev.debugScoreboard?.addScore('§4Stalled spiders', 0);
 
     //take out babies
     entities.filter(e => { return !e.hasComponent('minecraft:is_baby'); }).forEach(e => {
         if (sb.hasParticipant(e)) {
-            const lastTick = sb.getScore(e);
 
+            const lastTick = DynamicPropertyLib.getNumber(e, pack.lastActiveTick); //sb.getScore(e);
             if (lastTick) {
                 const deltaMinutes = Math.trunc(((system.currentTick - lastTick) / 20) / 60);
-                if (deltaMinutes > 4) {
-                    dev.debugScoreboard?.addScore('stalled spiders', 1);
+                if (deltaMinutes > 5) {
+                    dev.debugScoreboard?.addScore('§4Stalled spiders', 1);
                     sb.setScore(e, -1);
                     const { location } = e;
 
                     const killDelay = dev.debugEntityAlert ? (20 * 60 * 1) : 0;
-                    const msg = `Stalled ${watchFor.display} (${e.id}) @ ${Vector3Lib.toString(location, 0, true)} - Replacing in 1 minute`;
+                    const msg = `§4Stalled (over 5m) ${watchFor.display} (${e.id}) @ ${Vector3Lib.toString(location, 0, true)} - Replacing in 1 minute`;
                     chatLog.warn(msg, !!killDelay);
 
                     system.runTimeout(() => {
@@ -156,13 +155,30 @@ export function stalledEntityFix () {
                     }, killDelay);
                 }
             }
+
+            const lastWebTick = DynamicPropertyLib.getNumber(e, pack.lastWebActivityTick);
+            if (lastWebTick) {
+                const deltaMinutes = Math.trunc(((system.currentTick - lastTick) / 20) / 60);
+                if (lastWebTick > 10) {
+                    dev.debugScoreboard?.addScore('§cNon-web spiders', 1);
+                    sb.setScore(e, -1);
+                    const { location } = e;
+
+                    const killDelay = dev.debugEntityAlert ? (20 * 60 * 1) : 0;
+                    const msg = `No Web Activity (over 10m) (${e.id}) @ ${Vector3Lib.toString(location, 0, true)} - Despawning in 1 minute`;
+                    chatLog.warn(msg, !!killDelay);
+
+                    system.runTimeout(() => {
+                        if (watchFor.replaceEventName && e.isValid()) e.triggerEvent(watchFor.despawnEventName);
+                        else e.kill();
+                    }, killDelay);
+                }
+            }
         }
         else {
-            entityActivityUpdate(e);
+            entityLastActiveTickUpdate(e);
         }
     });
-
-    //dev.debugScoreboard?.setScore("spiders", entities.length)
 }
 //===================================================================
 export function timersToggle () {
@@ -170,53 +186,51 @@ export function timersToggle () {
     if (dev.debugTimeCountersOn) {
         dev.debugTimeCountersOn = false;
         if (dev.debugTimeCountersRunId) system.clearRun(dev.debugTimeCountersRunId);
+        dev.debugTimeCountersRunId = 0;
     }
     else {
         dev.debugTimeCountersOn = true;
-        ScoreboardLib.systemTimeCountersStart(dev.debugScoreboardName);
-    }
-}
-//===================================================================
-export function counts (override = false) {
-
-    if (override || dev.debugEntityActivity || dev.debugEntityAlert || dev.debugGamePlay) {
-        const entities_all = world.getDimension("overworld").getEntities({ type: watchFor.typeId });
-
-        system.runTimeout(() => {            
-            if (entities_all.length === 0) {
-                dev.debugScoreboard?.setScore("adult spiders", 0);
-                dev.debugScoreboard?.setScore("baby spiders", 0);
-                return;
-            }
-
-            const entities = entities_all.filter(e => { return !e.hasComponent('minecraft:is_baby'); });
-            dev.debugScoreboard?.setScore("adult spiders", entities.length);
-
-            if (entities.length === 0) {
-                dev.debugScoreboard?.setScore("baby spiders", entities_all.length);
-                return;
-            }
-
-            dev.debugScoreboard?.setScore("baby spiders", entities_all.length - entities.length);
-
-            let webCount = 0;
-            entities.forEach(e => {
-                const myWebs = e.getDynamicProperty('webs');
-                if (myWebs && typeof myWebs == 'number') webCount += myWebs;
-            });
-
-            dev.debugScoreboard?.setScore('webs', webCount);
-        }, 1);
+        dev.debugTimeCountersRunId = ScoreboardLib.systemTimeCountersStart(dev.debugScoreboardName, dev.debugTimers);
     }
 }
 //===================================================================
 /**
  * 
- * @param {Entity} entity 
+ * @param {boolean} [override =false]
  */
-function addOneToDynamicWebCount (entity) {
-    const propId = 'webs';
-    const myCount = entity.getDynamicProperty(propId);
-    if (!myCount || !(typeof myCount === 'number')) entity.setDynamicProperty(propId, 1);
-    else entity.setDynamicProperty(propId, myCount + 1);
+export function counts (override = false) {
+
+    if (override || dev.debugEntityActivity || dev.debugEntityAlert || dev.debugGamePlay) {
+        //const entities_all = EntityLib.getAllEntities({ type: watchFor.typeId });
+
+        const entities_all = world.getDimension("overworld").getEntities({ type: watchFor.typeId });
+
+        system.runTimeout(() => {
+            if (entities_all.length === 0) {
+                chatLog.warn('No Spiders',dev.debugEntityAlert)
+                dev.debugScoreboard?.setScore("§6Adult spiders", 0);
+                dev.debugScoreboard?.setScore("§bBaby spiders", 0);
+                return;
+            }
+
+            const entities = entities_all.filter(e => { return !e.hasComponent('minecraft:is_baby'); });
+            dev.debugScoreboard?.setScore("§6Adult spiders", entities.length);
+
+            if (entities.length === 0) {
+                chatLog.warn('No Adult Spiders',dev.debugEntityAlert)
+                dev.debugScoreboard?.setScore("§bBaby spiders", entities_all.length);
+                dev.debugBabyScoreboard?.setScore("§bBaby spiders", entities_all.length);
+                return;
+            }
+
+            if (entities_all.length - entities.length) {
+                dev.debugScoreboard?.setScore("§bBaby spiders", entities_all.length - entities.length);
+                dev.debugBabyScoreboard?.setScore("§bBaby spiders", entities_all.length - entities.length);
+            } else chatLog.log('No Baby Spiders',dev.debugBabyAlert)
+
+            const webCount = DynamicPropertyLib.sum(entities, pack.websCreated);
+            dev.debugScoreboard?.setScore('§5Total Loaded Webs', webCount);
+        }, 1);
+    }
 }
+//===================================================================
