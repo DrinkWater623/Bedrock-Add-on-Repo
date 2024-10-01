@@ -1,4 +1,10 @@
 {
+    /*
+    TODO:   1) Different colors, each color represents an effect and 
+            2) can interact with empty bottle to get potion of that effect 
+            3) or arrow to make poison arrow
+            4) turn offable in settings thow
+    */
     // ts:kill
     "$scope":{       
         "blockTypes":[
@@ -561,15 +567,17 @@
                 "minecraft:conditional_bandwidth_optimization": {},
                 "minecraft:nameable": {"default_trigger": {"event":"become_name_tagged","target":"self"}},
                 //TODO: test more -- do we really need this
-                "minecraft:despawn":{
-                    "despawn_from_chance": false,
-                    "despawn_from_inactivity": false,  
-                    "remove_child_entities": false,
-                    "despawn_from_distance": {"max_distance":128,"min_distance":128}, 
-                    "despawn_from_simulation_edge": false                    
-                },
+                // "minecraft:despawn":{
+                //     "despawn_from_chance": false,
+                //     "despawn_from_inactivity": false,  
+                //     "remove_child_entities": false,
+                //     "despawn_from_distance": {"max_distance":80,"min_distance":64}, 
+                //     "despawn_from_simulation_edge": false                    
+                // },
+                //vanilla
+                "minecraft:despawn": {"despawn_from_distance":{}}, //see if need to make 48-64
                 //-----------------------------------------------
-                "minecraft:type_family": {"family":["tree_spider","mob","arthropod"]},
+                "minecraft:type_family": {"family":["tree_spider"]}, //,"arthropod" took out mob to see if can get to spawn on leaves
                 "minecraft:ambient_sound_interval": {"event_name":"imitate.cave_spider","range":3,"value":2},
                 "minecraft:health": {"value":20,"max":20},
                 "minecraft:breathable": {"breathes_air": true,"total_supply": 15},

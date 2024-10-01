@@ -1,0 +1,23 @@
+{
+    "format_version": "1.20.81",
+    "minecraft:block": {
+        "description": {
+            "identifier": "dw623:super_web_block",
+            "menu_category": {"category":"construction"}            
+        },
+    "components": {
+        "minecraft:display_name": "Super Web Block",
+        "minecraft:geometry":{"identifier": "minecraft:geometry.cross"},        
+        "minecraft:material_instances": {
+            "*": {
+                "texture": "super_web",
+                "render_method": "alpha_test",
+                "face_dimming": false,
+                "ambient_occlusion": false
+            }
+        },
+        "minecraft:collision_box": true,
+        "minecraft:light_emission": 5
+        }
+    }
+}

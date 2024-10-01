@@ -1,0 +1,298 @@
+{
+  /*
+    ?? spawns_above_block_filter
+    TODO: add saplings after get to work on top
+  
+  */
+  "format_version": "1.8.0",
+  "minecraft:spawn_rules": {
+    "description": {
+      "identifier": "dw623:tree_spider",
+      "population_control": "animal"
+    },
+    "conditions": [
+      //==========================================================================================
+      // to force for farm
+      { 
+        "minecraft:spawns_on_surface": {},
+        "minecraft:distance_filter": {"min": 8,"max": 64},
+        "minecraft:weight": {"default":100},
+        "minecraft:density_limit": {"surface":10,"underground":10},
+        "minecraft:herd": {"min_size":2,"max_size":3},     
+        "minecraft:biome_filter": 
+        {
+          "any_of": [ //places where does not naturally spawn
+            {"test":"has_biome_tag","value":"nether"},
+            {"test":"has_biome_tag","value":"the_end"},                            
+            {"test":"has_biome_tag","value":"overworld"}
+          ]
+        },
+        //put webs down to start and make some trees  
+        "minecraft:spawns_on_block_filter": "dw623:super_web_block"  
+      },                    
+      //==========================================================================================
+      //savannah - since they seem to have a harder time to get to the leaves
+      { 
+        "minecraft:spawns_on_surface": {},
+        "minecraft:distance_filter": {"min": 8,"max": 32},
+        "minecraft:weight": {"default":100 },//3,"rarity": 2},
+        "minecraft:density_limit": {"surface":3,"underground":0},        
+        "minecraft:biome_filter": {"test":"has_biome_tag","value":"savanna"},
+        "minecraft:spawns_on_block_prevented_filter": "minecraft:grass",
+        "minecraft:spawns_on_block_filter": [
+          "minecraft:dirt",
+          "minecraft:podzol",
+          "minecraft:mud",
+          "minecraft:coarse_dirt",         
+          "minecraft:acacia_log",          
+          "minecraft:oak_log"
+        ],
+        "minecraft:spawns_above_block_filter": [          
+          "minecraft:short_grass",
+          "minecraft:tall_grass",
+          "minecraft:fern",
+          "minecraft:large_fern",          
+          "minecraft:acacia_leaves",
+          "minecraft:oak_leaves",
+          "minecraft:web"
+        ]                       
+      },
+      //==========================================================================================
+      //cherry - should be less cause to pretty
+      { 
+        "minecraft:spawns_on_surface": {},
+        "minecraft:distance_filter": {"min": 8,"max": 32},
+        "minecraft:weight": {
+          "default": 100
+          //,          "rarity": 4 // Close enough to Java's 30% chance. I upped to see if 20%
+        },
+        "minecraft:density_limit": {"surface":2,"underground":0},        
+        "minecraft:biome_filter":{"test":"has_biome_tag","value":"cherry_grove"},
+        "minecraft:spawns_on_block_prevented_filter": ["minecraft:grass","minecraft:pink_petals"],
+        "minecraft:spawns_on_block_filter": [
+          "minecraft:dirt",
+          "minecraft:podzol",
+          "minecraft:mud",
+          "minecraft:coarse_dirt",        
+          "minecraft:cherry_log",          
+          "minecraft:oak_log"  
+        ],
+        "minecraft:spawns_above_block_filter": [          
+          "minecraft:short_grass",
+          "minecraft:tall_grass",
+          "minecraft:fern",
+          "minecraft:large_fern",          
+          "minecraft:acacia_leaves",
+          "minecraft:oak_leaves",
+          "minecraft:web"
+        ]                        
+      },
+      //==========================================================================================
+      //flowers and meadows
+      { 
+        "minecraft:spawns_on_surface": {},
+        "minecraft:distance_filter": {"min": 8,"max": 48},
+        "minecraft:weight": {"default":100},
+        "minecraft:density_limit": {"surface":3,"underground":0},        
+        "minecraft:biome_filter": 
+        {
+          "any_of": [
+            {"test":"has_biome_tag","value":"flower_forest"},
+            {"test":"has_biome_tag","value":"meadow"}                            
+            //{"test":"has_biome_tag","value":"plains"} //to barren and sunflower_plains
+          ]
+        },
+        "minecraft:spawns_on_block_prevented_filter": "minecraft:grass",
+        "minecraft:spawns_on_block_filter": [          
+          "minecraft:dirt",
+          "minecraft:podzol",
+          "minecraft:mud",
+          "minecraft:coarse_dirt",
+          "minecraft:oak_log"
+        ],
+        "minecraft:spawns_above_block_filter": [          
+          "minecraft:short_grass",
+          "minecraft:tall_grass",
+          "minecraft:fern",
+          "minecraft:large_fern",                              
+          "minecraft:oak_leaves",          
+          "minecraft:vine",
+          "minecraft:poppy",
+          "minecraft:blue_orchid",
+          "minecraft:allium",
+          "minecraft:azure_bluet",
+          "minecraft:red_tulip",
+          "minecraft:orange_tulip",
+          "minecraft:white_tulip",
+          "minecraft:pink_tulip",
+          "minecraft:oxeye_daisy",
+          "minecraft:cornflower",
+          "minecraft:lily_of_the_valley",
+          "minecraft:dandelion",          
+          "minecraft:sunflower",
+          "minecraft:lilac",
+          "minecraft:rose_bush",
+          "minecraft:peony",
+          "minecraft:flowering_azalea",
+          "minecraft:azalea_leaves_flowered",          
+          "minecraft:pitcher_plant",
+          "minecraft:torchflower",
+          "minecraft:web"
+        ]                       
+      },
+      //==========================================================================================
+      //birch and swamps - more weight
+      { 
+        "minecraft:spawns_on_surface": {},
+        "minecraft:distance_filter": {"min": 8,"max": 48},
+        "minecraft:weight": {"default":100},
+        "minecraft:density_limit": {"surface":5,"underground":0},        
+        "minecraft:biome_filter": 
+        {
+          "any_of": [            
+            {"test":"has_biome_tag","value":"birch"},
+            {"test":"has_biome_tag","value":"birch_forest"},
+            {"test":"has_biome_tag","value":"birch_forest_hills_mutated"},
+            {"test":"has_biome_tag","value":"birch_forest_mutated"}, 
+            {"test":"has_biome_tag","value":"mangrove_swamp"},          
+            {"test":"has_biome_tag","value":"swamp"}
+          ]
+        },
+        "minecraft:spawns_on_block_prevented_filter": "minecraft:grass",
+        "minecraft:spawns_on_block_filter": [          
+          "minecraft:dirt",
+          "minecraft:podzol",
+          "minecraft:mud",
+          "minecraft:coarse_dirt",
+          "minecraft:birch_log",
+          "minecraft:oak_log",
+          "minecraft:mangrove_roots",                    
+          "minecraft:mangrove_log"
+        ],
+        "minecraft:spawns_above_block_filter": [          
+          "minecraft:short_grass",
+          "minecraft:tall_grass",
+          "minecraft:fern",
+          "minecraft:large_fern",                    
+          "minecraft:birch_leaves",          
+          "minecraft:mangrove_leaves",
+          "minecraft:oak_leaves",          
+          "minecraft:vine",          
+          "minecraft:mangrove_propagule",
+          "minecraft:web"
+        ]                      
+      },
+      //==========================================================================================
+      //TODO: one for mooshroom island
+      { 
+        "minecraft:spawns_on_surface": {},
+        "minecraft:distance_filter": {"min": 8,"max": 48},
+        "minecraft:weight": {"default":100},
+        "minecraft:density_limit": {"surface":2,"underground":0},        
+        "minecraft:biome_filter": 
+        {
+          "any_of": [            
+            {"test":"has_biome_tag","value":"mushroom_island"},
+            {"test":"has_biome_tag","value":"mushroom_island_shore"}
+          ]
+        },
+        "minecraft:spawns_on_block_prevented_filter": "minecraft:mycelium",
+        "minecraft:spawns_on_block_filter": [
+          "minecraft:grass",
+          "minecraft:dirt",
+          "minecraft:podzol",
+          "minecraft:mud",
+          "minecraft:coarse_dirt",
+          "minecraft:red_mushroom_block",
+          "minecraft:brown_mushroom_block"
+        ],
+        "minecraft:spawns_above_block_filter": [
+          "minecraft:short_grass",
+          "minecraft:tall_grass",
+          "minecraft:fern",
+          "minecraft:large_fern",     
+          "minecraft:vine",
+          "minecraft:brown_mushroom",
+          "minecraft:red_mushroom",          
+          "minecraft:web"
+        ]                      
+      },
+      //==========================================================================================
+       //regular
+      { 
+        "minecraft:spawns_on_surface": {},
+        "minecraft:distance_filter": {"min": 8,"max": 48},
+        "minecraft:weight": {"default":100},
+        "minecraft:density_limit": {"surface":4,"underground":0},        
+        "minecraft:biome_filter": 
+        {
+          "any_of": [
+            {"test":"has_biome_tag","value":"bamboo"},
+            {"test":"has_biome_tag","value":"bamboo_jungle"},
+            {"test":"has_biome_tag","value":"bamboo_jungle_hills"},
+            {"test":"has_biome_tag","value":"bee_habitat"},                   
+            {"test":"has_biome_tag","value":"cold_taiga"},
+            {"test":"has_biome_tag","value":"cold_taiga_hills"},
+            {"test":"has_biome_tag","value":"cold_taiga_mutated"},
+            {"test":"has_biome_tag","value":"extreme_hills_plus_trees"},
+            {"test":"has_biome_tag","value":"extreme_hills_plus_trees_mutated"},
+            {"test":"has_biome_tag","value":"grove"},
+            {"test":"has_biome_tag","value":"jungle"},
+            {"test":"has_biome_tag","value":"jungle_edge"},
+            {"test":"has_biome_tag","value":"jungle_edge_mutated"},
+            {"test":"has_biome_tag","value":"jungle_hills"},
+            {"test":"has_biome_tag","value":"jungle_mutated"},            
+            {"test":"has_biome_tag","value":"mega_taiga"},
+            {"test":"has_biome_tag","value":"mega_taiga_hills"},
+            {"test":"has_biome_tag","value":"mountain"},                
+            {"test":"has_biome_tag","value":"mountains"},                            
+            {"test":"has_biome_tag","value":"redwood_taiga_hills_mutated"},   
+            {"test":"has_biome_tag","value":"redwood_taiga_mutated"},
+            {"test":"has_biome_tag","value":"roofed"},
+            {"test":"has_biome_tag","value":"roofed_forest"},                
+            {"test":"has_biome_tag","value":"roofed_forest_mutated"},
+            {"test":"has_biome_tag","value":"taiga"},
+            {"test":"has_biome_tag","value":"taiga_mutated"},
+            {"test":"has_biome_tag","value":"taiga_hills"}
+            //these are included in above - not meant to be standalone for this
+            //{"test":"has_biome_tag","value":"forest"},
+            //{"test":"has_biome_tag","value":"hills"},
+            //{"test":"has_biome_tag","value":"mega"},
+          ]
+        },
+        "minecraft:spawns_on_block_prevented_filter": "minecraft:grass",
+        "minecraft:spawns_on_block_filter": [          
+          "minecraft:dirt",
+          "minecraft:podzol",
+          "minecraft:mud",
+          "minecraft:coarse_dirt",
+          "minecraft:red_mushroom_block",
+          "minecraft:brown_mushroom_block",          
+          "minecraft:birch_log",          
+          "minecraft:dark_oak_log",
+          "minecraft:jungle_log",          
+          "minecraft:oak_log",
+          "minecraft:spruce_log",
+          "minecraft:red_mushroom_block",
+          "minecraft:brown_mushroom_block"
+        ],
+        "minecraft:spawns_above_block_filter": [
+          "minecraft:short_grass",
+          "minecraft:tall_grass",
+          "minecraft:fern",
+          "minecraft:large_fern",                    
+          "minecraft:birch_leaves",          
+          "minecraft:dark_oak_leaves",
+          "minecraft:mangrove_leaves",
+          "minecraft:oak_leaves",
+          "minecraft:spruce_leaves",
+          "minecraft:vine",
+          "minecraft:sweet_berry_bush",
+          "minecraft:brown_mushroom",
+          "minecraft:red_mushroom",
+          "minecraft:web"
+        ]                      
+      }
+    ]
+  }
+}
