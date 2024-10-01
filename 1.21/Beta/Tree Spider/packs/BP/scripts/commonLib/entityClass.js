@@ -6,7 +6,7 @@
  *  20240827 - Created - to hold functions related to entities
  */
 //==============================================================================
-import { world, system, Player, Entity } from "@minecraft/server";
+import { world, system, Player, Entity,Block } from "@minecraft/server";
 import { Vector3Lib as vec3 } from './vectorClass.js';
 //==============================================================================
 export class EntityLib {
@@ -49,5 +49,32 @@ export class EntityLib {
         });
         msg += "\n\n";
         chatSend.sendMessage(msg);
+    }
+    //==============================================================================
+    /**
+     * @param { Entity } entity
+     * @returns {Block | undefined}
+     */
+    static currentBlock (entity) {
+        if(!entity) return undefined        
+        return entity.dimension.getBlock(entity.location)
+    }
+    //==============================================================================
+    /**
+     * @param { Entity } entity
+     * @returns {number | undefined}
+     */
+    static markVariant_get (entity) {
+        if(!entity) return undefined        
+        return entity.getComponent('minecraft:mark_variant')?.value;
+    }
+    //==============================================================================
+    /**
+     * @param { Entity } entity
+     * @returns {number | undefined}
+     */
+    static variant_get (entity) {
+        if(!entity) return undefined        
+        return entity.getComponent('minecraft:variant')?.value;
     }
 }

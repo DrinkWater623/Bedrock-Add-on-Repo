@@ -1,8 +1,9 @@
-import { Entity } from "@minecraft/server";
-
 //@ts-check
+
+import { Entity } from "@minecraft/server";
 export class DynamicPropertyLib {
 
+    //======================================  Numbers
     /**
      * 
      * @param {Entity} entity
@@ -19,7 +20,8 @@ export class DynamicPropertyLib {
     /**
      * 
      * @param {Entity[]} entities 
-     * @param {string} propertyName 
+     * @param {string} propertyName
+     * @returns {number} 
      */
     static sum (entities = [], propertyName) {
         if (!propertyName) return 0;
@@ -36,7 +38,7 @@ export class DynamicPropertyLib {
      * 
      * @param {Entity} entity
      * @param {string} propertyName
-     * @param {number} [qty=0] 
+     * @returns {number} 
      */
     static getNumber (entity, propertyName) {
         if (entity.isValid()) {
@@ -49,4 +51,35 @@ export class DynamicPropertyLib {
         } 
         else return 0;
     }
+
+    //====================================== Vectors
+    /**
+     * 
+     * @param {Entity} entity
+     * @param {string} propertyName
+     * @param {import("@minecraft/server").Vector3} location
+     */
+    static setVector (entity, propertyName, location) {
+        if (entity.isValid()) {            
+            entity.setDynamicProperty(propertyName, location);
+        }
+    }
+
+    /**
+     * 
+     * @param {Entity} entity
+     * @param {string} propertyName
+     * @returns {import("@minecraft/server").Vector3 | undefined} 
+     */
+    static getVector (entity, propertyName) {
+        if (entity.isValid()) {
+            const location = entity.getDynamicProperty(propertyName);
+            if (!location || typeof location != 'object') return undefined            
+            return location;
+        } 
+        else return undefined;
+    }
+
+    //====================================== Strings
+
 }

@@ -1,10 +1,9 @@
 //@ts-check
 import { system, Entity } from "@minecraft/server";
 import { BlockLib as BlockLib } from './commonLib/blockClass.js'; //beta parts used
-import { ScoreboardLib } from "./commonLib/scoreboardClass.js";
 import { Vector3Lib } from './commonLib/vectorClass.js';
-import { dev, chatLog, pack } from './settings.js';
-import { setWebAndEnter, teleportAndCenter } from "./fn-stable.js";
+import { dev, chatLog, entityEvents, watchFor } from './settings.js';
+import { setWebAndEnter, teleportAndCenter, webAdjacent, webRegister } from "./fn-stable.js";
 //===================================================================
 /**
  * 
@@ -12,27 +11,40 @@ import { setWebAndEnter, teleportAndCenter } from "./fn-stable.js";
  * @param {boolean} isBaby 
  */
 export function enterWeb (entity, isBaby = false) {
-    const dimension = entity.dimension;
-    const inBlock = dimension.getBlock(entity.location);
+    const { dimension, location } = entity;
+    const inBlock = dimension.getBlock(location);
+    chatLog.log(`§d*enterWeb (${entity.nameTag || entity.id}) @ ${Vector3Lib.toString(location)} ${inBlock ? 'inBlock: ' + inBlock.typeId : ''}`, dev.debugEntityActivity);
 
-    if (!inBlock) { chatLog.error('Cannot NOT be in a block, even air', dev.debugEntityActivity); return; }
-    if (inBlock.typeId == 'minecraft:web') { system.run(() => { entity.teleport(inBlock.center()); }); return; }
+    if (inBlock && inBlock.typeId == watchFor.home_typeId) {
+        system.run(() => {
+            chatLog.success(`§b${entity.nameTag || entity.id} Already in Web @ ${Vector3Lib.toString(location,0,true)} - enterWeb()`, dev.debugEntityAlert);
+            entity.teleport(inBlock.center());
+            isBaby ? entity.triggerEvent('baby_stay_in_web_start') : entity.triggerEvent(entityEvents.stayInWebEventName);
+        });
+        return true;
+    }
 
-    const blockLocations = BlockLib.blocksAround_locations(entity.dimension, entity.location, 2, { includeTypes: [ "minecraft:web" ] }, false);
-    if (blockLocations.length === 0) return;
+    const blockLocations = BlockLib.blocksAround_locations(dimension, location, 2, { includeTypes: [ watchFor.home_typeId ] }, false);
+    if (blockLocations.length === 0) {
+        system.run(() => {            
+            isBaby ? entity.triggerEvent('baby_wander_around_start') : entity.triggerEvent(entityEvents.wanderEventName);
+        });
+        return false;
+    }
 
-    entity.setDynamicProperty(pack.lastWebActivityTick, system.currentTick);
     const which = isBaby ? 0 : Math.trunc(blockLocations.length / 2);
-    const sb = isBaby ? dev.debugBabyScoreboard : dev.debugScoreboard;
-    const activityLog = isBaby ? dev.debugBabyActivity : dev.debugEntityActivity;
 
-    system.runTimeout(() => {
-        if (activityLog) {
-            chatLog.success('Entered Web', true);
-            sb?.addScore('enteredWeb', 1);
+    system.run(() => {
+        webRegister(entity);
+        if (dev.debugEntityActivity) {
+            chatLog.success(`§b${entity.nameTag || entity.id} Entered Web @ ${Vector3Lib.toString( blockLocations[ which ],0,true)}`, dev.debugEntityActivity);
+            //dev.debugScoreboard?.addScore('enteredWeb', 1);
         }
         teleportAndCenter(entity, blockLocations[ which ]);
-    }, 1);
+        isBaby ? entity.triggerEvent('baby_stay_in_web_start') : entity.triggerEvent(entityEvents.stayInWebEventName);
+    });
+
+    return true;
 }
 //===================================================================
 /**
@@ -40,22 +52,48 @@ export function enterWeb (entity, isBaby = false) {
  * @param {Entity} entity 
  */
 export function expandWeb (entity) {
-    const dimension = entity.dimension;
-    const inBlock = dimension.getBlock(entity.location);
-    chatLog.log(`§a*expandWeb() @ ${Vector3Lib.toString(entity.location)} ${inBlock ? 'inBlock: ' + inBlock.typeId : ''}`, dev.debugEntityActivity);
+    const { dimension, location } = entity;
+    const inBlock = dimension.getBlock(location);
+    chatLog.log(`§d*expandWeb (${entity.nameTag || entity.id}) @ ${Vector3Lib.toString(location)} ${inBlock ? 'inBlock: ' + inBlock.typeId : ''}`, dev.debugEntityActivity);
 
-    if (inBlock && inBlock.typeId != 'minecraft:web') return;
+    if (inBlock && inBlock.typeId != watchFor.home_typeId) {
+        system.run(() => {
+            entity.triggerEvent(entityEvents.wanderEventName);
+        });
+        return false;
+    }
 
-    let blockLocations = BlockLib.blocksAround_locations(entity.dimension, entity.location, 1, { includeTypes: [ "minecraft:air" ] }, true);
+    let blockLocations = BlockLib.blocksAround_locations(dimension, location, 1, { includeTypes: [ "minecraft:air" ] }, true);
     if (blockLocations.length === 0) {
-        blockLocations = BlockLib.blocksAround_locations(entity.dimension, entity.location, 2, { includeTypes: [ "minecraft:air" ] }, true);
-        // if (blockLocations.length === 0) {
-        //      //FIXME: if up in tree - not out this far
-        //      blockLocations = BlockLib.blocksAround_locations(entity.dimension, entity.location, 3, { includeTypes: [ "minecraft:air" ] },true);
-        //  };
-        if (blockLocations.length === 0) return;
+        blockLocations = BlockLib.blocksAround_locations(dimension, location, 2, { includeTypes: [ "minecraft:air" ] }, true);
+        if (blockLocations.length === 0) {
+            blockLocations = BlockLib.blocksAround_locations(dimension, location, 3, { includeTypes: [ "minecraft:air" ] }, true);
+        };
+        if (blockLocations.length === 0) {
+            system.run(() => {
+                entity.triggerEvent(entityEvents.wanderEventName);
+            });
+            return false;
+        }
     };
 
-    chatLog.success(`Expanded Web @ ${Vector3Lib.toString(blockLocations[ 0 ], 0, true)}`, dev.debugEntityActivity);
-    setWebAndEnter(entity, blockLocations[ 0 ], 'expandWeb');
+    const success = blockLocations.some(newLocation => {
+        const block = dimension.getBlock(newLocation);
+
+        if (block && webAdjacent(block)) {
+            chatLog.success(`§e${entity.nameTag || entity.id} Expanded Web @ ${Vector3Lib.toString( newLocation,0,true)}`, dev.debugEntityActivity);            
+            setWebAndEnter(entity, newLocation, 'expandWeb');
+            return true;
+        }
+
+        return false;
+    });
+
+    if (!success) {
+        //register anyway then go wander
+        system.runTimeout(() => {
+            webRegister(entity);
+            entity.triggerEvent(entityEvents.wanderEventName);
+        }, 1);
+    }
 }

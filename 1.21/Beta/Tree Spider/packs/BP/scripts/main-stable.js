@@ -7,12 +7,24 @@ export function main_stable () {
     if (pack.hasChatCmd === -1) // no beta
         alertLog.success(`§aInstalling Add-on ${pack.packName} - §bStable ${pack.isLoadAlertsOn ? '§c(Debug Mode)' : ''}`, dev.debugPackLoad || pack.isLoadAlertsOn);
 
-    subs.beforeEvents_worldInitialize();
+    //clearing scoreboards
+    if (dev.debugGamePlay || dev.debugEntityAlert || dev.debugEntityActivity || dev.debugLoadAndSpawn)
+        subs.beforeEvents_worldInitialize();
+
+    //debug scoreboards and stalled interval
     subs.afterEvents_worldInitialize();
-    subs.afterEvents_entitySpawn();
+
+    //Re-Inits - the ticks of the entity
     subs.afterEvents_entityLoad();
-    subs.beforeEvents_entityRemove();
-    subs.afterEvents_entityRemove();
+
+    if (dev.debugGamePlay || dev.debugEntityActivity || dev.debugEntityAlert)
+        subs.afterEvents_entityDie();
+
+    if (dev.debugLoadAndSpawn)
+        subs.beforeEvents_entityRemove(); //only involves removing from watchFor scoreboard
+
+    if (dev.debugGamePlay || dev.debugEntityActivity || dev.debugEntityAlert)
+        subs.afterEvents_entityRemove();
 }
 //==============================================================================
 //Note: any non-obj code (loose) run where this is imported... be mindful

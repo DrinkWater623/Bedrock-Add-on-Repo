@@ -8,9 +8,12 @@
     "conditions": [
       { 
         "minecraft:spawns_on_surface": {},
-        "minecraft:distance_filter": {"min": 8,"max": 24},
-        "minecraft:weight": {"default":100,"rarity": 0},
-        //"minecraft:density_limit": {},
+        "minecraft:distance_filter": {"min": 8,"max": 48},
+        "minecraft:weight": {"default":50,"rarity": 0},
+        "minecraft:density_limit": {
+          "surface": 8, //change to 3 - 5 for release - or make per difficulty....
+          "underground": 0
+        },
         //"minecraft:herd": {"min_size":2,"max_size":8}, NO, not in same spot like that
         "minecraft:biome_filter": 
         {
@@ -75,6 +78,7 @@
             {"test":"has_biome_tag","value":"taiga_hills"}
           ]
         } 
+        /*
         // "minecraft:spawns_on_block_filter": [
         //   "minecraft:podzol",
         //   "minecraft:grass_path",          
@@ -126,7 +130,8 @@
         //   // "minecraft:pitcher_plant",
         //   // "minecraft:torchflower",
         //   "minecraft:pink_petals"          
-        // ]              
+        // ]  
+        */            
       }
     ]
   }

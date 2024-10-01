@@ -1,15 +1,55 @@
 {
-    "$scope":{
-        "settings":{
-            "debugScoreboardName":"tree_spider_debug",
-            "nearest_timer":[30,60],
-            "random_timer":[30,60]
-        }
+    // ts:kill
+    "$scope":{       
+        "blockTypes":[
+            {
+                "mark":1   ,"type":"log"      ,"on_reach_event":"look_for_leaves_nearest_start", 
+                "target_blocks": [
+                    "minecraft:mangrove_roots","minecraft:acacia_log","minecraft:birch_log",
+                    "minecraft:cherry_log","minecraft:dark_oak_log","minecraft:jungle_log",
+                    "minecraft:mangrove_log","minecraft:oak_log","minecraft:spruce_log",
+                    "minecraft:warped_stem","minecraft:crimson_stem","minecraft:mushroom_stem"
+                ]
+            },
+            {
+                "mark":3   ,"type":"leaves"    ,"on_reach_event":"make_web", 
+                "target_blocks": [
+                    "minecraft:warped_wart_block","minecraft:shroomlight","minecraft:nether_wart_block",
+                    "minecraft:acacia_leaves","minecraft:birch_leaves","minecraft:cherry_leaves","minecraft:jungle_leaves",
+                    "minecraft:dark_oak_leaves","minecraft:mangrove_leaves","minecraft:oak_leaves","minecraft:spruce_leaves",
+                    "minecraft:azalea","minecraft:azalea_leaves","minecraft:azalea_leaves_flowered"
+                ]
+            }, 
+            {
+                "mark":5   ,"type":"nature"    ,"on_reach_event":"make_web",
+                "target_blocks": [   
+                    "minecraft:sunflower","minecraft:lilac","minecraft:rose_bush" ,"minecraft:peony",
+                    "minecraft:large_fern","minecraft:tall_grass","minecraft:sweet_berry_bush",
+                    "minecraft:pointed_dripstone",
+                    "minecraft:brown_mushroom_block","minecraft:red_mushroom_block",   
+                    "minecraft:big_drip_leaf"
+                ] 
+            },
+            {
+                "mark":7   ,"type":"web"       ,"on_reach_event":"enter_web",
+                "target_blocks": ["minecraft:web"] 
+            }
+        ],
+        "blockScopes":[
+            {"add":0    ,"scope":"nearest" ,"tick_interval":5   ,"search_range": 8}
+            //,
+            //{"add":1    ,"scope":"random"  ,"tick_interval":60  ,"search_range": 32}
+        ]
+
     },
+    
     "$template": {
         /*
-            Spiders usually do it at night or early morning
-            //TODO: add scared events for baby,so adult fight target
+            ??? Spiders usually do it at night or early morning ??? 
+            should I make more active then? they are not neces nocturnal
+
+            TODO: add Life Cycle
+            
         */
         "format_version": "1.21.0",
         "minecraft:entity": {
@@ -17,7 +57,8 @@
                 "identifier": "dw623:tree_spider",
                 "spawn_category": "creature",
                 "is_spawnable": true,
-                "is_summonable": true            
+                "is_summonable": true,                
+                "properties":{"bit:debug":{"type":"bool","default":true}}
             },
             "component_groups": {
                 "instant_despawn":{"minecraft:instant_despawn":{}},
@@ -34,228 +75,332 @@
                             }
                         ]
                     }
-                },
-                "spider_baby": {
-                    "minecraft:attack": {"damage":0,"effect_name": "blindness","effect_duration": 2},
-                    "minecraft:is_baby": {},
-                    "minecraft:scale": {"value":0.3},
-                    "minecraft:ageable": {
-                        "duration": 1200,
-                        "feed_items": [
-   "minecraft:rotten_flesh",
-   "minecraft:fermented_spider_eye",
-   "minecraft:spider_eye",
-   "minecraft:ink_sac",
-   "minecraft:slime_ball"
-                        ],
-                        "grow_up": {
-   "event": "minecraft:ageable_grow_up",
-   "target": "self"
-                        }
-                    },
-                    "minecraft:behavior.follow_parent": {"priority":2,"speed_multiplier":0.9},
-                    "minecraft:movement": {"value":0.25},
-                    "minecraft:mark_variant": {"value":0}, 
-                    "minecraft:behavior.random_stroll":{"priority":3,"interval":120,"speed_multiplier":0.7,"xy_dist":16,"y_dist":16}
-                },
+                },                
                 "spider_adult": {
                     "minecraft:attack": {"damage":2,"effect_name": "slowness","effect_duration": 4},
                     "minecraft:loot": {	"table": "loot_tables/entities/tree_spider.json" },
-                    "minecraft:scale": {"value":0.45},
-                    "minecraft:experience_reward": {"on_bred":"Math.Random(1,7)","on_death":"query.last_hit_by_player ? Math.Random(1,3) : 0"},
-                    "minecraft:behavior.breed": {"priority":4,"speed_multiplier":1},                    
-//                     "minecraft:behavior.tempt": {
-//                         "priority": 4,
-//                         "speed_multiplier": 1.5,
-//                         "within_radius": 8,
-//                         "can_tempt_vertically": true,
-//                         "items": [
-//    "minecraft:feather",
-//    "minecraft:string",
-//    "minecraft:rotten_flesh",
-//    "minecraft:fermented_spider_eye",
-//    "minecraft:spider_eye",
-//    "minecraft:ink_sac",
-//    "minecraft:slime_ball"
-//                         ]
-//                     },
+                    "minecraft:scale": {"value":0.50},
+                    "minecraft:experience_reward": {"on_bred":"Math.Random(1,7)","on_death":"query.last_hit_by_player ? Math.Random(1,3) : 0"}
+                },
+                "avoid_eggs": {                    
                     "minecraft:behavior.avoid_mob_type": {
                         "priority": 1,
                         "avoid_mob_sound":"imitate.cave_spider",
+                        "avoid_target_xz":16,
+                        "max_dist": 4,
+                        "max_flee": 8,
+                        "walk_speed_multiplier": 0.8,
+                        "sprint_speed_multiplier": 0.8,
+                        "sprint_distance":2,
                         "entity_types": [
+                            {"filters":{"test":"is_family","subject":"other","value":"tree_spider_egg_sac"}},
                             {
-                                "filters": {"test":"is_family","subject":"other","value":"tree_spider_egg_sac"},
-                                "max_dist": 1,
-                                "max_flee":2,
-                                "walk_speed_multiplier": 1,
-                                "sprint_speed_multiplier": 1,
-                                "sprint_distance":2
-                            },
+                                "filters": {
+                                    "any_of":[
+                                        {"test":"is_family","subject":"other","value":"creeper"},
+                                        {"test":"is_family","subject":"other","value":"slime"},
+                                        {"test":"is_family","subject":"other","value":"magma"},
+                                        {"test":"is_family","subject":"other","value":"pillager"},
+                                        {"test":"is_family","subject":"other","value":"villager"},
+                                        {"test":"is_family","subject":"other","value":"wandering_trader"},
+                                        {"test":"is_family","subject":"other","value":"parrot"},
+                                        {"test":"is_family","subject":"other","value":"horse"},
+                                        {"test":"is_family","subject":"other","value":"mule"},
+                                        {"test":"is_family","subject":"other","value":"donkey"},
+                                        {"test":"is_family","subject":"other","value":"llama"},
+                                        {"test":"is_family","subject":"other","value":"sheep"},
+                                        {"test":"is_family","subject":"other","value":"cow"},
+                                        {"test":"is_family","subject":"other","value":"chicken"},
+                                        {"test":"is_family","subject":"other","value":"ocelot"},
+                                        {"test":"is_family","subject":"other","value":"cat"}
+                                    ]
+                                }
+                            }
+                        ]
+                    }  
+                },
+                "avoid_other_spiders": {
+                    "minecraft:behavior.avoid_mob_type": {
+                        "priority": 1,
+                        "avoid_mob_sound":"imitate.cave_spider",
+                        "avoid_target_xz":16,
+                        "max_dist": 4,
+                        "max_flee": 8,
+                        "walk_speed_multiplier": 0.8,
+                        "sprint_speed_multiplier": 0.8,
+                        "sprint_distance":2,
+                        "entity_types": [                            
                             {
                                 "filters": {
                                     "all_of":[
                                         {"test":"is_family","subject":"other","value":"tree_spider"},
                                         {"test":"has_component","subject":"other","operator":"!=","value":"is_baby"}
                                     ]
-                                },
-                                "max_dist": 1,
-                                "max_flee":2,
-                                "walk_speed_multiplier": 1,
-                                "sprint_speed_multiplier": 1,
-                                "sprint_distance":2
+                                }
+                            },
+                            {
+                                "filters": {
+                                    "any_of":[
+                                        {"test":"is_family","subject":"other","value":"creeper"},
+                                        {"test":"is_family","subject":"other","value":"slime"},
+                                        {"test":"is_family","subject":"other","value":"magma"},
+                                        {"test":"is_family","subject":"other","value":"pillager"},
+                                        {"test":"is_family","subject":"other","value":"villager"},
+                                        {"test":"is_family","subject":"other","value":"wandering_trader"},
+                                        {"test":"is_family","subject":"other","value":"parrot"},
+                                        {"test":"is_family","subject":"other","value":"horse"},
+                                        {"test":"is_family","subject":"other","value":"mule"},
+                                        {"test":"is_family","subject":"other","value":"donkey"},
+                                        {"test":"is_family","subject":"other","value":"llama"},
+                                        {"test":"is_family","subject":"other","value":"sheep"},
+                                        {"test":"is_family","subject":"other","value":"cow"},
+                                        {"test":"is_family","subject":"other","value":"chicken"},
+                                        {"test":"is_family","subject":"other","value":"ocelot"},
+                                        {"test":"is_family","subject":"other","value":"cat"}
+                                    ]
+                                }
                             }
                         ]
                     }                
                 },
-                //State of being
-                "spider_calm": {
-                    "minecraft:on_target_acquired": {
-                        "event": "go_attack",
-                        "target": "self"
-                    },
-                    "minecraft:on_friendly_anger": {
-                        "event": "go_attack",
-                        "target": "self"
-                    },
-                    "minecraft:damage_sensor": {
-                        "triggers": [
-                            //fall
-                            {"cause":"fall","deals_damage":false},
-                            //bush
-                            {"on_damage":{"filters":{"test":"is_block","subject":"block","value":"minecraft:sweet_berry_bush"}},"deals_damage":false},
-                            //other entity
+                "avoid_other_spiders_and_eggs": {
+                    "minecraft:behavior.avoid_mob_type": {
+                        "priority": 1,
+                        "avoid_mob_sound":"imitate.cave_spider",
+                        "avoid_target_xz":16,
+                        "max_dist": 4,
+                        "max_flee": 8,
+                        "walk_speed_multiplier": 0.8,
+                        "sprint_speed_multiplier": 0.8,
+                        "sprint_distance":2,
+                        "entity_types": [
+                            {"filters":{"test":"is_family","subject":"other","value":"tree_spider_egg_sac"}},
                             {
-                                "cause": "all",
-                                "deals_damage": true,
-                                "on_damage": {
-                                    "event": "go_attack",
-                                    "filters": {
-                                        "any_of": [
-                                            {"test":"is_family","subject":"other","value":"monster"},
-                                            {"test":"is_family","subject":"other","value":"player"}
-                                        ]
-                                    }                        
+                                "filters": {
+                                    "all_of":[
+                                        {"test":"is_family","subject":"other","value":"tree_spider"},
+                                        {"test":"has_component","subject":"other","operator":"!=","value":"is_baby"}
+                                    ]
+                                }
+                            },
+                            {
+                                "filters": {
+                                    "any_of":[
+                                        {"test":"is_family","subject":"other","value":"creeper"},
+                                        {"test":"is_family","subject":"other","value":"slime"},
+                                        {"test":"is_family","subject":"other","value":"magma"},
+                                        {"test":"is_family","subject":"other","value":"pillager"},
+                                        {"test":"is_family","subject":"other","value":"villager"},
+                                        {"test":"is_family","subject":"other","value":"wandering_trader"},
+                                        {"test":"is_family","subject":"other","value":"parrot"},
+                                        {"test":"is_family","subject":"other","value":"horse"},
+                                        {"test":"is_family","subject":"other","value":"mule"},
+                                        {"test":"is_family","subject":"other","value":"donkey"},
+                                        {"test":"is_family","subject":"other","value":"llama"},
+                                        {"test":"is_family","subject":"other","value":"sheep"},
+                                        {"test":"is_family","subject":"other","value":"cow"},
+                                        {"test":"is_family","subject":"other","value":"chicken"},
+                                        {"test":"is_family","subject":"other","value":"ocelot"},
+                                        {"test":"is_family","subject":"other","value":"cat"}
+                                    ]
                                 }
                             }
                         ]
-                    }
+                    }                
                 },
-                "baby_spider_calm": {
-                    "minecraft:on_target_acquired": {
-                        "event": "baby_go_attack",
-                        "target": "self"
-                    },
-                    "minecraft:on_friendly_anger": {
-                        "event": "baby_go_attack",
-                        "target": "self"
-                    },
-                    "minecraft:damage_sensor": {
-                        "triggers": [
-                            //fall
-                            {"cause":"fall","deals_damage":false},
-                            //bush
-                            {"on_damage":{"filters":{"test":"is_block","subject":"block","value":"minecraft:sweet_berry_bush"}},"deals_damage":false},
-                            //other entity
-                            {
-                                "cause": "all",
-                                "deals_damage": true,
-                                "on_damage": {
-                                    "event": "baby_go_attack",
-                                    "filters": {
-                                        "any_of": [
-                                            {"test":"is_family","subject":"other","value":"monster"},
-                                            {"test":"is_family","subject":"other","value":"player"}
-                                        ]
-                                    }                        
+                //Mood                                
+                "{{#['baby','adult']}}":{
+                    "{{value}}_spider_calm": {
+                        "minecraft:on_target_acquired": {"event":"{{value}}_go_attack","target":"self"},
+                        "minecraft:on_friendly_anger": {"event":"{{value}}_go_attack","target":"self"},
+                        "minecraft:damage_sensor": {
+                            "triggers": [
+                                //fall
+                                {"cause":"fall","deals_damage":false},
+                                //bush
+                                {"on_damage":{"filters":{"test":"is_block","subject":"block","value":"minecraft:sweet_berry_bush"}},"deals_damage":false},
+                                //other entity
+                                {
+                                    "cause": "all",
+                                    "deals_damage": true,
+                                    "on_damage": {
+                                        "event": "{{value}}_go_attack",
+                                        "filters": {
+                                            "any_of": [
+                                                {"test":"is_family","subject":"other","value":"monster"},
+                                                {"test":"is_family","subject":"other","value":"player"}
+                                            ]
+                                        }                        
+                                    }
                                 }
-                            }
-                        ]
-                    }
-                },
-                "baby_spider_attack": {
-                    "minecraft:on_target_escape": {
-                        "event": "baby_become_calm",
-                        "target": "self"
-                    },
-                    "minecraft:angry": {
-                        "duration": 10,
-                        "duration_delta": 5,
-                        "broadcast_anger_on_being_attacked": true,
-                        "broadcastRange": 8,
-                        //"broadcast_targets": ["dw623:tree_spider"],
-                        "calm_event": {
-                            "event": "baby_become_calm",
-                            "target": "self"
+                            ]
                         }
                     },
-                    "minecraft:behavior.leap_at_target": {
-                        "priority": 4,
-                        "yd": 0.4,
-                        "must_be_on_ground": false
-                    },
-                    "minecraft:behavior.melee_attack": {
-                        "priority": 3,
-                        "track_target": true,
-                        "reach_multiplier": 0.8
-                    },
-                    "minecraft:damage_sensor": {
-                        "triggers": [
-                            //fall
-                            {"cause":"fall","deals_damage":false},
-                            //bush
-                            {"on_damage":{"filters":{"test":"is_block","subject":"block","value":"minecraft:sweet_berry_bush"}},"deals_damage":false}
-                        ]
-                    }
-                },
-                "spider_attack": {
-                    "minecraft:on_target_escape": {
-                        "event": "become_calm",
-                        "target": "self"
-                    },
-                    "minecraft:angry": {
-                        "duration": 10,
-                        "duration_delta": 5,
-                        "broadcast_anger_on_being_attacked": true,
-                        "broadcastRange": 8,
-                        //"broadcast_targets": ["dw623:tree_spider"],
-                        "calm_event": {
-   "event": "become_calm",
-   "target": "self"
-                        }
-                    },
-                    "minecraft:behavior.leap_at_target": {
-                        "priority": 4,
-                        "yd": 0.4,
-                        "must_be_on_ground": false
-                    },
-                    "minecraft:behavior.melee_attack": {
-                        "priority": 3,
-                        "track_target": true,
-                        "reach_multiplier": 0.8
-                    },
-                    "minecraft:damage_sensor": {
-                    "triggers": [
-                        //fall
-                        {
-   "cause": "fall",
-   "deals_damage": false
+                    "{{value}}_spider_attack": {
+                        "minecraft:on_target_escape": {"event":"{{value}}_become_calm","target":"self"},
+                        "minecraft:angry": {
+                            "duration": 10,
+                            "duration_delta": 5,
+                            "broadcast_anger_on_being_attacked": true,
+                            "broadcastRange": 8,
+                            "broadcast_targets": ["dw623:tree_spider"],
+                            "calm_event": {"event":"{{value}}_become_calm","target":"self"}
                         },
-                        //bush
-                        {
-   "on_damage": {
-       "filters": {
-           "test": "is_block",
-           "subject": "block",
-           "value": "minecraft:sweet_berry_bush"
-       }
-   },
-   "deals_damage": false
+                        "minecraft:behavior.leap_at_target": {"priority":2,"yd":0.4,"must_be_on_ground":false},
+                        "minecraft:behavior.melee_attack": {"priority":3,"track_target":true,"reach_multiplier":0.8},
+                        "minecraft:damage_sensor": {
+                            "triggers": [
+                                //fall
+                                {
+                                    "cause": "fall",
+                                    "deals_damage": false
+                                },
+                                //bush
+                                {
+                                    "on_damage": {
+                                        "filters": {
+                                            "test": "is_block",
+                                            "subject": "block",
+                                            "value": "minecraft:sweet_berry_bush"
+                                        }
+                                    },
+                                    "deals_damage": false
+                                }
+                            ]
+                        },
+                        "minecraft:physics":{"has_collision":true,"has_gravity":true},
+                        //To lower the previous Priority
+                        "minecraft:behavior.random_stroll":{"priority":90,"interval":600,"speed_multiplier":0.80},
+                        "minecraft:behavior.move_to_block": {
+                            "priority": 99,"start_chance": 1,"target_selection_method": "nearest","target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false}, "target_blocks": ["minecraft:web"],
+                            "tick_interval": 6000,"speed_multiplier": 0.8,"goal_radius": 0.5,"search_range": 32,"search_height":16                            
+                        } 
+                    }      
+                },
+                /*
+                "adult_spider_calm": {
+                    "minecraft:on_target_acquired": {"event":"adult_go_attack","target":"self"},
+                    "minecraft:on_friendly_anger": {"event":"adult_go_attack","target":"self"},
+                    "minecraft:damage_sensor": {
+                        "triggers": [
+                            //fall
+                            {"cause":"fall","deals_damage":false},
+                            //bush
+                            {"on_damage":{"filters":{"test":"is_block","subject":"block","value":"minecraft:sweet_berry_bush"}},"deals_damage":false},
+                            //other entity
+                            {
+                                "cause": "all",
+                                "deals_damage": true,
+                                "on_damage": {
+                                    "event": "adult_go_attack",
+                                    "filters": {
+                                        "any_of": [
+                                            {"test":"is_family","subject":"other","value":"monster"},
+                                            {"test":"is_family","subject":"other","value":"player"}
+                                        ]
+                                    }                        
+                                }
+                            }
+                        ]
+                    }
+                },
+                "adult_spider_attack": {
+                    "minecraft:on_target_escape": {"event":"adult_become_calm","target":"self"},
+                    "minecraft:angry": {
+                        "duration": 10,
+                        "duration_delta": 5,
+                        "broadcast_anger_on_being_attacked": true,
+                        "broadcastRange": 8,
+                        "broadcast_targets": ["dw623:tree_spider"],
+                        "calm_event": {"event":"adult_become_calm","target":"self"}
+                    },
+                    "minecraft:behavior.leap_at_target": {"priority":2,"yd":0.4,"must_be_on_ground":false},
+                    "minecraft:behavior.melee_attack": {"priority":3,"track_target":true,"reach_multiplier":0.8},
+                    "minecraft:damage_sensor": {
+                        "triggers": [
+                            //fall
+                            {
+                                "cause": "fall",
+                                "deals_damage": false
+                            },
+                            //bush
+                            {
+                                "on_damage": {
+                                    "filters": {
+                                        "test": "is_block",
+                                        "subject": "block",
+                                        "value": "minecraft:sweet_berry_bush"
+                                    }
+                                },
+                                "deals_damage": false
+                            }
+                        ]
+                    },
+                    //To lower the previous Priority
+                    "minecraft:behavior.move_to_block": {
+                        "priority": 99,"start_chance": 1,"target_selection_method": "nearest","target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false}, "target_blocks": ["minecraft:web"],
+                        "tick_interval": 6000,"speed_multiplier": 0.8,"goal_radius": 0.5,"search_range": 32,"search_height":16,"on_reach": [{"event":"enter_web","target":"self"}] 
+                    } 
+                },
+                */                 
+                // Task / Goal
+                "look_for_movement": { //One Movement to rule them ALL
+                    "minecraft:movement": {"value":0.3},
+                    "minecraft:behavior.random_stroll":{"priority":9,"interval":120,"speed_multiplier":0.80}
+                }, 
+                "movement_no": {
+                    "minecraft:movement": {"value":0},
+                    "minecraft:behavior.random_stroll":{"priority":99,"interval":6000,"speed_multiplier":0.0}
+                },                  
+                "{{#blockTypes}}":{
+                    "{{#blockScopes}}":{
+                        "look_for_{{type}}_{{scope}}": {
+                            "minecraft:mark_variant": {"value":"{{=(mark+add)}}"},
+                            "minecraft:behavior.move_to_block": {
+                                "priority": 2,"start_chance": 1,"target_selection_method": "{{scope}}","target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false}, 
+                                "target_blocks": "{{target_blocks}}",
+                                "tick_interval": "{{=tick_interval}}","speed_multiplier": 0.8,
+                                "goal_radius": 0.75,"search_range": "{{=search_range}}","search_height":16,
+                                "on_reach": [{"event":"{{on_reach_event}}","target":"self"}]
+                            } 
                         }
-                    ]
-                }
+                    }
+                },                
+                "stay_in_web": {
+                    "minecraft:movement": {"value":0.2},
+                    "minecraft:mark_variant": {"value":12},
+                    "minecraft:behavior.random_stroll":{"priority":100,"interval":6000,"speed_multiplier":0.01},
+                    "minecraft:behavior.move_to_block": {
+                        "priority": 2,"start_chance": 1,"target_selection_method": "nearest","target_blocks": ["minecraft:web"],
+                        "tick_interval": 10,"speed_multiplier": 0.5,
+                        "goal_radius": 1,"search_range": 3,"search_height": 3
+                        //had to add cause could not take web, kept coming back
+                        //,"on_reach": [{"event":"non_event","target":"self"}] 
+                        //FIXME: for some reason, placeWeb event was still going -see if real bug later  
+                    },
+                    //"minecraft:physics":{"has_collision":false,"has_gravity":false},
+                    //"minecraft:jump.static":{"jump_power":0.1},"minecraft:variant": {"value": 0},                    
+                    "minecraft:environment_sensor":{
+                        "triggers":[                                               
+                            {
+                                /* since cannot get pushed out anymore
+                                    then if in air, web is gone, so find another (? or start to wander)
+                                    problem, if need to get away because next to egg, it tweeks.. 
+                                    so do wander instead of nearest web
+                                */
+                                "event":"wander_around_start", 
+                                "filters":{
+                                    "all_of":[                                        
+                                        { "test": "is_mark_variant", "value": 12 }, //already in state
+                                        { "test": "in_block","value": "minecraft:air" }
+                                    ]
+                                }                        
+                            }
+                        ]
+                    }
                 },
                 "lay_egg_sac":{
-                    "minecraft:timer": {"looping":false,"time":0.25,"time_down_event":{"event":"lay_egg_sac_end"}},
+                    "minecraft:timer": {"looping":false,"time":1,"time_down_event":{"event":"lay_egg_sac_end"}},
                     "minecraft:spawn_entity": {
                         "entities": [
                             {
@@ -263,130 +408,64 @@
                                 "spawn_entity": "dw623:tree_spider_egg_sac",
                                 "single_use": true,
                                 "num_to_spawn": 1,
-                                "spawn_event" : "log_activity"
+                                "spawn_event" : "log_activity",
+                                "filters":{"test":"in_block","value":"minecraft:web"}
                             }
                         ]
                     }
-                }, 
-                // Activities
-                "look_for_log_random": {
-                    "minecraft:movement": {"value":1.5},
-                    "minecraft:mark_variant": {"value":1},
-                    "minecraft:behavior.move_to_block": {
-                        "priority": 2,"start_chance": 1,"target_selection_method": "random","target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false}, "target_blocks": ["minecraft:mangrove_roots","minecraft:acacia_log","minecraft:birch_log","minecraft:cherry_log","minecraft:dark_oak_log","minecraft:jungle_log","minecraft:mangrove_log","minecraft:oak_log","minecraft:spruce_log"],
-                        "tick_interval": 300,"speed_multiplier": 1.0,
-                        "goal_radius": 1.0,"search_range": 32,"search_height":16,
-                        "on_reach": [{"event":"look_for_leaves_nearest_start","target":"self"}]
-                    } 
-                },
-                "look_for_log_nearest": {
-                    "minecraft:movement": {"value":1},
-                    "minecraft:mark_variant": {"value":1},
-                    "minecraft:behavior.move_to_block": {
-                        "priority": 2,"start_chance": 1,"target_selection_method": "nearest","target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false}, "target_blocks": ["minecraft:mangrove_roots","minecraft:acacia_log","minecraft:birch_log","minecraft:cherry_log","minecraft:dark_oak_log","minecraft:jungle_log","minecraft:mangrove_log","minecraft:oak_log","minecraft:spruce_log"],
-                        "tick_interval": 1,"speed_multiplier": 0.9,
-                        "goal_radius": 1.0,"search_range": 32,"search_height":16,
-                        "on_reach": [{"event":"look_for_leaves_nearest_start","target":"self"}]
-                    } 
-                },
-                //TODO: test with 10 ticks
-                "look_for_leaves_nearest": {
-                    "minecraft:movement": {"value":0.5},  
-                    "minecraft:mark_variant": {"value":10}, 
-                    "minecraft:behavior.move_to_block": {
-                        "tick_interval": 1,"speed_multiplier": 0.7,
-                        "priority": 2, "start_chance": 1,"target_selection_method": "nearest","target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false},"target_blocks": ["minecraft:acacia_leaves","minecraft:birch_leaves","minecraft:cherry_leaves","minecraft:dark_oak_leaves","minecraft:jungle_leaves","minecraft:mangrove_leaves","minecraft:oak_leaves","minecraft:spruce_leaves","minecraft:vine"],
-                        "goal_radius": 1.0,"search_range": 4,"search_height": 16,
-                        "on_reach": [{"event":"make_a_web","target":"self"}] //,"stay_duration": 5.0,"on_stay_completed": [{"event":"make_a_web","target":"self"}]
-                    }
-                },
-                "look_for_leaves_random": {
-                    "minecraft:movement": {"value":1.5},
-                    "minecraft:mark_variant": {"value":2},
-                    "minecraft:behavior.move_to_block": {
-                        "tick_interval": 200,"speed_multiplier": 1.0,  
-                        "priority": 2, "start_chance": 1,"target_selection_method": "random","target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false},"target_blocks": ["minecraft:acacia_leaves","minecraft:birch_leaves","minecraft:cherry_leaves","minecraft:dark_oak_leaves","minecraft:jungle_leaves","minecraft:mangrove_leaves","minecraft:oak_leaves","minecraft:spruce_leaves","minecraft:vine"],
-                        "goal_radius": 1.0,"search_range": 64,"search_height": 32,
-                        "on_reach": [{"event":"make_a_web","target":"self"}] //,"stay_duration": 5.0,"on_stay_completed": [{"event":"make_a_web","target":"self"}]
-                    }          
-                },  
-                "look_for_nature_nearest": {
-                    "minecraft:movement": {"value":1},
-                    "minecraft:mark_variant": {"value":3},
-                    "minecraft:behavior.move_to_block": {
-                        "tick_interval": 1,"speed_multiplier": 0.9,
-                        "priority": 2,"start_chance": 1,"target_selection_method": "nearest",
-                        "target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false},
-                        "target_blocks": [
-   //"minecraft:short_grass","minecraft:fern","minecraft:poppy","minecraft:dandelion",
-   //"minecraft:sunflower","minecraft:lilac","minecraft:rose_bush" ,"minecraft:peony",
-   "minecraft:large_fern","minecraft:tall_grass","minecraft:sweet_berry_bush",
-   "minecraft:pointed_dripstone",
-   "minecraft:warped_wart_block","minecraft:shroomlight","minecraft:nether_wart_block",
-   "minecraft:mushroom_stem","minecraft:brown_mushroom_block","minecraft:red_mushroom_block",
-   "minecraft:azalea","minecraft:azalea_leaves","minecraft:azalea_leaves_flowered","minecraft:big_drip_leaf",
-   "minecraft:acacia_leaves","minecraft:birch_leaves","minecraft:cherry_leaves","minecraft:jungle_leaves",
-   "minecraft:dark_oak_leaves","minecraft:mangrove_leaves","minecraft:oak_leaves","minecraft:spruce_leaves"
-                        ],
-                        "goal_radius": 0.75,"search_range": 32,"search_height": 8,
-                        "on_reach": [{"event":"make_a_web","target":"self"}] //,"stay_duration": 5.0,"on_stay_completed": [{"event":"make_a_web","target":"self"}]
-                    }                
-                },
-                "look_for_nature_random": {
-                    "minecraft:movement": {"value":1.5},
-                    "minecraft:mark_variant": {"value":3},
-                    "minecraft:behavior.move_to_block": {
-                        "tick_interval": 200,"speed_multiplier": 1.0,
-                        "priority": 2,"start_chance": 1,"target_selection_method": "random",
-                        "target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false},
-                        "target_blocks": [
-   "minecraft:fern","minecraft:large_fern","minecraft:short_grass","minecraft:tall_grass","minecraft:sweet_berry_bush",
-   "minecraft:acacia_leaves","minecraft:birch_leaves","minecraft:cherry_leaves","minecraft:jungle_leaves","minecraft:dark_oak_leaves","minecraft:mangrove_leaves","minecraft:oak_leaves","minecraft:spruce_leaves",
-   "minecraft:poppy","minecraft:dandelion","minecraft:sunflower","minecraft:pink_petals"
-                        ],
-                        "goal_radius": 0.75,"search_range": 64,"search_height": 8,
-                        "on_reach": [{"event":"make_a_web","target":"self"}] //,"stay_duration": 5.0,"on_stay_completed": [{"event":"make_a_web","target":"self"}]
-                    }                
-                },
-                "look_for_web_nearest": {
-                    "minecraft:movement": {"value":1},
-                    "minecraft:mark_variant": {"value":11},
-                    "minecraft:behavior.move_to_block": {
-                        "priority": 2,"start_chance": 1,"target_selection_method": "nearest","target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false}, "target_blocks": ["minecraft:web"],
-                        "tick_interval": 1,"speed_multiplier": 0.9,
-                        "goal_radius": 0.5,"search_range": 32,"search_height":16,
-                        "on_reach": [{"event":"enter_web","target":"self"}] //,"stay_duration": 5.0,"on_stay_completed": [{"event":"enter_web","target":"self"}] 
-                    } 
-                },
-                "look_for_web_random": {                    
-                    "minecraft:movement": {"value":1.5},
-                    "minecraft:mark_variant": {"value":11},
-                    "minecraft:behavior.move_to_block": {
-                        "priority": 2,"start_chance": 1,"target_selection_method": "random","target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false}, "target_blocks": ["minecraft:web"],
-                        "tick_interval": 200,"speed_multiplier": 1,
-                        "goal_radius": 0.5,"search_range": 32,"search_height":16,
-                        "on_reach": [{"event":"enter_web","target":"self"}] //,"stay_duration": 5.0,"on_stay_completed": [{"event":"enter_web","target":"self"}] 
-                    } 
-                },
-                "stay_in_web": {
-                    "minecraft:movement": {"value":0},
-                    "minecraft:mark_variant": {"value":12},
-                    "minecraft:behavior.move_to_block": {
-                        "priority": 2,"start_chance": 1,"target_selection_method": "nearest","target_blocks": ["minecraft:web"],
-                        "tick_interval": 20,"speed_multiplier": 0.1,
-                        "goal_radius": 1,"search_range": 6,"search_height": 6  
-                    }                    
                 },
                 "wander_around":{
                     "minecraft:movement": {"value":0.3},
                     "minecraft:mark_variant": {"value":0}, 
-                    "minecraft:behavior.random_stroll":{"priority":2,"interval":120,"speed_multiplier":0.7,"xy_dist":16,"y_dist":16},
-                    //reset 
+                    "minecraft:behavior.random_stroll":{"priority":2,"interval":60,"speed_multiplier":0.8},
+                    "minecraft:behavior.move_to_block": {
+                        "priority": 99,"start_chance": 1,"target_selection_method": "nearest","target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false}, "target_blocks": ["minecraft:web"],
+                        "tick_interval": 6000,"speed_multiplier": 0.8,"goal_radius": 1,"search_range": 32,"search_height":16
+                    },                      
                     "minecraft:physics":{"has_collision":true,"has_gravity":true},
-                    "minecraft:jump.static": {"jump_power": 1.25}           
+                    "minecraft:jump.static": {"jump_power": 1.0}
                 },
-                "mark_variant_13":{"minecraft:mark_variant": {"value":13}},
+                //--------------------------------- 
+                "environment_sensor_non_web":{
+                    "minecraft:environment_sensor":{
+                        "triggers":[                                               
+                            {
+                                //so can reach leaves better
+                                "event":"can_jump_high",
+                                "filters":{
+                                    "all_of":[
+                                        { "test": "is_variant", "operator": "!=", "value": 2 }, //already in state
+                                        { "test": "is_mark_variant", "operator": "!=", "value": 12 }, //stay in web
+                                        { "test":"is_underground","value":true },
+                                        { "test": "in_block","operator":"!=","value": "minecraft:web" },
+                                        { "test": "in_block","operator":"!=","value": "minecraft:tall_grass" } //TODO: list other tall plants
+                                    ]
+                                }                        
+                            },
+                            {
+                                "event":"can_jump_normal",
+                                "filters":{
+                                    "all_of":[
+                                        { "test": "is_variant", "operator": "!=", "value": 1 },
+                                        { "test": "is_mark_variant", "operator": "!=", "value": 12 }, //stay in web
+                                        { "test": "in_block","operator":"!=","value": "minecraft:web" },
+                                        { "test":"is_underground", "value":false }
+                                    ]
+                                }
+                            },
+                            { 
+                                "event":"can_hover_in_web",
+                                "filters":{"test":"in_block","operator":"==","value":"minecraft:web"} 
+                            }
+                        ]
+                    }
+                },                                
+                "name_tagged":{"minecraft:persistent":{},"minecraft:despawn":{"filters":{"test":"has_nametag","value":false}}},
+                //--------------------------------- 
                 //Movement
+                "gravity_off_sans_collision":{
+                    "minecraft:physics":{"has_collision":false,"has_gravity":false} 
+                },
                 "gravity_on":{
                     "minecraft:physics":{"has_collision":true,"has_gravity":true} 
                 },
@@ -397,199 +476,168 @@
                 "jump_high":{"minecraft:jump.static":{"jump_power":3},"minecraft:variant": {"value": 2}},
                 "jump_normal":{"minecraft:jump.static":{"jump_power":1},"minecraft:variant": {"value": 1}},
                 "jump_low":{"minecraft:jump.static":{"jump_power":0.5},"minecraft:variant": {"value": 0}},
+                "jump_no":{"minecraft:jump.static":{"jump_power":0},"minecraft:variant": {"value": 0}},
                 //Timers       
                 //---
-                "look_for_log_nearest_start_delay":{"minecraft:timer": {"looping":false,"time":0.1,"time_down_event":{"event":"look_for_log_nearest_start"}}},
-                "look_for_log_random_start_delay":{"minecraft:timer": {"looping":false,"time":0.1,"time_down_event":{"event":"look_for_log_random_start"}}},
-
-                "look_for_log_nearest_timer":{"minecraft:timer": {"looping":false,"time":[30,90],"time_down_event":{"event":"look_for_nature_random_start"}}},
-                "look_for_log_random_timer":{"minecraft:timer": {"looping":false,"time":[60,180],"time_down_event":{"event":"look_for_log_nearest_start"}}},
+                "look_for_log_nearest_start_delay_timer":{"minecraft:timer": {"looping":false,"time":0.1,"time_down_event":{"event":"look_for_log_nearest_start"}}},
+                "look_for_log_nearest_timer":{"minecraft:timer": {"looping":false,"time":[15,30],"time_down_event":{"event":"look_for_leaves_nearest_start"}}},                //---
+                "look_for_leaves_nearest_timer":{"minecraft:timer": {"looping":false,"time":[15,30],"time_down_event":{"event":"look_for_nature_nearest_start"}}},                //---
+                "look_for_nature_nearest_timer":{"minecraft:timer": {"looping":false,"time":[15,30],"time_down_event":{"event":"look_for_web_nearest_start"}}},                //---can't find web - look for log and make one
+                "look_for_web_nearest_timer":{"minecraft:timer": {"looping":false,"time":[15,30],"time_down_event":{"event":"look_for_log_nearest_start"}}},
                 //---
-                "look_for_leaves_nearest_timer":{"minecraft:timer": {"looping":false,"time":[30,90],"time_down_event":{"event":"look_for_nature_random_start"}}},
-                "look_for_leaves_random_timer":{"minecraft:timer": {"looping":false,"time":[60,180],"time_down_event":{"event":"look_for_leaves_nearest_start"}}}, 
+                "stay_in_web_delay_timer":{"minecraft:timer": {"looping":false,"time":0.1,"time_down_event":{"event":"stay_in_web_start"}}},
+                "stay_in_web_timer":{"minecraft:timer": {"looping":false,"time":[120,300],"time_down_event":{"event":"stay_in_web_end"}}}, 
                 //---
-                "look_for_nature_nearest_timer":{"minecraft:timer": {"looping":false,"time":[30,90],"time_down_event":{"event":"look_for_web_random_start"}}},
-                "look_for_nature_random_timer":{"minecraft:timer": {"looping":false,"time":[60,180],"time_down_event":{"event":"look_for_nature_nearest_start"}}},
-                //---can't find web - look for log and make one
-                "look_for_web_nearest_timer":{"minecraft:timer": {"looping":false,"time":[30,90],"time_down_event":{"event":"look_for_log_nearest_start"}}},
-                "look_for_web_random_timer":{"minecraft:timer": {"looping":false,"time":[60,180],"time_down_event":{"event":"look_for_web_nearest_start"}}},
+                "wander_around_timer":{"minecraft:timer": {"looping":false,"time":[30,120],"time_down_event":{"event":"wander_around_end"}}},
                 //---
-                "stay_in_web_delay":{"minecraft:timer": {"looping":false,"time":0.1,"time_down_event":{"event":"stay_in_web_start"}}},
-                "stay_in_web_timer":{"minecraft:timer": {"looping":false,"time":[15,600],"time_down_event":{"event":"stay_in_web_end"}}}, 
+                "fake_timer":{"minecraft:timer": {"looping":false,"time":0.1}},
                 //---
-                "wander_around_timer":{"minecraft:timer": {"looping":false,"time":[60,600],"time_down_event":{"event":"wander_around_end"}}},
-                "fake_timer":{"minecraft:timer": {"looping":false,"time":1}},
-                "become_adult_activity_delay":{"minecraft:timer": {"looping":false,"time":0.1,"time_down_event":{"event":"become_adult_activity_set"}}},
+                "become_adult_activity_delay_timer":{"minecraft:timer": {"looping":false,"time":0.1,"time_down_event":{"event":"become_adult_activity_set"}}},
+                //---
                 // BABIES
+                "spider_baby": {
+                    "minecraft:attack": {"damage":0,"effect_name": "blindness","effect_duration": 2},
+                    "minecraft:is_baby": {},
+                    "minecraft:scale": {"value":0.3},
+                    "minecraft:ageable": {
+                        "duration": 2400,
+                        "feed_items": ["minecraft:rotten_flesh","minecraft:slime_ball"],
+                            "grow_up": {"event":"baby_ageable_grow_up","target":"self"}
+                    },
+                    "minecraft:behavior.follow_parent": {"priority":7,"speed_multiplier":0.9},
+                    "minecraft:movement": {"value":0.25},
+                    "minecraft:mark_variant": {"value":0}, 
+                    "minecraft:behavior.random_stroll":{"priority":2,"interval":60,"speed_multiplier":0.80} 
+                },
+                
                 "baby_look_for_web": {
-                    "minecraft:movement": {"value":1},
-                    "minecraft:mark_variant": {"value":11},
+                    "minecraft:movement": {"value":0.85},
+                    "minecraft:mark_variant": {"value":7},
+                    "minecraft:behavior.random_stroll":{"priority":9,"interval":120,"speed_multiplier":0.80},
                     "minecraft:behavior.move_to_block": {
                         "priority": 2,"start_chance": 1,"target_selection_method": "nearest","target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false}, "target_blocks": ["minecraft:web"],
                         "tick_interval": 1,"speed_multiplier": 0.9,
                         "goal_radius": 0.5,"search_range": 32,"search_height":16,
                         "on_reach": [{"event":"baby_enter_web","target":"self"}] //,"stay_duration": 5.0,"on_stay_completed": [{"event":"enter_web","target":"self"}] 
-                    } 
+                    },
+                    //reset 
+                    "minecraft:physics":{"has_collision":true,"has_gravity":true},
+                    "minecraft:jump.static": {"jump_power": 1.1} 
                 },
                 "baby_wander_around":{
                     "minecraft:movement": {"value":0.3},
                     "minecraft:mark_variant": {"value":0}, 
-                    "minecraft:behavior.random_stroll":{"priority":3,"interval":120,"speed_multiplier":0.75,"xy_dist":8,"y_dist":16},
+                    "minecraft:behavior.random_stroll":{"priority":2,"interval":60,"speed_multiplier":0.8},
                     //reset 
                     "minecraft:physics":{"has_collision":true,"has_gravity":true},
-                    "minecraft:jump.static": {"jump_power": 1.25}           
+                    "minecraft:jump.static": {"jump_power": 1.1}           
                 },
                 "baby_look_for_web_timer":{"minecraft:timer": {"looping":false,"time":[30,90],"time_down_event":{"event":"baby_wander_around_start"}}},
-                "baby_stay_in_web_delay":{"minecraft:timer": {"looping":false,"time":0.1,"time_down_event":{"event":"baby_stay_in_web_start"}}},
+                "baby_stay_in_web_delay_timer":{"minecraft:timer": {"looping":false,"time":0.1,"time_down_event":{"event":"baby_stay_in_web_start"}}},
                 "baby_stay_in_web_timer":{"minecraft:timer": {"looping":false,"time":[15,60],"time_down_event":{"event":"baby_stay_in_web_end"}}}, 
-                "baby_wander_around_delay":{"minecraft:timer": {"looping":false,"time":0.1,"time_down_event":{"event":"baby_wander_around_start"}}},
+                "baby_wander_around_delay_timer":{"minecraft:timer": {"looping":false,"time":0.1,"time_down_event":{"event":"baby_wander_around_start"}}},
                 "baby_wander_around_timer":{"minecraft:timer": {"looping":false,"time":[60,120],"time_down_event":{"event":"baby_wander_around_end"}}},
-                "entity_born_script_event_delay":{"minecraft:timer": {"looping":false,"time":0.1,"time_down_event":{"event":"entity_born_script_event"}}}
+                "entity_born_script_event_delay_timer":{"minecraft:timer": {"looping":false,"time":0.1,"time_down_event":{"event":"entity_born_script_event"}}}
             },
             "components": {
                 //-----------------------------------------------            
                 "minecraft:is_hidden_when_invisible": {},
                 "minecraft:navigation.climb": {"avoid_water":true,"can_jump":true,"avoid_portals":true,"avoid_damage_blocks":true}, 
                 //turn movement------------------
-                "minecraft:movement": {"value":2},
+                "minecraft:movement": {"value":0.85},
                 "minecraft:movement.basic": {"max_turn":270},
+                //-----------------------------------
+                "minecraft:behavior.float": {"priority":0},
+                "minecraft:behavior.hurt_by_target": {"priority":3},
+                "minecraft:behavior.random_stroll":{"priority":9,"interval":120,"speed_multiplier":0.80},
+                "minecraft:behavior.random_look_around": {"priority":10,"look_time":[1,3],"look_distance": 8},
+                "minecraft:behavior.look_at_player": {"priority":15,"look_distance":6.0,"target_distance": 4.0,"probability":0.02,"look_time":[1,2]},
                 //-----------------------------------------------
                 "minecraft:physics":{"has_collision":true,"has_gravity":true},
                 "minecraft:jump.static": {"jump_power": 1.5}, 
                 "minecraft:can_climb": {}, //ladders                
                 //-----------------------------------
-                "minecraft:behavior.hurt_by_target": {"priority":1},
                 "minecraft:collision_box": {"width":1.4,"height":0.9},
                 "minecraft:conditional_bandwidth_optimization": {},
-                "minecraft:behavior.float": {"priority":1},
-                "minecraft:nameable": {},
+                "minecraft:nameable": {"default_trigger": {"event":"become_name_tagged","target":"self"}},
+                //TODO: test more -- do we really need this
                 "minecraft:despawn":{
                     "despawn_from_chance": false,
                     "despawn_from_inactivity": false,  
                     "remove_child_entities": false,
-                    "despawn_from_distance": {"max_distance":128,"min_distance":128}, //TODO: test
-                    "despawn_from_simulation_edge": false
+                    "despawn_from_distance": {"max_distance":128,"min_distance":128}, 
+                    "despawn_from_simulation_edge": false                    
                 },
                 //-----------------------------------------------
                 "minecraft:type_family": {"family":["tree_spider","mob","arthropod"]},
                 "minecraft:ambient_sound_interval": {"event_name":"imitate.cave_spider","range":3,"value":2},
                 "minecraft:health": {"value":20,"max":20},
                 "minecraft:breathable": {"breathes_air": true,"total_supply": 15},
-                "minecraft:follow_range": {"value":16}, 
+                "minecraft:follow_range": {"value":8}, 
                 "minecraft:hurt_on_condition": {"damage_conditions":[{"filters":{"test":"in_lava","subject":"self","operator":"==","value":true},"cause":"lava","damage_per_tick":4}]},
                 "minecraft:pushable": {"is_pushable":true,"is_pushable_by_piston":true},
                 "minecraft:variant":{"value":0},
                 "minecraft:environment_sensor":{
-                    "triggers":[
-                        // {
-                        //     //so can reach leaves better
-                        //     "event":"can_jump_high_and_no_gravity",
-                        //     "filters":{
-                        //         "all_of":[
-                        //             {"test":"is_underground","value":true},
-                        //             {"test": "in_block","operator":"!=","value": "minecraft:web"}, 
-                        //             {"test": "in_block","operator":"!=","value": "minecraft:tall_grass"},  
-                        //             {
-                        //                 "any_of":[
-                        //                     {"test": "is_mark_variant","value":2},
-                        //                     {"test": "is_mark_variant","value":10},
-                        //                     {"test": "is_mark_variant","value":11}
-                        //                 ]
-                        //             }
-                        //         ]
-                        //     }                        
-                        // },
-                        // {
-                        //     //so can reach leaves better
-                        //     "event":"can_jump_normal_and_gravity",
-                        //     "filters":{
-                        //         "all_of":[
-                        //             {"test":"is_underground","value":true},
-                        //             {"test": "in_block","operator":"!=","value": "minecraft:web"},
-                        //             {
-                        //                 "none_of":[
-                        //                     {"test": "is_mark_variant","value":2},
-                        //                     {"test": "is_mark_variant","value":10},
-                        //                     {"test": "is_mark_variant","value":11}
-                        //                 ]
-                        //             }
-                        //         ]
-                        //     }                        
-                        // },
+                    "triggers":[                                               
                         {
-   //so can reach leaves better
-   "event":"can_jump_high",
-   "filters":{
-       "all_of":[
-           {"test":"is_underground","value":true},
-           { "test": "is_variant", "operator": "!=", "value": 2 }, //already in state
-           { "test": "in_block","operator":"!=","value": "minecraft:web"},
-           { "test": "in_block","operator":"!=","value": "minecraft:tall_grass"}
-       ]
-   }                        
+                            //so can reach leaves better
+                            "event":"can_jump_high",
+                            "filters":{
+                                "all_of":[
+                                    { "test":"is_underground","value":true },
+                                    { "test": "is_variant", "operator": "!=", "value": 2 }, //already in state
+                                    { "test": "in_block","operator":"!=","value": "minecraft:web" },
+                                    { "test": "in_block","operator":"!=","value": "minecraft:tall_grass" }
+                                ]
+                            }                        
                         },
                         {
-   "event":"can_jump_normal",
-   "filters":{
-       "all_of":[
-           {"test":"is_underground","value":false},
-           { "test": "is_variant", "operator": "!=", "value": 1 },
-           {"test": "in_block","operator":"!=","value": "minecraft:web"}       
-       ]
-   }
+                            "event":"can_jump_normal",
+                            "filters":{
+                                "all_of":[
+                                    { "test":"is_underground", "value":false },
+                                    { "test": "is_variant", "operator": "!=", "value": 1 },
+                                    { "test": "in_block","operator":"!=","value": "minecraft:web" }       
+                                ]
+                            }
                         },
-                        {"event":"can_hover_in_web","filters":{"test":"in_block","operator":"==","value":"minecraft:web"}}
+                        { 
+                            "event":"can_hover_in_web",
+                            "filters":{"test":"in_block","operator":"==","value":"minecraft:web"} 
+                        }
                     ]
                 },
                 "minecraft:interact": {
-                    "interactions": [
+                    "interactions": [                        
                         {
-   "on_interact": {
-       "filters": {
-           "all_of": [
-               {"test":"is_family","subject":"other","value":"player"},
-               {"test":"has_equipment","domain":"hand","subject":"other","value":"string"}
-           ]
-       }
-   },
-   //"add_items": {"table":"loot_tables/gameplay/entities/tree_spider_string.json"},
-   "cooldown": 1.0,
-   "cooldown_after_being_attacked": 10.0,
-   "particle_on_start": {
-       "particle_type": "smoke",
-       "particle_y_offset": 0.25,
-       "particle_offset_towards_interactor": true
-   },
-   "swing": true,
-   "health_amount":1,
-   "use_item": true,
-   "transform_to_item": "web",
-   "play_sounds": "imitate.cave_spider",
-   //"interact_text": "action.interact.milk",
-   //"spawn_entities": "minecraft:cow_adult",
-   "spawn_items":{"table":"loot_tables/gameplay/entities/tree_spider_string.json"}
-                        },
-                        {
-   "on_interact": {
-       "event":"say_my_state",
-       "filters": {
-           "all_of": [
-               {"test":"is_family","subject":"other","value":"player"},
-               {"test":"has_equipment","domain":"hand","subject":"other","value":"stick"}
-           ]
-       }
-   }, 
-   "swing": true,
-   "health_amount":1,
-   "use_item": false, 
-   "play_sounds": "imitate.cave_spider"
+                            "on_interact": {
+                                "event":"say_my_state",
+                                "filters": {
+                                    "all_of": [
+                                        {"test":"is_family","subject":"other","value":"player"},
+                                        {"test":"bool_property","domain":"bit:debug", "value":true},
+                                        {"test":"has_equipment","domain":"hand","subject":"other","value":"stick"}
+                                    ]
+                                }
+                            }, 
+                            "swing": true,
+                            "health_amount":1,
+                            "use_item": false, 
+                            "play_sounds": "imitate.cave_spider"
                         }
                     ]
-                }
+                },
+                "minecraft:behavior.tempt": {
+                    "priority": 20,
+                    "speed_multiplier": 1.25,
+                    "within_radius": 4,
+                    "can_tempt_vertically": true,
+                    "items": ["minecraft:rotten_flesh","minecraft:slime_ball"]
+                }                
                 /*
                 //  work this in after everything works - so can see if it messes with move_to_block
                 ,"minecraft:behavior.avoid_block": {
-                //     "priority": 5,
+                //     "priority": 4,
                 //     "tick_interval": 10,
                 //     "search_range": 4,
                 //     "search_height": 4,
@@ -604,59 +652,85 @@
                 //         "minecraft:magma"
                 //     ]
                 // } 
-*/      
+                */      
             },
-            "events": {   
+            "events": {  
+                "non_event":{"queue_command": {"command":["scriptevent chatOnly:EntityActivity §cnonEvent"]}},
                 //---------------------------------    
                 // Natural Adult Life
                 //---------------------------------                        
                 "minecraft:entity_spawned": {
                     "sequence":[                        
-                        {"queue_command": {"command":["scriptevent registerSB:EntityActivity §aSpawned"]}},
-                        {"add":{"component_groups":["spider_adult","spider_calm"]}},
-                        {"trigger":"look_for_log_nearest_start"}
+                        {"queue_command": {"command":["scriptevent registerSB:EntityAlert §aSpawned"]}},
+                        {"add":{"component_groups":["spider_adult","adult_spider_calm"]}},
+                        {"trigger":"look_for_web_nearest_start"}
                     ]                   
-                },                
+                },   
+                
                 //---------------------------------            
-                "go_attack": {
-                "sequence":[
-                    {"queue_command": {"command":["scriptevent register:EntityActivity §c*attacked"]}},
-                    {"trigger":"remove_move_to_block"}, 
-                    {
-                        "remove": {"component_groups":["spider_calm"]},
-                        "add": {"component_groups":["spider_attack","fake_timer","gravity_on"]}
-                    }
-                ]
-                },
-                "become_calm": {
-                    "sequence":[
-                        {"queue_command": {"command":["scriptevent register:EntityActivity §d*calmed"]}},
-                        {"trigger":"remove_move_to_block"}, 
+                "adult_go_attack": {
+                    "sequence":[                    
                         {
-                            "remove":{"component_groups":["spider_attack"]},
-                            "add":{"component_groups":["spider_calm"]}
+                            "filters":{"test":"bool_property","domain":"bit:debug", "value":true},
+                            "queue_command": {"command":["scriptevent chatOnly:EntityActivity §c*Adult attacked"]}
+                        },
+                        {
+                            "remove": {"component_groups":["adult_spider_calm"]},
+                            "add": {"component_groups":["adult_spider_attack","fake_timer","avoid_eggs"]}
+                        }
+                    ]
+                },
+                "adult_become_calm": {
+                    "sequence":[                        
+                        {
+                            "filters":{"test":"bool_property","domain":"bit:debug", "value":true},
+                            "queue_command": {"command":["scriptevent chatOnly:EntityActivity §d*Adult calmed"]}},
+                        {
+                            "remove":{"component_groups":["adult_spider_attack"]},
+                            "add":{"component_groups":["adult_spider_calm","avoid_other_spiders_and_eggs"]}
                         },
                         {"trigger":"look_for_web_nearest_start"}
                     ]
-                },                
+                },
+                "become_name_tagged":{"add":{"component_groups":["name_tagged"]}},                
                 //---------------------------------    
                 // End of Natural Life
                 //---------------------------------    
                 // Refactor Events
                 //---------------------------------                   
-                "despawn_me": {
-                    "queue_command":{"command":["scriptevent registerSB:EntityActivity §cDespawn Me"]},
-                    "add":{"component_groups":["instant_despawn"]}
-                },
-                "replace_me": {
-                    "queue_command": {"command":["scriptevent registerSB:EntityActivity §4Replace Me"]},
-                    "add":{"component_groups":["replace_me_and_despawn"]}
-                },
+                "despawn_me": {"add":{"component_groups":["instant_despawn"]}},                
+                "replace_me": {"add":{"component_groups":["replace_me_and_despawn"]}},               
+                //---------------------------------    
+                // End of Refactor Events
+                //---------------------------------                            
+                "can_jump_high": {"add":{"component_groups":["jump_high"]}},
+                "can_jump_normal": {"add":{"component_groups":["jump_normal"]}},
+                "can_hover_in_web": {"add":{"component_groups":["jump_low"]}}, //also looks like slow descent
+                //---------------------------------    
+                // End of Refactor Events
+                //---------------------------------    
+                // Major Script Events - Adult - scripts trigger the stay in web or wander events for these 3
                 //---------------------------------            
-                "on_reach_goal_start_fake_timer":{ 
-                    "queue_command": {"command":["scriptevent register:Activity §a*on_reach_goal"]}, 
-                    "add":{"component_groups":["fake_timer"]}
+                "make_web": {                   
+                    "sequence":[
+                        {"add":{"component_groups":["gravity_off_sans_collision","jump_no","movement_no"]}},
+                        {"queue_command": {"command":["scriptevent tree_spider:placeWeb"]}}
+                    ]
                 },
+                "enter_web":{                                        
+                    "sequence":[
+                        {"add":{"component_groups":["gravity_off_sans_collision","jump_no","movement_no"]}},
+                        {"queue_command": {"command":["scriptevent tree_spider:enterWeb"]}}
+                    ]
+                },                
+                "expand_web": { 
+                    "sequence":[
+                        {"add":{"component_groups":["gravity_off_sans_collision","jump_no","movement_no"]}},
+                        {"queue_command": {"command":["scriptevent tree_spider:expandWeb"]}}
+                    ]
+                },
+                //---------------------------------
+                /*                                
                 "remove_move_to_block": {
                     //everything has housekeeping.. but just in case, "one undo-ring to rule them all"
                     "filters": {"test":"has_component","value":"minecraft:move_to_block"},
@@ -664,159 +738,66 @@
                         "look_for_log_nearest",
                         "look_for_leaves_nearest",
                         "look_for_nature_nearest",
-                        "look_for_web_nearest",
-                        "stay_in_web",
-                        "look_for_log_random",
-                        "look_for_leaves_random",
-                        "look_for_nature_random",
-                        "look_for_web_random"
+                        "look_for_web_nearest"
+                        //"stay_in_web",
                     ]}
-                },  
-                //---------------------------------    
-                // End of Refactor Events
-                //---------------------------------            
-                "can_jump_high_and_no_gravity": {"add":{"component_groups":["jump_high","gravity_off"]}},
-                "can_jump_normal_and_gravity": {"add":{"component_groups":["jump_normal","gravity_on"]}},
-                "can_jump_high": {"add":{"component_groups":["jump_high"]}},
-                "can_jump_normal": {"add":{"component_groups":["jump_normal"]}},
-                "can_hover_in_web": {"add":{"component_groups":["jump_low"]}},
-                //---------------------------------    
-                // End of Refactor Events
-                //---------------------------------    
-                // Major Script Events - Adult
-                //---------------------------------            
-                "make_a_web": {  
-                    "sequence":[
-                        {
-                            "remove":{"component_groups":["look_for_leaves_nearest","look_for_nature_nearest"]},
-                            "add":{"component_groups":["fake_timer","gravity_off","jump_low"]}
-                        },
-                        {"queue_command": {"command":["scriptevent tree_spider:placeWeb"]}},
-                        {"add":{"component_groups":["stay_in_web_delay"]}}
-                    ]               
                 },
-                "enter_web":{
-                    "sequence":[
-                        {
-                            "add":{"component_groups":["fake_timer","gravity_off","jump_low"]},
-                            "remove":{"component_groups":["look_for_web_nearest","look_for_web_random"]}                    
-                        },
-                        {"queue_command": {"command":["scriptevent tree_spider:enterWeb adult"]}},
-                        {"add":{"component_groups":["stay_in_web_delay"]}}
-                    ]
-                },                
-                "expand_web": {                
-                    "queue_command": {"command":["scriptevent tree_spider:expandWeb"]},
-                    "add":{"component_groups":["stay_in_web_delay","mark_variant_13"]}
-                },
+                */   
                 //---------------------------------            
                 // End - Major Script Events - Adult
                 //---------------------------------            
                 // Adult Search Activity Control
-                //---------------------------------            
-                "look_for_log_nearest_start": {  
-                    "queue_command": {"command":["scriptevent chatOnly:EntityActivity §6*look_for_log_nearest_start"]}, 
-                    "add":{"component_groups":["look_for_log_nearest","look_for_log_nearest_timer","gravity_on"]}
-                }, 
-                "look_for_log_random_start": {  
-                    "queue_command": {"command":["scriptevent chatOnly:EntityActivity §6*look_for_log_random_start"]}, 
-                    "add":{"component_groups":["look_for_log_random","look_for_log_random_timer","gravity_on"]}
-                }, 
-                //---------------------------------            
-                "look_for_leaves_nearest_start": {                   
-                    "queue_command": {"command":["scriptevent chatOnly:EntityActivity §e*look_for_leaves_nearest_start"]},
-                    "add":{"component_groups":["look_for_leaves_nearest","look_for_leaves_nearest_timer","gravity_off"]}
-                },
-                "look_for_leaves_random_start": { 
-                    "queue_command": {"command":["scriptevent chatOnly:EntityActivity §e*look_for_leaves_random_start"]},  
-                    "add":{"component_groups":["look_for_leaves_random","look_for_leaves_random_timer","gravity_of"]}
-                },
-                //---------------------------------            
-                "look_for_nature_nearest_start": {              
-                    "queue_command": {"command":["scriptevent chatOnly:EntityActivity look_for_nature_nearest_start"]}, 
-                    "add":{"component_groups":["look_for_nature_nearest","look_for_nature_nearest_timer","gravity_on"]}
-                },
-                "look_for_nature_random_start": {              
-                    "queue_command": {"command":["scriptevent chatOnly:EntityActivity look_for_nature_random_start"]}, 
-                    "add":{"component_groups":["look_for_nature_random","look_for_nature_random_timer","gravity_on"]}
-                },
-                // TODO: keep looking for now... working on timing and amount of webs...
-                "look_for_nature_nearest_end": {// need to remove move_to_block before change to wander
-                    "sequence": [
-                        {"remove":{"component_groups":["look_for_nature_nearest","look_for_nature_random"]}},
-                        {"trigger":"wander_around_start"}
-                    ]
-                },
-                //---------------------------------          
-                "look_for_web_nearest_start": {              
-                    "queue_command": {"command":["scriptevent chatOnly:EntityActivity §6*look_for_web_nearest_start"]},
-                    "add":{"component_groups":["look_for_web_nearest","look_for_web_nearest_timer"]}
-                },                
-                "look_for_web_random_start": {              
-                    "queue_command": {"command":["scriptevent chatOnly:EntityActivity §6*look_for_web_random_start"]},
-                    "add":{"component_groups":["look_for_web_random","look_for_web_random_timer"]}
-                }, 
+                //---------------------------------
+                
+                "{{#blockTypes}}": {
+                    "{{#blockScopes}}": {
+                        "look_for_{{type}}_{{scope}}_start":  {
+                            "add": {
+                                "component_groups": [
+                                    "gravity_on","jump_normal",
+                                    "look_for_movement",
+                                    "avoid_other_spiders_and_eggs",
+                                    "environment_sensor_non_web",
+                                    "look_for_{{type}}_{{scope}}",
+                                    "look_for_{{type}}_{{scope}}_timer"
+                                ]
+                            }
+                        }
+                    }
+                },                                
                 //---------------------------------          
                 "stay_in_web_start":{
-                    "queue_command": {"command":["scriptevent chatOnly:EntityActivity §b*stay_in_web_start"]},
-                    "add":{"component_groups":["stay_in_web","stay_in_web_timer","gravity_off","jump_low"]}
-                },               
-                "stay_in_web_end": {     
-                    "sequence": [ 
-                        {"queue_command": {"command":["scriptevent chatOnly:EntityActivity §b*stay_in_web_end"]}},
-                        {"remove":{"component_groups":["stay_in_web"]}},
-                        {   
-                            "randomize": [   
-                                {"weight":70,"trigger":"stay_in_web_choose_next"},  
-                                {"weight":30,"add":{"component_groups":["lay_egg_sac"]}}
-                            ]
-                        }
+                    "sequence":[
+                        {"add":{"component_groups":["gravity_off_sans_collision","jump_no","movement_no"]}},
+                        {"add":{"component_groups":["stay_in_web","stay_in_web_timer","avoid_eggs"]}},
+                        {"queue_command": {"command":["scriptevent chatOnly:EntityActivity §2STAYING IN WEB"]}}
+                    ]
+                },
+                "stay_in_web_end": {   
+                    "randomize": [   
+                        {"weight":50,"trigger":"stay_in_web_choose_next"},  
+                        {"weight":50,"add":{"component_groups":["lay_egg_sac"]}}
                     ]
                 },                
                 //---------------------------------            
-                "lay_egg_sac_end":{
-                    "sequence":[
-                        {"queue_command": {"command":["scriptevent registerSB:EntityActivity §gEggs Laid"]}}, 
-                        {"remove":{"component_groups":["lay_egg_sac"]}},
-                        {"trigger":"stay_in_web_choose_next"}
-                    ]                    
-                },
+                "lay_egg_sac_end":{"remove":{"component_groups":["lay_egg_sac"]},"trigger":"wander_around_start"},
                 //---------------------------------            
                 "stay_in_web_choose_next": {
-                    "sequence":[
-                        {"add":{"component_groups":["gravity_on","jump_normal"]}},
-                        {
-                        "randomize": [   
-                            {"weight":40,"trigger":"wander_around_start"},  
-                            {"weight":10,"trigger":"look_for_log_random_start"},
-                            {"weight":10,"trigger":"look_for_nature_random_start"},  
-                            {"weight":10,"trigger":"look_for_web_random_start"},  
-                            {"weight":30,"trigger":"expand_web"}   
-                        ]        
-                        }
-                    ]   
+                    "randomize": [   
+                        {"weight":60,"trigger":"wander_around_start"},  
+                        {"weight":30,"trigger":"expand_web"},
+                        {"weight":10,"trigger":"stay_in_web_start"}
+                        
+                    ]        
                 }, 
                 //---------------------------------          
-                "wander_around_start": { 
-                    "sequence":[
-                        {"queue_command": {"command":["scriptevent chatOnly:EntityActivity §f*wander_around_start"]}},
-                        {"trigger":"remove_move_to_block"},
-                        {"add":{"component_groups":["wander_around","wander_around_timer","gravity_on","jump_normal"]}}
+                "wander_around_start": {"add":{"component_groups":["wander_around","wander_around_timer","avoid_other_spiders_and_eggs"]}},
+                "wander_around_end": {   
+                    "randomize": [
+                        {"weight":60,"trigger":"look_for_web_nearest_start"}, 
+                        {"weight":20,"trigger":"wander_around_start"},
+                        {"weight":20,"trigger":"look_for_log_nearest_start"}
                     ]
-                },
-                "wander_around_end": {
-                    "sequence":[
-                        {"queue_command": {"command":["scriptevent chatOnly:EntityActivity §f*wander_around_end"]}},
-                        {"remove":{"component_groups":["wander_around"]}},
-                        {   
-                            "randomize": [
-                                {"weight":30,"trigger":"look_for_web_random_start"}, 
-                                {"weight":25,"trigger":"look_for_log_random_start"},
-                                {"weight":25,"trigger":"look_for_nature_random_start"},
-                                {"weight":20,"trigger":"wander_around_start"}
-                            ]
-                        }
-                    ]                    
                 },
                 //---------------------------------            
                 // End of Adult Search Activity Control
@@ -824,78 +805,71 @@
                 // Babies R Us - born from egg in a web
                 //---------------------------------
                 "minecraft:entity_born": {                    
-                    "add":{"component_groups":["spider_baby","baby_spider_calm","entity_born_script_event_delay"]}
+                    "add":{"component_groups":["spider_baby","baby_spider_calm","entity_born_script_event_delay_timer","avoid_eggs"]}
                 },
-                "entity_born_script_event": { //because of the multiple script events..
-                    "queue_command": {"command":["scriptevent registerSB:Activity §bBorn"]},
-                    "add":{"component_groups":["baby_wander_around_delay"]}
+                "entity_born_script_event": { //because of the multiple script events in same tick..
+                    "queue_command": {"command":["scriptevent registerSB:EntityAlert §bBorn"]},
+                    "add":{"component_groups":["baby_wander_around_delay_timer"]}
                 },                
-                "minecraft:ageable_grow_up": {  
+                "baby_ageable_grow_up": {  
                     "sequence":[
-                        {"queue_command": {"command":["scriptevent registerSB:Activity §bPuberty"]}},
+                        {
+                            "filters":{"test":"bool_property","domain":"bit:debug", "value":true},
+                            "queue_command": {"command":["scriptevent registerSB:EntityAlert §bPuberty"]}
+                        },
                         {"remove":{"component_groups":["spider_baby"]}},
-                        {"add":{"component_groups":["spider_adult","become_adult_activity_delay"]}}                        
+                        {"add":{"component_groups":["spider_adult","become_adult_activity_delay_timer"]}}                        
                     ]
                 },
                 "become_adult_activity_set": {
-                    "add":{"component_groups":["spider_calm","look_for_log_nearest_start_delay"]}
+                    "add":{"component_groups":["adult_spider_calm","look_for_log_nearest_start_delay_timer"]}
                 },                
                 "baby_go_attack": {
-                    "sequence":[
-                        {"queue_command": {"command":["scriptevent register:BabyActivity §c*baby attacked"]}},
+                    "sequence":[ 
                         {
-                            "remove": {"component_groups":["baby_spider_calm","baby_look_for_web"]},
-                            "add": {"component_groups":["baby_spider_attack","fake_timer","gravity_on","jump_normal","baby_wander_around"]}
+                            "filters":{"test":"bool_property","domain":"bit:debug", "value":true},
+                            "queue_command": {"command":["scriptevent chatOnly:EntityActivity §c*Baby attacked"]}
+                        },
+                        {
+                            "remove": {"component_groups":["baby_spider_calm"]},
+                            "add": {"component_groups":["baby_spider_attack","fake_timer","avoid_eggs"]}
                         }
                     ]
                 },
                 "baby_become_calm": {
-                    "sequence":[
-                        {"queue_command": {"command":["scriptevent register:BabyActivity §d*baby calmed"]}},                        
+                    "sequence":[ 
+                        {
+                            "filters":{"test":"bool_property","domain":"bit:debug", "value":true},
+                            "queue_command": {"command":["scriptevent chatOnly:EntityActivity §d*baby calmed"]}
+                        },                        
                         {
                             "remove":{"component_groups":["baby_spider_attack"]},
-                            "add":{"component_groups":["baby_spider_calm"]}
+                            "add":{"component_groups":["baby_spider_calm","avoid_eggs"]}
                         },
                         {"trigger":"baby_look_for_web_start"}
                     ]
                 },                                                                                                   
                 "baby_enter_web":{
-                    "sequence":[
-                        {
-                            "add":{"component_groups":["fake_timer","gravity_off","jump_low"]},
-                            "remove":{"component_groups":["baby_look_for_web"]}                    
-                        },
-                        {"queue_command": {"command":["scriptevent tree_spider:enterWeb baby"]}},
-                        {"add":{"component_groups":["baby_stay_in_web_delay"]}}
-                    ]
+                    "queue_command": {"command":["scriptevent tree_spider:enterWeb baby"]}
+                    //,"add":{"component_groups":["baby_stay_in_web_delay_timer","gravity_off","jump_low"]}
                 }, 
-                "baby_look_for_web_start": {              
-                    "queue_command": {"command":["scriptevent registerSB:BabyActivity §6Look for Web"]},
-                    "add":{"component_groups":["baby_look_for_web","baby_look_for_web_timer"]}
+                "baby_look_for_web_start": {
+                    "add":{"component_groups":[
+                        "baby_look_for_web",
+                        "baby_look_for_web_timer",
+                        "look_for_movement",
+                        "avoid_eggs",
+                        "environment_sensor_non_web"                        
+                    ]}
                 },
-                "baby_stay_in_web_start":{
-                    "remove":{"component_groups":["baby_wander_around"]},
-                    "add":{"component_groups":["baby_stay_in_web","baby_stay_in_web_timer","gravity_off","jump_low"]}
-                },
-                "baby_stay_in_web_end": {     
-                    "sequence": [                         
-                        {"remove":{"component_groups":["baby_stay_in_web"]}},
-                        {"trigger":"baby_wander_around_start"}
-                    ]
-                },
-                "baby_wander_around_start": { 
-                    "sequence":[
-                        {"queue_command": {"command":["scriptevent registerSB:BabyActivity §dWander_Around"]}},                        
-                        {"add":{"component_groups":["baby_wander_around","baby_wander_around_timer","gravity_on","jump_normal"]}}
-                    ]
-                },
+                //yes same stay_in_web
+                "baby_stay_in_web_start":{"add":{"component_groups":["stay_in_web","baby_stay_in_web_timer","avoid_eggs"]}},
+                "baby_stay_in_web_end": {"trigger":"baby_wander_around_start"},
+                //yes same wander_around
+                "baby_wander_around_start": { "add":{"component_groups":["wander_around","baby_wander_around_timer","avoid_eggs"]} },
                 "baby_wander_around_end": {
                     "randomize": [
-                        {
-                            "weight":50,
-                            "remove":{"component_groups":["baby_wander_around"]},
-                            "trigger":"baby_look_for_web_start"
-                        }, 
+                        {"weight":50,"trigger":"baby_look_for_web_start"}, 
                         {"weight":50,"add":{"component_groups":["baby_wander_around_timer"]}}
                     ]                 
                 },
@@ -903,19 +877,26 @@
                 // End Search Activity Control
                 //---------------------------------                                                                  
                 //---------------------------------            
-                //debugging tool
+                //debugging tool - stick
                 "say_my_state":{
+                    "filters":{"test":"bool_property","domain":"bit:debug", "value":true},
                     "sequence": [
                         {"filters":{"test":"is_mark_variant","value":0},"queue_command":{"command":["scriptevent debug:Stick §d*I am Wandering"]}},
-                        {"filters":{"test":"is_mark_variant","value":1},"queue_command":{"command":["scriptevent debug:Stick §dLooking for a log"]}},
-                        {"filters":{"test":"is_mark_variant","value":10},"queue_command":{"command":["scriptevent debug:Stick §dLooking for leaf in tree"]}},
-                        {"filters":{"test":"is_mark_variant","value":2},"queue_command":{"command":["scriptevent debug:Stick §dLooking for leaf anywhere"]}},
-                        {"filters":{"test":"is_mark_variant","value":3},"queue_command":{"command":["scriptevent debug:Stick §dLooking for nature"]}},
-                        //{"filters":{"test":"is_mark_variant","value":4},"queue_command":{"command":["scriptevent debug:Stick §dLooking for a place"]}},
-                        //{"filters":{"test":"is_mark_variant","value":5},"queue_command":{"command":["scriptevent debug:Stick §dLooking for a web"]}},
-                        {"filters":{"test":"is_mark_variant","value":11},"queue_command":{"command":["scriptevent debug:Stick §dLooking for a web"]}},
-                        {"filters":{"test":"is_mark_variant","value":12},"queue_command":{"command":["scriptevent debug:Stick §dStaying in my web"]}},
-                        {"filters":{"test":"is_mark_variant","value":13},"queue_command":{"command":["scriptevent debug:Stick §dExpanding a web"]}}
+
+                        {"filters":{"test":"is_mark_variant","value":1},"queue_command":{"command":["scriptevent debug:Stick §dLooking for nearest log"]}},
+                        {"filters":{"test":"is_mark_variant","value":2},"queue_command":{"command":["scriptevent debug:Stick §dLooking for random log"]}},
+
+                        {"filters":{"test":"is_mark_variant","value":3},"queue_command":{"command":["scriptevent debug:Stick §dLooking for nearest leaves"]}},
+                        {"filters":{"test":"is_mark_variant","value":4},"queue_command":{"command":["scriptevent debug:Stick §dLooking for random leaves"]}},
+
+                        {"filters":{"test":"is_mark_variant","value":5},"queue_command":{"command":["scriptevent debug:Stick §dLooking for nearest nature"]}},
+                        {"filters":{"test":"is_mark_variant","value":6},"queue_command":{"command":["scriptevent debug:Stick §dLooking for random nature"]}},
+                        
+                        {"filters":{"test":"is_mark_variant","value":7},"queue_command":{"command":["scriptevent debug:Stick §dLooking for nearest web"]}},
+                        {"filters":{"test":"is_mark_variant","value":8},"queue_command":{"command":["scriptevent debug:Stick §dLooking for random web"]}},
+
+                        {"filters":{"test":"is_mark_variant","value":12},"queue_command":{"command":["scriptevent debug:Stick §dChillin' in my web"]}}
+                        //{"filters":{"test":"is_mark_variant","value":13},"queue_command":{"command":["scriptevent debug:Stick §dExpanding my web"]}}
                     ]
                 }               
             }
