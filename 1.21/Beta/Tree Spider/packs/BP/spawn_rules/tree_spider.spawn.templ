@@ -32,14 +32,14 @@
           "minecraft:spawns_on_block_filter": "dw623:super_web_block"  
         },                    
         //==========================================================================================
-        //savannah - since they seem to have a harder time to get to the leaves
+        //savanna - since they seem to have a harder time to get to the leaves
         { 
           "minecraft:spawns_on_surface": {},
           "minecraft:distance_filter": {"min": 8,"max": 32},
           "minecraft:weight": {"default":100 },//3,"rarity": 2},
           "minecraft:density_limit": {"surface":5,"underground":0},        
-          "minecraft:biome_filter": {"test":"has_biome_tag","value":"savanna"},
-          "minecraft:spawns_on_block_prevented_filter": "minecraft:grass"                        
+          "minecraft:spawns_on_block_prevented_filter": "minecraft:grass_block",                        
+          "minecraft:biome_filter": {"test":"has_biome_tag","value":"savanna"}
         },
         //==========================================================================================
         //cherry - should be less cause too pretty
@@ -108,6 +108,7 @@
           {
             "any_of": [
               {"test":"has_biome_tag","value":"bamboo"},            
+              {"test":"has_biome_tag","value":"bamboo_jungle"}, 
               {"test":"has_biome_tag","value":"cold_taiga"},
               {"test":"has_biome_tag","value":"extreme_hills_plus_trees"},            
               {"test":"has_biome_tag","value":"grove"},
@@ -124,7 +125,7 @@
               //{"test":"has_biome_tag","value":"mega"},
             ]
           },
-          "minecraft:spawns_on_block_prevented_filter": "minecraft:grass"                    
+          "minecraft:spawns_on_block_prevented_filter": "minecraft:grass_block"                    
         }
       ]
     }
