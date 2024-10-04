@@ -1,18 +1,15 @@
 //@ts-check
-import { world, system, TicksPerSecond, Entity, ScoreboardObjective, BiomeTypes, EntityInitializationCause } from "@minecraft/server";
-import { dev, alertLog, watchFor, pack, chatLog, dynamicVars } from './settings.js';
+import { world, system, TicksPerSecond, Entity, ScoreboardObjective } from "@minecraft/server";
+import { dev, alertLog, watchFor,  dynamicVars } from './settings.js';
 import { ScoreboardLib } from "./commonLib/scoreboardClass.js";
-import { stalledEntityCheckAndFix, counts, webRegister, lastTickRegister } from './fn-stable.js';
+import { stalledEntityCheckAndFix, counts, webRegister } from './fn-stable.js';
 import { DynamicPropertyLib } from "./commonLib/dynamicPropertyClass.js";
 import { globalConstantsLib } from "./commonLib/globalConstantsClass.js";
-import { Vector3Lib } from "./commonLib/vectorClass.js";
-import { EntityLib } from "./commonLib/entityClass.js";
 //==============================================================================
 const sbName_load = dev.debugScoreboardName + '_load_tick';
 const sbName_spawn = dev.debugScoreboardName + '_spawn_tick';
 let sb_load = world.scoreboard.getObjective(sbName_load);
 let sb_spawn = world.scoreboard.getObjective(sbName_spawn);
-const biomes = BiomeTypes.getAll();
 //==============================================================================
 export function beforeEvents_worldInitialize () {
 
@@ -99,33 +96,7 @@ export function afterEvents_entityLoad () {
         }
     });
 }
-//==============================================================================
-export function afterEvents_entitySpawn () {
-    //Load (195 ticks or so )is after Spawn    
-    //if (dev.debugLoadAndSpawn) {
-    alertLog.success("§aInstalling afterEvents.entitySpawn §c(debug mode : tick scoreboard)", dev.debugSubscriptions);
 
-    world.afterEvents.entitySpawn.subscribe((event) => {
-        if (event.entity && event.entity.typeId === watchFor.typeId) {
-            const entity = event.entity;
-
-            if (dev.debugGamePlay && event.cause == EntityInitializationCause.Spawned) {
-                const inBlock = EntityLib.currentBlock(entity);
-                const onBlock = inBlock?.below();
-                const biome = getCurrentBiome(entity);
-                const msg = `§g${entity.nameTag || entity.id} Loaded @ ${Vector3Lib.toString(entity.location, 0, true)} in Block ${inBlock?.typeId || '?'} on Block ${onBlock?.typeId || '?'} in Biome ${biome || '?'}`;
-                alertLog.success(msg, true);
-                chatLog.success(msg, true);
-                // }
-                // else if (biome) {
-                //     const msg = `§g${entity.nameTag || entity.id} Loaded @ ${Vector3Lib.toString(entity.location, 0, true)} in Biome ${biome}`;
-                //     alertLog.success(msg, dev.debugGamePlay);
-                // }
-            }
-
-        }
-    });
-}
 //==============================================================================
 export function afterEvents_entityDie () {
     // Does NOT mean Died
@@ -173,18 +144,4 @@ function welcomeBack (entity, sbUpdate) {
     webRegister(entity);
     DynamicPropertyLib.add(entity, dynamicVars.websCreated, 0);  //initializes if undefined
     if (dev.debugLoadAndSpawn) sbUpdate?.setScore(entity, system.currentTick);
-}
-/**
- * 
- * @param {Entity} entity 
- * @returns {string | undefined}
- */
-function getCurrentBiome (entity) {
-    const { dimension, location } = entity;
-    for (const currentBiome of biomes) {
-        // world.sendMessage(currentBiome.id);
-        const biome = dimension.findClosestBiome(location, currentBiome.id, { boundingSize: { x: 64, y: 64, z: 64 } });
-        if (biome != undefined) return currentBiome.id;
-    }
-    return undefined;
 }

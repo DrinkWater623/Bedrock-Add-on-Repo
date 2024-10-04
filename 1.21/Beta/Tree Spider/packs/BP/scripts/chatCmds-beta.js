@@ -9,8 +9,9 @@ import { MinecraftEffectTypes } from './commonLib/vanillaData.js';
 import { ScoreboardLib } from "./commonLib/scoreboardClass.js";
 import { counts, stalledEntityCheckAndFix } from "./fn-stable.js";
 import { Vector3Lib } from "./commonLib/vectorClass.js";
+import { getCurrentBiomeList } from "./fn-beta.js";
 const cmdList = [
-    'cls', 'count',
+    'cls', 'count','biomes',
     'debug gp', 'debug alert', 'debug activity',
     "replace all",
     "reset log",
@@ -58,6 +59,15 @@ function processCommand (player, command) {
     }
     if (command === "cls") {
         player.sendMessage(`${'\n'.repeat(40)}`);
+        return;
+    }
+
+    if (command === "biomes") {
+        system.runTimeout(()=>{
+            const biomes = getCurrentBiomeList(player)
+            player.sendMessage(`Biomes: ${biomes.replaceAll(',',', ')}`);
+
+        },4)
         return;
     }
 

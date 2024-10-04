@@ -5,7 +5,8 @@ import * as subsBeta from './subscribes-beta.js'
 //==============================================================================
 function main_beta () {
     subsBeta.afterEvents_scriptEventReceive ();
-    subsBeta.chatSend();    
+    subsBeta.chatSend();
+    subsBeta.afterEvents_entitySpawn();    
 }
 
 //==============================================================================

@@ -1,5 +1,5 @@
 //@ts-check
-import { system, Entity } from "@minecraft/server";
+import { system, Entity ,BiomeTypes} from "@minecraft/server";
 import { BlockLib as BlockLib } from './commonLib/blockClass.js'; //beta parts used
 import { Vector3Lib } from './commonLib/vectorClass.js';
 import { dev, chatLog, entityEvents, watchFor } from './settings.js';
@@ -97,3 +97,38 @@ export function expandWeb (entity) {
         }, 1);
     }
 }
+//===================================================================
+/**
+ * 
+ * @param {Entity} entity 
+ * @returns {string | undefined}
+ */
+export function getCurrentBiome (entity) {
+    const biomes = getCurrentBiomeArray(entity).sort((a, b) => a.length - b.length).reverse()    
+    return biomes[0];
+}
+/**
+ * 
+ * @param {Entity} entity 
+ * @returns {string[]}
+ */
+export function getCurrentBiomeArray (entity) {
+    const biomes = BiomeTypes.getAll();
+    const { dimension, location } = entity;
+    let list=[]
+    for (const currentBiome of biomes) {
+        // world.sendMessage(currentBiome.id);
+        const biome = dimension.findClosestBiome(location, currentBiome.id, { boundingSize: { x: 64, y: 64, z: 64 } });
+        if (biome != undefined) list.push(currentBiome.id)
+    }
+    return list;
+}
+/**
+ * 
+ * @param {Entity} entity 
+ * @returns {string}
+ */
+export function getCurrentBiomeList (entity) {    
+    return getCurrentBiomeArray(entity).sort((a, b) => a.length - b.length).reverse().toString()
+}
+//===================================================================

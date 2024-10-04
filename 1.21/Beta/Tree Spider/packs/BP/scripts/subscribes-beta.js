@@ -1,11 +1,13 @@
 //@ts-check
-import { world, system } from "@minecraft/server";
-import { alertLog, dev, watchFor, chatLog ,pack} from './settings.js';
+import { world, system, EntityInitializationCause } from "@minecraft/server";
+import { alertLog, dev, watchFor, chatLog, entityEvents } from './settings.js';
 import { chatSend_before_fn } from './chatCmds-beta.js';
-import { enterWeb, expandWeb } from './fn-beta.js';
+import { enterWeb, expandWeb, getCurrentBiome, getCurrentBiomeList } from './fn-beta.js';
 import { placeWeb, newEgg, lastTickRegister } from './fn-stable.js';
 import { Vector3Lib } from "./commonLib/vectorClass.js";
-//import { ScoreboardLib } from "./commonLib/scoreboardClass.js";
+import { EntityLib } from "./commonLib/entityClass.js";
+import { DynamicPropertyLib } from "./commonLib/dynamicPropertyClass.js";
+
 //==============================================================================
 export function chatSend () {
     alertLog.success(`§aInstalling Chat Commands (before)§r - §6Beta  §c(Debug Mode)§r`, dev.debugSubscriptions);
@@ -32,14 +34,14 @@ export function afterEvents_scriptEventReceive () {
             if (id === `${watchFor.family}:newEgg`) { newEgg(entity); return; }
         }
 
-        if (id.startsWith('register')) {            
+        if (id.startsWith('register')) {
             lastTickRegister(entity);
         }
 
         if (id === 'registerSB:EntityAlert') { dev.debugScoreboard?.addScore(message, 1); return; }
 
         //no sb for message after this point - add entity id to message
-        const note = `${entity.nameTag || entity.id} ${message} @ ${Vector3Lib.toString(entity.location,0,true)}`;
+        const note = `${entity.nameTag || entity.id} ${message} @ ${Vector3Lib.toString(entity.location, 0, true)}`;
 
         //THis one has Reached Goal - so proof, it did something
         if (id === 'register:EntityActivity') { chatLog.log(note, dev.debugEntityActivity); return; }
@@ -51,6 +53,46 @@ export function afterEvents_scriptEventReceive () {
 
         //if (dev.debugEntityActivity || dev.debugEntityAlert || dev.debugGamePlay)
         chatLog.error(`Unhandled Entity JSON Communication:\nId: ${id}\nMessage: ${note}`, true);
+    });
+}
+//==============================================================================
+export function afterEvents_entitySpawn () {
+    //Load (195 ticks or so )is after Spawn    
+    //if (dev.debugLoadAndSpawn) {
+    alertLog.success("§aInstalling afterEvents.entitySpawn §c(debug mode : tick scoreboard)", dev.debugSubscriptions);
+
+    world.afterEvents.entitySpawn.subscribe((event) => {
+        if (event.entity && event.entity.typeId === watchFor.typeId) {
+            const entity = event.entity;
+            const inBlock = EntityLib.currentBlock(entity);
+            const onBlock = inBlock?.below();
+            if (!entity.getDynamicProperty("spawns")) {
+
+                //because I cannot get the Spawn Rules to do what I want... 
+                //I want to be able to spawn in short grass, and such, just not on air/grass_block
+                if (inBlock?.typeId=="minecraft:air" && onBlock?.typeId=="minecraft:grass_block") {
+                    entity.triggerEvent(entityEvents.despawnEventName)
+                    return
+                }
+
+                //in beta because of Biome Check
+                if (dev.debugGamePlay && event.cause == EntityInitializationCause.Spawned) {
+                    const biome = getCurrentBiomeList(entity).replaceAll('minecraft:', '');
+                    const msg = `§g${entity.nameTag || entity.id} Loaded @ ${Vector3Lib.toString(entity.location, 0, true)} §bin ${inBlock?.typeId.replace('minecraft:', '') || '?'} §don ${onBlock?.typeId.replace('minecraft:', '') || '?'} §6in Biomes: ${biome || '?'}`;
+                    alertLog.success(msg, true);
+                    chatLog.success(msg, true);
+                }
+            }
+            else {
+                DynamicPropertyLib.add(entity, "spawns", 1);
+                if (dev.debugGamePlay && event.cause == EntityInitializationCause.Spawned) {
+                    const biome = getCurrentBiomeList(entity).replaceAll('minecraft:', '');
+                    const msg = `§g${entity.nameTag || entity.id} Re-Loaded @ ${Vector3Lib.toString(entity.location, 0, true)} §bin ${inBlock?.typeId.replace('minecraft:', '') || '?'} §don ${onBlock?.typeId.replace('minecraft:', '') || '?'} §6in Biomes: ${biome || '?'}`;
+                    alertLog.success(msg, true);
+                    chatLog.success(msg, true);
+                }
+            }
+        }
     });
 }
 //==============================================================================

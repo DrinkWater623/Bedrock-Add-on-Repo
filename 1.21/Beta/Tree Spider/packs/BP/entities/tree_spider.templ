@@ -384,23 +384,13 @@
                         //,"on_reach": [{"event":"non_event","target":"self"}] 
                         //FIXME: for some reason, placeWeb event was still going -see if real bug later  
                     },
-                    //"minecraft:physics":{"has_collision":false,"has_gravity":false},
-                    //"minecraft:jump.static":{"jump_power":0.1},"minecraft:variant": {"value": 0},                    
+                    "minecraft:physics":{"has_collision":false,"has_gravity":false},
+                    "minecraft:jump.static":{"jump_power":0},"minecraft:variant": {"value": 0},                    
                     "minecraft:environment_sensor":{
                         "triggers":[                                               
-                            {
-                                /* since cannot get pushed out anymore
-                                    then if in air, web is gone, so find another (? or start to wander)
-                                    problem, if need to get away because next to egg, it tweeks.. 
-                                    so do wander instead of nearest web
-                                */
+                            {                                
                                 "event":"wander_around_start", 
-                                "filters":{
-                                    "all_of":[                                        
-                                        { "test": "is_mark_variant", "value": 12 }, //already in state
-                                        { "test": "in_block","value": "minecraft:air" }
-                                    ]
-                                }                        
+                                "filters":{ "test": "in_block","value": "minecraft:air" }                        
                             }
                         ]
                     }
@@ -429,10 +419,7 @@
                         "tick_interval": 6000,"speed_multiplier": 0.8,"goal_radius": 1,"search_range": 32,"search_height":16
                     },                      
                     "minecraft:physics":{"has_collision":true,"has_gravity":true},
-                    "minecraft:jump.static": {"jump_power": 1.0}
-                },
-                //--------------------------------- 
-                "environment_sensor_non_web":{
+                    "minecraft:jump.static": {"jump_power": 1.0},
                     "minecraft:environment_sensor":{
                         "triggers":[                                               
                             {
@@ -442,7 +429,7 @@
                                     "all_of":[
                                         { "test": "is_variant", "operator": "!=", "value": 2 }, //already in state
                                         { "test": "is_mark_variant", "operator": "!=", "value": 12 }, //stay in web
-                                        { "test":"is_underground","value":true },
+                                        { "test": "is_underground","value":true },
                                         { "test": "in_block","operator":"!=","value": "minecraft:web" },
                                         { "test": "in_block","operator":"!=","value": "minecraft:tall_grass" } //TODO: list other tall plants
                                     ]
@@ -460,24 +447,59 @@
                                 }
                             },
                             { 
-                                "event":"can_hover_in_web",
+                                "event":"stay_in_web_start",
                                 "filters":{"test":"in_block","operator":"==","value":"minecraft:web"} 
                             }
                         ]
                     }
-                },                                
+                },
+                //--------------------------------- 
+                // "environment_sensor_non_web":{
+                //     "minecraft:environment_sensor":{
+                //         "triggers":[                                               
+                //             {
+                //                 //so can reach leaves better
+                //                 "event":"can_jump_high",
+                //                 "filters":{
+                //                     "all_of":[
+                //                         { "test": "is_variant", "operator": "!=", "value": 2 }, //already in state
+                //                         { "test": "is_mark_variant", "operator": "!=", "value": 12 }, //stay in web
+                //                         { "test": "is_underground","value":true },
+                //                         { "test": "in_block","operator":"!=","value": "minecraft:web" },
+                //                         { "test": "in_block","operator":"!=","value": "minecraft:tall_grass" } //TODO: list other tall plants
+                //                     ]
+                //                 }                        
+                //             },
+                //             {
+                //                 "event":"can_jump_normal",
+                //                 "filters":{
+                //                     "all_of":[
+                //                         { "test": "is_variant", "operator": "!=", "value": 1 },
+                //                         { "test": "is_mark_variant", "operator": "!=", "value": 12 }, //stay in web
+                //                         { "test": "in_block","operator":"!=","value": "minecraft:web" },
+                //                         { "test":"is_underground", "value":false }
+                //                     ]
+                //                 }
+                //             },
+                //             { 
+                //                 "event":"stay_in_web_start",
+                //                 "filters":{"test":"in_block","operator":"==","value":"minecraft:web"} 
+                //             }
+                //         ]
+                //     }
+                // },                                
                 "name_tagged":{"minecraft:persistent":{},"minecraft:despawn":{"filters":{"test":"has_nametag","value":false}}},
                 //--------------------------------- 
                 //Movement
                 "gravity_off_sans_collision":{
                     "minecraft:physics":{"has_collision":false,"has_gravity":false} 
                 },
-                "gravity_on":{
-                    "minecraft:physics":{"has_collision":true,"has_gravity":true} 
-                },
-                "gravity_off":{
-                    "minecraft:physics":{"has_collision":true,"has_gravity":false} 
-                },
+                // "gravity_on":{
+                //     "minecraft:physics":{"has_collision":true,"has_gravity":true} 
+                // },
+                // "gravity_off":{
+                //     "minecraft:physics":{"has_collision":true,"has_gravity":false} 
+                // },
                 //"in_web":{"minecraft:physics":{"has_collision":true,"has_gravity":false}},
                 "jump_high":{"minecraft:jump.static":{"jump_power":3},"minecraft:variant": {"value": 2}},
                 "jump_normal":{"minecraft:jump.static":{"jump_power":1},"minecraft:variant": {"value": 1}},
@@ -584,7 +606,7 @@
                 "minecraft:follow_range": {"value":8}, 
                 "minecraft:hurt_on_condition": {"damage_conditions":[{"filters":{"test":"in_lava","subject":"self","operator":"==","value":true},"cause":"lava","damage_per_tick":4}]},
                 "minecraft:pushable": {"is_pushable":true,"is_pushable_by_piston":true},
-                "minecraft:variant":{"value":0},
+                "minecraft:variant":{"value":0},                
                 "minecraft:environment_sensor":{
                     "triggers":[                                               
                         {
@@ -592,10 +614,11 @@
                             "event":"can_jump_high",
                             "filters":{
                                 "all_of":[
-                                    { "test":"is_underground","value":true },
                                     { "test": "is_variant", "operator": "!=", "value": 2 }, //already in state
+                                    { "test": "is_mark_variant", "operator": "!=", "value": 12 }, //stay in web
+                                    { "test": "is_underground","value":true },
                                     { "test": "in_block","operator":"!=","value": "minecraft:web" },
-                                    { "test": "in_block","operator":"!=","value": "minecraft:tall_grass" }
+                                    { "test": "in_block","operator":"!=","value": "minecraft:tall_grass" } //TODO: list other tall plants
                                 ]
                             }                        
                         },
@@ -603,14 +626,15 @@
                             "event":"can_jump_normal",
                             "filters":{
                                 "all_of":[
-                                    { "test":"is_underground", "value":false },
                                     { "test": "is_variant", "operator": "!=", "value": 1 },
-                                    { "test": "in_block","operator":"!=","value": "minecraft:web" }       
+                                    { "test": "is_mark_variant", "operator": "!=", "value": 12 }, //stay in web
+                                    { "test": "in_block","operator":"!=","value": "minecraft:web" },
+                                    { "test":"is_underground", "value":false }
                                 ]
                             }
                         },
                         { 
-                            "event":"can_hover_in_web",
+                            "event":"stay_in_web_start",
                             "filters":{"test":"in_block","operator":"==","value":"minecraft:web"} 
                         }
                     ]
@@ -713,7 +737,7 @@
                 //---------------------------------                            
                 "can_jump_high": {"add":{"component_groups":["jump_high"]}},
                 "can_jump_normal": {"add":{"component_groups":["jump_normal"]}},
-                "can_hover_in_web": {"add":{"component_groups":["jump_low"]}}, //also looks like slow descent
+                //"can_hover_in_web": {"add":{"component_groups":["jump_low"]}}, //also looks like slow descent
                 //---------------------------------    
                 // End of Refactor Events
                 //---------------------------------    
@@ -723,20 +747,17 @@
                     "sequence":[
                         {"add":{"component_groups":["gravity_off_sans_collision","jump_no","movement_no"]}},
                         {"queue_command": {"command":["scriptevent tree_spider:placeWeb"]}}
+                        //stay in web called by script event
                     ]
                 },
                 "enter_web":{                                        
                     "sequence":[
                         {"add":{"component_groups":["gravity_off_sans_collision","jump_no","movement_no"]}},
                         {"queue_command": {"command":["scriptevent tree_spider:enterWeb"]}}
+                        //stay in web called by script event
                     ]
                 },                
-                "expand_web": { 
-                    "sequence":[
-                        {"add":{"component_groups":["gravity_off_sans_collision","jump_no","movement_no"]}},
-                        {"queue_command": {"command":["scriptevent tree_spider:expandWeb"]}}
-                    ]
-                },
+                "expand_web": {"queue_command": {"command":["scriptevent tree_spider:expandWeb"]}},
                 //---------------------------------
                 /*                                
                 "remove_move_to_block": {
@@ -760,16 +781,18 @@
                 "{{#blockTypes}}": {
                     "{{#blockScopes}}": {
                         "look_for_{{type}}_{{scope}}_start":  {
-                            "add": {
-                                "component_groups": [
-                                    "gravity_on","jump_normal",
-                                    "look_for_movement",
-                                    "avoid_other_spiders_and_eggs",
-                                    "environment_sensor_non_web",
-                                    "look_for_{{type}}_{{scope}}",
-                                    "look_for_{{type}}_{{scope}}_timer"
-                                ]
-                            }
+                            "sequence":[
+                                {
+                                    "add": {
+                                        "component_groups": [                                            
+                                            "look_for_movement",
+                                            "avoid_other_spiders_and_eggs",                                            
+                                            "look_for_{{type}}_{{scope}}",
+                                            "look_for_{{type}}_{{scope}}_timer"
+                                        ]
+                                    }        
+                                }                                
+                            ]                            
                         }
                     }
                 },                                
@@ -857,17 +880,13 @@
                         {"trigger":"baby_look_for_web_start"}
                     ]
                 },                                                                                                   
-                "baby_enter_web":{
-                    "queue_command": {"command":["scriptevent tree_spider:enterWeb baby"]}
-                    //,"add":{"component_groups":["baby_stay_in_web_delay_timer","gravity_off","jump_low"]}
-                }, 
+                "baby_enter_web":{"queue_command":{"command":["scriptevent tree_spider:enterWeb baby"]}}, 
                 "baby_look_for_web_start": {
                     "add":{"component_groups":[
-                        "baby_look_for_web",
-                        "baby_look_for_web_timer",
                         "look_for_movement",
                         "avoid_eggs",
-                        "environment_sensor_non_web"                        
+                        "baby_look_for_web",
+                        "baby_look_for_web_timer"
                     ]}
                 },
                 //yes same stay_in_web
