@@ -1,0 +1,22 @@
+{
+    "anvil_from":[
+		{"input":"iron_block" },
+        {"input":"copper_block"}
+	],
+    "campfire":[
+		{"input":"rotten_flesh"		,"count":1 ,"output":"rotten_flesh_jerky"},
+		{"input":"spider_eye"		,"count":1 ,"output":"baked_spider_eye"}
+	],
+    "stonecutter":[
+		{"input":"iron_block"	,"count":1	,"output":"iron_block_anvil"  },
+        {"input":"copper_block"	,"count":1	,"output":"copper_block_anvil"  },
+		{"input":"magma"		,"count":16	,"output":"magma_rod"		    }
+	],
+    "charcoal_nuggets":[
+        {"input":"wooden_sword"},
+        {"input":"wooden_axe"},
+        {"input":"wooden_pickaxe"},
+        {"input":"wooden_shovel"},
+        {"input":"wooden_hoe"}
+    ]
+}

@@ -1,0 +1,32 @@
+{
+  "$files": {
+    "array": "wood_types",
+    "fileName": "./doors/from_planks_{{type}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shaped": {
+      "description": {
+        "identifier": "minecraft:{{type}}_door"
+      },
+      "tags": [
+        "crafting_table"
+      ],
+      "group": "wooden_door",
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:{{type}}_planks"
+        }
+      },
+      "result": {
+        "item": "minecraft:{{door > '' ? door : type+''}}_door",
+        "count": 12
+      }
+    }
+  }
+}

@@ -14,11 +14,11 @@ export const pack = {
 //Change this to change the entity
 export const dev = {
     debugAll: false,
-    debugCallBackEvents: true,
+    debugCallBackEvents: false,
     debugEntityAlert: true,
     debugGamePlay: true,
-    debugPackLoad: true,
-    debugSubscriptions: true
+    debugPackLoad: false,
+    debugSubscriptions: false
 };
 //==============================================================================
 //Change this to change the entity

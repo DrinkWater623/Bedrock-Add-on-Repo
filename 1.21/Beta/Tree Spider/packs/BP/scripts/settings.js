@@ -8,7 +8,7 @@ import { ConsoleAlert, ChatMsg } from "./commonLib/consoleClass";
 //==============================================================================
 export const pack = {
     packName: 'Tree Spider',
-    isLoadAlertsOn: false,
+    isLoadAlertsOn: true,
     hasChatCmd: -1,
     commandPrefix: "ts:",   
 };
@@ -24,10 +24,10 @@ export const dynamicVars = {
 //Change this to change the entity
 export const dev = {
     debugChatCmds: false,
-    debugGamePlay: true,
+    debugGamePlay: false,
     debugEntityActivity: false,
     debugEntityAlert: false,
-    //--
+    //--before turn off testing, get despawn position to see if distance is why
     debugPackLoad: false,
     debugSubscriptions: false,
     debugLoadAndSpawn: false,
@@ -60,8 +60,8 @@ export const watchFor = {
     stayInWebEventName: 'stay_in_web_start',
     wanderEventName: 'wander_around_start',
     stalledCheckRunInterval: 4,
-    assumedStalledIfOver: 5,
-    assumeNoWebsPossibleIfOver: 23,
+    assumedStalledIfOver: 10,
+    assumeNoWebsPossibleIfOver: 30,
     explosiveProjectiles: [],
     validated: false,  //TODO: - validate exists when pack loaded, if not, turn everything OFF
     scoreboardName: 'tree_spider_monitor',

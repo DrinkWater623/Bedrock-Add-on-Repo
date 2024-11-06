@@ -1,6 +1,9 @@
 import { world, system, Player, ChatSendBeforeEvent, TicksPerSecond, EffectTypes,EffectType } from "@minecraft/server";
-import * as fn from "./functions.js";
-import { debug, debugMsg } from "./main.js";
+import * as fn from "./before/functions.js";
+import { dimensionSuffix } from './fn-stable.js';
+import { debug, debugMsg } from "./before/main.js";
+import { Vector3Lib } from "./commonLib/vectorClass.js";
+import { chatLog } from "./settings.js";
 const TicksPerMinute = TicksPerSecond * 60;
 //==============================================================================
 
@@ -84,13 +87,13 @@ export class PlayerChatCommands {
         let dimension = player.getDynamicProperty('deathDimension');
         let msg = "";
         if (dimension) {
-            dimension = fn.dimensionSuffix(dimension);
+            dimension = dimensionSuffix(dimension);
             const location = player.getDynamicProperty('deathCoordinates');
-            msg = `* §gLast known §cDeath§g Coordinates: §b${dimension} §a@§g ${fn.vector3ToString(location)}`;
+            msg = `* §gLast known §cDeath§g Coordinates: §b${dimension} §a@§g ${Vector3Lib.toString(location)}`;
         }
         else msg = "* §cYou have no saved Death Coordinates";
 
-        fn.sendMessageLater(`\n${msg}\n\n`, player, 10);
+        chatLog.logsendMessageLater(`\n${msg}\n\n`, player, 10);
     }
 
     /**

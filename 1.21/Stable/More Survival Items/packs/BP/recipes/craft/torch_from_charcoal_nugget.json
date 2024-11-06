@@ -1,0 +1,16 @@
+{
+  "format_version": "1.12.0", 
+  "minecraft:recipe_shaped": {
+    "description": {"identifier":"dw623:torch_from_charcoal_nugget"},
+    "tags": ["crafting_table"],    
+    "pattern": ["#","|"],
+    "key": {
+      "#":{"item":"dw623:charcoal_nugget"},
+      "|":{"item":"minecraft:stick"}
+    },
+    "result": {
+      "item": "minecraft:torch",
+      "count": 1
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$files": {
+    "array": "wood_types",
+    "fileName": "./fence_gates/from_plank_{{type}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {"identifier":"dw623:cut_{{type}}_fence_gate_from_plank"},
+      "tags": ["stonecutter"],
+      "priority": 0,
+      "ingredients": [
+        {
+          "item": "minecraft:{{type}}_planks"
+        }
+      ],
+      "result": {
+        //"item": "minecraft:{{fence_gate > '' ? fence_gate : type+'_fence_gate'}}",
+        "item": "minecraft:{{type == 'oak' ? '' : type+'_'}}fence_gate",
+        "count": 8
+      }
+    }
+  }
+}

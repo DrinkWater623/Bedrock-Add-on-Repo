@@ -1,0 +1,36 @@
+{
+  "$scope": {
+    "paper_list": [
+      {"ingredient":"bamboo"        ,"count":3}
+    ]
+  },
+  "$files": {
+    "array": "paper_list",
+    "fileName": "./paper/from_{{ingredient}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shaped": {
+      "description": {
+        "identifier": "dw623:paper_from_{{ingredient}}"
+      },
+      "tags": [
+        "crafting_table"
+      ],
+      "priority": 0,
+      "pattern": [
+        "###"       
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:{{ingredient}}",
+          "data": "{{=data}}"
+        }
+      },
+      "result": {
+        "item": "minecraft:paper",
+        "count": "{{=count}}"
+      }
+    }
+  }
+}

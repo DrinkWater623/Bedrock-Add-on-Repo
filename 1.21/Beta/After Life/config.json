@@ -12,7 +12,7 @@
 		"beta":false,
 		"name": "After Life",
 		"description": "Gives Death Coordinates and Tries to save your stuff",													
-		/*"min_engine_version": [1,21,0], use at version chat cmds stable*/ 
+		"min_engine_version": [1,21,0],
 		"BP":{
 			"header_uuid": "161140f3-e042-414d-83ca-d01ccb9fe555",
 			"module_uuid": "adc098d3-ef78-4c39-bafa-8c49553cd778",

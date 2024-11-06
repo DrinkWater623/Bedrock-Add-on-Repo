@@ -39,6 +39,7 @@ Change Log:
     20240622 - NAA - bug... when min_engine_version is not a string
     20240624 - NAA = ad "capabilities": ["script_eval"],
     20240728 - NAA - global settings inside confile.json  "mani_fest":{}  outside of "regolith": {}
+    20241104 - NAA - minor logical bugs
 TODO:
     () Make is so I can have a dev and rel pack icon - prob can use the data section to hold and use by name or settings has filename
 */
@@ -1166,11 +1167,11 @@ function isLiveResourcePackFolder () {
     }
 
     //Ok if png or tga files or lang files
-    if (fileList.some(obj => obj.parse.dir.startsWith = '/RP/textures/' && [ ".png", ".tga" ].includes(obj.parse.ext))) {
+    if (fileList.some(obj => obj.parse.dir.startsWith == '/RP/textures/' && [ ".png", ".tga" ].includes(obj.parse.ext))) {
         consoleColor.success("==> Found RP png/tga Files");
         return true;
     }
-    if (fileList.some(obj => obj.parse.dir.startsWith = '/RP/texts/' && obj.parse.ext == ".lang")) {
+    if (fileList.some(obj => obj.parse.dir.startsWith == '/RP/texts/' && obj.parse.ext == ".lang")) {
         consoleColor.success("==> Found RP .lang Files");
         return true; //TODO: make sure not emptyish
     }
@@ -1485,7 +1486,7 @@ function manifestHeaders_set (pSettings) {
         version: pSettings.version || cmdLineSettingsJson.version || [ d.getFullYear() - 2000, d.getMonth() + 1, d.getDate() ],
         min_engine_version: pSettings.min_engine_version || cmdLineSettingsJson.min_engine_version || "get"
     };
-    const configHeader = {} || pSettings.header;
+    const configHeader = pSettings.header || {};
     pSettings.header = objectsMerge(configHeader, defaultHeader);
 
     if ([ "get", "new" ].includes(pSettings.header.uuid)) {

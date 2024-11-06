@@ -5,18 +5,613 @@
 const fs = require("fs");
 const fileInfo = require('path');
 const myUUID = require("crypto");
-const { Debug } = require("./js_lib/Debug.js");
-const { is, has } = require("./js_lib/shared-classes.js");
-const fileIo = require("./js_lib/File_io.js");
 //=====================================================================
-const { FetchSiteJsonStack } = require("./js_lib/FetchSiteJsonStack.js");
+var argPath = process.argv[ 1 ];
+var argSettings = process.argv[ 2 ];
+//=====================================================================
+/*
+Information:
+    Author:     DrinkWater623/PinkSalt623
+    Contact:    Discord/GitHub @DrinkWater623 
+
+    Purpose:    Create manifest.json from profile settings. 
+                Why?  Why not!  Cause I always have to update info when I move it out of Dev.
+
+    Usage:      in Regolith.  Does not validate input.
+
+    Settings:   name,version,min_game_version,description (all have defaults)
+                BP/RP{any of the above to override, UUID, module}
+                for UUID and module, can use real/fake UUID or the word get to get a real new one
+
+Change Log:    
+    20221220 - NAA - Created Basics - will figure out info for sub-packs and scripts later
+    20230107 - NAA - Added ,null,4 to stringify to make not all one line
+    20230304 - NAA - Added Julian Style Build Date to the Description (make optional Later)
+                    Added default version is [yy,m,d] DW Style
+    20240429 - NAA - Added Scripting stuff
+    20240509 Working on multi @minecraft dependencies
+    20240512 - NAA - Ability to grab author from config.json
+    20240513 - Naa - Multi-Server
+    20240604 - NAA - Redid practically everything - good enough to use for how I need
+    20240606 - NAA - Configured built-in TS/JS extension for ESNext and turned on some stuff
+                    so was able to take off some of  the ts-ignores, also fixed 2 bugs I saw on filters
+    20240612 - NAA - bug... when no pack dependencies per user.
+    20240622 - NAA - bug... when min_engine_version is not a string
+    20240624 - NAA = ad "capabilities": ["script_eval"],
+    20240728 - NAA - global settings inside confile.json  "mani_fest":{}  outside of "regolith": {}
+    20241104 - NAA - minor logical bugs
+TODO:
+    () Make is so I can have a dev and rel pack icon - prob can use the data section to hold and use by name or settings has filename
+*/
+
+//=====================================================================
+//                              Classes
+//=====================================================================
+class Debug {
+    constructor(booleanValue = true) {
+        this.debugOn = booleanValue;
+    }
+    //--------------------------------------      
+    colorsAdded = new Map(
+        [
+            [ "userExample", 44 ]
+        ]
+    );
+    #colorDefaultAssignments = new Map(
+        [
+            [ "bold", 97 ],
+            [ "error", 91 ],
+            [ "highlight", 100 ],
+            [ "log", 95 ],
+            [ "mute", 90 ],
+            [ "success", 92 ],
+            [ "tableTitle", 100 ],
+            [ "underline", 52 ],
+            [ "warn", 103 ]
+        ]
+    );
+    #colorMap = new Map(
+        [
+            [ "red", 91 ],
+            [ "yellow", 93 ],
+            [ "green", 92 ],
+            [ "blue", 94 ],
+            [ "magenta", 95 ],
+            [ "cyan", 96 ],
+            [ "white", 97 ],
+            [ "gray", 90 ],
+            [ "black-bg", 40 ],
+            [ "red-bg", 41 ],
+            [ "yellow-bg", 103 ],
+            [ "green-bg", 102 ],
+            [ "blue-bg", 104 ],
+            [ "magenta-bg", 105 ],
+            [ "cyan-bg", 106 ],
+            [ "white-bg", 107 ],
+            [ "gray-bg", 100 ]
+        ]
+    );
+    #colorReset = '\x1b[0m';
+    //--------------------------------------
+    off () { this.debugOn = false; this.color("red-bg", this.constructor.name + " OFF"); }
+    on () { this.debugOn = true; this.color("green-bg", this.constructor.name + " On"); }
+    toggle () { if (this.debugOn) this.off(); else this.on(); }
+    isDebug () { return this.debugOn; }
+    //--------------------------------------    
+    color (colorPtr, arg1, ...argRest) {
+        if (this.debugOn && arg1)
+            this.#log(colorPtr, arg1, argRest);
+    }
+    bold (arg1, ...argRest) {
+        if (this.debugOn && arg1)
+            this.#log("bold", arg1, argRest);
+    }
+    error (arg1, ...argRest) {
+        if (this.debugOn && arg1)
+            this.#log("error", arg1, argRest);
+    }
+    highlight (arg1, ...argRest) {
+        if (this.debugOn && arg1)
+            this.#log("highlight", arg1, argRest);
+    }
+    log (arg1, ...argRest) {
+        if (this.debugOn && arg1)
+            this.#log("log", arg1, argRest);
+    }
+    mute (arg1, ...argRest) {
+        if (this.debugOn && arg1)
+            this.#log("mute", arg1, argRest);
+    }
+    success (arg1, ...argRest) {
+        if (this.debugOn && arg1)
+            this.#log("success", arg1, argRest);
+    }
+    table (title, data = [], columns = []) { if (this.debugOn && data.length) this.#table(title, data, columns); }
+    underline (arg1, ...argRest) {
+        if (this.debugOn && arg1)
+            this.#log("underline", arg1, argRest);
+    }
+    warn (arg1, ...argRest) {
+        if (this.debugOn && arg1)
+            this.#log("warn", arg1, argRest);
+    }
+    colorsList () {
+        if (this.colorsAdded.size > 0) {
+            this.highlight("User Defined Colors (Overrides Defaults)");
+            this.colorsAdded.forEach(
+                (value, key) => {
+                    let colorString = "\x1b[" + value + "m%s";
+                    console.log(colorString, "User Defined Color:", key, value, this.#colorReset);
+                }
+            );
+        }
+
+        this.highlight("Default Assignments");
+        this.#colorDefaultAssignments.forEach(
+            (value, key) => {
+                let colorString = "\x1b[" + value + "m%s";
+                console.log(colorString, "Color Default Assignments:", key, value, this.#colorReset);
+            }
+        );
+
+        this.highlight("Colors");
+        this.#colorMap.forEach(
+            (value, key) => {
+                let colorString = "\x1b[" + value + "m%s";
+                console.log(colorString, "Color:", key, value, this.#colorReset);
+            }
+        );
+    }
+    //--------------------------------------
+    #colorNumberGet (color) {
+
+        if (typeof color === "number") return color;
+        else
+            if (typeof color === "string") {
+                //@ts-ignore
+                if (this.colorsAdded.has(color)) return this.colorsAdded.get(color);
+                //@ts-ignore
+                else if (this.#colorDefaultAssignments.has(color)) return this.#colorDefaultAssignments.get(color);
+                //@ts-ignore
+                else if (this.#colorMap.has(color)) return this.#colorMap.get(color);
+                //@ts-ignore
+                else return this.#colorMap.get("gray-bg");
+            }
+            //@ts-ignore
+            else return this.#colorMap.get("gray-bg");
+    }
+    #log (color, arg1, argsRest) {
+
+        /**
+         *   no argsRest and is Array use log-array
+         *   same type.... use log-comma
+         *   ar1 not array and argsRest is array, unArray i
+         */
+        if (argsRest === undefined) argsRest = [ "" ];
+
+        if (typeof arg1 === 'undefined') { return; }
+        else if (typeof arg1 === 'string') { if (!arg1) return; }
+        else if (typeof arg1 === 'object') { if (Object.keys(arg1).length = 0) return; }
+        //console.log(arg1)
+        //console.log(argsRest)
+        var [ arg2 = "", arg3 = "", arg4 = "", arg5 = "", arg6 = "", arg7 = "", arg8 = "", arg9 = "", arg10 = "", arg11 = "", arg12 = "", arg13 = "", arg14 = "", arg15 = "", arg16 = "" ] = argsRest;
+
+        if (argsRest === undefined || argsRest.length === 0) {
+            if (Array.isArray(arg1)) this.#log_array(color, arg1);
+            else this.#log_comma(color, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
+            return;
+        }
+
+        //TODO: if all is array of strings over 15, then concatenate and send
+        if (Array.isArray(argsRest) && argsRest.length > 15) {
+            //@ts-ignore
+            this.#log_comma(color, arg1, argsRest, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
+            return;
+        }
+
+        //What is left should be out of array if under 9 elements
+        this.#log_comma(color, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
+        return;
+    }
+    #log_comma (color, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16) {
+        let isWarning = false;
+        let isError = false;
+        let colorNumber = this.#colorNumberGet(color);
+
+        if (typeof color === "string") {
+            isError = (color === "error");
+            isWarning = (color === "warn");
+        }
+
+        let colorString = "\x1b[" + colorNumber + "m%s";
+
+        if (isWarning) console.warn(colorString, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, this.#colorReset);
+        else if (isError) console.error(colorString, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, this.#colorReset);
+        else console.log(colorString, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, this.#colorReset);
+    }
+
+    #log_array (color, args = []) {
+
+        if (typeof args === "undefined" || args.length === 0) return;
+
+        if (!Array.isArray(args)) {
+            this.#log_comma(color, args);
+            return;
+        }
+
+        let isWarning = false;
+        let isError = false;
+        let isSuccess = false;
+        let colorNumber = this.#colorNumberGet(color);
+
+        if (typeof color === "string") {
+            isError = (color === "error");
+            isWarning = (color === "warn");
+            isSuccess = (color === "success");
+        }
+
+        let colorString = "\x1b[" + colorNumber + "m";
+
+        for (let obj of args) {
+            let colorStr = colorString;
+            if ([ "boolean", "string" ].includes(typeof obj)) colorStr += '%s';
+            else if ([ "bigint", "number" ].includes(typeof obj)) colorStr += '%i';
+            else if (typeof obj === "object") colorStr += '%o';
+
+            if (isWarning) console.warn(colorStr, obj, this.#colorReset);
+            else if (isError) console.error(colorStr, obj, this.#colorReset);
+            else console.log(colorStr, obj, this.#colorReset);
+        }
+    }
+    //TODO: Find out if can add color in table by copying, adding color string and print that
+    #table (title, data = [], columns = []) {
+        if (typeof title === "string")
+            this.#log("tableTitle", title);
+        else console.table(title);
+
+        //TODO: Fix for different ways being sent LATER
+        //if (typeof data === "string")
+        //    if(columns.length)
+        //        if (typeof columns === "string")
+        //            console.log(data,columns )
+        //    else 
+        //    else
+        //        console.table(data,columns);
+        //else console.table(title);
+
+        if (columns.length == 0)
+            console.table(data);
+        else
+            console.table(data, columns);
+    }
+    //------------------------------------------    
+    static color (color, arg1, ...args) { let temp = new Debug(true); temp.color(color, arg1, args.length === 1 ? args[ 0 ] : args); }
+    static error (arg1, ...args) { let temp = new Debug(true); temp.error(arg1, args.length === 1 ? args[ 0 ] : args); }
+    static highlight (arg1, ...args) { let temp = new Debug(true); temp.highlight(arg1, args.length === 1 ? args[ 0 ] : args); }
+    static log (arg1, ...args) { let temp = new Debug(true); temp.log(arg1, args.length === 1 ? args[ 0 ] : args); }
+    static mute (arg1, ...args) { let temp = new Debug(true); temp.mute(arg1, args.length === 1 ? args[ 0 ] : args); }
+    static table (title, data, columns) { let temp = new Debug(true); temp.table(title, data, columns); }
+    static success (arg1, ...args) { let temp = new Debug(true); temp.success(arg1, args.length === 1 ? args[ 0 ] : args); }
+    static warn (arg1, ...args) { let temp = new Debug(true); temp.warn(arg1, args.length === 1 ? args[ 0 ] : args); }
+}
+//=====================================================================
+class is {
+
+    static array (candidate) { return Array.isArray(candidate); }
+    static boolean (candidate) { return typeof candidate === "boolean"; }
+    static function (candidate) { return typeof candidate === "function"; }
+    static null (candidate) { return Object.is(candidate, null); }
+    static number (candidate) { return typeof candidate === "number" || typeof candidate === "bigint"; }
+    static objectObject (candidate) { return candidate && typeof candidate === "object" && is.notArray(candidate); }
+    static object (candidate) { return typeof candidate === "object"; }
+    static string (candidate) { return typeof candidate === "string"; }
+    static symbol (candidate) { return typeof candidate === "symbol"; }
+    static undefined (candidate) { return typeof candidate === "undefined"; }
+    //---------------------------------------------------------------------------
+    static notArray (candidate) { return !Array.isArray(candidate); }
+    static notBoolean (candidate) { return typeof candidate !== "boolean"; }
+    static notFunction (candidate) { return typeof candidate !== "function"; }
+    static notNull (candidate) { return !Object.is(candidate, null); }
+    static notNumber (candidate) { return typeof candidate !== "number" && typeof candidate !== "bigint"; }
+    static notObject (candidate) { return typeof candidate !== "object"; }
+    static notString (candidate) { return typeof candidate !== "string"; }
+    static notSymbol (candidate) { return typeof candidate !== "symbol"; }
+    static notUndefined (candidate) { return typeof candidate !== "undefined"; }
+
+    static empty (object) {
+        //false is not empty, 0 is not empty
+        if (Object.is(object, undefined)) return true;
+        if (Object.is(object, null)) return true;
+        if (is.object(object)) return !!Object.keys(object).length;
+        if (is.string(object)) return !!object.length;
+        return false;
+    }
+    static notEmpty (object) {
+        //false is not empty, 0 is not empty
+        if (Object.is(object, undefined)) return false;
+        if (Object.is(object, null)) return false;
+        if (is.object(object)) return !Object.keys(object).length;
+        if (is.string(object)) return !object.length;
+        return true;
+    }
+    static exact (arg, compareArg) { return arg === compareArg; }
+    static notExact (arg, compareArg) { return arg !== compareArg; }
+    static equal (arg, compareArg) {
+        if (arg == compareArg) return true;
+        //if (arg == compareArg) return true;
+
+        //dive deeper
+        if (typeof arg !== typeof compareArg) return false;
+        if (is.array(arg) !== is.array(compareArg)) return false;
+
+        //arrays
+        if (is.array(arg)) {
+            if (arg.length != compareArg.length) return false;
+
+            //if either has some objects in the array
+            if (arg.some(obj => typeof obj === "object")) return false; //for now
+            if (compareArg.some(obj => typeof obj === "object")) return false; //for now
+            //what about emptys
+            for (let v of arg) if (!compareArg.includes(v)) return false;
+            return true;
+        }
+        // objects - non arrays?   this is more complex - needs more testing and thought
+        let argKeys = arg.keys();
+        let compareArgKeys = compareArg.keys();
+        if (argKeys.length !== compareArgKeys.length) return false;
+
+        //TODO:  way more to compare see the lib tests on objects/maps/?sets
+        //trying to get down to if the values are the same, regardless of how stored
+
+        return false;
+    }
+    static notEqual (arg, compareArg) { return !is.equal(arg, compareArg); }
+}
+class has {
+    static key (object = {}, keyName = "") {
+        return (typeof object === "object") && Object.hasOwn(object, keyName);
+    }
+    static keyValue (object = [ {} ], keyName = "", value) {
+        if (typeof object !== 'object') return false;
+        if (typeof value === 'object') return has.keyValues(object, keyName, value);
+
+        if (!Array.isArray(object)) {
+            return Object.hasOwn(object, keyName) && object[ keyName ] === value;
+        }
+        //Array, so check each object of array until found
+        const objList = object
+            .filter(obj => typeof obj === 'object')
+            .filter(obj => Object.hasOwn(obj, keyName))
+            .filter(obj => typeof obj[ keyName ] !== 'object')
+            .filter(obj => obj[ keyName ] === value);
+
+        return !!objList.length;
+    }
+    //TODO:  keyValues NOT DONE - need to .....
+    static keyValues (object = [], keyName = "", compareObject = {}) {
+        if (typeof object !== 'object') return false;
+        if (typeof compareObject !== 'object') return has.keyValue(object, keyName, compareObject);
+
+        if (!Array.isArray(object)) {
+            return Object.hasOwn(object, keyName) && object[ keyName ] === compareObject;
+        }
+
+        //Array, so check each object of array until found
+        const objList = object
+            .filter(obj => typeof obj === 'object')
+            .filter(obj => Object.hasOwn(obj, keyName))
+            .map(obj => obj[ keyName ]);
+
+        if (objList.length == 0) return false;
+    }
+    static values (object = {}) {
+        //false is not empty, 0 is not empty
+        if (Object.is(object, undefined)) return true;
+        if (Object.is(object, null)) return true;
+        if (is.object(object)) return !!Object.keys(object).length;
+        if (is.string(object)) return !!object.length;
+        return false;
+    }
+}
+//=====================================================================
+class FetchSiteJsonStack {
+    constructor(sites = []) {
+        this.fetchStack = sites
+            .filter(v => typeof v === "string")
+            .filter(v => v.length > 0)
+            .map(site => this.#siteObj(site));
+    }
+    promiseStack = [];
+    //--------------------------------------
+    debugOn = false;
+    #colorReset = '\x1b[0m';
+    #colorMap = new Map(
+        [
+            [ "bold", 97 ],
+            [ "error", 91 ],
+            [ "highlight", 47 ],
+            [ "log", 38 ],
+            [ "mute", 90 ],
+            [ "success", 92 ],
+            [ "warn", 93 ]
+        ]
+    );
+    #colorString (colorName) {
+        return "\x1b[" + this.#colorMap.get(colorName) + "m%s";
+    }
+    //--------------------------------------    
+    #siteObj (site) {
+        return {
+            site: site,
+            success: false,
+            data: {},
+            dataType: "Unknown",
+            err: ""
+        };
+    }
+    //add fetchSiteDel....
+    fetchAdd (...sites) {
+        sites
+            .filter(v => typeof v === "string")
+            .filter(v => v.length > 0)
+            .forEach(site => this.fetchStack.push(this.#siteObj(site)));
+    }
+    #fetchNext () {
+        if (this.fetchStack.length === 0) return;
+
+
+        let errCode = this.#colorString("error");
+        let warnCode = this.#colorString("warn");
+        let successCode = this.#colorString("success");
+
+        let newFetch = this.fetchStack.shift();
+        if (typeof newFetch != "object") return;
+
+        //should this be b4 the pop?  not sure
+        this._preFetchEach(newFetch);
+        //because user could alter the object
+        if (!("site" in newFetch) || newFetch.site.length === 0) {
+            if (this.fetchStack.length) this.#fetchNext();
+            return;
+        }
+
+        if (this.debugOn) console.log(this.#colorString("bold"), "==> Fetching Site:", newFetch.site, this.#colorReset);
+
+        fetch(newFetch.site)
+            .then(response => {
+                let returnedJson = {};
+
+                if (response.ok) {
+                    newFetch.success = true;
+                    console.log(this.#colorString("success"), "==> Fetch Successful:", newFetch.site, this.#colorReset);
+                    //FIXME:              
+                    try {
+                        returnedJson = response.json();
+                        newFetch.dataType = 'json';
+                    }
+                    catch (err) {
+                        console.error(this.#colorString("error"), "xx> Not a JSON Site:", newFetch.site, this.#colorReset);
+                    }
+                }
+                else {
+                    newFetch.success = false;
+                    console.warn(this.#colorString("warn"), "xx> Fetch Response Not-Ok:", newFetch.site, this.#colorReset);
+                }
+                return returnedJson;
+            })
+            .then(data => { //note: keep this part sep from above, works better
+                if (newFetch.success)
+                    newFetch.data = data;
+            })
+            .catch(error => {
+                newFetch.err = error;
+                if (this.debugOn) console.error(this.#colorString("error"), "xx> Fetch Error:", error, this.#colorReset);
+            })
+            .finally(() => {
+                this.promiseStack.push(newFetch);
+
+                this._postPromiseEach();
+
+                if (this.fetchStack.length)
+                    this.#fetchNext();
+                else {
+                    //if (this.debugOn) console.log(this.#colorString("success"), "==> Fetch Stack is Now Empty!");
+                    if (this.debugOn) console.log(this.#colorString("mute"), "<== fetchNext()");
+                    this._postPromiseAll();
+                }
+            });
+    }
+    fetchesStart () {
+        if (this.debugOn) console.log("==> fetchStart()");
+        if (this.fetchStack.length > 0)
+            this.#fetchNext();
+        else
+            console.warn(this.#colorString("warn"), "xx> Fetch List is Empty");
+    }
+    consoleLogFetchList () {
+        if (this.debugOn) console.log(this.#colorString("bold"), "* consoleLogFetchList()", "length:", this.fetchStack.length);
+        let list = [];
+        this.fetchStack.forEach(v => list.push(v.site));
+        if (list.length > 0) console.table(list);
+        else if (this.debugOn) console.warn(this.#colorString("warn"), "Fetch List is Empty");
+    }
+    consoleLogPromiseList () {
+        if (this.debugOn) console.log(this.#colorString("bold"), "* consoleLogPromiseList()", "length:", this.promiseStack.length);
+        let list = [];
+        this.promiseStack.forEach(v => list.push(
+            {
+                Retrieved: v.success,
+                DataType: v.dataType,
+                Site: v.site
+            }));
+        if (list.length > 0) console.table(list);
+        else if (this.debugOn) console.warn(this.#colorString("warn"), "==> Response List is Empty");
+    }
+    //for Json Data Only else will fail
+    consoleLogPromiseKeys () {
+        if (this.debugOn) console.log(this.#colorString("bold"), "* consoleLogPromiseKeys()", "length:", this.promiseStack.length);
+        if (this.promiseStack.length == 0) {
+            if (this.debugOn) console.warn(this.#colorString("warn"), "==> Response List is Empty");
+            return;
+        }
+        for (let i in this.promiseStack) {
+            let obj = this.promiseStack[ i ];
+
+            if (obj.success) {
+                console.info(this.#colorString("success"), "Site:", obj.site, this.#colorReset);
+                const keys = Object.keys(obj.data);
+                console.table(keys);
+            }
+            else
+                console.error(this.#colorString("error"), "Failed Site:", obj.site, "Err:", obj.err, this.#colorReset);
+        }
+    }
+    //--------------------------------------------------------------
+    //Expecting Class user to Overwrite these in their extended copy
+    //--------------------------------------------------------------
+    /*
+    This is called after each fetch is done whether it failed or not.  
+    This is how you can use your extend class functions in between fetches
+    i.e. you extended the constructor and want to add properties and update them
+    i.e. change the fetch stack based on response information
+    */
+    _preFetchEach (fetchObj) {
+        if (this.promiseStack.length === 0) {
+            console.warn(this.#colorString("warn"), "* _preFetchEach(fetchObj) is called before every site fetch.");
+            console.warn(this.#colorString("warn"), "\tReplace it in your Extended class");
+        }
+    }
+    /*
+    This is called after each promise is returned, whether it failed or not.  
+    This is how you can use your extend class functions in between fetches
+    i.e. you extended the constructor and want to add properties and update them
+    i.e. change the fetch stack based on response information
+    */
+    _postPromiseEach () {
+        if (this.promiseStack.length === 1) {
+            console.warn(this.#colorString("warn"), "* _postPromiseEach() is called after the returned promise of every fetch.");
+            console.warn(this.#colorString("warn"), "\tReplace it in your Extended class");
+        }
+    }
+    /*
+    This is called after last fetch in stack is done.  
+    This is how you can continue your node program, making it wait until all the promises are fulfilled
+    before it continues to your next function
+    */
+    _postPromiseAll () {
+        console.warn(this.#colorString("warn"), "* _postPromiseAll() is called after all promises are returned.");
+        console.warn(this.#colorString("warn"), "\tReplace it in your Extended class, to keep processing alive in Node JS");
+        this.consoleLogPromiseList();
+    }
+}
+//=====================================================================
 class McModuleFetchStack extends FetchSiteJsonStack {
     //If I wanted to add to the constructor
     /*
         constructor(sites=[]){
             super(sites);
             this.newVariable = 0;
-        }
+        }    
     */
     _preFetchEach () { }
     _postPromiseEach () { }
@@ -25,17 +620,21 @@ class McModuleFetchStack extends FetchSiteJsonStack {
     }
 }
 //=====================================================================
-var argPath = process.argv[ 1 ];
-var argSettings = process.argv[ 2 ];
-//=====================================================================
 // Global variables - Part 2
 //=====================================================================
 //const scriptsFolder = "BP/scripts";
 let isDebug = false;
 let isDebugMax = false;
 //=====================================================================
+
 let bpFiles = [];
 let rpFiles = [];
+const validScriptModules = [];
+validScriptModules.push({ module_name: "@minecraft/server", total: 0 });
+validScriptModules.push({ module_name: "@minecraft/server-ui", total: 0 });
+validScriptModules.push({ module_name: "@minecraft/common", total: 0 });
+validScriptModules.push({ module_name: "minecraft-bedrock-server", total: 0 });
+const validVersionNames = [ "get", "stable", "beta", "rc", "preview", "previewbeta", "latest", "latestbeta", "latest_beta", "preview_beta", "latest-beta", "preview-beta" ];
 // Console Logging
 const debug = new Debug(isDebug);
 debug.colorsAdded.set("functionStart", 96);
@@ -48,7 +647,6 @@ debugMax.colorsAdded.set("log", 95);
 
 const configFileSettings = { settings: {} };
 getConfigFileSettings();
-//=======================================================================
 
 const cmdLineSettingsJson = mergeDeep(configFileSettings.settings, JSON.parse(argSettings));
 debug.log(cmdLineSettingsJson);
@@ -64,17 +662,9 @@ const consoleColor = new Debug(!cmdLineSettingsJson.Silent);
 consoleColor.colorsAdded.set("highlight", 93);
 consoleColor.colorsAdded.set("possibleWarn", 93);
 consoleColor.colorsAdded.set("possibleError", 91);
-//=======================================================================
-// Above can be shared - but has to be below imprts and stuff
-//=======================================================================
+
 let myFetch; //leave as let, defined if use, needs to be global, as will be new Object from Fetch Class
 
-const validScriptModules = [];
-validScriptModules.push({ module_name: "@minecraft/server", total: 0 });
-validScriptModules.push({ module_name: "@minecraft/server-ui", total: 0 });
-validScriptModules.push({ module_name: "@minecraft/common", total: 0 });
-validScriptModules.push({ module_name: "minecraft-bedrock-server", total: 0 });
-const validVersionNames = [ "get", "stable", "beta", "rc", "preview", "previewbeta", "latest", "latestbeta", "latest_beta", "preview_beta", "latest-beta", "preview-beta" ];
 //=====================================================================
 //          Function Library
 //=====================================================================
@@ -182,6 +772,29 @@ function isArrayOfKeyValuePairs (array = [ {} ]) {
     if (array.some((item) => Array.isArray(item))) return false;
     return true;
 }
+function isArrayOfStrings (array = [ "" ]) {
+    if (Array.isArray(array))
+        return array.every((item) => typeof item === "string");
+
+    return false;
+}
+// @ts-ignore
+function isArrayOfArrays (array = [ [] ]) {
+    if (Array.isArray(array))
+        return array.every((item) => Array.isArray(item));
+
+    return false;
+}
+function isArrayOfSameTypes (array = []) {
+    if (!Array.isArray(array)) return false;
+
+    let firstType = typeof array[ 0 ];
+    return array.every((item) => typeof item === firstType);
+}
+// @ts-ignore
+function isArrayOfMixedTypes (array = []) {
+    return !isArrayOfSameTypes(array);
+}
 // @ts-ignore
 function arrayDeleteValues (array = [ "" ], value) {
     if (!Array.isArray(array)) return;
@@ -232,7 +845,7 @@ function arrayKeyValueArrayMerge (array = [ {} ], key = "", valueArray = [ "" ],
 }
 function arrayDeleteObjectIfKeyNotOnList (objectArray = [ {} ], keyArray = [ "" ], debug = false) {
     if (!isArrayOfKeyValuePairs(objectArray)) return;
-    if (!is.arrayOfStrings(keyArray) || is.string(keyArray)) return;
+    if (!isArrayOfStrings(keyArray) || is.string(keyArray)) return;
 
     //@ts-ignore
     if (is.string(keyArray)) keyArray = keyArray.split(",");
@@ -281,6 +894,86 @@ function deDupeNonObjectArray (array) {
 //=======================================================================
 function newUUID () { return myUUID.randomUUID(); }
 //=======================================================================
+function isFile (path) {
+    if (!fs.existsSync(path)) return false;
+    return fs.lstatSync(path).isFile();
+}
+function isFolder (path) {
+    if (!fs.existsSync(path)) return false;
+    return fs.lstatSync(path).isDirectory();
+}
+function isEmptyFolder (path) {
+
+    if (!fs.existsSync(path)) return true;
+    if (!fs.lstatSync(path).isDirectory()) return true;
+
+    let fileCount = fs.readdirSync(path).length;
+    return fileCount == 0 ? true : false;
+}
+// @ts-ignore
+function containFilesWithExt (path, ext) {
+    if (isEmptyFolder(path)) return false;
+    return fs.readdirSync(path).filter(f => f.endsWith("." + ext)).length > 0 ? true : false;
+}
+function fileTreeGet (path, minFileSize = 0, onlyExt = "") {
+    return treeGet(path, minFileSize, false, true, onlyExt);
+}
+// @ts-ignore
+function folderTreeGet (path, minObjSize = 0, onlyExt = "") {
+    return treeGet(path, minObjSize, true, false, onlyExt);
+}
+function treeGet (path, minSize = 0, folders = true, files = true, onlyExt = "") {
+    // @ts-ignore
+    const fg_Error = '\x1b[91m%s';
+    // @ts-ignore
+    const fg_Success = '\x1b[92m%s';
+    const fg_Warning = '\x1b[91m%s';
+
+    //TODO:add pattern for folder and for path separately
+    debugMax.log("==> treeGet(" + path + "," + minSize + "," + folders + "," + files + "," + onlyExt + ")");
+    let returnList = [];
+
+    if (!folders && !files) return [];
+
+    try {
+        fs.readdirSync(path);
+    }
+    catch {
+        console.log(fg_Warning, "xx> Error: Folder =", path, "Does Not Exist, Skipping");
+        return [];
+    }
+    const tempFileList = fs.readdirSync(path);
+
+    for (let f of tempFileList) {
+        const fullFileName = (path + '/' + f).replace('//', '/');
+        let treeObj =
+        {
+            fileName: fullFileName,
+            parse: fileInfo.parse(fullFileName),
+            isFile: !isFolder(fullFileName),
+            size: 0,
+            keep: false
+        };
+
+        if (files && treeObj.isFile) {
+            treeObj.size = fs.readFileSync(fullFileName).length;
+            treeObj.keep = files && treeObj.size >= minSize || (onlyExt.length == 0 || treeObj.parse.ext == onlyExt);
+        }
+        else if (!treeObj.isFile) {
+            const newSearch = treeGet(fullFileName, minSize, folders, files, onlyExt);
+            treeObj.size = newSearch.length;
+            for (let i in newSearch) returnList.push(newSearch[ i ]);
+
+            treeObj.keep = folders && treeObj.size >= minSize && (onlyExt.length == 0 || treeObj.parse.ext == onlyExt);
+        }
+
+        if (treeObj.keep) returnList.push(treeObj);
+    }
+
+    debugMax.mute("<== treeGet");
+    return returnList.filter(obj => obj.keep);
+}
+//=======================================================================
 function objectsMerge (myObject, emulateObject) {
     if (typeof emulateObject != "object" || Array.isArray(emulateObject)) return {};
     if (typeof myObject != "object" || Array.isArray(myObject)) return {};
@@ -299,8 +992,8 @@ function objectKeysMerge (myObject, emulateObject) {
     return object;
 }
 function stringArraysMerge (myArray, arrayFilter) {
-    if (!is.arrayOfStrings(myArray)) return [];
-    if (!is.arrayOfStrings(arrayFilter)) return [];
+    if (!isArrayOfStrings(myArray)) return [];
+    if (!isArrayOfStrings(arrayFilter)) return [];
     return myArray.filter(v => arrayFilter.includes(v));
 }
 //=======================================================================
@@ -412,8 +1105,8 @@ function isLiveBehaviorPackFolder () {
 
     //Either has scripts or read each json file, strip comments and see if any code inside.. must be at least one.
 
-    if (is.emptyFolder("BP")) { bpFiles = []; return false; }
-    bpFiles = fileIo.fileTreeGet("./BP", 0, "", debug.debugOn);
+    if (isEmptyFolder("BP")) { bpFiles = []; return false; }
+    bpFiles = fileTreeGet("./BP");
 
     let fileList = bpFiles
         .filter(obj => obj.fileName != './BP/pack_icon.png') //does not count
@@ -461,8 +1154,8 @@ function isLiveResourcePackFolder () {
 
     //Either has png/tga  or  read each json file, strip comments and see if any code inside.. must be at least one.
 
-    if (is.emptyFolder("RP")) { rpFiles = []; return false; }
-    rpFiles = fileIo.fileTreeGet("./RP", 0, "", debug.debugOn);
+    if (isEmptyFolder("RP")) { rpFiles = []; return false; }
+    rpFiles = fileTreeGet("./RP");
 
     let fileList = rpFiles
         .filter(obj => obj.fileName != './RP/pack_icon.png') //does not count 
@@ -474,11 +1167,11 @@ function isLiveResourcePackFolder () {
     }
 
     //Ok if png or tga files or lang files
-    if (fileList.some(obj => obj.parse.dir.startsWith = '/RP/textures/' && [ ".png", ".tga" ].includes(obj.parse.ext))) {
+    if (fileList.some(obj => obj.parse.dir.startsWith == '/RP/textures/' && [ ".png", ".tga" ].includes(obj.parse.ext))) {
         consoleColor.success("==> Found RP png/tga Files");
         return true;
     }
-    if (fileList.some(obj => obj.parse.dir.startsWith = '/RP/texts/' && obj.parse.ext == ".lang")) {
+    if (fileList.some(obj => obj.parse.dir.startsWith == '/RP/texts/' && obj.parse.ext == ".lang")) {
         consoleColor.success("==> Found RP .lang Files");
         return true; //TODO: make sure not emptyish
     }
@@ -663,6 +1356,7 @@ function getConfigFileSettings () {
         configFileSettings.settings = json.mani_fest;
     }
 
+
     debugMax.mute("<== getConfigFile()");
 
     return true;
@@ -790,9 +1484,9 @@ function manifestHeaders_set (pSettings) {
         ).trim().replace('  ', ' '),
         uuid: pSettings.header_uuid || "new",
         version: pSettings.version || cmdLineSettingsJson.version || [ d.getFullYear() - 2000, d.getMonth() + 1, d.getDate() ],
-        min_engine_version: pSettings.min_engine_version || cmdLineSettingsJson.min_engine_version || "stable"
+        min_engine_version: pSettings.min_engine_version || cmdLineSettingsJson.min_engine_version || "get"
     };
-    const configHeader = {} || pSettings.header;
+    const configHeader = pSettings.header || {};
     pSettings.header = objectsMerge(configHeader, defaultHeader);
 
     if ([ "get", "new" ].includes(pSettings.header.uuid)) {
@@ -883,8 +1577,8 @@ function manifestScriptModule_set (bpSettings) {
             uuid: bpSettings.module_uuid || "get",
             version: [ 1, 0, 0 ],
             entry: !!bpSettings.js ? (`scripts/${bpSettings.js}.js`).replace('.js.js', '.js') :
-                is.file("BP/scripts/index.js") ? "scripts/index.js" :
-                    is.file("BP/scripts/main.js") ? "scripts/main.js" :
+                isFile("BP/scripts/index.js") ? "scripts/index.js" :
+                    isFile("BP/scripts/main.js") ? "scripts/main.js" :
                         "Name/Path of your entry Script File Here"
         };
 
@@ -937,7 +1631,7 @@ function manifestParts_control (pSettings) {
 //=======================================================================
 function manifestBuild (pSettings) {
     debug.color("functionStart", "* buildManifest(" + pSettings.type + ")");
-
+    
     const manifest = {
         format_version: 2,
         header: pSettings.header,
@@ -1140,6 +1834,13 @@ function mainAfterFetch () {
         //console.log("Latest Stable", latestStable);
 
         const latestBeta = versionList.filter(v => latestBetaSearch.test(v)).reverse();
+        //console.log("Latest Beta", latestBeta);
+
+        //const previewRc = versionList.filter(v => previewRcSearch.test(v)).reverse();
+        //console.log("Preview RC", previewRc);
+
+        //const previewBeta = versionList.filter(v => previewBetaSearch.test(v)).reverse();
+        //console.log("Preview Beta", previewBeta);
 
         obj.versions = {
             success: obj.success,
@@ -1176,6 +1877,7 @@ function mainAfterFetch () {
         if (!cmdLineSettingsJson.engineGetList)
             if (engines.length)
                 cmdLineSettingsJson.engineGetList = engines;
+
     }
     //console.log(cmdLineSettingsJson.engineGetList);
     debug.table("==> min_engine_versions", cmdLineSettingsJson.engineGetList);

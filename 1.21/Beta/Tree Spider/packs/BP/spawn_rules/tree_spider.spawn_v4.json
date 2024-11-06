@@ -56,12 +56,13 @@
           "minecraft:crimson_stem", 
           "minecraft:warped_stem", 
           //-----------------------
+          //These do nothing  - if they did, it would be perfect
           "minecraft:acacia_leaves",          
           "minecraft:birch_leaves",
           "minecraft:cherry_leaves",          
           "minecraft:dark_oak_leaves",
           "minecraft:jungle_leaves",
-          "minecraft:mangrove_leaves",t
+          "minecraft:mangrove_leaves",
           "minecraft:mangrove_roots",                    
           "minecraft:oak_leaves",
           "minecraft:spruce_leaves",         

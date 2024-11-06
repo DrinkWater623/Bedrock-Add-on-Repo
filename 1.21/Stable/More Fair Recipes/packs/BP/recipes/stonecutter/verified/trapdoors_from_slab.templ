@@ -1,0 +1,27 @@
+{
+  "$files": {
+    "array": "wood_types",
+    "fileName": "./trapdoors/from_slab_{{type}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {
+        "identifier":"dw623:cut_trapdoors_from_slab_{{type}}"
+      },
+      "tags": [
+        "stonecutter"
+      ],
+      "priority": 0,
+      "ingredients": [
+        {
+          "item": "minecraft:{{type}}_slab"
+        }
+      ],
+      "result": {
+        "item": "minecraft:{{type == 'oak' ? '' : type+'_'}}trapdoor",
+        "count": 2
+      }
+    }
+  }
+}

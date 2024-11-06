@@ -1,0 +1,31 @@
+{
+  "$files": {
+    "array": "wood_types",
+    "fileName": "./doors/from_trapdoors_{{type}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shaped": {
+      "description": {
+        "identifier": "craft:{{type}}_doors_from_trapdoors"
+      },
+      "tags": [
+        "crafting_table"
+      ],
+      "group": "wooden_door",
+      "pattern": [        
+        "#",
+        "#"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:{{type == 'oak' ? '' : type+'_'}}trapdoor"
+        }
+      },
+      "result": {
+        "item": "minecraft:{{type == 'oak' ? 'wooden' : type}}_door",
+        "count": 1
+      }
+    }
+  }
+}

@@ -78,6 +78,7 @@
 						"settings":{
 							"name": "DW ABC : ActionBar Compass w/ Chat Toggle Commands",
 							"description": "Tells you which direction you are facing and/or XYZ Coords on the Action Bar. Use :abc & :xyz to toggle on/off",
+							"min_engine_version": [1,21,0],
 							"beta":true,"preview":false,
 							"BP":{
 								"js":"main-beta.js",

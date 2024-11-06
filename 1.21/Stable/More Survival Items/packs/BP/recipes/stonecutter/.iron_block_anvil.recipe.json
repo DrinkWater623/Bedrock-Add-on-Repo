@@ -1,0 +1,21 @@
+{
+    "format_version": "1.12",
+    "minecraft:recipe_shapeless": {
+        "description": {
+            "identifier": "dw623:iron_block_anvil_stonecutter"
+        },
+        "tags": [
+            "stonecutter"
+        ],
+        "priority": 0,
+        "ingredients": [
+            {
+                "item": "minecraft:iron_block"
+            }
+        ],
+        "result": {
+            "item": "dw623:iron_block_anvil",
+            "count": 1
+        }
+    }
+}

@@ -1,0 +1,31 @@
+{
+  "$scope":{
+		//"gem_list": 	"{{bs_gems.sort(x => x.give)}}",
+		"local_stone_list": "{{stone_list.filter(x => x.stairs_id >= 0 && x.slab_id >= 0)}}"
+  },
+  "$files": {
+    "array": "local_stone_list",
+    "fileName": "./slabs/from_stairs_{{name}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {
+        "identifier":"dw623:cut_slab_from_stairs_{{name}}"
+      },
+      "tags": [
+        "stonecutter"
+      ],
+      "priority": 0,
+      "ingredients": [
+        {
+          "item": "minecraft:{{stairs_input}}" //,  "data": "{{=stairs_id}}"
+        }
+      ],
+      "result": {
+        "item": "minecraft:{{slab_input}}", // "data": "{{=slab_id}}",
+        "count": 1
+      }
+    }
+  }
+}

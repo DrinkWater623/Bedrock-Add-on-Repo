@@ -1,0 +1,84 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
+	"author": "https://github.com/DrinkWater623",
+	"name": "Light_Arrow_Tiles",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"mani_fest":{
+		"Debug":false,
+		"preview":false,
+		"beta":false,
+		"scripts":false,
+		"name": "Light Arrow Tiles",
+		"description": "Vanilla style arrow tiles made of light",
+		"min_engine_version": [1,21,0],							
+		"BP":{
+			"header_uuid": "bba9abb8-3c98-40e4-af55-f980fefc111c",
+			"module_uuid": "c4394149-030e-4af9-b81e-22ca6dd245fd"
+			/*"dependencies":{"module_name":"@minecraft/server","version":"get"}*/
+		},
+		"RP": {
+			"header_uuid":"fc001ecd-2f2b-4c0d-9a94-2836effb7deb",
+			"module_uuid":"d81ededf-d16f-4b85-85ff-9b09d6a2e3fa"
+		}
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"jsonte": {"url":"github.com/MCDevKit/regolith-library","version":"2.14.0"},
+			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
+			"beta_js_ignore": {"runWith":"python","script":"./filters/beta_js_ignore.py"},
+			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
+			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}			
+		},
+		"profiles": {
+			"template-beta": {
+				"export": {"readOnly":false,"target":"local","rpName": "'void_rp_'+project.name"},				
+				"filters": [{"filter":"dot_ignore"},{"filter":"jsonte"}]
+			},
+			"template-stable": {
+				"export": {"readOnly":false,"target":"local","rpName": "'void_rp_'+project.name"},				
+				"filters": [
+					/*{"filter":"beta_js_ignore"},*/
+					{"profile":"template-beta"}]
+			},
+			"build": {				
+				"export": {"readOnly":false,"target":"local","bpName":"project.name+'_Stable_bp'","rpName": "project.name+'_Stable_rp'"},
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"beta":false,"preview":false}}]
+			},
+			"build-beta": {
+				"export": {"readOnly":false,"target":"local","bpName":"project.name+'_Beta_bp'","rpName": "project.name+'_Beta_rp'"},
+				"filters": [{"profile":"template-beta"},{"filter":"mani_fest","settings":{"beta":true,"preview":false,"BP":{"js":"main-beta.js"}}}]
+			},	
+			"stable": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"beta":false}}]
+			},
+			"beta": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [{"profile":"template-beta"},{"filter":"mani_fest","settings":{"beta":true,"BP":{"js":"main-beta.js"}}}]
+			},
+			"preview": {
+				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"preview":true}}]
+			},
+			"preview-beta": {
+				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
+				"filters": [
+					{"profile":"template-beta"},
+					{"filter":"mani_fest",
+						"settings":{							
+							"preview":true,"beta":true,
+							"BP":{
+								"js":"main-beta.js",
+								"dependencies":{"module_name":"@minecraft/server","version":"1.16.0-beta"}
+							}
+						}
+					}
+				]
+			}
+		}
+	}
+}

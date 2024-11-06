@@ -11,7 +11,7 @@
 		"preview":false,
 		"beta":false,
 		"name": "Tree Spider",
-		"description": "Friendly Spider that leaves webs in trees and other places....like IRL",													
+		"description": "Friendly Spider that makes webs...like IRL",													
 		"min_engine_version": [1,21,0],							
 		"BP":{
 			"header_uuid": "60156da2-e8e1-4ac8-8d66-18690ad45da2",

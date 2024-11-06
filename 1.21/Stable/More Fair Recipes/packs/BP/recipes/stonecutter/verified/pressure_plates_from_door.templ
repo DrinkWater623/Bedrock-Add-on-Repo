@@ -1,0 +1,27 @@
+{
+  "$files": {
+    "array": "wood_types",
+    "fileName": "./pressure_plates/from_door_{{type}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {
+        "identifier": "dw623:cut_{{type}}_pressure_plates_from_door"
+      },
+      "tags": [
+        "stonecutter"
+      ],
+      "priority": 0,
+      "ingredients": [
+        {
+          "item": "minecraft:{{type == 'oak' ? 'wooden' : type}}_door"
+        }
+      ],
+      "result": {
+        "item": "minecraft:{{type == 'oak' ? 'wooden' : type}}_pressure_plate",
+        "count": 3
+      }
+    }
+  }
+}

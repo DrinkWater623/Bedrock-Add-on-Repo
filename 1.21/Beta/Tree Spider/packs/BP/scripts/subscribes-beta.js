@@ -2,13 +2,17 @@
 import { world, system, EntityInitializationCause } from "@minecraft/server";
 import { alertLog, dev, watchFor, chatLog, entityEvents } from './settings.js';
 import { chatSend_before_fn } from './chatCmds-beta.js';
-import { enterWeb, expandWeb, getCurrentBiome, getCurrentBiomeList } from './fn-beta.js';
+import { enterWeb, expandWeb } from './fn-beta.js';
 import { placeWeb, newEgg, lastTickRegister } from './fn-stable.js';
 import { Vector3Lib } from "./commonLib/vectorClass.js";
 import { EntityLib } from "./commonLib/entityClass.js";
 import { DynamicPropertyLib } from "./commonLib/dynamicPropertyClass.js";
+import { BiomeLib } from "./commonLib/biomeLib.js";
 
 //==============================================================================
+/**
+ * @summary Beta
+ */
 export function chatSend () {
     alertLog.success(`§aInstalling Chat Commands (before)§r - §6Beta  §c(Debug Mode)§r`, dev.debugSubscriptions);
     world.beforeEvents.chatSend.subscribe((event) => {
@@ -16,6 +20,9 @@ export function chatSend () {
     });
 }
 //==============================================================================
+/**
+ * @summary Beta: enterWeb/expandWeb
+ */
 export function afterEvents_scriptEventReceive () {
 
     alertLog.success("§aInstalling afterEvents.scriptEventReceive §c(Debug Mode)", dev.debugSubscriptions);
@@ -56,7 +63,11 @@ export function afterEvents_scriptEventReceive () {
     });
 }
 //==============================================================================
+/**
+ * @summary Beta: getCurrentBiomeList
+ */
 export function afterEvents_entitySpawn () {
+    //Beta until dimension.findClosestBiome is released
     //Load (195 ticks or so )is after Spawn    
     //if (dev.debugLoadAndSpawn) {
     alertLog.success("§aInstalling afterEvents.entitySpawn §c(debug mode : tick scoreboard)", dev.debugSubscriptions);
@@ -76,8 +87,8 @@ export function afterEvents_entitySpawn () {
                 }
 
                 //in beta because of Biome Check
-                if (dev.debugGamePlay && event.cause == EntityInitializationCause.Spawned) {
-                    const biome = getCurrentBiomeList(entity).replaceAll('minecraft:', '');
+                if (dev.debugLoadAndSpawn && event.cause == EntityInitializationCause.Spawned) {
+                    const biome = BiomeLib.getCurrentBiomeList(entity).replaceAll('minecraft:', '');
                     const msg = `§g${entity.nameTag || entity.id} Loaded @ ${Vector3Lib.toString(entity.location, 0, true)} §bin ${inBlock?.typeId.replace('minecraft:', '') || '?'} §don ${onBlock?.typeId.replace('minecraft:', '') || '?'} §6in Biomes: ${biome || '?'}`;
                     alertLog.success(msg, true);
                     chatLog.success(msg, true);
@@ -85,8 +96,8 @@ export function afterEvents_entitySpawn () {
             }
             else {
                 DynamicPropertyLib.add(entity, "spawns", 1);
-                if (dev.debugGamePlay && event.cause == EntityInitializationCause.Spawned) {
-                    const biome = getCurrentBiomeList(entity).replaceAll('minecraft:', '');
+                if (dev.debugLoadAndSpawn && event.cause == EntityInitializationCause.Spawned) {
+                    const biome = BiomeLib.getCurrentBiomeList(entity).replaceAll('minecraft:', '');
                     const msg = `§g${entity.nameTag || entity.id} Re-Loaded @ ${Vector3Lib.toString(entity.location, 0, true)} §bin ${inBlock?.typeId.replace('minecraft:', '') || '?'} §don ${onBlock?.typeId.replace('minecraft:', '') || '?'} §6in Biomes: ${biome || '?'}`;
                     alertLog.success(msg, true);
                     chatLog.success(msg, true);

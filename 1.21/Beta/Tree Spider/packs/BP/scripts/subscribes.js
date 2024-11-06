@@ -1,10 +1,12 @@
 //@ts-check
-import { world, system, TicksPerSecond, Entity, ScoreboardObjective } from "@minecraft/server";
-import { dev, alertLog, watchFor,  dynamicVars } from './settings.js';
+import { world, system, TicksPerSecond, Entity, ScoreboardObjective,EntityInitializationCause } from "@minecraft/server";
+import { dev, alertLog, watchFor,  dynamicVars, entityEvents, chatLog } from './settings.js';
 import { ScoreboardLib } from "./commonLib/scoreboardClass.js";
-import { stalledEntityCheckAndFix, counts, webRegister } from './fn-stable.js';
+import { stalledEntityCheckAndFix, counts, webRegister, lastTickRegister } from './fn-stable.js';
 import { DynamicPropertyLib } from "./commonLib/dynamicPropertyClass.js";
 import { globalConstantsLib } from "./commonLib/globalConstantsClass.js";
+import { EntityLib } from "./commonLib/entityClass.js";
+import { Vector3Lib } from "./commonLib/vectorClass.js";
 //==============================================================================
 const sbName_load = dev.debugScoreboardName + '_load_tick';
 const sbName_spawn = dev.debugScoreboardName + '_spawn_tick';
@@ -96,16 +98,18 @@ export function afterEvents_entityLoad () {
         }
     });
 }
-
 //==============================================================================
 export function afterEvents_entityDie () {
     // Does NOT mean Died
-    if (dev.debugEntityActivity || dev.debugEntityAlert || dev.debugGamePlay) {
+    //if (dev.debugEntityActivity || dev.debugEntityAlert || dev.debugGamePlay) {
         alertLog.success("§aInstalling afterEvents.entityDie §c(debug mode : tick scoreboard)", dev.debugSubscriptions);
         world.afterEvents.entityDie.subscribe((event) => {
-            system.runTimeout(() => { dev.debugScoreboard?.addScore('§cDied', 1); }, 1);
+            system.runTimeout(() => { 
+                world.sendMessage(`Spider Died - ${event.damageSource.cause}`)
+                dev.debugScoreboard?.addScore('§cDied', 1); 
+            }, 1);
         }, { entityTypes: [ watchFor.typeId ] },);
-    }
+    //}
 }
 //==============================================================================
 export function beforeEvents_entityRemove () {
@@ -133,6 +137,8 @@ export function afterEvents_entityRemove () {
         }, { entityTypes: [ watchFor.typeId ] });
     }
 }
+//==============================================================================
+
 //==============================================================================
 /**
  * 

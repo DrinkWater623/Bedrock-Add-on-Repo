@@ -1,0 +1,35 @@
+{
+    "format_version": "1.21.0",
+    "minecraft:item": {
+        "description": {
+            "identifier": "dw623:rotten_flesh_jerky",
+            "menu_category": {
+                "category": "equipment",
+                "group": "itemGroup.name.cookedFood"
+            }
+        },
+        "components": {
+            "minecraft:display_name": {
+                "value": "Rotten Flesh Jerky"
+            },
+            "minecraft:icon": "rotten_flesh_jerky",
+            "minecraft:tags": {
+                "tags": [
+                    "minecraft:is_food"
+                ]
+            },
+            "minecraft:use_animation": "eat",
+            "minecraft:use_modifiers": {
+                "use_duration": 1.6,
+                "movement_modifier": 0.35
+            },
+            "minecraft:custom_components": ["dw623:effect_rotten_flesh_jerky_strength"],
+            "minecraft:food": {
+                "can_always_eat": false,
+                "nutrition": 5,
+                "saturation_modifier": 2
+                //"effects": [{"name":"nausea","chance":0.4,"duration":10,"amplifier":0}]
+            }
+        }
+    }
+}

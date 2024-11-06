@@ -1,0 +1,27 @@
+{
+  "$scope":{
+    "anvil_list":[
+      {"type": "chipped"},
+      {"type": "damaged"},
+      {"type": "deprecated"}
+    ]
+    
+  },
+  "$files": {
+    "array": "anvil_list",
+    "fileName": "./ores/renew_{{type}}_anvil"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_furnace": {
+      "description": {
+        "identifier": "dw623:renew_{{type}}_anvil"
+      },
+      "tags": [       
+        "blast_furnace"
+      ],
+      "input": "minecraft:{{type}}_anvil",
+      "output": "minecraft:anvil"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+    "format_version": "1.20.10",
+    "minecraft:recipe_shaped": {
+        "description": {
+            "identifier": "dw623:copper_block_anvil_craft"
+        },
+        "tags": [
+            "crafting_table"
+        ],
+        "pattern": [
+            "III",
+            " i ",
+            "iii"
+        ],
+        "key": {
+            "I": {
+                "item": "minecraft:copper_block"
+            },
+            "i": {
+                "item": "minecraft:copper_ingot"
+            }
+        },
+        "unlock": [
+            {
+                "item": "minecraft:copper_block"
+            }
+        ],
+        "result": {
+            "item": "dw623:copper_block_anvil",
+            "data": 0
+        }
+    }
+}

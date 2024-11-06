@@ -1,0 +1,37 @@
+{
+    "$scope":{
+        "anvil_fix":[
+            {"input":"chipped_anvil","fixer":"iron_nugget"},
+            {"input":"damaged_anvil","fixer":"iron_ingot"},
+            {"input":"deprecated_anvil","fixer":"iron_block"}
+        ]
+    },
+    "$files": {
+        "array": "anvil_fix",
+        "fileName": "{{input}}_fix_with_{{fixer}}"
+    },
+    "$template": {
+        "format_version": "1.12",
+        "minecraft:recipe_shapeless": {
+            "description": {
+                "identifier": "dw623:{{input}}_fix_with_{{fixer}}"
+            },
+            "tags": [
+                "crafting_table"
+            ],
+            "priority": 0,
+            "ingredients": [
+                {
+                    "item": "minecraft:{{input}}"                    
+                },
+                {
+                    "item": "minecraft:{{fixer}}"                    
+                }
+            ],
+            "result": {
+                "item": "minecraft:anvil",
+                "count": 1
+            }
+        }
+    }
+}

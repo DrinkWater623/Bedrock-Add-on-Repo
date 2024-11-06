@@ -1,0 +1,27 @@
+{
+    "$files": {
+        "array": "stonecutter",
+        "fileName": "{{output}}_stonecutter"
+    },
+    "$template": {
+        "format_version": "1.12",
+        "minecraft:recipe_shapeless": {
+            "description": {
+                "identifier": "dw623:{{output}}_stonecutter"
+            },
+            "tags": [
+                "stonecutter"
+            ],
+            "priority": 0,
+            "ingredients": [
+                {
+                    "item": "minecraft:{{input}}"
+                }
+            ],
+            "result": {
+                "item": "dw623:{{output}}",
+                "count": "{{=count}}"
+            }
+        }
+    }
+}

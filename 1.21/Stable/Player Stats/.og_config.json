@@ -1,0 +1,92 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
+	"author": "https://github.com/DrinkWater623",
+	"name": "Tree_Spider",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"mani_fest":{
+		"Debug":false,
+		"preview":false,
+		"beta":false,
+		"name": "Tree Spider",
+		"description": "Friendly Spider that leaves webs in trees",													
+		"min_engine_version": [1,21,0],							
+		"BP":{
+			"header_uuid": "60156da2-e8e1-4ac8-8d66-18690ad45da2",
+			"module_uuid": "0b044400-7d7f-4192-9f4b-d8d2256bfef8",
+			"dependencies":{"module_name":"@minecraft/server","version":"get"}								
+		},
+		"RP": {
+			"header_uuid": "a48721f9-215c-4e24-9160-b7ebc23e82e8",
+			"module_uuid": "b0fb973c-16f9-4896-a29f-1b98797bc429"
+		}
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			/*"jsonte": {"url":"github.com/MCDevKit/regolith-library","version":"2.14.0"},*/
+			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
+			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
+			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}			
+		},
+		"profiles": {
+			"template": {
+				"export": {"readOnly":false,"target":"local"},				
+				"filters": [											
+					{"filter":"dot_ignore"},
+					/*{"filter":"jsonte"},*/
+					{"filter":"empty_ignore"}
+				]
+			},
+			"build": {
+				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
+				"filters": [	
+					{"profile":"template"},												
+					{"filter":"mani_fest","settings":{"beta":false,"preview":false}}
+				]
+			},
+			"build-beta": {
+				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
+				"filters": [	
+					{"profile":"template"},												
+					{"filter":"mani_fest","settings":{"beta":true,"preview":false}}
+				]
+			},	
+			"stable": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"profile":"template"},		
+					{"filter":"mani_fest","settings":{"beta":false}}
+				]
+			},
+			"beta": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"profile":"template"},			
+					{"filter":"mani_fest","settings":{"beta":true}}
+				]
+			},
+			"preview": {
+				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
+				"filters": [
+					{"profile":"template"},	
+					{"filter":"mani_fest","settings":{"preview":true,"min_engine_version":[1,21,0]}}
+				]
+			},
+			"preview-beta": {
+				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
+				"filters": [
+					{"profile":"template"},	
+					{"filter":"mani_fest",
+						"settings":{
+							"preview":true,"beta":true,"min_engine_version":[1,21,0],
+							"BP":{"dependencies":{"module_name":"@minecraft/server","version":"get"}}
+						}
+					}
+				]
+			}
+		}
+	}
+}

@@ -1,0 +1,17 @@
+{
+    "format_version": "1.20.50",
+    "minecraft:item": {
+        "description": {
+            "identifier": "dw623:charcoal_nugget",
+            "menu_category": {"category":"items"}
+        },
+        "components": {
+            "minecraft:display_name": {"value":"Charcoal Nugget"},            
+            //"minecraft:icon": {"textures":{"default":"charcoal_nugget"}},
+            "minecraft:icon": "charcoal_nugget",
+            "minecraft:fuel":{"duration":9},
+            "minecraft:hand_equipped": true,
+            "minecraft:max_stack_size": 64
+        }
+    }
+}

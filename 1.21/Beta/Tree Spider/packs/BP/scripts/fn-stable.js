@@ -1,5 +1,5 @@
 //@ts-check
-import { Entity, system, Block } from "@minecraft/server";
+import { Entity, system, Block, world } from "@minecraft/server";
 import { dev, chatLog, watchFor, dynamicVars, entityEvents } from './settings.js';
 import { Vector3Lib } from './commonLib/vectorClass.js';
 import { ScoreboardLib } from "./commonLib/scoreboardClass.js";
@@ -327,14 +327,17 @@ export function stalledEntityCheckAndFix () {
                     const cmd = `summon ${watchFor.typeId} ${Vector3Lib.toString(location, 1, false, ' ')} 0 0 minecraft:entity_spawned "${nameTag}"`;
                     system.runTimeout(() => {
                         worldRun(cmd, e.dimension.id, 1);
-                        e.kill();
+                        if (entityEvents.replaceEventName && e.isValid()) e.triggerEvent(entityEvents.replaceEventName);
+                        //else e.kill();
                     }, killDelay);
                 }
                 else {
+                    //FIXME:spiders keep dying at
+                    world.sendMessage('killing stalled spider')
                     dev.debugScoreboard?.addScore('§4Stalled Spiders', 1);
                     system.runTimeout(() => {
                         if (entityEvents.replaceEventName && e.isValid()) e.triggerEvent(entityEvents.replaceEventName);
-                        else e.kill();
+                        //else e.kill();
                     }, killDelay);
                 }
 
@@ -350,10 +353,11 @@ export function stalledEntityCheckAndFix () {
 
                 const msg = `No Web Activity (${deltaMinutes}m) (${e.id}) @ ${Vector3Lib.toString(location, 0, true)} - Despawning in 1 minute`;
                 if (!!killDelay) chatLog.warn(msg, true);
-
+ //FIXME:spiders keep dying at
+ world.sendMessage('killing non web-making spider')
                 system.runTimeout(() => {
                     if (entityEvents.despawnEventName && e.isValid()) e.triggerEvent(entityEvents.despawnEventName);
-                    else e.kill();
+                    //else e.kill();
                 }, killDelay);
 
                 return;

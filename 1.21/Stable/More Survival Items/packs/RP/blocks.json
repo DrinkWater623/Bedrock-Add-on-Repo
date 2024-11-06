@@ -1,0 +1,9 @@
+{
+   "format_version" : "1.21.40",
+   "copper_block_anvil": {
+      "sound": "anvil"
+   },
+   "iron_block_anvil": {
+      "sound": "anvil"
+   }
+}

@@ -8,7 +8,6 @@ function main_beta () {
     subsBeta.chatSend();
     subsBeta.afterEvents_entitySpawn();    
 }
-
 //==============================================================================
 alertLog.success(`§aInstalling Add-on ${pack.packName} - §6Beta Chat Commands and Block Volume ${pack.isLoadAlertsOn ? '§c(Debug Mode)' : ''}`, pack.isLoadAlertsOn || dev.debugPackLoad);
 pack.hasChatCmd = 1;

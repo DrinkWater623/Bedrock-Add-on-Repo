@@ -1,0 +1,15 @@
+{
+  "$files": {
+    "array": "wood_types.filter(x => x.has_boat == 1)",
+    "fileName": "./boats/from_{{type}}_boat"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_furnace": {
+      "description": {"identifier":"dw623:furnace_charcoal_from_{{type}}_boat"},
+      "tags": ["furnace","blast_furnace"],
+      "input": "minecraft:{{type}}_boat",
+      "output": "minecraft:charcoal"
+    }
+  }
+}

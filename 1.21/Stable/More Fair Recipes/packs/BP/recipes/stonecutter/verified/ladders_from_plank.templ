@@ -1,0 +1,24 @@
+{
+  "$files": {
+    "array": "wood_types",
+    "fileName": "./ladders/from_plank_{{type}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {"identifier":"dw623:cut_{{type}}_ladders_from_plank"},
+      "tags": ["stonecutter"],
+      "priority": 0,
+      "ingredients": [
+        {
+          "item": "minecraft:{{type}}_planks"
+        }
+      ],
+      "result": {
+        "item": "minecraft:ladder",
+        "data": 0,
+        "count": 16
+      }
+    }
+  }
+}

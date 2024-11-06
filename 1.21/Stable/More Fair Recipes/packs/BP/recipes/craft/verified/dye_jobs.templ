@@ -1,0 +1,43 @@
+{
+  "$scope": {
+    "local_dye_list": [
+      {"folder":"blocks","dye_input":"red_dye"  ,"input_name":"sand"                ,"input_id":0,"input":"sand"                ,"output_name":"red_sand"                 ,"output_id":1  ,"output":"sand"              },
+      {"folder":"blocks","dye_input":"red_dye"  ,"input_name":"nether_brick"        ,"input_id":0,"input":"nether_brick"        ,"output_name":"red_nether_brick"         ,"output_id":0  ,"output":"red_nether_brick"  },
+      {"folder":"slabs" ,"dye_input":"red_dye"  ,"input_name":"nether_brick_slab"   ,"input_id":7,"input":"stone_block_slab"    ,"output_name":"red_nether_brick_slab"    ,"output_id":7  ,"output":"stone_block_slab2" },
+      {"folder":"slabs" ,"dye_input":"red_dye"  ,"input_name":"nether_brick_stairs" ,"input_id":0,"input":"nether_brick_stairs" ,"output_name":"red_nether_brick_stairs"  ,"output_id":0  ,"output":"red_nether_brick_stairs" },
+      {"folder":"Walls" ,"dye_input":"red_dye"  ,"input_name":"nether_brick_wall"   ,"input_id":9,"input":"cobblestone_wall"    ,"output_name":"red_nether_brick_wall"    ,"output_id":13 ,"output":"cobblestone_wall" }
+    ]
+  },
+  "$files": {
+      "array": "local_dye_list",
+      "fileName": "./{{folder}}/dye_{{input_name}}_{{dye_input}}"
+  },
+  "$template": {
+    "format_version": "1.17.0",
+    "minecraft:recipe_shaped": {
+      "description": {
+        "identifier": "dw623:dye_{{input_name}}_{{dye_input}}"
+      },
+      "tags": ["crafting_table"],      
+      "priority": 1,
+      "pattern": [
+        "###",
+        "#d#",
+        "###"
+      ],
+      "key": {
+        "d":  {"item":"minecraft:{{dye_input}}"},
+        "#": {
+          "item": "minecraft:{{input}}",
+          "data": "{{=input_id}}"
+        }
+      },     
+      "result": {
+        "item": "minecraft:{{output}}",
+        "data": "{{=output_id}}",
+        "count": 8
+      }
+    }
+  }
+}
+

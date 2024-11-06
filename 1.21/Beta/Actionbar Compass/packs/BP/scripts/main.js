@@ -1,9 +1,11 @@
 //@ts-check
 //=========================================================
 import { world, system } from "@minecraft/server";
+import { Vector3Lib } from "./commonLib/vectorClass";
 //=========================================================
 export const noCompassTag = "noCompassActionBar";
 export const xyzTag = "xyzTag";
+export const velocityTag = "velocityTag";
 //=========================================================
 /**
  * 
@@ -31,13 +33,25 @@ export function main () {
             .filter(p => !p.hasTag(noCompassTag) || p.hasTag(xyzTag))
             .forEach(p => {
                 //broken out for readability
+                const vt = p.hasTag(velocityTag);
+                const ct = !p.hasTag(noCompassTag);
+                const xt = p.hasTag(xyzTag);
+
                 let text = '';
-                if (!p.hasTag(noCompassTag)) {
-                    text = `§6${directionTextGet_Wave(p.getRotation().y)}`;
+
+                if (vt) {
+                    text += ` §e${Vector3Lib.toString(p.getVelocity(), 1, true)} ${ct || xt ? '|' : ''}`;
                 }
-                if (p.hasTag(xyzTag)) {
-                    text = (text + `  §b${p.location.x.toFixed(1)} §d${p.location.y.toFixed(1)} §g${p.location.z.toFixed(1)}`).trim();
+
+                if (ct) {
+                    text += ` §6${directionTextGet_Wave(p.getRotation().y)}  ${xt ? '|' : ''}`;
                 }
+
+                if (xt) {
+                    text += `  §b${p.location.x.toFixed(1)} §d${p.location.y.toFixed(1)} §g${p.location.z.toFixed(1)}`;
+                }
+
+                text = text.trim();
                 p.onScreenDisplay.setActionBar(text);
             });
     }, 15);

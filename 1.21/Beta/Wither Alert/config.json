@@ -55,11 +55,11 @@
 				"filters": [{"profile":"template-beta"},{"filter":"mani_fest","settings":{"beta":true,"preview":false,"BP":{"js":"main-beta.js"}}}]
 			},	
 			"stable": {
-				"export": {"readOnly":false,"target":"development","rpName": "'void_rp_'+project.name"},
+				"export": {"readOnly":false,"target":"development"},
 				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"beta":false}}]
 			},
 			"beta": {
-				"export": {"readOnly":false,"target":"development","rpName": "'void_rp_'+project.name"},
+				"export": {"readOnly":false,"target":"development"},
 				"filters": [{"profile":"template-beta"},{"filter":"mani_fest","settings":{"beta":true,"BP":{"js":"main-beta.js"}}}]
 			},
 			"preview": {

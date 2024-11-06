@@ -1,8 +1,7 @@
 //@ts-check
 import { world, EntityTypes } from "@minecraft/server";
 import { watchFor, dev, pack, alertLog, chatLog, gamePlay } from './settings.js';
-import { subscriptionsActivate } from './subscribes.js';
-
+import * as subs from './subscribes.js';
 //==============================================================================
 /**
  * List of properties
@@ -22,30 +21,24 @@ export function main_stable () {
     pack.isEntityAlertSystemOn = watchFor.validated;
 
     if (watchFor.validated) {
-        world.beforeEvents.worldInitialize.subscribe((event) => {
+        subs.worldInitialize_before();
 
-            const dypIds = world.getDynamicPropertyIds();
-            if (dypIds.includes('isLoadAlertsOn')) pack.isLoadAlertsOn = !!world.getDynamicProperty('isLoadAlertsOn');
-            if (dypIds.includes('isAlertSystemOn')) pack.isAlertSystemOn = !!world.getDynamicProperty('isAlertSystemOn');
-            world.setDynamicProperty('isLoadAlertsOn', pack.isLoadAlertsOn);
-            world.setDynamicProperty('isAlertSystemOn', pack.isAlertSystemOn);
+        if (pack.isAlertSystemOn) {
+            alertLog.success(`§aInstalling §bStable§r §aAdd-on`, debugMsg);            
+            subs.worldInitialize_after();
+            subs.explosion_after_sub();
+        }
+        else {
+            if (pack.hasChatCmd === -1) pack.hasChatCmd = 0;
 
-            if (pack.isAlertSystemOn) {
-                alertLog.success(`§aInstalling §bStable§r §aAdd-on`, debugMsg);
-                subscriptionsActivate();
-            }
-            else {
-                if (pack.hasChatCmd === -1) pack.hasChatCmd = 0;
+            let msg = `§6Alert system is §cOFF!§r`;
+            if (pack.hasChatCmd)
+                msg += `  §bOP, use command §a${gamePlay.commandPrefix}on§b turn turn back §aON§r`;
+            else
+                msg += ` This is the stable version and it should not be off.  Get the beta version to fix.`;
 
-                let msg = `§6Alert system is §cOFF!§r`;
-                if (pack.hasChatCmd)
-                    msg += `  §bOP, use command §a${gamePlay.commandPrefix}on§b turn turn back §aON§r`;
-                else
-                    msg += ` This is the stable version and it should not be off.  Get the beta version to fix.`;
-
-                alertLog.warn(msg, true);
-            }
-        });
+            alertLog.warn(msg, true);
+        }
     }
     else {
         alertLog.error(`§6Pack will not load because the defined entity is invalid: §c${watchFor.typeId}.  Update scripts/settings.js with a valid entity.`, true);
