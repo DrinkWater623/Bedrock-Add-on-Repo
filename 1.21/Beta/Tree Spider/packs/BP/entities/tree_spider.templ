@@ -3,7 +3,7 @@
     TODO:   1) Different colors, each color represents an effect and 
             2) can interact with empty bottle to get potion of that effect 
             3) or arrow to make poison arrow
-            4) turn offable in settings thow
+            4) turn off-able in settings
     */
     // ts:kill
     "$scope":{       
@@ -50,13 +50,10 @@
     },
     
     "$template": {
-        /*
-            ??? Spiders usually do it at night or early morning ??? 
-            should I make more active then? they are not neces nocturnal
-
-            TODO: add Life Cycle
-            
+        /*            
+            TODO: add Life Cycle            
         */
+
         "format_version": "1.21.0",
         "minecraft:entity": {
             "description": {
@@ -114,6 +111,7 @@
                                         {"test":"is_family","subject":"other","value":"mule"},
                                         {"test":"is_family","subject":"other","value":"donkey"},
                                         {"test":"is_family","subject":"other","value":"llama"},
+                                        {"test":"is_family","subject":"other","value":"frog"},
                                         {"test":"is_family","subject":"other","value":"sheep"},
                                         {"test":"is_family","subject":"other","value":"cow"},
                                         {"test":"is_family","subject":"other","value":"chicken"},
@@ -125,50 +123,50 @@
                         ]
                     }  
                 },
-                "avoid_other_spiders": {
-                    "minecraft:behavior.avoid_mob_type": {
-                        "priority": 1,
-                        "avoid_mob_sound":"imitate.cave_spider",
-                        "avoid_target_xz":16,
-                        "max_dist": 4,
-                        "max_flee": 8,
-                        "walk_speed_multiplier": 0.8,
-                        "sprint_speed_multiplier": 0.8,
-                        "sprint_distance":2,
-                        "entity_types": [                            
-                            {
-                                "filters": {
-                                    "all_of":[
-                                        {"test":"is_family","subject":"other","value":"tree_spider"},
-                                        {"test":"has_component","subject":"other","operator":"!=","value":"is_baby"}
-                                    ]
-                                }
-                            },
-                            {
-                                "filters": {
-                                    "any_of":[
-                                        {"test":"is_family","subject":"other","value":"creeper"},
-                                        {"test":"is_family","subject":"other","value":"slime"},
-                                        {"test":"is_family","subject":"other","value":"magma"},
-                                        {"test":"is_family","subject":"other","value":"pillager"},
-                                        {"test":"is_family","subject":"other","value":"villager"},
-                                        {"test":"is_family","subject":"other","value":"wandering_trader"},
-                                        {"test":"is_family","subject":"other","value":"parrot"},
-                                        {"test":"is_family","subject":"other","value":"horse"},
-                                        {"test":"is_family","subject":"other","value":"mule"},
-                                        {"test":"is_family","subject":"other","value":"donkey"},
-                                        {"test":"is_family","subject":"other","value":"llama"},
-                                        {"test":"is_family","subject":"other","value":"sheep"},
-                                        {"test":"is_family","subject":"other","value":"cow"},
-                                        {"test":"is_family","subject":"other","value":"chicken"},
-                                        {"test":"is_family","subject":"other","value":"ocelot"},
-                                        {"test":"is_family","subject":"other","value":"cat"}
-                                    ]
-                                }
-                            }
-                        ]
-                    }                
-                },
+                // "avoid_other_spiders": {
+                //     "minecraft:behavior.avoid_mob_type": {
+                //         "priority": 1,
+                //         "avoid_mob_sound":"imitate.cave_spider",
+                //         "avoid_target_xz":16,
+                //         "max_dist": 4,
+                //         "max_flee": 8,
+                //         "walk_speed_multiplier": 0.8,
+                //         "sprint_speed_multiplier": 0.8,
+                //         "sprint_distance":2,
+                //         "entity_types": [                            
+                //             {
+                //                 "filters": {
+                //                     "all_of":[
+                //                         {"test":"is_family","subject":"other","value":"tree_spider"},
+                //                         {"test":"has_component","subject":"other","operator":"!=","value":"is_baby"}
+                //                     ]
+                //                 }
+                //             },
+                //             {
+                //                 "filters": {
+                //                     "any_of":[
+                //                         {"test":"is_family","subject":"other","value":"creeper"},
+                //                         {"test":"is_family","subject":"other","value":"slime"},
+                //                         {"test":"is_family","subject":"other","value":"magma"},
+                //                         {"test":"is_family","subject":"other","value":"pillager"},
+                //                         {"test":"is_family","subject":"other","value":"villager"},
+                //                         {"test":"is_family","subject":"other","value":"wandering_trader"},
+                //                         {"test":"is_family","subject":"other","value":"parrot"},
+                //                         {"test":"is_family","subject":"other","value":"horse"},
+                //                         {"test":"is_family","subject":"other","value":"mule"},
+                //                         {"test":"is_family","subject":"other","value":"donkey"},
+                //                         {"test":"is_family","subject":"other","value":"llama"},
+                //                         {"test":"is_family","subject":"other","value":"sheep"},
+                //                         {"test":"is_family","subject":"other","value":"cow"},
+                //                         {"test":"is_family","subject":"other","value":"chicken"},
+                //                         {"test":"is_family","subject":"other","value":"ocelot"},
+                //                         {"test":"is_family","subject":"other","value":"cat"}
+                //                     ]
+                //                 }
+                //             }
+                //         ]
+                //     }                
+                // },
                 "avoid_other_spiders_and_eggs": {
                     "minecraft:behavior.avoid_mob_type": {
                         "priority": 1,
@@ -203,6 +201,7 @@
                                         {"test":"is_family","subject":"other","value":"mule"},
                                         {"test":"is_family","subject":"other","value":"donkey"},
                                         {"test":"is_family","subject":"other","value":"llama"},
+                                        {"test":"is_family","subject":"other","value":"frog"},
                                         {"test":"is_family","subject":"other","value":"sheep"},
                                         {"test":"is_family","subject":"other","value":"cow"},
                                         {"test":"is_family","subject":"other","value":"chicken"},
@@ -278,77 +277,11 @@
                         //To lower the previous Priority
                         "minecraft:behavior.random_stroll":{"priority":90,"interval":600,"speed_multiplier":0.80},
                         "minecraft:behavior.move_to_block": {
-                            "priority": 99,"start_chance": 1,"target_selection_method": "nearest","target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false}, "target_blocks": ["minecraft:web"],
+                            "priority": 99,"start_chance": 1,"target_selection_method": "nearest","target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false}, "target_blocks": ["minecraft:tall_grass"],
                             "tick_interval": 6000,"speed_multiplier": 0.8,"goal_radius": 0.5,"search_range": 32,"search_height":16                            
                         } 
                     }      
-                },
-                /*
-                "adult_spider_calm": {
-                    "minecraft:on_target_acquired": {"event":"adult_go_attack","target":"self"},
-                    "minecraft:on_friendly_anger": {"event":"adult_go_attack","target":"self"},
-                    "minecraft:damage_sensor": {
-                        "triggers": [
-                            //fall
-                            {"cause":"fall","deals_damage":false},
-                            //bush
-                            {"on_damage":{"filters":{"test":"is_block","subject":"block","value":"minecraft:sweet_berry_bush"}},"deals_damage":false},
-                            //other entity
-                            {
-                                "cause": "all",
-                                "deals_damage": true,
-                                "on_damage": {
-                                    "event": "adult_go_attack",
-                                    "filters": {
-                                        "any_of": [
-                                            {"test":"is_family","subject":"other","value":"monster"},
-                                            {"test":"is_family","subject":"other","value":"player"}
-                                        ]
-                                    }                        
-                                }
-                            }
-                        ]
-                    }
-                },
-                "adult_spider_attack": {
-                    "minecraft:on_target_escape": {"event":"adult_become_calm","target":"self"},
-                    "minecraft:angry": {
-                        "duration": 10,
-                        "duration_delta": 5,
-                        "broadcast_anger_on_being_attacked": true,
-                        "broadcastRange": 8,
-                        "broadcast_targets": ["dw623:tree_spider"],
-                        "calm_event": {"event":"adult_become_calm","target":"self"}
-                    },
-                    "minecraft:behavior.leap_at_target": {"priority":2,"yd":0.4,"must_be_on_ground":false},
-                    "minecraft:behavior.melee_attack": {"priority":3,"track_target":true,"reach_multiplier":0.8},
-                    "minecraft:damage_sensor": {
-                        "triggers": [
-                            //fall
-                            {
-                                "cause": "fall",
-                                "deals_damage": false
-                            },
-                            //bush
-                            {
-                                "on_damage": {
-                                    "filters": {
-                                        "test": "is_block",
-                                        "subject": "block",
-                                        "value": "minecraft:sweet_berry_bush"
-                                    }
-                                },
-                                "deals_damage": false
-                            }
-                        ]
-                    },
-                    //To lower the previous Priority
-                    "minecraft:behavior.move_to_block": {
-                        "priority": 99,"start_chance": 1,"target_selection_method": "nearest","target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false}, "target_blocks": ["minecraft:web"],
-                        "tick_interval": 6000,"speed_multiplier": 0.8,"goal_radius": 0.5,"search_range": 32,"search_height":16,"on_reach": [{"event":"enter_web","target":"self"}] 
-                    } 
-                },
-                */                 
+                },                                
                 // Task / Goal
                 "look_for_movement": { //One Movement to rule them ALL
                     "minecraft:movement": {"value":0.3},
@@ -373,9 +306,9 @@
                     }
                 },                
                 "stay_in_web": {
-                    "minecraft:movement": {"value":0.2},
-                    "minecraft:mark_variant": {"value":12},
-                    "minecraft:behavior.random_stroll":{"priority":100,"interval":6000,"speed_multiplier":0.01},
+                    "minecraft:movement": {"value":0},
+                    "minecraft:behavior.random_stroll":{"priority":99,"interval":6000,"speed_multiplier":0.0},                    
+                    "minecraft:mark_variant": {"value":12},                    
                     "minecraft:behavior.move_to_block": {
                         "priority": 2,"start_chance": 1,"target_selection_method": "nearest","target_blocks": ["minecraft:web"],
                         "tick_interval": 10,"speed_multiplier": 0.5,
@@ -384,13 +317,18 @@
                         //,"on_reach": [{"event":"non_event","target":"self"}] 
                         //FIXME: for some reason, placeWeb event was still going -see if real bug later  
                     },
-                    "minecraft:physics":{"has_collision":false,"has_gravity":false},
+                    "minecraft:physics":{"has_collision":true,"has_gravity":false}, 
+                    //turned collision on because they are suffocating in block below web
                     "minecraft:jump.static":{"jump_power":0},"minecraft:variant": {"value": 0},                    
                     "minecraft:environment_sensor":{
                         "triggers":[                                               
                             {                                
                                 "event":"wander_around_start", 
                                 "filters":{ "test": "in_block","value": "minecraft:air" }                        
+                            },
+                            {                                
+                                "event":"wander_around_start", 
+                                "filters":{ "test": "in_block","value": "minecraft:grass_block" }                        
                             }
                         ]
                     }
@@ -415,13 +353,13 @@
                     "minecraft:mark_variant": {"value":0}, 
                     "minecraft:behavior.random_stroll":{"priority":2,"interval":60,"speed_multiplier":0.8},
                     "minecraft:behavior.move_to_block": {
-                        "priority": 99,"start_chance": 1,"target_selection_method": "nearest","target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false}, "target_blocks": ["minecraft:web"],
+                        "priority": 99,"start_chance": 1,"target_selection_method": "nearest","target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false}, "target_blocks": ["minecraft:tall_grass"],
                         "tick_interval": 6000,"speed_multiplier": 0.8,"goal_radius": 1,"search_range": 32,"search_height":16
                     },                      
-                    "minecraft:physics":{"has_collision":true,"has_gravity":true},
                     "minecraft:jump.static": {"jump_power": 1.0},
+                    "minecraft:physics":{"has_collision":true,"has_gravity":true},
                     "minecraft:environment_sensor":{
-                        "triggers":[                                               
+                        "triggers":[
                             {
                                 //so can reach leaves better
                                 "event":"can_jump_high",
@@ -445,62 +383,19 @@
                                         { "test":"is_underground", "value":false }
                                     ]
                                 }
-                            },
-                            { 
-                                "event":"stay_in_web_start",
-                                "filters":{"test":"in_block","operator":"==","value":"minecraft:web"} 
-                            }
+                            }                            
                         ]
                     }
                 },
-                //--------------------------------- 
-                // "environment_sensor_non_web":{
-                //     "minecraft:environment_sensor":{
-                //         "triggers":[                                               
-                //             {
-                //                 //so can reach leaves better
-                //                 "event":"can_jump_high",
-                //                 "filters":{
-                //                     "all_of":[
-                //                         { "test": "is_variant", "operator": "!=", "value": 2 }, //already in state
-                //                         { "test": "is_mark_variant", "operator": "!=", "value": 12 }, //stay in web
-                //                         { "test": "is_underground","value":true },
-                //                         { "test": "in_block","operator":"!=","value": "minecraft:web" },
-                //                         { "test": "in_block","operator":"!=","value": "minecraft:tall_grass" } //TODO: list other tall plants
-                //                     ]
-                //                 }                        
-                //             },
-                //             {
-                //                 "event":"can_jump_normal",
-                //                 "filters":{
-                //                     "all_of":[
-                //                         { "test": "is_variant", "operator": "!=", "value": 1 },
-                //                         { "test": "is_mark_variant", "operator": "!=", "value": 12 }, //stay in web
-                //                         { "test": "in_block","operator":"!=","value": "minecraft:web" },
-                //                         { "test":"is_underground", "value":false }
-                //                     ]
-                //                 }
-                //             },
-                //             { 
-                //                 "event":"stay_in_web_start",
-                //                 "filters":{"test":"in_block","operator":"==","value":"minecraft:web"} 
-                //             }
-                //         ]
-                //     }
-                // },                                
                 "name_tagged":{"minecraft:persistent":{},"minecraft:despawn":{"filters":{"test":"has_nametag","value":false}}},
                 //--------------------------------- 
                 //Movement
                 "gravity_off_sans_collision":{
-                    "minecraft:physics":{"has_collision":false,"has_gravity":false} 
+                    "minecraft:physics":{"has_collision":true,"has_gravity":false} 
                 },
-                // "gravity_on":{
-                //     "minecraft:physics":{"has_collision":true,"has_gravity":true} 
-                // },
-                // "gravity_off":{
-                //     "minecraft:physics":{"has_collision":true,"has_gravity":false} 
-                // },
-                //"in_web":{"minecraft:physics":{"has_collision":true,"has_gravity":false}},
+                "gravity_off_with_collision":{
+                    "minecraft:physics":{"has_collision":true,"has_gravity":false} 
+                },                               
                 "jump_high":{"minecraft:jump.static":{"jump_power":3},"minecraft:variant": {"value": 2}},
                 "jump_normal":{"minecraft:jump.static":{"jump_power":1},"minecraft:variant": {"value": 1}},
                 "jump_low":{"minecraft:jump.static":{"jump_power":0.5},"minecraft:variant": {"value": 0}},
@@ -546,7 +441,7 @@
                         "priority": 2,"start_chance": 1,"target_selection_method": "nearest","target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false}, "target_blocks": ["minecraft:web"],
                         "tick_interval": 1,"speed_multiplier": 0.9,
                         "goal_radius": 0.5,"search_range": 32,"search_height":16,
-                        "on_reach": [{"event":"baby_enter_web","target":"self"}] //,"stay_duration": 5.0,"on_stay_completed": [{"event":"enter_web","target":"self"}] 
+                        "on_reach": [{"event":"baby_enter_web","target":"self"}] 
                     },
                     //reset 
                     "minecraft:physics":{"has_collision":true,"has_gravity":true},
@@ -602,13 +497,23 @@
                 "minecraft:type_family": {"family":["tree_spider"]}, //,"arthropod" took out mob to see if can get to spawn on leaves
                 "minecraft:ambient_sound_interval": {"event_name":"imitate.cave_spider","range":3,"value":2},
                 "minecraft:health": {"value":20,"max":20},
-                "minecraft:breathable": {"breathes_air": true,"total_supply": 15},
+                "minecraft:breathable": {
+                    "breathes_air": true,
+                    "breathe_blocks": [
+                        "minecraft:web",
+                        "minecraft:acacia_leaves","minecraft:birch_leaves","minecraft:cherry_leaves","minecraft:jungle_leaves",
+                        "minecraft:dark_oak_leaves","minecraft:mangrove_leaves","minecraft:oak_leaves","minecraft:spruce_leaves",
+                        "minecraft:azalea","minecraft:azalea_leaves","minecraft:azalea_leaves_flowered"    
+                    ],
+                    "total_supply": 60,
+                    "suffocate_time":1
+                },
                 "minecraft:follow_range": {"value":8}, 
                 "minecraft:hurt_on_condition": {"damage_conditions":[{"filters":{"test":"in_lava","subject":"self","operator":"==","value":true},"cause":"lava","damage_per_tick":4}]},
                 "minecraft:pushable": {"is_pushable":true,"is_pushable_by_piston":true},
                 "minecraft:variant":{"value":0},                
                 "minecraft:environment_sensor":{
-                    "triggers":[                                               
+                    "triggers":[                                                                    
                         {
                             //so can reach leaves better
                             "event":"can_jump_high",
@@ -632,10 +537,6 @@
                                     { "test":"is_underground", "value":false }
                                 ]
                             }
-                        },
-                        { 
-                            "event":"stay_in_web_start",
-                            "filters":{"test":"in_block","operator":"==","value":"minecraft:web"} 
                         }
                     ]
                 },
@@ -687,7 +588,7 @@
                 */      
             },
             "events": {  
-                "non_event":{"queue_command": {"command":["scriptevent chatOnly:EntityActivity §cnonEvent"]}},
+                "non_event":{"queue_command": {"command":["scriptevent chatOnly:EntityActivity§c nonEvent"]}},
                 //---------------------------------    
                 // Natural Adult Life
                 //---------------------------------                        
@@ -745,33 +646,25 @@
                 //---------------------------------            
                 "make_web": {                   
                     "sequence":[
-                        {"add":{"component_groups":["gravity_off_sans_collision","jump_no","movement_no"]}},
+                        {"add":{"component_groups":["fake_timer"]}},
                         {"queue_command": {"command":["scriptevent tree_spider:placeWeb"]}}
                         //stay in web called by script event
                     ]
                 },
                 "enter_web":{                                        
-                    "sequence":[
-                        {"add":{"component_groups":["gravity_off_sans_collision","jump_no","movement_no"]}},
+                    "sequence":[                        
+                        {"add":{"component_groups":["fake_timer"]}},
                         {"queue_command": {"command":["scriptevent tree_spider:enterWeb"]}}
-                        //stay in web called by script event
+                        //stay in web start called by script event
                     ]
                 },                
-                "expand_web": {"queue_command": {"command":["scriptevent tree_spider:expandWeb"]}},
-                //---------------------------------
-                /*                                
-                "remove_move_to_block": {
-                    //everything has housekeeping.. but just in case, "one undo-ring to rule them all"
-                    "filters": {"test":"has_component","value":"minecraft:move_to_block"},
-                    "remove":{"component_groups":[
-                        "look_for_log_nearest",
-                        "look_for_leaves_nearest",
-                        "look_for_nature_nearest",
-                        "look_for_web_nearest"
-                        //"stay_in_web",
-                    ]}
+                "expand_web": {
+                    "sequence":[                        
+                        {"add":{"component_groups":["fake_timer"]}},
+                        {"queue_command": {"command":["scriptevent tree_spider:expandWeb"]}}
+                        //stay in web start called by script event
+                    ]                    
                 },
-                */   
                 //---------------------------------            
                 // End - Major Script Events - Adult
                 //---------------------------------            
@@ -798,20 +691,39 @@
                 },                                
                 //---------------------------------          
                 "stay_in_web_start":{
-                    "sequence":[
-                        {"add":{"component_groups":["gravity_off_sans_collision","jump_no","movement_no"]}},
+                    "sequence":[                        
                         {"add":{"component_groups":["stay_in_web","stay_in_web_timer","avoid_eggs"]}},
                         {"queue_command": {"command":["scriptevent chatOnly:EntityActivity §2STAYING IN WEB"]}}
                     ]
                 },
-                "stay_in_web_end": {   
-                    "randomize": [   
-                        {"weight":50,"trigger":"stay_in_web_choose_next"},  
-                        {"weight":50,"add":{"component_groups":["lay_egg_sac"]}}
-                    ]
+                "stay_in_web_end": {
+                    //Needs to turn back on physics and gravity here   
+                    "sequence":[                        
+                        {"randomize": [   
+                            {"weight":50,"trigger":"stay_in_web_choose_next"},  
+                            {"weight":50,
+                            "remove":{"component_groups":["avoid_eggs"]},
+                            "add":{"component_groups":["lay_egg_sac"]}
+                        }
+                        ]}
+                    ]                    
                 },                
                 //---------------------------------            
-                "lay_egg_sac_end":{"remove":{"component_groups":["lay_egg_sac"]},"trigger":"wander_around_start"},
+                "lay_egg_sac_end":{                    
+                    "sequence":[                        
+                        {"remove":{"component_groups":["lay_egg_sac"]}},
+                        {
+                            //"trigger":"wander_around_start"
+                            "add":{"component_groups":[
+                                "wander_around",
+                                "wander_around_timer"
+                            ]}
+                        },
+                        {
+                            "add":{"component_groups":["avoid_other_spiders_and_eggs"]}
+                        }
+                    ]  
+                },
                 //---------------------------------            
                 "stay_in_web_choose_next": {
                     "randomize": [   
@@ -822,8 +734,14 @@
                     ]        
                 }, 
                 //---------------------------------          
-                "wander_around_start": {"add":{"component_groups":["wander_around","wander_around_timer","avoid_other_spiders_and_eggs"]}},
-                "wander_around_end": {   
+                "wander_around_start": {
+                    "add":{"component_groups":[
+                        "wander_around",
+                        "wander_around_timer",
+                        "avoid_other_spiders_and_eggs"
+                    ]}
+                },
+                "wander_around_end": {
                     "randomize": [
                         {"weight":60,"trigger":"look_for_web_nearest_start"}, 
                         {"weight":20,"trigger":"wander_around_start"},

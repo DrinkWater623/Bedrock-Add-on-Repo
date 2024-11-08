@@ -1,11 +1,10 @@
 //@ts-check
-import { world, system, TicksPerSecond, Entity, ScoreboardObjective,EntityInitializationCause } from "@minecraft/server";
-import { dev, alertLog, watchFor,  dynamicVars, entityEvents, chatLog } from './settings.js';
+import { world, system, TicksPerSecond, Entity, ScoreboardObjective, Block } from "@minecraft/server";
+import { dev, alertLog, watchFor, dynamicVars } from './settings.js';
 import { ScoreboardLib } from "./commonLib/scoreboardClass.js";
-import { stalledEntityCheckAndFix, counts, webRegister, lastTickRegister } from './fn-stable.js';
+import { stalledEntityCheckAndFix, counts, webRegister } from './fn-stable.js';
 import { DynamicPropertyLib } from "./commonLib/dynamicPropertyClass.js";
 import { globalConstantsLib } from "./commonLib/globalConstantsClass.js";
-import { EntityLib } from "./commonLib/entityClass.js";
 import { Vector3Lib } from "./commonLib/vectorClass.js";
 //==============================================================================
 const sbName_load = dev.debugScoreboardName + '_load_tick';
@@ -101,14 +100,36 @@ export function afterEvents_entityLoad () {
 //==============================================================================
 export function afterEvents_entityDie () {
     // Does NOT mean Died
+
     //if (dev.debugEntityActivity || dev.debugEntityAlert || dev.debugGamePlay) {
-        alertLog.success("§aInstalling afterEvents.entityDie §c(debug mode : tick scoreboard)", dev.debugSubscriptions);
-        world.afterEvents.entityDie.subscribe((event) => {
-            system.runTimeout(() => { 
-                world.sendMessage(`Spider Died - ${event.damageSource.cause}`)
-                dev.debugScoreboard?.addScore('§cDied', 1); 
-            }, 1);
-        }, { entityTypes: [ watchFor.typeId ] },);
+    alertLog.success("§aInstalling afterEvents.entityDie §c(debug mode : tick scoreboard)", dev.debugSubscriptions);
+
+    world.afterEvents.entityDie.subscribe((event) => {
+        var entity = event.deadEntity;
+        var whyDied = event.damageSource.cause;
+        var msg = '';
+
+        if (whyDied == 'suffocation') {
+            var dimension = entity.dimension;
+            var location = entity.location;
+
+            if (dimension != null && location != null) {
+                var inBlock = dimension.getBlock(location)?.typeId;
+                msg = `Spider Suffocated in§c block: ${inBlock} @ ${Vector3Lib.toString(location,1,true)}`;
+            }
+            else {
+                msg = `Spider Suffocated (cannot get block)`;
+            }
+        }
+        else {
+            msg = `Spider Died - ${whyDied}`;
+        }
+
+        world.sendMessage(msg);
+        if (dev.debugScoreboard)
+            system.runTimeout(() => { dev.debugScoreboard?.addScore('§cDied', 1); }, 1);
+
+    }, { entityTypes: [ watchFor.typeId ] });
     //}
 }
 //==============================================================================
@@ -137,8 +158,6 @@ export function afterEvents_entityRemove () {
         }, { entityTypes: [ watchFor.typeId ] });
     }
 }
-//==============================================================================
-
 //==============================================================================
 /**
  * 

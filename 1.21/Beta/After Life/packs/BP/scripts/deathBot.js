@@ -4,25 +4,27 @@
  * 
  */
 //==============================================================================
-import { world, system, Entity, Dimension, EntityInventoryComponent } from "@minecraft/server";
-import { debug, debugMsg } from "./main.js";
-import * as fn from "./functions.js";
+import { world, system, Dimension, EntityInventoryComponent,Player} from "@minecraft/server";
+import { chatLog, dev } from "./settings";
+import { sendPlayerMessageLater } from "./fn-stable";
+//==============================================================================
 const deathBotIdentifier = "dw623:death_bot";
+const debug = dev.debugBot
 //==============================================================================
 /**
-* @param { import("@minecraft/server").Dimension } dimension
+* @param { Dimension } dimension
 * @param { import("@minecraft/server").Vector3 } location
-* @param { import("@minecraft/server").Player }  player
+* @param { Player }  player
 */
 export function launchDeathBots (dimension, location, player) {
-    debugMsg(`*§a launchDeathBots()`);
+    if (debug) chatLog.player(player,`*§a launchDeathBots()`);
 
     const itemCount = floatingItemCount(dimension, location, 0, 10);
     if (itemCount === 0) {
         player.sendMessage("* §cNo Items TO Be Recovered Found");
         return;
     }
-    debugMsg(`==> itemCount: ${itemCount}`);
+    if (debug) chatLog.player(player,`==> itemCount: ${itemCount}`);
 
     let botCount = Math.ceil(itemCount / 27);
     if (botCount > 9) botCount = 9;
@@ -41,7 +43,7 @@ export function launchDeathBots (dimension, location, player) {
 * @param { number } botNumber
 */
 function launchDeathBot (dimension, location, player, botNumber = 0) {
-    debugMsg(`*§a launchDeathBot (botNumber: ${botNumber})`);
+    if (debug) chatLog.player(player,`*§a launchDeathBot (botNumber: ${botNumber})`);
 
     const botName = `§cDeath Container #${botNumber}:§r\n ${player?.nameTag}`;
     const bot = dimension.spawnEntity(deathBotIdentifier, location);
@@ -54,7 +56,7 @@ function launchDeathBot (dimension, location, player, botNumber = 0) {
 
     for (let i = 1; i < 5; i++)
         system.runTimeout(() => {
-            debugMsg(`#${botNumber} script (tick+${i}) tp r=15`);
+            if (debug) chatLog.player(player,`#${botNumber} script (tick+${i}) tp r=15`);
             bot.dimension.runCommand('tp @e[r=15,type=item] @s');
         }, i + ((i - 1) * 5));
     system.runTimeout(() => {
@@ -75,7 +77,7 @@ function botContainerReport (bot, player, botNumber = 1) {
         return;
     }
     //report here 
-    debugMsg(`==> Container Report #${botNumber}`);
+    if (debug) chatLog.player(player,`==> Container Report #${botNumber}`);
     const itemMap = new Map();
     for (let i = 0; i < 27; i++) {
         if (container.getItem[ i ]) {
@@ -91,7 +93,7 @@ function botContainerReport (bot, player, botNumber = 1) {
         system.runTimeout(() => {
             let msg = `§aRetrieved Item List (Death Bot #${botNumber}):§r`;
             itemMap.forEach((v, k) => { msg += `\n\t${v} - ${k}`; });
-            fn.sendPlayerMessageLater('\n\n' + msg + '\n\n', player, 1);
+            sendPlayerMessageLater('\n\n' + msg + '\n\n', player, 1);
         }, 5);
     }
 }

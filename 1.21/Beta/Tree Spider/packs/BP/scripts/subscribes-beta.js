@@ -81,10 +81,11 @@ export function afterEvents_entitySpawn () {
 
                 //because I cannot get the Spawn Rules to do what I want... 
                 //I want to be able to spawn in short grass, and such, just not on air/grass_block
-                if (inBlock?.typeId=="minecraft:air" && onBlock?.typeId=="minecraft:grass_block") {
-                    entity.triggerEvent(entityEvents.despawnEventName)
-                    return
-                }
+                //FIXME: this is where the limits apply - to make not spawn on plain grass block
+                //if (inBlock?.typeId=="minecraft:air" && onBlock?.typeId=="minecraft:grass_block") {
+                //    entity.triggerEvent(entityEvents.despawnEventName)
+                //    return
+                //}
 
                 //in beta because of Biome Check
                 if (dev.debugLoadAndSpawn && event.cause == EntityInitializationCause.Spawned) {

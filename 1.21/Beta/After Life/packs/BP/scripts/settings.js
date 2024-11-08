@@ -20,9 +20,11 @@ export const dynamicVars = {
     deathCoordinates: 'deathCoordinates'
 };
 //==============================================================================
-//Change this to change the entity
 export const dev = {
+    debug: true,
     debugChatCmds: false,
+    debugBot: true,
+    debugPlayer: true,
     debugGamePlay: false,
     debugEntityEvent: false,
     //--before turn off testing, get despawn position to see if distance is why

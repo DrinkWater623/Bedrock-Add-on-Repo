@@ -17,7 +17,7 @@ export function main_stable () {
     //Re-Inits - the ticks of the entity
     subs.afterEvents_entityLoad();
 
-    if (dev.debugGamePlay || dev.debugEntityActivity || dev.debugEntityAlert)
+    //if (dev.debugGamePlay || dev.debugEntityActivity || dev.debugEntityAlert)
         subs.afterEvents_entityDie();
 
     if (dev.debugLoadAndSpawn)

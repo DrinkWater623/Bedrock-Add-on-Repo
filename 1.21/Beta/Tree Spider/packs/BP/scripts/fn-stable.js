@@ -101,7 +101,8 @@ export function placeWeb (entity) {
         setWebAndEnter(entity, webLocationOffset, 'placedWeb');
         return true;
     }
-
+    
+    //else wander
     system.run(() => {
         entity.triggerEvent(entityEvents.wanderEventName);
     });
@@ -267,7 +268,7 @@ export function webRegister (entity) {
  */
 export function stalledEntityCheckAndFix () {
     //this sb keeps the last activity tick.. so if diff is over 5 min, it is stalled or out of range    
-
+    const debug = true;
     const entities = EntityLib.getAllEntities({ type: watchFor.typeId });
     if (entities.length === 0) return;
 
@@ -309,7 +310,7 @@ export function stalledEntityCheckAndFix () {
                 if (inBlock && inBlock.typeId == watchFor.home_typeId) {
 
                     msg = `§4${nameTag || e.id} Stalled (${deltaMinutes}m - mv=${markVar}) @ ${Vector3Lib.toString(location, 0, true)} - Sending Wander Event `;
-                    chatLog.warn(msg, dev.debugGamePlay || dev.debugEntityAlert || dev.debugEntityActivity);
+                    chatLog.warn(msg, debug|| dev.debugGamePlay || dev.debugEntityAlert || dev.debugEntityActivity);
                     system.run(() => {
                         e.setDynamicProperty(dynamicVars.lastWebActivityTick, system.currentTick);
                         e.triggerEvent(entityEvents.wanderEventName);
@@ -318,7 +319,7 @@ export function stalledEntityCheckAndFix () {
                 }
 
                 msg = `§4${nameTag ? nameTag : watchFor.display} Stalled (${deltaMinutes}m)  (${e.id}) @ ${Vector3Lib.toString(location, 0, true)} - Replacing `;
-                chatLog.warn(msg, dev.debugGamePlay || dev.debugEntityAlert || dev.debugEntityActivity);
+                chatLog.warn(msg, debug || dev.debugGamePlay || dev.debugEntityAlert || dev.debugEntityActivity);
 
                 if (nameTag) {
                     //summon one with same name
@@ -327,17 +328,25 @@ export function stalledEntityCheckAndFix () {
                     const cmd = `summon ${watchFor.typeId} ${Vector3Lib.toString(location, 1, false, ' ')} 0 0 minecraft:entity_spawned "${nameTag}"`;
                     system.runTimeout(() => {
                         worldRun(cmd, e.dimension.id, 1);
-                        if (entityEvents.replaceEventName && e.isValid()) e.triggerEvent(entityEvents.replaceEventName);
-                        //else e.kill();
+                        if (entityEvents.replaceEventName && e.isValid())
+                            e.triggerEvent(entityEvents.replaceEventName);
+                        else
+                            e.kill();
                     }, killDelay);
                 }
                 else {
-                    //FIXME:spiders keep dying at
-                    world.sendMessage('killing stalled spider')
                     dev.debugScoreboard?.addScore('§4Stalled Spiders', 1);
                     system.runTimeout(() => {
-                        if (entityEvents.replaceEventName && e.isValid()) e.triggerEvent(entityEvents.replaceEventName);
-                        //else e.kill();
+                        if (entityEvents.replaceEventName && e.isValid()) {
+                            chatLog.warn(`Replacing stalled spider (${deltaMinutes} min)`, dev.debugEntityAlert || debug);
+                            e.triggerEvent(entityEvents.replaceEventName);
+                        }
+                        else {
+                            chatLog.warn(`Replacing/kill stalled spider (${deltaMinutes} min)`, dev.debugEntityAlert || debug);
+                            const cmd = `summon ${watchFor.typeId} ${Vector3Lib.toString(location, 1, false, ' ')} 0 0 minecraft:entity_spawned`;
+                            worldRun(cmd, e.dimension.id, 1);
+                            e.kill();
+                        }
                     }, killDelay);
                 }
 
@@ -352,12 +361,12 @@ export function stalledEntityCheckAndFix () {
                 //dev.debugScoreboard?.addScore('§cNo-Webs spiders', 1);
 
                 const msg = `No Web Activity (${deltaMinutes}m) (${e.id}) @ ${Vector3Lib.toString(location, 0, true)} - Despawning in 1 minute`;
-                if (!!killDelay) chatLog.warn(msg, true);
- //FIXME:spiders keep dying at
- world.sendMessage('killing non web-making spider')
-                system.runTimeout(() => {
-                    if (entityEvents.despawnEventName && e.isValid()) e.triggerEvent(entityEvents.despawnEventName);
-                    //else e.kill();
+                if (!!killDelay) chatLog.warn(msg, debug || dev.debugEntityAlert);
+                system.runTimeout(() => {                    
+                    if (entityEvents.despawnEventName && e.isValid()) 
+                        e.triggerEvent(entityEvents.despawnEventName);
+                    else 
+                        e.kill();
                 }, killDelay);
 
                 return;

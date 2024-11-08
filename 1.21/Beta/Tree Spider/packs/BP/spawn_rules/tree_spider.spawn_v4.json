@@ -35,14 +35,16 @@
       { 
         "minecraft:spawns_on_surface": {},
         "minecraft:distance_filter": {"min": 8,"max": 32},
-        "minecraft:weight": {"default":100 },
+        "minecraft:weight": {"default":50 },
         "minecraft:density_limit": {"surface":3,"underground":0},                
         "minecraft:spawns_on_block_prevented_filter": ["minecraft:sand","minecraft:red_sand"],
         "minecraft:spawns_on_block_filter": [
           "minecraft:grass_block",
           "minecraft:dirt",
+          "minecraft:dirt_with_roots",
           "minecraft:podzol",
           "minecraft:mud",
+          "minecraft:muddy_mangrove_roots",
           "minecraft:coarse_dirt",         
           //-----------------------
           "minecraft:acacia_log",                    

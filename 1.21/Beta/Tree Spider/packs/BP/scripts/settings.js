@@ -24,7 +24,7 @@ export const dynamicVars = {
 //Change this to change the entity
 export const dev = {
     debugChatCmds: false,
-    debugGamePlay: false,
+    debugGamePlay: true,
     debugEntityActivity: false,
     debugEntityAlert: false,
     //--before turn off testing, get despawn position to see if distance is why
@@ -54,14 +54,10 @@ export const watchFor = {
     family: "tree_spider",
     display: "Tree Spider",
     egg_typeId: "dw623:tree_spider_egg_sac",
-    home_typeId:'minecraft:web',
-    despawnEventName: 'despawn_me',
-    replaceEventName: 'replace_me',
-    stayInWebEventName: 'stay_in_web_start',
-    wanderEventName: 'wander_around_start',
-    stalledCheckRunInterval: 4,
-    assumedStalledIfOver: 10,
-    assumeNoWebsPossibleIfOver: 30,
+    home_typeId:'minecraft:web',    
+    stalledCheckRunInterval: 10,
+    assumedStalledIfOver: 25,
+    assumeNoWebsPossibleIfOver: 60,
     explosiveProjectiles: [],
     validated: false,  //TODO: - validate exists when pack loaded, if not, turn everything OFF
     scoreboardName: 'tree_spider_monitor',

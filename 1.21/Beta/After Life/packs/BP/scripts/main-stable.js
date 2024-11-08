@@ -9,5 +9,6 @@ export function main_stable () {
     
     subs.afterEvents_playerSpawn();
     subs.afterEvents_entityDie();    
+    subs.afterEvents_scriptEventReceive ();
 }
 //==============================================================================

@@ -1,18 +1,16 @@
-import { world, system, Player, ChatSendBeforeEvent, TicksPerSecond, EffectTypes,EffectType } from "@minecraft/server";
-import * as fn from "./before/functions.js";
-import { dimensionSuffix } from './fn-stable.js';
-import { debug, debugMsg } from "./before/main.js";
+import { world, system, Player, ChatSendBeforeEvent, TicksPerSecond, EffectTypes } from "@minecraft/server";
+import { dev} from './settings.js';
+import { dimensionSuffix,clearPlayerChatWindow,clearWorldChatWindow } from './fn-stable.js';
 import { Vector3Lib } from "./commonLib/vectorClass.js";
-import { chatLog } from "./settings.js";
+//==============================================================================
 const TicksPerMinute = TicksPerSecond * 60;
 //==============================================================================
-
 export class PlayerChatCommands {
     constructor(cmdPrefix = ':') {
         this.cmdPrefix = cmdPrefix;
     }
     /**
-     * @param { import("@minecraft/server").ChatSendBeforeEvent } event
+     * @param {ChatSendBeforeEvent } event
      */
     processEvent (event) {
         if (!(event instanceof ChatSendBeforeEvent)) return false;
@@ -23,20 +21,32 @@ export class PlayerChatCommands {
         return this.processCommand(event.sender, message);
     }
     /**
-    * @param { import("@minecraft/server").Player } player
+    * @param { Player } player
     */
     processCommand (player, command = "") {
         if (!(player instanceof Player)) return false;
 
         switch (command) {
+            //last death info
             case '':
             case '?':
             case "q":
-            case "query": this.#query(player); return true;
-            case "clear": this.#clear(player); return true;
-            case "cls": fn.clearPlayerChatWindow(player, 40, 10); return true;
-            case "killme": if (debug || player.isOp()) { this.#killMe(player); return true; } else return false;
-            case "tpme": if (debug || player.isOp()) return this.#tpMe(player); else return false;
+            case "where": this.#query(player); return true;
+            //clear info on last death
+            case "clear": this.#clearLastDeathVars(player); return true;
+            case "cls": clearPlayerChatWindow(player, 40, 10); return true;
+        }
+
+        if (player.isOP() && dev.debug) {
+            switch (command) {
+                case "cleardv": player.clearDynamicProperties();; return true;
+                case "cleardvw": world.clearDynamicProperties();; return true;
+                case "killme": this.#killMe(player); return true; 
+                case "list": debugDynamicPropertiesList(player); return true;
+                case "listw": debugDynamicPropertiesList(world); return true;
+                case "summon": this.#spawnBot(player); return true;
+                case "tpme": this.#tpMe(player); return true;
+            }
         }
 
         if (player.isOp()) {
@@ -46,7 +56,7 @@ export class PlayerChatCommands {
                 command = command.removeAll(subCommand);
 
                 if (!command || command.startsWith('?')) {
-                    const playerList = world.getAllPlayers().filter(p => { p.isValid() && !!p.getDynamicProperty("deathDimension"); });
+                    const playerList = world.getAllPlayers().filter(p => { p.isValid() && !!p.getDynamicProperty(dynamicVars.deathDimension); });
                     if (!playerList.length) { player.sendMessage("§6No Players with Death Coordinates in the World"); return false; }
 
                     //TODO: playerList.sort() later in alpha
@@ -78,38 +88,47 @@ export class PlayerChatCommands {
 
             }
         }
+
         return false;
     }
     /**
-     * @param { import("@minecraft/server").Player } player
+     * @param { Player } player
+     */
+    #spawnBot(player){
+        clearWorldChatWindow();
+        player.sendMessage(`debugSpawn currentTick: ${system.currentTick}`);
+        launchDeathBots(player.dimension, player.location, player);
+    }
+    /**
+     * @param { Player } player
      */
     #query (player) {
-        let dimension = player.getDynamicProperty('deathDimension');
+        let dimension = player.getDynamicProperty(dynamicVars.deathDimension);
         let msg = "";
         if (dimension) {
             dimension = dimensionSuffix(dimension);
-            const location = player.getDynamicProperty('deathCoordinates');
+            const location = player.getDynamicProperty(dynamicVars.deathCoordinates);
             msg = `* §gLast known §cDeath§g Coordinates: §b${dimension} §a@§g ${Vector3Lib.toString(location)}`;
         }
         else msg = "* §cYou have no saved Death Coordinates";
 
-        chatLog.logsendMessageLater(`\n${msg}\n\n`, player, 10);
+        sendMessageLater(`\n${msg}\n\n`, player, 10);
     }
 
     /**
-     * @param { import("@minecraft/server").Player } player
+     * @param { Player } player
      */
-    #clear (player) {
+    #clearLastDeathVars (player) {
         let msg = "";
         //event.cancel;                
-        if (player.getDynamicProperty('deathDimension')) {
+        if (player.getDynamicProperty(dynamicVars.deathDimension)) {
             msg = "* §eClearing your last saved §cDeath§e Coordinates";
-            player.setDynamicProperty('deathMsgWaiting', false);
-            player.setDynamicProperty('deathDimension', "");
+            player.setDynamicProperty(dynamicVars.deathMsgWaiting, false);
+            player.setDynamicProperty(dynamicVars.deathDimension, "");
         }
         else msg = "* §cYou have no saved Death Coordinates to clear";
 
-        fn.sendMessageLater(`\n${msg}\n\n`, player, 5);
+        sendMessageLater(`\n${msg}\n\n`, player, 5);
     }
 
     /**
@@ -126,10 +145,10 @@ export class PlayerChatCommands {
     * @param { import("@minecraft/server").Player } player
     */
     #tpMe (player) {
-        if (player.isValid() && player.getDynamicProperty('deathDimension')) {
+        if (player.isValid() && player.getDynamicProperty(dynamicVars.deathDimension)) {
             system.runTimeout(() => {
-                const dimension = world.getDimension(player.getDynamicProperty("deathDimension"));
-                const location = player.getDynamicProperty('deathCoordinates');
+                const dimension = world.getDimension(player.getDynamicProperty(dynamicVars.deathDimension));
+                const location = player.getDynamicProperty(dynamicVars.deathCoordinates);
 
                 player.sendMessage("* §aTP to Last Known Death Coords");
                 //TODO:Prep area, make sure clear --cannot test until player is there... so check once TP in case inside a block, need to clear

@@ -5,17 +5,21 @@ import { dimensionSuffix } from './fn-stable.js';
 import { Vector3Lib } from "./commonLib/vectorClass.js";
 import * as bot from "./deathBot.js";
 //==============================================================================
+const debug = dev.debugSubscriptions;
+//==============================================================================
 export function afterEvents_playerSpawn () {
     //Load (195 ticks or so )is after Spawn    
     //if (dev.debugLoadAndSpawn) {
-    alertLog.success("§aInstalling afterEvents.playerSpawn §c(debug mode : tick scoreboard)", dev.debugSubscriptions);
+    alertLog.success("§aInstalling afterEvents.playerSpawn §c(debug mode : tick scoreboard)", debug);
 
     world.afterEvents.playerSpawn.subscribe((event) => {
         const player = event.player;
 
-        chatLog.log("`* §dafterEvents.playerSpawn: ${player.nameTag}`", dev.debugLoadAndSpawn);
-        chatLog.log(`==> deathMsgWaiting: ${!!player.getDynamicProperty(dynamicVars.deathMsgWaiting)}`, dev.debugLoadAndSpawn);
-        chatLog.log(`==> event.initialSpawn: ${event.initialSpawn}`, dev.debugLoadAndSpawn);
+        if (dev.debugPlayer && player.isOp()) {
+            chatLog.player(player, "`* §dafterEvents.playerSpawn: ${player.nameTag}`");
+            chatLog.player(player, `==> deathMsgWaiting: ${!!player.getDynamicProperty(dynamicVars.deathMsgWaiting)}`);
+            chatLog.player(player, `==> event.initialSpawn: ${event.initialSpawn}`);
+        }
 
         if (player.getDynamicProperty(dynamicVars.deathMsgWaiting)) {
 
@@ -50,13 +54,13 @@ export function afterEvents_playerSpawn () {
 //==============================================================================
 export function afterEvents_entityDie () {
 
-    alertLog.success("§aInstalling afterEvents.entityDie §c(debug mode)", dev.debugSubscriptions);
+    alertLog.success("§aInstalling afterEvents.entityDie §c(debug mode)", debug);
 
     world.afterEvents.entityDie.subscribe((event) => {
         const player = event.deadEntity;
         if (!(player instanceof Player)) return;
 
-        alertLog.log(`* §dafterEvents.entityDie: ${player.nameTag}` + "\n".repeat(30)), dev.debugEntityEvent;
+        alertLog.log(`* §dafterEvents.entityDie: ${player.nameTag}` + "\n".repeat(30)), dev.debugPlayer;
 
         const dimension = player.dimension;
         const location = player.location;
@@ -85,12 +89,27 @@ export function afterEvents_entityDie () {
             command = `fill ${fillArea} air replace glass`;
             dimension.runCommandAsync(command);
 
-            chatLog.player(player,"\n\n*§6Death Bot Launched to Death Coordinates to pick up/hold any items within 10 blocks");
+            chatLog.player(player, "\n\n*§6Death Bot Launched to Death Coordinates to pick up/hold any items within 10 blocks");
 
             //TODO: test death by drowning -- what is different
             bot.launchDeathBots(dimension, location, player);
         }
         //else chatLog.player(player,"§6Keep Inventory is On");
     }, { entityTypes: [ watchFor.typeId ] });
+}
+//==============================================================================
+//TODO: how used?  forgot
+export function afterEvents_scriptEventReceive () {
+
+    alertLog.success("§aInstalling afterEvents.scriptEventReceive §c(Debug Mode)", debug);
+
+    system.afterEvents.scriptEventReceive.subscribe((event) => {
+        const { id, message } = event;
+        if (id === 'debug:ct') {
+            let msg = `currentTick: ${system.currentTick}`;
+            if (message && ![ 'null', 'none', 'noMsg' ].includes(message)) msg += `: ${message}`;
+            world.sendMessage(msg);
+        }
+    });
 }
 //==============================================================================
