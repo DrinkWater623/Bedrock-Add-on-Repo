@@ -1,13 +1,52 @@
 //@ts-check
-import { Entity, system, Block, world, Player, World } from "@minecraft/server";
-import { dev, chatLog, watchFor, dynamicVars, entityEvents } from './settings.js';
-import { Vector3Lib } from './commonLib/vectorClass.js';
-import { ScoreboardLib } from "./commonLib/scoreboardClass.js";
+import { Entity, system, world, Player, World, TicksPerSecond } from "@minecraft/server";
+import { dev, chatLog, dynamicVars } from './settings.js';
 import { DynamicPropertyLib } from "./commonLib/dynamicPropertyClass.js";
-import { EntityLib } from "./commonLib/entityClass.js";
-import { worldRun } from "./commonLib/runCommandClass.js";
+
 //==============================================================================
 export const dimensionSuffix = (dimensionId = "") => { return dimensionId.replace('minecraft:', '').replace('the_', ''); };
+//==============================================================================
+/**
+ * 
+ * @param {Player} player 
+ */
+export function updatePlayerStats (player) {
+    var nowTick = system.currentTick;
+
+    //1st join world
+    if (DynamicPropertyLib.getNumber(player, dynamicVars.firstTick) == 0) {
+        //Initialize
+        if (nowTick == 0) nowTick++;
+        player.setDynamicProperty(dynamicVars.firstTick, nowTick);
+        player.setDynamicProperty(dynamicVars.longestTicksAlive, 1);
+        player.setDynamicProperty(dynamicVars.deathMsgWaiting, false);
+        DynamicPropertyLib.add(player, dynamicVars.lastDeathTick, nowTick);
+
+        chatLog.player(player, `==> dynamic vars initialized`, dev.debugPlayer && player.isOp());
+        return;
+    }
+
+    //update stats
+    let aliveTIcks = DynamicPropertyLib.getNumber(player, dynamicVars.aliveTicks);
+    if (aliveTIcks > DynamicPropertyLib.getNumber(player, dynamicVars.longestTicksAlive)) {
+        player.setDynamicProperty(dynamicVars.longestTicksAlive, aliveTIcks);
+    }
+}
+//==============================================================================
+/**
+ * 
+ * @param {Player} player 
+ */
+export function playerAliveTicksCounterJob (player) {
+    const thisJob = system.runInterval(() => {
+        if (player.isValid())
+            DynamicPropertyLib.add(player, dynamicVars.aliveTicks, TicksPerSecond);
+        else {
+            //cancel this job
+            system.clearRun(thisJob);
+        }            
+    }, TicksPerSecond);
+}
 //==============================================================================
 /**
  * 

@@ -1,0 +1,35 @@
+{
+  "$files": {
+    "array": "auto_sift_blocks",
+    "fileName": "./auto_sift/{{base}}.bp"
+  },
+  "$template": {
+    "format_version": "1.20.80",
+    "minecraft:block": {
+      "description": {
+        "identifier": "sift:{{base}}",        
+        "states": {"int:y_level":[15,1,2,3,4,5,6,7,8,9,10,11,12,13,14]}
+      },
+      "components": {
+        //TODO: add other features, like flammable, etc...
+        "minecraft:custom_components": ["dw623:auto_sift_blocks"],        
+        "minecraft:tick": {"interval_range":[7,7],"looping":true},
+        "minecraft:geometry": {"identifier":"geometry.block_15x15x15_floor_centered"},
+        "minecraft:material_instances": {"*":{"texture":"{{base}}","render_method":"opaque","face_dimming":false,"ambient_occlusion":false}},
+        "minecraft:collision_box": {"origin":[-7.5,0,-7.5],"size":[15,15,15]},
+        "minecraft:selection_box": false
+      },
+      "permutations": [
+        {
+          "{{#1..15}}": {
+            "condition": "query.block_state('int:y_level') == {{value}}",
+            "components": {
+              "minecraft:geometry": {"identifier":"geometry.block_15x{{value}}x15_floor_centered"},
+              "minecraft:collision_box": {"origin":[-7.5,0,-7.5],"size":[15,"{{=value}}",15]}
+            }
+          }
+        }        
+      ]
+    }
+  }
+}

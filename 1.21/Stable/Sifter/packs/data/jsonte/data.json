@@ -1,0 +1,60 @@
+{
+    "sifter_types":[
+        {"material":"copper"    ,"recipe_item":"copper_ingot"   ,"sound":"copper"},
+        {"material":"iron"      ,"recipe_item":"iron_ingot"     ,"sound":"metal"},
+        {"material":"diamond"   ,"recipe_item":"diamond"        ,"sound":"glass"}
+    ],
+    //gravity blocks only are auto sift - common sense
+    "auto_sift_blocks":[
+        {"base":"gravel"                        ,"sound":"gravel"},
+        {"base":"red_sand"                      ,"sound":"sand"},
+        {"base":"sand"                          ,"sound":"sand"},
+        {"base":"snow"                          ,"sound":"powder_snow"},
+        {"base":"black_concrete_powder"         ,"sound":"sand"},
+        {"base":"blue_concrete_powder"          ,"sound":"sand"},
+        {"base":"brown_concrete_powder"         ,"sound":"sand"},
+        {"base":"cyan_concrete_powder"          ,"sound":"sand"},
+        {"base":"gray_concrete_powder"          ,"sound":"sand"},
+        {"base":"green_concrete_powder"         ,"sound":"sand"},
+        {"base":"light_blue_concrete_powder"    ,"sound":"sand"},
+        {"base":"light_gray_concrete_powder"    ,"sound":"sand"},
+        {"base":"lime_concrete_powder"          ,"sound":"sand"},
+        {"base":"magenta_concrete_powder"       ,"sound":"sand"},
+        {"base":"orange_concrete_powder"        ,"sound":"sand"},
+        {"base":"pink_concrete_powder"          ,"sound":"sand"},
+        {"base":"purple_concrete_powder"        ,"sound":"sand"},
+        {"base":"red_concrete_powder"           ,"sound":"sand"},
+        {"base":"white_concrete_powder"         ,"sound":"sand"},
+        {"base":"yellow_concrete_powder"        ,"sound":"sand"}
+    ],
+
+    //"short_blocks":"{{auto_sift_blocks.flatMap(b => (1..15).map(y => {base: b.base, height: y, sound:b.sound}))}}", 
+    
+    "manual_sift_blocks":[
+        {"namespace":"minecraft"    ,"block":"mud"         ,"texture":"mud"},
+        {"namespace":"minecraft"    ,"block":"clay_block"  ,"texture":"clay"}       
+    ],
+    "special_sift_blocks":[        
+        //TODO: this one is diff... goes down to grass carpet at end
+        // and placing item on it should cause to convert to dirt version
+        // and it can get grass back from neighbors
+        {"namespace":"minecraft"    ,"block":"grass_block"  ,"texture":"dirt"},
+        {"namespace":"dw623"        ,"block":"grass_25p"     ,"texture":"dirt"},
+        {"namespace":"dw623"        ,"block":"grass_50p"     ,"texture":"dirt"},
+        {"namespace":"dw623"        ,"block":"grass_75p"     ,"texture":"dirt"}
+    ],
+    "item_pieces_9":[
+        {"item":"diamond_nugget"          ,"need":9    ,"minecraft":"diamond"},
+        {"item":"emerald_nugget"          ,"need":9    ,"minecraft":"emerald"},
+        {"item":"netherite_nugget"        ,"need":9    ,"minecraft":"netherite_ingot"}
+    ],
+    "item_pieces_2":[        
+        {"item":"netherite_scrap_piece"   ,"need":2    ,"minecraft":"netherite_scrap"}
+    ],
+    "elytra":[        
+        {"item":"broken_elytra_left"    ,"side":"Left"},
+        {"item":"broken_elytra_right"   ,"side":"Right"}
+    ]
+
+    //TODO: add loot 
+}

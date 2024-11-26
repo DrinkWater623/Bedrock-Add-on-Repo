@@ -2,7 +2,7 @@
 //=============================================================================
 /*
     Written By:     "https://github.com/DrinkWater623"
-    Last Update:    20241106
+    Last Update:    20241110 - add debug to .player
 */
 import { Player, system, World, world } from "@minecraft/server";
 //=============================================================================
@@ -36,9 +36,10 @@ export class ChatMsg {
     /**
      * 
      * @param {Player} player 
-     * @param {string} msg 
+     * @param {string} [msg]
+     * @param {boolean}  [debug]
      */
-    player (player,msg = '') { this.#send(player,`${this.packName}: ${msg}`); }
+    player (player,msg = '', debug = true) { if (debug) this.#send(player,`${this.packName}: ${msg}`); }
     //not sure needed to go out a tick or not...
     /**
      * 

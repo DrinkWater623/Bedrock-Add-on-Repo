@@ -29,56 +29,56 @@
 			/*"jsonte": {"url":"github.com/MCDevKit/regolith-library","version":"2.14.0"},*/
 			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
 			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
+			"beta_js_ignore": {"runWith":"python","script":"./filters/beta_js_ignore.py"},
 			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}			
 		},
 		"profiles": {
-			"template": {
-				"export": {"readOnly":false,"target":"local"},				
-				"filters": [											
-					{"filter":"dot_ignore"},					
-					{"filter":"empty_ignore"}
-				]
+			"template-beta": {
+				"export": {"readOnly":false,"target":"local","rpName": "'void_rp_'+project.name"},				
+				"filters": [{"filter":"dot_ignore"} //,{"filter":"jsonte"}
+			]
 			},
-			"build": {
-				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
-				"filters": [	
-					{"profile":"template"},												
-					{"filter":"mani_fest","settings":{"beta":false,"preview":false}}
-				]
+			"template-stable": {
+				"export": {"readOnly":false,"target":"local","rpName": "'void_rp_'+project.name"},				
+				"filters": [{"filter":"beta_js_ignore"},{"profile":"template-beta"}]
+			},
+			"test-this": {
+				"export": {"readOnly":false,"target":"local"},
+				"filters": [{"profile":"template-beta"},{"filter":"mani_fest","settings":{"beta":true,"preview":false,"BP":{"js":"try_this.js"}}}]
+			},
+			"build": {				
+				"export": {"readOnly":false,"target":"local","bpName":"project.name+'_Stable_bp'","rpName": "project.name+'_Stable_rp'"},
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"beta":false,"preview":false}}]
 			},
 			"build-beta": {
-				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
-				"filters": [	
-					{"profile":"template"},												
-					{"filter":"mani_fest","settings":{"beta":true}}
-				]
+				"export": {"readOnly":false,"target":"local","bpName":"project.name+'_Beta_bp'","rpName": "project.name+'_Beta_rp'"},
+				"filters": [{"profile":"template-beta"},{"filter":"mani_fest","settings":{"beta":true,"preview":false,"BP":{"js":"main-beta.js"}}}]
 			},	
 			"stable": {
 				"export": {"readOnly":false,"target":"development"},
-				"filters": [
-					{"profile":"template"},		
-					{"filter":"mani_fest","settings":{"beta":false}}
-				]
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"beta":false}}]
 			},
 			"beta": {
 				"export": {"readOnly":false,"target":"development"},
-				"filters": [
-					{"profile":"template"},			
-					{"filter":"mani_fest","settings":{"beta":true}}
-				]
+				"filters": [{"profile":"template-beta"},{"filter":"mani_fest","settings":{"beta":true,"BP":{"js":"main-beta.js"}}}]
 			},
 			"preview": {
 				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
-				"filters": [
-					{"profile":"template"},	
-					{"filter":"mani_fest","settings":{"preview":true}}
-				]
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"preview":true}}]
 			},
 			"preview-beta": {
 				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
 				"filters": [
-					{"profile":"template"},	
-					{"filter":"mani_fest","settings":{"preview":true,"beta":true}}
+					{"profile":"template-beta"},
+					{"filter":"mani_fest",
+						"settings":{							
+							"preview":true,"beta":true,
+							"BP":{
+								"js":"main-beta.js",
+								"dependencies":{"module_name":"@minecraft/server","version":"1.17.0-beta"}
+							}
+						}
+					}
 				]
 			}
 		}

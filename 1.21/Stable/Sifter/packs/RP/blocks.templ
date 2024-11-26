@@ -1,0 +1,28 @@
+{
+    "$scope":{
+        "short_blocks":"{{auto_sift_blocks.flatMap(b => (1..15).map(y => {base: b.base, height: y, sound:b.sound}))}}"
+    },
+    "$template": {
+        "format_version":"1.20.81",
+        //TODO: add Short Blocks for sound
+        "{{#sifter_types}}":{
+            "dw623:{{material}}_sifter" : {
+                "sound" : "{{sound}}",
+                "textures" : {
+                    "up": "{{material}}_net",
+                    "down" : "composter_bottom",
+                    "side" : "composter_side"
+                }
+            },
+            "dw623:{{material}}_net" : {
+                "sound" : "{{sound}}",
+                "textures" : {
+                    "up": "{{material}}_net",
+                    "down" : "{{material}}_net",
+                    "side" : "{{material}}_block"
+                }
+            }
+        },        
+        "{{#short_blocks}}":{"short:{{base}}_{{height}}":{"sound":"{{sound}}"}}
+    }
+}

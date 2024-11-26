@@ -1,0 +1,43 @@
+{
+  "$files": {
+    "array": "sifter_types",
+    "fileName": "./sifters/{{material}}_net.bp"
+  },
+  "$template": {
+    "format_version": "1.20.80",
+    "minecraft:block": {
+      "description": {
+        "identifier": "dw623:{{material}}_net",
+        "menu_category": {"category":"items"}
+      },
+      "components": {  
+        "minecraft:display_name": "{{realTitle(material)}} Net",      
+        "minecraft:geometry": {
+          "identifier": "geometry.block_16x2x16_floor_centered"
+        },
+        "minecraft:material_instances": {
+          "up": {
+            "texture": "{{material}}_net",
+            "render_method": "alpha_test",
+            "face_dimming": false,
+            "ambient_occlusion": false
+          },
+          "down": {
+            "texture": "{{material}}_net",
+            "render_method": "alpha_test",
+            "face_dimming": false,
+            "ambient_occlusion": false
+          },
+          "*": {
+            "texture": "{{material}}_block",
+            "render_method": "alpha_test",
+            "face_dimming": false,
+            "ambient_occlusion": false
+          }
+        },
+        "minecraft:collision_box": {"origin":[-8,0,-8],"size":[16,2,16]},     
+        "minecraft:selection_box": {"origin":[-8,0,-8],"size":[16,2,16]}     
+      }
+    }
+  }
+}

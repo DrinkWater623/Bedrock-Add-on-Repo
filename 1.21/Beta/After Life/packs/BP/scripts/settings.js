@@ -15,9 +15,15 @@ export const pack = {
 };
 export const dynamicVars = {
     //-- Dynamic Properties --
+    aliveTicks: 'aliveTicks',
+    firstTick: 'deathCoordinates',
+    deathCoordinates: 'deathCoordinates',
+    deathCounter: 'deathCounter',
     deathDimension: 'deathDimension',
     deathMsgWaiting: 'deathMsgWaiting',
-    deathCoordinates: 'deathCoordinates'
+    //deathTick: 'deathTick',
+    lastDeathTick:'lastDeathTick',
+    longestTicksAlive:'longestTicksAlive'    
 };
 //==============================================================================
 export const dev = {

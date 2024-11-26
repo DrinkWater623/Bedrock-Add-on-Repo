@@ -1,0 +1,55 @@
+{
+    "format_version":"1.20.81",
+    //TODO: add Short Blocks for sound
+    "dw623:copper_sifter" : {
+        "sound" : "copper",
+        "textures" : {
+            "up": "copper_net",
+            "down" : "composter_bottom",
+            "side" : "composter_side"
+        }
+    },
+    "dw623:iron_sifter" : {
+        "sound" : "metal",
+        "textures" : {
+            "up": "iron_net",
+            "down" : "composter_bottom",
+            "side" : "composter_side"
+        }
+    },
+    "dw623:diamond_sifter" : {
+        "sound" : "glass",
+        "textures" : {
+            "up": "diamond_net",
+            "down" : "composter_bottom",
+            "side" : "composter_side"
+        }
+    },
+    "dw623:copper_net" : {
+        "sound" : "copper",
+        "textures" : {
+            "up": "copper_net",
+            "down" : "copper_block",
+            "side" : "copper_block"
+        }
+    },
+    "dw623:iron_net" : {
+        "sound" : "metal",
+        "textures" : {
+            "up": "iron_net",
+            "down" : "iron_block",
+            "side" : "iron_block"
+        }
+    },
+    "dw623:diamond_net" : {
+        "sound" : "froglight",
+        "textures" : {
+            "up": "diamond_net",
+            "down" : "diamond_block",
+            "side" : "diamond_block"
+        }
+    },
+    "short:gravel_1":{
+        "sound" : "powder_snow"
+    }
+}

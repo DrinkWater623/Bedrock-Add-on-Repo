@@ -1,0 +1,29 @@
+{
+  "$scope":{
+      "short_blocks":"{{auto_sift_blocks.flatMap(b => (1..15).map(y => {base: b.base, height: y, sound:b.sound}))}}"
+  },
+  "$files": {
+    "array": "short_blocks",
+    "fileName": "./short/{{base}}_{{height}}.bp"
+  },
+  "$template": {
+    "format_version": "1.20.80",
+    "minecraft:block": {
+      "description": {
+        "identifier": "short:{{base}}_{{height}}"
+      },
+      "components": {
+        "minecraft:display_name": "{{realTitle(base)}} ({{height}})",
+        //TODO: add other features, like flammable, etc...
+        //can only place on ground
+        "minecraft:custom_components": ["dw623:short_blocks"],        
+        "minecraft:tick": {"interval_range":[20,20],"looping":true},
+        "minecraft:geometry": {"identifier":"geometry.block_15x{{height}}x15_floor_centered"},
+        "minecraft:material_instances": {"*":{"texture":"{{base}}","render_method":"opaque","face_dimming":false,"ambient_occlusion":false}},
+        "minecraft:collision_box": {"origin":[-7.5,0,-7.5],"size":[15,"{{=height}}",15]},
+        "minecraft:selection_box": {"origin":[-7.5,0,-7.5],"size":[15,"{{=height}}",15]},
+        "minecraft:placement_filter":{"conditions":[{"allowed_faces":["up"]}]}
+      }
+    }
+  }
+}

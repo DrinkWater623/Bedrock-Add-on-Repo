@@ -1,11 +1,12 @@
 import { world, system, Player, ChatSendBeforeEvent, TicksPerSecond, EffectTypes } from "@minecraft/server";
-import { dev} from './settings.js';
+import { dev, pack} from './settings.js';
 import { dimensionSuffix,clearPlayerChatWindow,clearWorldChatWindow } from './fn-stable.js';
 import { Vector3Lib } from "./commonLib/vectorClass.js";
 //==============================================================================
 const TicksPerMinute = TicksPerSecond * 60;
+export const chatCmds = new PlayerChatCommands(pack.commandPrefix);
 //==============================================================================
-export class PlayerChatCommands {
+class PlayerChatCommands {
     constructor(cmdPrefix = ':') {
         this.cmdPrefix = cmdPrefix;
     }
@@ -14,6 +15,12 @@ export class PlayerChatCommands {
      */
     processEvent (event) {
         if (!(event instanceof ChatSendBeforeEvent)) return false;
+
+        if (event.message==':?') {            
+            event.sender.sendMessage(`Type ${this.cmdPrefix}:? to see commands for the ${pack.packName} Add-On`)
+            return false;
+        }
+
         if (!event.message.startsWith(this.cmdPrefix)) return false;
         event.cancel;
 
@@ -29,7 +36,10 @@ export class PlayerChatCommands {
         switch (command) {
             //last death info
             case '':
-            case '?':
+            case '?': {
+                //TODO Show Command List
+                return true
+            }
             case "q":
             case "where": this.#query(player); return true;
             //clear info on last death

@@ -5,10 +5,10 @@
  *  Created by Created by: https://github.com/DrinkWater623
  * 
  * Change Log
- *      20241107 - Add fillCommand
+ *      20241108 - Fix fillCommand Generator
 */
 //==============================================================================
-import { Dimension, BlockVolume } from "@minecraft/server";
+import { Dimension, BlockVolume, system, Block } from "@minecraft/server";
 import { Vector3Lib } from "./vectorClass";
 
 export class BlockLib {
@@ -70,7 +70,7 @@ export class BlockLib {
      * @param {number} [radius=1] 
      * @param {import("@minecraft/server").BlockFilter} filter 
      * @filter example: { includeTypes: [ "minecraft:air" ] }
-     * @returns {object[]}
+     * @returns {Object[]}
      */
     static blocksAround_object (dimension, location, radius = 1, filter = {}) {
         const blockLocations = BlockLib.blocksAround_locations(dimension, location, radius, filter);
@@ -80,6 +80,7 @@ export class BlockLib {
 
         for (let i = 0; i < blockLocations.length; i++) {
             const block = dimension.getBlock(blockLocations[ i ]);
+            
             if (block) blockObjects.push({
                 block: block,
                 offset: Vector3Lib.delta(location, block.location, 0, false),
@@ -94,36 +95,58 @@ export class BlockLib {
     /**
      * @param {Dimension} dimension  
      * @param {import("@minecraft/server").Vector3} location 
+     * @param {number} [radius=1] 
+     * @param {import("@minecraft/server").BlockFilter} filter 
+     * @filter example: { includeTypes: [ "minecraft:air" ] }
+     * @returns {Block[]}
+     */
+    static blocksAround (dimension, location, radius = 1, filter = {}) {       
+        const blockObjects =  BlockLib.blocksAround_object(dimension, location, radius, filter);;
+        if (blockObjects.length === 0) return [];
+
+        const blocks =  blockObjects.filter(b => b.block instanceof Block).map(b => b.block);
+        return blocks
+    }
+    //=========================================================================
+    /**
+     * @param {Dimension} dimension  
+     * @param {import("@minecraft/server").Vector3} location 
      * @param {number} radius
      * @param {string} fillWithBlockTypeId 
      * @param {import("@minecraft/server").BlockFilter} [replaceFilter] 
      * @filter example: { includeTypes: [ "minecraft:air" ] } 
      */
-    static fillCommand (dimension, location, radius,fillWithBlockTypeId, replaceFilter={}) {
-        const blocks = BlockLib.blocksAround_object(dimension, location, radius, replaceFilter);
+    static fillCommand (dimension, location, radius, fillWithBlockTypeId, replaceFilter = {}) {
+        const blocks = BlockLib.blocksAround(dimension, location, radius, replaceFilter);
         if (blocks.length == 0) return;
 
         //TODO: confirm block typeId
-
-        //dimension.setBlockType(location, fillWith);
-        blocks.forEach(block => {
-            dimension.setBlockType(block.location, fillWithBlockTypeId)
-        })
-
-
+        const myJob = fillCommandGenerator(blocks,fillWithBlockTypeId)
+        system.runJob(myJob)
+    }    
+    //=========================================================================
+    /**
+ * @param {Dimension} dimension  
+ * @param {import("@minecraft/server").Vector3} location 
+ * @param {number} radius
+ * @param {import("@minecraft/server").BlockFilter} replaceFilter
+ * @filter example: { includeTypes: [ "minecraft:air" ] } 
+ * @param {string} fillWith 
+ */
+    static replace (dimension, location, radius, replaceFilter, fillWith,) {
+        BlockLib.fillCommand(dimension, location, radius, fillWith, replaceFilter);
     }
     //=========================================================================
-        /**
-     * @param {Dimension} dimension  
-     * @param {import("@minecraft/server").Vector3} location 
-     * @param {number} radius
-     * @param {import("@minecraft/server").BlockFilter} replaceFilter
-     * @filter example: { includeTypes: [ "minecraft:air" ] } 
-     * @param {string} fillWith 
-     */
-        static replace (dimension, location, radius,replaceFilter,fillWith, ) {
-            BlockLib.fillCommand(dimension, location, radius, fillWith, replaceFilter);    
-        }
-    //=========================================================================
 
+}
+/**
+ * 
+ * @param {Block[]} blocks 
+ * @param {string} setBlockTypeId
+ */
+function* fillCommandGenerator(blocks,setBlockTypeId) {
+    for (const block of blocks) {
+        block.setType(setBlockTypeId);
+        yield;
+    }
 }
