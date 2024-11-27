@@ -1,31 +1,25 @@
 {
   "$files": {
     "array": "sifter_types",
-    "fileName": "./sifters/{{material}}_sifter.bp"
+    "fileName": "./sifters/{{material}}_sifter_2.bp"
   },
   "$template": {
     "format_version": "1.20.80",
     "minecraft:block": {
       "description": {
-        "identifier": "dw623:{{material}}_sifter",
+        "identifier": "dw623:{{material}}_sifter_2",
         "menu_category": {
           "category": "items"
         }
       },
       "components": {
-        "minecraft:display_name": "{{realTitle(material)}} Sifter",
+        "minecraft:display_name": "{{realTitle(material)}} Sifter 2",
         //TODO: add other features, like flammable, etc...
         "minecraft:custom_components": [
-          "dw623:sifter_query"
+          "dw623:sifter_query_2"
         ],
         //companion components to check if a siftable block is above it
-        "minecraft:tick": {
-          "interval_range": [
-            20,
-            20
-          ],
-          "looping": true
-        },
+        "minecraft:tick": {"interval_range":["{{=speed}}","{{=speed}}"],"looping":true},
         "minecraft:geometry": {
           "identifier": "minecraft:geometry.full_block"
         },

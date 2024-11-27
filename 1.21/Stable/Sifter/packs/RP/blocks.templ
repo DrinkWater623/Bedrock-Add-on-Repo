@@ -1,6 +1,8 @@
 {
     "$scope":{
-        "short_blocks":"{{auto_sift_blocks.flatMap(b => (1..15).map(y => {base: b.base, height: y, sound:b.sound}))}}"
+        "short_blocks":"{{auto_sift_blocks.flatMap(b => (1..15).map(y => {base: b.base, height: y, sound:b.sound}))}}",
+        "short_concrete_blocks":"{{concrete_blocks.flatMap(b => (1..15).map(y => {base: b.base, height: y, sound:b.sound}))}}"
+
     },
     "$template": {
         "format_version":"1.20.81",
@@ -23,6 +25,7 @@
                 }
             }
         },        
-        "{{#short_blocks}}":{"short:{{base}}_{{height}}":{"sound":"{{sound}}"}}
+        "{{#short_blocks}}":{"short:{{base}}_{{height}}":{"sound":"{{sound}}"}},
+        "{{#short_concrete_blocks}}":{"dw623:{{base}}_{{height}}":{"sound":"{{sound}}"}}
     }
 }

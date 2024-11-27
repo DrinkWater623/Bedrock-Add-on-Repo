@@ -1,0 +1,50 @@
+{
+  "$files": {
+    "array": "sifter_types",
+    "fileName": "./sifters/{{material}}_sifter_1_og.bp"
+  },
+  "$template": {
+    "format_version": "1.20.80",
+    "minecraft:block": {
+      "description": {
+        "identifier": "dw623:{{material}}_sifter",
+        "menu_category": {
+          "category": "items"
+        }
+      },
+      "components": {
+        "minecraft:display_name": "{{realTitle(material)}} Sifter og",
+        //TODO: add other features, like flammable, etc...
+        "minecraft:custom_components": [
+          "dw623:sifter_query"
+        ],
+        //companion components to check if a siftable block is above it
+        "minecraft:tick": {"interval_range":[20,20],"looping":true},
+        "minecraft:geometry": {
+          "identifier": "minecraft:geometry.full_block"
+        },
+        "minecraft:material_instances": {
+          "up": {
+            "texture": "{{material}}_net",
+            "render_method": "alpha_test",
+            "face_dimming": false,
+            "ambient_occlusion": false
+          },
+          "*": {
+            "texture": "composter_side",
+            "render_method": "alpha_test",
+            "face_dimming": false,
+            "ambient_occlusion": false
+          },
+          "down": {
+            "texture": "composter_bottom",
+            "render_method": "alpha_test",
+            "face_dimming": false,
+            "ambient_occlusion": false
+          }
+        },
+        "minecraft:collision_box": true        
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$scope":{
+      "short_concrete_blocks":"{{concrete_blocks.flatMap(b => (1..15).map(y => {base: b.base, height: y}))}}"
+  },
+  "$files": {
+    "array": "short_concrete_blocks",
+    "fileName": "./concrete/{{base}}_{{height}}.bp"
+  },
+  "$template": {
+    "format_version": "1.20.80",
+    "minecraft:block": {
+      "description": {
+        "identifier": "dw623:{{base}}_{{height}}"
+      },
+      "components": {
+        "tag:stone_pick_diggable":{},
+        "minecraft:display_name": "{{realTitle(base)}} ({{height}})",
+        //TODO: map color
+        //TODO: vertical placement and adding to other ones if on top        
+        // do vertical placement stuff
+        //"minecraft:custom_components": ["dw623:concrete_slabs"],        
+        //"minecraft:tick": {"interval_range":[20,20],"looping":true},
+        "minecraft:geometry": {"identifier":"geometry.block_16x{{height}}x16_floor_centered"},
+        "minecraft:material_instances": {"*":{"texture":"{{base}}"}},
+        "minecraft:collision_box": {"origin":[-8,0,-8],"size":[16,"{{=height}}",16]},
+        "minecraft:selection_box": {"origin":[-8,0,-8],"size":[16,"{{=height}}",16]} 
+      }
+    }
+  }
+}

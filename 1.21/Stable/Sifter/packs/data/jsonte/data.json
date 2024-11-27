@@ -1,33 +1,50 @@
 {
     "sifter_types":[
-        {"material":"copper"    ,"recipe_item":"copper_ingot"   ,"sound":"copper"},
-        {"material":"iron"      ,"recipe_item":"iron_ingot"     ,"sound":"metal"},
-        {"material":"diamond"   ,"recipe_item":"diamond"        ,"sound":"glass"}
+        {"material":"copper"    ,"speed":50,"recipe_item":"copper_ingot"   ,"sound":"copper"},
+        {"material":"iron"      ,"speed":30,"recipe_item":"iron_ingot"     ,"sound":"metal"},
+        {"material":"diamond"   ,"speed":15,"recipe_item":"diamond"        ,"sound":"glass"}
     ],
     //gravity blocks only are auto sift - common sense
     "auto_sift_blocks":[
-        {"base":"gravel"                        ,"sound":"gravel"},
-        {"base":"red_sand"                      ,"sound":"sand"},
-        {"base":"sand"                          ,"sound":"sand"},
-        {"base":"snow"                          ,"sound":"powder_snow"},
-        {"base":"black_concrete_powder"         ,"sound":"sand"},
-        {"base":"blue_concrete_powder"          ,"sound":"sand"},
-        {"base":"brown_concrete_powder"         ,"sound":"sand"},
-        {"base":"cyan_concrete_powder"          ,"sound":"sand"},
-        {"base":"gray_concrete_powder"          ,"sound":"sand"},
-        {"base":"green_concrete_powder"         ,"sound":"sand"},
-        {"base":"light_blue_concrete_powder"    ,"sound":"sand"},
-        {"base":"light_gray_concrete_powder"    ,"sound":"sand"},
-        {"base":"lime_concrete_powder"          ,"sound":"sand"},
-        {"base":"magenta_concrete_powder"       ,"sound":"sand"},
-        {"base":"orange_concrete_powder"        ,"sound":"sand"},
-        {"base":"pink_concrete_powder"          ,"sound":"sand"},
-        {"base":"purple_concrete_powder"        ,"sound":"sand"},
-        {"base":"red_concrete_powder"           ,"sound":"sand"},
-        {"base":"white_concrete_powder"         ,"sound":"sand"},
-        {"base":"yellow_concrete_powder"        ,"sound":"sand"}
+        {"base":"gravel"                        ,"sound":"gravel"      ,"tag":"gravel"      },
+        {"base":"red_sand"                      ,"sound":"sand"        ,"tag":"sand"        },
+        {"base":"sand"                          ,"sound":"sand"        ,"tag":"sand"        },
+        {"base":"snow"                          ,"sound":"powder_snow" ,"tag":"snow"        },
+        {"base":"black_concrete_powder"         ,"sound":"sand"        ,"tag":"sand"        },
+        {"base":"blue_concrete_powder"          ,"sound":"sand"        ,"tag":"sand"        },
+        {"base":"brown_concrete_powder"         ,"sound":"sand"        ,"tag":"sand"        },
+        {"base":"cyan_concrete_powder"          ,"sound":"sand"        ,"tag":"sand"        },
+        {"base":"gray_concrete_powder"          ,"sound":"sand"        ,"tag":"sand"        },
+        {"base":"green_concrete_powder"         ,"sound":"sand"        ,"tag":"sand"        },
+        {"base":"light_blue_concrete_powder"    ,"sound":"sand"        ,"tag":"sand"        },
+        {"base":"light_gray_concrete_powder"    ,"sound":"sand"        ,"tag":"sand"        },
+        {"base":"lime_concrete_powder"          ,"sound":"sand"        ,"tag":"sand"        },
+        {"base":"magenta_concrete_powder"       ,"sound":"sand"        ,"tag":"sand"        },
+        {"base":"orange_concrete_powder"        ,"sound":"sand"        ,"tag":"sand"        },
+        {"base":"pink_concrete_powder"          ,"sound":"sand"        ,"tag":"sand"        },
+        {"base":"purple_concrete_powder"        ,"sound":"sand"        ,"tag":"sand"        },
+        {"base":"red_concrete_powder"           ,"sound":"sand"        ,"tag":"sand"        },
+        {"base":"white_concrete_powder"         ,"sound":"sand"        ,"tag":"sand"        },
+        {"base":"yellow_concrete_powder"        ,"sound":"sand"        ,"tag":"sand"        }
     ],
-
+"concrete_blocks":[
+        {"base":"black_concrete"         ,"sound":"stone"},
+        {"base":"blue_concrete"          ,"sound":"stone"},
+        {"base":"brown_concrete"         ,"sound":"stone"},
+        {"base":"cyan_concrete"          ,"sound":"stone"},
+        {"base":"gray_concrete"          ,"sound":"stone"},
+        {"base":"green_concrete"         ,"sound":"stone"},
+        {"base":"light_blue_concrete"    ,"sound":"stone"},
+        {"base":"light_gray_concrete"    ,"sound":"stone"},
+        {"base":"lime_concrete"          ,"sound":"stone"},
+        {"base":"magenta_concrete"       ,"sound":"stone"},
+        {"base":"orange_concrete"        ,"sound":"stone"},
+        {"base":"pink_concrete"          ,"sound":"stone"},
+        {"base":"purple_concrete"        ,"sound":"stone"},
+        {"base":"red_concrete"           ,"sound":"stone"},
+        {"base":"white_concrete"         ,"sound":"stone"},
+        {"base":"yellow_concrete"        ,"sound":"stone"}
+    ],
     //"short_blocks":"{{auto_sift_blocks.flatMap(b => (1..15).map(y => {base: b.base, height: y, sound:b.sound}))}}", 
     
     "manual_sift_blocks":[
@@ -54,6 +71,11 @@
     "elytra":[        
         {"item":"broken_elytra_left"    ,"side":"Left"},
         {"item":"broken_elytra_right"   ,"side":"Right"}
+    ],
+    "dust":[        
+        {"item":"gravel"},
+        {"item":"sand"},
+        {"item":"red_sand"}
     ]
 
     //TODO: add loot 

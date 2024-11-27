@@ -1,0 +1,22 @@
+{
+    "$files": {
+        "array": "dust",
+        "fileName": "{{item}}_dust.bp"
+    },
+    "$template": {
+        "format_version": "1.20.50",
+        "minecraft:item": {
+            "description": {
+                "identifier": "dw623:{{item}}_dust",
+                "menu_category": {
+                    "category": "items"
+                }
+            },
+            "components": {
+                "minecraft:icon": "{{item}}_dust",
+                //"minecraft:icon": {"textures":{"default":"{{item_name}}"}},
+                "minecraft:display_name": {"value":"{{realTitle(item)}} Dust"}
+            }
+        }
+    }
+}
