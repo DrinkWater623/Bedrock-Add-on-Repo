@@ -20,7 +20,8 @@ export const globals = {
     autoSiftBlockNameSpace: "sift:",
     autoSiftBlockStateName: "int:y_level",
     mainNameSpace: "dw623:",
-    shortBlockNameSpace: "short:"
+    shortBlockNameSpace: "short:",
+    keyBlockWords: [ "gravel", "powder", "sand", "snow" ] //save time
 };
 export const dynamicVars = {
 };
@@ -51,30 +52,33 @@ const colors = [
     "yellow",
 ];
 //==============================================================================
-//TODO: have this pack be the death counter for players
 export const watchFor = {
     autoSiftBlocks: [
-        { name: "gravel", custom: "", minecraft: "", sound: "dig.gravel" },
-        { name: "red_sand", custom: "", minecraft: "", sound: "dig.sand" },
-        { name: "sand", custom: "", minecraft: "", sound: "dig.sand" },
-        { name: "soul_sand", custom: "", minecraft: "", sound: "dig.hay" },
-        { name: "snow", custom: "", minecraft: "", sound: "dig.snow" },
-        { name: "black_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { name: "blue_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { name: "brown_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { name: "cyan_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { name: "gray_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { name: "green_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { name: "light_blue_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { name: "light_gray_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { name: "lime_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { name: "magenta_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { name: "orange_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { name: "pink_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { name: "purple_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { name: "red_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { name: "white_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { name: "yellow_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" }
+        //a few not gravity, but should be, so treating they are.
+        { gravity: true, name: "gravel", custom: "", minecraft: "", sound: "dig.gravel" },
+        { gravity: true, name: "red_sand", custom: "", minecraft: "", sound: "dig.sand" },
+        { gravity: true, name: "sand", custom: "", minecraft: "", sound: "dig.sand" },
+        { gravity: false, name: "soul_sand", custom: "", minecraft: "", sound: "dig.hay" },
+        { gravity: false, name: "snow", custom: "", minecraft: "", sound: "dig.snow" },
+        { gravity: false, name: "powder_snow", custom: "", minecraft: "", sound: "dig.snow" },
+        { gravity: true, name: "mud", custom: "", minecraft: "", sound: "dig.mud" },
+        //TODO: powdered snow... but it has a freeze effect.. see if can mimic
+        { gravity: true, name: "black_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
+        { gravity: true, name: "blue_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
+        { gravity: true, name: "brown_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
+        { gravity: true, name: "cyan_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
+        { gravity: true, name: "gray_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
+        { gravity: true, name: "green_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
+        { gravity: true, name: "light_blue_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
+        { gravity: true, name: "light_gray_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
+        { gravity: true, name: "lime_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
+        { gravity: true, name: "magenta_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
+        { gravity: true, name: "orange_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
+        { gravity: true, name: "pink_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
+        { gravity: true, name: "purple_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
+        { gravity: true, name: "red_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
+        { gravity: true, name: "white_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
+        { gravity: true, name: "yellow_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" }
     ],
     shortConcreteBlocks: [
         { base: "", name: "black_concrete", typeId: "", height: 16 },
@@ -101,18 +105,16 @@ export const watchFor = {
         "minecraft:flowing_lava",
         "minecraft:flowing_water"
     ],
-    //another pack for this... crumble/smash
-    manualSiftBlocks: [
-        //mud and clay are more maliable and can have something hidden inside
-        { custom: globals.mainNameSpace + "manual_siftable_mud", minecraft: "minecraft:mud", sound: "dig.mud" },
-        { custom: globals.mainNameSpace + "manual_siftable_clay", minecraft: "minecraft:clay", sound: "dig.clay" }
+    waterBlocks: [
+        "minecraft:water",
+        "minecraft:flowing_water"
     ],
     sifterBlocks: [
         globals.mainNameSpace + "copper_sifter",
         globals.mainNameSpace + "iron_sifter",
         globals.mainNameSpace + "diamond_sifter"
     ],
-    vanillaBlocks: [ "" ],
+    vanillaGravityBlocks: [ "" ],
     allSiftableBlocks: [ "" ],
     shortGravityBlocks: [ {
         nameSpace: "x",
@@ -120,32 +122,25 @@ export const watchFor = {
         height: 0,
         name: "x",
         sound: "x",
-        typeId: "x",
-        siftBlockTypeId: "x"
-    } ],
-    sifterBlocks_2: [ "" ]
+        typeId: "x"
+    } ]
 };
 //==============================================================================
 // Adjustments
 //==============================================================================
-// TODO: testing different method to allow for different speeds of the sifters as defined in the BP file
-// shifting the sifting to the sifter from the block to see if can work
-watchFor.sifterBlocks.forEach(value => watchFor.sifterBlocks_2.push(value + '_2'));
-//==============================================================================
 watchFor.autoSiftBlocks.forEach(b => {
     b.custom = `${globals.autoSiftBlockNameSpace}${b.name}`;
     b.minecraft = `minecraft:${b.name}`;
-    watchFor.vanillaBlocks.push(b.minecraft);
+    watchFor.vanillaGravityBlocks.push(b.minecraft);
 
-    for (let i = 1; i <= 15; i++) {
+    for (let i = 1; i <= 16; i++) {
         const addB = {
             nameSpace: globals.shortBlockNameSpace,
             base: b.name,
             height: i,
             name: `${b.name}_${i}`,
             sound: b.sound,
-            typeId: `${globals.shortBlockNameSpace}${b.name}_${i}`,
-            siftBlockTypeId: `${globals.autoSiftBlockNameSpace}${b.name}`
+            typeId: `${globals.shortBlockNameSpace}${b.name}_${i}`
         };
         watchFor.shortGravityBlocks.push(addB);
     }
@@ -154,148 +149,147 @@ watchFor.autoSiftBlocks.forEach(b => {
 //==============================================================================
 export const lootTableItems = [
     //put these as zero for filters
-    { minHeight: 2, typeId: "minecraft:stick", blocksAllowed: [ "sand", "gravel", "concrete" ] },
-    { minHeight: 2, typeId: "minecraft:bowl", blocksAllowed: [ "all" ] },
-    { minHeight: 3, typeId: "minecraft:brick", blocksAllowed: [ "all" ] },
-    { minHeight: 4, typeId: "minecraft:flint", blocksAllowed: [ "gravel", "concrete" ] },
+    { minHeight: 1, typeId: "minecraft:stick", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] },
+    { minHeight: 3, typeId: "minecraft:bowl", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 4, typeId: "minecraft:brick", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 4, typeId: "minecraft:flint", blocksNotAllowed: [ "" ], blocksAllowed: [ "gravel", "concrete" ] },
     //food in snow
-    { minHeight: 4, typeId: "minecraft:bread", blocksAllowed: [ "snow" ] },
-    { minHeight: 4, typeId: "minecraft:baked_potato", blocksAllowed: [ "snow" ] },
-    { minHeight: 4, typeId: "minecraft:cookie", blocksAllowed: [ "snow" ] },
-    { minHeight: 4, typeId: "minecraft:pumpkin_pie", blocksAllowed: [ "snow" ] },
-    { minHeight: 4, typeId: "minecraft:cake", blocksAllowed: [ "snow" ] },
-    { minHeight: 2, typeId: "minecraft:dried_kelp", blocksAllowed: [ "sand", "gravel", "concrete" ] },
-    { minHeight: 4, typeId: "minecraft:bread", blocksAllowed: [ "snow" ] },
+    { minHeight: 4, typeId: "minecraft:bread", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "snow" ] },
+    { minHeight: 4, typeId: "minecraft:baked_potato", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "snow" ] },
+    { minHeight: 2, typeId: "minecraft:cookie", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "snow" ] },
+    { minHeight: 4, typeId: "minecraft:pumpkin_pie", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "snow" ] },
+    { minHeight: 4, typeId: "minecraft:cake", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "snow" ] },
+    { minHeight: 1, typeId: "minecraft:dried_kelp", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] },
     //items
-    { minHeight: 3, typeId: "minecraft:nether_brick", blocksAllowed: [ "all" ] },
-    { minHeight: 3, typeId: "minecraft:sea_pickle", blocksAllowed: [ "sand" ] },
-    { minHeight: 3, typeId: "minecraft:candle", blocksAllowed: [ "sand", "gravel", "concrete" ] },
-    { minHeight: 3, typeId: "minecraft:amethyst_shard", blocksAllowed: [ "all" ] },
-    { minHeight: 4, typeId: "minecraft:honey_bottle", blocksAllowed: [ "all" ] },
-    { minHeight: 4, typeId: "minecraft:flower_pot", blocksAllowed: [ "all" ] },
-    { minHeight: 4, typeId: "minecraft:bucket", blocksAllowed: [ "all" ] },
-    { minHeight: 4, typeId: "minecraft:charcoal", blocksAllowed: [ "sand", "gravel" ] },
-    { minHeight: 4, typeId: "minecraft:coal", blocksAllowed: [ "sand", "gravel" ] },
-    { minHeight: 4, typeId: "minecraft:quartz", blocksAllowed: [ "all" ] },
-    { minHeight: 2, typeId: "minecraft:prismarine_shard", blocksAllowed: [ "sand" ] },
-    { minHeight: 2, typeId: "minecraft:prismarine_crystals", blocksAllowed: [ "sand" ] },
-    { minHeight: 4, typeId: "minecraft:nautilus_shell", blocksAllowed: [ "sand" ] },
-    { minHeight: 15, typeId: "minecraft:heart_of_the_sea", blocksAllowed: [ "sand" ] },
-    { minHeight: 4, typeId: "minecraft:turtle_scute", blocksAllowed: [ "sand" ] },
-    { minHeight: 4, typeId: "minecraft:armadillo_scute", blocksAllowed: [ "red_sand" ] },
-    { minHeight: 2, typeId: "minecraft:string", blocksAllowed: [ "all" ] },
-    { minHeight: 2, typeId: "minecraft:feather", blocksAllowed: [ "sand", "gravel", "concrete" ] },
-    
-    { minHeight: 4, typeId: "minecraft:leather", blocksAllowed: [ "all" ] },
-    { minHeight: 4, typeId: "minecraft:rabbit_hide", blocksAllowed: [ "sand" ] },
-    { minHeight: 2, typeId: "minecraft:rabbit_foot", blocksAllowed: [ "all" ] },
-    { minHeight: 2, typeId: "minecraft:blaze_rod", blocksAllowed: [ "all" ] },
-    { minHeight: 2, typeId: "minecraft:breeze_rod", blocksAllowed: [ "all" ] },
-    { minHeight: 2, typeId: "minecraft:echo_shard", blocksAllowed: [ "all" ] },
-    { minHeight: 2, typeId: "minecraft:dragon_breath", blocksAllowed: [ "all" ] },
-    { minHeight: 12, typeId: "minecraft:shulker_shell", blocksAllowed: [ "all" ] },
-    { minHeight: 6, typeId: "minecraft:ender_pearl", blocksAllowed: [ "sand", "snow" ] },
-    { minHeight: 6, typeId: "minecraft:ender_eye", blocksAllowed: [ "sand", "snow" ] },
-    { minHeight: 4, typeId: "minecraft:nether_star", blocksAllowed: [ "snow" ] },
-    { minHeight: 2, typeId: "minecraft:end_rod", blocksAllowed: [ "all" ] },
-    { minHeight: 2, typeId: "minecraft:lightning_rod", blocksAllowed: [ "all", "concrete" ] },
-    { minHeight: 2, typeId: "minecraft:paper", blocksAllowed: [ "sand", "gravel" ] },
-    { minHeight: 3, typeId: "minecraft:book", blocksAllowed: [ "sand", "gravel", "concrete" ] },
-    { minHeight: 3, typeId: "minecraft:writable_book", blocksAllowed: [ "sand", "gravel", "concrete" ] },
-    { minHeight: 2, typeId: "minecraft:lever", blocksAllowed: [ "sand", "gravel", "concrete" ] },
-    { minHeight: 2, typeId: "minecraft:tripwire_hook", blocksAllowed: [ "all" ] },
-    { minHeight: 12, typeId: "minecraft:daylight_detector", blocksAllowed: [ "all" ] },
-    { minHeight: 2, typeId: "minecraft:repeater", blocksAllowed: [ "sand", "gravel", "concrete" ] },
-    { minHeight: 2, typeId: "minecraft:comparator", blocksAllowed: [ "sand", "gravel", "concrete" ] },
-    { minHeight: 2, typeId: "minecraft:name_tag", blocksAllowed: [ "all" ] },
-    { minHeight: 2, typeId: "minecraft:chain", blocksAllowed: [ "all" ] },
-    { minHeight: 8, typeId: "minecraft:trial_key", blocksAllowed: [ "all" ] },
-    { minHeight: 8, typeId: "minecraft:ominous_trial_key", blocksAllowed: [ "all" ] },
-    { minHeight: 4, typeId: "minecraft:disc_fragment_5", blocksAllowed: [ "all" ] },
+    { minHeight: 4, typeId: "minecraft:nether_brick", blocksNotAllowed: [ "" ], blocksAllowed: [ "soul_sand" ] },
+    { minHeight: 4, typeId: "minecraft:sea_pickle", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand" ] },
+    { minHeight: 4, typeId: "minecraft:candle", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] },
+    { minHeight: 4, typeId: "minecraft:amethyst_shard", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 6, typeId: "minecraft:honey_bottle", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 4, typeId: "minecraft:flower_pot", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 4, typeId: "minecraft:bucket", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 4, typeId: "minecraft:charcoal", blocksNotAllowed: [ "" ], blocksAllowed: [ "sand", "gravel" ] },
+    { minHeight: 4, typeId: "minecraft:coal", blocksNotAllowed: [ "" ], blocksAllowed: [ "sand", "gravel" ] },
+    { minHeight: 4, typeId: "minecraft:quartz", blocksNotAllowed: [ "" ], blocksAllowed: [ "soul_sand" ] },
+    { minHeight: 2, typeId: "minecraft:prismarine_shard", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand" ] },
+    { minHeight: 2, typeId: "minecraft:prismarine_crystals", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand" ] },
+    { minHeight: 4, typeId: "minecraft:nautilus_shell", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand" ] },
+    { minHeight: 15, typeId: "minecraft:heart_of_the_sea", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand" ] },
+    { minHeight: 4, typeId: "minecraft:turtle_scute", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand" ] },
+    { minHeight: 4, typeId: "minecraft:armadillo_scute", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "red_sand" ] },
+    { minHeight: 2, typeId: "minecraft:string", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 2, typeId: "minecraft:feather", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] },
+
+    { minHeight: 3, typeId: "minecraft:leather", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 3, typeId: "minecraft:rabbit_hide", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand" ] },
+    { minHeight: 1, typeId: "minecraft:rabbit_foot", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 2, typeId: "minecraft:blaze_rod", blocksNotAllowed: [ "" ], blocksAllowed: [ "soul_sand" ] },
+    { minHeight: 2, typeId: "minecraft:breeze_rod", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 2, typeId: "minecraft:echo_shard", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 6, typeId: "minecraft:dragon_breath", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 12, typeId: "minecraft:shulker_shell", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 6, typeId: "minecraft:ender_pearl", blocksNotAllowed: [ "" ], blocksAllowed: [ "soul_sand" ] },
+    { minHeight: 6, typeId: "minecraft:ender_eye", blocksNotAllowed: [ "" ], blocksAllowed: [ "soul_sand" ] },
+    { minHeight: 4, typeId: "minecraft:nether_star", blocksNotAllowed: [ "" ], blocksAllowed: [ "soul_sand" ] },
+    { minHeight: 2, typeId: "minecraft:end_rod", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 2, typeId: "minecraft:lightning_rod", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all", "concrete" ] },
+    { minHeight: 2, typeId: "minecraft:paper", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel" ] },
+    { minHeight: 4, typeId: "minecraft:book", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] },
+    { minHeight: 4, typeId: "minecraft:writable_book", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] },
+    { minHeight: 2, typeId: "minecraft:lever", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] },
+    { minHeight: 2, typeId: "minecraft:tripwire_hook", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 12, typeId: "minecraft:daylight_detector", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 8, typeId: "minecraft:repeater", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] },
+    { minHeight: 8, typeId: "minecraft:comparator", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] },
+    { minHeight: 2, typeId: "minecraft:name_tag", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 2, typeId: "minecraft:chain", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 8, typeId: "minecraft:trial_key", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 8, typeId: "minecraft:ominous_trial_key", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 4, typeId: "minecraft:disc_fragment_5", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
 
     //nature menu
-    { minHeight: 3, typeId: "minecraft:bamboo", blocksAllowed: [ "sand", "snow" ] },
-    { minHeight: 4, typeId: "minecraft:sugar_cane", blocksAllowed: [ "sand", "snow" ] },
-    { minHeight: 4, typeId: "minecraft:egg", blocksAllowed: [ "all" ] },
-    { minHeight: 2, typeId: "minecraft:kelp", blocksAllowed: [ "sand", "snow" ] },
-    { minHeight: 2, typeId: "minecraft:waterlily", blocksAllowed: [ "sand", "snow" ] },
-    { minHeight: 10, typeId: "minecraft:deadbush", blocksAllowed: [ "sand" ] },
-    { minHeight: 14, typeId: "minecraft:pointed_dripstone", blocksAllowed: [ "sand" ] },
-    { minHeight: 2, typeId: "minecraft:bone", blocksAllowed: [ "all" ] },
-    { minHeight: 4, typeId: "minecraft:turtle_egg", blocksAllowed: [ "all" ] },
-    { minHeight: 2, typeId: "minecraft:rotten_flesh", blocksAllowed: [ "all" ] },
-    { minHeight: 4, typeId: "minecraft:nether_wart", blocksAllowed: [ "all" ] },
-    { minHeight: 4, typeId: "minecraft:chorus_fruit", blocksAllowed: [ "snow" ] },
-    { minHeight: 4, typeId: "minecraft:potato", blocksAllowed: [ "snow" ] },
-    { minHeight: 4, typeId: "minecraft:poisonous_potato", blocksAllowed: [ "snow" ] },
-    { minHeight: 4, typeId: "minecraft:golden_carrot", blocksAllowed: [ "all" ] },
-    { minHeight: 4, typeId: "minecraft:carrot", blocksAllowed: [ "snow" ] },
-    { minHeight: 4, typeId: "minecraft:apple", blocksAllowed: [ "snow" ] },
-    { minHeight: 4, typeId: "minecraft:golden_apple", blocksAllowed: [ "all" ] },
-    { minHeight: 4, typeId: "minecraft:enchanted_golden_apple", blocksAllowed: [ "all" ] },
-    { minHeight: 6, typeId: "minecraft:melon_slice", blocksAllowed: [ "snow" ] },
-    { minHeight: 6, typeId: "minecraft:glistering_melon_slice", blocksAllowed: [ "snow" ] },
-    { minHeight: 4, typeId: "minecraft:sweet_berries", blocksAllowed: [ "snow" ] },
-    { minHeight: 4, typeId: "minecraft:glow_berries", blocksAllowed: [ "all" ] },
-    { minHeight: 4, typeId: "minecraft:honeycomb", blocksAllowed: [ "all" ] },
-    { minHeight: 3, typeId: "minecraft:ink_sac", blocksAllowed: [ "all" ] },
-    { minHeight: 3, typeId: "minecraft:glow_ink_sac", blocksAllowed: [ "all" ] },
-    { minHeight: 4, typeId: "minecraft:small_amethyst_bud", blocksAllowed: [ "all" ] },
-    { minHeight: 8, typeId: "minecraft:medium_amethyst_bud", blocksAllowed: [ "all" ] },
-    { minHeight: 12, typeId: "minecraft:large_amethyst_bud", blocksAllowed: [ "all" ] },
-    { minHeight: 4, typeId: "minecraft:frame", blocksAllowed: [ "all" ] },
-    { minHeight: 4, typeId: "minecraft:glow_frame", blocksAllowed: [ "all" ] },
-    { minHeight: 4, typeId: "minecraft:painting", blocksAllowed: [ "all" ] },
-    { minHeight: 12, typeId: "minecraft:player_head", blocksAllowed: [ "all" ] },
-    { minHeight: 12, typeId: "minecraft:creeper_head", blocksAllowed: [ "all" ] },
-    { minHeight: 12, typeId: "minecraft:zombie_head", blocksAllowed: [ "all" ] },
-    { minHeight: 12, typeId: "minecraft:piglin_head", blocksAllowed: [ "all" ] },
-    { minHeight: 12, typeId: "minecraft:skeleton_skull", blocksAllowed: [ "all" ] },
-    { minHeight: 8, typeId: "minecraft:goat_horn", blocksAllowed: [ "all" ] },
+    { minHeight: 3, typeId: "minecraft:bamboo", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "snow" ] },
+    { minHeight: 3, typeId: "minecraft:sugar_cane", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "snow" ] },
+    { minHeight: 4, typeId: "minecraft:egg", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 2, typeId: "minecraft:kelp", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "snow" ] },
+    { minHeight: 2, typeId: "minecraft:waterlily", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "snow" ] },
+    { minHeight: 10, typeId: "minecraft:deadbush", blocksNotAllowed: [ "" ], blocksAllowed: [ "sand", "red_sand" ] },
+    { minHeight: 14, typeId: "minecraft:pointed_dripstone", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand" ] },
+    { minHeight: 2, typeId: "minecraft:bone", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 4, typeId: "minecraft:turtle_egg", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand" ] },
+    { minHeight: 2, typeId: "minecraft:rotten_flesh", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 4, typeId: "minecraft:nether_wart", blocksNotAllowed: [ "" ], blocksAllowed: [ "soul_sand" ] },
+    { minHeight: 4, typeId: "minecraft:chorus_fruit", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "snow" ] },
+    { minHeight: 4, typeId: "minecraft:potato", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "snow" ] },
+    { minHeight: 4, typeId: "minecraft:poisonous_potato", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "snow" ] },
+    { minHeight: 4, typeId: "minecraft:golden_carrot", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 4, typeId: "minecraft:carrot", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "snow" ] },
+    { minHeight: 4, typeId: "minecraft:apple", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "snow" ] },
+    { minHeight: 4, typeId: "minecraft:golden_apple", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 4, typeId: "minecraft:enchanted_golden_apple", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 6, typeId: "minecraft:melon_slice", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "snow" ] },
+    { minHeight: 6, typeId: "minecraft:glistering_melon_slice", blocksNotAllowed: [ "" ], blocksAllowed: [ "snow" ] },
+    { minHeight: 4, typeId: "minecraft:sweet_berries", blocksNotAllowed: [ "" ], blocksAllowed: [ "snow" ] },
+    { minHeight: 4, typeId: "minecraft:glow_berries", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 4, typeId: "minecraft:honeycomb", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 2, typeId: "minecraft:ink_sac", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 2, typeId: "minecraft:glow_ink_sac", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 4, typeId: "minecraft:small_amethyst_bud", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 8, typeId: "minecraft:medium_amethyst_bud", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 12, typeId: "minecraft:large_amethyst_bud", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 4, typeId: "minecraft:frame", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 4, typeId: "minecraft:glow_frame", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 4, typeId: "minecraft:painting", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 14, typeId: "minecraft:player_head", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 14, typeId: "minecraft:creeper_head", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 14, typeId: "minecraft:zombie_head", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 14, typeId: "minecraft:piglin_head", blocksNotAllowed: [ "" ], blocksAllowed: [ "soul_sand" ] },
+    { minHeight: 14, typeId: "minecraft:skeleton_skull", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 8, typeId: "minecraft:goat_horn", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
     //items
-    { minHeight: 6, typeId: "minecraft:diamond", blocksAllowed: [ "all" ] },
-    { minHeight: 6, typeId: "minecraft:emerald", blocksAllowed: [ "all" ] },
-    { minHeight: 6, typeId: "minecraft:copper_ingot", blocksAllowed: [ "all" ] },
-    { minHeight: 6, typeId: "minecraft:gold_ingot", blocksAllowed: [ "all" ] },
-    { minHeight: 6, typeId: "minecraft:iron_ingot", blocksAllowed: [ "all" ] },
-    { minHeight: 6, typeId: "minecraft:netherite_ingot", blocksAllowed: [ "snow" ] },
-    { minHeight: 4, typeId: "minecraft:netherite_scrap", blocksAllowed: [ "all" ] },
-    { minHeight: 6, typeId: "minecraft:raw_copper", blocksAllowed: [ "all" ] },
-    { minHeight: 6, typeId: "minecraft:raw_gold", blocksAllowed: [ "all" ] },
-    { minHeight: 6, typeId: "minecraft:raw_iron", blocksAllowed: [ "all" ] },
-    { minHeight: 2, typeId: "minecraft:gold_nugget", blocksAllowed: [ "all" ] },
-    { minHeight: 2, typeId: "minecraft:iron_nugget", blocksAllowed: [ "all" ] },
+    { minHeight: 6, typeId: "minecraft:diamond", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 6, typeId: "minecraft:emerald", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 6, typeId: "minecraft:copper_ingot", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 6, typeId: "minecraft:gold_ingot", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 6, typeId: "minecraft:iron_ingot", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 6, typeId: "minecraft:netherite_ingot", blocksNotAllowed: [ "" ], blocksAllowed: [ "soul_sand" ] },
+    { minHeight: 4, typeId: "minecraft:netherite_scrap", blocksNotAllowed: [ "" ], blocksAllowed: [ "soul_sand" ] },
+    { minHeight: 6, typeId: "minecraft:raw_copper", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 6, typeId: "minecraft:raw_gold", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 6, typeId: "minecraft:raw_iron", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 2, typeId: "minecraft:gold_nugget", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 2, typeId: "minecraft:iron_nugget", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
     //tools
-    { minHeight: 8, typeId: "minecraft:totem_of_undying", blocksAllowed: [ "all" ] },
-    { minHeight: 8, typeId: "minecraft:turtle_helmet", blocksAllowed: [ "all" ] },
-    { minHeight: 3, typeId: "minecraft:lead", blocksAllowed: [ "all" ] },
-    { minHeight: 3, typeId: "minecraft:clock", blocksAllowed: [ "all" ] },
-    { minHeight: 3, typeId: "minecraft:compass", blocksAllowed: [ "all" ] },
-    { minHeight: 3, typeId: "minecraft:recovery_compass", blocksAllowed: [ "all" ] },
-    { minHeight: 1, typeId: "minecraft:empty_map", blocksAllowed: [ "all" ] },
-    { minHeight: 1, typeId: "minecraft:filled_map", blocksAllowed: [ "all" ] },
-    { minHeight: 12, typeId: "minecraft:saddle", blocksAllowed: [ "all" ] },
-    { minHeight: 14, typeId: "minecraft:wolf_armor", blocksAllowed: [ "all" ] },
-    { minHeight: 8, typeId: "minecraft:trident", blocksAllowed: [ "sand" ] },
+    { minHeight: 8, typeId: "minecraft:totem_of_undying", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 8, typeId: "minecraft:turtle_helmet", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand" ] },
+    { minHeight: 3, typeId: "minecraft:lead", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 3, typeId: "minecraft:clock", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 3, typeId: "minecraft:compass", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 3, typeId: "minecraft:recovery_compass", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 1, typeId: "minecraft:empty_map", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 1, typeId: "minecraft:filled_map", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 12, typeId: "minecraft:saddle", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 14, typeId: "minecraft:wolf_armor", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 8, typeId: "minecraft:trident", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand" ] },
 
-    { minHeight: 8, typeId: "minecraft:fire_charge", blocksAllowed: [ "all" ] },
-    { minHeight: 10, typeId: "minecraft:firework_rocket", blocksAllowed: [ "all" ] },
-    { minHeight: 8, typeId: "minecraft:firework_star", blocksAllowed: [ "all" ] },
-    { minHeight: 6, typeId: "minecraft:shears", blocksAllowed: [ "all" ] },
-    { minHeight: 8, typeId: "minecraft:glass_bottle", blocksAllowed: [ "all" ] },
-    { minHeight: 8, typeId: "minecraft:experience_bottle", blocksAllowed: [ "all" ] },
-    { minHeight: 8, typeId: "minecraft:spyglass", blocksAllowed: [ "all" ] },
-    { minHeight: 8, typeId: "minecraft:brush", blocksAllowed: [ "all" ] },
-    { minHeight: 14, typeId: "minecraft:mace", blocksAllowed: [ "all" ] },
-    { minHeight: 8, typeId: "minecraft:bundle", blocksAllowed: [ "all" ] },
+    { minHeight: 8, typeId: "minecraft:fire_charge", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 12, typeId: "minecraft:firework_rocket", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 8, typeId: "minecraft:firework_star", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 6, typeId: "minecraft:shears", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 6, typeId: "minecraft:glass_bottle", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 6, typeId: "minecraft:experience_bottle", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
+    { minHeight: 4, typeId: "minecraft:spyglass", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 4, typeId: "minecraft:brush", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 14, typeId: "minecraft:mace", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 8, typeId: "minecraft:bundle", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
 
     //custom
-    { minHeight: 2, typeId: globals.mainNameSpace + "emerald_nugget", blocksAllowed: [ "all" ] },
-    { minHeight: 2, typeId: globals.mainNameSpace + "diamond_nugget", blocksAllowed: [ "all" ] },
-    { minHeight: 2, typeId: globals.mainNameSpace + "netherite_nugget", blocksAllowed: [ "all" ] },
-    { minHeight: 2, typeId: globals.mainNameSpace + "netherite_scrap_piece", blocksAllowed: [ "all" ] },
-    { minHeight: 8, typeId: globals.mainNameSpace + "broken_elytra_left", blocksAllowed: [ "snow" ] },
-    { minHeight: 8, typeId: globals.mainNameSpace + "broken_elytra_right", blocksAllowed: [ "snow" ] }
+    { minHeight: 1, typeId: globals.mainNameSpace + "emerald_nugget", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 1, typeId: globals.mainNameSpace + "diamond_nugget", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 1, typeId: globals.mainNameSpace + "netherite_nugget", blocksNotAllowed: [ "" ], blocksAllowed: [ "soul_sand" ] },
+    { minHeight: 1, typeId: globals.mainNameSpace + "netherite_scrap_piece", blocksNotAllowed: [ "" ], blocksAllowed: [ "soul_sand" ] },
+    { minHeight: 6, typeId: globals.mainNameSpace + "broken_elytra_left", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 6, typeId: globals.mainNameSpace + "broken_elytra_right", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] }
     // add cooked foods and raw in snow only
 
 ];
@@ -305,60 +299,61 @@ const vanillaItems = Object.values(MinecraftItemTypes); //.   how to get the val
 //add enchanted tools weapons
 
 colors.forEach(c => {
-    lootTableItems.push({ minHeight: 8, typeId: "minecraft:" + c + "_bundle", blocksAllowed: [ "all" ] });
-    lootTableItems.push({ minHeight: 8, typeId: "minecraft:" + c + "_candle", blocksAllowed: [ "sand", "gravel", "concrete" ] });
+    lootTableItems.push({ minHeight: 8, typeId: "minecraft:" + c + "_bundle", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] });
+    lootTableItems.push({ minHeight: 8, typeId: "minecraft:" + c + "_candle", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] });
 });
 vanillaItems.filter(id => id.endsWith('_button')).forEach(item => {
-    lootTableItems.push({ minHeight: 2, typeId: item, blocksAllowed: [ "sand", "gravel", "concrete" ] });
+    lootTableItems.push({ minHeight: 2, typeId: item, blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] });
 });
 vanillaItems.filter(id => id.endsWith('_pressure_plate')).forEach(item => {
-    lootTableItems.push({ minHeight: 2, typeId: item, blocksAllowed: [ "sand", "gravel", "concrete" ] });
+    lootTableItems.push({ minHeight: 2, typeId: item, blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] });
 });
 vanillaItems.filter(id => id.endsWith('_seeds')).forEach(item => {
-    lootTableItems.push({ minHeight: 1, typeId: item, blocksAllowed: [ "all" ] });
+    lootTableItems.push({ minHeight: 1, typeId: item, blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] });
 });
 vanillaItems.filter(id => id.endsWith('_coral_fan')).forEach(item => {
-    lootTableItems.push({ minHeight: 8, typeId: item, blocksAllowed: [ "sand" ] });
+    lootTableItems.push({ minHeight: 8, typeId: item, blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand" ] });
 });
 vanillaItems.filter(id => id.startsWith('music_disc_')).forEach(item => {
-    lootTableItems.push({ minHeight: 3, typeId: item, blocksAllowed: [ "all" ] });
-});
-vanillaItems.filter(id => id.endsWith('_goat_horn')).forEach(item => {
-    lootTableItems.push({ minHeight: 6, typeId: item, blocksAllowed: [ "all" ] });
+    lootTableItems.push({ minHeight: 3, typeId: item, blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] });
 });
 vanillaItems.filter(id => id.endsWith('_smithing_template')).forEach(item => {
-    lootTableItems.push({ minHeight: 4, typeId: item, blocksAllowed: [ "all" ] });
+    lootTableItems.push({ minHeight: 4, typeId: item, blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] });
 });
-vanillaItems.filter(id => id.endsWith('_pottery_shard')).forEach(item => {
-    lootTableItems.push({ minHeight: 3, typeId: item, blocksAllowed: [ "all" ] });
+
+[ "_pottery_shard", "_banner_pattern" ].forEach(type => {
+    vanillaItems.filter(id => id.endsWith(type)).forEach(item => {
+        lootTableItems.push({ minHeight: 3, typeId: item, blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] });
+    });
 });
-vanillaItems.filter(id => id.endsWith('_banner_pattern')).forEach(item => {
-    lootTableItems.push({ minHeight: 3, typeId: item, blocksAllowed: [ "all" ] });
+
+[ "_axe", "_pickaxe", "_sword", "_hoe", "_shovel" ].forEach(type => {
+    vanillaItems.filter(id => id.endsWith(type) && (id.includes("gold") || id.includes("netherite"))).forEach(item => {
+        lootTableItems.push({ minHeight: 12, typeId: item, blocksNotAllowed: [ "" ], blocksAllowed: [ "soul_sand" ] });
+    });
+    vanillaItems.filter(id => id.endsWith(type) && !(id.includes("gold") || id.includes("netherite"))).forEach(item => {
+        lootTableItems.push({ minHeight: 12, typeId: item, blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] });
+    });
 });
-vanillaItems.filter(id => id.endsWith('_axe')).forEach(item => {
-    lootTableItems.push({ minHeight: 6, typeId: item, blocksAllowed: [ "all" ] });
+[ "_boots", "_helmet", "_leggings", "_chestplate" ].forEach(type => {
+    vanillaItems.filter(id => id.endsWith(type) && (id.includes("gold") || id.includes("netherite"))).forEach(item => {
+        lootTableItems.push({ minHeight: 14, typeId: item, blocksNotAllowed: [ "" ], blocksAllowed: [ "soul_sand" ] });
+    });
+    vanillaItems.filter(id => id.endsWith(type) && !(id.includes("gold") || id.includes("netherite"))).forEach(item => {
+        lootTableItems.push({ minHeight: 14, typeId: item, blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] });
+    });
 });
-vanillaItems.filter(id => id.endsWith('_pickaxe')).forEach(item => {
-    lootTableItems.push({ minHeight: 6, typeId: item, blocksAllowed: [ "all" ] });
-});
-vanillaItems.filter(id => id.endsWith('_sword')).forEach(item => {
-    lootTableItems.push({ minHeight: 6, typeId: item, blocksAllowed: [ "all" ] });
-});
-vanillaItems.filter(id => id.endsWith('_hoe')).forEach(item => {
-    lootTableItems.push({ minHeight: 6, typeId: item, blocksAllowed: [ "all" ] });
-});
-vanillaItems.filter(id => id.endsWith('_shovel')).forEach(item => {
-    lootTableItems.push({ minHeight: 6, typeId: item, blocksAllowed: [ "all" ] });
-});
-const badItems = lootTableItems.filter(item => item.typeId.startsWith('minecraft:') && !vanillaItems.includes(item.typeId))
+
+const badItems = lootTableItems.filter(item => item.typeId.startsWith('minecraft:') && !vanillaItems.includes(item.typeId));
 //badItems.forEach(bad => alertLog.log(bad.typeId));
 
 //==============================================================================
+//add all the other sizes
 watchFor.shortConcreteBlocks.filter(s => s.height = 16).forEach(b => {
     b.base = b.name;
     b.typeId = globals.mainNameSpace + b.name;
 
-    for (let i = 1; i <= 15; i++) {
+    for (let i = 1; i <= 16; i++) {
         const addB = {
             base: b.name,
             height: i,

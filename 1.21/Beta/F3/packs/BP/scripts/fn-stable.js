@@ -1,41 +1,27 @@
 //@ts-check
 import {
     world,
-    // system,
-    // Block,
-    // ItemStack,
     Player,
-    PlayerInteractWithBlockBeforeEvent,
-    PlayerInteractWithBlockAfterEvent,
     PlayerBreakBlockBeforeEvent,
     PlayerBreakBlockAfterEvent
 } from "@minecraft/server";
-import { Vector3Lib as vec3 } from './commonLib/vectorClass.js';
 import { Debug } from './commonLib/mcDebugClass.js';
+import { alertLog, chatLog, toggles } from "./settings.js";
 //==============================================================================
 const debug = new Debug("F3", true, world);
-export const toggles = {
-    //Player Interact With Block
-    piwb_b4: false,
-    piwb_aft: false,
-    //Player Break Block
-    pbb_b4: false,
-    pbb_aft: false,
-    //Player Place Block
-    ppb_b4: false, //beta
-
-    //Player Interact With Entity
-    piwe_b4: false
-};
 //==================================================================
 //==================================================================
 /**
  * 
  * @param {Player} player 
  */
-function playerF3Initialize (player) {
+export function playerF3Initialize (player) {
     //@ts-ignore
-    if (!player.f3) player.f3 = new Map();
+    if (!player.f3) {
+        //@ts-ignore
+        player.f3 = new Map();
+        alertLog.success(`Player ${player.name} initialized with F3 Map Object`)
+    }
 }
 //==================================================================
 /**
@@ -43,13 +29,17 @@ function playerF3Initialize (player) {
  * @param { string } mapKey 
  * @param { object } mapObject 
  */
-export function playerF3Add (player, mapKey, mapObject) {
+export function playerF3Add (player, mapKey, mapObject,show=false) {
     if (player.isValid()) {
 
         playerF3Initialize(player);
 
         //@ts-ignore
         player.f3.set(mapKey, mapObject);
+
+        if (show){
+            debug.listObjectInnards(mapObject, player, mapKey, true);
+        }
     }
 }
 //==================================================================
@@ -78,29 +68,11 @@ export function playerF3Show (player, mapKey) {
         world.sendMessage(`no f3 info: ${mapKey}`);
         return;
     }
-
+    player.sendMessage('\n\n')
     debug.listObjectInnards(f3_info, world, mapKey, true);
+    player.sendMessage('\n\n')
 }
-//==================================================================
-/**
- * 
- * @param {PlayerInteractWithBlockBeforeEvent | PlayerInteractWithBlockAfterEvent} event 
- */
-export function playerInteractWithBlock_save (event) {
-    const { player, block, blockFace, faceLocation, itemStack } = event;
 
-    if (player.isValid() && block.isValid()) {
-
-        playerF3Add(player, 'last_playerInteractWithBlock',
-            {
-                block: block,
-                blockFace: blockFace,
-                faceLocation: vec3.round(faceLocation, 1),
-                vectorDelta: vec3.delta(faceLocation, block.center(), 1), //where on block (out from center)
-                itemUsed: itemStack?.typeId
-            });
-    }
-}
 /**
  * @param {PlayerBreakBlockBeforeEvent} event 
  */
@@ -119,6 +91,7 @@ export function playerBreakBlock_before_show (event) {
         debug.playerInfo(player, world, "\n§d* pbb_b4-Player's View", true, 'view');
     }
 };
+//==============================================================================
 /**
  * @param {PlayerBreakBlockAfterEvent} event 
  */
@@ -151,3 +124,4 @@ export function playerBreakBlock_after_show (event) {
         debug.playerInfo(player, world, "\n§d* pbb_aft - Player's View", true, 'view');
     }
 }
+//==============================================================================

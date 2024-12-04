@@ -1,0 +1,27 @@
+{ 
+  "$scope":{
+    //not powder snow - No Loot
+      "short_blocks":"{{auto_sift_blocks.flatMap(b => (1..15).map(y => {base: b.base, height: y})).flatMap(b => (1..15).map(y => {base: b.base, height_1: b.height, height_2:y, height: b.height+y})).filter(b => b.height <= 16 && b.height_1 <= b.height_2)}}"      
+  },
+    "$files": {
+        "array": "short_blocks",
+        "fileName": "./{{base}}/{{base}}_{{height_1}}_{{height_2}}.recipe"
+    },    
+    "$template": {
+    "format_version": "1.20.10",
+    "minecraft:recipe_shaped": {
+      "description": {"identifier":"dw623:{{base}}_{{height_1}}_{{height_2}}_recipe"},      
+      "tags": [ "crafting_table" ],      
+      "pattern": ["T","B"],
+      "key":    {
+        "T":{"item":"short:{{base}}_{{height_1}}"},
+        "B":{"item":"short:{{base}}_{{height_2}}"}
+      },
+      "unlock": [
+        {"item":"short:{{base}}_{{height_1}}"},
+        {"item":"short:{{base}}_{{height_2}}"}
+      ],
+      "result": {"item":"{{height==16 ? 'minecraft:'+base : 'short:'+base+'_'+height}}"}
+    }
+  }
+}

@@ -1,31 +1,45 @@
 {
-    "$scope":{
-        "short_blocks":"{{auto_sift_blocks.flatMap(b => (1..15).map(y => {base: b.base, height: y, sound:b.sound}))}}",
-        "short_concrete_blocks":"{{concrete_blocks.flatMap(b => (1..15).map(y => {base: b.base, height: y, sound:b.sound}))}}"
-
+    "$scope": {
+        "short_blocks": "{{auto_sift_blocks.flatMap(b => (1..16).map(y => {base: b.base, height: y, sound:b.sound, texture:b.texture,gamma:b.brightness_gamma}))}}",
+        "short_concrete_blocks": "{{concrete_blocks.flatMap(b => (1..16).map(y => {base: b.base, height: y, sound:b.sound}))}}"
     },
     "$template": {
-        "format_version":"1.20.81",
-        //TODO: add Short Blocks for sound
-        "{{#sifter_types}}":{
-            "dw623:{{material}}_sifter" : {
-                "sound" : "{{sound}}",
-                "textures" : {
+        "format_version": "1.20.81",
+        
+        "{{#sifter_types}}": {
+            "dw623:{{material}}_sifter": {
+                "sound": "{{sound}}",
+                "textures": {
                     "up": "{{material}}_net",
-                    "down" : "composter_bottom",
-                    "side" : "composter_side"
+                    "down": "composter_bottom",
+                    "side": "composter_side"
                 }
             },
-            "dw623:{{material}}_net" : {
-                "sound" : "{{sound}}",
-                "textures" : {
+            "dw623:{{material}}_net": {
+                "sound": "{{sound}}",
+                "textures": {
                     "up": "{{material}}_net",
-                    "down" : "{{material}}_net",
-                    "side" : "{{material}}_block"
+                    "down": "{{material}}_net",
+                    "side": "{{material}}_block"
                 }
             }
-        },        
-        "{{#short_blocks}}":{"short:{{base}}_{{height}}":{"sound":"{{sound}}"}},
-        "{{#short_concrete_blocks}}":{"dw623:{{base}}_{{height}}":{"sound":"{{sound}}"}}
+        },
+        "{{#1..16}}": {
+            "short:powder_snow_{{value}}": {                
+                "isotropic" : true,
+                "sound": "snow"                
+            }
+        },
+        "{{#short_blocks}}": {
+            "short:{{base}}_{{height}}": {                
+                "isotropic" : true,
+                "sound": "{{sound}}"
+            }
+        },
+        "{{#short_concrete_blocks}}": {
+            "dw623:{{base}}_{{height}}": {                
+                "sound": "{{sound}}"
+            }
+        }
     }
 }

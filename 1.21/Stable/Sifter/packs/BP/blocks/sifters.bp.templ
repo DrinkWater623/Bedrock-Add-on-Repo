@@ -1,22 +1,22 @@
 {
   "$files": {
     "array": "sifter_types",
-    "fileName": "./sifters/{{material}}_sifter_2.bp"
+    "fileName": "./sifters/{{material}}_sifter.bp"
   },
   "$template": {
     "format_version": "1.20.80",
     "minecraft:block": {
       "description": {
-        "identifier": "dw623:{{material}}_sifter_2",
+        "identifier": "dw623:{{material}}_sifter",
         "menu_category": {
           "category": "items"
         }
       },
       "components": {
-        "minecraft:display_name": "{{realTitle(material)}} Sifter 2",
-        //TODO: add other features, like flammable, etc...
+        "minecraft:display_name": "{{realTitle(material)}} Sifter",    
+        "minecraft:map_color": "{{map}}",         
         "minecraft:custom_components": [
-          "dw623:sifter_query_2"
+          "dw623:sifter_query"
         ],
         //companion components to check if a siftable block is above it
         "minecraft:tick": {"interval_range":["{{=speed}}","{{=speed}}"],"looping":true},
@@ -26,7 +26,7 @@
         "minecraft:material_instances": {
           "up": {
             "texture": "{{material}}_net",
-            "render_method": "alpha_test",
+            "render_method": "alpha_test",  //TODO: make sure right one... there is z-fighting
             "face_dimming": false,
             "ambient_occlusion": false
           },

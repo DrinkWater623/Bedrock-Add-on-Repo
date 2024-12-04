@@ -4,8 +4,8 @@
 //=====================================================================
 const fs = require("fs");
 //const fileInfo = require('path');
-const { Debug } = require("./js_lib/Debug");
-const { is, has } = require("./js_lib/shared-classes");
+const { Debug } = require("./js_lib/Debug.js");
+const { is, has } = require("./js_lib/shared-classes.js");
 const fileIo = require("./js_lib/File_io.js");
 //=====================================================================// Global variables - Part 1
 //=====================================================================

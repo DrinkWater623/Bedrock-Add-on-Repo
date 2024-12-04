@@ -142,7 +142,8 @@ export function rotateClockwise (event) {
     bug.log("§6Current Block States", event.player);
     bug.listBlockStates(currentPermutation, event.player);
 
-    const staticStateBlockFace = currentPermutation.getState("minecraft:block_face"); //face of block arrow is on, not just touched
+    //face of block arrow is on, not just touched
+    const staticStateBlockFace = currentPermutation.getState("minecraft:block_face"); 
 
     const oldStateCardinalDirection = currentPermutation.getState("minecraft:cardinal_direction");
     const oldCardinalDirectionDirInfo = dirInfo.directionOject_get(oldStateCardinalDirection);

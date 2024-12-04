@@ -1,30 +1,16 @@
 //@ts-check
-import {
-    //system,
-    //Player,
-    world
-} from "@minecraft/server";
-
-//import { Vector3Lib as vec3 } from './commonLib/vectorClass.js';
-//import { Debug } from './commonLib/mcDebugClass.js';
-import * as f3 from './f3.js';
-//==============================================================================
-//const debug = new Debug("F3", true, world);
-//==============================================================================
 /**
- * Capture information on the block interacted with
- * 
- * After events does not give all of the information, so capture to player
- * and info on last interaction can be grabbed by the after event, or itemUseOn
+ * Notes:  This is only called via manifest when Stable Config is used
  */
-
 //==============================================================================
-console.warn("§aInstalling beforeEvents.playerBreakBlock §gSTABLE");
-world.beforeEvents.playerBreakBlock.subscribe((event) => {
-    f3.playerBreakBlock_before_show(event);
-});
-console.warn("§aInstalling afterEvents.playerBreakBlock §gSTABLE");
-world.afterEvents.playerBreakBlock.subscribe((event) => {
-    f3.playerBreakBlock_after_show(event);
-});
+import { main_stable } from './main-stable.js';
+import { alertLog, dev, pack } from './settings.js';
 //==============================================================================
+if (pack.isBeta == -1) pack.isBeta = 0;
+if (pack.hasChatCmd == -1) pack.hasChatCmd = 0;
+//==============================================================================
+alertLog.log(`§aInstalling Add-on ${pack.packName} - §aStable §c(Debug Mode)`, dev.debugPackLoad);
+//==============================================================================
+main_stable();
+//==============================================================================
+alertLog.success(`§aInstalled Add-on ${pack.packName} - §aStable ${dev.debugPackLoad ? '§c(Debug Mode)' : ''}`, pack.isLoadAlertsOn);

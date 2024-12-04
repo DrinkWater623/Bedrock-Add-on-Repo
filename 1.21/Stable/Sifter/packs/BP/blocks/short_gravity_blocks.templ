@@ -1,10 +1,11 @@
 {
   "$scope":{
-      "short_blocks":"{{auto_sift_blocks.flatMap(b => (1..16).map(y => {base: b.base, height: y, tag:b.tag}))}}"
+      //not powder snow - No Loot
+      "short_blocks":"{{auto_sift_blocks.flatMap(b => (1..16).map(y => {base: b.base, height: y, tag:b.tag, texture:b.texture,map:b.map_color}))}}"
   },
   "$files": {
     "array": "short_blocks",
-    "fileName": "./short/{{base}}_{{height}}.bp"
+    "fileName": "./{{base}}/{{base}}_{{height}}.bp"
   },
   "$template": {
     "format_version": "1.20.80",
@@ -14,17 +15,15 @@
       },
       "components": {
         "tag:{{tag}}":{},
-        "minecraft:display_name": "{{realTitle(base)}} ({{height}})",
-        "minecraft:light_emission": 1, //TODO figuire out how to get same shade, and fix the monotone in blcoks.json
-        //TODO: map color        
-        //can only place on ground
+        "minecraft:display_name": "{{realTitle(base)}} ({{height}})",               
+        "minecraft:map_color": "{{map}}",              
         "minecraft:custom_components": ["dw623:gravity_block_slabs"],        
         "minecraft:tick": {"interval_range":[3,3],"looping":true},
         "minecraft:geometry": {"identifier":"geometry.block_16x{{height}}x16_floor_centered"},
-        "minecraft:material_instances": {"*":{"texture":"{{base}}","render_method":"opaque"}},
+        "minecraft:material_instances": {"*":{"texture":"{{texture}}"}},
+        //"minecraft:light_dampening": 0,
         "minecraft:collision_box": {"origin":[-8,0,-8],"size":[16,"{{=height}}",16]},
-        "minecraft:selection_box": {"origin":[-8,0,-8],"size":[16,"{{=height}}",16]}
-        //,"minecraft:placement_filter":{"conditions":[{"allowed_faces":["up"]}]}
+        "minecraft:selection_box": {"origin":[-8,0,-8],"size":[16,"{{=height}}",16]}        
       }
     }
   }

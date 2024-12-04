@@ -22,7 +22,7 @@
             "last2Words": "",
             "uniqueShortKey": "acacia_log",
             "material": "wood",
-            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_type_tags": "minecraft:is_axe_item_destructible",
             "tool_material_tier_tags": "minecraft:wood_tier_destructible"
         },
         {
@@ -47,7 +47,7 @@
             "last2Words": "",
             "uniqueShortKey": "birch_log",
             "material": "wood",
-            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_type_tags": "minecraft:is_axe_item_destructible",
             "tool_material_tier_tags": "minecraft:wood_tier_destructible"
         },
         {
@@ -72,7 +72,7 @@
             "last2Words": "",
             "uniqueShortKey": "cherry_log",
             "material": "wood",
-            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_type_tags": "minecraft:is_axe_item_destructible",
             "tool_material_tier_tags": "minecraft:wood_tier_destructible"
         },
         {
@@ -98,7 +98,7 @@
             "last2Words": "oak_log",
             "uniqueShortKey": "dark_oak_log",
             "material": "wood",
-            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_type_tags": "minecraft:is_axe_item_destructible",
             "tool_material_tier_tags": "minecraft:wood_tier_destructible"
         },
         {
@@ -123,7 +123,7 @@
             "last2Words": "",
             "uniqueShortKey": "jungle_log",
             "material": "wood",
-            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_type_tags": "minecraft:is_axe_item_destructible",
             "tool_material_tier_tags": "minecraft:wood_tier_destructible"
         },
         {
@@ -148,7 +148,7 @@
             "last2Words": "",
             "uniqueShortKey": "mangrove_log",
             "material": "wood",
-            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_type_tags": "minecraft:is_axe_item_destructible",
             "tool_material_tier_tags": "minecraft:wood_tier_destructible"
         },
         {
@@ -173,7 +173,7 @@
             "last2Words": "",
             "uniqueShortKey": "oak_log",
             "material": "wood",
-            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_type_tags": "minecraft:is_axe_item_destructible",
             "tool_material_tier_tags": "minecraft:wood_tier_destructible"
         },
         {
@@ -198,7 +198,7 @@
             "last2Words": "",
             "uniqueShortKey": "spruce_log",
             "material": "wood",
-            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_type_tags": "minecraft:is_axe_item_destructible",
             "tool_material_tier_tags": "minecraft:wood_tier_destructible"
         },
         {
@@ -224,7 +224,7 @@
             "last2Words": "acacia_log",
             "uniqueShortKey": "stripped_a6a_log",
             "material": "wood",
-            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_type_tags": "minecraft:is_axe_item_destructible",
             "tool_material_tier_tags": "minecraft:wood_tier_destructible"
         },
         {
@@ -250,7 +250,7 @@
             "last2Words": "birch_log",
             "uniqueShortKey": "stripped_b5h_log",
             "material": "wood",
-            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_type_tags": "minecraft:is_axe_item_destructible",
             "tool_material_tier_tags": "minecraft:wood_tier_destructible"
         },
         {
@@ -276,7 +276,7 @@
             "last2Words": "cherry_log",
             "uniqueShortKey": "stripped_c6y_log",
             "material": "wood",
-            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_type_tags": "minecraft:is_axe_item_destructible",
             "tool_material_tier_tags": "minecraft:wood_tier_destructible"
         },
         {
@@ -303,7 +303,7 @@
             "last2Words": "oak_log",
             "uniqueShortKey": "stripped_d4ko3k_log",
             "material": "wood",
-            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_type_tags": "minecraft:is_axe_item_destructible",
             "tool_material_tier_tags": "minecraft:wood_tier_destructible"
         },
         {
@@ -329,7 +329,7 @@
             "last2Words": "jungle_log",
             "uniqueShortKey": "stripped_j6e_log",
             "material": "wood",
-            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_type_tags": "minecraft:is_axe_item_destructible",
             "tool_material_tier_tags": "minecraft:wood_tier_destructible"
         },
         {
@@ -355,7 +355,7 @@
             "last2Words": "mangrove_log",
             "uniqueShortKey": "stripped_m8e_log",
             "material": "wood",
-            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_type_tags": "minecraft:is_axe_item_destructible",
             "tool_material_tier_tags": "minecraft:wood_tier_destructible"
         },
         {
@@ -381,7 +381,7 @@
             "last2Words": "oak_log",
             "uniqueShortKey": "stripped_oak_log",
             "material": "wood",
-            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_type_tags": "minecraft:is_axe_item_destructible",
             "tool_material_tier_tags": "minecraft:wood_tier_destructible"
         },
         {
@@ -407,7 +407,7 @@
             "last2Words": "spruce_log",
             "uniqueShortKey": "stripped_s6e_log",
             "material": "wood",
-            "tool_type_tags": "minecraft:is_hatchet_item_destructible",
+            "tool_type_tags": "minecraft:is_axe_item_destructible",
             "tool_material_tier_tags": "minecraft:wood_tier_destructible"
         }
     ]

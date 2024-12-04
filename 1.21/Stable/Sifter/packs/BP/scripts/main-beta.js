@@ -1,10 +1,10 @@
 //@ts-check
 import { alertLog, pack, dev } from './settings.js';
 import { main_stable } from './main-stable.js';
-import * as subsBeta from './subscribes-beta.js'
+//TODO: delete after never needing to be beta
 //==============================================================================
 function main_beta () {    
-     
+
 }
 //==============================================================================
 alertLog.success(`§aInstalling Add-on ${pack.packName} - §6Beta Chat Commands and Block Volume ${pack.isLoadAlertsOn ? '§c(Debug Mode)' : ''}`, pack.isLoadAlertsOn || dev.debugPackLoad);

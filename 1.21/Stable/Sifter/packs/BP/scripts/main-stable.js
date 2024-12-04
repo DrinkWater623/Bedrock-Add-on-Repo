@@ -8,7 +8,7 @@ export function main_stable () {
         alertLog.success(`§aInstalling Add-on ${pack.packName} - §bStable ${pack.isLoadAlertsOn ? '§c(Debug Mode)' : ''}`, dev.debugPackLoad || pack.isLoadAlertsOn);
     
     subs.beforeEvents_worldInitialize();    
-    subs.afterEvents_playerPlaceBlock();
+    //subs.afterEvents_playerPlaceBlock();
     
 }
 //==============================================================================

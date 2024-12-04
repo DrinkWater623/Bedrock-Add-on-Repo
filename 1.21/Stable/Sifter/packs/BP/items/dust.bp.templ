@@ -9,14 +9,14 @@
             "description": {
                 "identifier": "dw623:{{item}}_dust",
                 "menu_category": {
-                    "category": "items"
+                    "category": "nature"
                 }
             },
             "components": {
-                "minecraft:icon": "{{item}}_dust",
-                //"minecraft:icon": {"textures":{"default":"{{item_name}}"}},
+                "minecraft:icon": "{{item}}_dust",               
                 "minecraft:display_name": {"value":"{{realTitle(item)}} Dust"}
-            }
+            },
+            "minecraft:should_despawn":true
         }
     }
 }

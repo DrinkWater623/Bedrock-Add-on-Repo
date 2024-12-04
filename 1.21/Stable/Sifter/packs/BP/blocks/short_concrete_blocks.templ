@@ -1,21 +1,31 @@
 {
   "$scope":{
-      "short_concrete_blocks":"{{concrete_blocks.flatMap(b => (1..15).map(y => {base: b.base, height: y}))}}"
+      "short_concrete_blocks":"{{concrete_blocks.flatMap(b => (1..16).map(y => {base: b.base, height: y,map:b.map_color}))}}"
   },
   "$files": {
     "array": "short_concrete_blocks",
-    "fileName": "./concrete/{{base}}_{{height}}.bp"
+    "fileName": "./{{base}}/{{base}}_{{height}}.bp"
   },
   "$template": {
     "format_version": "1.20.80",
     "minecraft:block": {
       "description": {
-        "identifier": "dw623:{{base}}_{{height}}"
+        "identifier": "dw623:{{base}}_{{height}}",
+        "traits": {
+					"minecraft:placement_position": {
+						"enabled_states": ["minecraft:block_face", "minecraft:vertical_half"]
+					},
+          "minecraft:placement_direction": {
+              "enabled_states": [
+                  "minecraft:cardinal_direction" //,"minecraft:facing_direction"
+              ]
+          }
+				}
       },
       "components": {
         "tag:stone_pick_diggable":{},
         "minecraft:display_name": "{{realTitle(base)}} ({{height}})",
-        //TODO: map color
+        "minecraft:map_color": "{{map}}",
         //TODO: vertical placement and adding to other ones if on top        
         // do vertical placement stuff
         //"minecraft:custom_components": ["dw623:concrete_slabs"],        

@@ -29,7 +29,7 @@
 			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
 			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
 			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"},
-			"vanilla-data": {"runWith":"nodejs","script":"./filters/vanilla-data.js"},
+			"process-blocks-json": {"runWith":"nodejs","script":"./filters/process-blocks-json.js"},
 			"time":{"runWith": "shell",	"command": "date" }
 		},
 		"profiles": {
@@ -37,7 +37,7 @@
 				"export": {"readOnly":false,"target":"local"}, 		
 				"filters": [											
 					{"filter":"dot_ignore"},
-					{"filter":"vanilla-data","settings":{
+					{"filter":"process-blocks-json","settings":{
 						"branch":"preview",	
 						"excludeBlocks":[							
 							"stone_slab",

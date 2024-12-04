@@ -11,7 +11,8 @@
 		"preview":false,
 		"beta":false,
 		"name": "F3 Events",
-		"description": "Event Information Gathering",															
+		"description": "Event Information Gathering",	
+		"min_engine_version": [1,21,0],														
 		"BP":{
 			"header_uuid": "7f6fbf4d-af92-4de6-8216-a1176cefd382",
 			"module_uuid": "62eadd6e-4dd8-444e-adce-559e9dd46210"							
