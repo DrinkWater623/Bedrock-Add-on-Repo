@@ -32,7 +32,8 @@ export const dev = {
     debug: false,
     debugChatCmds: false,
     debugPackLoad: false,
-    debugSubscriptions: false
+    debugSubscriptions: false,
+    debugPlayerLoadSpawn: false
 };
 //==============================================================================
 export const entityEvents = {

@@ -2,8 +2,9 @@
     //Note: Loot is in the settings.js.. just spawn items, no loot tables - may do for books
     "sifter_types":[
         {"material":"copper"    ,"map_color":"#D87F33" ,"speed":60,"recipe_item":"copper_ingot"   ,"sound":"copper"},
-        {"material":"iron"      ,"map_color":"#A7A7A7" ,"speed":30,"recipe_item":"iron_ingot"     ,"sound":"metal"},
-        {"material":"diamond"   ,"map_color":"#5CDBD5" ,"speed":15,"recipe_item":"diamond"        ,"sound":"glass"}
+        {"material":"iron"      ,"map_color":"#A7A7A7" ,"speed":40,"recipe_item":"iron_ingot"     ,"sound":"metal"},
+        {"material":"diamond"   ,"map_color":"#5CDBD5" ,"speed":20,"recipe_item":"diamond"        ,"sound":"glass"},
+        {"material":"netherite" ,"map_color":"#664C33" ,"speed":10,"recipe_item":"netherite_ingot","sound":"metal"}
     ],
     "powder_snow":["powder_snow"],
     //gravity blocks only are auto sift - common sense

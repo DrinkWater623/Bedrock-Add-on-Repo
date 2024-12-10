@@ -7,10 +7,11 @@ import { MinecraftItemTypes } from "./commonLib/vanillaData";
  */
 //==============================================================================
 export const pack = {
-    packName: 'Sift Blocks',
+    packName: 'Auto Sifters',
     isLoadAlertsOn: true,
-    hasChatCmd: 0,
-    alert: "https://github.com/DrinkWater623"
+    hasChatCmd: -1,
+    alert: "https://github.com/DrinkWater623",
+    nonVanillaSlabPlacement: true
 };
 //==============================================================================
 export const alertLog = new ConsoleAlert(`§d${pack.packName}§r`);
@@ -19,9 +20,10 @@ export const chatLog = new ChatMsg(`§b${pack.packName}§r`);
 export const globals = {
     autoSiftBlockNameSpace: "sift:",
     autoSiftBlockStateName: "int:y_level",
-    mainNameSpace: "dw623:",
-    shortBlockNameSpace: "short:",
-    keyBlockWords: [ "gravel", "powder", "sand", "snow" ] //save time
+    mainNameSpace: "dw623:",   
+    minecraftNameSpace:"minecraft:",
+    mcAir:'minecraft:air',
+    keyBlockWords: [ "gravel", "powder", "mud","sand", "snow" ] //save time
 };
 export const dynamicVars = {
 };
@@ -30,7 +32,7 @@ export const dev = {
     debug: false,
     debugGamePlay: false,
     debugPackLoad: false,
-    debugSubscriptions: false
+    debugSubscriptions: true
 };
 //==============================================================================
 const colors = [
@@ -53,50 +55,19 @@ const colors = [
 ];
 //==============================================================================
 export const watchFor = {
-    autoSiftBlocks: [
-        //a few not gravity, but should be, so treating they are.
-        { gravity: true, name: "gravel", custom: "", minecraft: "", sound: "dig.gravel" },
-        { gravity: true, name: "red_sand", custom: "", minecraft: "", sound: "dig.sand" },
-        { gravity: true, name: "sand", custom: "", minecraft: "", sound: "dig.sand" },
-        { gravity: false, name: "soul_sand", custom: "", minecraft: "", sound: "dig.hay" },
-        { gravity: false, name: "snow", custom: "", minecraft: "", sound: "dig.snow" },
-        { gravity: false, name: "powder_snow", custom: "", minecraft: "", sound: "dig.snow" },
-        { gravity: true, name: "mud", custom: "", minecraft: "", sound: "dig.mud" },
-        //TODO: powdered snow... but it has a freeze effect.. see if can mimic
-        { gravity: true, name: "black_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { gravity: true, name: "blue_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { gravity: true, name: "brown_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { gravity: true, name: "cyan_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { gravity: true, name: "gray_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { gravity: true, name: "green_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { gravity: true, name: "light_blue_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { gravity: true, name: "light_gray_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { gravity: true, name: "lime_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { gravity: true, name: "magenta_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { gravity: true, name: "orange_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { gravity: true, name: "pink_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { gravity: true, name: "purple_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { gravity: true, name: "red_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { gravity: true, name: "white_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" },
-        { gravity: true, name: "yellow_concrete_powder", custom: "", minecraft: "", sound: "dig.sand" }
+    autoSiftBlockInfo: [
+        //a few not gravity, but should be, so treating like they are - cause hey, I can.
+        { full: true    ,gravity: true, name: "gravel", custom: "", minecraft: "", sound: "dig.gravel" },
+        { full: true    ,gravity: true, name: "red_sand", custom: "", minecraft: "", sound: "dig.sand" },
+        { full: true    ,gravity: true, name: "sand", custom: "", minecraft: "", sound: "dig.sand" },
+        { full: true    ,gravity: false, name: "soul_sand", custom: "", minecraft: "", sound: "dig.hay" },
+        { full: true    ,gravity: false, name: "snow", custom: "", minecraft: "", sound: "dig.snow" },
+        { full: true    ,gravity: false, name: "powder_snow", custom: "", minecraft: "", sound: "dig.snow" },
+        { full: true    ,gravity: true, name: "mud", custom: "", minecraft: "", sound: "dig.mud" }
+        //TODO: powdered snow... but it has a freeze effect.. see if can mimic       
     ],
-    shortConcreteBlocks: [
-        { base: "", name: "black_concrete", typeId: "", height: 16 },
-        { base: "", name: "blue_concrete", typeId: "", height: 16 },
-        { base: "", name: "brown_concrete", typeId: "", height: 16 },
-        { base: "", name: "cyan_concrete", typeId: "", height: 16 },
-        { base: "", name: "gray_concrete", typeId: "", height: 16 },
-        { base: "", name: "green_concrete", typeId: "", height: 16 },
-        { base: "", name: "light_blue_concrete", typeId: "", height: 16 },
-        { base: "", name: "light_gray_concrete", typeId: "", height: 16 },
-        { base: "", name: "lime_concrete", typeId: "", height: 16 },
-        { base: "", name: "magenta_concrete", typeId: "", height: 16 },
-        { base: "", name: "orange_concrete", typeId: "", height: 16 },
-        { base: "", name: "pink_concrete", typeId: "", height: 16 },
-        { base: "", name: "purple_concrete", typeId: "", height: 16 },
-        { base: "", name: "red_concrete", typeId: "", height: 16 },
-        { base: "", name: "white_concrete", typeId: "", height: 16 },
-        { base: "", name: "yellow_concrete", typeId: "", height: 16 }
+    customConcreteSlabInfo: [
+        { base: "", height: 0, name: "", typeId: "" }
     ],
     fallThruBlocks: [
         "minecraft:air",
@@ -112,41 +83,44 @@ export const watchFor = {
     sifterBlocks: [
         globals.mainNameSpace + "copper_sifter",
         globals.mainNameSpace + "iron_sifter",
-        globals.mainNameSpace + "diamond_sifter"
+        globals.mainNameSpace + "diamond_sifter",
+        globals.mainNameSpace + "netherite_sifter"
     ],
-    vanillaGravityBlocks: [ "" ],
-    allSiftableBlocks: [ "" ],
-    shortGravityBlocks: [ {
-        nameSpace: "x",
+
+    vanillaSifterBlocks: [ "" ],
+
+    customSiftableBlocks: [ "" ],
+
+    customSiftableBlockInfo: [ {
+        //nameSpace: "x",
         base: "x",
+        typeIdBase:"x",
+        minecraft:"x",
         height: 0,
         name: "x",
-        sound: "x",
-        typeId: "x"
-    } ]
+        typeId: "x",
+        sound: "x"
+    } ],
+    vanillaItemsNeedingBestFace: [  
+        "cake",      
+        "chain",
+        "end_rod",
+        "flower_pot",
+        "frame",
+        "hopper",
+        "ladder",
+        "lever",
+        "lantern",
+        "painting",
+        "redstone_wire",
+        "redstone_repeater",
+        "redstone_comparator",
+        "redstone_torch",
+        "torch"
+    ]
 };
 //==============================================================================
-// Adjustments
-//==============================================================================
-watchFor.autoSiftBlocks.forEach(b => {
-    b.custom = `${globals.autoSiftBlockNameSpace}${b.name}`;
-    b.minecraft = `minecraft:${b.name}`;
-    watchFor.vanillaGravityBlocks.push(b.minecraft);
-
-    for (let i = 1; i <= 16; i++) {
-        const addB = {
-            nameSpace: globals.shortBlockNameSpace,
-            base: b.name,
-            height: i,
-            name: `${b.name}_${i}`,
-            sound: b.sound,
-            typeId: `${globals.shortBlockNameSpace}${b.name}_${i}`
-        };
-        watchFor.shortGravityBlocks.push(addB);
-    }
-});
-//watchFor.shortGravityBlocks.filter(z => z.base.includes('gravel')).forEach(x => {alertLog.log(x.typeId)})
-//==============================================================================
+const vanillaItems = Object.values(MinecraftItemTypes); //.   how to get the values again... not the key
 export const lootTableItems = [
     //put these as zero for filters
     { minHeight: 1, typeId: "minecraft:stick", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] },
@@ -179,6 +153,8 @@ export const lootTableItems = [
     { minHeight: 4, typeId: "minecraft:armadillo_scute", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "red_sand" ] },
     { minHeight: 2, typeId: "minecraft:string", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
     { minHeight: 2, typeId: "minecraft:feather", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] },
+
+    { minHeight: 10, typeId: "minecraft:bubble_column", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] },
 
     { minHeight: 3, typeId: "minecraft:leather", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
     { minHeight: 3, typeId: "minecraft:rabbit_hide", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand" ] },
@@ -293,19 +269,85 @@ export const lootTableItems = [
     // add cooked foods and raw in snow only
 
 ];
-const vanillaItems = Object.values(MinecraftItemTypes); //.   how to get the values again... not the key
-//have to use loot tables for these
+//=============================================================================
+// Update
+//==============================================================================
+watchFor.autoSiftBlockInfo.forEach(b => {
+    b.custom = `${globals.autoSiftBlockNameSpace}${b.name}`;
+    b.minecraft = `${globals.minecraftNameSpace}${b.name}`;   
+});
+//==============================================================================
+// Append
+//==============================================================================
+colors.forEach(color => {        
+
+    //add colored gravity blocks to main auto sifter list
+    const concretePowderBase = color + "_concrete_powder"
+    const concretePowderInfo = {
+        full: false,
+        gravity: true,
+        name: concretePowderBase,
+        custom: `${globals.autoSiftBlockNameSpace}${concretePowderBase}`,
+        minecraft: `${globals.minecraftNameSpace}${concretePowderBase}`,
+        height: 16,
+        sound: "dig.sand"
+    };    
+    watchFor.autoSiftBlockInfo.push(concretePowderInfo)
+    
+    //add concrete slab for each color to concreteSlabs list
+    const concreteSlabBase = color + "_concrete_slab";
+    for (let i = 1; i <= 16; i++) {
+        const concreteSlabInfo = {
+            base: concreteSlabBase,
+            height: i,
+            name: `${concreteSlabBase}_${i}`,
+            typeId: `${globals.mainNameSpace + concreteSlabBase}_${i}`
+        };
+        watchFor.customConcreteSlabInfo.push(concreteSlabInfo);        
+    }
+
+    //loot table stuff with colors
+    lootTableItems.push({ minHeight: 8, typeId: globals.minecraftNameSpace + color + "_bundle", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] });
+    lootTableItems.push({ minHeight: 8, typeId: globals.minecraftNameSpace + color + "_candle", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] });
+    watchFor.vanillaItemsNeedingBestFace.push(color + "_carpet");
+    watchFor.vanillaItemsNeedingBestFace.push(color + "_candle");
+});
+// simple array for easier search
+watchFor.vanillaSifterBlocks = watchFor.autoSiftBlockInfo.map(b => b.minecraft)
+//==============================================================================
+// Adjustments
+//==============================================================================
+watchFor.autoSiftBlockInfo.forEach(b => {
+    const slabBaseName = b.name+'_slab'
+    for (let i = 1; i <= 16; i++) {
+        const addB = {
+            base: slabBaseName,
+            typeIdBase: `${globals.mainNameSpace}${slabBaseName}`,
+            minecraft: `minecraft:${b.name}`,
+            height: i,
+            name: `${slabBaseName}_${i}`,
+            typeId: `${globals.mainNameSpace}${slabBaseName}_${i}`,
+            sound: b.sound
+        };
+        watchFor.customSiftableBlockInfo.push(addB);
+    }
+});
+watchFor.customSiftableBlocks = watchFor.customSiftableBlockInfo.map(b => b.typeId)
+//==============================================================================
+//  Appends for Loot Tables - Loops of Loop-able Stuff
+//==============================================================================
 //add enchanted books - good ones
 //add enchanted tools weapons
-
-colors.forEach(c => {
-    lootTableItems.push({ minHeight: 8, typeId: "minecraft:" + c + "_bundle", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] });
-    lootTableItems.push({ minHeight: 8, typeId: "minecraft:" + c + "_candle", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] });
+vanillaItems.filter(id => id.endsWith('_rail')).forEach(item => {
+    watchFor.vanillaItemsNeedingBestFace.push(item);
 });
+
 vanillaItems.filter(id => id.endsWith('_button')).forEach(item => {
+    watchFor.vanillaItemsNeedingBestFace.push(item);
     lootTableItems.push({ minHeight: 2, typeId: item, blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] });
 });
 vanillaItems.filter(id => id.endsWith('_pressure_plate')).forEach(item => {
+    watchFor.vanillaItemsNeedingBestFace.push(item);
     lootTableItems.push({ minHeight: 2, typeId: item, blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] });
 });
 vanillaItems.filter(id => id.endsWith('_seeds')).forEach(item => {
@@ -343,27 +385,17 @@ vanillaItems.filter(id => id.endsWith('_smithing_template')).forEach(item => {
         lootTableItems.push({ minHeight: 14, typeId: item, blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] });
     });
 });
-
-const badItems = lootTableItems.filter(item => item.typeId.startsWith('minecraft:') && !vanillaItems.includes(item.typeId));
-//badItems.forEach(bad => alertLog.log(bad.typeId));
-
 //==============================================================================
-//add all the other sizes
-watchFor.shortConcreteBlocks.filter(s => s.height = 16).forEach(b => {
-    b.base = b.name;
-    b.typeId = globals.mainNameSpace + b.name;
-
-    for (let i = 1; i <= 16; i++) {
-        const addB = {
-            base: b.name,
-            height: i,
-            name: `${b.name}_${i}`,
-            typeId: `${globals.mainNameSpace + b.name}_${i}`
-        };
-        watchFor.shortConcreteBlocks.push(addB);
-    }
-});
+//Add minecraft: in front
+for(let i=0;i<watchFor.vanillaItemsNeedingBestFace.length;i++){
+    watchFor.vanillaItemsNeedingBestFace[i] = globals.minecraftNameSpace+watchFor.vanillaItemsNeedingBestFace[i]
+}
 //==============================================================================
+//Debug
+if (dev.debugPackLoad) {
+    const badItems = lootTableItems.filter(item => item.typeId.startsWith(globals.minecraftNameSpace) && !vanillaItems.includes(item.typeId));
+    badItems.forEach(bad => alertLog.error(bad.typeId));
 
-
-//vanillaItems.forEach(v => alertLog.log(v))
+    //vanillaItems.forEach(v => alertLog.log(v))
+}
+//==============================================================================

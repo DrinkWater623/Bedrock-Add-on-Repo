@@ -1,0 +1,29 @@
+{
+  "$scope":{
+      //not powder snow - No Loot
+      "slabs":"{{auto_sift_blocks.flatMap(b => (1..16).map(y => {base: b.base,block: b.base+'_slab', height: y, tag:b.tag, texture:b.texture,map:b.map_color}))}}"
+  },
+  "$files": {
+    "array": "slabs",
+    "fileName": "./{{block}}/{{base}}_{{height}}.bp"
+  },
+  "$template": {
+    "format_version": "1.20.80",
+    "minecraft:block": {
+      "description": {
+        "identifier": "dw623:{{block}}_{{height}}"
+      },
+      "components": {
+        "tag:{{tag}}":{},
+        "minecraft:display_name": "{{realTitle(block)}} ({{height}})",               
+        "minecraft:map_color": "{{map}}",              
+        "minecraft:custom_components": ["dw623:siftable_slabs"],        
+        "minecraft:tick": {"interval_range":[3,3],"looping":true},
+        "minecraft:geometry": {"identifier":"geometry.block_16x{{height}}x16_floor"},
+        "minecraft:material_instances": {"*":{"texture":"{{texture}}"}},       
+        "minecraft:collision_box": {"origin":[-8,0,-8],"size":[16,"{{=height}}",16]},
+        "minecraft:selection_box": {"origin":[-8,0,-8],"size":[16,"{{=height}}",16]}        
+      }
+    }
+  }
+}

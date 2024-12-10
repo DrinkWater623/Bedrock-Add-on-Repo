@@ -1,10 +1,7 @@
 { 
-	"$scope":{
-
-	},
 	"$files": {
 		"array": "(15..16).flatMap(n => {'xz': n, 'origin': n/-2.0})",
-		"fileName": "./blocks/block_{{xz}}.y.{{xz}}.floor.geo"
+		"fileName": "./blocks/block_{{xz}}.y.{{xz}}.floor{{xz==16 ? '' : '_centered'}}.geo"
 	},
 	"$template":
 	{
@@ -13,7 +10,7 @@
 			{
 				"{{#1..16}}": {
 					"description": {
-						"identifier": "geometry.block_{{xz}}x{{value}}x{{xz}}_floor_centered",
+						"identifier": "geometry.block_{{xz}}x{{value}}x{{xz}}_floor{{xz==16 ? '' : '_centered'}}",
 						"texture_width": 16,
 						"texture_height": 16,
 						"visible_bounds_width": 2,

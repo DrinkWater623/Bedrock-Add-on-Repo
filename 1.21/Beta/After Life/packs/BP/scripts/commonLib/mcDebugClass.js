@@ -275,7 +275,7 @@ export class Debug {
             msg += `\n${fTitle('Location (rounded):')} ${player.dimension.id} @ ${vec3.toString(vec3.round(player.location),0,true)}`;
             msg += `\n${fTitle('Location (floor):')} ${player.dimension.id} @ ${vec3.toString(vec3.floor(player.location),0,true)}`;
             const spawnPoint = player.getSpawnPoint();
-            if (spawnPoint) msg += `\n${fTitle('Spawns:')} ${spawnPoint.dimension.id} @ ${vec3.toString(vec3.toVector3(spawnPoint.x, spawnPoint.y, spawnPoint.z))}`;
+            if (spawnPoint) msg += `\n${fTitle('Spawns:')} ${spawnPoint.dimension.id} @ ${vec3.toString(vec3.new(spawnPoint.x, spawnPoint.y, spawnPoint.z))}`;
         }
 
         if (!details || details.includes('view')) {

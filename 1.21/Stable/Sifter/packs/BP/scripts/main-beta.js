@@ -1,14 +1,15 @@
 //@ts-check
 import { alertLog, pack, dev } from './settings.js';
 import { main_stable } from './main-stable.js';
-//TODO: delete after never needing to be beta
+import * as subs_beta from './subscribes-beta.js';
 //==============================================================================
 function main_beta () {    
-
+    subs_beta.beforeEvents_playerPlaceBlock();
+    subs_beta.beforeEvents_playerInteractWithBlock();
 }
 //==============================================================================
-alertLog.success(`§aInstalling Add-on ${pack.packName} - §6Beta Chat Commands and Block Volume ${pack.isLoadAlertsOn ? '§c(Debug Mode)' : ''}`, pack.isLoadAlertsOn || dev.debugPackLoad);
-pack.hasChatCmd = 1;
+alertLog.success(`§aInstalling Add-on ${pack.packName} - §6Beta ${pack.isLoadAlertsOn ? '§c(Debug Mode)' : ''}`, pack.isLoadAlertsOn || dev.debugPackLoad);
+pack.hasChatCmd = 0;
 //==============================================================================
 alertLog.log(`§bCalling main_stable()  §c(Debug Mode)`, dev.debugPackLoad);
 main_stable();

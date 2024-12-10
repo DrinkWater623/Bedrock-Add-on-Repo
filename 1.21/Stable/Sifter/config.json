@@ -1,7 +1,7 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
 	"author": "https://github.com/DrinkWater623",
-	"name": "Sifter",
+	"name": "Auto_Sifter",
 	"packs": {
 		"behaviorPack": "./packs/BP",
 		"resourcePack": "./packs/RP"
@@ -10,8 +10,8 @@
 		"Debug":false,
 		"preview":false,
 		"beta":false,
-		"name": "Sifter",
-		"description": "Sifts dirt, sand and gravel to find hidden items",													
+		"name": "Auto Sifter",
+		"description": "Sifts sand, gravel, concrete powder, snow & mud to find hidden loot",													
 		"min_engine_version": [1,21,0],
 		"BP":{
 			"header_uuid": "b934be1c-8067-4771-9720-f416f52d8782",
@@ -41,11 +41,7 @@
 			"template-stable": {
 				"export": {"readOnly":false,"target":"local","rpName": "'void_rp_'+project.name"},				
 				"filters": [{"filter":"beta_js_ignore"},{"profile":"template-beta"}]
-			},
-			"test-this": {
-				"export": {"readOnly":false,"target":"local"},
-				"filters": [{"profile":"template-beta"},{"filter":"mani_fest","settings":{"beta":true,"preview":false,"BP":{"js":"try_this.js"}}}]
-			},
+			},			
 			"build": {				
 				"export": {"readOnly":false,"target":"local","bpName":"project.name+'_Stable_bp'","rpName": "project.name+'_Stable_rp'"},
 				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"beta":false,"preview":false}}]

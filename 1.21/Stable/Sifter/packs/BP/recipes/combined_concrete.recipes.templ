@@ -1,26 +1,26 @@
 { 
   "$scope":{
-      "short_blocks":"{{concrete_blocks.flatMap(b => (1..15).map(y => {base: b.base, height: y})).flatMap(b => (1..15).map(y => {base: b.base, height_1: b.height, height_2:y, height: b.height+y})).filter(b => b.height <= 16 && b.height_1 <= b.height_2)}}"      
+      "slabs":"{{concrete_blocks.flatMap(b => (1..15).map(y => {base: b.base, height: y})).flatMap(b => (1..15).map(y => {base: b.base, block:b.base+'_slab',height_1: b.height, height_2:y, height: b.height+y})).filter(b => b.height <= 16 && b.height_1 <= b.height_2)}}"      
   },
     "$files": {
-        "array": "short_blocks",
-        "fileName": "./{{base}}/{{base}}_{{height_1}}_{{height_2}}.recipe"
+        "array": "slabs",
+        "fileName": "./{{block}}/{{base}}_{{height}}_{{height_1}}_{{height_2}}.recipe"
     },    
     "$template": {
     "format_version": "1.20.10",
     "minecraft:recipe_shaped": {
-      "description": {"identifier":"dw623:{{base}}_{{height_1}}_{{height_2}}_recipe"},      
+      "description": {"identifier":"dw623:{{base}}_{{height}}_{{height_1}}_{{height_2}}_recipe"},      
       "tags": [ "crafting_table" ],      
       "pattern": ["T","B"],
       "key":    {
-        "T":{"item":"dw623:{{base}}_{{height_1}}"},
-        "B":{"item":"dw623:{{base}}_{{height_2}}"}
+        "T":{"item":"dw623:{{block}}_{{height_1}}"},
+        "B":{"item":"dw623:{{block}}_{{height_2}}"}
       },
       "unlock": [
-        {"item":"dw623:{{base}}_{{height_1}}"},
-        {"item":"dw623:{{base}}_{{height_2}}"}
+        {"item":"dw623:{{block}}_{{height_1}}"},
+        {"item":"dw623:{{block}}_{{height_2}}"}
       ],
-      "result": {"item":"{{height==16 ? 'minecraft:'+base : 'dw623:'+base+'_'+height}}"}
+      "result": {"item":"{{height==16 ? 'minecraft:'+base : 'dw623:'+block+'_'+height}}"}
     }
   }
 }

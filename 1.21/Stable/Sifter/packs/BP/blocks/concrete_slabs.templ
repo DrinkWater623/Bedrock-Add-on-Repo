@@ -1,0 +1,84 @@
+{
+  "$scope":{
+    "concrete_slabs":"{{concrete_blocks.flatMap(b => (1..16).map(y => {base: b.base,block: b.base+'_slab', height: y,map:b.map_color}))}}"
+  },
+  "$files": {
+    "array": "concrete_slabs",
+    "fileName": "./{{block}}/{{block}}_{{height}}.bp"
+  },
+  "$template": {
+    "format_version": "1.21.50",
+    "minecraft:block": {
+      "description": {
+        "identifier": "dw623:{{block}}_{{height}}",
+        "traits": {
+          "minecraft:placement_position": {            
+            "enabled_states":[              
+              "minecraft:block_face"
+            ]
+          }          
+        }
+      },
+      "components": {
+        "tag:stone_pick_diggable":{},
+        "minecraft:display_name": "{{realTitle(block)}} ({{height}})",
+        "minecraft:map_color": "{{map}}",        
+        //"minecraft:custom_components": ["dw623:concrete_slabs"],                
+        "minecraft:geometry": {"identifier":"geometry.block_16x{{height}}x16_floor"},
+        "minecraft:material_instances": {"*":{"texture":"{{base}}"}},
+        "minecraft:collision_box": {"origin":[-8,0,-8],"size":[16,"{{=height}}",16]},
+        "minecraft:selection_box": {"origin":[-8,0,-8],"size":[16,"{{=height}}",16]} 
+      },
+      "permutations":[
+        {
+          "condition": "query.block_state('minecraft:block_face') == 'up'",
+          "components": {
+              "minecraft:geometry": {"identifier":"geometry.block_16x{{height}}x16_floor"},
+              "minecraft:collision_box": {"origin": [-8,0,-8],"size": [16,"{{=height}}",16]},
+              "minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,"{{=height}}",16]}
+          }
+        },        
+        {
+            "condition": "query.block_state('minecraft:block_face') == 'down'",
+            "components": {
+                "minecraft:geometry": {"identifier":"geometry.block_16x{{height}}x16_ceiling"},
+                "minecraft:collision_box": {"origin": [-8,"{{=16-height}}",-8],"size": [16,"{{=height}}",16]},
+                "minecraft:selection_box": {"origin": [-8,"{{=16-height}}",-8],"size": [16,"{{=height}}",16]}
+            }
+        },
+        {
+            "condition": "query.block_state('minecraft:block_face') == 'south'",
+            "components": {
+                "minecraft:geometry": {"identifier":"geometry.block_16x{{height}}x16_north"},
+                "minecraft:collision_box": {"origin": [-8,0,-8],"size": [16,16,"{{=height}}"]},
+                "minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,16,"{{=height}}"]}
+            }
+        },
+        {
+            "condition": "query.block_state('minecraft:block_face') == 'north'",
+            "components": {
+                "minecraft:geometry": {"identifier":"geometry.block_16x{{height}}x16_south"},
+                "minecraft:collision_box": {"origin": [-8,0,"{{=8-height}}"],"size": [16,16,"{{=height}}"]},
+                "minecraft:selection_box": {"origin": [-8,0,"{{=8-height}}"],"size": [16,16,"{{=height}}"]}
+            }
+        },
+        {
+            "condition": "query.block_state('minecraft:block_face') == 'west'",
+            "components": {
+                "minecraft:geometry": {"identifier":"geometry.block_16x{{height}}x16_east"},
+                "minecraft:collision_box": {"origin": [-8,0,-8],"size": ["{{=height}}",16,16]},
+                "minecraft:selection_box": {"origin": [-8,0,-8],"size": ["{{=height}}",16,16]}
+            }
+        },
+        {
+            "condition": "query.block_state('minecraft:block_face') == 'east'",
+            "components": {
+                "minecraft:geometry": {"identifier":"geometry.block_16x{{height}}x16_west"},
+                "minecraft:collision_box": {"origin": ["{{=8-height}}",0,-8],"size": ["{{=height}}",16,16]},
+                "minecraft:selection_box": {"origin": ["{{=8-height}}",0,-8],"size": ["{{=height}}",16,16]}
+            }
+        }
+      ]
+    }
+  }
+}

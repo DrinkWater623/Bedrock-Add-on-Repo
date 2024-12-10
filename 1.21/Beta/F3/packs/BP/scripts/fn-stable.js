@@ -6,7 +6,7 @@ import {
     PlayerBreakBlockAfterEvent
 } from "@minecraft/server";
 import { Debug } from './commonLib/mcDebugClass.js';
-import { alertLog, chatLog, toggles } from "./settings.js";
+import { alertLog, chatLog, dev, toggles } from "./settings.js";
 //==============================================================================
 const debug = new Debug("F3", true, world);
 //==================================================================
@@ -20,7 +20,7 @@ export function playerF3Initialize (player) {
     if (!player.f3) {
         //@ts-ignore
         player.f3 = new Map();
-        alertLog.success(`Player ${player.name} initialized with F3 Map Object`)
+        alertLog.success(`Player ${player.name} initialized with F3 Map Object`,dev.debugPlayerLoadSpawn)
     }
 }
 //==================================================================

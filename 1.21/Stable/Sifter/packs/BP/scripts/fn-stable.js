@@ -1,299 +1,329 @@
 //@ts-check
-import { Block, Dimension, ItemStack, system, } from "@minecraft/server";
-import { chatLog, globals, lootTableItems, watchFor } from './settings.js';
+import { Block, BlockPermutation, Direction, system } from "@minecraft/server";
+import { endsWithNumber, getLastWord, minusLastWord } from "./commonLib/stringLib.js";
+import { chatLog, watchFor } from "./settings.js";
+import { vanilla_blocks } from "./commonLib/blocks.json.js";
 //==============================================================================
-const mcAir = "minecraft:air";
-var itemTestDone = true;
+/**
+ * 
+ * @param {string} typeID 
+ * @returns {string}
+ */
+function baseBlockTypeIDFromSlab (typeID) {
+    return typeID.split("_slab_", 1)[ 0 ];
+}
+//==
+/**
+ * 
+ * @param {Block} block 
+ * @param {Direction | string} blockFace 
+ * @returns {Block | undefined}
+ */
+export function getAdjacentBlock (block, blockFace, debug = false) {
+
+    if (!block || !block.isValid()) {
+        chatLog.error('Invalid Block', debug);
+        return undefined;
+    }
+
+    blockFace = blockFace.toLowerCase();
+
+    switch (blockFace) {
+        case 'below':
+        case 'down':
+            return block.below(1);
+            break;
+        case 'above':
+        case 'up':
+            return block.above(1);
+            break;
+        case 'north':
+            return block.north(1);
+            break;
+        case 'south':
+            return block.south(1);
+            break;
+        case 'east':
+            return block.east(1);
+            break;
+        case 'west':
+            return block.west(1);
+            break;
+        default:
+            return undefined;
+    }
+}
+//==============================================================================
+/**
+ * 
+ * @param {Block} block
+ * @param {string} stateName
+ * @param {('string'|'number'|'boolean')} expectedType 
+ * @param {boolean} [fail=true]   
+ * @returns 
+ */
+export function getBlockState (block, stateName, expectedType, fail = true) {
+
+    if (!block || !block.isValid()) {
+        throw new Error("Invalid Block");
+    }
+
+    const stateValue = block.permutation.getState(stateName);
+    let errMsg = '';
+    if (!stateValue) {
+        errMsg = `${block.typeId} is missing valid ${stateName} state`;
+    }
+    else if (typeof stateValue != expectedType)
+        errMsg = `${block.typeId} ${stateName} trait is not a string: ${stateValue}`;
+
+    if (errMsg) {
+        if (fail)
+            throw new Error(errMsg);
+
+        return undefined;
+    }
+
+    return stateValue;
+}
 //==============================================================================
 /**
  * 
  * @param {Block} block 
- * @param {Block} blockBelow
+ * @returns 
  */
-export function concretePowderWaterCheck (block, blockBelow) {
+export function getDw623SlabBlockFace (block) {
 
-    const locations = [
-        blockBelow,
-        block.above(1),
-        block.east(1),
-        block.west(1),
-        block.north(1),
-        block.south(1)
-    ];
+    if (!block || !block.isValid()) {
+        throw new Error("Invalid Block");
+    }
 
-    locations.forEach(neighborBlock => {
-        if (neighborBlock && watchFor.waterBlocks.includes(neighborBlock.typeId)) {
-            concretePowderConvert(block);
-            return true;
-        }
-    });
+    const stateName = 'minecraft:block_face';
+    const currentBlockFace = getBlockState(block, stateName, 'string', true)?.toString() ?? '';
 
-    return false;
-}
-/**
- * 
- * @param {Block} block  
- */
-function concretePowderConvert (block) {
-    if (!block.isValid()) return;
+    if (!"up.down.north.south.east.west".includes(currentBlockFace))
+        throw new Error(`§rdw623 Slab ${stateName} trait has invalid (n.s.e.w) value: ${currentBlockFace}`);
 
-    const newBlockTypeId = block.typeId.replace(globals.shortBlockNameSpace, globals.mainNameSpace).replace('_powder', '');
-    system.run(() => {
-        block.setType(newBlockTypeId);
-    });
+    return currentBlockFace;
 }
 //==============================================================================
 /**
  * 
- * @param {Block} block 
- * @param {Block} [blockAbove]
+ * @param {string} cardinalDirection 
+ * @param {number} leftOrRightEnum
  */
-export function sifterSift (block, blockAbove) {
-    if (!block.isValid()) return;
-    if (!blockAbove) blockAbove = block.above(1);
-    if (!blockAbove || blockAbove.typeId == mcAir) return;
+export function getPerpendicularFace (cardinalDirection, leftOrRightEnum = 0) {
 
-    //short gravity slab
-    const blockFilter = watchFor.shortGravityBlocks.filter(b => b.typeId == blockAbove.typeId);
-    if (!blockFilter || !blockFilter[ 0 ]) {
-        return;
-    }
-
-    const blockInfo = blockFilter[ 0 ];
-
-    block.dimension.playSound(blockInfo.sound, block.location, { pitch: 1, volume: 1 });
-
-    let particleLocation = block.bottomCenter();
-    particleLocation.y += blockInfo.height / 16;
-    block.dimension.spawnParticle("minecraft:dust_plume", particleLocation);
-
-    spawnDustBlock(blockAbove, 0.25);
-    spawnRandomLoot(blockAbove, blockInfo.height, 0.10);
-
-    let newBlockTypeId = "";
-    if (blockInfo.height == 1) {
-        newBlockTypeId = 'minecraft:air';
-    }
-    else {
-        //decrement height
-        newBlockTypeId = `${blockInfo.nameSpace}${blockInfo.base}_${blockInfo.height - 1}`;
-    }
-
-    system.run(() => {
-        blockAbove.setType(newBlockTypeId);
-    });
-}
-//==============================================================================
-/**
- * 
- * @param {Block} block 
- * @param {Block} blockAbove
- */
-export function sifterConvertAndSift (block, blockAbove) {
-
-    if (watchFor.vanillaGravityBlocks.includes(blockAbove.typeId)) {
-        const convertedBlockTypeId = blockAbove.typeId.replace("minecraft:", globals.shortBlockNameSpace) + '_16';
-        //TODO: confirm valid block in game
-        if (watchFor.shortGravityBlocks.filter(b => b.typeId == convertedBlockTypeId).length) {
-            system.run(() => {
-                blockAbove.setType(convertedBlockTypeId);
-
-                //do not send blockAbove, as it was changed last tick
-                system.runTimeout(() => { sifterSift(block); }, 1);
-            });
-        }
-    }
-}
-//==============================================================================
-function lootSelector (typeId = "", height = 0) {
-
-    const lootPool = lootTableItems
-        .filter(a => height >= a.minHeight)
-        .filter(no => !no.blocksNotAllowed.some(p => typeId.includes(p)))
-        .filter(b => b.blocksAllowed[ 0 ] == 'all' || b.blocksAllowed.some(p => typeId.includes(p)));
-
-    if (!lootPool) return "";
-
-
-    if (lootPool.length == 1) return lootPool[ 0 ].typeId;
-
-    const randomNum = Math.floor(Math.random() * lootPool.length);
-    return lootPool[ randomNum ].typeId;
-}
-/**
- * 
- * @param {Block} block 
- * @param {number} height 
- * @param {number} chance 
- */
-
-function spawnRandomLoot (block, height = 0, chance = 0) {
-
-    if (!itemTestDone) {
-        itemTestDone = true;
-        const dim = block.dimension;
-        const loc = block.center();
-        loc.y += 2;
-        system.runJob(testLootMe(dim, loc));
-    }
-
-    if (Math.random() > chance) return;
-
-    const lootTypeID = lootSelector(block.typeId, height);
-    if (lootTypeID) {
-        let i = new ItemStack(lootTypeID, 1);
-        block.dimension.spawnItem(i, block.center());
-    }
-}
-//==============================================================================
-function dustBlockSelector (typeId = "") {
-
-    let base = "";
-    if (typeId.includes("mud")) {
-        return "dw623:mud_ball";
-    }
-
-    if (typeId.includes("snow")) {
-        return "minecraft:snowball";
-    }
-
-    if (typeId.includes("gravel")) {
-        base = "gravel";
-    }
-    else if (typeId.includes("sand")) {
-        if (typeId.includes("soul_sand"))
-            base = "soul_sand";
+    cardinalDirection = cardinalDirection.toLowerCase();
+    if ("north.south.east.west".includes(cardinalDirection)) {
+        if (leftOrRightEnum == 0)
+            switch (cardinalDirection) {
+                case 'north':
+                    return 'west';
+                case 'south':
+                    return 'east';
+                case 'west':
+                    return 'south';
+                case 'east':
+                    return 'north';
+                default:
+                    return '';
+            }
         else
-        if (typeId.includes("red_sand"))
-            base = "red_sand";
-        else
-            base = "sand";
-    }
-    else if (typeId.includes("concrete_powder")) {
-        //50/50 chance - concrete powder is made out of sand and gravel
-        //and makes life easier than every powder dust version
-        base = Math.random() < 0.5 ? "gravel" : "sand";
+            switch (cardinalDirection) {
+                case 'north':
+                    return 'eat';
+                case 'south':
+                    return 'west';
+                case 'west':
+                    return 'north';
+                case 'east':
+                    return 'south';
+                default:
+                    return '';
+            }
     }
     else
-        return "";
-
-    return globals.mainNameSpace + base + "_dust";
+        return '';
 }
 /**
  * 
- * @param {Block} block 
- * @param {number} chance 
+ * @param {string} typeId 
  */
-function spawnDustBlock (block, chance = 0) {
-    if (Math.random() > chance) return;
+function getLikelyPlaceBlockSound (typeId) {
 
-    const dustLootTypeId = dustBlockSelector(block.typeId);
-    if (dustLootTypeId) {
-        let i = new ItemStack(dustLootTypeId, 1);
-        block.dimension.spawnItem(i, block.center());
-    }
-}
-//==============================================================================
-/**
- * 
- * @param {Dimension} dim 
- * @param {import("@minecraft/server").Vector3} loc 
- */
-function* testLootMe (dim, loc) {
+    if (typeId.includes('stone'))
+        return 'use.stone';
 
-    for (const loot of lootTableItems) {
-        const i = new ItemStack(loot.typeId, 1);
-        dim.spawnItem(i, loc);
-        yield;
-    }
-}
-//==============================================================================
-/**
- * 
- * @param {Block} block 
- * @param {Block} blockBelow
- */
-export function gravityBlockMoveDownOne (block, blockBelow) {
-    system.run(() => {
-        blockBelow.setType(block.typeId);
-        system.runTimeout(() => { block.setType(mcAir); }, 1);
-    });
-}
-//==============================================================================
-/**
- * 
- * @param {Block} block 
- * @param {Block} blockBelow
- */
-export function gravityBlockCombine (block, blockBelow) {
-    const blockFilter = watchFor.shortGravityBlocks.filter(b => b.typeId == block.typeId);
-    if (!blockFilter || !blockFilter.length) return;
-    const blockInfo = blockFilter[ 0 ];
-    if (!blockInfo) return;
+    if (typeId.includes('soul_sand'))
+        return 'use.soul_sand';
 
-    if (blockInfo.height == 16) {
-        // if sifter not below me, convert back to minecraft version
-        // because I am normal height        
-        if (watchFor.sifterBlocks.includes(blockBelow.typeId))
-            return;
+    if (typeId.endsWith('_sand') ||
+        typeId.includes('_sand_')
+    )
+        return 'use.sand';
 
-        //if another block like me, short is below me, do not change
-        if (blockBelow.typeId != block.typeId &&
-            blockBelow.typeId.startsWith(blockInfo.nameSpace + blockInfo.base))
-            return;
+    if (typeId.includes('wool') ||
+        typeId.includes('carpet')
+    )
+        return 'use.cloth';
 
-        //I can change now
-        const mcBlockTypeId = `minecraft:${blockInfo.base}`;
-        system.run(() => {
-            block.setType(mcBlockTypeId);
-        });
-    }
-    //if I am not a full block, can I combine with block above me?
-    else if (blockInfo.height < 16) {
+    if (typeId.includes('gravel'))
+        return 'use.gravel';
 
-        //should always be unless at top of the world... TODO: check for top of the world
-        const blockAbove = block.above(1);
+    if (typeId.includes('powder_snow'))
+        return 'place.powder_snow';
 
-        if (blockAbove) {
-            let totalHeight = 0;
+    if (typeId.includes('powder'))
+        return 'place.sand';
 
-            //is a block like me above me?
-            if (blockAbove.typeId.startsWith(blockInfo.nameSpace + blockInfo.base)) {
-                const blockAboveFilter = watchFor.shortGravityBlocks.filter(b => b.typeId == blockAbove.typeId);
-                if (!blockAboveFilter) return;
-                const blockAboveInfo = blockAboveFilter[ 0 ];
-                if (!blockAboveInfo) return;
+    if (typeId.includes('snow'))
+        return 'use.snow';
 
-                totalHeight = blockInfo.height + blockAboveInfo.height;
-            }
-            //is a base block like me above me?
-            else if (blockAbove.typeId.startsWith('minecraft:' + blockInfo.base)) {
-                totalHeight = blockInfo.height + 16;
-            }
-            else
-                return;
+    if (typeId.endsWith('_log') ||
+        typeId.endsWith('_plank') ||
+        typeId.endsWith('_wood') ||
+        typeId.includes('_log_') ||
+        typeId.includes('_plank_') ||
+        typeId.includes('_wood_') ||
+        typeId.includes('acacia_') ||
+        typeId.includes('birch_') ||
+        typeId.includes(':cherry_') ||
+        typeId.includes('jungle_') ||
+        typeId.includes('mangrove_') ||
+        typeId.includes('oak_') ||
+        typeId.includes('spruce_')
+    )
+        return 'use.wood';
 
-            let newTypeID_1 = "";
-            let newTypeID_2 = "";
-
-            if (totalHeight <= 16) {
-                newTypeID_1 = `${globals.shortBlockNameSpace}${blockInfo.base}_${totalHeight}`;
-                newTypeID_2 = mcAir;
-            }
-            else {
-                if (blockBelow && watchFor.sifterBlocks.includes(blockBelow.typeId))
-                    newTypeID_1 = `${globals.shortBlockNameSpace}${blockInfo.base}_16`;
-                else
-                    newTypeID_1 = `minecraft:${blockInfo.base}`;
-
-                newTypeID_2 = `${globals.shortBlockNameSpace}${blockInfo.base}_${totalHeight - 16}`;
-            }
-            system.run(() => {
-                blockAbove.setType(newTypeID_2);
-                block.setType(newTypeID_1);
-            });
-
-            return;
+    const base = typeId.split(':')[ 1 ];
+    if (Object.keys(vanilla_blocks).includes(base)) {
+        const vb = vanilla_blocks[ base ];
+        if (vb){
+            const sound = vb.sound
+            if(sound)
+                return sound
         }
     }
+
+    return 'place.stone';
 }
+//==============================================================================
+/**
+ * 
+ * @param {Block} block 
+ * @param {string} typeId 
+ * @param {string} [sound=''] 
+ */
+export function placeBlock (block, typeId, sound = '') {
+
+    if (block.isValid()) {
+        if (!sound)
+            sound = getLikelyPlaceBlockSound(typeId);
+
+        system.run(() => {
+            block.dimension.playSound(sound,block.location)
+            block.setType(typeId);
+        });
+        return true;
+    }
+    else
+        return false;
+}
+//==============================================================================
+/**
+ * 
+ * @param {Block} block 
+ * @param {BlockPermutation} permutation
+ */
+export function placeBlockPermutation (block, permutation,sound='') {
+    if (block.isValid()) {
+        if (!sound)
+            sound = getLikelyPlaceBlockSound(permutation.type.id);
+
+        system.run(() => { 
+            block.dimension.playSound(sound,block.location)
+            block.setPermutation(permutation); 
+        });
+
+        // TODO:  try????
+        
+        return true;
+    }
+    else
+        return false;
+}
+//==============================================================================
+/**
+ * 
+ * @param {Block} block 
+ * @param {string} newTypeId 
+ * @param {Object} states 
+ */
+export function placeBlockWithStates (block, newTypeId, states) {
+    if (Object.keys(states).length == 0) {
+        return placeBlock(block, newTypeId);
+    }
+    else {
+        const permutation = BlockPermutation.resolve(newTypeId, states);
+        return placeBlockPermutation(block, permutation);
+    }
+}
+//==============================================================================
+/**
+ * 
+ * @param {Block} block 
+ * @param {string} newTypeId 
+ * @param {string} blockFace 
+ * @param {boolean} airOnly 
+ */
+export function placeDw623Slab (block, newTypeId, blockFace, airOnly = true, debug = false) {
+
+    if (airOnly && !watchFor.fallThruBlocks.includes(block.typeId)) {
+        chatLog.warn(`  ==> Block already in location`, debug);
+        return false;
+    }
+
+    return replaceDw623Slab(block, newTypeId, blockFace);
+}
+//==============================================================================
+/**
+ * 
+ * @param {Block} block 
+ * @param {string} newTypeId 
+ * @param {string} blockFace 
+ */
+export function replaceDw623Slab (block, newTypeId, blockFace) {
+    const newSlabPermutation = BlockPermutation.resolve(newTypeId, { 'minecraft:block_face': blockFace });
+    return placeBlockPermutation(block, newSlabPermutation);
+}
+//==============================================================================
+/**
+ * 
+ * @param {string} typeID 
+ * @returns {string}
+ */
+export function slabTypeIDSansHeight (typeID) {
+    if (endsWithNumber(typeID)) {
+        return minusLastWord(typeID, '_');
+    }
+    else {
+        return typeID;
+    }
+}
+//==============================================================================
+/**
+ * 
+ * @param {string} typeID 
+ * @returns {number}
+ */
+export function slabTypeIDHeight (typeID) {
+    if (endsWithNumber(typeID)) {
+        const lastWord = getLastWord(typeID, '_');
+        return parseInt(lastWord) ?? 0;
+    }
+    else
+        return 0;
+}
+//==============================================================================
+// End of File
+//==============================================================================
