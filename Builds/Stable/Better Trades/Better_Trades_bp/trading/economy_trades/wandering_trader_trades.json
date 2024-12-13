@@ -1,0 +1,719 @@
+{
+  "tiers": [
+    {
+      "groups": [
+        {
+          "num_to_select": 2,
+          "trades": [
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:sponge",
+                  "quantity": 4
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:spyglass",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:saddle",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:snow_layer",
+                  "quantity": 32
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:snowball",
+                  "quantity": 32
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:slime_ball",
+                  "quantity": 32
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:magma_cream",
+                  "quantity": 32
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:ender_pearl",
+                  "quantity": 8
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:ender_chest",
+                  "quantity": 2
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:lead",
+                  "quantity": 2
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 9
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:firework_rocket",
+                  "quantity": 32
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:glow_ink_sac",
+                  "quantity": 8
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:name_tag",
+                  "quantity": 8
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:raw_iron",
+                  "quantity": 9
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:anvil",
+                  "quantity": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 2,
+          "trades": [
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:coal_block",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:redstone_block",
+                  "quantity": 9
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:raw_gold",
+                  "quantity": 45
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:raw_iron",
+                  "quantity": 36
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:raw_copper_block",
+                  "quantity": 63
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 4
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:ancient_debris",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 16
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:netherite_ingot",
+                  "quantity": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:quartz",
+                  "quantity": 64
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:amethyst_block",
+                  "quantity": 32
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:amethyst_cluster",
+                  "quantity": 8
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:small_amethyst_bud",
+                  "quantity": 8
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:medium_amethyst_bud",
+                  "quantity": 8
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:large_amethyst_bud",
+                  "quantity": 8
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 3,
+          "trades": [
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:coal",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:lapis_block",
+                  "quantity": 15
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:redstone_block",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:raw_gold",
+                  "quantity": 5
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:raw_iron",
+                  "quantity": 4
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 7
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:raw_copper_block",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 9
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 12,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald_block",
+                  "quantity": 4
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:ancient_debris",
+                  "quantity": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "max_uses": 5,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 8
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:shulker_shell",
+                  "quantity": 2
+                }
+              ]
+            },
+            {
+              "max_uses": 5,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:red_shulker_box",
+                      "quantity": 1
+                    },
+                    {
+                      "item": "minecraft:white_shulker_box",
+                      "quantity": 1
+                    },
+                    {
+                      "item": "minecraft:blue_shulker_box",
+                      "quantity": 1
+                    },
+                    {
+                      "item": "minecraft:pink_shulker_box",
+                      "quantity": 1
+                    },
+                    {
+                      "item": "minecraft:black_shulker_box",
+                      "quantity": 1
+                    },
+                    {
+                      "item": "minecraft:green_shulker_box",
+                      "quantity": 1
+                    },
+                    {
+                      "item": "minecraft:light_gray_shulker_box",
+                      "quantity": 1
+                    },
+                    {
+                      "item": "minecraft:magenta_shulker_box",
+                      "quantity": 1
+                    },
+                    {
+                      "item": "minecraft:yellow_shulker_box",
+                      "quantity": 1
+                    },
+                    {
+                      "item": "minecraft:gray_shulker_box",
+                      "quantity": 1
+                    },
+                    {
+                      "item": "minecraft:purple_shulker_box",
+                      "quantity": 1
+                    },
+                    {
+                      "item": "minecraft:light_blue_shulker_box",
+                      "quantity": 1
+                    },
+                    {
+                      "item": "minecraft:lime_shulker_box",
+                      "quantity": 1
+                    },
+                    {
+                      "item": "minecraft:orange_shulker_box",
+                      "quantity": 1
+                    },
+                    {
+                      "item": "minecraft:brown_shulker_box",
+                      "quantity": 1
+                    },
+                    {
+                      "item": "minecraft:cyan_shulker_box",
+                      "quantity": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "trades": [
+            {
+              "max_uses": 5,
+              "wants": [
+                {
+                  "item": "dw623:trading_paper",
+                  "quantity": 1,
+                  "price_multiplier": 0.05
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

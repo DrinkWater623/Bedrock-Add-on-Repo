@@ -1,8 +1,0 @@
-[
-	{
-		"flipbook_texture": "textures/blocks/conveyor_belt",
-		"atlas_tile": "conveyor_belt",
-		"frames": [ 0, 1, 2, 3 ],
-    "ticks_per_frame": 5
-	}
-]

@@ -1,0 +1,1117 @@
+{
+  "tiers": [
+    {
+      "groups": [
+        {
+          "num_to_select": 8,
+          "trades": [
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:rotten_flesh",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:spider_eye",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:string",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:ink_sac",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:nautilus_shell",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:bone",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:phantom_membrane",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:gunpowder",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:lead",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:trident",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:leather",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:rabbit_foot",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:rabbit_hide",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:stick",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:dirt",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:sand",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:sand:1",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:snowball",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:apple",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:carrot",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:potato",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:beetroot",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:wheat",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:cherry_sapling",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:sapling",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:sapling:1",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:sapling:2",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:sapling:3",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:sapling:4",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:sapling:5",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:flowering_azalea",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:yellow_flower",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:red_flower:0",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:red_flower:1",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:red_flower:2",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:red_flower:3",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:red_flower:4",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:red_flower:5",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:red_flower:6",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:red_flower:7",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:red_flower:8",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:red_flower:9",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:red_flower:10",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:double_plant:0",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:double_plant:1",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:double_plant:2",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:double_plant:3",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:double_plant:4",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:double_plant:5",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:bamboo",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:sugar_cane",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:cocoa_beans",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:wheat_seeds",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:beetroot_seeds",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:pumpkin_seeds",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:melon_seeds",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:kelp",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:vine",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:waterlily",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:deadbush",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:brown_mushroom",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:red_mushroom",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:chicken",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:beef",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:porkchop",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:rabbit",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:mutton",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:cod",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "max_uses": 32,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "dw623:trading_coin",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:salmon",
+                  "quantity": 1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

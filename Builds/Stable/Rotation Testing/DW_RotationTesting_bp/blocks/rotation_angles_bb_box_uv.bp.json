@@ -1,0 +1,820 @@
+{
+  "format_version": "1.21.20",
+  "minecraft:block": {
+    "description": {
+      "identifier": "dw623:rotation_angle_bb_box_uv",
+      "menu_category": {
+        "category": "items",
+        "is_hidden_in_commands": false
+      },
+      "states": {
+        "int:x_id": {
+          "values": {
+            "min": 0,
+            "max": 3
+          }
+        },
+        "int:y_id": {
+          "values": {
+            "min": 0,
+            "max": 3
+          }
+        },
+        "int:z_id": {
+          "values": {
+            "min": 0,
+            "max": 3
+          }
+        }
+      }
+    },
+    "components": {
+      "minecraft:custom_components": [
+        "dw623:rotation_angles_components"
+      ],
+      "minecraft:display_name": "Rotation Angle Block - Box UV",
+      "minecraft:light_emission": 10,
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "bb_box_uv_pixel_art",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:geometry": {
+        "identifier": "geometry.bb_box_uv"
+      },
+      "minecraft:collision_box": true,
+      "minecraft:selection_box": true
+    },
+    "permutations": [
+      {
+        "condition": "q.block_state('int:x_id') == 0 && q.block_state('int:y_id') == 0 && q.block_state('int:z_id') == 0",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 0 && q.block_state('int:y_id') == 0 && q.block_state('int:z_id') == 1",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              0,
+              90
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 0 && q.block_state('int:y_id') == 0 && q.block_state('int:z_id') == 2",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              0,
+              180
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 0 && q.block_state('int:y_id') == 0 && q.block_state('int:z_id') == 3",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              0,
+              270
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 0 && q.block_state('int:y_id') == 1 && q.block_state('int:z_id') == 0",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              90,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 0 && q.block_state('int:y_id') == 1 && q.block_state('int:z_id') == 1",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              90,
+              90
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 0 && q.block_state('int:y_id') == 1 && q.block_state('int:z_id') == 2",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              90,
+              180
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 0 && q.block_state('int:y_id') == 1 && q.block_state('int:z_id') == 3",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              90,
+              270
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 0 && q.block_state('int:y_id') == 2 && q.block_state('int:z_id') == 0",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              180,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 0 && q.block_state('int:y_id') == 2 && q.block_state('int:z_id') == 1",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              180,
+              90
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 0 && q.block_state('int:y_id') == 2 && q.block_state('int:z_id') == 2",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              180,
+              180
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 0 && q.block_state('int:y_id') == 2 && q.block_state('int:z_id') == 3",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              180,
+              270
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 0 && q.block_state('int:y_id') == 3 && q.block_state('int:z_id') == 0",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              270,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 0 && q.block_state('int:y_id') == 3 && q.block_state('int:z_id') == 1",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              270,
+              90
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 0 && q.block_state('int:y_id') == 3 && q.block_state('int:z_id') == 2",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              270,
+              180
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 0 && q.block_state('int:y_id') == 3 && q.block_state('int:z_id') == 3",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              270,
+              270
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 1 && q.block_state('int:y_id') == 0 && q.block_state('int:z_id') == 0",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              90,
+              0,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 1 && q.block_state('int:y_id') == 0 && q.block_state('int:z_id') == 1",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              90,
+              0,
+              90
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 1 && q.block_state('int:y_id') == 0 && q.block_state('int:z_id') == 2",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              90,
+              0,
+              180
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 1 && q.block_state('int:y_id') == 0 && q.block_state('int:z_id') == 3",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              90,
+              0,
+              270
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 1 && q.block_state('int:y_id') == 1 && q.block_state('int:z_id') == 0",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              90,
+              90,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 1 && q.block_state('int:y_id') == 1 && q.block_state('int:z_id') == 1",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              90,
+              90,
+              90
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 1 && q.block_state('int:y_id') == 1 && q.block_state('int:z_id') == 2",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              90,
+              90,
+              180
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 1 && q.block_state('int:y_id') == 1 && q.block_state('int:z_id') == 3",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              90,
+              90,
+              270
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 1 && q.block_state('int:y_id') == 2 && q.block_state('int:z_id') == 0",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              90,
+              180,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 1 && q.block_state('int:y_id') == 2 && q.block_state('int:z_id') == 1",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              90,
+              180,
+              90
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 1 && q.block_state('int:y_id') == 2 && q.block_state('int:z_id') == 2",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              90,
+              180,
+              180
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 1 && q.block_state('int:y_id') == 2 && q.block_state('int:z_id') == 3",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              90,
+              180,
+              270
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 1 && q.block_state('int:y_id') == 3 && q.block_state('int:z_id') == 0",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              90,
+              270,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 1 && q.block_state('int:y_id') == 3 && q.block_state('int:z_id') == 1",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              90,
+              270,
+              90
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 1 && q.block_state('int:y_id') == 3 && q.block_state('int:z_id') == 2",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              90,
+              270,
+              180
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 1 && q.block_state('int:y_id') == 3 && q.block_state('int:z_id') == 3",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              90,
+              270,
+              270
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 2 && q.block_state('int:y_id') == 0 && q.block_state('int:z_id') == 0",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              180,
+              0,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 2 && q.block_state('int:y_id') == 0 && q.block_state('int:z_id') == 1",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              180,
+              0,
+              90
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 2 && q.block_state('int:y_id') == 0 && q.block_state('int:z_id') == 2",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              180,
+              0,
+              180
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 2 && q.block_state('int:y_id') == 0 && q.block_state('int:z_id') == 3",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              180,
+              0,
+              270
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 2 && q.block_state('int:y_id') == 1 && q.block_state('int:z_id') == 0",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              180,
+              90,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 2 && q.block_state('int:y_id') == 1 && q.block_state('int:z_id') == 1",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              180,
+              90,
+              90
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 2 && q.block_state('int:y_id') == 1 && q.block_state('int:z_id') == 2",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              180,
+              90,
+              180
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 2 && q.block_state('int:y_id') == 1 && q.block_state('int:z_id') == 3",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              180,
+              90,
+              270
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 2 && q.block_state('int:y_id') == 2 && q.block_state('int:z_id') == 0",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              180,
+              180,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 2 && q.block_state('int:y_id') == 2 && q.block_state('int:z_id') == 1",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              180,
+              180,
+              90
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 2 && q.block_state('int:y_id') == 2 && q.block_state('int:z_id') == 2",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              180,
+              180,
+              180
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 2 && q.block_state('int:y_id') == 2 && q.block_state('int:z_id') == 3",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              180,
+              180,
+              270
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 2 && q.block_state('int:y_id') == 3 && q.block_state('int:z_id') == 0",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              180,
+              270,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 2 && q.block_state('int:y_id') == 3 && q.block_state('int:z_id') == 1",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              180,
+              270,
+              90
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 2 && q.block_state('int:y_id') == 3 && q.block_state('int:z_id') == 2",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              180,
+              270,
+              180
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 2 && q.block_state('int:y_id') == 3 && q.block_state('int:z_id') == 3",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              180,
+              270,
+              270
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 3 && q.block_state('int:y_id') == 0 && q.block_state('int:z_id') == 0",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              270,
+              0,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 3 && q.block_state('int:y_id') == 0 && q.block_state('int:z_id') == 1",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              270,
+              0,
+              90
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 3 && q.block_state('int:y_id') == 0 && q.block_state('int:z_id') == 2",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              270,
+              0,
+              180
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 3 && q.block_state('int:y_id') == 0 && q.block_state('int:z_id') == 3",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              270,
+              0,
+              270
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 3 && q.block_state('int:y_id') == 1 && q.block_state('int:z_id') == 0",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              270,
+              90,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 3 && q.block_state('int:y_id') == 1 && q.block_state('int:z_id') == 1",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              270,
+              90,
+              90
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 3 && q.block_state('int:y_id') == 1 && q.block_state('int:z_id') == 2",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              270,
+              90,
+              180
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 3 && q.block_state('int:y_id') == 1 && q.block_state('int:z_id') == 3",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              270,
+              90,
+              270
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 3 && q.block_state('int:y_id') == 2 && q.block_state('int:z_id') == 0",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              270,
+              180,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 3 && q.block_state('int:y_id') == 2 && q.block_state('int:z_id') == 1",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              270,
+              180,
+              90
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 3 && q.block_state('int:y_id') == 2 && q.block_state('int:z_id') == 2",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              270,
+              180,
+              180
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 3 && q.block_state('int:y_id') == 2 && q.block_state('int:z_id') == 3",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              270,
+              180,
+              270
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 3 && q.block_state('int:y_id') == 3 && q.block_state('int:z_id') == 0",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              270,
+              270,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 3 && q.block_state('int:y_id') == 3 && q.block_state('int:z_id') == 1",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              270,
+              270,
+              90
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 3 && q.block_state('int:y_id') == 3 && q.block_state('int:z_id') == 2",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              270,
+              270,
+              180
+            ]
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('int:x_id') == 3 && q.block_state('int:y_id') == 3 && q.block_state('int:z_id') == 3",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              270,
+              270,
+              270
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

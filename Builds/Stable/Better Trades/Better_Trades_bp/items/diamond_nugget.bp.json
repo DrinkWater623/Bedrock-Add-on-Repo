@@ -1,0 +1,17 @@
+{
+  "format_version": "1.20.50",
+  "minecraft:item": {
+    "description": {
+      "identifier": "dw623:diamond_nugget",
+      "menu_category": {
+        "category": "items"
+      }
+    },
+    "components": {
+      "minecraft:icon": "diamond_nugget",
+      "minecraft:display_name": {
+        "value": "Diamond Nugget"
+      }
+    }
+  }
+}

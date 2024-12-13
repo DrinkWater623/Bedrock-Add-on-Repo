@@ -1,0 +1,18 @@
+{
+  "resource_pack_name": "dw623",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "trading_coin": {
+      "textures": "textures/items/trading_coin"
+    },
+    "trading_paper": {
+      "textures": "textures/items/trading_paper"
+    },
+    "emerald_nugget": {
+      "textures": "textures/items/emerald_nugget"
+    },
+    "diamond_nugget": {
+      "textures": "textures/items/diamond_nugget"
+    }
+  }
+}

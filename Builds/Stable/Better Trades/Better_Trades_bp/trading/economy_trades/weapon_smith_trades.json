@@ -1,0 +1,2265 @@
+{
+  "tiers": [
+    {
+      "total_exp_required": 0,
+      "groups": [
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:charcoal",
+                  "quantity": 8
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:coal",
+                  "quantity": 8
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lava_bucket",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:stick",
+                  "quantity": 16
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:oak_log",
+                  "quantity": 8
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:spruce_log",
+                  "quantity": 8
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:jungle_log",
+                  "quantity": 8
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:stone",
+                  "quantity": 8
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:cobblestone",
+                  "quantity": 8
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:andesite",
+                  "quantity": 8
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "trader_exp": 10,
+              "max_uses": 5,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:lapis_lazuli",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:raw_copper",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    }
+                  ]
+                },
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:oak_planks",
+                      "quantity": 3,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 0,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:acacia_planks",
+                      "quantity": 3,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 1,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:jungle_planks",
+                      "quantity": 3,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 2,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:acacia_planks",
+                      "quantity": 3,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 3,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:spruce_planks",
+                      "quantity": 3,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 4,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:mangrove_planks",
+                      "quantity": 3,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 5,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:spruce_planks",
+                      "quantity": 3,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 6,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:birch_planks",
+                      "quantity": 3,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 0,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:oak_planks",
+                      "quantity": 3,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 1,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:oak_planks",
+                      "quantity": 3,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 2,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:oak_planks",
+                      "quantity": 3,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 3,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:oak_planks",
+                      "quantity": 3,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 4,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:dark_oak_planks",
+                      "quantity": 3,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 5,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:birch_planks",
+                      "quantity": 3,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 6,
+                        "operator": "="
+                      }
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:wooden_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 5,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:lapis_lazuli",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:raw_copper",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    }
+                  ]
+                },
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:oak_planks",
+                      "quantity": 2,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 0,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:acacia_planks",
+                      "quantity": 2,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 1,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:jungle_planks",
+                      "quantity": 2,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 2,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:acacia_planks",
+                      "quantity": 2,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 3,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:spruce_planks",
+                      "quantity": 2,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 4,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:mangrove_planks",
+                      "quantity": 2,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 5,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:spruce_planks",
+                      "quantity": 2,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 6,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:birch_planks",
+                      "quantity": 2,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 0,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:oak_planks",
+                      "quantity": 2,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 1,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:oak_planks",
+                      "quantity": 2,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 2,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:oak_planks",
+                      "quantity": 2,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 3,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:oak_planks",
+                      "quantity": 2,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 4,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:dark_oak_planks",
+                      "quantity": 2,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 5,
+                        "operator": "="
+                      }
+                    },
+                    {
+                      "item": "minecraft:birch_planks",
+                      "quantity": 2,
+                      "price_multiplier": 0.05,
+                      "filters": {
+                        "test": "is_mark_variant",
+                        "subject": "self",
+                        "value": 6,
+                        "operator": "="
+                      }
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:wooden_sword",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 5,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:lapis_lazuli",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:raw_copper",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:copper_ingot",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:lapis_block",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:copper_block",
+                      "quantity": 1
+                    },
+                    {
+                      "item": "minecraft:raw_copper_block",
+                      "quantity": 1
+                    }
+                  ]
+                },
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:stone",
+                      "quantity": 3,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:cobblestone",
+                      "quantity": 3,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:andesite",
+                      "quantity": 3,
+                      "price_multiplier": 0.05
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:stone_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 5,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:lapis_lazuli",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:raw_copper",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:copper_ingot",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:lapis_block",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:copper_block",
+                      "quantity": 1
+                    },
+                    {
+                      "item": "minecraft:raw_copper_block",
+                      "quantity": 1
+                    }
+                  ]
+                },
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:stone",
+                      "quantity": 2,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:cobblestone",
+                      "quantity": 2,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:andesite",
+                      "quantity": 2,
+                      "price_multiplier": 0.05
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:stone_sword",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:wooden_axe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:wooden_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:wooden_sword",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:wooden_sword",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:stone_axe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 20
+                      }
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:stone_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:stone_sword",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 20
+                      }
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:stone_sword",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "total_exp_required": 10,
+      "groups": [
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:raw_gold",
+                  "quantity": 5
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:nether_gold_ore",
+                  "quantity": 10
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:gold_ore",
+                  "quantity": 2
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:deepslate_gold_ore",
+                  "quantity": 2
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:lapis_lazuli",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:raw_copper",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:copper_ingot",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:lapis_block",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:raw_gold",
+                  "quantity": 3
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:golden_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:lapis_lazuli",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:raw_copper",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:copper_ingot",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:lapis_block",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:raw_gold",
+                  "quantity": 2
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:golden_sword",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:lapis_block",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "dw623:emerald_nugget",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "dw623:trading_coin",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:golden_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:lapis_block",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "dw623:emerald_nugget",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "dw623:trading_coin",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:golden_sword",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:golden_axe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 30
+                      }
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:golden_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:golden_sword",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 30
+                      }
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:golden_sword",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "total_exp_required": 70,
+      "groups": [
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:raw_iron",
+                  "quantity": 4
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:iron_ore",
+                  "quantity": 2
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ]
+            },
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:deepslate_iron_ore",
+                  "quantity": 2
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:lapis_block",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "dw623:emerald_nugget",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "dw623:trading_coin",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:raw_iron",
+                  "quantity": 3
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:iron_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:lapis_block",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "dw623:emerald_nugget",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "dw623:trading_coin",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:raw_iron",
+                  "quantity": 2
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:iron_sword",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:iron_axe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 40
+                      }
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:iron_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:iron_sword",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 40
+                      }
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:iron_sword",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "trader_exp": 10,
+              "max_uses": 5,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:shield",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 20
+                      }
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:shield",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "unbreaking",
+                          "level": 3
+                        },
+                        {
+                          "id": "mending",
+                          "level": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:emerald",
+                      "functions": [
+                        {
+                          "function": "set_count",
+                          "count": {
+                            "min": 5,
+                            "max": 14
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "item": "minecraft:diamond",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:shield",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "unbreaking",
+                          "level": 3
+                        },
+                        {
+                          "id": "mending",
+                          "level": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "total_exp_required": 150,
+      "groups": [
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond_block",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald_block",
+                  "quantity": 9
+                }
+              ]
+            },
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond_ore",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald_block",
+                  "quantity": 3
+                }
+              ]
+            },
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:deepslate_diamond_ore",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald_block",
+                  "quantity": 3
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "trades": [
+            {
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 9
+                },
+                {
+                  "item": "minecraft:netherite_ingot",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:netherite_upgrade_smithing_template",
+                  "quantity": 9
+                }
+              ],
+              "trader_exp": 25,
+              "max_uses": 1,
+              "reward_exp": true
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:lapis_block",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:raw_copper_block",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:copper_block",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "dw623:emerald_nugget",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "dw623:trading_coin",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:emerald",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "dw623:diamond_nugget",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 3
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:diamond_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:lapis_block",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:raw_copper_block",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:copper_block",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "dw623:emerald_nugget",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "dw623:trading_coin",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:emerald",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "dw623:diamond_nugget",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 2
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:diamond_sword",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond_axe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 40
+                      }
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:diamond_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond_sword",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 40
+                      }
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:diamond_sword",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "total_exp_required": 250,
+      "groups": [
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:netherite_ingot",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald_block",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:ancient_debris",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald_block",
+                  "quantity": 4
+                }
+              ]
+            },
+            {
+              "trader_exp": 5,
+              "max_uses": 16,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:netherite_scrap",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:emerald_block",
+                  "quantity": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "dw623:diamond_nugget",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:diamond_axe",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:netherite_ingot",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:netherite_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "dw623:diamond_nugget",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:diamond_sword",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:netherite_ingot",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:netherite_sword",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 10,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1,
+                  "price_multiplier": 0.05
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:netherite_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 10,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1,
+                  "price_multiplier": 0.05
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:netherite_sword",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:netherite_axe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 40
+                      }
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:netherite_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:netherite_sword",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 40
+                      }
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:netherite_sword",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "trader_exp": 10,
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:trident",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 40
+                      }
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:trident",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 5,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:emerald",
+                      "functions": [
+                        {
+                          "function": "set_count",
+                          "count": {
+                            "min": 4,
+                            "max": 17
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "item": "minecraft:diamond",
+                      "functions": [
+                        {
+                          "function": "set_count",
+                          "count": {
+                            "min": 2,
+                            "max": 5
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:trident",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "unbreaking",
+                          "level": 3
+                        },
+                        {
+                          "id": "mending",
+                          "level": 1
+                        },
+                        {
+                          "id": "loyalty",
+                          "level": 3
+                        },
+                        {
+                          "id": "impaling",
+                          "level": 5
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

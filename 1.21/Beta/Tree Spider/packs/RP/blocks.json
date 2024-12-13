@@ -1,7 +1,0 @@
-{
-    "format_version" : [ 1, 1, 0 ],
-    "dw623:super_web_block" : {
-      "sound" : "web",
-      "textures" : "super_web"
-   }
-}

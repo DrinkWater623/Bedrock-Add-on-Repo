@@ -1,0 +1,2091 @@
+{
+  "tiers": [
+    {
+      "groups": [
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:scaffolding",
+                  "quantity": 32
+                }
+              ],
+              "max_uses": 25,
+              "reward_exp": true
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:glass",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:tinted_glass",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:black_stained_glass",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:blue_stained_glass",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:brown_stained_glass",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:cyan_stained_glass",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:gray_stained_glass",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:green_stained_glass",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:light_blue_stained_glass",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:light_gray_stained_glass",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:magenta_stained_glass",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:orange_stained_glass",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:pink_stained_glass",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:purple_stained_glass",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:red_stained_glass",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:lime_stained_glass",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:white_stained_glass",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:yellow_stained_glass",
+                  "quantity": 16
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:acacia_log",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:birch_log",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:cherry_log",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:crimson_stem",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:dark_oak_log",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:jungle_log",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:mangrove_log",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:oak_log",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:spruce_log",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:warped_stem",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:stone",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:smooth_stone",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:diorite",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:granite",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:andesite",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:blackstone",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:cobblestone",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:mossy_cobblestone",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:mud_bricks",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:brick_block",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:packed_mud",
+                  "quantity": 16
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:hardened_clay",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:black_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:blue_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:brown_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:cyan_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:gray_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:green_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:light_blue_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:light_gray_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:magenta_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:orange_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:pink_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:purple_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:red_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:lime_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:white_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:yellow_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:black_glazed_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:blue_glazed_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:brown_glazed_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:cyan_glazed_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:gray_glazed_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:green_glazed_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:light_blue_glazed_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:silver_glazed_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:magenta_glazed_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:orange_glazed_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:pink_glazed_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:purple_glazed_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:red_glazed_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:lime_glazed_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:white_glazed_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:yellow_glazed_terracotta",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:black_concrete_powder",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:blue_concrete_powder",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:brown_concrete_powder",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:cyan_concrete_powder",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:gray_concrete_powder",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:green_concrete_powder",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:light_blue_concrete_powder",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:light_gray_concrete_powder",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:magenta_concrete_powder",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:orange_concrete_powder",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:pink_concrete_powder",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:purple_concrete_powder",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:red_concrete_powder",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:lime_concrete_powder",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:white_concrete_powder",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:yellow_concrete_powder",
+                  "quantity": 16
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:lit_pumpkin",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:end_rod",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:glowstone",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:lantern",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:ochre_froglight",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:pearlescent_froglight",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:sealantern",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:shroomlight",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:verdant_froglight",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:soul_campfire",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:soul_lantern",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:soul_torch",
+                  "quantity": 32
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:sponge",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:basalt",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:smooth_basalt",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:polished_basalt",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:packed_ice",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:blue_ice",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:amethyst_block",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:sculk",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:obsidian",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:calcite",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:prismarine",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:end_bricks",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:nether_brick",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:quartz_bricks",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:red_nether_brick",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:quartz_block",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:quartz_block:1",
+                  "quantity": 16
+                }
+              ]
+            },
+            {
+              "max_uses": 25,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:emerald",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:purpur_block",
+                  "quantity": 16
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "trader_exp": 10,
+              "max_uses": 10,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:lapis_lazuli",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "dw623:trading_coin",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:emerald",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:wooden_pickaxe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 10,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:lapis_lazuli",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "dw623:trading_coin",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:emerald",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:stone_pickaxe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "trader_exp": 10,
+              "max_uses": 10,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "choice": [
+                    {
+                      "item": "minecraft:lapis_lazuli",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "dw623:trading_coin",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    },
+                    {
+                      "item": "minecraft:emerald",
+                      "quantity": 1,
+                      "price_multiplier": 0.05
+                    }
+                  ]
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:golden_pickaxe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "wants": [
+                {
+                  "item": "minecraft:diamond",
+                  "quantity": 1,
+                  "price_multiplier": 0.0
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:yellow_shulker_box",
+                  "quantity": 1
+                }
+              ],
+              "trader_exp": 5,
+              "max_uses": 2,
+              "reward_exp": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

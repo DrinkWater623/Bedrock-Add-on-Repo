@@ -1,6 +1,0 @@
-{
-    "ubd:conveyor_belt_block" : {
-        //"sound" : "stonecutter",
-        "textures" : "conveyor_belt"
-    }
-}

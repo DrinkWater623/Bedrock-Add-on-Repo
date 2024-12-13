@@ -1,5 +1,0 @@
-WHere to get
-
-https://github.com/Mojang/bedrock-samples/blob/main/resource_pack/blocks.json
-
-https://github.com/Mojang/bedrock-samples/tree/main/metadata/vanilladata_modules

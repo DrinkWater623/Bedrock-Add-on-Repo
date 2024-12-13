@@ -1,8 +1,0 @@
-{
-    "currencies":[
-        {"active":1     ,"item_namespace":"dw623","item_name":"trading_coin"      ,"can_upgrade":64   ,"upgrade_namespace":"dw623"      ,"upgrade_item_name":"trading_paper" },
-        {"active":1     ,"item_namespace":"dw623","item_name":"trading_paper"     ,"can_upgrade":0    ,"upgrade_namespace":null         ,"upgrade_item_name":null             },
-        {"active":1     ,"item_namespace":"dw623","item_name":"emerald_nugget"    ,"can_upgrade":9    ,"upgrade_namespace":"minecraft"  ,"upgrade_item_name":"emerald"        },
-        {"active":1     ,"item_namespace":"dw623","item_name":"diamond_nugget"    ,"can_upgrade":9    ,"upgrade_namespace":"minecraft"  ,"upgrade_item_name":"diamond"        }
-    ]
-}

@@ -1,0 +1,33 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shapeless": {
+    "description": {
+      "identifier": "dw623:pearlescent_froglight_arrow_recipe"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "ingredients": [
+      {
+        "data": 0,
+        "item": "minecraft:pearlescent_froglight"
+      },
+      {
+        "data": 0,
+        "item": "dw623:light_arrow_template"
+      }
+    ],
+    "priority": 0,
+    "result": {
+      "count": 16,
+      "data": 0,
+      "item": "dw623:pearlescent_froglight_arrow"
+    },
+    "unlock": [
+      {
+        "data": 0,
+        "item": "dw623:light_arrow_template"
+      }
+    ]
+  }
+}

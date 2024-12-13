@@ -1,0 +1,3161 @@
+{
+  "tiers": [
+    {
+      "groups": [
+        {
+          "num_to_select": 2,
+          "trades": [
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "mending",
+                          "level": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "unbreaking",
+                          "level": 3
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "blast_protection",
+                          "level": 4
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "fire_protection",
+                          "level": 4
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "projectile_protection",
+                          "level": 4
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "protection",
+                          "level": 4
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "thorns",
+                          "level": 3
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "aqua_affinity",
+                          "level": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "respiration",
+                          "level": 3
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "depth_strider",
+                          "level": 3
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "feather_falling",
+                          "level": 4
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "frost_walker",
+                          "level": 2
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "soul_speed",
+                          "level": 3
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "swift_sneak",
+                          "level": 3
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "flame",
+                          "level": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "infinity",
+                          "level": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "power",
+                          "level": 5
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "punch",
+                          "level": 2
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "multishot",
+                          "level": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "piercing",
+                          "level": 4
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "quick_charge",
+                          "level": 3
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "luck_of_the_sea",
+                          "level": 3
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "lure",
+                          "level": 3
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "impaling",
+                          "level": 5
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "channeling",
+                          "level": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "loyalty",
+                          "level": 3
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "riptide",
+                          "level": 3
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "efficiency",
+                          "level": 5
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "silk_touch",
+                          "level": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "fortune",
+                          "level": 3
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "fire_aspect",
+                          "level": 2
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "looting",
+                          "level": 3
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "knockback",
+                          "level": 2
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "sharpness",
+                          "level": 5
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "smite",
+                          "level": 5
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "bane_of_arthropods",
+                          "level": 5
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "unbreaking",
+                          "level": 3
+                        },
+                        {
+                          "id": "mending",
+                          "level": 1
+                        },
+                        {
+                          "id": "silk_touch",
+                          "level": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "unbreaking",
+                          "level": 3
+                        },
+                        {
+                          "id": "mending",
+                          "level": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "trades": [
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:book",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 2,
+          "trades": [
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:golden_helmet",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 10
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:golden_helmet",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:golden_chestplate",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 16
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:golden_chestplate",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:golden_leggings",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 14
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:golden_leggings",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:golden_boots",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 8
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:golden_boots",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:iron_helmet",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 15
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:iron_helmet",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:iron_chestplate",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 24
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:iron_chestplate",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:iron_leggings",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 21
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:iron_leggings",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:iron_boots",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 12
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:iron_boots",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond_helmet",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 20
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:diamond_helmet",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond_chestplate",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 32
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:diamond_chestplate",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond_leggings",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 28
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:diamond_leggings",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond_boots",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 16
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:diamond_boots",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:netherite_helmet",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 25
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:netherite_helmet",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:netherite_chestplate",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 40
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:netherite_chestplate",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:netherite_leggings",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 35
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:netherite_leggings",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:netherite_boots",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 20
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:netherite_boots",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:elytra",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:elytra",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "mending",
+                          "level": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:elytra",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:elytra",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "unbreaking",
+                          "level": 3
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:elytra",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:elytra",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "unbreaking",
+                          "level": 3
+                        },
+                        {
+                          "id": "mending",
+                          "level": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:shield",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:shield",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "unbreaking",
+                          "level": 3
+                        },
+                        {
+                          "id": "mending",
+                          "level": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:shield",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:shield",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "mending",
+                          "level": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 10
+                      }
+                    }
+                  ]
+                },
+                {
+                  "item": "minecraft:shield",
+                  "quantity": 1
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:shield",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "specific_enchants",
+                      "enchants": [
+                        {
+                          "id": "unbreaking",
+                          "level": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:golden_hoe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 6
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:golden_hoe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:golden_shovel",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 3
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:golden_shovel",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:golden_pickaxe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 9
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:golden_pickaxe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:golden_axe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 9
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:golden_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:iron_hoe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 8
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:iron_hoe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:iron_shovel",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 4
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:iron_shovel",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:iron_pickaxe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 12
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:iron_pickaxe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:iron_axe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 12
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:iron_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond_hoe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 10
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:diamond_hoe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond_shovel",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 5
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:diamond_shovel",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond_pickaxe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 15
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:diamond_pickaxe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond_axe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 15
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:diamond_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:netherite_hoe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 12
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:netherite_hoe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:netherite_shovel",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 6
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:netherite_shovel",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:netherite_pickaxe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 18
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:netherite_pickaxe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:netherite_axe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 18
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:netherite_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:fishing_rod",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 10
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:fishing_rod",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:shears",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 10
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:shears",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": false,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "num_to_select": 1,
+          "trades": [
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:golden_axe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 9
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:golden_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": true,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:golden_sword",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 6
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:golden_sword",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": true,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:iron_axe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 12
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:iron_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": true,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:iron_sword",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 8
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:iron_sword",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": true,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond_axe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 15
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:diamond_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": true,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:diamond_sword",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 10
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:diamond_sword",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": true,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:netherite_axe",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 18
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:netherite_axe",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": true,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:netherite_sword",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 12
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:netherite_sword",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": true,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:trident",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 10
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:trident",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": true,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:bow",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 10
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:bow",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": true,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "max_uses": 3,
+              "reward_exp": true,
+              "wants": [
+                {
+                  "item": "minecraft:crossbow",
+                  "quantity": 1
+                },
+                {
+                  "item": "minecraft:lapis_lazuli",
+                  "quantity": 10
+                }
+              ],
+              "gives": [
+                {
+                  "item": "minecraft:crossbow",
+                  "quantity": 1,
+                  "functions": [
+                    {
+                      "function": "enchant_with_levels",
+                      "treasure": true,
+                      "levels": {
+                        "min": 39,
+                        "max": 39
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

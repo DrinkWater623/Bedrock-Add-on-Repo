@@ -1,0 +1,29 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:emerald_from_emerald_nuggets"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "###",
+      "###",
+      "###"
+    ],
+    "key": {
+      "#": {
+        "item": "dw623:emerald_nugget"
+      }
+    },
+    "unlock": [
+      {
+        "item": "dw623:emerald_nugget"
+      }
+    ],
+    "result": {
+      "item": "minecraft:emerald"
+    }
+  }
+}

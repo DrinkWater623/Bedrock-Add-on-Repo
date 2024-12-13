@@ -1,7 +1,0 @@
-{
-   "resource_pack_name" : "dw623",
-   "texture_name" : "atlas.items",
-   "texture_data" : {  
-      "wither_remote_stick": {"textures":"textures/items/wither_bot_remote"}
-   }
-}
