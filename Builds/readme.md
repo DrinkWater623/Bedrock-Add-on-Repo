@@ -1,4 +1,4 @@
-## DW623's Script API Shared Code
+## DW623's Bedrock Add-Ons
 
 ### License
 Copyright (C) 2024  [DrinkWater623/PinkSalt623>](https://github.com/DrinkWater623)
@@ -9,5 +9,4 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 >
 
-### A few words from our sponsor
-Not ready for Prime Time by any stretch of the imagination but this is what I use and improve constantly as I need.
+### Enjoy
