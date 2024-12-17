@@ -1,6 +1,6 @@
 //@ts-check
 import { Block, BlockComponentTickEvent, ItemStack, system } from "@minecraft/server";
-import { watchFor, chatLog, globals, lootTableItems } from '../../settings.js';
+import { watchFor, chatLog, globals, lootTableItems, pack, dev } from '../../settings.js';
 //==============================================================================
 /**
  * 
@@ -8,7 +8,7 @@ import { watchFor, chatLog, globals, lootTableItems } from '../../settings.js';
  * @returns 
  */
 export function sifter_query_onTick (e) {
-    const debug = false;
+    const debug = dev.debugSifterOnTickEvents;
 
     const blockAbove = e.block.above(1);
 
@@ -64,13 +64,13 @@ export function sifter_query_onTick (e) {
  * @param {Block} [blockAbove]
  */
 function sifterSift (block, blockAbove) {
-    if (!block.isValid()) 
+    if (!block.isValid())
         return;
 
-    if (!blockAbove) 
+    if (!blockAbove)
         blockAbove = block.above(1);
 
-    if (!blockAbove || blockAbove.typeId == globals.mcAir) 
+    if (!blockAbove || blockAbove.isAir)
         return;
 
     //sifting slabs
@@ -81,11 +81,22 @@ function sifterSift (block, blockAbove) {
 
     const blockInfo = blockFilter[ 0 ];
 
-    block.dimension.playSound(blockInfo.sound, block.location, { pitch: 1, volume: 2 });
+    block.dimension.playSound(blockInfo.sound, block.location, { pitch: 1, volume: 4 });
 
     let particleLocation = block.bottomCenter();
     particleLocation.y += blockInfo.height / 16;
-    block.dimension.spawnParticle("minecraft:dust_plume", particleLocation);
+    const particleLocations = [ particleLocation ];
+    [ 0.75, -0.75 ].forEach(n => {
+        let particleLocationX = blockAbove.bottomCenter();
+        let particleLocationZ = blockAbove.bottomCenter();
+        particleLocationX.x += n;
+        particleLocationZ.z += n;
+        particleLocations.push(particleLocationX);
+        particleLocations.push(particleLocationZ);
+    });
+    particleLocations.forEach(v3 => {
+        block.dimension.spawnParticle("minecraft:dust_plume", v3);
+    });
 
     spawnDustBlock(blockAbove, 0.25);
     spawnRandomLoot(blockAbove, blockInfo.height, 0.10);
@@ -110,10 +121,13 @@ function sifterSift (block, blockAbove) {
  * @param {Block} blockAbove
  */
 function sifterConvertAndSift (block, blockAbove) {
+    const debug = dev.debugSifterOnTickEvents;
+
+    chatLog.log(`Block: ${block.typeId}  Above: ${blockAbove.typeId}  Sifter Block?: ${watchFor.vanillaSifterBlocks.includes(blockAbove.typeId)}`,debug)
 
     if (watchFor.vanillaSifterBlocks.includes(blockAbove.typeId)) {
-        const convertedBlockTypeId = blockAbove.typeId.replace(globals.minecraftNameSpace, globals.mainNameSpace) + '_slab_16';
-        chatLog.log(`Convert to ${convertedBlockTypeId}`)
+        const convertedBlockTypeId = blockAbove.typeId.replace(globals.mcNameSpace, pack.packNameSpace) + '_slab_16';
+        chatLog.log(`Convert to ${convertedBlockTypeId} - Sifter Block?: ${watchFor.customSiftableBlocks.includes(convertedBlockTypeId)}`, debug);
 
         //TODO: confirm valid block in game
         if (watchFor.customSiftableBlocks.includes(convertedBlockTypeId)) {
@@ -140,6 +154,7 @@ function lootSelector (typeId = "", height = 0) {
     if (lootPool.length == 1) return lootPool[ 0 ].typeId;
 
     const randomNum = Math.floor(Math.random() * lootPool.length);
+    if (randomNum >= lootPool.length) return ""
     return lootPool[ randomNum ].typeId;
 }
 /**
@@ -150,7 +165,7 @@ function lootSelector (typeId = "", height = 0) {
  */
 
 function spawnRandomLoot (block, height = 0, chance = 0) {
-    
+
     if (Math.random() > chance) return;
 
     const lootTypeID = lootSelector(block.typeId, height);
@@ -191,7 +206,7 @@ function dustBlockSelector (typeId = "") {
     else
         return "";
 
-    return globals.mainNameSpace + base + "_dust";
+    return pack.packNameSpace + base + "_dust";
 }
 /**
  * 
@@ -199,12 +214,16 @@ function dustBlockSelector (typeId = "") {
  * @param {number} chance 
  */
 function spawnDustBlock (block, chance = 0) {
-    if (Math.random() > chance) return;
+    if (!block || !block.isValid() || Math.random() > chance)
+        return;
 
+    const below = block.below(1) ?? block;
     const dustLootTypeId = dustBlockSelector(block.typeId);
+
     if (dustLootTypeId) {
         let i = new ItemStack(dustLootTypeId, 1);
-        block.dimension.spawnItem(i, block.center());
+
+        block.dimension.spawnItem(i, below.bottomCenter());
     }
 }
 //==============================================================================

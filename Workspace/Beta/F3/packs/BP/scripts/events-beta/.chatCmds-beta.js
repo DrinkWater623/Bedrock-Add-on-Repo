@@ -1,5 +1,5 @@
 import { world,  Player } from "@minecraft/server";
-import { Debug } from './commonLib/mcDebugClass.js';
+import { Debug } from '../commonLib/mcDebugClass.js';
 import * as f3 from './f3.js';
 //==============================================================================
 const debug = new Debug("F3", true, world);

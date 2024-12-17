@@ -8,7 +8,7 @@ export function main_stable () {
         pack.hasChatCmd = 0;
         alertLog.success(`§aInstalling Add-on ${pack.packName} - §bStable ${pack.isLoadAlertsOn ? '§c(Debug Mode)' : ''}`, dev.debugPackLoad || pack.isLoadAlertsOn);
     }
-
-    subs.beforeEvents_worldInitialize();
+    subs.beforeEvents_worldInitialize_subscribe();
+    subs.beforeEvents_playerInteractWithBlock_subscribe();
 }
 //==============================================================================

@@ -1,10 +1,10 @@
 {
     //Note: Loot is in the settings.js.. just spawn items, no loot tables - may do for books
     "sifter_types":[
-        {"material":"copper"    ,"map_color":"#D87F33" ,"speed":60,"recipe_item":"copper_ingot"   ,"sound":"copper"},
-        {"material":"iron"      ,"map_color":"#A7A7A7" ,"speed":40,"recipe_item":"iron_ingot"     ,"sound":"metal"},
-        {"material":"diamond"   ,"map_color":"#5CDBD5" ,"speed":20,"recipe_item":"diamond"        ,"sound":"glass"},
-        {"material":"netherite" ,"map_color":"#664C33" ,"speed":10,"recipe_item":"netherite_ingot","sound":"metal"}
+        {"material":"copper"    ,"map_color":"#D87F33" ,"speed":30,"recipe_item":"copper_ingot"   ,"sound":"copper"},
+        {"material":"iron"      ,"map_color":"#A7A7A7" ,"speed":20,"recipe_item":"iron_ingot"     ,"sound":"metal"},
+        {"material":"diamond"   ,"map_color":"#5CDBD5" ,"speed":10,"recipe_item":"diamond"        ,"sound":"glass"},
+        {"material":"netherite" ,"map_color":"#664C33" ,"speed":5,"recipe_item":"netherite_ingot","sound":"metal"}
     ],
     "powder_snow":["powder_snow"],
     //gravity blocks only are auto sift - common sense
@@ -14,25 +14,25 @@
         {"base":"gravel"                        ,"map_color":"#A4A8B8"  ,"sound":"gravel"      ,"tag":"gravel"   ,"texture":"gravel"                      ,"brightness_gamma":null  },
         {"base":"red_sand"                      ,"map_color":"#9F5224"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"red_sand"                    ,"brightness_gamma":0.550  },
         {"base":"sand"                          ,"map_color":"#F7E9A3"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"flattened_sand"              ,"brightness_gamma":0.550  },
-        {"base":"mud"                           ,"map_color":"#664C33"  ,"sound":"mud"         ,"tag":"mud"     ,"texture":"mud"                          ,"brightness_gamma":null  },
+        {"base":"mud"                           ,"map_color":"#664C33"  ,"sound":"mud"         ,"tag":"dirt"     ,"texture":"mud"                          ,"brightness_gamma":null  },
         {"base":"soul_sand"                     ,"map_color":"#664C33"  ,"sound":"soul_sand"   ,"tag":"soul_sand","texture":"soul_sand"                   ,"brightness_gamma":null  },
-        {"base":"snow"                          ,"map_color":"#FFFFFF"  ,"sound":"powder_snow" ,"tag":"snow"     ,"texture":"snow"                        ,"brightness_gamma":0.450  },
-        {"base":"black_concrete_powder"         ,"map_color":"#191919"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"black_concrete_powder"       ,"brightness_gamma":null  },
-        {"base":"blue_concrete_powder"          ,"map_color":"#334CB2"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"blue_concrete_powder"        ,"brightness_gamma":null  },
-        {"base":"brown_concrete_powder"         ,"map_color":"#664C33"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"brown_concrete_powder"       ,"brightness_gamma":null  },
-        {"base":"cyan_concrete_powder"          ,"map_color":"#4C7F99"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"cyan_concrete_powder"        ,"brightness_gamma":null  },
-        {"base":"gray_concrete_powder"          ,"map_color":"#4C4C4C"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"gray_concrete_powder"        ,"brightness_gamma":null  },
-        {"base":"green_concrete_powder"         ,"map_color":"#667F33"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"green_concrete_powder"       ,"brightness_gamma":null  },
-        {"base":"light_blue_concrete_powder"    ,"map_color":"#6699D8"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"light_blue_concrete_powder"  ,"brightness_gamma":null  },
-        {"base":"light_gray_concrete_powder"    ,"map_color":"#999999"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"light_gray_concrete_powder"  ,"brightness_gamma":null  },
-        {"base":"lime_concrete_powder"          ,"map_color":"#7FCC19"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"lime_concrete_powder"        ,"brightness_gamma":null  },
-        {"base":"magenta_concrete_powder"       ,"map_color":"#B24CD8"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"magenta_concrete_powder"     ,"brightness_gamma":null  },
-        {"base":"orange_concrete_powder"        ,"map_color":"#D87F33"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"orange_concrete_powder"      ,"brightness_gamma":null  },
-        {"base":"pink_concrete_powder"          ,"map_color":"#F27FA5"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"pink_concrete_powder"        ,"brightness_gamma":null  },
-        {"base":"purple_concrete_powder"        ,"map_color":"#7F3FB2"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"purple_concrete_powder"      ,"brightness_gamma":null  },
-        {"base":"red_concrete_powder"           ,"map_color":"#993333"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"red_concrete_powder"         ,"brightness_gamma":null  },
-        {"base":"white_concrete_powder"         ,"map_color":"#FFFFFF"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"white_concrete_powder"       ,"brightness_gamma":null  },
-        {"base":"yellow_concrete_powder"        ,"map_color":"#E5E533"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"yellow_concrete_powder"      ,"brightness_gamma":null  }
+        {"base":"snow"                          ,"map_color":"#FFFFFF"  ,"sound":"snow" ,"tag":null     ,"texture":"snow"                        ,"brightness_gamma":0.450  },
+        {"base":"black_concrete_powder"         ,"map_color":"#191919"  ,"sound":"sand"        ,"tag":null     ,"texture":"black_concrete_powder"       ,"brightness_gamma":null  },
+        {"base":"blue_concrete_powder"          ,"map_color":"#334CB2"  ,"sound":"sand"        ,"tag":null     ,"texture":"blue_concrete_powder"        ,"brightness_gamma":null  },
+        {"base":"brown_concrete_powder"         ,"map_color":"#664C33"  ,"sound":"sand"        ,"tag":null     ,"texture":"brown_concrete_powder"       ,"brightness_gamma":null  },
+        {"base":"cyan_concrete_powder"          ,"map_color":"#4C7F99"  ,"sound":"sand"        ,"tag":null     ,"texture":"cyan_concrete_powder"        ,"brightness_gamma":null  },
+        {"base":"gray_concrete_powder"          ,"map_color":"#4C4C4C"  ,"sound":"sand"        ,"tag":null     ,"texture":"gray_concrete_powder"        ,"brightness_gamma":null  },
+        {"base":"green_concrete_powder"         ,"map_color":"#667F33"  ,"sound":"sand"        ,"tag":null     ,"texture":"green_concrete_powder"       ,"brightness_gamma":null  },
+        {"base":"light_blue_concrete_powder"    ,"map_color":"#6699D8"  ,"sound":"sand"        ,"tag":null     ,"texture":"light_blue_concrete_powder"  ,"brightness_gamma":null  },
+        {"base":"light_gray_concrete_powder"    ,"map_color":"#999999"  ,"sound":"sand"        ,"tag":null     ,"texture":"light_gray_concrete_powder"  ,"brightness_gamma":null  },
+        {"base":"lime_concrete_powder"          ,"map_color":"#7FCC19"  ,"sound":"sand"        ,"tag":null     ,"texture":"lime_concrete_powder"        ,"brightness_gamma":null  },
+        {"base":"magenta_concrete_powder"       ,"map_color":"#B24CD8"  ,"sound":"sand"        ,"tag":null     ,"texture":"magenta_concrete_powder"     ,"brightness_gamma":null  },
+        {"base":"orange_concrete_powder"        ,"map_color":"#D87F33"  ,"sound":"sand"        ,"tag":null     ,"texture":"orange_concrete_powder"      ,"brightness_gamma":null  },
+        {"base":"pink_concrete_powder"          ,"map_color":"#F27FA5"  ,"sound":"sand"        ,"tag":null     ,"texture":"pink_concrete_powder"        ,"brightness_gamma":null  },
+        {"base":"purple_concrete_powder"        ,"map_color":"#7F3FB2"  ,"sound":"sand"        ,"tag":null     ,"texture":"purple_concrete_powder"      ,"brightness_gamma":null  },
+        {"base":"red_concrete_powder"           ,"map_color":"#993333"  ,"sound":"sand"        ,"tag":null     ,"texture":"red_concrete_powder"         ,"brightness_gamma":null  },
+        {"base":"white_concrete_powder"         ,"map_color":"#FFFFFF"  ,"sound":"sand"        ,"tag":null     ,"texture":"white_concrete_powder"       ,"brightness_gamma":null  },
+        {"base":"yellow_concrete_powder"        ,"map_color":"#E5E533"  ,"sound":"sand"        ,"tag":null     ,"texture":"yellow_concrete_powder"      ,"brightness_gamma":null  }
     ],
     "concrete_blocks":[
         {"base":"black_concrete"         ,"map_color":"#191919"  ,"sound":"stone"},

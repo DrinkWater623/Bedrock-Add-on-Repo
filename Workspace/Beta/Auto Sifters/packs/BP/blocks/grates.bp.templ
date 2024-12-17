@@ -1,13 +1,13 @@
 {
   "$files": {
     "array": "sifter_types",
-    "fileName": "./sifters/{{material}}_net.bp"
+    "fileName": "./sifters/{{material}}_grate.bp"
   },
   "$template": {
     "format_version": "1.20.80",
     "minecraft:block": {
       "description": {
-        "identifier": "dw623:{{material}}_net",
+        "identifier": "dw623:{{material}}_grate",
         "menu_category": {"category":"items"},
         "traits": {
           "minecraft:placement_position": {            
@@ -18,13 +18,13 @@
         }
       },
       "components": {  
-        "minecraft:display_name": "{{realTitle(material)}} Net",      
+        "minecraft:display_name": "{{realTitle(material)}} Grate",      
         "minecraft:geometry": {
-          "identifier": "geometry.block_16x1x16_floor"
+          "identifier": "geometry.dw623.block_16x1x16_floor"
         },
         "minecraft:material_instances": {         
           "*": {
-            "texture": "{{material}}_net",
+            "texture": "{{material}}_grate",
             "render_method": "alpha_test",
             "face_dimming": false,
             "ambient_occlusion": false
@@ -37,7 +37,7 @@
         {
           "condition": "query.block_state('minecraft:block_face') == 'up'",
           "components": {
-              "minecraft:geometry": {"identifier":"geometry.block_16x1x16_floor"},
+              "minecraft:geometry": {"identifier":"geometry.dw623.block_16x1x16_floor"},
               "minecraft:collision_box": {"origin": [-8,0,-8],"size": [16,1,16]},
               "minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,1,16]}
           }
@@ -45,7 +45,7 @@
         {
             "condition": "query.block_state('minecraft:block_face') == 'down'",
             "components": {
-                "minecraft:geometry": {"identifier":"geometry.block_16x1x16_ceiling"},
+                "minecraft:geometry": {"identifier":"geometry.dw623.block_16x1x16_ceiling"},
                 "minecraft:collision_box": {"origin": [-8,15,-8],"size": [16,1,16]},
                 "minecraft:selection_box": {"origin": [-8,15,-8],"size": [16,1,16]}
             }
@@ -53,7 +53,7 @@
         {
             "condition": "query.block_state('minecraft:block_face') == 'south'",
             "components": {
-                "minecraft:geometry": {"identifier":"geometry.block_16x1x16_north"},
+                "minecraft:geometry": {"identifier":"geometry.dw623.block_16x1x16_north"},
                 "minecraft:collision_box": {"origin": [-8,0,-8],"size": [16,16,1]},
                 "minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,16,1]}
             }
@@ -61,7 +61,7 @@
         {
             "condition": "query.block_state('minecraft:block_face') == 'north'",
             "components": {
-                "minecraft:geometry": {"identifier":"geometry.block_16x1x16_south"},
+                "minecraft:geometry": {"identifier":"geometry.dw623.block_16x1x16_south"},
                 "minecraft:collision_box": {"origin": [-8,0,7],"size": [16,16,1]},
                 "minecraft:selection_box": {"origin": [-8,0,7],"size": [16,16,1]}
             }
@@ -69,7 +69,7 @@
         {
             "condition": "query.block_state('minecraft:block_face') == 'west'",
             "components": {
-                "minecraft:geometry": {"identifier":"geometry.block_16x1x16_east"},
+                "minecraft:geometry": {"identifier":"geometry.dw623.block_16x1x16_east"},
                 "minecraft:collision_box": {"origin": [-8,0,-8],"size": [1,16,16]},
                 "minecraft:selection_box": {"origin": [-8,0,-8],"size": [1,16,16]}
             }
@@ -77,7 +77,7 @@
         {
             "condition": "query.block_state('minecraft:block_face') == 'east'",
             "components": {
-                "minecraft:geometry": {"identifier":"geometry.block_16x1x16_west"},
+                "minecraft:geometry": {"identifier":"geometry.dw623.block_16x1x16_west"},
                 "minecraft:collision_box": {"origin": [7,0,-8],"size": [1,16,16]},
                 "minecraft:selection_box": {"origin": [7,0,-8],"size": [1,16,16]}
             }

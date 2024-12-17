@@ -4,10 +4,10 @@
  * before interacting with/placing
  * that can be placed vertically , etc...
  */
-import { BlockPermutation, PlayerInteractWithBlockBeforeEvent, PlayerPlaceBlockBeforeEvent, world } from "@minecraft/server";
-import { chatLog, globals } from '../settings.js';
+import { BlockPermutation, PlayerInteractWithBlockBeforeEvent, PlayerPlaceBlockBeforeEvent } from "@minecraft/server";
+import { chatLog } from '../settings.js';
 import { FaceLocationGrid, Vector2Lib, Vector3Lib } from "../commonLib/vectorClass.js";
-import { getAdjacentBlock, getBlockState, slabTypeIDSansHeight } from "../fn-stable.js";
+import { getAdjacentBlock, getBlockState, slabTypeIDHeight, slabTypeIDSansHeight } from "../fn-stable.js";
 //=============================================================================
 /*
     Written By:     "https://github.com/DrinkWater623"
@@ -22,16 +22,18 @@ import { getAdjacentBlock, getBlockState, slabTypeIDSansHeight } from "../fn-sta
             for each test.
 
     Last Update:    20241209 - created
+                    20241215 - Oh, forgot to fill this in.. big WIP
 */
 //==============================================================================
 /**
- * @summary Beta
+ * Technically do not need to combine events anymore since just using Interact
+ * works best... but keeping as is, in case I need to test with PlaceBlock
  */
 //==============================================================================
 export class SlabBeforeEventData {
 
     /**
-     *
+     * @remark Events are Stable stable, onlyPlayerPlaceBlockBeforeEventSignal is Beta
      * @param {PlayerPlaceBlockBeforeEvent | PlayerInteractWithBlockBeforeEvent} event
      */
     constructor(event, debug = false) {
@@ -55,23 +57,27 @@ export class SlabBeforeEventData {
 
         this.itemCount = this.itemStack?.amount;
 
-        this.itemFamily = slabTypeIDSansHeight(this.itemTyeId);
+        //because this is handling also for placing item on top or bottom of slab, like lantern/torch
+        this.itemFamily = '';
+        this.itemHeight = 0;
 
-        if (!this.itemFamily.startsWith('dw623:') || !this.itemFamily.endsWith('slab')) {
-            event.cancel = true;
-            throw new Error(`This Event is only for dw623 slabs: Block Name Formatted Incorrectly: ${this.itemTyeId}`);
+        if (this.itemTyeId.startsWith('dw623:') && this.itemTyeId.includes('_slab_')) {
+            this.itemFamily = slabTypeIDSansHeight(this.itemTyeId);
+            this.itemHeight = slabTypeIDHeight((this.itemTyeId));
+
+            //     event.cancel = true;
+            //     throw new Error(`This Event is only for dw623 slabs: Block Name Formatted Incorrectly: ${this.itemTyeId}`);
+            // }
+
+            // My Slabs use minecraft:block_face
+            // If I ever make a purely vanilla one, then there will be another handler for that.
+            const tempPermutation = BlockPermutation.resolve(this.itemTyeId);
+
+            if (!tempPermutation.getState('minecraft:block_face')) {
+                event.cancel = true;
+                throw new Error('ItemStack is missing state (block trait) minecraft:block_face');
+            }
         }
-
-        // My Slabs use minecraft:block_face
-        // If I ever make a purely vanilla one, then there will be another handler for that.
-
-        const tempPermutation = BlockPermutation.resolve(this.itemTyeId);
-
-        if (!tempPermutation.getState('minecraft:block_face')) {
-            event.cancel = true;
-            throw new Error('ItemStack is missing state (block trait) minecraft:block_face');
-        }
-
         //since my slabs.. should have correct block trait
 
         //---------------------------------------------------------
@@ -88,6 +94,16 @@ export class SlabBeforeEventData {
                 event.blockFace :
                 event.face)
             .toLowerCase();
+
+        if (this.touchBlock.typeId.startsWith('dw623:') && this.touchBlock.typeId.includes('_slab_')) {
+            //if (watchFor.customConcreteSlabInfo.some(p => p.typeId == this.touchBlock.typeId)) {
+            this.touchBlockFamily = slabTypeIDSansHeight(this.touchBlock.typeId);
+            this.touchBlockHeight = slabTypeIDHeight((this.touchBlock.typeId));
+        }
+        else {
+            this.touchBlockFamily = '';
+            this.touchBlockHeight = 0;
+        }
 
         //How is the current block oriented via permutations
         //if my slab
@@ -138,9 +154,15 @@ export class SlabBeforeEventData {
     #infoShow () {
         this.ogEvent.player.sendMessage('\n');
         //-------------
-        chatLog.log("§bBlock Info");
-        this.ogEvent.player.sendMessage(`  ==>§a Touched Block:§6 ${this.touchBlock.typeId} `);
-        this.ogEvent.player.sendMessage(`  ==>§e Touched Where:§6 ${this.touchFace} face  §b ver/hor: ${this.verticalHalf}-${this.horizontalHalf}`);
+        chatLog.log("§dTouched Block Info");
+        if (this.touchBlockFamily) {
+            this.ogEvent.player.sendMessage(`  ==>§a Family:§6 ${this.touchBlockFamily} `);
+            this.ogEvent.player.sendMessage(`  ==>§b Height:§6 ${this.touchBlockHeight} `);
+        }
+        else
+            this.ogEvent.player.sendMessage(`  ==>§a Block:§6 ${this.touchBlock.typeId} `);
+
+        this.ogEvent.player.sendMessage(`  ==>§e Where:§6 ${this.touchFace} face  §b ver/hor:§r ${this.verticalHalf}-${this.horizontalHalf}`);
         //this.ogEvent.player.sendMessage(`  ==>§b Grid(3x3): ${Vector2Lib.toString(this.grid_3x3, 0, true)}`);
         this.ogEvent.player.sendMessage(`  ==>§b Grid(4x4): ${Vector2Lib.toString(this.grid_4x4, 0, true)}`);
 
@@ -152,14 +174,21 @@ export class SlabBeforeEventData {
         }
 
         this.ogEvent.player.sendMessage('\n');
-        chatLog.log("§bItem Info");
-        this.ogEvent.player.sendMessage(`  ==>§a Item In Hand :§f ${this.itemCount} §6${this.itemTyeId}`);
-        this.ogEvent.player.sendMessage(`  ==>§b Family :§f ${this.itemFamily}`);
+        chatLog.log("§dItem Held Info");
+        if (this.itemTyeId != this.itemFamily) {
+            this.ogEvent.player.sendMessage(`  ==>§a Family :§6 ${this.itemFamily}`);
+            this.ogEvent.player.sendMessage(`  ==>§b Height :§f ${this.itemHeight}`);
+        }
+        else
+            this.ogEvent.player.sendMessage(`  ==>§a Item In Hand :§f ${this.itemCount} §6${this.itemTyeId}`);
 
         this.ogEvent.player.sendMessage('\n');
-        chatLog.log("§bGeo Location");
+        chatLog.log("§dGeo Location");
         this.ogEvent.player.sendMessage(`  ==>§b Touched Block: ${Vector3Lib.toString(this.touchBlock.location, 0, true, ',')}`);
         this.ogEvent.player.sendMessage(`  ==>§a New Block Space: ${Vector3Lib.toString(this.newBlock.location, 0, true, ',')}`);
-        this.ogEvent.player.sendMessage(`  ==>§e In space where new block would go: ${this.newBlock.typeId}`);
+        this.ogEvent.player.sendMessage(`  ==>§e In space where new block would go:§6 ${this.newBlock.typeId}`);
     }
 }
+//=============================================================================
+// End of File
+//=============================================================================

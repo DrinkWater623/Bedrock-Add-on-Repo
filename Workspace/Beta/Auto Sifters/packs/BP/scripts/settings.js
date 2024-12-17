@@ -8,8 +8,10 @@ import { MinecraftItemTypes } from "./commonLib/vanillaData";
 //==============================================================================
 export const pack = {
     packName: 'Auto Sifters',
+    packNameSpace: 'dw623:',
     isLoadAlertsOn: true,
     hasChatCmd: -1,
+    isStable: 1,
     alert: "https://github.com/DrinkWater623",
     VanillaOnlySlabPlacement: false
 };
@@ -17,22 +19,38 @@ export const pack = {
 export const alertLog = new ConsoleAlert(`§d${pack.packName}§r`);
 export const chatLog = new ChatMsg(`§b${pack.packName}§r`);
 //==============================================================================
-export const globals = {
-    autoSiftBlockNameSpace: "sift:",
-    autoSiftBlockStateName: "int:y_level",
-    mainNameSpace: "dw623:",   
-    minecraftNameSpace:"minecraft:",
-    mcAir:'minecraft:air',
-    keyBlockWords: [ "gravel", "powder", "mud","sand", "snow" ] //save time
-};
-export const dynamicVars = {
+export const globals = {       
+    mcNameSpace: "minecraft:",
+    mcAir: 'minecraft:air',
+    keyBlockWords: [ "gravel", "powder", "mud", "sand", "snow" ] //save time
 };
 //==============================================================================
 export const dev = {
     debug: false,
     debugGamePlay: false,
     debugPackLoad: false,
-    debugSubscriptions: true
+    debugSubscriptions: false,
+    debugSlabInteractEvents: true,
+    debugSifterOnTickEvents: true,
+    allDebug () {
+        for (const key in dev) {
+            if (key.startsWith('debug') && key.length>'debug'.length)
+                dev[ key ] = this.debug;
+        }
+    },
+    allOff () {
+        for (const key in dev) {
+            if (key.startsWith('debug'))
+                dev[ key ] = false;
+        }
+    },
+    allOn () {
+        for (const key in dev) {
+            if (key.startsWith('debug'))
+                dev[ key ] = true;
+        }
+    },
+
 };
 //==============================================================================
 const colors = [
@@ -57,13 +75,13 @@ const colors = [
 export const watchFor = {
     autoSiftBlockInfo: [
         //a few not gravity, but should be, so treating like they are - cause hey, I can.
-        { full: true    ,gravity: true, name: "gravel", custom: "", minecraft: "", sound: "dig.gravel" },
-        { full: true    ,gravity: true, name: "red_sand", custom: "", minecraft: "", sound: "dig.sand" },
-        { full: true    ,gravity: true, name: "sand", custom: "", minecraft: "", sound: "dig.sand" },
-        { full: true    ,gravity: false, name: "soul_sand", custom: "", minecraft: "", sound: "dig.hay" },
-        { full: true    ,gravity: false, name: "snow", custom: "", minecraft: "", sound: "dig.snow" },
-        { full: true    ,gravity: false, name: "powder_snow", custom: "", minecraft: "", sound: "dig.snow" },
-        { full: true    ,gravity: true, name: "mud", custom: "", minecraft: "", sound: "dig.mud" }
+        { full: true, gravity: true, name: "gravel", custom: "", minecraft: "", sound: "dig.gravel" },
+        { full: true, gravity: true, name: "red_sand", custom: "", minecraft: "", sound: "dig.sand" },
+        { full: true, gravity: true, name: "sand", custom: "", minecraft: "", sound: "dig.sand" },
+        { full: true, gravity: false, name: "soul_sand", custom: "", minecraft: "", sound: "dig.hay" },
+        { full: true, gravity: false, name: "snow", custom: "", minecraft: "", sound: "dig.snow" },
+        { full: true, gravity: false, name: "powder_snow", custom: "", minecraft: "", sound: "dig.snow" },
+        { full: true, gravity: true, name: "mud", custom: "", minecraft: "", sound: "dig.mud" }
         //TODO: powdered snow... but it has a freeze effect.. see if can mimic       
     ],
     customConcreteSlabInfo: [
@@ -81,43 +99,45 @@ export const watchFor = {
         "minecraft:flowing_water"
     ],
     sifterBlocks: [
-        globals.mainNameSpace + "copper_sifter",
-        globals.mainNameSpace + "iron_sifter",
-        globals.mainNameSpace + "diamond_sifter",
-        globals.mainNameSpace + "netherite_sifter"
+        pack.packNameSpace + "copper_sifter",
+        pack.packNameSpace + "iron_sifter",
+        pack.packNameSpace + "diamond_sifter",
+        pack.packNameSpace + "netherite_sifter"
     ],
-
     vanillaSifterBlocks: [ "" ],
-
     customSiftableBlocks: [ "" ],
-
     customSiftableBlockInfo: [ {
         //nameSpace: "x",
         base: "x",
-        typeIdBase:"x",
-        minecraft:"x",
+        typeIdBase: "x",
+        minecraft: "x",
         height: 0,
         name: "x",
         typeId: "x",
         sound: "x"
     } ],
-    vanillaItemsNeedingBestFace: [  
-        "cake",      
-        "chain",
-        "end_rod",
-        "flower_pot",
-        "frame",
-        "hopper",
-        "ladder",
-        "lever",
-        "lantern",
-        "painting",
-        "redstone_wire",
-        "redstone_repeater",
-        "redstone_comparator",
-        "redstone_torch",
-        "torch"
+
+    //nothing can sit on top if on up face and it is slab, meaning it is on bottom
+    vanillaItemsPlacementSpecs: [
+        { item: "minecraft:cake", minHeight: 1, minWidth: 14, allowedBlockFaceTraits: 'up' },
+        { item: "minecraft:sea_pickle", minHeight: 13, minWidth: 13, allowedBlockFaceTraits: 'up' },
+        { item: "minecraft:scaffolding", minHeight: 1, minWidth: 15, allowedBlockFaceTraits: 'up' },
+        { item: "minecraft:flower_pot", minHeight: 1, minWidth: 10, allowedBlockFaceTraits: 'up' },
+        { item: "minecraft:frame", minHeight: 3, minWidth: 3, allowedBlockFaceTraits: '' },
+        { item: "minecraft:lever", minHeight: 12, minWidth: 12, allowedBlockFaceTraits: '' },
+        { item: "minecraft:lantern", minHeight: 1, minWidth: 9, allowedBlockFaceTraits: 'up,down' },
+        { item: "minecraft:torch", minHeight: 9, minWidth: 9, allowedBlockFaceTraits: '' },
+        { item: "minecraft:redstone", minHeight: 1, minWidth: 14, allowedBlockFaceTraits: 'up' },
+        { item: "minecraft:redstone_torch", minHeight: 9, minWidth: 9, allowedBlockFaceTraits: '' },
+        { item: "minecraft:comparator", minHeight: 1, minWidth: 9, allowedBlockFaceTraits: 'up' },
+        { item: "minecraft:repeater", minHeight: 1, minWidth: 9, allowedBlockFaceTraits: 'up' },
+        { item: "minecraft:tripwire_hook", minHeight: 8, minWidth: 8, allowedBlockFaceTraits: '' }
+        //but can be 1 if on up
     ]
+    /*
+    stuff that is okay, per how on mc slab
+    banner
+     */
 };
 //==============================================================================
 const vanillaItems = Object.values(MinecraftItemTypes); //.   how to get the values again... not the key
@@ -260,12 +280,12 @@ export const lootTableItems = [
     { minHeight: 8, typeId: "minecraft:bundle", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
 
     //custom
-    { minHeight: 1, typeId: globals.mainNameSpace + "emerald_nugget", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
-    { minHeight: 1, typeId: globals.mainNameSpace + "diamond_nugget", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
-    { minHeight: 1, typeId: globals.mainNameSpace + "netherite_nugget", blocksNotAllowed: [ "" ], blocksAllowed: [ "soul_sand" ] },
-    { minHeight: 1, typeId: globals.mainNameSpace + "netherite_scrap_piece", blocksNotAllowed: [ "" ], blocksAllowed: [ "soul_sand" ] },
-    { minHeight: 6, typeId: globals.mainNameSpace + "broken_elytra_left", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
-    { minHeight: 6, typeId: globals.mainNameSpace + "broken_elytra_right", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] }
+    { minHeight: 1, typeId: pack.packNameSpace + "emerald_nugget", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 1, typeId: pack.packNameSpace + "diamond_nugget", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 1, typeId: pack.packNameSpace + "netherite_nugget", blocksNotAllowed: [ "" ], blocksAllowed: [ "soul_sand" ] },
+    { minHeight: 1, typeId: pack.packNameSpace + "netherite_scrap_piece", blocksNotAllowed: [ "" ], blocksAllowed: [ "soul_sand" ] },
+    { minHeight: 6, typeId: pack.packNameSpace + "broken_elytra_left", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] },
+    { minHeight: 6, typeId: pack.packNameSpace + "broken_elytra_right", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "all" ] }
     // add cooked foods and raw in snow only
 
 ];
@@ -273,27 +293,27 @@ export const lootTableItems = [
 // Update
 //==============================================================================
 watchFor.autoSiftBlockInfo.forEach(b => {
-    b.custom = `${globals.autoSiftBlockNameSpace}${b.name}`;
-    b.minecraft = `${globals.minecraftNameSpace}${b.name}`;   
+    b.custom = `${pack.packNameSpace}${b.name}`;
+    b.minecraft = `${globals.mcNameSpace}${b.name}`;
 });
 //==============================================================================
 // Append
 //==============================================================================
-colors.forEach(color => {        
+colors.forEach(color => {
 
     //add colored gravity blocks to main auto sifter list
-    const concretePowderBase = color + "_concrete_powder"
+    const concretePowderBase = color + "_concrete_powder";
     const concretePowderInfo = {
         full: false,
         gravity: true,
         name: concretePowderBase,
-        custom: `${globals.autoSiftBlockNameSpace}${concretePowderBase}`,
-        minecraft: `${globals.minecraftNameSpace}${concretePowderBase}`,
+        custom: `${pack.packNameSpace}${concretePowderBase}`,
+        minecraft: `${globals.mcNameSpace}${concretePowderBase}`,
         height: 16,
         sound: "dig.sand"
-    };    
-    watchFor.autoSiftBlockInfo.push(concretePowderInfo)
-    
+    };
+    watchFor.autoSiftBlockInfo.push(concretePowderInfo);
+
     //add concrete slab for each color to concreteSlabs list
     const concreteSlabBase = color + "_concrete_slab";
     for (let i = 1; i <= 16; i++) {
@@ -301,53 +321,64 @@ colors.forEach(color => {
             base: concreteSlabBase,
             height: i,
             name: `${concreteSlabBase}_${i}`,
-            typeId: `${globals.mainNameSpace + concreteSlabBase}_${i}`
+            typeId: `${pack.packNameSpace + concreteSlabBase}_${i}`
         };
-        watchFor.customConcreteSlabInfo.push(concreteSlabInfo);        
+        watchFor.customConcreteSlabInfo.push(concreteSlabInfo);
     }
 
     //loot table stuff with colors
-    lootTableItems.push({ minHeight: 8, typeId: globals.minecraftNameSpace + color + "_bundle", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] });
-    lootTableItems.push({ minHeight: 8, typeId: globals.minecraftNameSpace + color + "_candle", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] });
-    watchFor.vanillaItemsNeedingBestFace.push(color + "_carpet");
-    watchFor.vanillaItemsNeedingBestFace.push(color + "_candle");
+    lootTableItems.push({ minHeight: 8, typeId: globals.mcNameSpace + color + "_bundle", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] });
+    lootTableItems.push({ minHeight: 8, typeId: globals.mcNameSpace + color + "_candle", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] });
+
+    watchFor.vanillaItemsPlacementSpecs.push({ item: globals.mcNameSpace + color + "_carpet", minHeight: 0, minWidth: 2, allowedBlockFaceTraits: 'down', disAllowedBlockFaceTraits: '' });
+    //candle is complicated
+    //one candle is 9, but 2 is 11, but mc can have candles with nothing under them, so ok
 });
-// simple array for easier search
-watchFor.vanillaSifterBlocks = watchFor.autoSiftBlockInfo.map(b => b.minecraft)
+// simp1le array for easier search
+watchFor.vanillaSifterBlocks = watchFor.autoSiftBlockInfo.map(b => b.minecraft);
 //==============================================================================
 // Adjustments
 //==============================================================================
 watchFor.autoSiftBlockInfo.forEach(b => {
-    const slabBaseName = b.name+'_slab'
+    const slabBaseName = b.name + '_slab';
     for (let i = 1; i <= 16; i++) {
         const addB = {
             base: slabBaseName,
-            typeIdBase: `${globals.mainNameSpace}${slabBaseName}`,
+            typeIdBase: `${pack.packNameSpace}${slabBaseName}`,
             minecraft: `minecraft:${b.name}`,
             height: i,
             name: `${slabBaseName}_${i}`,
-            typeId: `${globals.mainNameSpace}${slabBaseName}_${i}`,
+            typeId: `${pack.packNameSpace}${slabBaseName}_${i}`,
             sound: b.sound
         };
         watchFor.customSiftableBlockInfo.push(addB);
     }
 });
-watchFor.customSiftableBlocks = watchFor.customSiftableBlockInfo.map(b => b.typeId)
+watchFor.customSiftableBlocks = watchFor.customSiftableBlockInfo.map(b => b.typeId);
 //==============================================================================
 //  Appends for Loot Tables - Loops of Loop-able Stuff
 //==============================================================================
 //add enchanted books - good ones
 //add enchanted tools weapons
 vanillaItems.filter(id => id.endsWith('_rail')).forEach(item => {
-    watchFor.vanillaItemsNeedingBestFace.push(item);
+    watchFor.vanillaItemsPlacementSpecs.push({ item: item, minHeight: 1, minWidth: 12, allowedBlockFaceTraits: 'down', disAllowedBlockFaceTraits: '' });
+});
+
+vanillaItems.filter(id => id.endsWith('_sign')).filter(id => !id.endsWith('_hanging_sign')).forEach(item => {
+    watchFor.vanillaItemsPlacementSpecs.push({ item: item, minHeight: 4, minWidth: 9, allowedBlockFaceTraits: '' });
+});
+vanillaItems.filter(id => id.endsWith('_hanging_sign')).forEach(item => {
+    watchFor.vanillaItemsPlacementSpecs.push({ item: item, minHeight: 2, minWidth: 1, allowedBlockFaceTraits: 'down' });
 });
 
 vanillaItems.filter(id => id.endsWith('_button')).forEach(item => {
-    watchFor.vanillaItemsNeedingBestFace.push(item);
+    //TODO: note button is a little diff, depends on player cardinal facing direction
+    // technically need one pixel line on block, just use 8 until can work that out
+    watchFor.vanillaItemsPlacementSpecs.push({ item: item, minHeight: 8, minWidth: 8, allowedBlockFaceTraits: '' });
     lootTableItems.push({ minHeight: 2, typeId: item, blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] });
 });
 vanillaItems.filter(id => id.endsWith('_pressure_plate')).forEach(item => {
-    watchFor.vanillaItemsNeedingBestFace.push(item);
+    watchFor.vanillaItemsPlacementSpecs.push({ item: item, minHeight: 1, minWidth: 9, allowedBlockFaceTraits: 'down' });
     lootTableItems.push({ minHeight: 2, typeId: item, blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] });
 });
 vanillaItems.filter(id => id.endsWith('_seeds')).forEach(item => {
@@ -386,16 +417,14 @@ vanillaItems.filter(id => id.endsWith('_smithing_template')).forEach(item => {
     });
 });
 //==============================================================================
-//Add minecraft: in front
-for(let i=0;i<watchFor.vanillaItemsNeedingBestFace.length;i++){
-    watchFor.vanillaItemsNeedingBestFace[i] = globals.minecraftNameSpace+watchFor.vanillaItemsNeedingBestFace[i]
-}
 //==============================================================================
 //Debug
 if (dev.debugPackLoad) {
-    const badItems = lootTableItems.filter(item => item.typeId.startsWith(globals.minecraftNameSpace) && !vanillaItems.includes(item.typeId));
+    const badItems = lootTableItems.filter(item => item.typeId.startsWith(globals.mcNameSpace) && !vanillaItems.includes(item.typeId));
     badItems.forEach(bad => alertLog.error(bad.typeId));
 
     //vanillaItems.forEach(v => alertLog.log(v))
 }
-//==============================================================================
+//=============================================================================
+// End of File
+//=============================================================================

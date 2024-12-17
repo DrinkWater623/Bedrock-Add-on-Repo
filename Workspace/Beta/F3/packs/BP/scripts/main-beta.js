@@ -6,8 +6,8 @@
 import { world } from '@minecraft/server';
 import { main_stable, masterDevDebugInitialize } from './main-stable.js';
 import { alertLog, pack, dev, toggles } from './settings.js';
-import * as f3 from './fn-beta.js';
-import { PlayerChatCommands } from "./chat_cmds-beta.js";
+import * as piwb from './events-beta/playerInteractWithBlock.js';
+import { PlayerChatCommands } from "./events-beta/chat_cmds-beta.js";
 //==============================================================================
 const chatCmds = new PlayerChatCommands(pack.commandPrefix);
 //==============================================================================
@@ -20,13 +20,13 @@ function main_beta () {
     alertLog.success("§aInstalling beforeEvents.playerInteractWithBlock §6BETA", dev.debugSubscriptions);
     world.beforeEvents.playerInteractWithBlock.subscribe((event) => {
         if (toggles.piwb_b4)
-            f3.playerInteractWithBlock_save(event);
+            piwb.playerInteractWithBlock_both(event);
     });
 
     alertLog.success("§aInstalling afterEvents.playerInteractWithBlock §6BETA", dev.debugSubscriptions);
     world.afterEvents.playerInteractWithBlock.subscribe((event) => {
         if (toggles.piwb_aft)
-            f3.playerInteractWithBlock_save(event);
+            piwb.playerInteractWithBlock_both(event);
     });
 }
 //==============================================================================

@@ -1,7 +1,6 @@
 //@ts-check
 import { WorldInitializeBeforeEvent } from "@minecraft/server";
 //==============================================================================
-import { concrete_slabs_beforeOnPlayerPlace } from "../components/beforeOnPlayerPlace/concrete_slabs_opp.js";
 import { siftable_slabs_onTick } from "../components/onTick/siftable_slabs.js";
 import { sifter_query_onTick } from "../components/onTick/sifter_query.js";
 import { alertLog, dev } from "../settings.js";

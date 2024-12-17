@@ -1,7 +1,7 @@
 //@ts-check
 import { Player, ChatSendBeforeEvent } from "@minecraft/server";
-import { pack, toggles, chatLog, alertLog, dev } from './settings.js';
-import { playerF3Show } from "./fn-stable.js";
+import { pack, toggles, chatLog, alertLog, dev } from '../settings.js';
+import { playerF3Show } from "../fn-stable.js";
 //==============================================================================
 
 //==============================================================================

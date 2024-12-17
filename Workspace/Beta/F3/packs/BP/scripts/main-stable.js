@@ -1,6 +1,7 @@
 //@ts-check
 import { world } from "@minecraft/server";
 import { alertLog, dev, pack, toggles } from "./settings.js";
+import * as pbb from "./events/playerBreakBlock.js";
 import * as f3 from './fn-stable.js';
 //==============================================================================
 /**
@@ -32,13 +33,13 @@ export function main_stable () {
     alertLog.success("§aInstalling beforeEvents.playerBreakBlock §gSTABLE", dev.debugSubscriptions);
     world.beforeEvents.playerBreakBlock.subscribe((event) => {
         if (toggles.pbb_b4)
-            f3.playerBreakBlock_before_show(event);
+            pbb.playerBreakBlock_before_show(event);
     });
 
     alertLog.success("§aInstalling afterEvents.playerBreakBlock §gSTABLE", dev.debugSubscriptions);
     world.afterEvents.playerBreakBlock.subscribe((event) => {
         if (toggles.pbb_aft)
-            f3.playerBreakBlock_after_show(event);
+            pbb.playerBreakBlock_after_show(event);
     });
     //==============================================================================
 }

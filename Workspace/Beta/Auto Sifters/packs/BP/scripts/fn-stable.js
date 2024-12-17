@@ -257,7 +257,7 @@ export function placeBlockPermutation (block, permutation,sound='') {
         if (!sound)
             sound = getLikelyPlaceBlockSound(permutation.type.id);
         
-        chatLog.send(world,`§f§lSound: §a§l${sound}`,true)
+        //chatLog.send(world,`  ==> Sound: §a${sound}`,true)
 
         system.run(() => { 
             block.dimension.playSound(sound,block.location,{volume:10})

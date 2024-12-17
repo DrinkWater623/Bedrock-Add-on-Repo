@@ -1,6 +1,7 @@
 //@ts-check
-import { world } from "@minecraft/server";
+import { MinecraftDimensionTypes, world } from "@minecraft/server";
 import { ConsoleAlert, ChatMsg } from "./commonLib/consoleClass";
+import { MinecraftBiomeTypes, MinecraftBlockTypes, MinecraftEntityTypes, MinecraftItemTypes } from "./commonLib/vanillaData";
 //==============================================================================
 /**
  *  Owner is to edit this file as needed
@@ -36,22 +37,15 @@ export const dev = {
     debugPlayerLoadSpawn: false
 };
 //==============================================================================
-export const entityEvents = {
-    despawnEventName: 'despawn_me',
-    replaceEventName: 'replace_me',
-    stayInWebEventName: 'stay_in_web_start',
-    wanderEventName: 'wander_around_start'
-};
+export const vanillaLists ={
+    //biomes:Object.values(MinecraftBiomeTypes),
+    blocks: Object.keys(MinecraftBlockTypes).filter(k => typeof MinecraftBlockTypes[k]=='string').map(k => MinecraftBlockTypes[k]),
+    //dimensions: Object.values(MinecraftDimensionTypes),
+    //entities: Object.values(MinecraftEntityTypes),
+    items: Object.keys(MinecraftItemTypes).filter(k => typeof MinecraftBlockTypes[k]=='string').map(k => MinecraftBlockTypes[k])  
+}
 //==============================================================================
 //TODO: have this pack be the death counter for players
-export const watchFor = {
-    typeId: "minecraft:player",
-    family: "player",
-    display: "After Life",
-    scoreboardName: 'after_life_monitor',
-    scoreboardDisplayName: '§aAfter Life §bMonitor',
-    scoreboard: world.scoreboard.getObjective(`after_life_monitor`)
-};
 //==============================================================================
 export const alertLog = new ConsoleAlert(`§d${pack.packName}§r`);
 export const chatLog = new ChatMsg(`§b${pack.packName}§r`);

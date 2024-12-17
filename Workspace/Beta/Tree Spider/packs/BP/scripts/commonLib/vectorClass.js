@@ -14,10 +14,12 @@
  *      20241210 - Fixed FaceLocationGrid to not need block, after new info
  *                 Added rotationToCompassDirection and rotationToCardinalDirection for internal use
  *                 Added ability to change up/down grid per player rotation, if given
+ *      20241215 - Change 'up' | 'down' | 'south' | 'north' | 'east' | 'west' to string
+ *      20241217 - Took out debug message
 */
 //==============================================================================
 
-import { Block, Player, world } from "@minecraft/server";
+import { Player, world } from "@minecraft/server";
 
 /**
  * @param {number} number  
@@ -55,11 +57,14 @@ function rotationToCompassDirection (rotation) {
  * @returns { 'south' | 'west' | 'north' | 'east'}
  */
 function rotationToCardinalDirection (rotation) {
-    let dirs = [ "south", "west", "north", "east", "south" ];
+    let dirs = [ "south", "west", "north", "east", "south" ];    
     let dir = Math.round((rotation % 360) / 90);
     if (dir < 0) dir += 4;
-    //@ts-ignore
+
+    //@ts-ignore    
     return dirs[ dir ];
+
+    
 }
 //==============================================================================
 //==============================================================================
@@ -282,7 +287,7 @@ export class FaceLocationGrid {
     /**
      * 
      * @param {import("@minecraft/server").Vector3} faceLocation 
-     * @param {'up' | 'down' | 'south' | 'north' | 'east' | 'west'} blockFace
+     * @param {string} blockFace
      * @param {boolean} [absolute=false]
      * @param {Player | undefined} [player = undefined]
      * @summary Use Absolute to have the grids not be relative to the face side  
@@ -294,7 +299,7 @@ export class FaceLocationGrid {
                 decimalPart(faceLocation.y),
                 decimalPart(faceLocation.z)
             );
-        this.blockFace = blockFace;
+        this.blockFace = blockFace.toLowerCase();
 
         if ([ 'up', 'down' ].includes(this.blockFace)) {
             this.xDelta = this.faceLocation.x;
@@ -363,43 +368,38 @@ export class FaceLocationGrid {
         if (![ 'up', 'down' ].includes(this.blockFace))
             return;
 
-        //const angle = Math.round((rotationY % 360) / 90);
-        const direction = rotationToCardinalDirection(rotationY);
-        world.sendMessage(`rotationY=${rotationY} - -angle = Dir=${direction}`)
+        const direction = rotationToCardinalDirection(rotationY);        
+        //world.sendMessage(`rotationY=${Math.round(rotationY,1} - -angle = Dir=${direction}`)
         this.adjustUpDownToPlayerDirection(direction);
     }
     //for up/down can alter to be relative to player rotation
     /**
      * 
-     * @param {'up' | 'down' | 'south' | 'north' | 'east' | 'west'} direction      
+     * @param {string} direction      
      */
     adjustUpDownToPlayerDirection (direction) {
         if (![ 'up', 'down' ].includes(this.blockFace))
             return;
 
         //TODO: figure out later, not needed yet
-        world.sendMessage(`altering for ${direction}`)
+        //world.sendMessage(`altering for ${direction}`);
         switch (direction) {
-            case 'north':
-                [ this.xDelta, this.yDelta ] = [ this.#og_xDelta, this.#og_yDelta ];
+            case 'north': [ this.xDelta, this.yDelta ] = [ this.#og_xDelta, this.#og_yDelta ];
                 break;
-            case 'south':
-                [ this.xDelta, this.yDelta ] = [ 1 - this.#og_xDelta, 1 - this.#og_yDelta ];
+            case 'south': [ this.xDelta, this.yDelta ] = [ 1 - this.#og_xDelta, 1 - this.#og_yDelta ];
                 break;
-            case 'west':
-                [ this.xDelta, this.yDelta ] = [ 1-this.#og_yDelta, this.#og_xDelta ];
+            case 'west': [ this.xDelta, this.yDelta ] = [ 1 - this.#og_yDelta, this.#og_xDelta ];
                 break;
-            case 'east':
-                [ this.xDelta, this.yDelta ] = [ this.#og_yDelta, 1-this.#og_xDelta ];
+            case 'east': [ this.xDelta, this.yDelta ] = [ this.#og_yDelta, 1 - this.#og_xDelta ];
                 break;
             default:
                 return;
         }
 
-        if (this.blockFace =='down') {
+        if (this.blockFace == 'down') {
             //reverse for when looking up.  Imagine looking at paper
-            this.xDelta = 1-this.xDelta
-            this.yDelta = 1-this.yDelta
+            this.xDelta = 1 - this.xDelta;
+            this.yDelta = 1 - this.yDelta;
         }
 
         // reset these vars

@@ -1,4 +1,7 @@
 //@ts-check
+//=============================================================================
+//export class Direction {}
+//=============================================================================
 //TODO:rework this - ask k if cardinal or not... 
 //put info def in constructor
 export class DirectionInfo {
@@ -133,3 +136,4 @@ export class DirectionInfo {
         return retInfo;
     }
 }
+//=============================================================================

@@ -4,12 +4,13 @@ import { main_stable } from './main-stable.js';
 import * as subs_beta from './subscribes-beta.js';
 //==============================================================================
 function main_beta () {    
-    subs_beta.beforeEvents_playerPlaceBlock(true);
-    subs_beta.beforeEvents_playerInteractWithBlock(true);
+    subs_beta.beforeEvents_playerPlaceBlock_subscribe();
 }
 //==============================================================================
+if (dev.debug) dev.allDebug()
 alertLog.success(`§aInstalling Add-on ${pack.packName} - §6Beta ${pack.isLoadAlertsOn ? '§c(Debug Mode)' : ''}`, pack.isLoadAlertsOn || dev.debugPackLoad);
 pack.hasChatCmd = 0;
+pack.isStable = 0;
 //==============================================================================
 alertLog.log(`§bCalling main_stable()  §c(Debug Mode)`, dev.debugPackLoad);
 main_stable();
