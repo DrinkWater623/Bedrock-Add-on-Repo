@@ -30,21 +30,15 @@ export function beforeEvents_playerInteractWithBlock_subscribe () {
         if (!watchFor.customConcreteSlabInfo.some(p => p.typeId == holdingTypeId || p.typeId == blockTypeId))
             return;
 
-        const debug = dev.debugEvents && event.isFirstEvent;
+        const debug = dev.debugSlabInteractEvents && event.isFirstEvent;
 
         const isHoldingSlab = watchFor.customConcreteSlabInfo.some(p => p.typeId == holdingTypeId);
         const isHoldingSpecialItem = isHoldingSlab ? false : watchFor.vanillaItemsPlacementSpecs.some(s => s.item == holdingTypeId);
-        // if (event.isFirstEvent) {
-        //     world.sendMessage('\n'.repeat(40))
-        //     world.sendMessage(`/${holdingTypeId}/`)
-        //     world.sendMessage(`${isHoldingSpecialItem}`)
-        //     world.sendMessage(`${isHoldingSlab}`)
-        //     //watchFor.vanillaItemsPlacementSpecs.forEach(d => world.sendMessage(d.item))
-        // }
+        
         if(!isHoldingSlab && !isHoldingSpecialItem)
             return
 
-        chatLog.send(event.player, `${'\n'.repeat(40)}§e§lSubscription Activated:§f§l beforeEvents.playerInteractWithBlock`, debug);
+        chatLog.send(event.player, `${'\n'.repeat(2)}${'='.repeat(80)}\n§e§lSubscription Activated:§f§l beforeEvents.playerInteractWithBlock`, debug);
 
         if (isHoldingSlab) {
             //Do I need this.. test

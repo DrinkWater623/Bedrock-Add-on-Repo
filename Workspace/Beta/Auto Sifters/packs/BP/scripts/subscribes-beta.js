@@ -24,7 +24,7 @@ export function beforeEvents_playerPlaceBlock_subscribe () {
     alertLog.success('Subscribing to§r world.beforeEvents.playerPlaceBlock - §6Beta', dev.debugSubscriptions);
 
     world.beforeEvents.playerPlaceBlock.subscribe((event) => {
-        const debug = dev.debugEvents
+        const debug = dev.debugSlabInteractEvents
         chatLog.send(event.player, '\n§f§lSubscription Activated:§f§l beforeEvents.playerPlaceBlock\n', debug);
 
         if (watchFor.customConcreteSlabInfo.some(p => p.typeId == event.permutationBeingPlaced.type.id)) {

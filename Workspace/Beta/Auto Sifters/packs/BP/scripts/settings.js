@@ -30,8 +30,8 @@ export const dev = {
     debugGamePlay: false,
     debugPackLoad: false,
     debugSubscriptions: false,
-    debugSlabInteractEvents: true,
-    debugSifterOnTickEvents: true,
+    debugSlabInteractEvents: false,
+    debugSifterOnTickEvents: false,
     allDebug () {
         for (const key in dev) {
             if (key.startsWith('debug') && key.length>'debug'.length)

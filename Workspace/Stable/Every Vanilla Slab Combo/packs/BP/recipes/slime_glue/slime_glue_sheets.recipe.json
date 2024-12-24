@@ -1,0 +1,16 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shapeless": {
+    "description": {
+      "identifier": "dw623:stonecutter_slime_glue_sheets_from_block"
+    },
+    "tags": ["stonecutter"],
+    "priority": 0,
+    "ingredients": [{"item":"dw623:slime_glue_block"}],
+    "unlock": [{"item": "dw623:slime_glue_block"}],
+    "result": {
+      "item": "dw623:slime_glue_sheet",
+      "count": 32
+    }
+  }
+}

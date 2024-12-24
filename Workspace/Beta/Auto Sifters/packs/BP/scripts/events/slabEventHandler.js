@@ -101,8 +101,7 @@ function placeCombinableSlab (event, debug = false) {
             success = placeBlock(event.touchBlock, newBlockTypeId);
         }
         else {
-            const newSlabTypeId = `${event.itemFamily}_${newHeight}`;
-            const newSlabPermutation = BlockPermutation.resolve(newSlabTypeId, { 'minecraft:block_face': event.blockFaceTrait });
+            const newSlabTypeId = `${event.itemFamily}_${newHeight}`;            
             success = replaceDw623Slab(event.touchBlock, newSlabTypeId, event.blockFaceTrait);
         }
 

@@ -1,0 +1,19 @@
+{
+    "$template": {
+        "format_version" : "1.21.40",
+        "dw623:slime_glue_block": {
+            "sound": "slime",
+            "textures": "slime_glue_sheet",
+            "isotropic": true
+        },
+        "dw623:slime_glue_sheet": {
+            "sound": "slime",
+            "isotropic": true
+        },
+        "{{#vanilla_slab_combos}}": {
+            "{{settings.block_ns}}:{{identifier}}": {
+                "sound": "{{sound > '' ? sound : length(obj2.sound) > 0 ? obj2.sound : length(obj1.sound) > 0 ? obj1.sound : 'stone'}}"
+            }
+        }
+    }
+}

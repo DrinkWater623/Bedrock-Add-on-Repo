@@ -312,6 +312,7 @@ export function placeDw623Slab (block, newTypeId, blockFace, airOnly = true, deb
  * @param {string} blockFace 
  */
 export function replaceDw623Slab (block, newTypeId, blockFace) {
+    //const verticalHalf = blockFace=='up' ? 'bottom':'top'
     const newSlabPermutation = BlockPermutation.resolve(newTypeId, { 'minecraft:block_face': blockFace });
     return placeBlockPermutation(block, newSlabPermutation);
 }
