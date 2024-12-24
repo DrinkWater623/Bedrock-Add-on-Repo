@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:mossy_s5eb5k.polished_b10eb5k.slab.combo_recipe1"
+    },
+    "pattern": [
+      "111",
+      "ggg",
+      "222"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:mossy_stone_brick_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:polished_blackstone_brick_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:mossy_stone_brick_slab"
+      },
+      {
+        "item": "minecraft:polished_blackstone_brick_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:mossy_stone_brick.polished_blackstone_brick.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}

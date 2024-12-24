@@ -1,0 +1,50 @@
+{
+    "format_version": 2,
+    "header": {
+        "name": "Every Slab Combo RP : §aStable§r",
+        "description": "Every Combination of Vanilla Slabs RP\n§aBuild Date: 2024.12.24.0.18.21§r §gby https://github.com/DrinkWater623§r",
+        "uuid": "6ee535ff-5e13-475b-9746-de09be7ac732",
+        "version": [
+            24,
+            12,
+            24
+        ],
+        "min_engine_version": [
+            1,
+            21,
+            0
+        ]
+    },
+    "modules": [
+        {
+            "type": "resources",
+            "description": "RP Pack",
+            "uuid": "9eb29a24-bad4-450e-b11c-a394990a48ab",
+            "version": [
+                1,
+                0,
+                0
+            ]
+        }
+    ],
+    "dependencies": [
+        {
+            "uuid": "eca6fee8-a292-4bb6-a9d7-11027db98340",
+            "version": [
+                24,
+                12,
+                24
+            ]
+        }
+    ],
+    "metadata": {
+        "authors": [
+            "https://github.com/DrinkWater623"
+        ],
+        "generated_with": {
+            "regolith_filter_mani_fest": [
+                "24.7.28"
+            ]
+        }
+    }
+}

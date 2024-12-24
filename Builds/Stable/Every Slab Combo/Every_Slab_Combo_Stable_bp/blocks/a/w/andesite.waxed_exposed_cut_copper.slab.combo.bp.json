@@ -1,0 +1,196 @@
+{
+  "format_version": "1.20.80",
+  "minecraft:block": {
+    "description": {
+      "identifier": "dw623:andesite.waxed_exposed_cut_copper.slab.combo",
+      "menu_category": {
+        "category": "construction",
+        "group": "itemGroup.name.slab",
+        "is_hidden_in_commands": false
+      },
+      "traits": {
+        "minecraft:placement_position": {
+          "enabled_states": [
+            "minecraft:block_face"
+          ]
+        }
+      }
+    },
+    "components": {
+      "minecraft:collision_box": true,
+      "minecraft:destructible_by_explosion": true,
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 3,
+        "item_specific_speeds": [
+          {
+            "item": "wooden_axe",
+            "destroy_speed": 2
+          },
+          {
+            "item": "stone_axe",
+            "destroy_speed": 1.5
+          },
+          {
+            "item": "iron_axe",
+            "destroy_speed": 1
+          },
+          {
+            "item": "diamond_axe",
+            "destroy_speed": 0.75
+          },
+          {
+            "item": "netherite_axe",
+            "destroy_speed": 0.6
+          },
+          {
+            "item": "wooden_pickaxe",
+            "destroy_speed": 3
+          },
+          {
+            "item": "stone_pickaxe",
+            "destroy_speed": 2.5
+          },
+          {
+            "item": "iron_pickaxe",
+            "destroy_speed": 2
+          },
+          {
+            "item": "diamond_pickaxe",
+            "destroy_speed": 1.5
+          },
+          {
+            "item": "netherite_pickaxe",
+            "destroy_speed": 1.2
+          }
+        ]
+      },
+      "minecraft:display_name": "Andesite & Waxed Exposed Cut Copper Slab Combo",
+      "minecraft:flammable": false,
+      "minecraft:geometry": "geometry.dw623.block_2_slabs",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "invisible",
+          "render_method": "opaque"
+        },
+        "top_slab": {
+          "texture": "andesite_slab",
+          "render_method": "opaque",
+          "ambient_occlusion": true,
+          "face_dimming": true
+        },
+        "top_slab_side": {
+          "texture": "andesite_slab",
+          "render_method": "opaque",
+          "ambient_occlusion": true,
+          "face_dimming": true
+        },
+        "bottom_slab": {
+          "texture": "exposed_cut_copper",
+          "render_method": "opaque",
+          "ambient_occlusion": true,
+          "face_dimming": true
+        },
+        "bottom_slab_side": {
+          "texture": "exposed_cut_copper",
+          "render_method": "opaque",
+          "ambient_occlusion": true,
+          "face_dimming": true
+        }
+      },
+      "minecraft:selection_box": true,
+      "minecraft:transformation": {
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "permutations": [
+      {
+        "condition": "query.block_state('minecraft:block_face') == 'west'",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              0,
+              90
+            ]
+          },
+          "tag:minecraft:is_pickaxe_item_destructible": {
+          }
+        }
+      },
+      {
+        "condition": "query.block_state('minecraft:block_face') == 'north'",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              90,
+              180,
+              0
+            ]
+          },
+          "tag:minecraft:is_pickaxe_item_destructible": {
+          }
+        }
+      },
+      {
+        "condition": "query.block_state('minecraft:block_face') == 'east'",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              -90,
+              -90
+            ]
+          },
+          "tag:minecraft:is_pickaxe_item_destructible": {
+          }
+        }
+      },
+      {
+        "condition": "query.block_state('minecraft:block_face') == 'south'",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              90,
+              0,
+              0
+            ]
+          },
+          "tag:minecraft:is_pickaxe_item_destructible": {
+          }
+        }
+      },
+      {
+        "condition": "query.block_state('minecraft:block_face') == 'up'",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "tag:minecraft:is_pickaxe_item_destructible": {
+          }
+        }
+      },
+      {
+        "condition": "query.block_state('minecraft:block_face') == 'down'",
+        "components": {
+          "minecraft:transformation": {
+            "rotation": [
+              0,
+              0,
+              180
+            ]
+          },
+          "tag:minecraft:is_pickaxe_item_destructible": {
+          }
+        }
+      }
+    ]
+  }
+}

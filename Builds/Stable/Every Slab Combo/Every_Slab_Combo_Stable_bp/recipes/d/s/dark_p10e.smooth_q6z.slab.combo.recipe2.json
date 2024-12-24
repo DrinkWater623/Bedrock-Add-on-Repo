@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:dark_p10e.smooth_q6z.slab.combo_recipe2"
+    },
+    "pattern": [
+      "222",
+      "ggg",
+      "111"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:dark_prismarine_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:smooth_quartz_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:dark_prismarine_slab"
+      },
+      {
+        "item": "minecraft:smooth_quartz_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:dark_prismarine.smooth_quartz.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}

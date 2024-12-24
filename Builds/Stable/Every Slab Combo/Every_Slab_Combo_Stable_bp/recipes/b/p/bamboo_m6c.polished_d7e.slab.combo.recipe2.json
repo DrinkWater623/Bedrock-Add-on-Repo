@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:bamboo_m6c.polished_d7e.slab.combo_recipe2"
+    },
+    "pattern": [
+      "222",
+      "ggg",
+      "111"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:bamboo_mosaic_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:polished_diorite_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:bamboo_mosaic_slab"
+      },
+      {
+        "item": "minecraft:polished_diorite_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:bamboo_mosaic.polished_diorite.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}

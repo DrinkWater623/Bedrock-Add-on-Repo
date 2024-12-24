@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:cut_s9e.oak.slab.combo_recipe1"
+    },
+    "pattern": [
+      "111",
+      "ggg",
+      "222"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:cut_sandstone_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:oak_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:cut_sandstone_slab"
+      },
+      {
+        "item": "minecraft:oak_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:cut_sandstone.oak.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}

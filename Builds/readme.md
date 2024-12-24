@@ -1,4 +1,5 @@
 ## DW623's Bedrock Add-Ons
+This applies to all my stuff
 
 ### License
 Copyright (C) 2024  [DrinkWater623/PinkSalt623>](https://github.com/DrinkWater623)

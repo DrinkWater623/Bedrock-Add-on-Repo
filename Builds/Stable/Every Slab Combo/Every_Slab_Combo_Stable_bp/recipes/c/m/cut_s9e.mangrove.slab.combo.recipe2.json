@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:cut_s9e.mangrove.slab.combo_recipe2"
+    },
+    "pattern": [
+      "222",
+      "ggg",
+      "111"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:cut_sandstone_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:mangrove_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:cut_sandstone_slab"
+      },
+      {
+        "item": "minecraft:mangrove_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:cut_sandstone.mangrove.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}

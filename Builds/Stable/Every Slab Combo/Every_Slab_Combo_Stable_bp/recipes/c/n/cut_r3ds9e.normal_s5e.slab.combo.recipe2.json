@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:cut_r3ds9e.normal_s5e.slab.combo_recipe2"
+    },
+    "pattern": [
+      "222",
+      "ggg",
+      "111"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:cut_red_sandstone_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:normal_stone_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:cut_red_sandstone_slab"
+      },
+      {
+        "item": "minecraft:normal_stone_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:cut_red_sandstone.normal_stone.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}

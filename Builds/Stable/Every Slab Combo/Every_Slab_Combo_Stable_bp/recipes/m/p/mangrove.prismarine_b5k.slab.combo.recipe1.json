@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:mangrove.prismarine_b5k.slab.combo_recipe1"
+    },
+    "pattern": [
+      "111",
+      "ggg",
+      "222"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:mangrove_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:prismarine_brick_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:mangrove_slab"
+      },
+      {
+        "item": "minecraft:prismarine_brick_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:mangrove.prismarine_brick.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}

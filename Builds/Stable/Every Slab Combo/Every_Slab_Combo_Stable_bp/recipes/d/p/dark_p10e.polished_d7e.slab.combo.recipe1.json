@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:dark_p10e.polished_d7e.slab.combo_recipe1"
+    },
+    "pattern": [
+      "111",
+      "ggg",
+      "222"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:dark_prismarine_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:polished_diorite_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:dark_prismarine_slab"
+      },
+      {
+        "item": "minecraft:polished_diorite_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:dark_prismarine.polished_diorite.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}

@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:exposed_c3tc6r.mangrove.slab.combo_recipe1"
+    },
+    "pattern": [
+      "111",
+      "ggg",
+      "222"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:exposed_cut_copper_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:mangrove_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:exposed_cut_copper_slab"
+      },
+      {
+        "item": "minecraft:mangrove_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:exposed_cut_copper.mangrove.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}

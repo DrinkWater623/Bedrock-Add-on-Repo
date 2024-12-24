@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:oxidized_c3tc6r.red_n6rb5k.slab.combo_recipe2"
+    },
+    "pattern": [
+      "222",
+      "ggg",
+      "111"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:oxidized_cut_copper_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:red_nether_brick_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:oxidized_cut_copper_slab"
+      },
+      {
+        "item": "minecraft:red_nether_brick_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:oxidized_cut_copper.red_nether_brick.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}

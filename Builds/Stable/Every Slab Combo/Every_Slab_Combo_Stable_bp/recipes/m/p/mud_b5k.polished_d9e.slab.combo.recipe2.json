@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:mud_b5k.polished_d9e.slab.combo_recipe2"
+    },
+    "pattern": [
+      "222",
+      "ggg",
+      "111"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:mud_brick_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:polished_deepslate_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:mud_brick_slab"
+      },
+      {
+        "item": "minecraft:polished_deepslate_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:mud_brick.polished_deepslate.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}

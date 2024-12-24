@@ -1,0 +1,33 @@
+{
+  "format_version": "1.20.80",
+  "minecraft:block": {
+    "description": {
+      "identifier": "dw623:slime_glue_sheet",
+      "menu_category": {
+        "category": "items",
+        "is_hidden_in_commands": false
+      }
+    },
+    "components": {
+      "minecraft:display_name": "Slime Glue Sheet",
+      "minecraft:geometry": "geometry.dw623.block_16x1x16_ceiling",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "slime_glue_sheet",
+          "render_method": "alpha_test"
+        }
+      },
+      "minecraft:placement_filter": {
+        "conditions": [
+          {
+            "block_filter": [
+              {
+                "tags": "q.any_tag('x')"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

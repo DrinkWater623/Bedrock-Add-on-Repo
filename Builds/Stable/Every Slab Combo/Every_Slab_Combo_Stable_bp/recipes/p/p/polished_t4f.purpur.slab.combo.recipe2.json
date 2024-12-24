@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:polished_t4f.purpur.slab.combo_recipe2"
+    },
+    "pattern": [
+      "222",
+      "ggg",
+      "111"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:polished_tuff_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:purpur_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:polished_tuff_slab"
+      },
+      {
+        "item": "minecraft:purpur_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:polished_tuff.purpur.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}

@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:smooth_s5e.weathered_c3tc6r.slab.combo_recipe2"
+    },
+    "pattern": [
+      "222",
+      "ggg",
+      "111"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:smooth_stone_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:weathered_cut_copper_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:smooth_stone_slab"
+      },
+      {
+        "item": "minecraft:weathered_cut_copper_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:smooth_stone.weathered_cut_copper.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}

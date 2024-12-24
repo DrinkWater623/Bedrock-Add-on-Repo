@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:granite.polished_b10eb5k.slab.combo_recipe2"
+    },
+    "pattern": [
+      "222",
+      "ggg",
+      "111"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:granite_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:polished_blackstone_brick_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:granite_slab"
+      },
+      {
+        "item": "minecraft:polished_blackstone_brick_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:granite.polished_blackstone_brick.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}

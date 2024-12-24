@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:jungle.petrified_oak.slab.combo_recipe1"
+    },
+    "pattern": [
+      "111",
+      "ggg",
+      "222"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:jungle_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:petrified_oak_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:jungle_slab"
+      },
+      {
+        "item": "minecraft:petrified_oak_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:jungle.petrified_oak.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}

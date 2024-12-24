@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:andesite.smooth_s9e.slab.combo_recipe1"
+    },
+    "pattern": [
+      "111",
+      "ggg",
+      "222"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:andesite_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:smooth_sandstone_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:andesite_slab"
+      },
+      {
+        "item": "minecraft:smooth_sandstone_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:andesite.smooth_sandstone.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}

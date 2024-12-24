@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:petrified_oak.smooth_s5e.slab.combo_recipe2"
+    },
+    "pattern": [
+      "222",
+      "ggg",
+      "111"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:petrified_oak_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:smooth_stone_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:petrified_oak_slab"
+      },
+      {
+        "item": "minecraft:smooth_stone_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:petrified_oak.smooth_stone.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}

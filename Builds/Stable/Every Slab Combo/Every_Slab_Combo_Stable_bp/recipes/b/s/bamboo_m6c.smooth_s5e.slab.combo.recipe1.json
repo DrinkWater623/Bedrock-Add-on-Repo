@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:bamboo_m6c.smooth_s5e.slab.combo_recipe1"
+    },
+    "pattern": [
+      "111",
+      "ggg",
+      "222"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:bamboo_mosaic_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:smooth_stone_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:bamboo_mosaic_slab"
+      },
+      {
+        "item": "minecraft:smooth_stone_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:bamboo_mosaic.smooth_stone.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}

@@ -1,0 +1,39 @@
+{
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:cut_c6r.end_s5eb5k.slab.combo_recipe2"
+    },
+    "pattern": [
+      "222",
+      "ggg",
+      "111"
+    ],
+    "tags": [
+      "crafting_table"
+    ],
+    "key": {
+      "1": {
+        "item": "minecraft:cut_copper_slab"
+      },
+      "g": {
+        "item": "dw623:slime_glue_sheet"
+      },
+      "2": {
+        "item": "minecraft:end_stone_brick_slab"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:cut_copper_slab"
+      },
+      {
+        "item": "minecraft:end_stone_brick_slab"
+      }
+    ],
+    "result": {
+      "item": "dw623:cut_copper.end_stone_brick.slab.combo",
+      "count": 3
+    }
+  },
+  "format_version": "1.20.10"
+}
