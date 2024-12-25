@@ -39,14 +39,14 @@
 				]
 			},					
 			"build": {
-				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
+				"export": {"readOnly":false,"target":"local","bpName":"project.name+'_Stable_bp'","rpName": "project.name+'_Stable_rp'"},			
 				"filters": [	
 					{"profile":"template"},												
 					{"filter":"mani_fest","settings":{"beta":false,"preview":false}}
 				]
 			},
 			"build-beta": {
-				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
+				"export": {"readOnly":false,"target":"local"},				
 				"filters": [	
 					{"profile":"template"},												
 					{"filter":"mani_fest","settings":{"beta":true,"preview":false}}

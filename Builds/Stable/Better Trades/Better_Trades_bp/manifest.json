@@ -2,12 +2,12 @@
     "format_version": 2,
     "header": {
         "name": "Better Trades BP : §aStable§r",
-        "description": "Better Trades BP\n§aBuild Date: 2024.12.11.16.49.48§r §gby https://github.com/DrinkWater623§r",
+        "description": "Better Trades BP\n§aBuild Date: 2024.12.25.0.15.33§r §gby https://github.com/DrinkWater623§r",
         "uuid": "5f8dfd22-2703-46ca-a088-e94186d9b0f3",
         "version": [
             24,
             12,
-            11
+            25
         ],
         "min_engine_version": [
             1,
@@ -33,7 +33,7 @@
             "version": [
                 24,
                 12,
-                11
+                25
             ]
         }
     ],
@@ -41,9 +41,10 @@
         "authors": [
             "https://github.com/DrinkWater623"
         ],
+        "license": "GPL-3.0-only",
         "generated_with": {
             "regolith_filter_mani_fest": [
-                "24.7.28"
+                "2024.12.24"
             ]
         }
     }

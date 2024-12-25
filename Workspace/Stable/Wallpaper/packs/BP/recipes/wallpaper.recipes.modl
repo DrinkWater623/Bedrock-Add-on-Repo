@@ -1,0 +1,27 @@
+{  
+  "$module": "wallpaper_recipe",
+  "$template": {
+    "format_version": "1.20.10",
+    "minecraft:recipe_shaped": {      
+      "description": {"identifier":"dw623:{{item_name}}_wallpaper.recipe"},      
+      "tags": ["crafting_table"],      
+      "pattern": [
+        "ppp",
+        "pip",
+        "ppp"
+      ],
+    "key": {              
+      "p": {"item":"minecraft:paper"},
+      "i": {"item":"minecraft:{{item_name}}"}
+    },
+    "unlock": [
+      {"item": "minecraft:{{item_name}}"},
+      {"item": "minecraft:paper"}
+    ],
+      "result": {        
+        "item": "dw623:{{item_name}}_wallpaper",
+        "count": 8
+      }
+    }
+  }
+}

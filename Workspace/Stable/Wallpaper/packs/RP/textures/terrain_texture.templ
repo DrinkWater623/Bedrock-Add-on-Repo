@@ -1,0 +1,23 @@
+{
+   "$template": {
+      "resource_pack_name": "dw623",
+      "texture_name": "atlas.terrain",
+      "num_mip_levels": 4,
+      "padding": 8,
+      "texture_data": {
+         "{{#flowers}}": {
+            "{{item_name}}_wallpaper": {
+               "textures": "textures/blocks/{{block_texture}}"
+            }
+         },
+         "{{#same_name}}": {
+            "{{item_name}}_wallpaper": {
+               "textures": "textures/blocks/{{item_name}}"
+            }
+         },
+         "invisible": {
+            "textures": "textures/invisible"
+         }
+      }
+   }
+}

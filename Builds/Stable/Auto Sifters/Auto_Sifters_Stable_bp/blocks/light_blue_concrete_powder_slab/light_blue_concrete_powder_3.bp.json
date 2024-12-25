@@ -1,0 +1,56 @@
+{
+  "format_version": "1.20.80",
+  "minecraft:block": {
+    "description": {
+      "identifier": "dw623:light_blue_concrete_powder_slab_3"
+    },
+    "components": {
+      "tag:minecraft:is_shovel_item_destructible": {
+      },
+      "minecraft:display_name": "Light Blue Concrete Powder Slab (3)",
+      "minecraft:map_color": "#6699D8",
+      "minecraft:custom_components": [
+        "dw623:siftable_slabs"
+      ],
+      "minecraft:tick": {
+        "interval_range": [
+          3,
+          3
+        ],
+        "looping": true
+      },
+      "minecraft:geometry": {
+        "identifier": "geometry.dw623.block_16x3x16_floor"
+      },
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "light_blue_concrete_powder"
+        }
+      },
+      "minecraft:collision_box": {
+        "origin": [
+          -8,
+          0,
+          -8
+        ],
+        "size": [
+          16,
+          3,
+          16
+        ]
+      },
+      "minecraft:selection_box": {
+        "origin": [
+          -8,
+          0,
+          -8
+        ],
+        "size": [
+          16,
+          3,
+          16
+        ]
+      }
+    }
+  }
+}

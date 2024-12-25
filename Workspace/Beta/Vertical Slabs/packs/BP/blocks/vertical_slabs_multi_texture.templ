@@ -1,0 +1,96 @@
+{ 
+  "$scope":{
+      "slabs":"{{vanilla_slabs.filter(b => b.textureType == 'object')}}"
+  },
+  "$files": {
+    "array": "slabs",
+    "fileName": "./vertical_{{identifier}}.bp"
+  },
+  "$template": {
+    "format_version": "1.20.80",
+    "minecraft:block": {
+      "description": {
+        "identifier": "dw623:vertical_{{identifier}}",
+        "menu_category": {
+          "category":"none",
+          "is_hidden_in_commands":true
+        },
+        "traits": {
+          "minecraft:placement_position": {            
+            "enabled_states":[              
+              "minecraft:block_face"
+            ]
+          }          
+        }
+      },
+      "components": {
+        "tag:{{tool_type_tags}}":{}, 
+        "minecraft:placement_filter":{
+          "conditions": [{"allowed_faces":["side"]}]},       
+        "minecraft:display_name": "{{realTitle('vertical '+identifier)}}",  
+        "minecraft:loot": "/loot_tables/dw623/{{identifier}}.loot.json",
+        //cause it says it needs it.. tho it don't
+        "minecraft:geometry": {"identifier":"geometry.dw623.block_16x8x16_north"},
+        "minecraft:material_instances": {
+          "*":{"texture":"{{textures.side}}"},
+          "north":{"texture":"{{textures.up}}"},
+          "south":{"texture":"{{textures.up}}"}
+        }
+      },
+      "permutations":[        
+        {
+            "condition": "query.block_state('minecraft:block_face') == 'south'",
+            "components": {
+              "minecraft:geometry": {"identifier":"geometry.dw623.block_16x8x16_north"},
+              "minecraft:collision_box": {"origin": [-8,0,-8],"size": [16,16,8]},
+              "minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,16,8]},
+              "minecraft:material_instances": {
+                "*":{"texture":"{{textures.side}}"},
+                "north":{"texture":"{{textures.up}}"},
+                "south":{"texture":"{{textures.up}}"}
+              }
+            }
+        },
+        {
+          "condition": "query.block_state('minecraft:block_face') == 'north'",
+          "components": {
+            "minecraft:geometry": {"identifier":"geometry.dw623.block_16x8x16_south"},
+            "minecraft:collision_box": {"origin": [-8,0,0],"size": [16,16,8]},
+            "minecraft:selection_box": {"origin": [-8,0,0],"size": [16,16,8]},
+            "minecraft:material_instances": {
+              "*":{"texture":"{{textures.side}}"},
+              "north":{"texture":"{{textures.up}}"},
+              "south":{"texture":"{{textures.up}}"}
+            }
+          }
+        },
+        {
+          "condition": "query.block_state('minecraft:block_face') == 'west'",
+          "components": {
+            "minecraft:geometry": {"identifier":"geometry.dw623.block_16x8x16_east"},
+            "minecraft:collision_box": {"origin": [-8,0,-8],"size": [8,16,16]},
+            "minecraft:selection_box": {"origin": [-8,0,-8],"size": [8,16,16]},
+            "minecraft:material_instances": {
+              "*":{"texture":"{{textures.side}}"},
+              "east":{"texture":"{{textures.up}}"},
+              "west":{"texture":"{{textures.up}}"}
+            }
+          }
+        },
+        {
+          "condition": "query.block_state('minecraft:block_face') == 'east'",
+          "components": {
+            "minecraft:geometry": {"identifier":"geometry.dw623.block_16x8x16_west"},
+            "minecraft:collision_box": {"origin": [0,0,-8],"size": [8,16,16]},
+            "minecraft:selection_box": {"origin": [0,0,-8],"size": [8,16,16]},
+            "minecraft:material_instances": {
+              "*":{"texture":"{{textures.side}}"},
+              "east":{"texture":"{{textures.up}}"},
+              "west":{"texture":"{{textures.up}}"}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:green_concrete_powder_slab_1_13_recipe"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "T",
+      "B"
+    ],
+    "key": {
+      "T": {
+        "item": "dw623:green_concrete_powder_slab_1"
+      },
+      "B": {
+        "item": "dw623:green_concrete_powder_slab_13"
+      }
+    },
+    "unlock": [
+      {
+        "item": "dw623:green_concrete_powder_slab_1"
+      },
+      {
+        "item": "dw623:green_concrete_powder_slab_13"
+      }
+    ],
+    "result": {
+      "item": "dw623:green_concrete_powder_slab_14"
+    }
+  }
+}

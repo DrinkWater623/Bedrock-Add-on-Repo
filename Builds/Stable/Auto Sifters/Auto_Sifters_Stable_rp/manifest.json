@@ -1,0 +1,51 @@
+{
+    "format_version": 2,
+    "header": {
+        "name": "Auto Sifters RP : §aStable§r",
+        "description": "Sifts sand, gravel, concrete powder, snow & mud to find hidden loot RP\n§aBuild Date: 2024.12.25.0.13.51§r §gby https://github.com/DrinkWater623§r",
+        "uuid": "4c8f6025-25ba-4b94-84f2-509c4d0b83d8",
+        "version": [
+            24,
+            12,
+            25
+        ],
+        "min_engine_version": [
+            1,
+            21,
+            0
+        ]
+    },
+    "modules": [
+        {
+            "type": "resources",
+            "description": "RP Pack",
+            "uuid": "9ce7806a-5753-44d5-a33d-d0e0585402d3",
+            "version": [
+                1,
+                0,
+                0
+            ]
+        }
+    ],
+    "dependencies": [
+        {
+            "uuid": "b934be1c-8067-4771-9720-f416f52d8782",
+            "version": [
+                24,
+                12,
+                25
+            ]
+        }
+    ],
+    "metadata": {
+        "authors": [
+            "https://github.com/DrinkWater623"
+        ],
+        "license": "GPL-3.0-only",
+        "generated_with": {
+            "regolith_filter_mani_fest": [
+                "2024.12.24"
+            ]
+        }
+    }
+}

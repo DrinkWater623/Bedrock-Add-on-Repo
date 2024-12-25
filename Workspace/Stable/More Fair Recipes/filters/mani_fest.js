@@ -1,5 +1,7 @@
 // @ts-check
 //=====================================================================
+// Copyright (C) 2024 DrinkWater623/PinkSalt623  License: GPL-3.0-only
+//=====================================================================
 // Global variables - Part 1
 //=====================================================================
 const fs = require("fs");
@@ -40,6 +42,8 @@ Change Log:
     20240624 - NAA = ad "capabilities": ["script_eval"],
     20240728 - NAA - global settings inside confile.json  "mani_fest":{}  outside of "regolith": {}
     20241104 - NAA - minor logical bugs
+    20241224 - NAA - license in manifest and this file.
+    
 TODO:
     () Make is so I can have a dev and rel pack icon - prob can use the data section to hold and use by name or settings has filename
 */
@@ -1644,8 +1648,9 @@ function manifestBuild (pSettings) {
 
     manifest.metadata = {
         "authors": [ pSettings.author || cmdLineSettingsJson.author ],
+        "license": cmdLineSettingsJson.license ?? "GPL-3.0-only",
         "generated_with": {
-            "regolith_filter_mani_fest": [ "24.7.28" ]
+            "regolith_filter_mani_fest": [ "2024.12.24" ]
         }
     };
 

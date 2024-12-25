@@ -1,0 +1,32 @@
+{
+  "resource_pack_name": "dw623",
+  "texture_name": "atlas.terrain",
+  "num_mip_levels": 4,
+  "padding": 8,
+  "texture_data": {
+    "copper_sifter_side": {
+      "textures": "textures/blocks/dw623/auto_sifters/copper_sifter_side.png"
+    },
+    "iron_sifter_side": {
+      "textures": "textures/blocks/dw623/auto_sifters/iron_sifter_side.png"
+    },
+    "diamond_sifter_side": {
+      "textures": "textures/blocks/dw623/auto_sifters/diamond_sifter_side.png"
+    },
+    "netherite_sifter_side": {
+      "textures": "textures/blocks/dw623/auto_sifters/netherite_sifter_side.png"
+    },
+    "copper_grate": {
+      "textures": "textures/blocks/dw623/auto_sifters/copper_grate_48.png"
+    },
+    "iron_grate": {
+      "textures": "textures/blocks/dw623/auto_sifters/iron_grate_92.png"
+    },
+    "diamond_grate": {
+      "textures": "textures/blocks/dw623/auto_sifters/diamond_grate_100.png"
+    },
+    "netherite_grate": {
+      "textures": "textures/blocks/dw623/auto_sifters/netherite_grate_116.png"
+    }
+  }
+}

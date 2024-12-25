@@ -1,0 +1,34 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:magenta_concrete_16_8_8_recipe"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "T",
+      "B"
+    ],
+    "key": {
+      "T": {
+        "item": "dw623:magenta_concrete_slab_8"
+      },
+      "B": {
+        "item": "dw623:magenta_concrete_slab_8"
+      }
+    },
+    "unlock": [
+      {
+        "item": "dw623:magenta_concrete_slab_8"
+      },
+      {
+        "item": "dw623:magenta_concrete_slab_8"
+      }
+    ],
+    "result": {
+      "item": "minecraft:magenta_concrete"
+    }
+  }
+}

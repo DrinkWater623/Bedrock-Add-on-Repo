@@ -1,0 +1,3 @@
+the tmp folder has what was ran....
+
+Copy from there to have a copy to see

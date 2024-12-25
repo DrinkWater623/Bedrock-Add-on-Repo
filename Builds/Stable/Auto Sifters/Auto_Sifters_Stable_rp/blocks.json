@@ -1,0 +1,2267 @@
+{
+  "format_version": "1.20.81",
+  "dw623:copper_sifter": {
+    "sound": "wood"
+  },
+  "dw623:copper_grate": {
+    "sound": "copper"
+  },
+  "dw623:iron_sifter": {
+    "sound": "wood"
+  },
+  "dw623:iron_grate": {
+    "sound": "metal"
+  },
+  "dw623:diamond_sifter": {
+    "sound": "wood"
+  },
+  "dw623:diamond_grate": {
+    "sound": "glass"
+  },
+  "dw623:netherite_sifter": {
+    "sound": "wood"
+  },
+  "dw623:netherite_grate": {
+    "sound": "metal"
+  },
+  "dw623:powder_snow_slab_1": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:powder_snow_slab_2": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:powder_snow_slab_3": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:powder_snow_slab_4": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:powder_snow_slab_5": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:powder_snow_slab_6": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:powder_snow_slab_7": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:powder_snow_slab_8": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:powder_snow_slab_9": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:powder_snow_slab_10": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:powder_snow_slab_11": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:powder_snow_slab_12": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:powder_snow_slab_13": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:powder_snow_slab_14": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:powder_snow_slab_15": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:powder_snow_slab_16": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:gravel_slab_1": {
+    "isotropic": true,
+    "sound": "gravel"
+  },
+  "dw623:gravel_slab_2": {
+    "isotropic": true,
+    "sound": "gravel"
+  },
+  "dw623:gravel_slab_3": {
+    "isotropic": true,
+    "sound": "gravel"
+  },
+  "dw623:gravel_slab_4": {
+    "isotropic": true,
+    "sound": "gravel"
+  },
+  "dw623:gravel_slab_5": {
+    "isotropic": true,
+    "sound": "gravel"
+  },
+  "dw623:gravel_slab_6": {
+    "isotropic": true,
+    "sound": "gravel"
+  },
+  "dw623:gravel_slab_7": {
+    "isotropic": true,
+    "sound": "gravel"
+  },
+  "dw623:gravel_slab_8": {
+    "isotropic": true,
+    "sound": "gravel"
+  },
+  "dw623:gravel_slab_9": {
+    "isotropic": true,
+    "sound": "gravel"
+  },
+  "dw623:gravel_slab_10": {
+    "isotropic": true,
+    "sound": "gravel"
+  },
+  "dw623:gravel_slab_11": {
+    "isotropic": true,
+    "sound": "gravel"
+  },
+  "dw623:gravel_slab_12": {
+    "isotropic": true,
+    "sound": "gravel"
+  },
+  "dw623:gravel_slab_13": {
+    "isotropic": true,
+    "sound": "gravel"
+  },
+  "dw623:gravel_slab_14": {
+    "isotropic": true,
+    "sound": "gravel"
+  },
+  "dw623:gravel_slab_15": {
+    "isotropic": true,
+    "sound": "gravel"
+  },
+  "dw623:gravel_slab_16": {
+    "isotropic": true,
+    "sound": "gravel"
+  },
+  "dw623:red_sand_slab_1": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_sand_slab_2": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_sand_slab_3": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_sand_slab_4": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_sand_slab_5": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_sand_slab_6": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_sand_slab_7": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_sand_slab_8": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_sand_slab_9": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_sand_slab_10": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_sand_slab_11": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_sand_slab_12": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_sand_slab_13": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_sand_slab_14": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_sand_slab_15": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_sand_slab_16": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:sand_slab_1": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:sand_slab_2": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:sand_slab_3": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:sand_slab_4": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:sand_slab_5": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:sand_slab_6": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:sand_slab_7": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:sand_slab_8": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:sand_slab_9": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:sand_slab_10": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:sand_slab_11": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:sand_slab_12": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:sand_slab_13": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:sand_slab_14": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:sand_slab_15": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:sand_slab_16": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:mud_slab_1": {
+    "isotropic": true,
+    "sound": "mud"
+  },
+  "dw623:mud_slab_2": {
+    "isotropic": true,
+    "sound": "mud"
+  },
+  "dw623:mud_slab_3": {
+    "isotropic": true,
+    "sound": "mud"
+  },
+  "dw623:mud_slab_4": {
+    "isotropic": true,
+    "sound": "mud"
+  },
+  "dw623:mud_slab_5": {
+    "isotropic": true,
+    "sound": "mud"
+  },
+  "dw623:mud_slab_6": {
+    "isotropic": true,
+    "sound": "mud"
+  },
+  "dw623:mud_slab_7": {
+    "isotropic": true,
+    "sound": "mud"
+  },
+  "dw623:mud_slab_8": {
+    "isotropic": true,
+    "sound": "mud"
+  },
+  "dw623:mud_slab_9": {
+    "isotropic": true,
+    "sound": "mud"
+  },
+  "dw623:mud_slab_10": {
+    "isotropic": true,
+    "sound": "mud"
+  },
+  "dw623:mud_slab_11": {
+    "isotropic": true,
+    "sound": "mud"
+  },
+  "dw623:mud_slab_12": {
+    "isotropic": true,
+    "sound": "mud"
+  },
+  "dw623:mud_slab_13": {
+    "isotropic": true,
+    "sound": "mud"
+  },
+  "dw623:mud_slab_14": {
+    "isotropic": true,
+    "sound": "mud"
+  },
+  "dw623:mud_slab_15": {
+    "isotropic": true,
+    "sound": "mud"
+  },
+  "dw623:mud_slab_16": {
+    "isotropic": true,
+    "sound": "mud"
+  },
+  "dw623:soul_sand_slab_1": {
+    "isotropic": true,
+    "sound": "soul_sand"
+  },
+  "dw623:soul_sand_slab_2": {
+    "isotropic": true,
+    "sound": "soul_sand"
+  },
+  "dw623:soul_sand_slab_3": {
+    "isotropic": true,
+    "sound": "soul_sand"
+  },
+  "dw623:soul_sand_slab_4": {
+    "isotropic": true,
+    "sound": "soul_sand"
+  },
+  "dw623:soul_sand_slab_5": {
+    "isotropic": true,
+    "sound": "soul_sand"
+  },
+  "dw623:soul_sand_slab_6": {
+    "isotropic": true,
+    "sound": "soul_sand"
+  },
+  "dw623:soul_sand_slab_7": {
+    "isotropic": true,
+    "sound": "soul_sand"
+  },
+  "dw623:soul_sand_slab_8": {
+    "isotropic": true,
+    "sound": "soul_sand"
+  },
+  "dw623:soul_sand_slab_9": {
+    "isotropic": true,
+    "sound": "soul_sand"
+  },
+  "dw623:soul_sand_slab_10": {
+    "isotropic": true,
+    "sound": "soul_sand"
+  },
+  "dw623:soul_sand_slab_11": {
+    "isotropic": true,
+    "sound": "soul_sand"
+  },
+  "dw623:soul_sand_slab_12": {
+    "isotropic": true,
+    "sound": "soul_sand"
+  },
+  "dw623:soul_sand_slab_13": {
+    "isotropic": true,
+    "sound": "soul_sand"
+  },
+  "dw623:soul_sand_slab_14": {
+    "isotropic": true,
+    "sound": "soul_sand"
+  },
+  "dw623:soul_sand_slab_15": {
+    "isotropic": true,
+    "sound": "soul_sand"
+  },
+  "dw623:soul_sand_slab_16": {
+    "isotropic": true,
+    "sound": "soul_sand"
+  },
+  "dw623:snow_slab_1": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:snow_slab_2": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:snow_slab_3": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:snow_slab_4": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:snow_slab_5": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:snow_slab_6": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:snow_slab_7": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:snow_slab_8": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:snow_slab_9": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:snow_slab_10": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:snow_slab_11": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:snow_slab_12": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:snow_slab_13": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:snow_slab_14": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:snow_slab_15": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:snow_slab_16": {
+    "isotropic": true,
+    "sound": "snow"
+  },
+  "dw623:black_concrete_powder_slab_1": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:black_concrete_powder_slab_2": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:black_concrete_powder_slab_3": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:black_concrete_powder_slab_4": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:black_concrete_powder_slab_5": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:black_concrete_powder_slab_6": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:black_concrete_powder_slab_7": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:black_concrete_powder_slab_8": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:black_concrete_powder_slab_9": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:black_concrete_powder_slab_10": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:black_concrete_powder_slab_11": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:black_concrete_powder_slab_12": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:black_concrete_powder_slab_13": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:black_concrete_powder_slab_14": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:black_concrete_powder_slab_15": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:black_concrete_powder_slab_16": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:blue_concrete_powder_slab_1": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:blue_concrete_powder_slab_2": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:blue_concrete_powder_slab_3": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:blue_concrete_powder_slab_4": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:blue_concrete_powder_slab_5": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:blue_concrete_powder_slab_6": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:blue_concrete_powder_slab_7": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:blue_concrete_powder_slab_8": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:blue_concrete_powder_slab_9": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:blue_concrete_powder_slab_10": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:blue_concrete_powder_slab_11": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:blue_concrete_powder_slab_12": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:blue_concrete_powder_slab_13": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:blue_concrete_powder_slab_14": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:blue_concrete_powder_slab_15": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:blue_concrete_powder_slab_16": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:brown_concrete_powder_slab_1": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:brown_concrete_powder_slab_2": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:brown_concrete_powder_slab_3": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:brown_concrete_powder_slab_4": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:brown_concrete_powder_slab_5": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:brown_concrete_powder_slab_6": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:brown_concrete_powder_slab_7": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:brown_concrete_powder_slab_8": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:brown_concrete_powder_slab_9": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:brown_concrete_powder_slab_10": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:brown_concrete_powder_slab_11": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:brown_concrete_powder_slab_12": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:brown_concrete_powder_slab_13": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:brown_concrete_powder_slab_14": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:brown_concrete_powder_slab_15": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:brown_concrete_powder_slab_16": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:cyan_concrete_powder_slab_1": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:cyan_concrete_powder_slab_2": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:cyan_concrete_powder_slab_3": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:cyan_concrete_powder_slab_4": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:cyan_concrete_powder_slab_5": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:cyan_concrete_powder_slab_6": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:cyan_concrete_powder_slab_7": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:cyan_concrete_powder_slab_8": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:cyan_concrete_powder_slab_9": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:cyan_concrete_powder_slab_10": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:cyan_concrete_powder_slab_11": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:cyan_concrete_powder_slab_12": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:cyan_concrete_powder_slab_13": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:cyan_concrete_powder_slab_14": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:cyan_concrete_powder_slab_15": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:cyan_concrete_powder_slab_16": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:gray_concrete_powder_slab_1": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:gray_concrete_powder_slab_2": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:gray_concrete_powder_slab_3": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:gray_concrete_powder_slab_4": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:gray_concrete_powder_slab_5": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:gray_concrete_powder_slab_6": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:gray_concrete_powder_slab_7": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:gray_concrete_powder_slab_8": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:gray_concrete_powder_slab_9": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:gray_concrete_powder_slab_10": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:gray_concrete_powder_slab_11": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:gray_concrete_powder_slab_12": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:gray_concrete_powder_slab_13": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:gray_concrete_powder_slab_14": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:gray_concrete_powder_slab_15": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:gray_concrete_powder_slab_16": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:green_concrete_powder_slab_1": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:green_concrete_powder_slab_2": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:green_concrete_powder_slab_3": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:green_concrete_powder_slab_4": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:green_concrete_powder_slab_5": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:green_concrete_powder_slab_6": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:green_concrete_powder_slab_7": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:green_concrete_powder_slab_8": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:green_concrete_powder_slab_9": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:green_concrete_powder_slab_10": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:green_concrete_powder_slab_11": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:green_concrete_powder_slab_12": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:green_concrete_powder_slab_13": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:green_concrete_powder_slab_14": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:green_concrete_powder_slab_15": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:green_concrete_powder_slab_16": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_blue_concrete_powder_slab_1": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_blue_concrete_powder_slab_2": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_blue_concrete_powder_slab_3": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_blue_concrete_powder_slab_4": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_blue_concrete_powder_slab_5": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_blue_concrete_powder_slab_6": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_blue_concrete_powder_slab_7": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_blue_concrete_powder_slab_8": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_blue_concrete_powder_slab_9": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_blue_concrete_powder_slab_10": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_blue_concrete_powder_slab_11": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_blue_concrete_powder_slab_12": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_blue_concrete_powder_slab_13": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_blue_concrete_powder_slab_14": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_blue_concrete_powder_slab_15": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_blue_concrete_powder_slab_16": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_gray_concrete_powder_slab_1": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_gray_concrete_powder_slab_2": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_gray_concrete_powder_slab_3": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_gray_concrete_powder_slab_4": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_gray_concrete_powder_slab_5": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_gray_concrete_powder_slab_6": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_gray_concrete_powder_slab_7": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_gray_concrete_powder_slab_8": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_gray_concrete_powder_slab_9": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_gray_concrete_powder_slab_10": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_gray_concrete_powder_slab_11": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_gray_concrete_powder_slab_12": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_gray_concrete_powder_slab_13": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_gray_concrete_powder_slab_14": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_gray_concrete_powder_slab_15": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:light_gray_concrete_powder_slab_16": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:lime_concrete_powder_slab_1": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:lime_concrete_powder_slab_2": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:lime_concrete_powder_slab_3": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:lime_concrete_powder_slab_4": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:lime_concrete_powder_slab_5": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:lime_concrete_powder_slab_6": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:lime_concrete_powder_slab_7": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:lime_concrete_powder_slab_8": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:lime_concrete_powder_slab_9": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:lime_concrete_powder_slab_10": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:lime_concrete_powder_slab_11": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:lime_concrete_powder_slab_12": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:lime_concrete_powder_slab_13": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:lime_concrete_powder_slab_14": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:lime_concrete_powder_slab_15": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:lime_concrete_powder_slab_16": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:magenta_concrete_powder_slab_1": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:magenta_concrete_powder_slab_2": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:magenta_concrete_powder_slab_3": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:magenta_concrete_powder_slab_4": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:magenta_concrete_powder_slab_5": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:magenta_concrete_powder_slab_6": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:magenta_concrete_powder_slab_7": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:magenta_concrete_powder_slab_8": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:magenta_concrete_powder_slab_9": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:magenta_concrete_powder_slab_10": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:magenta_concrete_powder_slab_11": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:magenta_concrete_powder_slab_12": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:magenta_concrete_powder_slab_13": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:magenta_concrete_powder_slab_14": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:magenta_concrete_powder_slab_15": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:magenta_concrete_powder_slab_16": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:orange_concrete_powder_slab_1": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:orange_concrete_powder_slab_2": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:orange_concrete_powder_slab_3": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:orange_concrete_powder_slab_4": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:orange_concrete_powder_slab_5": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:orange_concrete_powder_slab_6": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:orange_concrete_powder_slab_7": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:orange_concrete_powder_slab_8": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:orange_concrete_powder_slab_9": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:orange_concrete_powder_slab_10": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:orange_concrete_powder_slab_11": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:orange_concrete_powder_slab_12": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:orange_concrete_powder_slab_13": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:orange_concrete_powder_slab_14": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:orange_concrete_powder_slab_15": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:orange_concrete_powder_slab_16": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:pink_concrete_powder_slab_1": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:pink_concrete_powder_slab_2": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:pink_concrete_powder_slab_3": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:pink_concrete_powder_slab_4": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:pink_concrete_powder_slab_5": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:pink_concrete_powder_slab_6": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:pink_concrete_powder_slab_7": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:pink_concrete_powder_slab_8": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:pink_concrete_powder_slab_9": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:pink_concrete_powder_slab_10": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:pink_concrete_powder_slab_11": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:pink_concrete_powder_slab_12": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:pink_concrete_powder_slab_13": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:pink_concrete_powder_slab_14": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:pink_concrete_powder_slab_15": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:pink_concrete_powder_slab_16": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:purple_concrete_powder_slab_1": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:purple_concrete_powder_slab_2": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:purple_concrete_powder_slab_3": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:purple_concrete_powder_slab_4": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:purple_concrete_powder_slab_5": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:purple_concrete_powder_slab_6": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:purple_concrete_powder_slab_7": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:purple_concrete_powder_slab_8": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:purple_concrete_powder_slab_9": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:purple_concrete_powder_slab_10": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:purple_concrete_powder_slab_11": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:purple_concrete_powder_slab_12": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:purple_concrete_powder_slab_13": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:purple_concrete_powder_slab_14": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:purple_concrete_powder_slab_15": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:purple_concrete_powder_slab_16": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_concrete_powder_slab_1": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_concrete_powder_slab_2": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_concrete_powder_slab_3": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_concrete_powder_slab_4": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_concrete_powder_slab_5": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_concrete_powder_slab_6": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_concrete_powder_slab_7": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_concrete_powder_slab_8": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_concrete_powder_slab_9": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_concrete_powder_slab_10": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_concrete_powder_slab_11": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_concrete_powder_slab_12": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_concrete_powder_slab_13": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_concrete_powder_slab_14": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_concrete_powder_slab_15": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:red_concrete_powder_slab_16": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:white_concrete_powder_slab_1": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:white_concrete_powder_slab_2": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:white_concrete_powder_slab_3": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:white_concrete_powder_slab_4": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:white_concrete_powder_slab_5": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:white_concrete_powder_slab_6": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:white_concrete_powder_slab_7": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:white_concrete_powder_slab_8": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:white_concrete_powder_slab_9": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:white_concrete_powder_slab_10": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:white_concrete_powder_slab_11": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:white_concrete_powder_slab_12": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:white_concrete_powder_slab_13": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:white_concrete_powder_slab_14": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:white_concrete_powder_slab_15": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:white_concrete_powder_slab_16": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:yellow_concrete_powder_slab_1": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:yellow_concrete_powder_slab_2": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:yellow_concrete_powder_slab_3": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:yellow_concrete_powder_slab_4": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:yellow_concrete_powder_slab_5": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:yellow_concrete_powder_slab_6": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:yellow_concrete_powder_slab_7": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:yellow_concrete_powder_slab_8": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:yellow_concrete_powder_slab_9": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:yellow_concrete_powder_slab_10": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:yellow_concrete_powder_slab_11": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:yellow_concrete_powder_slab_12": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:yellow_concrete_powder_slab_13": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:yellow_concrete_powder_slab_14": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:yellow_concrete_powder_slab_15": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:yellow_concrete_powder_slab_16": {
+    "isotropic": true,
+    "sound": "sand"
+  },
+  "dw623:black_concrete_slab_1": {
+    "sound": "stone"
+  },
+  "dw623:black_concrete_slab_2": {
+    "sound": "stone"
+  },
+  "dw623:black_concrete_slab_3": {
+    "sound": "stone"
+  },
+  "dw623:black_concrete_slab_4": {
+    "sound": "stone"
+  },
+  "dw623:black_concrete_slab_5": {
+    "sound": "stone"
+  },
+  "dw623:black_concrete_slab_6": {
+    "sound": "stone"
+  },
+  "dw623:black_concrete_slab_7": {
+    "sound": "stone"
+  },
+  "dw623:black_concrete_slab_8": {
+    "sound": "stone"
+  },
+  "dw623:black_concrete_slab_9": {
+    "sound": "stone"
+  },
+  "dw623:black_concrete_slab_10": {
+    "sound": "stone"
+  },
+  "dw623:black_concrete_slab_11": {
+    "sound": "stone"
+  },
+  "dw623:black_concrete_slab_12": {
+    "sound": "stone"
+  },
+  "dw623:black_concrete_slab_13": {
+    "sound": "stone"
+  },
+  "dw623:black_concrete_slab_14": {
+    "sound": "stone"
+  },
+  "dw623:black_concrete_slab_15": {
+    "sound": "stone"
+  },
+  "dw623:black_concrete_slab_16": {
+    "sound": "stone"
+  },
+  "dw623:blue_concrete_slab_1": {
+    "sound": "stone"
+  },
+  "dw623:blue_concrete_slab_2": {
+    "sound": "stone"
+  },
+  "dw623:blue_concrete_slab_3": {
+    "sound": "stone"
+  },
+  "dw623:blue_concrete_slab_4": {
+    "sound": "stone"
+  },
+  "dw623:blue_concrete_slab_5": {
+    "sound": "stone"
+  },
+  "dw623:blue_concrete_slab_6": {
+    "sound": "stone"
+  },
+  "dw623:blue_concrete_slab_7": {
+    "sound": "stone"
+  },
+  "dw623:blue_concrete_slab_8": {
+    "sound": "stone"
+  },
+  "dw623:blue_concrete_slab_9": {
+    "sound": "stone"
+  },
+  "dw623:blue_concrete_slab_10": {
+    "sound": "stone"
+  },
+  "dw623:blue_concrete_slab_11": {
+    "sound": "stone"
+  },
+  "dw623:blue_concrete_slab_12": {
+    "sound": "stone"
+  },
+  "dw623:blue_concrete_slab_13": {
+    "sound": "stone"
+  },
+  "dw623:blue_concrete_slab_14": {
+    "sound": "stone"
+  },
+  "dw623:blue_concrete_slab_15": {
+    "sound": "stone"
+  },
+  "dw623:blue_concrete_slab_16": {
+    "sound": "stone"
+  },
+  "dw623:brown_concrete_slab_1": {
+    "sound": "stone"
+  },
+  "dw623:brown_concrete_slab_2": {
+    "sound": "stone"
+  },
+  "dw623:brown_concrete_slab_3": {
+    "sound": "stone"
+  },
+  "dw623:brown_concrete_slab_4": {
+    "sound": "stone"
+  },
+  "dw623:brown_concrete_slab_5": {
+    "sound": "stone"
+  },
+  "dw623:brown_concrete_slab_6": {
+    "sound": "stone"
+  },
+  "dw623:brown_concrete_slab_7": {
+    "sound": "stone"
+  },
+  "dw623:brown_concrete_slab_8": {
+    "sound": "stone"
+  },
+  "dw623:brown_concrete_slab_9": {
+    "sound": "stone"
+  },
+  "dw623:brown_concrete_slab_10": {
+    "sound": "stone"
+  },
+  "dw623:brown_concrete_slab_11": {
+    "sound": "stone"
+  },
+  "dw623:brown_concrete_slab_12": {
+    "sound": "stone"
+  },
+  "dw623:brown_concrete_slab_13": {
+    "sound": "stone"
+  },
+  "dw623:brown_concrete_slab_14": {
+    "sound": "stone"
+  },
+  "dw623:brown_concrete_slab_15": {
+    "sound": "stone"
+  },
+  "dw623:brown_concrete_slab_16": {
+    "sound": "stone"
+  },
+  "dw623:cyan_concrete_slab_1": {
+    "sound": "stone"
+  },
+  "dw623:cyan_concrete_slab_2": {
+    "sound": "stone"
+  },
+  "dw623:cyan_concrete_slab_3": {
+    "sound": "stone"
+  },
+  "dw623:cyan_concrete_slab_4": {
+    "sound": "stone"
+  },
+  "dw623:cyan_concrete_slab_5": {
+    "sound": "stone"
+  },
+  "dw623:cyan_concrete_slab_6": {
+    "sound": "stone"
+  },
+  "dw623:cyan_concrete_slab_7": {
+    "sound": "stone"
+  },
+  "dw623:cyan_concrete_slab_8": {
+    "sound": "stone"
+  },
+  "dw623:cyan_concrete_slab_9": {
+    "sound": "stone"
+  },
+  "dw623:cyan_concrete_slab_10": {
+    "sound": "stone"
+  },
+  "dw623:cyan_concrete_slab_11": {
+    "sound": "stone"
+  },
+  "dw623:cyan_concrete_slab_12": {
+    "sound": "stone"
+  },
+  "dw623:cyan_concrete_slab_13": {
+    "sound": "stone"
+  },
+  "dw623:cyan_concrete_slab_14": {
+    "sound": "stone"
+  },
+  "dw623:cyan_concrete_slab_15": {
+    "sound": "stone"
+  },
+  "dw623:cyan_concrete_slab_16": {
+    "sound": "stone"
+  },
+  "dw623:gray_concrete_slab_1": {
+    "sound": "stone"
+  },
+  "dw623:gray_concrete_slab_2": {
+    "sound": "stone"
+  },
+  "dw623:gray_concrete_slab_3": {
+    "sound": "stone"
+  },
+  "dw623:gray_concrete_slab_4": {
+    "sound": "stone"
+  },
+  "dw623:gray_concrete_slab_5": {
+    "sound": "stone"
+  },
+  "dw623:gray_concrete_slab_6": {
+    "sound": "stone"
+  },
+  "dw623:gray_concrete_slab_7": {
+    "sound": "stone"
+  },
+  "dw623:gray_concrete_slab_8": {
+    "sound": "stone"
+  },
+  "dw623:gray_concrete_slab_9": {
+    "sound": "stone"
+  },
+  "dw623:gray_concrete_slab_10": {
+    "sound": "stone"
+  },
+  "dw623:gray_concrete_slab_11": {
+    "sound": "stone"
+  },
+  "dw623:gray_concrete_slab_12": {
+    "sound": "stone"
+  },
+  "dw623:gray_concrete_slab_13": {
+    "sound": "stone"
+  },
+  "dw623:gray_concrete_slab_14": {
+    "sound": "stone"
+  },
+  "dw623:gray_concrete_slab_15": {
+    "sound": "stone"
+  },
+  "dw623:gray_concrete_slab_16": {
+    "sound": "stone"
+  },
+  "dw623:green_concrete_slab_1": {
+    "sound": "stone"
+  },
+  "dw623:green_concrete_slab_2": {
+    "sound": "stone"
+  },
+  "dw623:green_concrete_slab_3": {
+    "sound": "stone"
+  },
+  "dw623:green_concrete_slab_4": {
+    "sound": "stone"
+  },
+  "dw623:green_concrete_slab_5": {
+    "sound": "stone"
+  },
+  "dw623:green_concrete_slab_6": {
+    "sound": "stone"
+  },
+  "dw623:green_concrete_slab_7": {
+    "sound": "stone"
+  },
+  "dw623:green_concrete_slab_8": {
+    "sound": "stone"
+  },
+  "dw623:green_concrete_slab_9": {
+    "sound": "stone"
+  },
+  "dw623:green_concrete_slab_10": {
+    "sound": "stone"
+  },
+  "dw623:green_concrete_slab_11": {
+    "sound": "stone"
+  },
+  "dw623:green_concrete_slab_12": {
+    "sound": "stone"
+  },
+  "dw623:green_concrete_slab_13": {
+    "sound": "stone"
+  },
+  "dw623:green_concrete_slab_14": {
+    "sound": "stone"
+  },
+  "dw623:green_concrete_slab_15": {
+    "sound": "stone"
+  },
+  "dw623:green_concrete_slab_16": {
+    "sound": "stone"
+  },
+  "dw623:light_blue_concrete_slab_1": {
+    "sound": "stone"
+  },
+  "dw623:light_blue_concrete_slab_2": {
+    "sound": "stone"
+  },
+  "dw623:light_blue_concrete_slab_3": {
+    "sound": "stone"
+  },
+  "dw623:light_blue_concrete_slab_4": {
+    "sound": "stone"
+  },
+  "dw623:light_blue_concrete_slab_5": {
+    "sound": "stone"
+  },
+  "dw623:light_blue_concrete_slab_6": {
+    "sound": "stone"
+  },
+  "dw623:light_blue_concrete_slab_7": {
+    "sound": "stone"
+  },
+  "dw623:light_blue_concrete_slab_8": {
+    "sound": "stone"
+  },
+  "dw623:light_blue_concrete_slab_9": {
+    "sound": "stone"
+  },
+  "dw623:light_blue_concrete_slab_10": {
+    "sound": "stone"
+  },
+  "dw623:light_blue_concrete_slab_11": {
+    "sound": "stone"
+  },
+  "dw623:light_blue_concrete_slab_12": {
+    "sound": "stone"
+  },
+  "dw623:light_blue_concrete_slab_13": {
+    "sound": "stone"
+  },
+  "dw623:light_blue_concrete_slab_14": {
+    "sound": "stone"
+  },
+  "dw623:light_blue_concrete_slab_15": {
+    "sound": "stone"
+  },
+  "dw623:light_blue_concrete_slab_16": {
+    "sound": "stone"
+  },
+  "dw623:light_gray_concrete_slab_1": {
+    "sound": "stone"
+  },
+  "dw623:light_gray_concrete_slab_2": {
+    "sound": "stone"
+  },
+  "dw623:light_gray_concrete_slab_3": {
+    "sound": "stone"
+  },
+  "dw623:light_gray_concrete_slab_4": {
+    "sound": "stone"
+  },
+  "dw623:light_gray_concrete_slab_5": {
+    "sound": "stone"
+  },
+  "dw623:light_gray_concrete_slab_6": {
+    "sound": "stone"
+  },
+  "dw623:light_gray_concrete_slab_7": {
+    "sound": "stone"
+  },
+  "dw623:light_gray_concrete_slab_8": {
+    "sound": "stone"
+  },
+  "dw623:light_gray_concrete_slab_9": {
+    "sound": "stone"
+  },
+  "dw623:light_gray_concrete_slab_10": {
+    "sound": "stone"
+  },
+  "dw623:light_gray_concrete_slab_11": {
+    "sound": "stone"
+  },
+  "dw623:light_gray_concrete_slab_12": {
+    "sound": "stone"
+  },
+  "dw623:light_gray_concrete_slab_13": {
+    "sound": "stone"
+  },
+  "dw623:light_gray_concrete_slab_14": {
+    "sound": "stone"
+  },
+  "dw623:light_gray_concrete_slab_15": {
+    "sound": "stone"
+  },
+  "dw623:light_gray_concrete_slab_16": {
+    "sound": "stone"
+  },
+  "dw623:lime_concrete_slab_1": {
+    "sound": "stone"
+  },
+  "dw623:lime_concrete_slab_2": {
+    "sound": "stone"
+  },
+  "dw623:lime_concrete_slab_3": {
+    "sound": "stone"
+  },
+  "dw623:lime_concrete_slab_4": {
+    "sound": "stone"
+  },
+  "dw623:lime_concrete_slab_5": {
+    "sound": "stone"
+  },
+  "dw623:lime_concrete_slab_6": {
+    "sound": "stone"
+  },
+  "dw623:lime_concrete_slab_7": {
+    "sound": "stone"
+  },
+  "dw623:lime_concrete_slab_8": {
+    "sound": "stone"
+  },
+  "dw623:lime_concrete_slab_9": {
+    "sound": "stone"
+  },
+  "dw623:lime_concrete_slab_10": {
+    "sound": "stone"
+  },
+  "dw623:lime_concrete_slab_11": {
+    "sound": "stone"
+  },
+  "dw623:lime_concrete_slab_12": {
+    "sound": "stone"
+  },
+  "dw623:lime_concrete_slab_13": {
+    "sound": "stone"
+  },
+  "dw623:lime_concrete_slab_14": {
+    "sound": "stone"
+  },
+  "dw623:lime_concrete_slab_15": {
+    "sound": "stone"
+  },
+  "dw623:lime_concrete_slab_16": {
+    "sound": "stone"
+  },
+  "dw623:magenta_concrete_slab_1": {
+    "sound": "stone"
+  },
+  "dw623:magenta_concrete_slab_2": {
+    "sound": "stone"
+  },
+  "dw623:magenta_concrete_slab_3": {
+    "sound": "stone"
+  },
+  "dw623:magenta_concrete_slab_4": {
+    "sound": "stone"
+  },
+  "dw623:magenta_concrete_slab_5": {
+    "sound": "stone"
+  },
+  "dw623:magenta_concrete_slab_6": {
+    "sound": "stone"
+  },
+  "dw623:magenta_concrete_slab_7": {
+    "sound": "stone"
+  },
+  "dw623:magenta_concrete_slab_8": {
+    "sound": "stone"
+  },
+  "dw623:magenta_concrete_slab_9": {
+    "sound": "stone"
+  },
+  "dw623:magenta_concrete_slab_10": {
+    "sound": "stone"
+  },
+  "dw623:magenta_concrete_slab_11": {
+    "sound": "stone"
+  },
+  "dw623:magenta_concrete_slab_12": {
+    "sound": "stone"
+  },
+  "dw623:magenta_concrete_slab_13": {
+    "sound": "stone"
+  },
+  "dw623:magenta_concrete_slab_14": {
+    "sound": "stone"
+  },
+  "dw623:magenta_concrete_slab_15": {
+    "sound": "stone"
+  },
+  "dw623:magenta_concrete_slab_16": {
+    "sound": "stone"
+  },
+  "dw623:orange_concrete_slab_1": {
+    "sound": "stone"
+  },
+  "dw623:orange_concrete_slab_2": {
+    "sound": "stone"
+  },
+  "dw623:orange_concrete_slab_3": {
+    "sound": "stone"
+  },
+  "dw623:orange_concrete_slab_4": {
+    "sound": "stone"
+  },
+  "dw623:orange_concrete_slab_5": {
+    "sound": "stone"
+  },
+  "dw623:orange_concrete_slab_6": {
+    "sound": "stone"
+  },
+  "dw623:orange_concrete_slab_7": {
+    "sound": "stone"
+  },
+  "dw623:orange_concrete_slab_8": {
+    "sound": "stone"
+  },
+  "dw623:orange_concrete_slab_9": {
+    "sound": "stone"
+  },
+  "dw623:orange_concrete_slab_10": {
+    "sound": "stone"
+  },
+  "dw623:orange_concrete_slab_11": {
+    "sound": "stone"
+  },
+  "dw623:orange_concrete_slab_12": {
+    "sound": "stone"
+  },
+  "dw623:orange_concrete_slab_13": {
+    "sound": "stone"
+  },
+  "dw623:orange_concrete_slab_14": {
+    "sound": "stone"
+  },
+  "dw623:orange_concrete_slab_15": {
+    "sound": "stone"
+  },
+  "dw623:orange_concrete_slab_16": {
+    "sound": "stone"
+  },
+  "dw623:pink_concrete_slab_1": {
+    "sound": "stone"
+  },
+  "dw623:pink_concrete_slab_2": {
+    "sound": "stone"
+  },
+  "dw623:pink_concrete_slab_3": {
+    "sound": "stone"
+  },
+  "dw623:pink_concrete_slab_4": {
+    "sound": "stone"
+  },
+  "dw623:pink_concrete_slab_5": {
+    "sound": "stone"
+  },
+  "dw623:pink_concrete_slab_6": {
+    "sound": "stone"
+  },
+  "dw623:pink_concrete_slab_7": {
+    "sound": "stone"
+  },
+  "dw623:pink_concrete_slab_8": {
+    "sound": "stone"
+  },
+  "dw623:pink_concrete_slab_9": {
+    "sound": "stone"
+  },
+  "dw623:pink_concrete_slab_10": {
+    "sound": "stone"
+  },
+  "dw623:pink_concrete_slab_11": {
+    "sound": "stone"
+  },
+  "dw623:pink_concrete_slab_12": {
+    "sound": "stone"
+  },
+  "dw623:pink_concrete_slab_13": {
+    "sound": "stone"
+  },
+  "dw623:pink_concrete_slab_14": {
+    "sound": "stone"
+  },
+  "dw623:pink_concrete_slab_15": {
+    "sound": "stone"
+  },
+  "dw623:pink_concrete_slab_16": {
+    "sound": "stone"
+  },
+  "dw623:purple_concrete_slab_1": {
+    "sound": "stone"
+  },
+  "dw623:purple_concrete_slab_2": {
+    "sound": "stone"
+  },
+  "dw623:purple_concrete_slab_3": {
+    "sound": "stone"
+  },
+  "dw623:purple_concrete_slab_4": {
+    "sound": "stone"
+  },
+  "dw623:purple_concrete_slab_5": {
+    "sound": "stone"
+  },
+  "dw623:purple_concrete_slab_6": {
+    "sound": "stone"
+  },
+  "dw623:purple_concrete_slab_7": {
+    "sound": "stone"
+  },
+  "dw623:purple_concrete_slab_8": {
+    "sound": "stone"
+  },
+  "dw623:purple_concrete_slab_9": {
+    "sound": "stone"
+  },
+  "dw623:purple_concrete_slab_10": {
+    "sound": "stone"
+  },
+  "dw623:purple_concrete_slab_11": {
+    "sound": "stone"
+  },
+  "dw623:purple_concrete_slab_12": {
+    "sound": "stone"
+  },
+  "dw623:purple_concrete_slab_13": {
+    "sound": "stone"
+  },
+  "dw623:purple_concrete_slab_14": {
+    "sound": "stone"
+  },
+  "dw623:purple_concrete_slab_15": {
+    "sound": "stone"
+  },
+  "dw623:purple_concrete_slab_16": {
+    "sound": "stone"
+  },
+  "dw623:red_concrete_slab_1": {
+    "sound": "stone"
+  },
+  "dw623:red_concrete_slab_2": {
+    "sound": "stone"
+  },
+  "dw623:red_concrete_slab_3": {
+    "sound": "stone"
+  },
+  "dw623:red_concrete_slab_4": {
+    "sound": "stone"
+  },
+  "dw623:red_concrete_slab_5": {
+    "sound": "stone"
+  },
+  "dw623:red_concrete_slab_6": {
+    "sound": "stone"
+  },
+  "dw623:red_concrete_slab_7": {
+    "sound": "stone"
+  },
+  "dw623:red_concrete_slab_8": {
+    "sound": "stone"
+  },
+  "dw623:red_concrete_slab_9": {
+    "sound": "stone"
+  },
+  "dw623:red_concrete_slab_10": {
+    "sound": "stone"
+  },
+  "dw623:red_concrete_slab_11": {
+    "sound": "stone"
+  },
+  "dw623:red_concrete_slab_12": {
+    "sound": "stone"
+  },
+  "dw623:red_concrete_slab_13": {
+    "sound": "stone"
+  },
+  "dw623:red_concrete_slab_14": {
+    "sound": "stone"
+  },
+  "dw623:red_concrete_slab_15": {
+    "sound": "stone"
+  },
+  "dw623:red_concrete_slab_16": {
+    "sound": "stone"
+  },
+  "dw623:white_concrete_slab_1": {
+    "sound": "stone"
+  },
+  "dw623:white_concrete_slab_2": {
+    "sound": "stone"
+  },
+  "dw623:white_concrete_slab_3": {
+    "sound": "stone"
+  },
+  "dw623:white_concrete_slab_4": {
+    "sound": "stone"
+  },
+  "dw623:white_concrete_slab_5": {
+    "sound": "stone"
+  },
+  "dw623:white_concrete_slab_6": {
+    "sound": "stone"
+  },
+  "dw623:white_concrete_slab_7": {
+    "sound": "stone"
+  },
+  "dw623:white_concrete_slab_8": {
+    "sound": "stone"
+  },
+  "dw623:white_concrete_slab_9": {
+    "sound": "stone"
+  },
+  "dw623:white_concrete_slab_10": {
+    "sound": "stone"
+  },
+  "dw623:white_concrete_slab_11": {
+    "sound": "stone"
+  },
+  "dw623:white_concrete_slab_12": {
+    "sound": "stone"
+  },
+  "dw623:white_concrete_slab_13": {
+    "sound": "stone"
+  },
+  "dw623:white_concrete_slab_14": {
+    "sound": "stone"
+  },
+  "dw623:white_concrete_slab_15": {
+    "sound": "stone"
+  },
+  "dw623:white_concrete_slab_16": {
+    "sound": "stone"
+  },
+  "dw623:yellow_concrete_slab_1": {
+    "sound": "stone"
+  },
+  "dw623:yellow_concrete_slab_2": {
+    "sound": "stone"
+  },
+  "dw623:yellow_concrete_slab_3": {
+    "sound": "stone"
+  },
+  "dw623:yellow_concrete_slab_4": {
+    "sound": "stone"
+  },
+  "dw623:yellow_concrete_slab_5": {
+    "sound": "stone"
+  },
+  "dw623:yellow_concrete_slab_6": {
+    "sound": "stone"
+  },
+  "dw623:yellow_concrete_slab_7": {
+    "sound": "stone"
+  },
+  "dw623:yellow_concrete_slab_8": {
+    "sound": "stone"
+  },
+  "dw623:yellow_concrete_slab_9": {
+    "sound": "stone"
+  },
+  "dw623:yellow_concrete_slab_10": {
+    "sound": "stone"
+  },
+  "dw623:yellow_concrete_slab_11": {
+    "sound": "stone"
+  },
+  "dw623:yellow_concrete_slab_12": {
+    "sound": "stone"
+  },
+  "dw623:yellow_concrete_slab_13": {
+    "sound": "stone"
+  },
+  "dw623:yellow_concrete_slab_14": {
+    "sound": "stone"
+  },
+  "dw623:yellow_concrete_slab_15": {
+    "sound": "stone"
+  },
+  "dw623:yellow_concrete_slab_16": {
+    "sound": "stone"
+  }
+}

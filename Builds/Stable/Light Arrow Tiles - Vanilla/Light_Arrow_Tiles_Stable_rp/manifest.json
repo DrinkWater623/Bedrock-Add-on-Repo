@@ -2,12 +2,12 @@
     "format_version": 2,
     "header": {
         "name": "Light Arrow Tiles RP : §aStable§r",
-        "description": "Vanilla style arrow tiles made of light RP\n§aBuild Date: 2024.12.11.16.42.51§r §gby https://github.com/DrinkWater623§r",
+        "description": "Vanilla style arrow tiles made of light RP\n§aBuild Date: 2024.12.25.0.18.49§r §gby https://github.com/DrinkWater623§r",
         "uuid": "fc001ecd-2f2b-4c0d-9a94-2836effb7deb",
         "version": [
             24,
             12,
-            11
+            25
         ],
         "min_engine_version": [
             1,
@@ -33,7 +33,7 @@
             "version": [
                 24,
                 12,
-                11
+                25
             ]
         }
     ],
@@ -41,9 +41,10 @@
         "authors": [
             "https://github.com/DrinkWater623"
         ],
+        "license": "GPL-3.0-only",
         "generated_with": {
             "regolith_filter_mani_fest": [
-                "24.7.28"
+                "2024.12.24"
             ]
         }
     }

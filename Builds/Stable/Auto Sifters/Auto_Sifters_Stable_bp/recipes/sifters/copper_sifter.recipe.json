@@ -1,0 +1,31 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "dw623:copper_sifter_recipe"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "N",
+      "C"
+    ],
+    "key": {
+      "N": {
+        "item": "dw623:copper_grate"
+      },
+      "C": {
+        "item": "minecraft:composter"
+      }
+    },
+    "unlock": [
+      {
+        "item": "dw623:copper_grate"
+      }
+    ],
+    "result": {
+      "item": "dw623:copper_sifter"
+    }
+  }
+}

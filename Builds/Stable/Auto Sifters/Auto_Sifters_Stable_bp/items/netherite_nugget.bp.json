@@ -1,0 +1,17 @@
+{
+  "format_version": "1.20.50",
+  "minecraft:item": {
+    "description": {
+      "identifier": "dw623:netherite_nugget",
+      "menu_category": {
+        "category": "items"
+      }
+    },
+    "components": {
+      "minecraft:icon": "netherite_nugget",
+      "minecraft:display_name": {
+        "value": "Netherite Nugget"
+      }
+    }
+  }
+}

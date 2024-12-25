@@ -1,0 +1,17 @@
+{
+  "format_version": "1.20.50",
+  "minecraft:item": {
+    "description": {
+      "identifier": "dw623:broken_elytra_left",
+      "menu_category": {
+        "category": "items"
+      }
+    },
+    "components": {
+      "minecraft:icon": "broken_elytra_left",
+      "minecraft:display_name": {
+        "value": "Left Elytra Wing"
+      }
+    }
+  }
+}

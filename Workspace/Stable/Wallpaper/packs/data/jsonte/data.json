@@ -1,0 +1,53 @@
+{
+    "flowers":[
+        {"item_name":"allium"				,"block_texture":"flower_allium"			},
+        {"item_name":"azure_bluet"			,"block_texture":"flower_houstonia"			},
+        {"item_name":"blue_orchid"		    ,"block_texture":"flower_blue_orchid"			},
+        {"item_name":"cornflower"			,"block_texture":"flower_cornflower"		},
+        {"item_name":"dandelion"			,"block_texture":"flower_dandelion"	    },
+        {"item_name":"lilac"			    ,"block_texture":"double_plant_syringa_top"			},
+        {"item_name":"lily_of_the_valley"	,"block_texture":"flower_lily_of_the_valley"},
+        {"item_name":"orange_tulip"		    ,"block_texture":"flower_tulip_orange"		},
+        {"item_name":"pink_tulip"			,"block_texture":"flower_tulip_pink"		},
+        {"item_name":"poppy"				,"block_texture":"flower_rose"				},
+        {"item_name":"red_tulip"			,"block_texture":"flower_tulip_red"			},
+        {"item_name":"white_tulip"		    ,"block_texture":"flower_tulip_white"		},
+        {"item_name":"oxeye_daisy"		    ,"block_texture":"flower_oxeye_daisy"				},
+        {"item_name":"brown_mushroom" 	    ,"block_texture":"mushroom_brown"},
+        {"item_name":"red_mushroom" 	    ,"block_texture":"mushroom_red"},
+        {"item_name":"sunflower"			,"block_texture":"double_plant_sunflower_front"			},
+        {"item_name":"twisting_vines"	    ,"block_texture":"twisting_vines_base"},
+        {"item_name":"weeping_vines"	    ,"block_texture":"weeping_vines_base"},
+        {"item_name":"rose_bush"			,"block_texture":"double_plant_rose_top"				},
+        {"item_name":"peony"	    		,"block_texture":"double_plant_paeonia_top"			},
+        {"item_name":"pitcher_plant"	    ,"block_texture":"pitcher_crop_top_stage_4"},
+        {"item_name":"tall_grass"	        ,"block_texture":"double_plant_grass_carried"				},
+        {"item_name":"short_grass"	        ,"block_texture":"tallgrass"				},
+        {"item_name":"large_fern"			,"block_texture":"fern_carried"				},        //  Tall Grass
+        {"item_name":"vine"			        ,"block_texture":"vine_carried"},
+        {"item_name":"oak_sapling"	        ,"block_texture":"sapling_oak"},
+        {"item_name":"spruce_sapling"	    ,"block_texture":"sapling_spruce"},
+        {"item_name":"birch_sapling"	    ,"block_texture":"sapling_birch"},
+        {"item_name":"jungle_sapling"	    ,"block_texture":"sapling_jungle"},
+        {"item_name":"acacia_sapling"	    ,"block_texture":"sapling_acacia"},
+        {"item_name":"dark_oak_sapling"	    ,"block_texture":"sapling_roofed_oak"}
+    ],
+    //{"is_block":1,"group":3	,"item_name":"tallgrass"	        ,"block_texture":"tallgrass_carried"                  },
+    //{"is_block":1,"group":3	,"item_name":"kelp"				    ,"block_texture":"kelp_top_bulb"}, MOVING
+    // {"is_block":1,"group":3	,"item_name":"nether_sprouts"	    ,"block_texture":"nether_sprouts"},
+    "same_name":        [
+        {"item_name":"bamboo_sapling"	    ,"block_texture":"bamboo_sapling"},
+        {"item_name":"cherry_sapling"	    ,"block_texture":"cherry_sapling"},
+        {"item_name":"pale_oak_sapling"	    ,"block_texture":"pale_oak_sapling"},
+        {"item_name":"chorus_flower"	    ,"block_texture":"chorus_flower"},
+        {"item_name":"pink_petals"		    ,"block_texture":"pink_petals"},        
+        {"item_name":"torchflower"		    ,"block_texture":"torchflower"},        
+        {"item_name":"crimson_fungus"	    ,"block_texture":"crimson_fungus"},
+        {"item_name":"crimson_roots"	    ,"block_texture":"crimson_roots"},
+        {"item_name":"deadbush"		        ,"block_texture":"deadbush"},
+        {"item_name":"hanging_roots"	    ,"block_texture":"hanging_roots"},
+        {"item_name":"spore_blossom"	    ,"block_texture":"spore_blossom"},    
+        {"item_name":"warped_fungus"		,"block_texture":"warped_fungus"},
+        {"item_name":"warped_roots"		    ,"block_texture":"warped_roots"}
+    ]    
+}

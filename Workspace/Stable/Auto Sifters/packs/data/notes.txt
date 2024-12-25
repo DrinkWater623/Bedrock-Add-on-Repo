@@ -1,0 +1,74 @@
+TODO: add podzol, farmland, Mycelium,corse dirt, farmland, clay block, netherrack and those dirts
+Maybe leaves....
+powder snow
+
+some stuff is for certain blocks only... common sense
+...maybe include biome
+
+loot:
+    nuggets
+        diamond
+        emerald
+        bone
+        copper
+        netherite scraps
+        iron
+        gold        
+
+    other
+    golden apple and carrot
+        bundles
+        wolf armor
+        goat horns
+        OP rods
+        OP bows
+        OP trident
+        other weapons
+        shears
+        spyglass
+        brush
+        candles
+        stick
+        zombie head
+        creeper head
+        bowl
+        flower pot
+        bricks
+        nether bricks
+        records
+        prismarine chard and crystals
+        rabbit feet
+        string
+        rotten flesh
+        spider eyes
+        potions
+        arrows
+        ? cooked food
+        inc sacs
+        glow inc sacs
+        amethyst chards
+        seeds
+        turtle eggs
+        blaze rod
+        breeze rod
+        turtle scute
+        armadillo scute
+        disc fragments
+        bucket
+        echo shard
+        nautilus shell
+        heart of the sea,
+        banner patterns
+        pottery shards
+        smithing templates
+        ender pearl
+        eye of ender
+        slime ball,
+        chain
+        trial key
+        books
+
+
+
+
+

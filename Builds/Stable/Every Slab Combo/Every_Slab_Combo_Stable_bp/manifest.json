@@ -2,7 +2,7 @@
     "format_version": 2,
     "header": {
         "name": "Every Slab Combo BP : §aStable§r",
-        "description": "Every Combination of Vanilla Slabs BP\n§aBuild Date: 2024.12.24.0.18.21§r §gby https://github.com/DrinkWater623§r",
+        "description": "Every Combination of Vanilla Slabs BP\n§aBuild Date: 2024.12.24.23.22.24§r §gby https://github.com/DrinkWater623§r",
         "uuid": "eca6fee8-a292-4bb6-a9d7-11027db98340",
         "version": [
             24,
@@ -41,9 +41,10 @@
         "authors": [
             "https://github.com/DrinkWater623"
         ],
+        "license": "GPL-3.0-only",
         "generated_with": {
             "regolith_filter_mani_fest": [
-                "24.7.28"
+                "2024.12.24"
             ]
         }
     }

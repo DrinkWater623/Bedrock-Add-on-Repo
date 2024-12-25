@@ -1,0 +1,39 @@
+{
+  "resource_pack_name": "dw623",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "mud_ball": {
+      "textures": "textures/items/dw623/common/mud_ball"
+    },
+    "gravel_dust": {
+      "textures": "textures/items/dw623/common/gravel_dust"
+    },
+    "sand_dust": {
+      "textures": "textures/items/dw623/common/sand_dust"
+    },
+    "red_sand_dust": {
+      "textures": "textures/items/dw623/common/red_sand_dust"
+    },
+    "soul_sand_dust": {
+      "textures": "textures/items/dw623/common/soul_sand_dust"
+    },
+    "broken_elytra_left": {
+      "textures": "textures/items/dw623/common/broken_elytra_left"
+    },
+    "broken_elytra_right": {
+      "textures": "textures/items/dw623/common/broken_elytra_right"
+    },
+    "netherite_scrap_piece": {
+      "textures": "textures/items/dw623/common/netherite_scrap_piece"
+    },
+    "diamond_nugget": {
+      "textures": "textures/items/dw623/common/diamond_nugget"
+    },
+    "emerald_nugget": {
+      "textures": "textures/items/dw623/common/emerald_nugget"
+    },
+    "netherite_nugget": {
+      "textures": "textures/items/dw623/common/netherite_nugget"
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "format_version": "1.20.80",
+  "minecraft:block": {
+    "description": {
+      "identifier": "dw623:yellow_concrete_powder_slab_4"
+    },
+    "components": {
+      "tag:minecraft:is_shovel_item_destructible": {
+      },
+      "minecraft:display_name": "Yellow Concrete Powder Slab (4)",
+      "minecraft:map_color": "#E5E533",
+      "minecraft:custom_components": [
+        "dw623:siftable_slabs"
+      ],
+      "minecraft:tick": {
+        "interval_range": [
+          3,
+          3
+        ],
+        "looping": true
+      },
+      "minecraft:geometry": {
+        "identifier": "geometry.dw623.block_16x4x16_floor"
+      },
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "yellow_concrete_powder"
+        }
+      },
+      "minecraft:collision_box": {
+        "origin": [
+          -8,
+          0,
+          -8
+        ],
+        "size": [
+          16,
+          4,
+          16
+        ]
+      },
+      "minecraft:selection_box": {
+        "origin": [
+          -8,
+          0,
+          -8
+        ],
+        "size": [
+          16,
+          4,
+          16
+        ]
+      }
+    }
+  }
+}

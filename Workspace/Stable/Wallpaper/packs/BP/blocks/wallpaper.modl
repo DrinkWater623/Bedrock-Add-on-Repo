@@ -1,0 +1,93 @@
+{
+    "$module": "wallpaper_block",
+    "$template": {
+        "format_version": "{{settings.block_format_version}}",
+        "minecraft:block": 
+        {
+            "description": 
+            {
+                "identifier": "dw623:{{item_name}}_wallpaper", 
+                "menu_category": {                
+                    "category": "items",                    
+                    "is_hidden_in_commands": false
+                },               
+                "traits": {"minecraft:placement_position":{"enabled_states":["minecraft:block_face"]}}
+            },
+            "components": {
+                "minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,1,16]},
+                "minecraft:collision_box":{"origin": [-8,0,-8],"size": [16,1,16]},                
+                "minecraft:destructible_by_explosion": true,                
+                "minecraft:destructible_by_mining": true,                
+                "minecraft:display_name":"{{item_name}} Wallpaper",                
+                "minecraft:flammable":true,      
+                "minecraft:geometry": "geometry.dw623.block_half_tile_floor",                        
+                "minecraft:material_instances": {
+                    "*": {"texture":"{{item_name}}_wallpaper","render_method":"opaque"}
+                    /*,
+                    "up":{"texture":"{{item_name}}_wallpaper","render_method":"opaque","ambient_occlusion": true,"face_dimming":true},                    
+                    "down":{"texture":"{{item_name}}_wallpaper","render_method":"opaque","ambient_occlusion": true,"face_dimming":true}                    
+                    */
+                },                    
+                "minecraft:transformation": {"rotation": [0,0,0]}
+            },           
+            /*"permutations": [               
+                {
+                    "{{#rotate_block_face}}":{
+                        "condition": "query.block_state('minecraft:block_face') == '{{block_face}}'",
+                        "components": {"minecraft:transformation":{"rotation": "{{rotation}}"}}
+                    }                    
+                }
+            ]*/
+            "permutations":[
+                {
+                "condition": "query.block_state('minecraft:block_face') == 'up'",
+                "components": {              
+                    "minecraft:geometry": {"identifier":"geometry.dw623.block_16x1x16_floor"},
+                    "minecraft:collision_box": {"origin": [-8,0,-8],"size": [16,1,16]},
+                    "minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,1,16]}
+                }
+                },        
+                {
+                    "condition": "query.block_state('minecraft:block_face') == 'down'",
+                    "components": {               
+                        "minecraft:geometry": {"identifier":"geometry.dw623.block_16x1x16_ceiling"},
+                        "minecraft:collision_box": {"origin": [-8,15,-8],"size": [16,1,16]},
+                        "minecraft:selection_box": {"origin": [-8,15,-8],"size": [16,1,16]}
+                    }
+                },
+                {
+                    "condition": "query.block_state('minecraft:block_face') == 'south'",
+                    "components": {
+                        "minecraft:geometry": {"identifier":"geometry.dw623.block_16x1x16_north"},
+                        "minecraft:collision_box": {"origin": [-8,0,-8],"size": [16,16,1]},
+                        "minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,16,1]}
+                    }
+                },
+                {
+                    "condition": "query.block_state('minecraft:block_face') == 'north'",
+                    "components": {
+                        "minecraft:geometry": {"identifier":"geometry.dw623.block_16x1x16_south"},
+                        "minecraft:collision_box": {"origin": [-8,0,7],"size": [16,16,1]},
+                        "minecraft:selection_box": {"origin": [-8,0,7],"size": [16,16,1]}
+                    }
+                },
+                {
+                    "condition": "query.block_state('minecraft:block_face') == 'west'",
+                    "components": {
+                        "minecraft:geometry": {"identifier":"geometry.dw623.block_16x1x16_east"},
+                        "minecraft:collision_box": {"origin": [-8,0,-8],"size": [1,16,16]},
+                        "minecraft:selection_box": {"origin": [-8,0,-8],"size": [1,16,16]}
+                    }
+                },
+                {
+                    "condition": "query.block_state('minecraft:block_face') == 'east'",
+                    "components": {
+                        "minecraft:geometry": {"identifier":"geometry.dw623.block_16x1x16_west"},
+                        "minecraft:collision_box": {"origin": [7,0,-8],"size": [1,16,16]},
+                        "minecraft:selection_box": {"origin": [7,0,-8],"size": [1,16,16]}
+                    }
+                }
+            ]           
+        }
+    }
+}

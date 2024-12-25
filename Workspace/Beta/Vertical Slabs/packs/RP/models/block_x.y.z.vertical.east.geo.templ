@@ -1,0 +1,44 @@
+{ 
+	"$files": {
+		"array": "(16..16).flatMap(n => {'xz': n, 'origin': n/-2.0})",
+		"fileName": "./blocks/block_{{xz}}.8.{{xz}}.east.geo"
+	},
+	"$template":
+	{
+		"format_version": "1.12.0",
+		"minecraft:geometry": [
+			{
+				"{{#8..8}}": {
+					"description": {
+						"identifier": "geometry.dw623.block_{{xz}}x{{value}}x{{xz}}_east",
+						"texture_width": 16,
+						"texture_height": 16,
+						"visible_bounds_width": 3,
+						"visible_bounds_height": 2.5,
+						"visible_bounds_offset": [0, 0.75, 0]
+					},
+					"bones": [
+						{
+							"name": "bb_main",
+							"pivot": [0, 0, 0],
+							"cubes": [
+								{
+									"origin": [-8, 0, "{{=origin}}"],
+									"size": ["{{=value}}", "{{=xz}}", "{{=xz}}"],
+									"uv": {
+										"north": 	{"uv": [0, 0], "uv_size": ["{{=value}}", "{{=xz}}"]},
+										"south": 	{"uv": [0, 0], "uv_size": ["{{=value}}", "{{=xz}}"]},
+										"east": 	{"uv": [0, 0], "uv_size": ["{{=xz}}", "{{=xz}}"]},
+										"west":		{"uv": [0, 0], "uv_size": ["{{=xz}}", "{{=xz}}"]},
+										"up": 		{"uv": ["{{=value}}", "{{=xz}}"], "uv_size": ["{{=value*-1}}","{{=xz*-1}}"]},
+										"down": 	{"uv": ["{{=value}}", "{{=xz}}"], "uv_size": ["{{=value*-1}}","{{=xz*-1}}"]}
+									}
+								}
+							]
+						}
+					]
+				}
+			}			
+		]
+	}
+}

@@ -1,0 +1,58 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
+	"author": "https://github.com/DrinkWater623",
+	"name": "Wallpaper",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"mani_fest":{
+		"Debug":false,
+		"preview":false,
+		"beta":false,
+		"name": "Wallpaper",
+		"description": "Stuff",													
+		"min_engine_version": [1,21,0],
+		"BP":{
+			"header_uuid": "cbf63dae-a145-4436-9620-b11408585a76",
+			"module_uuid": "38cd9f74-d4d3-4a7e-80c9-de35610ceaf5"
+			
+		},
+		"RP": {
+			"header_uuid": "1312c6ff-a126-4e40-889d-8549770a9be6",
+			"module_uuid": "00e86cf7-420e-4564-9e5f-6cd5fd3e4061"
+		}
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"jsonte": {"url":"github.com/MCDevKit/regolith-library","version":"2.14.0"},
+			"dot_ignore": {"runWith":"python","script":"/filters/dot_ignore.py"},
+			"empty_ignore": {"runWith":"python","script":"/filters/empty_ignore.py"},			
+			"mani_fest": {"runWith":"nodejs","script":"/filters/mani_fest.js"}		
+		},
+		"profiles": {
+			"template-stable": {
+				"export": {"readOnly":false,"target":"local"},				
+				"filters": [
+					{"filter":"dot_ignore"},					
+					{"filter":"jsonte"},
+					{"filter":"empty_ignore"}
+				]
+			},										
+			"build": {				
+				"export": {"readOnly":false,"target":"local","bpName":"project.name+'_Stable_bp'","rpName": "project.name+'_Stable_rp'"},
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"beta":false,"preview":false}}]
+			},			
+			"stable": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"beta":false}}]
+			},
+			"preview": {
+				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"preview":true}}]
+			}
+			
+		}
+	}
+}

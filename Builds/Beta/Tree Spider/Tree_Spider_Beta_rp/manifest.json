@@ -1,0 +1,51 @@
+{
+    "format_version": 2,
+    "header": {
+        "name": "Tree Spider RP : §6Beta§r",
+        "description": "Friendly Spider that makes webs...like IRL RP\n§aBuild Date: 2024.12.24.23.16.14§r §gby https://github.com/DrinkWater623§r",
+        "uuid": "a48721f9-215c-4e24-9160-b7ebc23e82e8",
+        "version": [
+            24,
+            12,
+            24
+        ],
+        "min_engine_version": [
+            1,
+            21,
+            0
+        ]
+    },
+    "modules": [
+        {
+            "type": "resources",
+            "description": "RP Pack",
+            "uuid": "b0fb973c-16f9-4896-a29f-1b98797bc429",
+            "version": [
+                1,
+                0,
+                0
+            ]
+        }
+    ],
+    "dependencies": [
+        {
+            "uuid": "60156da2-e8e1-4ac8-8d66-18690ad45da2",
+            "version": [
+                24,
+                12,
+                24
+            ]
+        }
+    ],
+    "metadata": {
+        "authors": [
+            "https://github.com/DrinkWater623"
+        ],
+        "license": "GPL-3.0-only",
+        "generated_with": {
+            "regolith_filter_mani_fest": [
+                "2024.12.24"
+            ]
+        }
+    }
+}
