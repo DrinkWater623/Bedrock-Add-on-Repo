@@ -1,7 +1,7 @@
 //@ts-check
 import { BlockPermutation, world } from "@minecraft/server";
-import { chatLog, globals, alertLog,pack } from '../settings.js';
-import { PlayerLib } from "../commonLib/playerClass.js";
+import { chatLog,  alertLog,pack } from '../settings.js';
+import { PlayerLib } from "../common-stable/playerClass.js";
 import {    
     placeBlock,
     placeDw623Slab,
@@ -9,6 +9,7 @@ import {
     replaceDw623Slab
 } from "../fn-stable.js";
 import { SlabBeforeEventData } from "../class/SlabEventDataClass-beta.js";
+import { mcNameSpace } from "../common-data/globalConstantsLib.js";
 //=============================================================================
 /*
     Written By:     "https://github.com/DrinkWater623"
@@ -96,7 +97,7 @@ function placeCombinableSlab (event, debug = false) {
 
         let success = false;
         if (newHeight == 16) {
-            const newBlockTypeId = event.itemFamily.replace(pack.packNameSpace, globals.mcNameSpace).replace('_slab', '');
+            const newBlockTypeId = event.itemFamily.replace(pack.packNameSpace, mcNameSpace).replace('_slab', '');
             success = placeBlock(event.touchBlock, newBlockTypeId);
         }
         else {
@@ -163,7 +164,7 @@ function placeAdjacentSlab (event, debug = false) {
         chatLog.send(event.player, `  §f==> Opposite or Same Face: §a${event.blockFaceTrait} / ${event.touchFace}`, debug);
 
         //if opposite, check grid for other types of placement
-        if (event.blockFaceTrait != event.touchFace || event.touchBlock.typeId.startsWith(globals.mcNameSpace)) {
+        if (event.blockFaceTrait != event.touchFace || event.touchBlock.typeId.startsWith(mcNameSpace)) {
             
             const grid = event.grid_4x4;
             const flat=[ 'up', 'down' ].includes(event.touchFace)

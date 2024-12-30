@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
-	"author": "https://github.com/DrinkWater623",
+	"author": "DrinkWater623, Update Block Dev",	
 	"name": "Every_Slab_Combo",
 	"packs": {
 		"behaviorPack": "./packs/BP",
@@ -11,8 +11,10 @@
 		"preview":false,
 		"beta":false,
 		"name": "Every Slab Combo",
-		"description": "Every Combination of Vanilla Slabs",													
-		"min_engine_version": [1,21,0],
+		"description": "Every Combination of Vanilla Slabs",
+		"license":"GPL-3.0-only",
+		"url": "https://github.com/DrinkWater623",													
+		"min_engine_version": [1,21,50],
 		"BP":{
 			"header_uuid": "eca6fee8-a292-4bb6-a9d7-11027db98340",
 			"module_uuid": "114de2f7-7dc9-47ce-bcc2-6d1d16c6a2c1"
@@ -45,7 +47,8 @@
 								"wooden_slab"								
 							], 									
 							"excludeEndsWith":["2","3","4"], 									
-							"slabCombos":true
+							"slabCombos":true,
+							"slabs":true
 						}
 					},
 					{"filter":"jsonte"},

@@ -1,33 +1,41 @@
 //@ts-check
-import { system, Entity ,BiomeTypes} from "@minecraft/server";
-import { BlockLib as BlockLib } from './commonLib/blockClass.js'; //beta parts used
-import { Vector3Lib } from './commonLib/vectorClass.js';
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only (https://www.gnu.org/licenses/gpl-3.0.html)
+CliffNotes: Using my files within Minecraft Bedrock MarketPlace is prohibited without written permission.  All code must remain freely visible and license passed along.
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
+import { system, Entity } from "@minecraft/server";
 import { dev, chatLog, entityEvents, watchFor } from './settings.js';
 import { setWebAndEnter, teleportAndCenter, webAdjacent, webRegister } from "./fn-stable.js";
+import { Vector3Lib } from './common-stable/vectorClass.js';
+import { blocksAround_locations } from './common-beta/blockVolumeLib-beta.js';
 //===================================================================
 /**
- * @summary Beta: dimension.getBlocks in BlockLib.blocksAround_locations
+ * @summary Beta: dimension.getBlocks in blocksAround_locations
  * @param {Entity} entity 
  * @param {boolean} isBaby 
  */
 export function enterWeb (entity, isBaby = false) {
-    //Beta for dimension.getBlocks in BlockLib.blocksAround_locations
+    //Beta for dimension.getBlocks in blocksAround_locations
     const { dimension, location } = entity;
     const inBlock = dimension.getBlock(location);
     chatLog.log(`§d*enterWeb (${entity.nameTag || entity.id}) @ ${Vector3Lib.toString(location)} ${inBlock ? 'inBlock: ' + inBlock.typeId : ''}`, dev.debugEntityActivity);
 
     if (inBlock && inBlock.typeId == watchFor.home_typeId) {
         system.run(() => {
-            chatLog.success(`§b${entity.nameTag || entity.id} Already in Web @ ${Vector3Lib.toString(location,0,true)} - enterWeb()`, dev.debugEntityAlert);
+            chatLog.success(`§b${entity.nameTag || entity.id} Already in Web @ ${Vector3Lib.toString(location, 0, true)} - enterWeb()`, dev.debugEntityAlert);
             entity.teleport(inBlock.center());
             isBaby ? entity.triggerEvent('baby_stay_in_web_start') : entity.triggerEvent(entityEvents.stayInWebEventName);
         });
         return true;
     }
 
-    const blockLocations = BlockLib.blocksAround_locations(dimension, location, 2, { includeTypes: [ watchFor.home_typeId ] }, false);
+    const blockLocations = blocksAround_locations(dimension, location, 2, { includeTypes: [ watchFor.home_typeId ] }, false);
     if (blockLocations.length === 0) {
-        system.run(() => {            
+        system.run(() => {
             isBaby ? entity.triggerEvent('baby_wander_around_start') : entity.triggerEvent(entityEvents.wanderEventName);
         });
         return false;
@@ -38,7 +46,7 @@ export function enterWeb (entity, isBaby = false) {
     system.run(() => {
         webRegister(entity);
         if (dev.debugEntityActivity) {
-            chatLog.success(`§b${entity.nameTag || entity.id} Entered Web @ ${Vector3Lib.toString( blockLocations[ which ],0,true)}`, dev.debugEntityActivity);
+            chatLog.success(`§b${entity.nameTag || entity.id} Entered Web @ ${Vector3Lib.toString(blockLocations[ which ], 0, true)}`, dev.debugEntityActivity);
             //dev.debugScoreboard?.addScore('enteredWeb', 1);
         }
         teleportAndCenter(entity, blockLocations[ which ]);
@@ -49,7 +57,7 @@ export function enterWeb (entity, isBaby = false) {
 }
 //===================================================================
 /**
- * @summary Beta: dimension.getBlocks in BlockLib.blocksAround_locations
+ * @summary Beta: dimension.getBlocks in blocksAround_locations
  * @param {Entity} entity 
  */
 export function expandWeb (entity) {
@@ -64,11 +72,11 @@ export function expandWeb (entity) {
         return false;
     }
 
-    let blockLocations = BlockLib.blocksAround_locations(dimension, location, 1, { includeTypes: [ "minecraft:air" ] }, true);
+    let blockLocations = blocksAround_locations(dimension, location, 1, { includeTypes: [ "minecraft:air" ] }, true);
     if (blockLocations.length === 0) {
-        blockLocations = BlockLib.blocksAround_locations(dimension, location, 2, { includeTypes: [ "minecraft:air" ] }, true);
+        blockLocations = blocksAround_locations(dimension, location, 2, { includeTypes: [ "minecraft:air" ] }, true);
         if (blockLocations.length === 0) {
-            blockLocations = BlockLib.blocksAround_locations(dimension, location, 3, { includeTypes: [ "minecraft:air" ] }, true);
+            blockLocations = blocksAround_locations(dimension, location, 3, { includeTypes: [ "minecraft:air" ] }, true);
         };
         if (blockLocations.length === 0) {
             system.run(() => {
@@ -82,7 +90,7 @@ export function expandWeb (entity) {
         const block = dimension.getBlock(newLocation);
 
         if (block && webAdjacent(block)) {
-            chatLog.success(`§e${entity.nameTag || entity.id} Expanded Web @ ${Vector3Lib.toString( newLocation,0,true)}`, dev.debugEntityActivity);            
+            chatLog.success(`§e${entity.nameTag || entity.id} Expanded Web @ ${Vector3Lib.toString(newLocation, 0, true)}`, dev.debugEntityActivity);
             setWebAndEnter(entity, newLocation, 'expandWeb');
             return true;
         }
@@ -101,7 +109,7 @@ export function expandWeb (entity) {
 //===================================================================
 /**
  * @summary Beta: dimension.findClosestBiome
- * @param {Entity} entity 
+ * @param {Entity} entity
  * @returns {string | undefined}
  */
 

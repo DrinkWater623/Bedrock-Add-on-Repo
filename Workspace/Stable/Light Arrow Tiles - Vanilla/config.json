@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
-	"author": "https://github.com/DrinkWater623",
+	"author": "DrinkWater623, Update Block Dev",	
 	"name": "Light_Arrow_Tiles",
 	"packs": {
 		"behaviorPack": "./packs/BP",
@@ -13,7 +13,9 @@
 		"scripts":false,
 		"name": "Light Arrow Tiles",
 		"description": "Vanilla style arrow tiles made of light",
-		"min_engine_version": [1,21,0],							
+		"license":"GPL-3.0-only",
+		"url": "https://github.com/DrinkWater623",
+		"min_engine_version": [1,21,50],							
 		"BP":{
 			"header_uuid": "bba9abb8-3c98-40e4-af55-f980fefc111c",
 			"module_uuid": "c4394149-030e-4af9-b81e-22ca6dd245fd"

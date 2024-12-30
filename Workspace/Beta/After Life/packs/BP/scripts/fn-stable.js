@@ -1,7 +1,14 @@
 //@ts-check
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
 import { Entity, system, world, Player, World, TicksPerSecond } from "@minecraft/server";
 import { dev, chatLog, dynamicVars } from './settings.js';
-import { DynamicPropertyLib } from "./commonLib/dynamicPropertyClass.js";
+import { DynamicPropertyLib } from "./common-stable/dynamicPropertyClass.js";
 
 //==============================================================================
 export const dimensionSuffix = (dimensionId = "") => { return dimensionId.replace('minecraft:', '').replace('the_', ''); };

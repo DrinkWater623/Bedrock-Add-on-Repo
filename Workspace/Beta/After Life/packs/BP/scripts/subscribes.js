@@ -1,11 +1,18 @@
 //@ts-check
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
 import { world, system, Player, TicksPerSecond } from "@minecraft/server";
 import { dev, alertLog, watchFor, dynamicVars, chatLog, pack } from './settings.js';
 import { dimensionSuffix, playerAliveTicksCounterJob, updatePlayerStats } from './fn-stable.js';
-import { Vector3Lib } from "./commonLib/vectorClass.js";
 import * as bot from "./deathBot.js";
-import { BlockLib } from "./commonLib/blockClass.js";
-import { DynamicPropertyLib } from "./commonLib/dynamicPropertyClass.js";
+import { BlockLib } from "./common-beta/blockClass.js";
+import { Vector3Lib } from "./common-stable/vectorClass.js";
+import { DynamicPropertyLib } from "./common-stable/dynamicPropertyClass.js";
 //==============================================================================
 const debug = dev.debugSubscriptions;
 //==============================================================================

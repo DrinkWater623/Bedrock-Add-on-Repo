@@ -1,9 +1,17 @@
 //@ts-check
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
 import { Block, BlockPermutation, system } from "@minecraft/server";
-import { chatLog, watchFor } from "./settings.js";
-import { vanilla_blocks } from "./commonLib/blocks.json.js";
-import { MinecraftBlockTypes, MinecraftItemTypes } from "./commonLib/vanillaData.js";
-import { sound_definitions } from "./commonLib/sound_definitions.js";
+import { chatLog } from "./settings.js";
+import { vanilla_blocks } from "./common-data/blocks.json.js";
+import { MinecraftBlockTypes, MinecraftItemTypes } from "./common-data/vanillaData.js";
+import { sound_definitions } from "./common-data/sound_definitions.js";
+import { fallThruBlocks } from "./common-data/globalConstantsLib.js";
 //==============================================================================
 const vanillaItems = Object.values(MinecraftItemTypes);
 const vanillaBlocks = Object.values(MinecraftBlockTypes).filter(b => vanillaItems.includes(b));
@@ -269,7 +277,7 @@ export function placeBlockWithStates (block, newTypeId, states, sound='',soundLi
  */
 export function placeDw623Slab (block, newTypeId, blockFace, airOnly = true, sound='',soundLike='') {
 
-    if (airOnly && !watchFor.fallThruBlocks.includes(block.typeId)) {
+    if (airOnly && !fallThruBlocks.includes(block.typeId)) {
         return false;
     }
 

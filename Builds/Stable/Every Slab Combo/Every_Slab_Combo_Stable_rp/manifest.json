@@ -2,12 +2,12 @@
     "format_version": 2,
     "header": {
         "name": "Every Slab Combo RP : §aStable§r",
-        "description": "Every Combination of Vanilla Slabs RP\n§aBuild Date: 2024.12.24.23.22.24§r §gby https://github.com/DrinkWater623§r",
+        "description": "Every Combination of Vanilla Slabs RP\n§aBuild Date: 2024.12.25.5.40.19§r §gby https://github.com/DrinkWater623§r",
         "uuid": "6ee535ff-5e13-475b-9746-de09be7ac732",
         "version": [
             24,
             12,
-            24
+            25
         ],
         "min_engine_version": [
             1,
@@ -33,7 +33,7 @@
             "version": [
                 24,
                 12,
-                24
+                25
             ]
         }
     ],

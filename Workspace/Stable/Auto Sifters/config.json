@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
-	"author": "https://github.com/DrinkWater623",
+	"author": "DrinkWater623, Update Block Dev",
 	"name": "Auto_Sifters",
 	"packs": {
 		"behaviorPack": "./packs/BP",
@@ -12,7 +12,9 @@
 		"beta":false,
 		"name": "Auto Sifters",
 		"description": "Sifts sand, gravel, concrete powder, snow & mud to find hidden loot",													
-		"min_engine_version": [1,21,0],
+		"license":"GPL-3.0-only",
+		"url": "https://github.com/DrinkWater623",
+		"min_engine_version": [1,21,50],
 		"BP":{
 			"header_uuid": "b934be1c-8067-4771-9720-f416f52d8782",
 			"module_uuid": "8643034c-8fa7-4c92-8811-4aea44b05ecd",

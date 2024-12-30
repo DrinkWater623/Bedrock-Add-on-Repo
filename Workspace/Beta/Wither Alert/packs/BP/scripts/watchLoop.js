@@ -1,7 +1,14 @@
 //@ts-check
-import { world, system, TicksPerSecond, Player } from "@minecraft/server";
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
+import { world, system, TicksPerSecond } from "@minecraft/server";
 import { callBacks_activate, callBacks_deactivate } from './callbackEvents.js';
-import { Entities } from './commonLib/entityClass.js';
+import { Entities } from './common-stable/entityClass.js';
 import { dev, chatLog } from './settings.js';
 //==============================================================================
 import { watchFor } from './settings.js';

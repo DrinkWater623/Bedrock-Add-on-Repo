@@ -1,6 +1,14 @@
-//@ts-check
+//@ts-check//@ts-check
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
 import { world, Player, BlockTypes } from '@minecraft/server';
-import * as vanillaBlocks from './vanillaBlocks.js';
+import * as vanillaBlocks from './everyBlock.js';
+//========================================================================
 const listBlockTypes = BlockTypes.getAll();
 //to stay in chat screen
 world.afterEvents.chatSend.subscribe(  //Chat Command Code Testing

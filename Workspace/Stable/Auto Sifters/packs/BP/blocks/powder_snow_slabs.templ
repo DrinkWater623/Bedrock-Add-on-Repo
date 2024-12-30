@@ -5,7 +5,7 @@
   },
   "$files": {
     "array": "p_snow",
-    "fileName": "./powder_snow/powder_snow_slab_{{height}}.bp"
+    "fileName": "./siftable/powder_snow/powder_snow_slab_{{height}}.bp"
   },
   "$template": {
     "format_version": "1.20.80",
@@ -24,7 +24,19 @@
         "minecraft:geometry": {"identifier":"geometry.dw623.block_16x{{height}}x16_floor"},
         "minecraft:material_instances": {"*":{"texture":"powder_snow"}},        
         "minecraft:collision_box": false,
-        "minecraft:selection_box": {"origin":[-8,0,-8],"size":[16,"{{=height}}",16]}        
+        "minecraft:selection_box": {"origin":[-8,0,-8],"size":[16,"{{=height}}",16]},
+        "minecraft:flammable": false,
+        "minecraft:destructible_by_mining": {          
+         "seconds_to_destroy": 0.40, 
+          "item_specific_speeds":[
+              {"item":"minecraft:wooden_shovel"    ,"destroy_speed": 0.40},
+              {"item":"minecraft:stone_shovel"     ,"destroy_speed": 0.20},
+              {"item":"minecraft:golden_shovel"    ,"destroy_speed": 0.10},
+              {"item":"minecraft:iron_shovel"      ,"destroy_speed": 0.20},
+              {"item":"minecraft:diamond_shovel"   ,"destroy_speed": 0.10},
+              {"item":"minecraft:netherite_shovel" ,"destroy_speed": 0.10}            
+          ]
+        } 
       }
     }
   }

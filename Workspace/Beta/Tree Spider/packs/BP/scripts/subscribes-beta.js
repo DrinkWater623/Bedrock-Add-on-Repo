@@ -1,13 +1,21 @@
 //@ts-check
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only (https://www.gnu.org/licenses/gpl-3.0.html)
+CliffNotes: Using my files within Minecraft Bedrock MarketPlace is prohibited without written permission.  All code must remain freely visible and license passed along.
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
 import { world, system, EntityInitializationCause } from "@minecraft/server";
 import { alertLog, dev, watchFor, chatLog, entityEvents, pack } from './settings.js';
 import { chatSend_before_fn } from './chatCmds-beta.js';
 import { enterWeb, expandWeb } from './fn-beta.js';
 import { placeWeb, newEgg, lastTickRegister } from './fn-stable.js';
-import { Vector3Lib } from "./commonLib/vectorClass.js";
-import { EntityLib } from "./commonLib/entityClass.js";
-import { DynamicPropertyLib } from "./commonLib/dynamicPropertyClass.js";
-import { BiomeLib } from "./commonLib/biomeLib.js";
+import { Vector3Lib } from "./common-stable/vectorClass.js";
+import { EntityLib } from "./common-stable/entityClass.js";
+import { DynamicPropertyLib } from "./common-stable/dynamicPropertyClass.js";
+import { BiomeLib } from "./common-beta/biomeLib.js";
 
 //==============================================================================
 /**

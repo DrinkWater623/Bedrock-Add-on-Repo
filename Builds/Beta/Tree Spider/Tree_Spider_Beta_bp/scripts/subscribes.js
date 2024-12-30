@@ -1,11 +1,19 @@
 //@ts-check
-import { world, system, TicksPerSecond, Entity, ScoreboardObjective, Block } from "@minecraft/server";
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only (https://www.gnu.org/licenses/gpl-3.0.html)
+CliffNotes: Using my files within Minecraft Bedrock MarketPlace is prohibited without written permission.  All code must remain freely visible and license passed along.
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
+import { world, system, TicksPerSecond, Entity, ScoreboardObjective } from "@minecraft/server";
 import { dev, alertLog, watchFor, dynamicVars } from './settings.js';
-import { ScoreboardLib } from "./commonLib/scoreboardClass.js";
 import { stalledEntityCheckAndFix, counts, webRegister } from './fn-stable.js';
-import { DynamicPropertyLib } from "./commonLib/dynamicPropertyClass.js";
-import { globalConstantsLib } from "./commonLib/globalConstantsClass.js";
-import { Vector3Lib } from "./commonLib/vectorClass.js";
+import { Ticks } from "./common-data/globalConstantsLib.js";
+import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
+import { DynamicPropertyLib } from "./common-stable/dynamicPropertyClass.js";
+import { Vector3Lib } from "./common-stable/vectorClass.js";
 //==============================================================================
 const sbName_load = dev.debugScoreboardName + '_load_tick';
 const sbName_spawn = dev.debugScoreboardName + '_spawn_tick';
@@ -44,7 +52,7 @@ export function afterEvents_worldInitialize () {
         if (dev.debugGamePlay || dev.debugEntityAlert || dev.debugEntityActivity) {
             dev.debugTimeCountersRunId = ScoreboardLib.systemTimeCountersStart(dev.debugScoreboardName, dev.debugTimers);
             system.runTimeout(() => {
-                system.runInterval(() => { counts(); }, globalConstantsLib.TicksPerMinute / 6);
+                system.runInterval(() => { counts(); }, Ticks.perMinute / 6);
                 system.runTimeout(() => { ScoreboardLib.sideBar_set(dev.debugScoreboardName); }, TicksPerSecond / 4);
             }, TicksPerSecond * 6);
         }
@@ -81,10 +89,10 @@ export function afterEvents_worldInitialize () {
         system.runTimeout(() => {
             system.runInterval(() => {
                 stalledEntityCheckAndFix();
-            }, globalConstantsLib.TicksPerMinute * watchFor.stalledCheckRunInterval);
-        }, globalConstantsLib.TicksPerMinute * watchFor.stalledCheckRunInterval);
+            }, Ticks.perMinute * watchFor.stalledCheckRunInterval);
+        },  Ticks.perMinute * watchFor.stalledCheckRunInterval);
     });
-}
+} 
 //==============================================================================
 export function afterEvents_entityLoad () {
     //Load (195 ticks or so )is after Spawn    

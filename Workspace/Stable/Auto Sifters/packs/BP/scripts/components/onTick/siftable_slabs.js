@@ -1,10 +1,11 @@
 //@ts-check
 import { Block, BlockComponentTickEvent, BlockPermutation, system } from "@minecraft/server";
-import { globals, watchFor } from '../../settings.js';
+import { watchFor } from '../../settings.js';
 import {    
     slabTypeIDSansHeight,
     slabTypeIDHeight
 } from "../../fn-stable.js";
+import { airBlock } from "../../common-data/globalConstantsLib.js";
 //==============================================================================
 /**
  * 
@@ -87,7 +88,7 @@ function concretePowderConvert (block) {
 function blockMoveDownOne (block, blockBelow) {
     system.run(() => {
         blockBelow.setType(block.typeId);
-        system.runTimeout(() => { block.setType(globals.mcAir); }, 1);
+        system.runTimeout(() => { block.setType(airBlock); }, 1);
     });
 }
 //==============================================================================
@@ -146,7 +147,7 @@ function blockCombineWithBlockBelow (block, blockBelow) {
 
             if (totalHeight <= 16) {
                 newTypeID_1 = `${baseSlabTypeId}_${totalHeight}`;
-                newTypeID_2 = globals.mcAir;
+                newTypeID_2 = airBlock;
             }
             else {
                 if (blockBelow && watchFor.sifterBlocks.includes(blockBelow.typeId))

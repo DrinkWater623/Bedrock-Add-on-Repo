@@ -1,9 +1,11 @@
 // @ts-check
-/**
- * Notes:  
- * 
- */
-//==============================================================================
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
 import { world, system, Dimension, EntityInventoryComponent,Player} from "@minecraft/server";
 import { chatLog, dev } from "./settings";
 import { sendPlayerMessageLater } from "./fn-stable";

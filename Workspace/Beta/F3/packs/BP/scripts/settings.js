@@ -1,7 +1,7 @@
 //@ts-check
 import { MinecraftDimensionTypes, world } from "@minecraft/server";
-import { ConsoleAlert, ChatMsg } from "./commonLib/consoleClass";
-import { MinecraftBiomeTypes, MinecraftBlockTypes, MinecraftEntityTypes, MinecraftItemTypes } from "./commonLib/vanillaData";
+import { ConsoleAlert, ChatMsg } from "./common-stable/consoleClass";
+import {  MinecraftBlockTypes,  MinecraftItemTypes } from "./common-data/vanillaData";
 //==============================================================================
 /**
  *  Owner is to edit this file as needed
@@ -15,6 +15,9 @@ export const pack = {
     commandPrefix: "f3:",
     alert: "https://github.com/DrinkWater623"
 };
+//==============================================================================
+export const alertLog = new ConsoleAlert(`§d${pack.packName}§r`);
+export const chatLog = new ChatMsg(`§b${pack.packName}§r`);
 //==============================================================================
 export const toggles = {
     //Player Interact With Block
@@ -44,8 +47,3 @@ export const vanillaLists ={
     //entities: Object.values(MinecraftEntityTypes),
     items: Object.keys(MinecraftItemTypes).filter(k => typeof MinecraftBlockTypes[k]=='string').map(k => MinecraftBlockTypes[k])  
 }
-//==============================================================================
-//TODO: have this pack be the death counter for players
-//==============================================================================
-export const alertLog = new ConsoleAlert(`§d${pack.packName}§r`);
-export const chatLog = new ChatMsg(`§b${pack.packName}§r`);

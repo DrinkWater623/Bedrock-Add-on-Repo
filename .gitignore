@@ -1,1 +1,7 @@
+build/
+.regolith/
+.*.js
+.*.json
+.*.templ
+.*.modl
 .*/

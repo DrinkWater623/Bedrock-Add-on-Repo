@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
-	"author": "https://github.com/DrinkWater623",
+	"author": "DrinkWater623, Update Block Dev",
 	"name": "Rotation_Testing",
 	"packs": {
 		"behaviorPack": "./packs/BP",
@@ -11,10 +11,14 @@
 		"preview":false,
 		"beta":false,
 		"name": "Rotation Testing",
-		"description": "Testing all 64 angles",															
+		"description": "Testing all 64 angles",
+		"license":"GPL-3.0-only",
+		"url": "https://github.com/DrinkWater623",
+		"min_engine_version": [1,21,50],															
 		"BP":{
 			"header_uuid": "81cca4a2-7d49-4c4c-8ea9-e7540d636182",
-			"module_uuid": "c2887c48-97f8-4814-990a-f08c436fefde"							
+			"module_uuid": "c2887c48-97f8-4814-990a-f08c436fefde",
+			"dependencies":{"module_name":"@minecraft/server","version":"get"}								
 		},
 		"RP": {
 			"header_uuid":"3d5982e7-1042-47d8-a5d8-0bb8423fb8cb",
@@ -44,45 +48,12 @@
 					{"profile":"template"},												
 					{"filter":"mani_fest","settings":{"beta":false,"preview":false}}
 				]
-			},
-			"build-beta": {
-				"export": {"readOnly":false,"target":"local"},				
-				"filters": [	
-					{"profile":"template"},												
-					{"filter":"mani_fest","settings":{"beta":true,"preview":false}}
-				]
-			},	
+			},			
 			"stable": {
 				"export": {"readOnly":false,"target":"development"},
 				"filters": [
 					{"profile":"template"},		
 					{"filter":"mani_fest","settings":{"beta":false}}
-				]
-			},
-			"beta": {
-				"export": {"readOnly":false,"target":"development"},
-				"filters": [
-					{"profile":"template"},			
-					{"filter":"mani_fest","settings":{"beta":true}}
-				]
-			},
-			"preview": {
-				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
-				"filters": [
-					{"profile":"template"},	
-					{"filter":"mani_fest","settings":{"preview":true,"min_engine_version":[1,21,30]}}
-				]
-			},
-			"preview-beta": {
-				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
-				"filters": [
-					{"profile":"template"},	
-					{"filter":"mani_fest",
-						"settings":{
-							"preview":true,"beta":true,"min_engine_version":[1,21,30],
-							"BP":{"dependencies":{"module_name":"@minecraft/server","version":"1.15.0-beta"}}
-						}
-					}
 				]
 			}
 		}

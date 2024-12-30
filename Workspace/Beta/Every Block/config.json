@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
-	"author": "https://github.com/DrinkWater623",
+	"author": "DrinkWater623, Update Block Dev",
 	"name": "Every_Block",
 	"packs": {
 		"behaviorPack": "./packs/BP",
@@ -9,10 +9,12 @@
 	"mani_fest":{
 		"Debug":false,
 		"preview":false,
-		"beta":false,
+		"beta":true,
 		"name": "Every Block",
-		"description": "Lay and Collect Info on Every Block",													
-		"min_engine_version": [1,21,0],							
+		"description": "Lay and Collect Info on Every Block",
+		"license":"GPL-3.0-only",
+		"url": "https://github.com/DrinkWater623",													
+		"min_engine_version": [1,21,50],							
 		"BP":{
 			"header_uuid": "6207c3af-90b0-4378-912a-2ed0c5faa8af",
 			"module_uuid": "86a35aae-abca-4b2c-81ac-fae86990a54b",

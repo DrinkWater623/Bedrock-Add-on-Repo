@@ -1,6 +1,13 @@
 //@ts-check
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
 import { world } from "@minecraft/server";
-import { ConsoleAlert, ChatMsg } from "./commonLib/consoleClass";
+import { ConsoleAlert, ChatMsg } from "./common-stable/consoleClass";
 //==============================================================================
 /**
  *  Owner is to edit this file as needed
@@ -13,6 +20,10 @@ export const pack = {
     hasChatCmd: -1,
     commandPrefix: "ts:"
 };
+//==============================================================================
+export const alertLog = new ConsoleAlert(`§d${pack.packName}§r`);
+export const chatLog = new ChatMsg(`§b${pack.packName}§r`);
+//==============================================================================
 export const dynamicVars = {
     //-- Dynamic Properties --
     aliveTicks: 'aliveTicks',
@@ -40,25 +51,7 @@ export const dev = {
     //---
     debugTimeCountersOn: false,
     debugTimers: 'mh', //was smh, but don't need seconds
-    debugTimeCountersRunId: 0,
-    // allDebug () {
-    //     for (const key in dev) {
-    //         if (key.startsWith('debug') && key.length > 'debug'.length)
-    //             dev[ key ] = this.debug;
-    //     }
-    // },
-    // allOff () {
-    //     for (const key in dev) {
-    //         if (key.startsWith('debug'))
-    //             dev[ key ] = false;
-    //     }
-    // },
-    // allOn () {
-    //     for (const key in dev) {
-    //         if (key.startsWith('debug'))
-    //             dev[ key ] = true;
-    //     }
-    // },
+    debugTimeCountersRunId: 0,    
     anyOn () {
         this.debug = false;
         for (const key in dev) {
@@ -112,5 +105,3 @@ export const watchFor = {
     ]
 };
 //==============================================================================
-export const alertLog = new ConsoleAlert(`§d${pack.packName}§r`);
-export const chatLog = new ChatMsg(`§b${pack.packName}§r`);

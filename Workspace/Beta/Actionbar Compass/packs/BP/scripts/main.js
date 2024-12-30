@@ -1,7 +1,7 @@
 //@ts-check
 //=========================================================
 import { world, system } from "@minecraft/server";
-import { Vector3Lib } from "./commonLib/vectorClass";
+import { Vector3Lib } from "./common-stable/vectorClass";
 //=========================================================
 export const noCompassTag = "noCompassActionBar";
 export const xyzTag = "xyzTag";

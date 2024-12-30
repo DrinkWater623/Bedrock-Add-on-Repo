@@ -1,8 +1,15 @@
 //@ts-check
-import { ConsoleAlert, ChatMsg } from "./commonLib/consoleClass";
-import { MinecraftBlockTypes, MinecraftItemTypes } from "./commonLib/vanillaData";
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
+import { ConsoleAlert, ChatMsg } from "./common-stable/consoleClass";
+import { MinecraftBlockTypes, MinecraftItemTypes } from "./common-data/vanillaData";
+//==============================================================================
 const vanillaItems = Object.values(MinecraftItemTypes).filter(item => item.endsWith('_slab'));
-
 //==============================================================================
 /**
  *  Owner is to edit this file as needed
@@ -22,8 +29,7 @@ export const alertLog = new ConsoleAlert(`§d${pack.packName}§r`);
 export const chatLog = new ChatMsg(`§b${pack.packName}§r`);
 //==============================================================================
 export const globals = {
-    mcNameSpace: "minecraft:",
-    mcAir: 'minecraft:air'
+   
 };
 //==============================================================================
 export const dev = {
@@ -31,6 +37,9 @@ export const dev = {
     debugPackLoad: false,
     debugSubscriptions: false,
     debugSlabInteractEvents: false,    
+    debugSlabOxidationEvents: true,    
+    debugSlabScrapeEvents: true,    
+    debugSlabWaxEvents: true,    
     debugSlabPlaceEvents: false,
     anyOn () {
         this.debug=false;
@@ -62,21 +71,7 @@ export const dev = {
 export const watchFor = {
     vanillaSlabs: Object.values(MinecraftBlockTypes)
         .filter(block => block.endsWith('_slab'))
-        .filter(b => vanillaItems.includes(b)),
-
-    // woodSlabs: Object.values(MinecraftBlockTypes)
-    //     .filter(b => b.endsWith('_planks'))
-    //     .map(s => s.replace('_planks', '_slab'))
-    //     .filter(i => vanillaItems.includes(i)),
-
-    fallThruBlocks: [
-        "minecraft:air",
-        "minecraft:lava",
-        "minecraft:water",
-        "minecraft:flowing_lava",
-        "minecraft:flowing_water"
-
-    ]
+        .filter(b => vanillaItems.includes(b))
 };
 //=============================================================================
 // End of File

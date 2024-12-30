@@ -1,17 +1,19 @@
 //@ts-check
-//==============================================================================
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
 import {
-    world, system,
+    world,
     EntityDieAfterEvent,
-    EntityLoadAfterEvent,
-    EntityRemoveBeforeEvent,
-    EntitySpawnAfterEvent,
-    ExplosionAfterEvent,
-    WorldInitializeAfterEvent
+    EntityRemoveBeforeEvent
 } from "@minecraft/server";
-
-import { Vector3Lib as vec3 } from './commonLib/vectorClass.js';
+import { Vector3Lib as vec3 } from './common-stable/vectorClass.js';
 import { watchFor, dev, chatLog } from './settings.js';
+//==============================================================================
 const reloadTime = 10;
 //==============================================================================
 const default_entityDie_after = world.afterEvents.entityDie.subscribe((x) => { }, { entityTypes: [ "minecraft:wither_skull" ] });

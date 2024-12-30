@@ -1,0 +1,46 @@
+{ 
+  "$module": "slab.common",
+  "$template": {
+    "format_version": "1.20.80",
+    "minecraft:block": {
+      "description": {
+        "identifier": "dw623:vertical_{{identifier}}",
+        "menu_category": {
+          "category":"none",
+          "is_hidden_in_commands":true
+        },
+        "traits": {
+          "minecraft:placement_position": {            
+            "enabled_states":[              
+              "minecraft:block_face"
+            ]
+          }          
+        }
+      },
+      "components": {
+        "tag:{{tool_type_tags}}":{}, 
+        "tag:{{tool_material_tier_tags}}":{},
+        "tag:{{sound}}":{},
+        "minecraft:placement_filter":{
+          "conditions": [{"allowed_faces":["side"]}]},       
+        "minecraft:display_name": "{{realTitle('vertical '+identifier)}}",  
+        "minecraft:loot": "loot_tables/dw623/{{identifier}}.loot.json",
+        "minecraft:geometry": {"identifier":"geometry.dw623.block_16x8x16_north"},      
+        "minecraft:flammable": {"catch_chance_modifier":"{{=flammableLevel}}","destroy_chance_modifier":"{{=flammableLevel*4}}"},
+        "minecraft:destructible_by_explosion": true,
+        "minecraft:destructible_by_mining": {          
+          "seconds_to_destroy": "{{=tools.base * (tools.material=='hand' ? 1 : 2.0)}}", 
+          "item_specific_speeds":[
+            {"item":"minecraft:wooden_{{tools.best}}"    ,"destroy_speed": "{{=tools.materials.wooden}}"},
+            {"item":"minecraft:stone_{{tools.best}}"     ,"destroy_speed": "{{=tools.materials.stone}}"},
+            {"item":"minecraft:golden_{{tools.best}}"    ,"destroy_speed": "{{=tools.materials.golden}}"},
+            {"item":"minecraft:iron_{{tools.best}}"      ,"destroy_speed": "{{=tools.materials.iron}}"},
+            {"item":"minecraft:diamond_{{tools.best}}"   ,"destroy_speed": "{{=tools.materials.diamond}}"},
+            {"item":"minecraft:netherite_{{tools.best}}" ,"destroy_speed": "{{=tools.materials.netherite}}"}          
+          ]
+        }
+      },
+      "permutations":[]
+    }
+  }
+}

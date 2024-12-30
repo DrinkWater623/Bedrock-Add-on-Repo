@@ -10,8 +10,9 @@ function main_beta () {
         subsBeta.chatSend();
 
     subsBeta.afterEvents_entitySpawn();
-
-    alertLog.success(`§aInstalling Add-on ${pack.packName} - §6Beta 4 Block Volume ${dev.debug ? '§c(Debug Mode)' : ''}`, pack.isLoadAlertsOn || dev.debugPackLoad);
+    
+    // 4 Block Volume
+    alertLog.success(`§aInstalling Add-on ${pack.packName} - §6Beta ${dev.debug ? '§c(Debug Mode)' : ''}`, pack.isLoadAlertsOn || dev.debugPackLoad);
 }
 //==============================================================================
 pack.beta = true;

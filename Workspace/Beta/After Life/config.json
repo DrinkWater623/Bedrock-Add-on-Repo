@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
-	"author": "https://github.com/DrinkWater623",
+	"author": "DrinkWater623, Update Block Dev",
 	"name": "After_Life",
 	"packs": {
 		"behaviorPack": "./packs/BP",
@@ -11,7 +11,9 @@
 		"preview":false,
 		"beta":false,
 		"name": "After Life",
-		"description": "Gives Death Coordinates and Tries to save your stuff",													
+		"description": "Gives Death Coordinates and Tries to save your stuff",
+		"license":"GPL-3.0-only",
+		"url": "https://github.com/DrinkWater623",
 		"min_engine_version": [1,21,0],
 		"BP":{
 			"header_uuid": "161140f3-e042-414d-83ca-d01ccb9fe555",

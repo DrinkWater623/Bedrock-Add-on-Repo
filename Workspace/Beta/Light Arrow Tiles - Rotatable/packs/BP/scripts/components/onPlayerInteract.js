@@ -1,6 +1,6 @@
 //import { world } from '@minecraft/server';
-import { DirectionInfo } from '../library/direction_info.js';
-import { McDebug } from '../library/McDebug.js';
+import { DirectionInfo } from '../common-other/direction_info.js';
+import { McDebug } from '../common-stable/McDebug.js';
 
 /**
  * Rotation is still influenced by which way the player is facing

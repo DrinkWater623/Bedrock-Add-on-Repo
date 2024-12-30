@@ -1,0 +1,19 @@
+{
+
+    /*
+    "dw623:cut_copper_slab",
+    "dw623:exposed_cut_copper_slab",
+    "dw623:weathered_cut_copper_slab",
+    "dw623:oxidized_cut_copper_slab"
+    */
+    
+    // "one_texture_slabs":"vanilla_slabs.filter(b => b.textureType == 'string')",
+    // "multi_texture_slabs":"{{vanilla_slabs.filter(b => b.textureType == 'object')}}",
+
+    // "one_texture_non_copper_slabs":"{{one_texture_slabs.filter(b => !endsWith(b.identifier,'cut_copper_slab'))}}",
+
+    // "copper_slabs":"one_texture_slabs.filter(b => endsWith(b.identifier,'cut_copper_slab'))",
+    // "oxi_slabs":"{{copper_slabs.filter(b => !startsWith(b.identifier,'waxed_'))}}",
+    // "waxed_slabs":"{{copper_slabs.filter(b => startsWith(b.identifier,'waxed_'))}}"
+
+}

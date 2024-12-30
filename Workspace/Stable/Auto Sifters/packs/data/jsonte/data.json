@@ -1,10 +1,67 @@
 {
     //Note: Loot is in the settings.js.. just spawn items, no loot tables - may do for books
     "sifter_types":[
-        {"material":"copper"    ,"map_color":"#D87F33" ,"speed":30,"recipe_item":"copper_ingot"   ,"sound":"copper"},
-        {"material":"iron"      ,"map_color":"#A7A7A7" ,"speed":20,"recipe_item":"iron_ingot"     ,"sound":"metal"},
-        {"material":"diamond"   ,"map_color":"#5CDBD5" ,"speed":10,"recipe_item":"diamond"        ,"sound":"glass"},
-        {"material":"netherite" ,"map_color":"#664C33" ,"speed":5,"recipe_item":"netherite_ingot","sound":"metal"}
+        {"material":"copper"    ,"map_color":"#D87F33" ,"speed":30,"recipe_item":"copper_ingot"   ,"sound":"copper",
+            "tools": {
+                "best": "pickaxe",
+                "material": "stone",
+                "base": 2,
+                "hand": 2.3,
+                "mace": 0.48,
+                "wooden_pickaxe": 2,
+                "stone_pickaxe": 0.58,
+                "golden_pickaxe": 0.63,
+                "iron_pickaxe": 0.38,
+                "diamond_pickaxe": 0.3,
+                "netherite_pickaxe": 0.25
+            }
+        },
+        {"material":"iron"      ,"map_color":"#A7A7A7" ,"speed":20,"recipe_item":"iron_ingot"     ,"sound":"metal",
+            "tools": {
+                "best": "pickaxe",
+                "material": "wood",
+                "base": 3,
+                "hand": 12.5,
+                "mace": 0.79,
+                "wooden_pickaxe": 3,
+                "stone_pickaxe": 1.0,
+                "golden_pickaxe": 0.33,
+                "iron_pickaxe": 0.63,
+                "diamond_pickaxe": 0.48,
+                "netherite_pickaxe": 0.42
+            }
+        },
+    
+        {"material":"diamond"   ,"map_color":"#5CDBD5" ,"speed":10,"recipe_item":"diamond"        ,"sound":"glass",
+            "tools": {
+                "best": "pickaxe",
+                "material": "iron",
+                "base": 6.1,
+                "hand": 12.5,
+                "mace": 1.88,               
+                "wooden_pickaxe": 6.1,               
+                "stone_pickaxe": 3.12,
+                "golden_pickaxe": 1.0,
+                "iron_pickaxe": 0.63,
+                "diamond_pickaxe": 0.50,
+                "netherite_pickaxe": 0.45
+            }
+        },
+        {"material":"netherite" ,"map_color":"#664C33" ,"speed":5,"recipe_item":"netherite_ingot","sound":"metal",
+            "tools": {
+                "best": "pickaxe",
+                "material": "diamond",
+                "base": 62,
+                "hand": 125,
+                "mace": 26.0,
+                "wooden_pickaxe": 62.0,
+                "stone_pickaxe": 31.0,
+                "golden_pickaxe": 10.42,
+                "iron_pickaxe": 20.8,
+                "diamond_pickaxe": 4.7,
+                "netherite_pickaxe": 4.18
+            }
+        }
     ],
     "powder_snow":["powder_snow"],
     //gravity blocks only are auto sift - common sense
@@ -16,7 +73,7 @@
         {"base":"sand"                          ,"map_color":"#F7E9A3"  ,"sound":"sand"        ,"tag":"sand"     ,"texture":"flattened_sand"              ,"brightness_gamma":0.550  },
         {"base":"mud"                           ,"map_color":"#664C33"  ,"sound":"mud"         ,"tag":"dirt"     ,"texture":"mud"                          ,"brightness_gamma":null  },
         {"base":"soul_sand"                     ,"map_color":"#664C33"  ,"sound":"soul_sand"   ,"tag":"soul_sand","texture":"soul_sand"                   ,"brightness_gamma":null  },
-        {"base":"snow"                          ,"map_color":"#FFFFFF"  ,"sound":"snow" ,"tag":null     ,"texture":"snow"                        ,"brightness_gamma":0.450  },
+        {"base":"snow"                          ,"map_color":"#FFFFFF"  ,"sound":"snow"        ,"tag":null     ,"texture":"snow"                        ,"brightness_gamma":0.450  },
         {"base":"black_concrete_powder"         ,"map_color":"#191919"  ,"sound":"sand"        ,"tag":null     ,"texture":"black_concrete_powder"       ,"brightness_gamma":null  },
         {"base":"blue_concrete_powder"          ,"map_color":"#334CB2"  ,"sound":"sand"        ,"tag":null     ,"texture":"blue_concrete_powder"        ,"brightness_gamma":null  },
         {"base":"brown_concrete_powder"         ,"map_color":"#664C33"  ,"sound":"sand"        ,"tag":null     ,"texture":"brown_concrete_powder"       ,"brightness_gamma":null  },

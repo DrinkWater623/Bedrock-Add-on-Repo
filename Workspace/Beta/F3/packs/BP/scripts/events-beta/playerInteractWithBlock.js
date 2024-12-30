@@ -6,9 +6,9 @@ import {
     Direction,
     BlockPermutation
 } from "@minecraft/server";
-import { FaceLocationGrid, Vector2Lib, Vector3Lib } from '../commonLib/vectorClass.js';
 import { playerF3Add } from "../fn-stable.js";
 import { vanillaLists } from "../settings.js";
+import { FaceLocationGrid, Vector2Lib, Vector3Lib } from '../common-stable/vectorClass.js';
 //==============================================================================
 /**
  * 

@@ -13,11 +13,7 @@
         Yes, I am, I am a die hard Regolith and jsonte FAN-Girl...
         //"array":"vanilla_slab_combos.filter(s => settings.debug == false || s.obj1.identifier == settings.test_slab1 || s.obj1.identifier == settings.test_slab2)",
 
-        TODO: 
-        1) each slab by itself needs to be test to make sure valid in game 
-            - clear inventory then give slab - if did not get - not real
-        2) fix geo in hand and floating - upside down from what it is, and in menu turn sideways
-            - see "item_display_transforms" - my discord and BAO
+        TODO:         
         3) idea - change mining speeds on the fly in permutatins after I know what side they are mining, in permutaions
 
     */    
@@ -31,7 +27,7 @@
         {
             "description": 
             {
-                "identifier": "{{settings.block_ns}}:{{identifier}}", 
+                "identifier": "dw623:{{block.identifier}}", 
                 "menu_category": {                
                     "category": "construction",
                     "group": "itemGroup.name.slab",
@@ -42,26 +38,7 @@
             },
             "components": {
                 "minecraft:collision_box":true,                
-                "minecraft:destructible_by_explosion": true,                
-                "minecraft:destructible_by_mining": {
-                    //use 5 for wood and 8 for stone
-                    "seconds_to_destroy": 3, //this is really hardness... not seconds
-                    "item_specific_speeds":[
-                        {"item":"wooden_axe","destroy_speed": 2},
-                        {"item":"stone_axe","destroy_speed": 1.5},
-                        {"item":"iron_axe","destroy_speed": 1},
-                        {"item":"diamond_axe","destroy_speed": 0.75},
-                        {"item":"netherite_axe","destroy_speed": 0.6},
-
-                        {"item":"wooden_pickaxe","destroy_speed": 3},
-                        {"item":"stone_pickaxe","destroy_speed": 2.5},
-                        {"item":"iron_pickaxe","destroy_speed": 2},
-                        {"item":"diamond_pickaxe","destroy_speed": 1.5},
-                        {"item":"netherite_pickaxe","destroy_speed": 1.2}
-                    ]
-                },                
-                "minecraft:display_name":"{{title}}",                
-                "minecraft:flammable":"{{=(contains(obj1.sound,'wood') || contains(obj2.sound,'wood') ? true : false)}}",                
+                "minecraft:display_name":"{{block.title}}",                
                 "minecraft:geometry": "geometry.dw623.block_2_slabs",
                 "minecraft:material_instances": {
                     "*": {"texture":"invisible","render_method":"opaque"},
@@ -71,7 +48,28 @@
                     "bottom_slab_side": {"texture":"{{obj2.textureList.side}}" ,"render_method":"opaque","ambient_occlusion": true,"face_dimming":true}
                 },    
                 "minecraft:selection_box":true,                
-                "minecraft:transformation": {"rotation": [0,0,0]}
+                "minecraft:transformation": {"rotation": [0,0,0]},
+                "minecraft:flammable": {"catch_chance_modifier":"{{=block.flammableLevel}}","destroy_chance_modifier":"{{=block.flammableLevel*4}}"},
+                "minecraft:destructible_by_explosion": true,                                               
+                "minecraft:destructible_by_mining": {          
+                    "seconds_to_destroy": "{{=tools.base * (tools.material=='hand' ? 1 : 2.0)}}",
+                    "item_specific_speeds":[
+                        {"item":"minecraft:mace"          ,"destroy_speed": "{{=tools.mace}}"},
+                        {"item":"minecraft:wooden_axe"    ,"destroy_speed": "{{=tools.wooden_axe}}"},
+                        {"item":"minecraft:stone_axe"     ,"destroy_speed": "{{=tools.stone_axe}}"},
+                        {"item":"minecraft:golden_axe"    ,"destroy_speed": "{{=tools.golden_axe}}"},
+                        {"item":"minecraft:iron_axe"      ,"destroy_speed": "{{=tools.iron_axe}}"},
+                        {"item":"minecraft:diamond_axe"   ,"destroy_speed": "{{=tools.diamond_axe}}"},
+                        {"item":"minecraft:netherite_axe" ,"destroy_speed": "{{=tools.netherite_axe}}"},
+
+                        {"item":"minecraft:wooden_pickaxe"    ,"destroy_speed": "{{=tools.wooden_pickaxe}}"},
+                        {"item":"minecraft:stone_pickaxe"     ,"destroy_speed": "{{=tools.stone_pickaxe}}"},
+                        {"item":"minecraft:golden_pickaxe"    ,"destroy_speed": "{{=tools.golden_pickaxe}}"},
+                        {"item":"minecraft:iron_pickaxe"      ,"destroy_speed": "{{=tools.iron_pickaxe}}"},
+                        {"item":"minecraft:diamond_pickaxe"   ,"destroy_speed": "{{=tools.diamond_pickaxe}}"},
+                        {"item":"minecraft:netherite_pickaxe" ,"destroy_speed": "{{=tools.netherite_pickaxe}}"}            
+                    ]
+                }
             },           
             "permutations": [               
                 {

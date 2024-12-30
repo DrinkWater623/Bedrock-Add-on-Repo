@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
-	"author": "https://github.com/DrinkWater623",
+	"author": "DrinkWater623, Update Block Dev",
 	"name": "Actionbar_Info",
 	"packs": {
 		"behaviorPack": "./packs/BP",
@@ -10,7 +10,9 @@
 		"Debug":false,
 		"preview":false,
 		"beta":false,
-		"name": "ActionBar Info",
+		"name": "ActionBar Info",		
+		"license":"GPL-3.0-only",
+		"url": "https://github.com/DrinkWater623",
 		"description": "Tells you some stuff on the Action Bar",
 		"min_engine_version": [1,21,0],							
 		"BP":{

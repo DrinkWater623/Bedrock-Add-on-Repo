@@ -14,6 +14,7 @@ var argSettings = process.argv[ 2 ];
 /*
 Information:
     Author:     DrinkWater623/PinkSalt623
+    License:    GPL-3.0-only
     Contact:    Discord/GitHub @DrinkWater623 
 
     Purpose:    Create manifest.json from profile settings. 
@@ -43,6 +44,7 @@ Change Log:
     20240728 - NAA - global settings inside confile.json  "mani_fest":{}  outside of "regolith": {}
     20241104 - NAA - minor logical bugs
     20241224 - NAA - license in manifest and this file.
+    20241229 - NAA = add URL to metadata - change configs to use
     
 TODO:
     () Make is so I can have a dev and rel pack icon - prob can use the data section to hold and use by name or settings has filename
@@ -1389,6 +1391,8 @@ function masterConfigSettingsCheck () {
     }
     //------------------------------------------------------------------------------------------
     cmdLineSettingsJson.author = cmdLineSettingsJson.author || configFileSettings.author || "Add Author Name Here";
+    cmdLineSettingsJson.url = cmdLineSettingsJson.url || "Add URL Here";
+    cmdLineSettingsJson.license = cmdLineSettingsJson.license || "Add License Here";    
     //------------------------------------------------------------------------------------------
     //----------------------------------------
     //Determine if BP and RP Exist
@@ -1647,8 +1651,9 @@ function manifestBuild (pSettings) {
     //if (pSettings.dependencies && pSettings.dependencies.length) manifest.dependencies = pSettings.dependencies;
 
     manifest.metadata = {
-        "authors": [ pSettings.author || cmdLineSettingsJson.author ],
-        "license": cmdLineSettingsJson.license ?? "GPL-3.0-only",
+        "authors": [ (pSettings.author || cmdLineSettingsJson.author) || "Add author name here"],
+        "url": pSettings.url || cmdLineSettingsJson.url,
+        "license": pSettings.license || cmdLineSettingsJson.license || "GPL-3.0-only",
         "generated_with": {
             "regolith_filter_mani_fest": [ "2024.12.24" ]
         }

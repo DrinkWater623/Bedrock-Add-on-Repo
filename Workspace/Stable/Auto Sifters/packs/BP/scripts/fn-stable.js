@@ -1,8 +1,16 @@
 //@ts-check
-import { Block, BlockPermutation, Direction, EquipmentSlot, Player, system, world } from "@minecraft/server";
-import { endsWithNumber, getLastWord, minusLastWord } from "./commonLib/stringLib.js";
-import { chatLog, watchFor } from "./settings.js";
-import { vanilla_blocks } from "./commonLib/blocks.json.js";
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
+import { Block, BlockPermutation, Direction, EquipmentSlot, Player, system } from "@minecraft/server";
+import { chatLog} from "./settings.js";
+import { vanilla_blocks } from "./common-data/blocks.json.js";
+import { fallThruBlocks } from "./common-data/globalConstantsLib.js";
+import { endsWithNumber, getLastWord, minusLastWord } from "./common-other/stringLib.js";
 //==============================================================================
 /**
  * 
@@ -297,7 +305,7 @@ export function placeBlockWithStates (block, newTypeId, states) {
  */
 export function placeDw623Slab (block, newTypeId, blockFace, airOnly = true) {
 
-    if (airOnly && !watchFor.fallThruBlocks.includes(block.typeId)) {        
+    if (airOnly && !fallThruBlocks.includes(block.typeId)) {        
         return false;
     }
 

@@ -1,4 +1,11 @@
 //@ts-check
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
 import { world } from "@minecraft/server";
 import { alertLog, chatLog, dev, watchFor } from './settings.js';
 import { SlabBeforeEventData } from "./class/SlabEventDataClass-beta.js";

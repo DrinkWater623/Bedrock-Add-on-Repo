@@ -1,8 +1,16 @@
 //@ts-check
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
 import { Direction, world } from "@minecraft/server";
+import { FaceLocationGrid, Vector2Lib } from "./common-stable/vectorClass.js";
 import { alertLog, chatLog, dev, globals, pack, watchFor } from './settings.js';
-import { FaceLocationGrid, Vector2Lib } from "./commonLib/vectorClass.js";
 import { placeDw623Slab } from "./fn-stable.js";
+import { mcNameSpace } from "./common-data/globalConstantsLib.js";
 //=============================================================================
 export function beforeEvents_playerPlaceBlock_subscribe () {
     //This event is still beta as of 1.21.50
@@ -29,7 +37,7 @@ export function beforeEvents_playerPlaceBlock_subscribe () {
         if (grid.y == 1 || event.player.isSneaking) {
             chatLog.log('Placing Vertically', dev.debugSlabPlaceEvents);
             event.cancel = true;
-            const newSlabId = blockTypeId.replace(globals.mcNameSpace, pack.packNameSpace + 'vertical_');
+            const newSlabId = blockTypeId.replace(mcNameSpace, pack.packNameSpace + 'vertical_');
             placeDw623Slab(event.block, newSlabId, event.face.toLowerCase(), true,'',blockTypeId);
         }
         else chatLog.log(`not right face location ${Vector2Lib.toString(grid,0,true)}`, dev.debugSlabPlaceEvents);

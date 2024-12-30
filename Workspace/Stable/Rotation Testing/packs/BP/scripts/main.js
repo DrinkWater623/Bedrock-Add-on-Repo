@@ -17,8 +17,8 @@
 */
 //=============================================================================
 import { world, system, Block } from '@minecraft/server';
-import * as mathFn from './commonLib/mathLib';
-import {PlayerLib} from './commonLib/playerClass'
+import {bitArrayAdd} from './common-other/mathLib';
+import {PlayerLib} from './common-stable/playerClass'
 //=============================================================================
 const numOfAngles = 64;
 //names of the states in the Block Json
@@ -115,7 +115,7 @@ const rotationBlockCustomComponentSubscriptionId =
                     let isHoldingStick = PlayerLib.isPlayerHoldingTypeId('minecraft:stick', player);
 
                     if (isHoldingStick || PlayerLib.isPlayerHoldingBlock(block, player)) {
-                        let newAngleIds = mathFn.bitArrayAdd(angleIds, (isHoldingStick ? 16 : 1), 4, 3, 0, 63);
+                        let newAngleIds = bitArrayAdd(angleIds, (isHoldingStick ? 16 : 1), 4, 3, 0, 63);
 
                         const newBlockPermutation = block.permutation
                             .withState(angleStateX, newAngleIds[ 0 ])

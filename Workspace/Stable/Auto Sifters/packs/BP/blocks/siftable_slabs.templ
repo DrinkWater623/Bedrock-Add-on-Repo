@@ -1,11 +1,11 @@
 {
   "$scope":{
       //not powder snow - No Loot
-      "slabs":"{{auto_sift_blocks.flatMap(b => (1..16).map(y => {base: b.base,block: b.base+'_slab', height: y, tag:b.tag, texture:b.texture,map:b.map_color}))}}"
+      "slabs":"{{auto_sift_blocks.flatMap(b => (1..16).map(y => {base: b.base,block: b.base+'_slab', height: y, tag:b.tag, texture:b.texture,map_color:b.map_color}))}}"
   },
   "$files": {
     "array": "slabs",
-    "fileName": "./{{block}}/{{base}}_{{height}}.bp"
+    "fileName": "./siftable/{{block}}/{{base}}_{{height}}.bp"
   },
   "$template": {
     "format_version": "1.20.80",
@@ -17,13 +17,26 @@
         "tag:{{tag}}":"{{tag ? {} : null}}",
         "tag:minecraft:is_shovel_item_destructible":{},         
         "minecraft:display_name": "{{realTitle(block)}} ({{height}})",               
-        "minecraft:map_color": "{{map}}",              
+        "minecraft:map_color": "{{=map_color}}",             
         "minecraft:custom_components": ["dw623:siftable_slabs"],        
         "minecraft:tick": {"interval_range":[3,3],"looping":true},
         "minecraft:geometry": {"identifier":"geometry.dw623.block_16x{{height}}x16_floor"},
         "minecraft:material_instances": {"*":{"texture":"{{texture}}"}},       
         "minecraft:collision_box": {"origin":[-8,0,-8],"size":[16,"{{=height}}",16]},
-        "minecraft:selection_box": {"origin":[-8,0,-8],"size":[16,"{{=height}}",16]}        
+        "minecraft:selection_box": {"origin":[-8,0,-8],"size":[16,"{{=height}}",16]},
+        "minecraft:flammable": {"catch_chance_modifier":0,"destroy_chance_modifier":0},
+        "minecraft:destructible_by_explosion": true,
+        "minecraft:destructible_by_mining": {          
+         "seconds_to_destroy": 0.5, // 9, //this is really hardness... not seconds
+          "item_specific_speeds":[
+              {"item":"minecraft:wooden_shovel"    ,"destroy_speed": 0.40},
+              {"item":"minecraft:stone_shovel"     ,"destroy_speed": 0.20},
+              {"item":"minecraft:golden_shovel"    ,"destroy_speed": 0.10},
+              {"item":"minecraft:iron_shovel"      ,"destroy_speed": 0.20}  ,
+              {"item":"minecraft:diamond_shovel"   ,"destroy_speed": 0.10},
+              {"item":"minecraft:netherite_shovel" ,"destroy_speed": 0.10}            
+          ]
+        } 
       }
     }
   }

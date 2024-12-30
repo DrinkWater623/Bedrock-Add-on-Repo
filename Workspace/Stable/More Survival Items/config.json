@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
-	"author": "https://github.com/DrinkWater623",
+	"author": "DrinkWater623, Update Block Dev",
 	"name": "More_Survival_Items",
 	"packs": {
 		"behaviorPack": "./packs/BP",
@@ -11,7 +11,9 @@
 		"preview":false,
 		"beta":false,
 		"name": "More Survival Items",
-		"description": "More Common-Sense Survival Items",													
+		"description": "More Common-Sense Survival Items",
+		"license":"GPL-3.0-only",
+		"url": "https://github.com/DrinkWater623",													
 		"min_engine_version": [1,21,0],							
 		"BP":{
 			"header_uuid": "8ed3a881-5a3c-463e-9957-fca1034e12ff",

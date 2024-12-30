@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
-	"author": "https://github.com/DrinkWater623",
+	"author": "DrinkWater623, Update Block Dev",
 	"name": "Tree_Spider",
 	"packs": {
 		"behaviorPack": "./packs/BP",
@@ -9,10 +9,12 @@
 	"mani_fest":{
 		"Debug":false,
 		"preview":false,
-		"beta":false,
+		"beta":true,
 		"name": "Tree Spider",
-		"description": "Friendly Spider that makes webs...like IRL",													
-		"min_engine_version": [1,21,0],							
+		"description": "Friendly Spider that makes webs",
+		"license":"GPL-3.0-only",
+		"url": "https://github.com/DrinkWater623",													
+		"min_engine_version": [1,21,50],							
 		"BP":{
 			"header_uuid": "60156da2-e8e1-4ac8-8d66-18690ad45da2",
 			"module_uuid": "0b044400-7d7f-4192-9f4b-d8d2256bfef8",

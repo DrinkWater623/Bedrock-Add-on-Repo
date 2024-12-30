@@ -1,12 +1,19 @@
 //@ts-check
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
 /**
  * Beta Chat Commands for Wither Alert Addon
  * TODO: User Form for some of this
  */
 import { world, system, Player, ChatSendBeforeEvent, ChatSendAfterEvent } from "@minecraft/server";
 import { watchFor, gamePlay, dev, pack } from './settings.js';
-import { Entities } from './commonLib/entityClass.js';
-import { MinecraftEffectTypes } from './commonLib/vanillaData.js';
+import { Entities } from './common-stable/entityClass.js';
+import { MinecraftEffectTypes } from './common-data/vanillaData.js';
 //==============================================================================
 /**
  * 

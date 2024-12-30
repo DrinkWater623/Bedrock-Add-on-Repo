@@ -1,4 +1,11 @@
 //@ts-check
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
 /**
  * Separating the Subscriptions from the function callbacks
  */
@@ -6,8 +13,8 @@
 import { system, world } from "@minecraft/server";
 import { watchFor, dev, alertLog, pack, chatLog } from './settings.js';
 import * as events from './callbackEvents.js';
-import { Entities } from "./commonLib/entityClass.js";
-import { Vector3Lib as vec3 } from './commonLib/vectorClass.js';
+import { Entities } from "./common-stable/entityClass.js";
+import { Vector3Lib as vec3 } from './common-stable/vectorClass.js';
 import * as watchLoop from './watchLoop.js';
 //==============================================================================
 const reloadTime = 10;

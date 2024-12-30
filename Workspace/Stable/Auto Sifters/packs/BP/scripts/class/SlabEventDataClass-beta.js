@@ -1,4 +1,11 @@
 //@ts-check
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
 /**
  * This is made specifically to gether info needed to process slabs and tiles
  * before interacting with/placing
@@ -6,8 +13,9 @@
  */
 import { BlockPermutation, PlayerInteractWithBlockBeforeEvent, PlayerPlaceBlockBeforeEvent } from "@minecraft/server";
 import { chatLog } from '../settings.js';
-import { FaceLocationGrid, Vector2Lib, Vector3Lib } from "../commonLib/vectorClass.js";
-import { getAdjacentBlock, getBlockState, slabTypeIDHeight, slabTypeIDSansHeight } from "../fn-stable.js";
+import {  slabTypeIDHeight, slabTypeIDSansHeight } from "../fn-stable.js";
+import { FaceLocationGrid, Vector2Lib, Vector3Lib } from "../common-stable/vectorClass.js";
+import { getAdjacentBlock ,getBlockState} from "../common-stable/blockLib-stable.js";
 //=============================================================================
 /*
     Written By:     "https://github.com/DrinkWater623"

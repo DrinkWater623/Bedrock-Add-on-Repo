@@ -1,4 +1,11 @@
 //@ts-check
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
 import { world } from "@minecraft/server";
 import { chatSend_before_fn, chatSend_after_fn } from './chatCmds-beta.js';
 import { alertLog, pack, dev } from './settings.js';

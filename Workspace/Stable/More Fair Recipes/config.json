@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
-	"author": "https://github.com/DrinkWater623",
+	"author": "DrinkWater623, Update Block Dev",
 	"name": "More_Fair_Recipes",
 	"packs": {
 		"behaviorPack": "./packs/BP",
@@ -11,7 +11,9 @@
 		"preview":false,
 		"beta":false,
 		"name": "More Fair Recipes",
-		"description": "More Fair Survival Recipes",													
+		"description": "More Fair Survival Recipes",
+		"license":"GPL-3.0-only",
+		"url": "https://github.com/DrinkWater623",													
 		"min_engine_version": [1,21,0],							
 		"BP":{
 			"header_uuid": "55ad300b-1325-4739-aaeb-01a4e1340b3f",

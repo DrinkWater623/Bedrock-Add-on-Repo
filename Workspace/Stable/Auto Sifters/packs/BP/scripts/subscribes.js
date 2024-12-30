@@ -1,8 +1,15 @@
 //@ts-check
-import { ItemStack, PlayerInteractWithBlockAfterEvent, PlayerInteractWithBlockBeforeEvent, PlayerInteractWithEntityBeforeEvent, world } from "@minecraft/server";
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
+import { ItemStack, PlayerInteractWithBlockBeforeEvent, world } from "@minecraft/server";
 import { dev, alertLog, chatLog, watchFor } from './settings.js';
-import { block_registerCustomComponents } from "./events/blockComponentRegistry.js";
 import { SlabBeforeEventData } from "./class/SlabEventDataClass.js";
+import { block_registerCustomComponents } from "./events/blockComponentRegistry.js";
 import { slabEventHandler } from "./events/slabEventHandler.js";
 //==============================================================================
 export function beforeEvents_worldInitialize_subscribe () {

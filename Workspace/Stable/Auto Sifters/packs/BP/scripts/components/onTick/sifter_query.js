@@ -1,6 +1,7 @@
 //@ts-check
 import { Block, BlockComponentTickEvent, ItemStack, system } from "@minecraft/server";
 import { watchFor, chatLog, globals, lootTableItems, pack, dev } from '../../settings.js';
+import { airBlock, mcNameSpace } from "../../common-data/globalConstantsLib.js";
 //==============================================================================
 /**
  * 
@@ -103,7 +104,7 @@ function sifterSift (block, blockAbove) {
 
     let newBlockTypeId = "";
     if (blockInfo.height == 1) {
-        newBlockTypeId = globals.mcAir;
+        newBlockTypeId = airBlock;
     }
     else {
         //decrement height
@@ -126,7 +127,7 @@ function sifterConvertAndSift (block, blockAbove) {
     chatLog.log(`Block: ${block.typeId}  Above: ${blockAbove.typeId}  Sifter Block?: ${watchFor.vanillaSifterBlocks.includes(blockAbove.typeId)}`,debug)
 
     if (watchFor.vanillaSifterBlocks.includes(blockAbove.typeId)) {
-        const convertedBlockTypeId = blockAbove.typeId.replace(globals.mcNameSpace, pack.packNameSpace) + '_slab_16';
+        const convertedBlockTypeId = blockAbove.typeId.replace(mcNameSpace, pack.packNameSpace) + '_slab_16';
         chatLog.log(`Convert to ${convertedBlockTypeId} - Sifter Block?: ${watchFor.customSiftableBlocks.includes(convertedBlockTypeId)}`, debug);
 
         //TODO: confirm valid block in game

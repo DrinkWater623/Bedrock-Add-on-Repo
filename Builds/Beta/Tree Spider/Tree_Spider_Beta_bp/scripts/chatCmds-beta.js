@@ -5,11 +5,12 @@
  */
 import { world, system, Player, Entity, ChatSendBeforeEvent, ChatSendAfterEvent, GameMode } from "@minecraft/server";
 import { dev, entityEvents, pack, watchFor } from './settings.js';
-import { MinecraftEffectTypes } from './commonLib/vanillaData.js';
-import { ScoreboardLib } from "./commonLib/scoreboardClass.js";
 import { counts, stalledEntityCheckAndFix } from "./fn-stable.js";
-import { Vector3Lib } from "./commonLib/vectorClass.js";
-import { BiomeLib } from "./commonLib/biomeLib.js";
+import { MinecraftEffectTypes } from './common-data/vanillaData.js';
+import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
+import { Vector3Lib } from "./common-stable/vectorClass.js";
+import { BiomeLib } from "./common-beta/biomeLib.js";
+//==============================================================================
 const cmdList = [
     'cls', 'count','biomes',
     'debug gp', 'debug alert', 'debug activity',

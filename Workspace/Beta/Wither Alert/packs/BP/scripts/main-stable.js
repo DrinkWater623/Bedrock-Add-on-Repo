@@ -1,5 +1,12 @@
 //@ts-check
-import { world, EntityTypes } from "@minecraft/server";
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
+import {  EntityTypes } from "@minecraft/server";
 import { watchFor, dev, pack, alertLog, chatLog, gamePlay } from './settings.js';
 import * as subs from './subscribes.js';
 //==============================================================================

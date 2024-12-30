@@ -1,7 +1,7 @@
 //@ts-check
 import { world, Player } from "@minecraft/server";
-import { Debug } from './commonLib/mcDebugClass.js';
 import { alertLog, dev } from "./settings.js";
+import { Debug } from './common-stable/mcDebugClass.js';
 //==============================================================================
 const debug = new Debug("F3", true, world);
 //==================================================================

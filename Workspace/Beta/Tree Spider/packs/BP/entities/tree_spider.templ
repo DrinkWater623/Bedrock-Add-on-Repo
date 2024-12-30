@@ -1,11 +1,18 @@
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only (https://www.gnu.org/licenses/gpl-3.0.html)
+CliffNotes: Using my files within Minecraft Bedrock MarketPlace is prohibited without written permission.  All code must remain freely visible and license passed along.
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241230 - add License
+========================================================================*/
 {
     /*
     TODO:   1) Different colors, each color represents an effect and 
             2) can interact with empty bottle to get potion of that effect 
             3) or arrow to make poison arrow
             4) turn off-able in settings
-    */
-    // ts:kill
+    */    
     "$scope":{       
         "blockTypes":[
             {
@@ -13,7 +20,7 @@
                 "target_blocks": [
                     "minecraft:mangrove_roots","minecraft:acacia_log","minecraft:birch_log",
                     "minecraft:cherry_log","minecraft:dark_oak_log","minecraft:jungle_log",
-                    "minecraft:mangrove_log","minecraft:oak_log","minecraft:spruce_log",
+                    "minecraft:mangrove_log","minecraft:oak_log","minecraft:pale_oak_log","minecraft:spruce_log",
                     "minecraft:warped_stem","minecraft:crimson_stem","minecraft:mushroom_stem"
                 ]
             },
@@ -22,7 +29,7 @@
                 "target_blocks": [
                     "minecraft:warped_wart_block","minecraft:shroomlight","minecraft:nether_wart_block",
                     "minecraft:acacia_leaves","minecraft:birch_leaves","minecraft:cherry_leaves","minecraft:jungle_leaves",
-                    "minecraft:dark_oak_leaves","minecraft:mangrove_leaves","minecraft:oak_leaves","minecraft:spruce_leaves",
+                    "minecraft:dark_oak_leaves","minecraft:mangrove_leaves","minecraft:oak_leaves","minecraft:pale_oak_leaves","minecraft:spruce_leaves",
                     "minecraft:azalea","minecraft:azalea_leaves","minecraft:azalea_leaves_flowered"
                 ]
             }, 
@@ -49,11 +56,7 @@
 
     },
     
-    "$template": {
-        /*            
-            TODO: add Life Cycle            
-        */
-
+    "$template": {                
         "format_version": "1.21.0",
         "minecraft:entity": {
             "description": {

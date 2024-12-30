@@ -1,6 +1,7 @@
 // @ts-check
 //=====================================================================
 // Copyright (C) 2024 DrinkWater623/PinkSalt623  License: GPL-3.0-only
+// Last Update 20241228 18.05
 //=====================================================================
 // Global variables - Part 1
 //=====================================================================
@@ -9,6 +10,8 @@ const fs = require("fs");
 const { Debug } = require("./js_lib/Debug.js");
 const { is, has } = require("./js_lib/shared-classes.js");
 const fileIo = require("./js_lib/File_io.js");
+const { Mining_Speeds } = require("./js_lib/miningSpeeds.js");
+const { error } = require("console");
 //=====================================================================// Global variables - Part 1
 //=====================================================================
 var argPath = process.argv[ 1 ];
@@ -62,7 +65,24 @@ function round (number, place = 0) {
     return Math.round(number * multiplier) / multiplier;
 }
 //==============================================================================
-
+const minecraftColors = [
+    "black",
+    "blue",
+    "brown",
+    "cyan",
+    "gray",
+    "green",
+    "light_blue",
+    "light_gray",
+    "lime",
+    "magenta",
+    "orange",
+    "pink",
+    "purple",
+    "red",
+    "white",
+    "yellow",
+];
 //=======================================================================
 
 //=======================================================================
@@ -258,14 +278,49 @@ function includedBlocks_get (blockKeys, excluded = []) {
 //=======================================================================
 function processBlocksDotJson () {
 
+    const miningSpeedCalc = new Mining_Speeds(true);
+    if (miningSpeedCalc) {
+        export_miningSpeeds(miningSpeedCalc);
+        //miningSpeedCalc.listBlocks();
+    }
+
     blockDotJsonRawData = rawDataFileContent[ 0 ].data;
     if (blockDotJsonRawData.length == 0) return;
 
     const blockKeys = Object.keys(blockDotJsonRawData);
-    //lists
-    const logBlocks = blockKeys.filter(b => b.endsWith("_fence")).map(b2 => b2.replace("_fence", ''));
+
+    //-----------------------------------------------
+    // short lists
     const blockColors = blockKeys.filter(b => b.endsWith("_wool")).map(b2 => b2.replace("_wool", ''));
 
+    const logTypes = blockKeys.filter(b => b.endsWith("_fence")).map(b2 => b2.replace("_fence", ''));
+    const oreTypes = blockKeys
+        .filter(b2 => !b2.includes('deepslate'))
+        .filter(b => b.endsWith("_ore"))
+        .map(b2 => b2.replace("_ore", ''));
+    oreTypes.push('netherite');
+
+    // ?? stones should have a wall or slab.. I think.. may need to account for more variations
+    // ?? copper and resin and sandstone and packed_mud
+    const stoneTypes = blockKeys.filter(b => b.endsWith("_wall")).map(b2 => b2.replace("_wall", ''));
+
+    blockKeys
+        .filter(b1 => b1.endsWith("_slab"))
+        .filter(b2 => !b2.includes("double_"))
+        .map(b3 => b3.replace("_slab", ''))
+        .filter(b4 => !stoneTypes.includes(b4))
+        .filter(b4 => !logTypes.includes(b4))
+        .filter(b5 => !oreTypes.includes(b5))
+        .forEach(b => { stoneTypes.push(b); });
+
+    blockKeys
+        .filter(b1 => b1.endsWith("_stairs"))
+        .map(b3 => b3.replace("_stairs", ''))
+        .filter(b4 => !stoneTypes.includes(b4))
+        .filter(b4 => !logTypes.includes(b4))
+        .filter(b4 => !oreTypes.includes(b4))
+        .forEach(b => { stoneTypes.push(b); });
+    //-----------------------------------------------
     excludes = excludedBlocks_get(blockKeys);
     includes = includedBlocks_get(blockKeys, excludes);
 
@@ -279,19 +334,70 @@ function processBlocksDotJson () {
 
     blockKeys.forEach((key, i) => {
         //debug.log(key);
-        const data = blockDotJsonRawData[ key ];
-        if (typeof data == 'object' && !excludes.includes(key)) {
-            data.index = i;
-            data.tag_group = '';
-            data.tag = '';
-            data.identifier = key;
-            data.title = Title(key.replaceAll('_', ' '));
+
+        const bdjData = blockDotJsonRawData[ key ];
+
+
+        if (typeof bdjData == 'object' && !excludes.includes(key)) {
+
+            //-----------------------------------------------------------------------------
+            //Fix Blocks.Json Possible Errors or Reduce Info
+
+            if (Object.hasOwn(bdjData, 'carried_textures') && typeof bdjData.carried_textures == 'string') {
+
+                if (Object.hasOwn(bdjData, 'textures')) {
+                    if (typeof bdjData.textures == 'object') {
+                        bdjData.textures = bdjData.carried_textures;
+                        delete bdjData.carried_textures;
+                    }
+                }
+                else {
+                    bdjData.textures = bdjData.carried_textures;
+                    delete bdjData.carried_textures;
+                }
+            }
+
+            if (Object.hasOwn(bdjData, 'sounds') && typeof bdjData.sounds == 'string') {
+                bdjData.sound = bdjData.sounds;
+                delete bdjData.sounds;
+            }
+
+            if (!bdjData.sound) bdjData.sound = '';
+            bdjData.flammableLevel = bdjData.sound.endsWith('wood') ? 5 :
+                bdjData.sound.startsWith('nether') ? 0 :
+                    bdjData.sound.startsWith('crimson') ? 0 :
+                        bdjData.sound.startsWith('warped') ? 0 : 1;
+            //-----------------------------------------------------------------------------
+            const newData = {
+                index: i,
+                identifier: key,
+                uniqueShortKey: '',
+                title: Title(key.replaceAll('_', ' ')),
+                tag_group: '',
+                tag: '',
+                geo: ''
+            };
+
+            const data = Object.assign(newData, bdjData);
+            //TODO: figure out what really using material for... too much... to do with this
+            data.material = data.sound;
+            if (data.material == 'grass') data.material = 'nature';
+            if (data.material == 'anvil') data.material = 'metal';
+            if (data.material.endsWith('wood')) data.material = 'wood';
+            if (data.material.endsWith('hanging_sign')) data.material = 'wood';
+            if (data.material == 'hanging_sign') data.material = 'wood';
+            if (data.material == 'decorated_pot') data.material = 'stone';
+            //-----------------------------------------------------------------------------
 
             data.nameParts = key.split('_');
             data.wordCount = data.nameParts.length;
-            //data.first2Words = data.wordCount > 2 ? data.nameParts[ 0 ] + '_' + data.nameParts[ 1 ] : '';
+
             data.firstWord = data.wordCount > 1 ? data.nameParts[ 0 ] : '';
             data.lastWord = data.wordCount > 1 ? data.nameParts[ data.nameParts.length - 1 ] : '';
+            //default
+            data.tag = data.wordCount > 1 ? data.lastWord : data.key;
+
+            data.first2Words = data.wordCount > 2 ? data.nameParts[ 0 ] + '_' + data.nameParts[ 1 ] : '';
             data.last2Words = data.wordCount > 2 ? data.nameParts[ data.nameParts.length - 2 ] + '_' + data.nameParts[ data.nameParts.length - 1 ] : '';
 
             //unique key
@@ -306,163 +412,245 @@ function processBlocksDotJson () {
             }
             else {
                 data.uniqueShortKey = key;
-
             }
 
-            //mc colors
-            data.colored = blockColors.some(c => data.identifier.startsWith(c + '_'));
+            const miningSpeedMatch = miningSpeedCalc.findBestMatch(data.identifier);
 
-            //if(!data.sound) debug.error("No Sound",key)
-            if (!data.sound) data.sound = '';
+            if (
+                !!miningSpeedMatch &&
+                typeof miningSpeedMatch == 'object' &&
+                (includeHasSounds.length == 0 || includeHasSounds.includes(data.sound))
+            ) {
+                try {
+                    data.hardness = miningSpeedMatch.hardness;
+                    data.tools = miningSpeedMatch.tools;
+                    data.tools.match = miningSpeedMatch.block;
+                    data.tools.materials = miningSpeedMatch.materials;
+                    blocks.push(data);
 
-            //initialize with minimum - will be reset later
-            data.hardness = 0;
-            data.destroy_time = 0;
-            data.explosion_reistence = 0;
-            data.tool_type = 'tool';
-            data.tool_material_minimum = 'wood';
-            data.mine_by_hand = false;
-            data.hand_destroy_time = 25;
+                    if (!data.identifier.includes(miningSpeedMatch.block) &&
+                        !miningSpeedMatch.block.includes(data.identifier) &&
+                        !data.identifier.includes('copper')
+                    ) {
+                        consoleColor.log(`Check MiningSpeed Match: ${data.identifier} as ${miningSpeedMatch.block}`);
+                    }
 
-            if (includeHasSounds.length == 0 || includeHasSounds.includes(data.sound))
-                blocks.push(data);
+                } catch (error) {
+                    consoleColor.log(data.identifier);
+                    consoleColor.error('Object Error Found');
+                    console.log(miningSpeedMatch);
+                    consoleColor.error(error);
+                    throw new error("Stopping");
+                }
+            }
         }
     });
     consoleColor.log(`Block.json ${cmdLineSettingsJson.branch} block count`, blocks.length);
-
+    //-----------------------------------------------------------------------------------
     //create algorythem to do counts of types...and more than  ?  get on tag
     //then 2nd tag for group... like tag group for blocks...vs other stuff
+    //-----------------------------------------------------------------------------------
+    const firstWords = new Map();
+    const lastWords = new Map();
+    const first2Words = new Map();
+    const last2Words = new Map();
+    for (const obj of blocks) {
+        let key = obj.firstWord;
+        if (key) firstWords.set(key, (firstWords.get(key) || 0) + 1);
+
+        key = obj.lastWord;
+        if (key) lastWords.set(key, (lastWords.get(key) || 0) + 1);
+
+        if (obj.wordCount > 2) {
+            key = obj.first2Words;
+            if (key) first2Words.set(key, (first2Words.get(key) || 0) + 1);
+
+            key = obj.las2tWord;
+            if (key) last2Words.set(key, (last2Words.get(key) || 0) + 1);
+        }
+    }
+    //-----------------------------------------------------------------------------------
     blocks.forEach((data) => {
 
         //2 words
-        //to make sure not slab
-        if (!data.tag && [ 'double_slab' ].includes(data.last2Words)) {
-            data.tag_group = 'block';
-            data.tag = data.last2Words;
-        }
-        if (!data.tag && data.identifier.includes('double') && data.identifier.endsWith('slab')) {
+        //to make sure not slab - damn mojand and inconsistencies
+        if (data.nameParts.includes('double') && data.lastWord == 'slab') {
             data.tag_group = 'block';
             data.tag = 'double_slab';
+            data.geo = 'full_block';
         }
-
-        if (!data.tag && [ 'shulker_box' ].includes(data.last2Words)) {
+        else if ([ 'concrete_powder' ].includes(data.last2Words)) {
+            data.tag_group = 'block';
+            data.tag = data.last2Words;
+            data.geo = 'full_block';
+        }
+        else if ([ 'shulker_box' ].includes(data.last2Words)) {
             data.tag_group = 'inventory';
             data.tag = data.last2Words;
-            data.mine_by_hand = true;
-            data.tool_type = 'pickaxe';
+            data.geo = 'full_block';
         }
-        //coral_wall_fan
-        if (!data.tag && [ 'coral_fan', 'wall_fan' ].includes(data.last2Words)) {
-            data.tag_group = 'plant';
+        else if (data.identifier.endsWith('coral_wall_fan')) {
+            data.tag_group = 'coral';
+            data.tag = 'coral_wall_fan';
+            data.geo = 'cross';
+        }
+        else if ([ 'coral_block', 'coral_fan' ].includes(data.last2Words)) {
+            data.tag_group = 'coral';
             data.tag = data.last2Words;
+            data.geo = 'cross';
+        }
+        else if ([ 'candle_cake' ].includes(data.last2Words)) {
+            data.tag_group = 'food';
+            data.tag = data.last2Words;
+            data.geo = 'custom';
         }
 
         //One word
-        if (!data.tag && [ 'calcite', 'path', 'sandstone', 'nylium', 'hyphae', 'stem', 'cobblestone', 'mud', 'block', 'shroomlight', 'seaLantern', 'grate', 'bricks', 'concrete', 'coral', 'log', 'ore', 'planks', 'wood', 'terracotta', "glass", "powder", "wool", 'stone', 'blackstone', 'basalt', 'bedrock', 'tuff', 'ice', 'froglight', 'glowstone', 'copper', 'tiles', 'sand', 'snow', 'soil', 'sponge', 'stonebrick', 'obsidian' ].includes(data.lastWord)) {
+        if (
+            data.identifier.endsWith('light') ||
+            data.identifier.endsWith('bricks') ||
+            [ 'concrete', 'soil', 'block', 'ore', 'log', 'planks', 'wood', 'terracotta', 'sandstone', 'nylium', 'hyphae', 'stem', 'bricks', "wool" ].includes(data.lastWord)
+        ) {
             data.tag_group = 'block';
-            data.tag = data.wordCount > 1 ? data.lastWord : data.key;
+            data.geo = 'full_block';
         }
+        if (
+            [ 'calcite', 'path', 'cobblestone', 'mud', 'seaLantern', 'grate', 'coral', "powder", 'stone', 'blackstone', 'basalt', 'bedrock', 'tuff', 'ice', 'froglight', 'glowstone', 'copper', 'tiles', 'sand', 'snow', 'sponge', 'stonebrick', 'obsidian' ].includes(data.identifier)) {
+            data.tag_group = 'block';
+            data.geo = 'full_block';
+        }
+
         if (!data.tag &&
             (
-                [ 'hanging_sign', '' ].includes(data.sound) ||
-                [ 'candle', 'banner', 'sign', 'slab', 'stairs', 'wall', 'gate', 'fence', 'button', "carpet", 'cake', 'pane', 'trapdoor', 'door', 'bulb' ].includes(data.lastWord)
+                data.last2Words == 'hanging_sign'
             )
         ) {
             data.tag_group = 'non-full-block';
-            data.tag = data.wordCount > 1 ? data.lastWord : data.key;
-            data.mine_by_hand = true;
+            data.tag = data.last2Words;
+            data.geo = 'custom';
+        }
+        if (!data.tag &&
+            (
+                data.lastWord == 'slab'
+            )
+        ) {
+            data.tag_group = 'non-full-block';
+            data.geo = 'half_block';
+        }
+        //TODO: More breakdowns        
+        if (!data.tag &&
+            (
+                [ 'sign', 'gate', 'fence', 'candle', 'banner', 'stairs', 'wall', 'button', "carpet", 'cake', 'pane', 'trapdoor', 'door', 'bulb' ].includes(data.lastWord)
+            )
+        ) {
+            data.tag_group = 'non-full-block';
+            data.geo = 'custom';
+        }
+
+        if (!data.tag && (
+            [ 'leaves', 'pumpkin', 'cactus' ].includes(data.lastWord)
+        )
+        ) {
+            data.tag_group = 'plant';
+            data.material = 'nature';
+            data.geo = 'full_block';
         }
 
         if (!data.tag &&
             (
-                [ 'vines', 'grass' ].includes(data.sound) ||
-                [ 'leaves', 'carrots', 'cactus', 'pumpkin', 'orchid', 'tulip', 'daisy', 'lilac', 'grass', 'flower', 'plant', 'sapling', 'sunflower', 'seagrass', 'reeds', 'poppy', "flowered", "bluet", "bamboo", "beetroot", 'dripleaf', 'mushroom', 'tallgrass', 'fungus', 'roots', 'vines', 'vine', 'wheat', 'rose', 'waterlily' ].includes(data.lastWord)
+                [ 'vines', 'grass', 'bamboo' ].includes(data.sound) ||
+                [ 'carrots', 'orchid', 'tulip', 'daisy', 'lilac', 'grass', 'flower', 'plant', 'sapling', 'sunflower', 'seagrass', 'reeds', 'poppy', "flowered", "bluet", "bamboo", "beetroot", 'dripleaf', 'mushroom', 'tallgrass', 'fungus', 'roots', 'vines', 'vine', 'wheat', 'rose', 'waterlily' ].includes(data.lastWord)
             )
         ) {
             data.tag_group = 'plant';
-            data.tag = data.wordCount > 1 ? data.lastWord : data.key;
-            data.material = 'organic';
-            data.tool_type = 'hoe';
-            data.tool_material = 'wood';
-            data.mine_by_hand = true;
+            data.material = 'nature';
+            data.geo = 'cross';
         }
         //job blocks - some settings re-adjusted per material later
-        if (!data.tag && [ 'table', 'loom', 'stonecutter' ].includes(data.lastWord)) {
+        if ([ 'table', 'loom', 'bookshelf' ].includes(data.lastWord ?? data.identifier)) {
             data.tag_group = 'job-block';
-            data.tag = data.wordCount > 1 ? data.lastWord : data.key;
-            data.tool_type = 'axe';
-            data.tool_material = 'wood';
-            data.mine_by_hand = true;
+            data.geo = 'full_block';
         }
+        if ([ 'brewing_stand', , 'stonecutter', 'anvil', 'cauldron' ].includes(data.lastWord ?? data.identifier)) {
+            data.tag_group = 'job-block';
+            data.geo = 'custom';
+        }
+
         if (!data.tag && [ 'chest' ].includes(data.lastWord)) {
             data.tag_group = 'inventory';
             data.tag = data.wordCount > 1 ? data.lastWord : data.key;
-            data.tool_type = 'axe';
-            data.tool_material = 'wood';
-            data.mine_by_hand = true;
+            data.geo = 'full_block';
         }
     });
 
+    //==============================================================
     //material TODO: do more - but just worried about slabs for now
+
     blocks.forEach((data) => {
-        if (
-            data.sound.includes('wood') ||
-            data.identifier.includes('wood') ||
-            logBlocks.some(logName => data.identifier.startsWith(logName))
-        ) {
-            data.material = 'wood';
-            data.tool_type = 'axe';
-            data.tool_material = 'wood';
+        if (oreTypes.includes(data.firstWord)) {
+            data.material = data.firstWord;
         }
 
-        if (data.sound.includes('stone') || data.identifier.includes('stone')) {
+        if (
+            data.sound == 'stone' ||
+            stoneTypes.includes(data.firstWord) ||
+            data.nameParts.includes('stone') ||
+            data.nameParts.includes('stone') ||
+            data.lastWord == '_ore' ||
+            data.nameParts.includes('brick')
+        ) {
             data.material = 'stone';
-            data.tool_type = 'pickaxe';
-            data.tool_material = 'wood';
-            data.hardess = 2;
-            data.mine_by_hand = false;
         }
 
         if (data.identifier.startsWith('end_stone') || data.identifier.startsWith('end_brick')) {
             data.material = 'stone';
-            data.tool_type = 'pickaxe';
-            data.tool_material = 'wood';
-            data.hardess = 3;
-            data.hand_destroy_time = 15;
+        }
+        if (
+            data.identifier.startsWith('wooden') ||
+            logTypes.some(logName => data.identifier.startsWith(logName))
+        ) {
+            data.material = 'wood';
         }
 
-        if (data.sound.includes('copper') || data.identifier.includes('copper')) {
+        if (data.sound.includes('copper') ||
+            data.identifier.includes('copper') ||
+            data.identifier.startsWith('iron')) {
             data.material = 'metal';
-            data.tool_type = 'pickaxe';
-            data.tool_material_minimum = 'stone';
-        }
-        if (data.identifier.startsWith('iron')) {
-            data.material = 'metal';
-            data.tool_type = 'pickaxe';
-            data.tool_material_minimum = 'stone';
-            data.hand_destroy_time = 15;
-            data.hardess = 3;
         }
 
         if (data.sound.includes('sand') || data.sound.includes('gravel')) {
             data.material = 'sand';
-            data.tool_type = 'shovel';
-            data.mine_by_hand = true;
-
         }
 
-        //overrides
+    });
+    //==============================================================
+    /* 
+    help with harness and destroy
+    https://minecraft.wiki/w/Breaking
+    */
+    blocks.forEach((data) => {
+        //mc colors
+        data.colored = lastWords[ data.lastWord ] >= blockColors.length &&
+            blockColors.some(color => data.identifier.startsWith(color + '_'));
+
+        data.destroy_time = data.tools.base * 2; //made up cause testing times was not working if this is bigger
+        data.tool_type = data.tools.best;
+        data.mine_by_hand = (data.tools.hand <= data.tools.base);
+        data.tool_material_minimum = data.mine_by_hand ? 'wood' : data.tools.materials.least;
+        data.explosion_resistence = round(data.destroy_time * 3, 0);
+    });
+
+    blocks.forEach((data) => {       //overrides
         if (data.identifier.includes('netherite')) data.material_tier_tags = 'minecraft:diamond_tier_destructible';
-        if ([ 'wool', 'carpet', 'leaves', 'vines' ].includes(data.tag)) data.tool_tags = 'minecraft:is_shears_item_destructible';
+
+        if ([ 'wool', 'carpet', 'leaves', 'vines' ].includes(data.tag)) {
+            data.tool_tags = 'minecraft:is_shears_item_destructible';
+        }
 
         //default calculation
-        data.destroy_time = data.destroy_time || (1.5 * data.hardness) || 0.05;
-        data.explosion_reistence = data.explosion_reistence || data.destroy_time * 3;
         let tool = data.tool_type || 'tool';
-        //fixed in 1.21.50 if (tool == 'axe') tool = 'hatchet';
-        //fixed in 1.21.50 if (tool == 'shovel') tool = 'digger';
         data.tool_type_tags = `minecraft:is_${data.tool_type}_item_destructible`;
-        data.tool_material_tier_tags = data.tool_material === 'wood' ? null : `minecraft:${data.tool_material}_tier_destructible`;
+        data.tool_material_tier_tags = ([ 'stone', 'diamond', 'iron' ].includes(data.tools.materials.least) ? 'minecraft' : 'dw623') + `:${data.tools.materials.least}_tier_destructible`;
 
     });
 
@@ -483,6 +671,27 @@ function processBlocksDotJson () {
     }
 }
 //=====================================================================
+function export_miningSpeeds (data) {
+
+    const dataOutput = { mining_speeds: data };
+    let outputStingify = JSON.stringify(dataOutput, null, 4);
+    let outFileName = `${outpath}/mining_speeds.json`;
+
+    if (fs.existsSync(outFileName)) fs.unlinkSync(outFileName);
+    if (!fs.existsSync(outFileName)) {
+        fs.writeFileSync(outFileName, outputStingify, { encoding: 'utf8', mode: 0o644, flag: 'w' });
+        if (fs.existsSync(outFileName)) {
+            consoleColor.success(`Exported mining_speeds to: ${outFileName}`);
+        }
+        else {
+            consoleColor.error(`Did Not Export mining_speeds to: ${outFileName}`);
+        }
+    }
+    else {
+        consoleColor.error(`Could Not Delete Old File: ${outFileName}`);
+    }
+}
+//=====================================================================
 function export_blocksDotJson (tag, outpath, blocks) {
 
     const data = blocks
@@ -492,9 +701,9 @@ function export_blocksDotJson (tag, outpath, blocks) {
     if (data.length == 0) return;
 
     data.forEach(block => {
-        block.textureType = typeof block.textures
-    })
-    
+        block.textureType = typeof block.textures;
+    });
+
     const dataOutput = { vanilla_123abcxyz789: data };
     let outputStingify = JSON.stringify(dataOutput, null, 4).replace('vanilla_123abcxyz789', `vanilla_${tag}s`);
     let outFileName = `${outpath}/vanilla_${tag}s.json`;
@@ -547,10 +756,10 @@ function export_blocksDotJsonSounds (tag, outpath, blocks) {
     fs.unlinkSync(outFileName);
     if (!fs.existsSync(outFileName)) {
         fs.writeFileSync(outFileName, outputStingify, { encoding: 'utf8', mode: 0o644, flag: 'w' });
-        if (!fs.existsSync(outFileName))
+        if (fs.existsSync(outFileName))
             consoleColor.success(`Exported ${data.length} ${tag}s to: ${outFileName}`);
         else {
-            consoleColor.error(`Did Not Export ${data.length} ${tag}s to: ${outFileName}`);
+            consoleColor.error(`Did Not Export Sounds ${data.length} ${tag}s to: ${outFileName}`);
         }
     }
     else {
@@ -559,7 +768,7 @@ function export_blocksDotJsonSounds (tag, outpath, blocks) {
 }
 //=====================================================================
 function crossJoins_Get (tag = "slab", blocks) {
-
+    //this is only for slabs, so it will not need sertain things
     const data1 = blocks
         .filter(block => { return block.tag == tag; });
 
@@ -573,34 +782,75 @@ function crossJoins_Get (tag = "slab", blocks) {
         else b.textureList = { up: b.textures, down: b.textures, side: b.textures };
     });
     const data2 = data1;
-    const dataCombo = [];
+    const dataCombos = [];
 
     data1.forEach(b1 => {
         data2
             .filter(b2a => { return b2a.index > b1.index; })
             .forEach(b2 => {
                 const identifier = (b1.identifier + '.' + b2.identifier).replaceAll('_' + tag, '') + `.${tag}.combo`;
-                dataCombo.push({
-                    identifier: identifier,
-                    identifierShort: (b1.uniqueShortKey + '.' + b2.uniqueShortKey).replaceAll('_' + tag, '') + `.${tag}.combo`,
-                    title: Title(identifier.replace('.', ' & ').replaceAll('_' + tag, '').replaceAll('_', ' ').replaceAll('.', ' ')),
-                    sound: b1.sound == b2.sound ? b1.sound :
-                        (b1.sound.includes(b2.sound) ? b2.sound :
-                            (b2.sound.includes(b1.sound) ? b1.sound : '')),
-                    tool_type_tags: b1.tool_type_tags == b2.tool_type_tags ? b1.tool_type_tags : '',
-                    tool_material_tier_tags: b1.tool_material_tier_tags == b2.tool_material_tier_tags ? b1.tool_material_tier_tags : '',
-                    destroy_time: round((b1.destroy_time + b2.destroy_time) / 2, 1),
-                    explosion_reistence: round((b1.explosion_reistence + b2.explosion_reistence) / 2, 1),
+                const combo = {
+                    block: {
+                        identifier: identifier,
+                        identifierShort: (b1.uniqueShortKey + '.' + b2.uniqueShortKey).replaceAll('_' + tag, '') + `.${tag}.combo`,
+                        title: Title(identifier.replace('.', ' & ').replaceAll('_' + tag, '').replaceAll('_', ' ').replaceAll('.', ' ')),
+                        //since for slabs, will be either wood, stone or metal - stone is default when can't find sameniess
+                        sound: b1.sound == b2.sound ? b1.sound :
+                            (b1.sound.includes(b2.sound) ? b2.sound :
+                                (b2.sound.includes(b1.sound) ? b1.sound :
+                                    (b1.sound.length > b2.sound ? b2.sound : b1.sound))),
+
+                        material: b1.material == b2.material ? b1.material :
+                            b1.material.includes(b2.material) ? b2.material :
+                                b2.material.includes(b1.material) ? b1.material :
+                                    [ b1.material, b2.material ].includes('stone'),
+                        flammableLevel: Math.floor((b1.flammableLevel + b2.flammableLevel) / 2),
+                        tool_type_tags: b1.tool_type_tags == b2.tool_type_tags ? b1.tool_type_tags : '',
+                        tool_material_tier_tags: b1.tool_material_tier_tags == b2.tool_material_tier_tags ? b1.tool_material_tier_tags : '',
+                        hardness: round((b1.hardness + b2.hardness) / 2, 1),
+                        destroy_time: round((b1.destroy_time + b2.destroy_time) / 2, 1),
+                        explosion_resistence: round((b1.explosion_resistence + b2.explosion_resistence) / 2, 1),
+                    },
+                    tools: {
+                        //tool material is NOT like block material
+                        material: b1.tools.material == b2.tools.material ? b1.tools.material :
+                            [ b1.tools.material, b2.tools.material ].includes('hand') ? 'wood' :
+                                [ b1.tools.material, b2.tools.material ].includes('wood') ? 'wood' :
+                                    [ b1.tool.material, b2.tools.material ].includes('stone') ? 'stone' :
+                                        [ b1.tools.material, b2.tools.material ].includes('iron') ? 'iron' :
+                                            'diamond',
+
+                        base: round((b1.tools.base + b2.tools.base) / 2, 1),
+                        hand: round((b1.tools.hand + b2.tools.hand) / 2, 1),
+                        mace: round((b1.tools.mace + b2.tools.mace) / 2, 1),
+                        //just need axe and pickaxe for slabs                     
+
+                        wooden_axe: crossJoinTool(b1, b2, 'wooden_axe'),
+                        stone_axe: crossJoinTool(b1, b2, 'stone_axe'),
+                        iron_axe: crossJoinTool(b1, b2, 'iron_axe'),
+                        diamond_axe: crossJoinTool(b1, b2, 'diamond_axe'),
+                        netherite_axe: crossJoinTool(b1, b2, 'netherite_axe'),
+                        golden_axe: crossJoinTool(b1, b2, 'golden_axe'),
+
+                        wooden_pickaxe: crossJoinTool(b1, b2, 'wooden_pickaxe'),
+                        stone_pickaxe: crossJoinTool(b1, b2, 'stone_pickaxe'),
+                        iron_pickaxe: crossJoinTool(b1, b2, 'iron_pickaxe'),
+                        diamond_pickaxe: crossJoinTool(b1, b2, 'diamond_pickaxe'),
+                        netherite_pickaxe: crossJoinTool(b1, b2, 'netherite_pickaxe'),
+                        golden_pickaxe: crossJoinTool(b1, b2, 'golden_pickaxe'),
+                    },
                     obj1: {
                         identifier: b1.identifier,
                         identifierShort: b1.uniqueShortKey,
                         textures: b1.textures,
                         textureList: b1.textureList,
                         sound: b1.sound,
+                        material: b1.material,
                         tool_type_tags: b1.tool_type_tags,
                         tool_material_tier_tags: b1.tool_material_tier_tags,
                         destroy_time: b1.destroy_time,
-                        explosion_reistence: b1.explosion_reistence
+                        explosion_resistence: b1.explosion_resistence,
+                        tools: b1.tools
                     },
                     obj2: {
                         identifier: b2.identifier,
@@ -608,21 +858,42 @@ function crossJoins_Get (tag = "slab", blocks) {
                         textures: b2.textures,
                         textureList: b2.textureList,
                         sound: b2.sound,
+                        material: b2.material,
                         tool_type_tags: b2.tool_type_tags,
                         tool_material_tier_tags: b2.tool_material_tier_tags,
                         destroy_time: b2.destroy_time,
-                        explosion_reistence: b2.explosion_reistence
+                        explosion_resistence: b2.explosion_resistence,
+                        tools: b2.tools
                     }
-                });
+                };
+
+                dataCombos.push(combo);
             });
     });
 
     //use one texture
 
-    const dataReturn = dataCombo.filter(k => includes.length == 0 || includes.includes(k.obj1.identifier || includes.includes(k.obj2.identifier)));
+    const dataReturn = dataCombos.filter(k => includes.length == 0 || includes.includes(k.obj1.identifier || includes.includes(k.obj2.identifier)));
     if (debug) dataReturn.forEach(b => { consoleColor.log("Combo Slab :", b.obj1.identifier, "and", b.obj2.identifier); });
 
     return dataReturn;
+}
+/**
+ * 
+ * @param {object} b1 
+ * @param {object} b2 
+ * @param {string} tool
+ */
+function crossJoinTool (b1, b2, tool) {
+
+    const b1_toolBase = b1.sound.endsWith('wood') ? 'axe' : 'pickaxe';
+    const b2_toolBase = b2.sound.endsWith('wood') ? 'axe' : 'pickaxe';
+
+    const words = tool.split('_');
+
+    const b1_tool = words[ 0 ] + '_' + b1_toolBase;
+    const b2_tool = words[ 0 ] + '_' + b2_toolBase;
+    return round(b1.tools[ b1_tool ] + b1.tools[ b2_tool ] / 2, 1);
 }
 //=====================================================================
 function export_crossJoin (tag = "slab", outpath, blocks) {
@@ -691,3 +962,4 @@ function main () {
 main();
 //============================================================================
 //Go Home, the show is over
+//============================================================================

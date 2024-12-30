@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
-	"author": "https://github.com/DrinkWater623",
+	"author": "DrinkWater623, Update Block Dev",
 	"name": "F3_Events",
 	"packs": {
 		"behaviorPack": "./packs/BP",
@@ -9,10 +9,12 @@
 	"mani_fest":{
 		"Debug":false,
 		"preview":false,
-		"beta":false,
+		"beta":true,
 		"name": "F3 Events",
-		"description": "Event Information Gathering",	
-		"min_engine_version": [1,21,0],														
+		"description": "Event Information Gathering",
+		"license":"GPL-3.0-only",
+		"url": "https://github.com/DrinkWater623",	
+		"min_engine_version": [1,21,50],														
 		"BP":{
 			"header_uuid": "7f6fbf4d-af92-4de6-8216-a1176cefd382",
 			"module_uuid": "62eadd6e-4dd8-444e-adce-559e9dd46210"							
@@ -24,7 +26,8 @@
 	},
 	"regolith": {
 		"dataPath": "./packs/data",
-		"filterDefinitions": {			
+		"filterDefinitions": {		
+			"jsonte": {"url":"github.com/MCDevKit/regolith-library","version":"2.14.0"},	
 			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
 			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
 			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}			
@@ -34,29 +37,18 @@
 				"export": {"readOnly":false,"target":"local"},				
 				"filters": [											
 					{"filter":"dot_ignore"},								
-					{"filter":"empty_ignore"} 
+					{"filter":"empty_ignore"} ,
+					{"filter":"jsonte"}
 				]
 			},					
-			"build": {
-				"export": {"readOnly":false,"target":"local","rpName": "'void_rp_'+project.name"},				
-				"filters": [{"profile":"template"},	{"filter":"mani_fest","settings":{"beta":false,"preview":false}}]
-			},
 			"build-beta": {
 				"export": {"readOnly":false,"target":"local","rpName": "'void_rp_'+project.name"},				
 				"filters": [{"profile":"template"},	{"filter":"mani_fest","settings":{"beta":true,"preview":false,"BP":{"js":"main-beta.js"}}}]
 			},	
-			"stable": {
-				"export": {"readOnly":false,"target":"development","rpName": "'void_rp_'+project.name"},
-				"filters": [{"profile":"template"},{"filter":"mani_fest","settings":{"beta":false}}]
-			},
 			"beta": {
 				"export": {"readOnly":false,"target":"development","rpName": "'void_rp_'+project.name"},
 				"filters": [{"profile":"template"},{"filter":"mani_fest","settings":{"beta":true,"BP":{"js":"main-beta.js"}}}]
-			},
-			"preview": {
-				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "'void_rp_'+project.name"},
-				"filters": [{"profile":"template"},	{"filter":"mani_fest","settings":{"preview":true,"min_engine_version":[1,21,30]}}]
-			},
+			},			
 			"preview-beta": {
 				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "'void_rp_'+project.name"},
 				"filters": [

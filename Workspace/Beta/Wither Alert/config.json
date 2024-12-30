@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
-	"author": "https://github.com/DrinkWater623",
+	"author": "DrinkWater623, Update Block Dev",
 	"name": "Wither_Alert",
 	"packs": {
 		"behaviorPack": "./packs/BP",
@@ -9,9 +9,11 @@
 	"mani_fest":{
 		"Debug":false,
 		"preview":false,
-		"beta":false,
+		"beta":true,
 		"name": "Wither Alert",
-		"description": "Gives Locations of Withers",													
+		"description": "Gives Locations of Withers",
+		"license":"GPL-3.0-only",
+		"url": "https://github.com/DrinkWater623",													
 		"min_engine_version": [1,21,0],							
 		"BP":{
 			"header_uuid": "ea61f455-31fd-4659-8607-5e7f3788c144",

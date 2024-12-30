@@ -4,7 +4,7 @@ import {
     PlayerBreakBlockBeforeEvent,
     PlayerBreakBlockAfterEvent
 } from "@minecraft/server";
-import { Debug } from '../commonLib/mcDebugClass.js';
+import { Debug } from '../common-stable/mcDebugClass.js';
 import {  toggles } from "../settings.js";
 //==============================================================================
 const debug = new Debug("F3", true, world);

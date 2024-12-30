@@ -1,8 +1,8 @@
 //@ts-check
 //=========================================================
 import { world, system } from "@minecraft/server";
-import { Vector3Lib } from "./commonLib/vectorClass";
-import { round } from "./commonLib/mathClass";
+import { Vector3Lib } from "./common-stable/vectorClass";
+import { round } from "./common-other/mathLib";
 //=========================================================
 export const facingTag = "facingTag";
 export const xyzTag = "xyzTag";

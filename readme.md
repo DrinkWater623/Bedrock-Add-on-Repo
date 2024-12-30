@@ -3,14 +3,9 @@
 ### Overview
 This repository contains a small amount of my development work as I've learned to navigate Bedrock Add-ons.  I am mainly creating these to use on my own server and realms.  This is my 1st Repo, and yeah, don't quite know what I am doing... But I am learning to navigate the Repo World!!
 
-### Tools and Organization
-The raw files are written for use with Regolith, the JSON Templating Filter (jsonte) and my a few of my own Filters. I do not have official documentation for them, but not hard to figure out from the config.json files.  That said, hit me up if you have questions before I am able to make something for it.  
+### Organization
+Builds - Fully usable copies of RP/BP folders as well as the McAddOn.  There will be a readme.  Not everything is fully tested, so read the notes
 
-If I have released the .mcaddon to my world for use or testing, there will be a copy of it in  folder of that add-on and you can crack that open to examine the full add-on.  Otherwise, go Regolith/Jsonte or go home.  You can learn about or get Regolith at their Hub (see links below)
+Script Library - This is where I keep the common code that I copy to the different projects as needed.  I try to keep it updated when I make needed changes or additions when working on a project.
 
-### Fan-Girl Links:
-- [List of Key Dev Discords](https://wiki.bedrock.dev/discord.html)
-- [Bedrock OSS GitHub Repo's](https://github.com/Bedrock-OSS)
-- [Regolith](https://bedrock-oss.github.io/regolith/)
-- [Jsonte (JSON Templating) Filter Quick Tutorial](https://mcdevkit.com/tutorial)
-- [Jsonte Filter Documentation](https://docs.mcdevkit.com/json-templating-engine/)
+Workspace - This holds all the files for a project, minus the .regolith folder.  See the ReadMe inside Workspace Folder for more information.

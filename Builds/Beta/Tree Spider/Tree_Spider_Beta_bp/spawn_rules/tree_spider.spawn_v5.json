@@ -1,0 +1,59 @@
+{
+  /*
+    ?? spawns_above_block_filter
+    TODO: add saplings after get to work on top
+  
+  */
+  "format_version": "1.8.0",
+  "minecraft:spawn_rules": {
+    "description": {
+      "identifier": "dw623:tree_spider",
+      "population_control": "animal"
+    },
+    "conditions": [
+      //==========================================================================================
+      // to force for farm
+      { 
+        "minecraft:spawns_on_surface": {},
+        "minecraft:distance_filter": {"min": 8,"max": 64},
+        "minecraft:weight": {"default":100},
+        "minecraft:density_limit": {"surface":10,"underground":10},
+        "minecraft:herd": {"min_size":2,"max_size":3},     
+        "minecraft:biome_filter": 
+        {
+          "any_of": [ //places where does not naturally spawn
+            {"test":"has_biome_tag","value":"nether"},
+            {"test":"has_biome_tag","value":"the_end"},                            
+            {"test":"has_biome_tag","value":"overworld"}
+          ]
+        },
+        //put webs down to start and make some trees  
+        "minecraft:spawns_on_block_filter": "dw623:super_web_block"  
+      },                    
+      //==========================================================================================
+      //Not Cherry nor Savannah
+      { 
+        "minecraft:spawns_on_surface": {},
+        "minecraft:distance_filter": {"min": 8,"max": 32},
+        "minecraft:weight": {"default":50 },
+        "minecraft:density_limit": {"surface":3,"underground":0},                
+        "minecraft:spawns_on_block_prevented_filter": ["minecraft:sand","minecraft:red_sand"],        
+        "minecraft:biome_filter": {
+          "any_of": [
+            {"test":"has_biome_tag","value":"bamboo"},
+            {"test":"has_biome_tag","value":"birch"},                          
+            {"test":"has_biome_tag","value":"cold_taiga"},
+            {"test":"has_biome_tag","value":"extreme_hills_plus_trees"},            
+            {"test":"has_biome_tag","value":"forest"},
+            {"test":"has_biome_tag","value":"grove"},
+            {"test":"has_biome_tag","value":"jungle"},
+            {"test":"has_biome_tag","value":"mushroom_island"},              
+            {"test":"has_biome_tag","value":"roofed"},
+            {"test":"has_biome_tag","value":"swamp"},
+            {"test":"has_biome_tag","value":"taiga"}             
+          ]
+        }                     
+      }      
+    ]
+  }
+}

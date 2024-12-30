@@ -1,4 +1,8 @@
 { 
+  /*
+      The only way to get this block in hand is while in creative using PICK.  Otherwise it is not meant for having
+      only for becoming when the player is placing vertically
+  */
   "$scope":{
       "slabs":"{{vanilla_slabs.filter(b => b.textureType == 'string')}}"
   },
@@ -6,31 +10,40 @@
     "array": "slabs",
     "fileName": "./vertical_{{identifier}}.bp"
   },
+  "$extend": ["slab.common"], 
   "$template": {
-    "format_version": "1.20.80",
     "minecraft:block": {
-      "description": {
-        "identifier": "dw623:vertical_{{identifier}}",
-        "menu_category": {
-          "category":"none",
-          "is_hidden_in_commands":true
-        },
-        "traits": {
-          "minecraft:placement_position": {            
-            "enabled_states":[              
-              "minecraft:block_face"
+      "description": {},
+      "components": {     
+        "minecraft:material_instances": {"*":{"texture":"{{textures}}"}},
+        /*
+      "dw623:cut_copper_slab",
+      "dw623:exposed_cut_copper_slab",
+      "dw623:weathered_cut_copper_slab",
+      "dw623:oxidized_cut_copper_slab"
+      */
+        "{{?identifier == 'cut_copper_slab'}}":{
+          "minecraft:custom_components": [
+            "dw623:cut_copper_oxidation",
+            "dw623:waxable_cut_copper"
             ]
-          }          
-        }
-      },
-      "components": {
-        "tag:{{tool_type_tags}}":{}, 
-        "minecraft:placement_filter":{
-          "conditions": [{"allowed_faces":["side"]}]},       
-        "minecraft:display_name": "{{realTitle('vertical '+identifier)}}",  
-        "minecraft:loot": "/loot_tables/dw623/{{identifier}}.loot.json",
-        "minecraft:geometry": {"identifier":"geometry.dw623.block_16x8x16_north"},      
-        "minecraft:material_instances": {"*":{"texture":"{{textures}}"}}
+        },
+        "{{?(identifier == 'exposed_cut_copper_slab' || identifier == 'weathered_cut_copper_slab')}}":{
+          "minecraft:custom_components": [
+            "dw623:cut_copper_oxidation", 
+            "dw623:scrapeable_cut_copper",
+            "dw623:waxable_cut_copper"
+          ]
+        },
+        "{{?identifier == 'oxidized_cut_copper_slab'}}":{
+          "minecraft:custom_components": [
+            "dw623:cut_copper_oxidation", 
+            "dw623:waxable_cut_copper"
+          ]
+        },
+        "{{?(startsWith(identifier,'waxed_') && endsWith(identifier,'_cut_copper_slab'))}}":{
+          "minecraft:custom_components": ["dw623:unwaxable_cut_copper"]
+        }          
       },
       "permutations":[        
         {

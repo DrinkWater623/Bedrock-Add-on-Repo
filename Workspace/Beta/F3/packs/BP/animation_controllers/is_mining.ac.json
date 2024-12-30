@@ -1,0 +1,72 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.is_mining": {
+			"initial_state": "load",
+			"states": {
+				"load": {
+					"transitions": [
+						{
+							"wait": "q.is_moving"
+						}
+					],
+					"on_exit": [
+						"/scoreboard objectives add Player_Info dummy",
+						"/scoreboard objectives setdisplay sidebar Player_Info",
+						"/scoreboard players set is_mining Player_Info 0"
+					]
+				},
+				"mining": {
+					"on_entry": [
+						"v.time = q.life_time;",
+						"/scoreboard players add is_mining Player_Info 1"
+					],
+					"transitions": [
+						{
+							"reset": "(q.life_time - v.time) > 1 && v.attack_time==0"
+						},
+						{
+							"loop": "v.attack_time" // && q.is_item_equipped('main_hand')"
+						}
+					]
+				},
+				"loop": {
+					"transitions": [
+						{
+							"mining": "return true;"
+						}
+					]
+				},
+				"wait": {
+					"transitions": [
+						{
+							"mining": "v.attack_time" // && q.is_item_equipped('main_hand')"
+						}
+					],
+					"on_exit": [
+						"/scoreboard players set is_mining Player_Info 0"
+					]
+				},
+				"reset": {
+					"transitions": [
+						{
+							"wait": "q.is_moving"
+						}
+					],
+					"on_exit": [						
+						"/scoreboard players set is_mining Player_Info 0"
+					]
+				}
+			}
+		}
+	}
+}
+/*
+    scoreboard players set @s[m=s,hasitem={item=netherite_pickaxe,location=slot.weapon.mainhand}] weapon_mainhand 1
+    scoreboard players set @s[m=s,hasitem={item=diamond_pickaxe,location=slot.weapon.mainhand}] weapon_mainhand 1
+    scoreboard players set @s[m=s,hasitem={item=iron_pickaxe,location=slot.weapon.mainhand}] weapon_mainhand 2
+    scoreboard players set @s[m=s,hasitem={item=golden_pickaxe,location=slot.weapon.mainhand}] weapon_mainhand 2
+    scoreboard players set @s[m=s,hasitem={item=stone_pickaxe,location=slot.weapon.mainhand}] weapon_mainhand 3
+    scoreboard players set @s[m=s,hasitem={item=wooden_pickaxe,location=slot.weapon.mainhand}] weapon_mainhand 4
+
+*/

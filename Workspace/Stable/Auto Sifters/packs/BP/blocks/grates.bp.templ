@@ -1,7 +1,7 @@
 {
   "$files": {
     "array": "sifter_types",
-    "fileName": "./sifters/{{material}}_grate.bp"
+    "fileName": "./grates/{{material}}_grate.bp"
   },
   "$template": {
     "format_version": "1.20.80",
@@ -18,10 +18,12 @@
         }
       },
       "components": {  
-        "minecraft:display_name": "{{realTitle(material)}} Grate",      
+        "minecraft:display_name": "{{realTitle(material)}} Grate",
+        "minecraft:map_color": "{{=map_color}}",      
         "minecraft:geometry": {
           "identifier": "geometry.dw623.block_16x1x16_floor"
         },
+        "minecraft:light_dampening": 0,
         "minecraft:material_instances": {         
           "*": {
             "texture": "{{material}}_grate",
@@ -31,7 +33,20 @@
           }
         },
         "minecraft:collision_box": {"origin":[-8,0,-8],"size":[16,1,16]},     
-        "minecraft:selection_box": {"origin":[-8,0,-8],"size":[16,1,16]}     
+        "minecraft:selection_box": {"origin":[-8,0,-8],"size":[16,1,16]},
+        "minecraft:flammable": {"catch_chance_modifier":0,"destroy_chance_modifier":0},
+        "minecraft:destructible_by_explosion": "{{=material != 'netherite'}}",
+        "minecraft:destructible_by_mining": {          
+         "seconds_to_destroy": "{{=tools.base*2}}", //this is really hardness... not seconds
+          "item_specific_speeds":[
+              {"item":"minecraft:wooden_pickaxe"    ,"destroy_speed": "{{=tools.wooden_pickaxe}}"   },
+              {"item":"minecraft:stone_pickaxe"     ,"destroy_speed": "{{=tools.stone_pickaxe}}"    },
+              {"item":"minecraft:golden_pickaxe"    ,"destroy_speed": "{{=tools.golden_pickaxe}}"   },
+              {"item":"minecraft:iron_pickaxe"      ,"destroy_speed": "{{=tools.iron_pickaxe}}"     }  ,
+              {"item":"minecraft:diamond_pickaxe"   ,"destroy_speed": "{{=tools.diamond_pickaxe}}"  },
+              {"item":"minecraft:netherite_pickaxe" ,"destroy_speed": "{{=tools.netherite_pickaxe}}"}            
+          ]
+        }     
       },
       "permutations":[
         {

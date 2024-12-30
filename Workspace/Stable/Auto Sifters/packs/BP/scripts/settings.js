@@ -1,6 +1,14 @@
 //@ts-check
-import { ConsoleAlert, ChatMsg } from "./commonLib/consoleClass";
-import { MinecraftItemTypes } from "./commonLib/vanillaData";
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
+import { ConsoleAlert, ChatMsg } from "./common-stable/consoleClass";
+import { MinecraftItemTypes } from "./common-data/vanillaData";
+import { mcNameSpace } from "./common-data/globalConstantsLib";
 //==============================================================================
 /**
  *  Owner is to edit this file as needed
@@ -19,9 +27,7 @@ export const pack = {
 export const alertLog = new ConsoleAlert(`§d${pack.packName}§r`);
 export const chatLog = new ChatMsg(`§b${pack.packName}§r`);
 //==============================================================================
-export const globals = {       
-    mcNameSpace: "minecraft:",
-    mcAir: 'minecraft:air',
+export const globals = {          
     keyBlockWords: [ "gravel", "powder", "mud", "sand", "snow" ] //save time
 };
 //==============================================================================
@@ -301,7 +307,7 @@ export const lootTableItems = [
 //==============================================================================
 watchFor.autoSiftBlockInfo.forEach(b => {
     b.custom = `${pack.packNameSpace}${b.name}`;
-    b.minecraft = `${globals.mcNameSpace}${b.name}`;
+    b.minecraft = `${mcNameSpace}${b.name}`;
 });
 //==============================================================================
 // Append
@@ -315,7 +321,7 @@ colors.forEach(color => {
         gravity: true,
         name: concretePowderBase,
         custom: `${pack.packNameSpace}${concretePowderBase}`,
-        minecraft: `${globals.mcNameSpace}${concretePowderBase}`,
+        minecraft: `${mcNameSpace}${concretePowderBase}`,
         height: 16,
         sound: "dig.sand"
     };
@@ -334,10 +340,10 @@ colors.forEach(color => {
     }
 
     //loot table stuff with colors
-    lootTableItems.push({ minHeight: 8, typeId: globals.mcNameSpace + color + "_bundle", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] });
-    lootTableItems.push({ minHeight: 8, typeId: globals.mcNameSpace + color + "_candle", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] });
+    lootTableItems.push({ minHeight: 8, typeId: mcNameSpace + color + "_bundle", blocksNotAllowed: [ "" ], blocksAllowed: [ "all" ] });
+    lootTableItems.push({ minHeight: 8, typeId: mcNameSpace + color + "_candle", blocksNotAllowed: [ "soul_sand" ], blocksAllowed: [ "sand", "gravel", "concrete" ] });
 
-    watchFor.vanillaItemsPlacementSpecs.push({ item: globals.mcNameSpace + color + "_carpet", minHeight: 0, minWidth: 2, allowedBlockFaceTraits: 'down', disAllowedBlockFaceTraits: '' });
+    watchFor.vanillaItemsPlacementSpecs.push({ item: mcNameSpace + color + "_carpet", minHeight: 0, minWidth: 2, allowedBlockFaceTraits: 'down', disAllowedBlockFaceTraits: '' });
     //candle is complicated
     //one candle is 9, but 2 is 11, but mc can have candles with nothing under them, so ok
 });
@@ -427,7 +433,7 @@ vanillaItems.filter(id => id.endsWith('_smithing_template')).forEach(item => {
 //==============================================================================
 //Debug
 if (dev.debugPackLoad) {
-    const badItems = lootTableItems.filter(item => item.typeId.startsWith(globals.mcNameSpace) && !vanillaItems.includes(item.typeId));
+    const badItems = lootTableItems.filter(item => item.typeId.startsWith(mcNameSpace) && !vanillaItems.includes(item.typeId));
     badItems.forEach(bad => alertLog.error(bad.typeId));
 
     //vanillaItems.forEach(v => alertLog.log(v))

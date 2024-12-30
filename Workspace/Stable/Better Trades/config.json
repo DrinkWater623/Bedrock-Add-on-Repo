@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
-	"author": "https://github.com/DrinkWater623",
+	"author": "DrinkWater623, Update Block Dev",
 	"name": "Better_Trades",
 	"packs": {
 		"behaviorPack": "./packs/BP",
@@ -11,8 +11,10 @@
 		"preview":false,
 		"beta":false,
 		"name": "Better Trades",
-		"description": "Better Trades",													
-		"min_engine_version": [1,21,0],
+		"description": "Better Villager Trades with Wandering Trader Guild",
+		"license":"GPL-3.0-only",
+		"url": "https://github.com/DrinkWater623",
+		"min_engine_version": [1,21,50],
 		"BP": {
 			"header_uuid": "5f8dfd22-2703-46ca-a088-e94186d9b0f3",
 			"module_uuid": "e69355e9-66dc-48e8-9fcd-ea9dc0c7e208"
