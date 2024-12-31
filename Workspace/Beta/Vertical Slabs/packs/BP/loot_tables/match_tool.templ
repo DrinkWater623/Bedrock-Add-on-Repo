@@ -1,0 +1,39 @@
+{
+    "$scope":{
+        "matchTool":[
+            {"id":0 ,"name":"wood"      ,"lootTool":"wooden"    },
+            {"id":1 ,"name":"stone"     ,"lootTool":"stone"     },
+            {"id":2 ,"name":"golden"    ,"lootTool":"golden"    },
+            {"id":3 ,"name":"iron"      ,"lootTool":"iron"      },
+            {"id":4 ,"name":"diamond"   ,"lootTool":"diamond"   },
+            {"id":5 ,"name":"netherite" ,"lootTool":"netherite" }
+        ]
+    },
+    "$files": {
+        "array": "vanilla_slabs.filter(x => x.tools.material != 'hand')",
+        "fileName": "./dw623/vertical_slabs/{{identifier}}.{{tools.best}}"
+    },
+    "$template": {
+        "pools": [
+            {
+                "{{#matchTool.filter(x => x.id >= ( tools.material=='wood' ? 0 : tools.material=='stone' ? 1 : tools.material=='iron' ? 3 : tools.material=='diamond' ? 4 : 5) )}}": {
+                    "rolls": 1,
+                    "conditions": [
+                        {
+                            "condition": "match_tool",
+                            "item": "minecraft:{{lootTool}}_{{tools.best}}",
+                            "count":1
+                        }
+                    ],
+                    "entries": [
+                        {
+                            "type": "loot_table",
+                            "name": "loot_tables/dw623/vertical_slabs/{{identifier}}.loot.json",
+                            "weight": 100
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

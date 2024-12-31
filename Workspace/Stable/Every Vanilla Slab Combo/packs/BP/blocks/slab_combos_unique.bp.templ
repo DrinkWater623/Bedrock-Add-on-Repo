@@ -52,7 +52,7 @@
                 "minecraft:flammable": {"catch_chance_modifier":"{{=block.flammableLevel}}","destroy_chance_modifier":"{{=block.flammableLevel*4}}"},
                 "minecraft:destructible_by_explosion": true,                                               
                 "minecraft:destructible_by_mining": {          
-                    "seconds_to_destroy": "{{=tools.base * (tools.material=='hand' ? 1 : 2.0)}}",
+                    "seconds_to_destroy": "{{=destroy_time}}",
                     "item_specific_speeds":[
                         {"item":"minecraft:mace"          ,"destroy_speed": "{{=tools.mace}}"},
                         {"item":"minecraft:wooden_axe"    ,"destroy_speed": "{{=tools.wooden_axe}}"},

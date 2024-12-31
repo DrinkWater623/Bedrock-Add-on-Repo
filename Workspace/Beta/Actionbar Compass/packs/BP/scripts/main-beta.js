@@ -43,7 +43,7 @@ function main_beta () {
     //console.warn('§aInstalling Action Bar Compass - §bChat Commands§r - §6Beta§r');
 
     world.beforeEvents.chatSend.subscribe((eventObject) => {
-        if ([ ":abc",";abc" ].includes(eventObject.message.toLowerCase())) {
+        if ([ ":abc", ";abc" ].includes(eventObject.message.toLowerCase())) {
             eventObject.cancel = true;
             system.run(() => { compassToggle(eventObject.sender); });
         }
@@ -59,6 +59,11 @@ function main_beta () {
 
     world.afterEvents.playerSpawn.subscribe((event) => {
         system.runTimeout(() => {
+            if (!event.player.hasTag('abcTags')) {
+                event.player.addTag('abcTags');
+                event.player.addTag(main.xyzTag);
+            }
+
             event.player.sendMessage(`Your ActionBar Compass is ${event.player.hasTag(main.noCompassTag) ? "§cOff" : "§aOn"} - §rType §d:abc§r in chat to toggle it §aon/§coff`);
             event.player.sendMessage(`Your ActionBar XYZ is ${event.player.hasTag(main.xyzTag) ? "§aOn" : "§cOff"} - §rType §d:xyz§r in chat to toggle it §aon/§coff`);
             event.player.sendMessage(`Your ActionBar Velocity is ${event.player.hasTag(main.velocityTag) ? "§aOn" : "§cOff"} - §rType §d:vel§r in chat to toggle it §aon/§coff`);

@@ -1,0 +1,52 @@
+{
+    "format_version": 2,
+    "header": {
+        "name": "Vertical Slabs RP : §6Beta§r",
+        "description": "Adds ability to place vanilla slabs vertically RP\n§aBuild Date: 2024.12.31.7.53.29§r §gby DrinkWater623, Update Block Dev§r",
+        "uuid": "75dc8fb9-8443-4496-9d4a-f24265093fdd",
+        "version": [
+            24,
+            12,
+            31
+        ],
+        "min_engine_version": [
+            1,
+            21,
+            50
+        ]
+    },
+    "modules": [
+        {
+            "type": "resources",
+            "description": "RP Pack",
+            "uuid": "a6f72c01-ce92-46b9-ba81-322edb56c141",
+            "version": [
+                1,
+                0,
+                0
+            ]
+        }
+    ],
+    "dependencies": [
+        {
+            "uuid": "1079ff75-d7a5-4d0b-87e5-e97a643c5150",
+            "version": [
+                24,
+                12,
+                31
+            ]
+        }
+    ],
+    "metadata": {
+        "authors": [
+            "DrinkWater623, Update Block Dev"
+        ],
+        "url": "https://github.com/DrinkWater623",
+        "license": "GPL-3.0-only",
+        "generated_with": {
+            "regolith_filter_mani_fest": [
+                "2024.12.24"
+            ]
+        }
+    }
+}

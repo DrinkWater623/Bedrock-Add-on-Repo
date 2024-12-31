@@ -1,5 +1,6 @@
 // @ts-check
 /*
+Last Update 20241231 05:55a
 =====================================================================
 Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
 License: GPL-3.0-only (https://www.gnu.org/licenses/gpl-3.0.html)
@@ -639,7 +640,7 @@ function processBlocksDotJson () {
         data.colored = lastWords[ data.lastWord ] >= blockColors.length &&
             blockColors.some(color => data.identifier.startsWith(color + '_'));
 
-        data.destroy_time = data.tools.base * 2; //made up cause testing times was not working if this is bigger
+        data.destroy_time = round(data.tools.hand * 0.65,2); // from testing
         data.tool_type = data.tools.best;
         data.mine_by_hand = (data.tools.hand <= data.tools.base);
         data.tool_material_minimum = data.mine_by_hand ? 'wood' : data.tools.materials.least;
@@ -814,7 +815,7 @@ function crossJoins_Get (tag = "slab", blocks) {
                         tool_type_tags: b1.tool_type_tags == b2.tool_type_tags ? b1.tool_type_tags : '',
                         tool_material_tier_tags: b1.tool_material_tier_tags == b2.tool_material_tier_tags ? b1.tool_material_tier_tags : '',
                         hardness: round((b1.hardness + b2.hardness) / 2, 1),
-                        destroy_time: round((b1.destroy_time + b2.destroy_time) / 2, 1),
+                        destroy_time: round((b1.destroy_time + b2.destroy_time) / 2, 2),
                         explosion_resistence: round((b1.explosion_resistence + b2.explosion_resistence) / 2, 1),
                     },
                     tools: {

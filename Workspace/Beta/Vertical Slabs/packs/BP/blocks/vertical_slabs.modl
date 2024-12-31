@@ -24,19 +24,40 @@
         "minecraft:placement_filter":{
           "conditions": [{"allowed_faces":["side"]}]},       
         "minecraft:display_name": "{{realTitle('vertical '+identifier)}}",  
-        "minecraft:loot": "loot_tables/dw623/{{identifier}}.loot.json",
+        "minecraft:loot": "loot_tables/dw623/vertical_slabs/{{identifier}}.{{tools.material=='hand' ? 'loot' : tools.best}}.json",
         "minecraft:geometry": {"identifier":"geometry.dw623.block_16x8x16_north"},      
         "minecraft:flammable": {"catch_chance_modifier":"{{=flammableLevel}}","destroy_chance_modifier":"{{=flammableLevel*4}}"},
         "minecraft:destructible_by_explosion": true,
-        "minecraft:destructible_by_mining": {          
-          "seconds_to_destroy": "{{=tools.base * (tools.material=='hand' ? 1 : 2.0)}}", 
-          "item_specific_speeds":[
-            {"item":"minecraft:wooden_{{tools.best}}"    ,"destroy_speed": "{{=tools.materials.wooden}}"},
-            {"item":"minecraft:stone_{{tools.best}}"     ,"destroy_speed": "{{=tools.materials.stone}}"},
-            {"item":"minecraft:golden_{{tools.best}}"    ,"destroy_speed": "{{=tools.materials.golden}}"},
-            {"item":"minecraft:iron_{{tools.best}}"      ,"destroy_speed": "{{=tools.materials.iron}}"},
-            {"item":"minecraft:diamond_{{tools.best}}"   ,"destroy_speed": "{{=tools.materials.diamond}}"},
-            {"item":"minecraft:netherite_{{tools.best}}" ,"destroy_speed": "{{=tools.materials.netherite}}"}          
+        "minecraft:destructible_by_mining": {
+          "seconds_to_destroy": "{{=(tools.hand*0.65)}}",
+          //"seconds_to_destroy": "{{=(tools.material=='hand' ? tools.hand*0.65 : tools.hand < 10 ? tools.hand : tools.hand*0.65)}}",
+          "item_specific_speeds":[  
+            // {"{{?tools.material=='hand'}}":[
+            //   {"item":{"tags":"q.all_tags('minecraft:is_tool','wooden_tier')"}    ,"destroy_speed": "{{=tools.materials.wooden}}"},
+            //   {"item":{"tags":"q.all_tags('minecraft:is_tool','stone_tier')"}     ,"destroy_speed": "{{=tools.materials.stone}}"},
+            //   {"item":{"tags":"q.all_tags('minecraft:is_tool','golden_tier')"}    ,"destroy_speed": "{{=tools.materials.golden}}"},
+            //   {"item":{"tags":"q.all_tags('minecraft:is_tool','iron_tier')"}      ,"destroy_speed": "{{=tools.materials.iron}}"},
+            //   {"item":{"tags":"q.all_tags('minecraft:is_tool','diamond_tier')"}   ,"destroy_speed": "{{=tools.materials.diamond}}"},
+            //   {"item":{"tags":"q.all_tags('minecraft:is_tool','netherite_tier')"} ,"destroy_speed": "{{=tools.materials.netherite}}"}         
+            //   ]},            
+            {"{{?tools.best=='pickaxe'}}":[
+              //{"item":{"tags":"q.any_tag('minecraft:is_axe')"},"destroy_speed": "{{=tools.hand*2}}"},
+              {"item":{"tags":"q.all_tags('minecraft:is_pickaxe','wooden_tier')"}    ,"destroy_speed": "{{=0.5*tools.materials.wooden}}"},
+              {"item":{"tags":"q.all_tags('minecraft:is_pickaxe','stone_tier')"}     ,"destroy_speed": "{{=0.5*tools.materials.stone}}"},
+              {"item":{"tags":"q.all_tags('minecraft:is_pickaxe','golden_tier')"}    ,"destroy_speed": "{{=0.5*tools.materials.golden}}"},
+              {"item":{"tags":"q.all_tags('minecraft:is_pickaxe','iron_tier')"}      ,"destroy_speed": "{{=0.5*tools.materials.iron}}"},
+              {"item":{"tags":"q.all_tags('minecraft:is_pickaxe','diamond_tier')"}   ,"destroy_speed": "{{=0.5*tools.materials.diamond}}"},
+              {"item":{"tags":"q.all_tags('minecraft:is_pickaxe','netherite_tier')"} ,"destroy_speed": "{{=0.5*tools.materials.netherite}}"}         
+            ]},
+            {"{{?tools.best=='axe'}}":[
+              //{"item":{"tags":"q.any_tag('minecraft:is_pickaxe')"},"destroy_speed": "{{=tools.hand*2}}"},
+              {"item":{"tags":"q.all_tags('minecraft:is_axe','wooden_tier')"}    ,"destroy_speed": "{{=tools.materials.wooden}}"},
+              {"item":{"tags":"q.all_tags('minecraft:is_axe','stone_tier')"}     ,"destroy_speed": "{{=tools.materials.stone}}"},
+              {"item":{"tags":"q.all_tags('minecraft:is_axe','golden_tier')"}    ,"destroy_speed": "{{=tools.materials.golden}}"},
+              {"item":{"tags":"q.all_tags('minecraft:is_axe','iron_tier')"}      ,"destroy_speed": "{{=tools.materials.iron}}"},
+              {"item":{"tags":"q.all_tags('minecraft:is_axe','diamond_tier')"}   ,"destroy_speed": "{{=tools.materials.diamond}}"},
+              {"item":{"tags":"q.all_tags('minecraft:is_axe','netherite_tier')"} ,"destroy_speed": "{{=tools.materials.netherite}}"} 
+            ]}
           ]
         }
       },

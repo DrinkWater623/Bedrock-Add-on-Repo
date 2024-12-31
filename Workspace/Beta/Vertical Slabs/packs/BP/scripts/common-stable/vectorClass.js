@@ -4,7 +4,7 @@ Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev
 License: GPL-3.0-only
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20241229 - reOrg and add License
+Last Update: 20241230 - exported rotationToCardinalDirection
 ========================================================================*/
 import { Player, world } from "@minecraft/server";
 //============================================================================
@@ -26,7 +26,7 @@ function round (number, decimalPlaces = 0) {
  * @param {number} rotation 
  * @returns 
  */
-function rotationToCompassDirection (rotation) {
+export function rotationToCompassDirection (rotation) {
     const dirs = [ "S", "S W", "W", "N W", "N", "N E", "E", "S E", "S" ];
     let dir = Math.round((rotation % 360) / 8);
     if (dir < 0) dir += 8;
@@ -43,7 +43,7 @@ function rotationToCompassDirection (rotation) {
  * @param {number} rotation 
  * @returns { 'south' | 'west' | 'north' | 'east'}
  */
-function rotationToCardinalDirection (rotation) {
+export function rotationToCardinalDirection (rotation) {
     let dirs = [ "south", "west", "north", "east", "south" ];    
     let dir = Math.round((rotation % 360) / 90);
     if (dir < 0) dir += 4;

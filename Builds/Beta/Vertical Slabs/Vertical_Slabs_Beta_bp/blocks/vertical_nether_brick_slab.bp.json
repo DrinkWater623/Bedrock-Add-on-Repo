@@ -1,0 +1,222 @@
+{
+  "minecraft:block": {
+    "description": {
+      "identifier": "dw623:vertical_nether_brick_slab",
+      "menu_category": {
+        "category": "none",
+        "is_hidden_in_commands": true
+      },
+      "traits": {
+        "minecraft:placement_position": {
+          "enabled_states": [
+            "minecraft:block_face"
+          ]
+        }
+      }
+    },
+    "components": {
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "nether_brick_slab"
+        }
+      },
+      "tag:minecraft:is_pickaxe_item_destructible": {
+      },
+      "tag:dw623:wood_tier_destructible": {
+      },
+      "tag:stone": {
+      },
+      "minecraft:placement_filter": {
+        "conditions": [
+          {
+            "allowed_faces": [
+              "side"
+            ]
+          }
+        ]
+      },
+      "minecraft:display_name": "Vertical Nether Brick Slab",
+      "minecraft:loot": "loot_tables/dw623/vertical_slabs/nether_brick_slab.pickaxe.json",
+      "minecraft:geometry": {
+        "identifier": "geometry.dw623.block_16x8x16_north"
+      },
+      "minecraft:flammable": {
+        "catch_chance_modifier": 1,
+        "destroy_chance_modifier": 4
+      },
+      "minecraft:destructible_by_explosion": true,
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 6.5,
+        "item_specific_speeds": [
+          {
+            "item": {
+              "tags": "q.all_tags('minecraft:is_pickaxe','wooden_tier')"
+            },
+            "destroy_speed": 0.75
+          },
+          {
+            "item": {
+              "tags": "q.all_tags('minecraft:is_pickaxe','stone_tier')"
+            },
+            "destroy_speed": 0.375
+          },
+          {
+            "item": {
+              "tags": "q.all_tags('minecraft:is_pickaxe','golden_tier')"
+            },
+            "destroy_speed": 0.125
+          },
+          {
+            "item": {
+              "tags": "q.all_tags('minecraft:is_pickaxe','iron_tier')"
+            },
+            "destroy_speed": 0.25
+          },
+          {
+            "item": {
+              "tags": "q.all_tags('minecraft:is_pickaxe','diamond_tier')"
+            },
+            "destroy_speed": 0.2
+          },
+          {
+            "item": {
+              "tags": "q.all_tags('minecraft:is_pickaxe','netherite_tier')"
+            },
+            "destroy_speed": 0.175
+          }
+        ]
+      }
+    },
+    "permutations": [
+      {
+        "condition": "query.block_state('minecraft:block_face') == 'south'",
+        "components": {
+          "minecraft:geometry": {
+            "identifier": "geometry.dw623.block_16x8x16_north"
+          },
+          "minecraft:collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              8
+            ]
+          },
+          "minecraft:selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              16,
+              16,
+              8
+            ]
+          }
+        }
+      },
+      {
+        "condition": "query.block_state('minecraft:block_face') == 'north'",
+        "components": {
+          "minecraft:geometry": {
+            "identifier": "geometry.dw623.block_16x8x16_south"
+          },
+          "minecraft:collision_box": {
+            "origin": [
+              -8,
+              0,
+              0
+            ],
+            "size": [
+              16,
+              16,
+              8
+            ]
+          },
+          "minecraft:selection_box": {
+            "origin": [
+              -8,
+              0,
+              0
+            ],
+            "size": [
+              16,
+              16,
+              8
+            ]
+          }
+        }
+      },
+      {
+        "condition": "query.block_state('minecraft:block_face') == 'west'",
+        "components": {
+          "minecraft:geometry": {
+            "identifier": "geometry.dw623.block_16x8x16_east"
+          },
+          "minecraft:collision_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              8,
+              16,
+              16
+            ]
+          },
+          "minecraft:selection_box": {
+            "origin": [
+              -8,
+              0,
+              -8
+            ],
+            "size": [
+              8,
+              16,
+              16
+            ]
+          }
+        }
+      },
+      {
+        "condition": "query.block_state('minecraft:block_face') == 'east'",
+        "components": {
+          "minecraft:geometry": {
+            "identifier": "geometry.dw623.block_16x8x16_west"
+          },
+          "minecraft:collision_box": {
+            "origin": [
+              0,
+              0,
+              -8
+            ],
+            "size": [
+              8,
+              16,
+              16
+            ]
+          },
+          "minecraft:selection_box": {
+            "origin": [
+              0,
+              0,
+              -8
+            ],
+            "size": [
+              8,
+              16,
+              16
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "format_version": "1.20.80"
+}

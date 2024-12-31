@@ -1,0 +1,89 @@
+{
+  "pools": [
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "match_tool",
+          "item": "minecraft:stone_pickaxe",
+          "count": 1
+        }
+      ],
+      "entries": [
+        {
+          "type": "loot_table",
+          "name": "loot_tables/dw623/vertical_slabs/exposed_cut_copper_slab.loot.json",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "match_tool",
+          "item": "minecraft:golden_pickaxe",
+          "count": 1
+        }
+      ],
+      "entries": [
+        {
+          "type": "loot_table",
+          "name": "loot_tables/dw623/vertical_slabs/exposed_cut_copper_slab.loot.json",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "match_tool",
+          "item": "minecraft:iron_pickaxe",
+          "count": 1
+        }
+      ],
+      "entries": [
+        {
+          "type": "loot_table",
+          "name": "loot_tables/dw623/vertical_slabs/exposed_cut_copper_slab.loot.json",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "match_tool",
+          "item": "minecraft:diamond_pickaxe",
+          "count": 1
+        }
+      ],
+      "entries": [
+        {
+          "type": "loot_table",
+          "name": "loot_tables/dw623/vertical_slabs/exposed_cut_copper_slab.loot.json",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "match_tool",
+          "item": "minecraft:netherite_pickaxe",
+          "count": 1
+        }
+      ],
+      "entries": [
+        {
+          "type": "loot_table",
+          "name": "loot_tables/dw623/vertical_slabs/exposed_cut_copper_slab.loot.json",
+          "weight": 100
+        }
+      ]
+    }
+  ]
+}
