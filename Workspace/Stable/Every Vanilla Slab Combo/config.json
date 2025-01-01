@@ -42,11 +42,20 @@
 					{
 						"filter":"process-blocks-json",
 						"settings":{
+							"debug":false,
 							"branch":"main",							
-							"excludeBlocks":[															
-								"wooden_slab"								
-							], 									
-							"excludeEndsWith":["2","3","4"], 									
+							"excludeBlocks":[														
+								"wooden_slab",
+								"allow",
+								"deny",
+								"barrier",
+								"bedrock",
+								"border"								
+							], 			
+							"excluideRegExMatches":[],
+							"excludeStartsWith":["light_block_","depreciated","reserved","invisible","structure"],
+							"excludeContains":["cut_copper","portal","jigsaw"],
+							"excludeEndsWith":["command_block","1","2","3","4","5","6","7","8","9","0","_portal","_gateway","water","lava"], 									
 							"slabCombos":true,
 							"slabs":true
 						}

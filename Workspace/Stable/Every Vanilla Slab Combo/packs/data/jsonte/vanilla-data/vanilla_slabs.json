@@ -73,13 +73,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 6,
+            "destroy_time": 1.95,
             "tool_type": "axe",
             "mine_by_hand": true,
             "tool_material_minimum": "wood",
-            "explosion_resistence": 18,
+            "explosion_resistence": 6,
             "tool_type_tags": "minecraft:is_axe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:hand_tier_destructible",
             "textureType": "string"
         },
         {
@@ -155,12 +155,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -237,13 +238,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 6,
+            "destroy_time": 1.95,
             "tool_type": "axe",
             "mine_by_hand": true,
             "tool_material_minimum": "wood",
-            "explosion_resistence": 18,
+            "explosion_resistence": 6,
             "tool_type_tags": "minecraft:is_axe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:hand_tier_destructible",
             "textureType": "string"
         },
         {
@@ -319,13 +320,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 6,
+            "destroy_time": 1.95,
             "tool_type": "axe",
             "mine_by_hand": true,
             "tool_material_minimum": "wood",
-            "explosion_resistence": 18,
+            "explosion_resistence": 6,
             "tool_type_tags": "minecraft:is_axe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:hand_tier_destructible",
             "textureType": "string"
         },
         {
@@ -401,13 +402,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 6,
+            "destroy_time": 1.95,
             "tool_type": "axe",
             "mine_by_hand": true,
             "tool_material_minimum": "wood",
-            "explosion_resistence": 18,
+            "explosion_resistence": 6,
             "tool_type_tags": "minecraft:is_axe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:hand_tier_destructible",
             "textureType": "string"
         },
         {
@@ -483,12 +484,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -564,12 +566,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 3,
+            "destroy_time": 6.5,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 9,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 20,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -645,13 +648,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 6,
+            "destroy_time": 1.95,
             "tool_type": "axe",
             "mine_by_hand": true,
             "tool_material_minimum": "wood",
-            "explosion_resistence": 18,
+            "explosion_resistence": 6,
             "tool_type_tags": "minecraft:is_axe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:hand_tier_destructible",
             "textureType": "string"
         },
         {
@@ -729,12 +732,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 5.3,
+            "destroy_time": 11.38,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 15.899999999999999,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 34,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -810,12 +814,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 3,
+            "destroy_time": 6.5,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 9,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 20,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -891,13 +896,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 6,
+            "destroy_time": 1.95,
             "tool_type": "axe",
             "mine_by_hand": true,
             "tool_material_minimum": "wood",
-            "explosion_resistence": 18,
+            "explosion_resistence": 6,
             "tool_type_tags": "minecraft:is_axe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:hand_tier_destructible",
             "textureType": "string"
         },
         {
@@ -975,12 +980,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 9.75,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "stone",
+            "explosion_resistence": 29,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "minecraft:stone_tier_destructible",
             "textureType": "string"
         },
         {
@@ -1062,12 +1068,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 1.2,
+            "destroy_time": 2.6,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 3.5999999999999996,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 8,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "object"
         },
         {
@@ -1148,12 +1155,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 1.2,
+            "destroy_time": 2.6,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 3.5999999999999996,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 8,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "object"
         },
         {
@@ -1230,13 +1238,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 6,
+            "destroy_time": 1.95,
             "tool_type": "axe",
             "mine_by_hand": true,
             "tool_material_minimum": "wood",
-            "explosion_resistence": 18,
+            "explosion_resistence": 6,
             "tool_type_tags": "minecraft:is_axe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:hand_tier_destructible",
             "textureType": "string"
         },
         {
@@ -1313,12 +1321,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -1396,12 +1405,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 5.3,
+            "destroy_time": 11.38,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 15.899999999999999,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 34,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -1479,12 +1489,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 5.3,
+            "destroy_time": 11.38,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 15.899999999999999,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 34,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -1560,12 +1571,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -1643,12 +1655,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -1727,12 +1740,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 9.75,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "stone",
+            "explosion_resistence": 29,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "minecraft:stone_tier_destructible",
             "textureType": "string"
         },
         {
@@ -1808,12 +1822,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -1889,13 +1904,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 6,
+            "destroy_time": 1.95,
             "tool_type": "axe",
             "mine_by_hand": true,
             "tool_material_minimum": "wood",
-            "explosion_resistence": 18,
+            "explosion_resistence": 6,
             "tool_type_tags": "minecraft:is_axe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:hand_tier_destructible",
             "textureType": "string"
         },
         {
@@ -1971,13 +1986,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 6,
+            "destroy_time": 1.95,
             "tool_type": "axe",
             "mine_by_hand": true,
             "tool_material_minimum": "wood",
-            "explosion_resistence": 18,
+            "explosion_resistence": 6,
             "tool_type_tags": "minecraft:is_axe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:hand_tier_destructible",
             "textureType": "string"
         },
         {
@@ -2054,12 +2069,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 3,
+            "destroy_time": 6.5,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 9,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 20,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -2137,12 +2153,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -2220,12 +2237,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -2302,12 +2320,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 3,
+            "destroy_time": 6.5,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 9,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 20,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -2384,12 +2403,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -2465,13 +2485,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 6,
+            "destroy_time": 1.95,
             "tool_type": "axe",
             "mine_by_hand": true,
             "tool_material_minimum": "wood",
-            "explosion_resistence": 18,
+            "explosion_resistence": 6,
             "tool_type_tags": "minecraft:is_axe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:hand_tier_destructible",
             "textureType": "string"
         },
         {
@@ -2550,12 +2570,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 9.75,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "stone",
+            "explosion_resistence": 29,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "minecraft:stone_tier_destructible",
             "textureType": "string"
         },
         {
@@ -2632,13 +2653,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 6,
+            "destroy_time": 1.95,
             "tool_type": "axe",
             "mine_by_hand": true,
             "tool_material_minimum": "wood",
-            "explosion_resistence": 18,
+            "explosion_resistence": 6,
             "tool_type_tags": "minecraft:is_axe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:hand_tier_destructible",
             "textureType": "string"
         },
         {
@@ -2715,13 +2736,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 6,
+            "destroy_time": 1.95,
             "tool_type": "axe",
             "mine_by_hand": true,
             "tool_material_minimum": "wood",
-            "explosion_resistence": 18,
+            "explosion_resistence": 6,
             "tool_type_tags": "minecraft:is_axe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:hand_tier_destructible",
             "textureType": "string"
         },
         {
@@ -2798,12 +2819,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -2881,12 +2903,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -2963,12 +2986,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 3,
+            "destroy_time": 6.5,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 9,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 20,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -3046,12 +3070,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 5.3,
+            "destroy_time": 11.38,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 15.899999999999999,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 34,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -3128,12 +3153,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -3210,12 +3236,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -3292,12 +3319,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -3374,12 +3402,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -3455,12 +3484,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -3536,12 +3566,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 3,
+            "destroy_time": 6.5,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 9,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 20,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -3621,12 +3652,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 1.2,
+            "destroy_time": 2.6,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 3.5999999999999996,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 8,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "object"
         },
         {
@@ -3704,12 +3736,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 3,
+            "destroy_time": 6.5,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 9,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 20,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -3790,12 +3823,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 1.2,
+            "destroy_time": 2.6,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 3.5999999999999996,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 8,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "object"
         },
         {
@@ -3872,12 +3906,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 3,
+            "destroy_time": 6.5,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 9,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 20,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -3957,12 +3992,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 1.2,
+            "destroy_time": 2.6,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 3.5999999999999996,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 8,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "object"
         },
         {
@@ -4039,12 +4075,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 1.2,
+            "destroy_time": 2.6,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 3.5999999999999996,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 8,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -4122,12 +4159,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 1.2,
+            "destroy_time": 2.6,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 3.5999999999999996,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 8,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -4204,12 +4242,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 1.2,
+            "destroy_time": 2.6,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 3.5999999999999996,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 8,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -4290,12 +4329,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 3,
+            "destroy_time": 6.5,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 9,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 20,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "object"
         },
         {
@@ -4371,13 +4411,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 6,
+            "destroy_time": 1.95,
             "tool_type": "axe",
             "mine_by_hand": true,
             "tool_material_minimum": "wood",
-            "explosion_resistence": 18,
+            "explosion_resistence": 6,
             "tool_type_tags": "minecraft:is_axe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:hand_tier_destructible",
             "textureType": "string"
         },
         {
@@ -4454,12 +4494,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -4539,12 +4580,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 3,
+            "destroy_time": 6.5,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 9,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 20,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "object"
         },
         {
@@ -4621,12 +4663,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -4702,12 +4745,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 4.88,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "wood",
+            "explosion_resistence": 15,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:wood_tier_destructible",
             "textureType": "string"
         },
         {
@@ -4783,13 +4827,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 6,
+            "destroy_time": 1.95,
             "tool_type": "axe",
             "mine_by_hand": true,
             "tool_material_minimum": "wood",
-            "explosion_resistence": 18,
+            "explosion_resistence": 6,
             "tool_type_tags": "minecraft:is_axe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "dw623:hand_tier_destructible",
             "textureType": "string"
         },
         {
@@ -4868,12 +4912,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 9.75,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "stone",
+            "explosion_resistence": 29,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "minecraft:stone_tier_destructible",
             "textureType": "string"
         },
         {
@@ -4953,12 +4998,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 9.75,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "stone",
+            "explosion_resistence": 29,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "minecraft:stone_tier_destructible",
             "textureType": "string"
         },
         {
@@ -5038,12 +5084,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 9.75,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "stone",
+            "explosion_resistence": 29,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "minecraft:stone_tier_destructible",
             "textureType": "string"
         },
         {
@@ -5123,12 +5170,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 9.75,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "stone",
+            "explosion_resistence": 29,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "minecraft:stone_tier_destructible",
             "textureType": "string"
         },
         {
@@ -5207,12 +5255,13 @@
                 }
             },
             "colored": false,
-            "destroy_time": 2.3,
+            "destroy_time": 9.75,
             "tool_type": "pickaxe",
             "mine_by_hand": false,
-            "explosion_resistence": 6.8999999999999995,
+            "tool_material_minimum": "stone",
+            "explosion_resistence": 29,
             "tool_type_tags": "minecraft:is_pickaxe_item_destructible",
-            "tool_material_tier_tags": "minecraft:undefined_tier_destructible",
+            "tool_material_tier_tags": "minecraft:stone_tier_destructible",
             "textureType": "string"
         }
     ]

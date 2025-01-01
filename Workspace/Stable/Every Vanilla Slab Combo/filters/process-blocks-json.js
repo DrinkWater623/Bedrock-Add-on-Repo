@@ -1,6 +1,6 @@
 // @ts-check
 /*
-Last Update 20241231 05:55a
+Last Update 20250101 02:30
 =====================================================================
 Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
 License: GPL-3.0-only (https://www.gnu.org/licenses/gpl-3.0.html)
@@ -126,6 +126,18 @@ function readImportFiles () {
     return true;
 }
 //=======================================================================
+/**
+ * 
+ * /waxed_\w+.cut_copper\w+/gm
+ * waxed_\w+.cut_copper\w+/gm
+ * 
+ * /waxed_\w+.cut_copper\w+/gm
+ */
+/**
+ * 
+ * @param {string[]} blockKeys 
+ * @returns {string[]}
+ */
 function excludedBlocks_get (blockKeys) {
     const excludes = [];
     const keys = [ ...blockKeys ];
@@ -146,24 +158,6 @@ function excludedBlocks_get (blockKeys) {
         consoleColor.log(`${excludes.length} Excluded blocks (exact)`);
     }
 
-    if (Array.isArray(excludeContains) && excludeContains.length) {
-        let ctr = 0;
-        excludeContains
-            .filter(x => { return !!x && typeof x == 'string'; })
-            .forEach(c => {
-                keys.filter(k => { return k.includes(c); })
-                    .filter(k1 => { return !excludes.includes(k1); })
-                    .forEach(k2 => {
-                        if (!excludes.includes(k2)) {
-                            excludes.push(k2);
-                            consoleColor.log(k2, 'excluded (contains)');
-                            ctr++;
-                        }
-                    });
-            });
-        consoleColor.log(`${ctr} Excluded blocks (contains)`);
-    }
-
     if (Array.isArray(excludeStartsWith) && excludeStartsWith.length) {
         let ctr = 0;
         excludeStartsWith
@@ -180,6 +174,24 @@ function excludedBlocks_get (blockKeys) {
                     });
             });
         consoleColor.log(`${ctr} Excluded blocks (starts with)`);
+    }
+
+    if (Array.isArray(excludeContains) && excludeContains.length) {
+        let ctr = 0;
+        excludeContains
+            .filter(x => { return !!x && typeof x == 'string'; })
+            .forEach(c => {
+                keys.filter(k => { return k.includes(c); })
+                    .filter(k1 => { return !excludes.includes(k1); })
+                    .forEach(k2 => {
+                        if (!excludes.includes(k2)) {
+                            excludes.push(k2);
+                            consoleColor.log(k2, 'excluded (contains)');
+                            ctr++;
+                        }
+                    });
+            });
+        consoleColor.log(`${ctr} Excluded blocks (contains)`);
     }
 
     if (Array.isArray(excludeEndsWith) && excludeEndsWith.length) {
@@ -204,6 +216,12 @@ function excludedBlocks_get (blockKeys) {
     return excludes;
 }
 //=======================================================================
+/**
+ * 
+ * @param {string[]} blockKeys
+ * @param {string[]} excluded 
+ * @returns {string[]}
+ */
 function includedBlocks_get (blockKeys, excluded = []) {
     const includes = [];
     const keys = blockKeys.filter(k => { return !excluded.includes(k); });
@@ -336,7 +354,6 @@ function processBlocksDotJson () {
 
     consoleColor.log(`Block.json ${cmdLineSettingsJson.branch}${excludes.length || includes.length ? ' filtered' : ''} key count`, blockKeys.length);
 
-
     const includeHasSounds = cmdLineSettingsJson.includeHasSounds || [];
 
     blockKeys.forEach((key, i) => {
@@ -344,9 +361,7 @@ function processBlocksDotJson () {
 
         const bdjData = blockDotJsonRawData[ key ];
 
-
-        if (typeof bdjData == 'object' && !excludes.includes(key)) {
-
+        if (typeof bdjData == 'object' && !excludes.includes(key)) {            
             //-----------------------------------------------------------------------------
             //Fix Blocks.Json Possible Errors or Reduce Info
 
@@ -640,7 +655,7 @@ function processBlocksDotJson () {
         data.colored = lastWords[ data.lastWord ] >= blockColors.length &&
             blockColors.some(color => data.identifier.startsWith(color + '_'));
 
-        data.destroy_time = round(data.tools.hand * 0.65,2); // from testing
+        data.destroy_time = round(data.tools.hand * 0.65, 2); // from testing
         data.tool_type = data.tools.best;
         data.mine_by_hand = (data.tools.hand <= data.tools.base);
         data.tool_material_minimum = data.mine_by_hand ? 'wood' : data.tools.materials.least;
@@ -678,9 +693,13 @@ function processBlocksDotJson () {
     }
 }
 //=====================================================================
+/**
+ * 
+ * @param {Mining_Speeds} data 
+ */
 function export_miningSpeeds (data) {
 
-    const dataOutput = { mining_speeds: data };
+    const dataOutput = { exportDate: Date.now(), mining_speeds: data };
     let outputStingify = JSON.stringify(dataOutput, null, 4);
     let outFileName = `${outpath}/mining_speeds.json`;
 
@@ -691,14 +710,25 @@ function export_miningSpeeds (data) {
             consoleColor.success(`Exported mining_speeds to: ${outFileName}`);
         }
         else {
-            consoleColor.error(`Did Not Export mining_speeds to: ${outFileName}`);
+            let errMsg = `Did Not Export mining_speeds to: ${outFileName}`;
+            consoleColor.error(errMsg);
+            throw new error(errMsg);
         }
     }
     else {
-        consoleColor.error(`Could Not Delete Old File: ${outFileName}`);
+        let errMsg = `Could Not Delete Old File: ${outFileName}`;
+        consoleColor.error(errMsg);
+        throw new error(errMsg);
     }
 }
 //=====================================================================
+/**
+ * 
+ * @param {string} tag 
+ * @param {string} outpath 
+ * @param {object[]} blocks 
+ * @returns 
+ */
 function export_blocksDotJson (tag, outpath, blocks) {
 
     const data = blocks
@@ -733,6 +763,13 @@ function export_blocksDotJson (tag, outpath, blocks) {
     }
 }
 //=====================================================================
+/**
+ * 
+ * @param {string} tag 
+ * @param {string} outpath 
+ * @param {object[]} blocks 
+ * @returns 
+ */
 function export_blocksDotJsonSounds (tag, outpath, blocks) {
 
     const data = blocks
@@ -774,12 +811,18 @@ function export_blocksDotJsonSounds (tag, outpath, blocks) {
     }
 }
 //=====================================================================
+/**
+ * 
+ * @param {string} tag 
+ * @param {object[]} blocks 
+ * @returns {object[]}
+ */
 function crossJoins_Get (tag = "slab", blocks) {
     //this is only for slabs, so it will not need sertain things
     const data1 = blocks
         .filter(block => { return block.tag == tag; });
 
-    if (data1.length == 0) return false;
+    if (data1.length == 0) return [];
 
     data1.forEach(b => {
         if (typeof b.textures == 'object') {
@@ -881,15 +924,17 @@ function crossJoins_Get (tag = "slab", blocks) {
     //use one texture
 
     const dataReturn = dataCombos.filter(k => includes.length == 0 || includes.includes(k.obj1.identifier || includes.includes(k.obj2.identifier)));
-    if (debug) dataReturn.forEach(b => { consoleColor.log("Combo Slab :", b.obj1.identifier, "and", b.obj2.identifier); });
+    if (debug.isDebug()) dataReturn.forEach(b => { consoleColor.log("Combo Slab :", b.obj1.identifier, "and", b.obj2.identifier); });
 
     return dataReturn;
 }
+//=====================================================================
 /**
  * 
  * @param {object} b1 
  * @param {object} b2 
  * @param {string} tool
+ * @returns {number}
  */
 function crossJoinTool (b1, b2, tool) {
 
@@ -900,9 +945,16 @@ function crossJoinTool (b1, b2, tool) {
 
     const b1_tool = words[ 0 ] + '_' + b1_toolBase;
     const b2_tool = words[ 0 ] + '_' + b2_toolBase;
-    return round(b1.tools[ b1_tool ] + b1.tools[ b2_tool ] / 2, 1);
+    return round((b1.tools[ b1_tool ] + b1.tools[ b2_tool ]) / 2, 1);
 }
 //=====================================================================
+/**
+ * 
+ * @param {string} tag 
+ * @param {string} outpath 
+ * @param {object[]} blocks 
+ * @returns 
+ */
 function export_crossJoin (tag = "slab", outpath, blocks) {
 
     const dataCombo = crossJoins_Get(tag, blocks);
@@ -915,6 +967,12 @@ function export_crossJoin (tag = "slab", outpath, blocks) {
     fs.writeFileSync(outFileName, outputStingify);
     consoleColor.success(`Exported ${dataCombo.length} ${tag} Combos to: ${outFileName}`);
 }
+//=====================================================================
+/**
+ * 
+ * @param {string} str 
+ * @returns {string}
+ */
 function Title (str) {
     const sentences = str.split(' ');
     sentences.forEach((sentence, index) => {
@@ -923,6 +981,11 @@ function Title (str) {
     return sentences.join(' ');
 }
 //=====================================================================
+/**
+ * 
+ * @param {string} str 
+ * @returns {string}
+ */
 function Sentence (str) {
     const sentences = str.split('. ');
     sentences.forEach((sentence, index) => {

@@ -14,7 +14,7 @@
       {"item": "minecraft:{{obj2.identifier}}"}
     ],
       "result": {        
-        "item": "{{settings.block_ns}}:{{identifier}}",
+        "item": "dw623:{{block.identifier}}",
         "count": 3
       }
     }

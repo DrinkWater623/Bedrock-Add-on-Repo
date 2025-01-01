@@ -10,8 +10,8 @@
 
         "entity_format_version_bp":"1.21.0",
         "entity_format_version_rp":"1.10.0",
-        "block_format_version":"1.20.80",
-        "item_format_version":"1.10"
+        "block_format_version":"1.21.50",
+        "item_format_version":"1.20.50"
 
 		// {{Title(replace(settings.main_bot,'_',' '))}}
 		// {{settings.main_bot}}

@@ -80,7 +80,7 @@
 		},
 		{
 			"description": {
-				"identifier": "geometry.block_16x1x16_center",
+				"identifier": "geometry.dw623.block_16x1x16_center",
 				"texture_width": 16,
 				"texture_height": 16,
 				"visible_bounds_width": 3,
@@ -110,7 +110,7 @@
 		},
 		{
 			"description": {
-				"identifier": "geometry.block_16x1x16_vertical",
+				"identifier": "geometry.dw623.block_16x1x16_vertical",
 				"texture_width": 16,
 				"texture_height": 16,
 				"visible_bounds_width": 2,

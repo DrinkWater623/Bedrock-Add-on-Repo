@@ -32,16 +32,7 @@
           "seconds_to_destroy": "{{=(tools.hand*0.65)}}",
           //"seconds_to_destroy": "{{=(tools.material=='hand' ? tools.hand*0.65 : tools.hand < 10 ? tools.hand : tools.hand*0.65)}}",
           "item_specific_speeds":[  
-            // {"{{?tools.material=='hand'}}":[
-            //   {"item":{"tags":"q.all_tags('minecraft:is_tool','wooden_tier')"}    ,"destroy_speed": "{{=tools.materials.wooden}}"},
-            //   {"item":{"tags":"q.all_tags('minecraft:is_tool','stone_tier')"}     ,"destroy_speed": "{{=tools.materials.stone}}"},
-            //   {"item":{"tags":"q.all_tags('minecraft:is_tool','golden_tier')"}    ,"destroy_speed": "{{=tools.materials.golden}}"},
-            //   {"item":{"tags":"q.all_tags('minecraft:is_tool','iron_tier')"}      ,"destroy_speed": "{{=tools.materials.iron}}"},
-            //   {"item":{"tags":"q.all_tags('minecraft:is_tool','diamond_tier')"}   ,"destroy_speed": "{{=tools.materials.diamond}}"},
-            //   {"item":{"tags":"q.all_tags('minecraft:is_tool','netherite_tier')"} ,"destroy_speed": "{{=tools.materials.netherite}}"}         
-            //   ]},            
             {"{{?tools.best=='pickaxe'}}":[
-              //{"item":{"tags":"q.any_tag('minecraft:is_axe')"},"destroy_speed": "{{=tools.hand*2}}"},
               {"item":{"tags":"q.all_tags('minecraft:is_pickaxe','wooden_tier')"}    ,"destroy_speed": "{{=0.5*tools.materials.wooden}}"},
               {"item":{"tags":"q.all_tags('minecraft:is_pickaxe','stone_tier')"}     ,"destroy_speed": "{{=0.5*tools.materials.stone}}"},
               {"item":{"tags":"q.all_tags('minecraft:is_pickaxe','golden_tier')"}    ,"destroy_speed": "{{=0.5*tools.materials.golden}}"},
