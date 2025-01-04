@@ -5,7 +5,7 @@ import {
     slabTypeIDSansHeight,
     slabTypeIDHeight
 } from "../../fn-stable.js";
-import { airBlock } from "../../common-data/globalConstantsLib.js";
+import { airBlock, fallThruBlocks, waterBlocks } from "../../common-data/globalConstantsLib.js";
 //==============================================================================
 /**
  * 
@@ -32,7 +32,7 @@ export function siftable_slabs_onTick (e) {
     }
 
     //gravity - pass thru - move down
-    if (watchFor.fallThruBlocks.includes(blockBelow.typeId)) {
+    if (fallThruBlocks.includes(blockBelow.typeId)) {
         blockMoveDownOne(e.block, blockBelow);
     }
     else {
@@ -60,7 +60,7 @@ function concretePowderWaterCheck (block, blockBelow) {
     ];
 
     locations.forEach(neighborBlock => {
-        if (neighborBlock && watchFor.waterBlocks.includes(neighborBlock.typeId)) {
+        if (neighborBlock && waterBlocks.includes(neighborBlock.typeId)) {
             concretePowderConvert(block);
             return true;
         }

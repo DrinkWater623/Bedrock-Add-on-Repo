@@ -3,7 +3,7 @@ Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev
 License: GPL-3.0-only
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20241229 - reOrg and add License
+Last Update: 20250103 - add waterBlock
 ========================================================================*/
 //@ts-check
 import { TicksPerSecond } from "@minecraft/server";
@@ -17,6 +17,7 @@ export class Ticks {
 
 export const mcNameSpace = 'minecraft:'
 export const airBlock = mcNameSpace + 'air';
+export const waterBlock = mcNameSpace + 'water';
 
 export const fallThruBlocks = [
     "minecraft:air",
@@ -34,4 +35,24 @@ export const lavaBlocks = [
 export const waterBlocks = [
     "minecraft:water",
     "minecraft:flowing_water"
+];
+
+//these are in ID order
+export const colors = [
+    "white",
+    "orange",
+    "magenta",
+    "light_blue",
+    "yellow",
+    "lime",
+    "pink",
+    "gray",
+    "light_gray",
+    "cyan",
+    "purple",
+    "blue",
+    "brown",
+    "green",
+    "red",
+    "black"
 ];
