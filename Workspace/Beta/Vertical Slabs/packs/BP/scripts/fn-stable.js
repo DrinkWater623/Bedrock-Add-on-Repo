@@ -8,48 +8,11 @@ Last Update: 20241229 - reOrg and add License
 ========================================================================*/
 import { Block, BlockPermutation, system } from "@minecraft/server";
 import { chatLog } from "./settings.js";
-import { vanilla_blocks } from "./common-data/blocks.json.js";
-import { MinecraftBlockTypes, MinecraftItemTypes } from "./common-data/vanillaData.js";
+import { blocksDotJson } from "./common-data/blocks.json.js";
+import { MinecraftBlockTypes, MinecraftItemTypes } from "./common-data/vanilla-data.js";
 import { sound_definitions } from "./common-data/sound_definitions.js";
-import { fallThruBlocks } from "./common-data/globalConstantsLib.js";
+import { fallThruBlocks, woodBlocks } from "./common-data/block-data.js";
 //==============================================================================
-const vanillaItems = Object.values(MinecraftItemTypes);
-const vanillaBlocks = Object.values(MinecraftBlockTypes).filter(b => vanillaItems.includes(b));
-
-const woodTypes = vanillaBlocks
-    .filter(block => block.endsWith('_planks'))
-    .filter(b => vanillaItems.includes(b))
-    .map(s => s.replace('_planks', ''));
-
-const woodBlocks = [];
-woodTypes.forEach(id => {
-    vanillaBlocks.forEach(block => {
-        if (
-            (
-                block.startsWith(id) ||
-                block.startsWith(id.replace(':', ':stripped')))
-            &&
-            (
-                block.endsWith('button') ||
-                block.endsWith('door') ||
-                block.endsWith('fence') ||
-                block.endsWith('fence_gate') ||
-                block.endsWith('hanging_sign') ||
-                block.endsWith('hyphae') ||
-                block.endsWith('log') ||
-                block.endsWith('planks') ||
-                block.endsWith('pressure_plate') ||
-                block.endsWith('sign') ||
-                block.endsWith('slab') ||
-                block.endsWith('stairs') ||
-                block.endsWith('stem') ||
-                block.endsWith('wood')
-            )
-        )
-            woodBlocks.push(block);
-    });
-});
-
 //==============================================================================
 /**
  * 
@@ -66,7 +29,7 @@ function getLikelyPlaceBlockSound (typeId, soundLike = '') {
         findSoundForId = typeId.replace('minecraft:', '');
 
     if (findSoundForId) {
-        const foundBlock = vanilla_blocks[ findSoundForId ];
+        const foundBlock = blocksDotJson[ findSoundForId ];
         if (foundBlock && foundBlock.sound) {
 
             let placeSound = 'place.' + foundBlock.sound;
@@ -186,8 +149,8 @@ function getLikelyPlaceBlockSound (typeId, soundLike = '') {
         return 'use.snow';
 
     const base = typeId.split(':')[ 1 ];
-    if (Object.keys(vanilla_blocks).includes(base)) {
-        const vb = vanilla_blocks[ base ];
+    if (Object.keys(blocksDotJson).includes(base)) {
+        const vb = blocksDotJson[ base ];
         if (vb) {
             const sound = vb.sound;
             if (sound)

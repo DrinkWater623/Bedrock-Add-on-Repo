@@ -7,7 +7,7 @@ URL: https://github.com/DrinkWater623
 Last Update: 20241229 - reOrg and add License
 ========================================================================*/
 import { ConsoleAlert, ChatMsg } from "./common-stable/consoleClass";
-import { MinecraftBlockTypes, MinecraftItemTypes } from "./common-data/vanillaData";
+import { MinecraftBlockTypes, MinecraftItemTypes } from "./common-data/vanilla-data";
 //==============================================================================
 const vanillaItems = Object.values(MinecraftItemTypes).filter(item => item.endsWith('_slab'));
 //==============================================================================

@@ -7,7 +7,7 @@ URL: https://github.com/DrinkWater623
 Last Update: 20241229 - reOrg and add License
 ========================================================================*/
 import { world, system, Player, ItemStack, BlockPermutation } from '@minecraft/server';
-import { MinecraftBlockTypes, MinecraftItemTypes } from './common-data/vanillaData.js';
+import { MinecraftBlockTypes, MinecraftItemTypes } from './common-data/vanilla-data.js';
 //==============================================================================
 /**
 * @param {string } msg

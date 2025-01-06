@@ -2,6 +2,7 @@
 import {  system,  world } from "@minecraft/server";
 import { MinecraftEffectTypes } from "./vanilla-data.js";
 
+function x(xx){}
 world.beforeEvents.worldInitialize.subscribe((event) => {
 
     event.itemComponentRegistry

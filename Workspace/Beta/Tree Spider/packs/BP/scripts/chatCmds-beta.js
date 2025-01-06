@@ -6,7 +6,7 @@
 import { world, system, Player, Entity, ChatSendBeforeEvent, ChatSendAfterEvent, GameMode } from "@minecraft/server";
 import { dev, entityEvents, pack, watchFor } from './settings.js';
 import { counts, stalledEntityCheckAndFix } from "./fn-stable.js";
-import { MinecraftEffectTypes } from './common-data/vanillaData.js';
+import { MinecraftEffectTypes } from './common-data/vanilla-data.js';
 import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
 import { Vector3Lib } from "./common-stable/vectorClass.js";
 import { BiomeLib } from "./common-beta/biomeLib.js";

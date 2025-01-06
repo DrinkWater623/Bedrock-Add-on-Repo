@@ -1,7 +1,7 @@
 //@ts-check
 import { MinecraftDimensionTypes, world } from "@minecraft/server";
 import { ConsoleAlert, ChatMsg } from "./common-stable/consoleClass";
-import {  MinecraftBlockTypes,  MinecraftItemTypes } from "./common-data/vanillaData";
+import {  MinecraftBlockTypes,  MinecraftItemTypes } from "./common-data/vanilla-data";
 //==============================================================================
 /**
  *  Owner is to edit this file as needed

@@ -7,7 +7,7 @@ URL: https://github.com/DrinkWater623
 Last Update: 20241229 - reOrg and add License
 ========================================================================*/
 import { ConsoleAlert, ChatMsg } from "./common-stable/consoleClass";
-import { MinecraftItemTypes } from "./common-data/vanillaData";
+import { MinecraftItemTypes } from "./common-data/vanilla-data";
 import { mcNameSpace } from "./common-data/globalConstantsLib";
 //==============================================================================
 /**

@@ -1,4 +1,4 @@
-export const vanilla_blocks = {
+export const blocksDotJson = {
     //"format_version": "1.21.40",
     "acacia_button": {
         "sound": "wood",

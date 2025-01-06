@@ -13,7 +13,7 @@ Last Update: 20241229 - reOrg and add License
 import { world, system, Player, ChatSendBeforeEvent, ChatSendAfterEvent } from "@minecraft/server";
 import { watchFor, gamePlay, dev, pack } from './settings.js';
 import { Entities } from './common-stable/entityClass.js';
-import { MinecraftEffectTypes } from './common-data/vanillaData.js';
+import { MinecraftEffectTypes } from './common-data/vanilla-data.js';
 //==============================================================================
 /**
  * 
