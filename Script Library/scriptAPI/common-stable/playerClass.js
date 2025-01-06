@@ -4,7 +4,7 @@ Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev
 License: GPL-3.0-only
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20250105a - add MainHandItemCount
+Last Update: 20250105b - add MainHandItemCount, mainHandRemoveSome
 ========================================================================*/
 import { Player, Block, EquipmentSlot, ItemStack, system } from '@minecraft/server';
 //=============================================================================
@@ -72,6 +72,39 @@ export class PlayerLib {
             return;
 
         const newItemStackCount = selectedItem.amount - 1;
+        if (newItemStackCount >= 0) {
+            system.run(() => {
+                if (newItemStackCount == 0) {
+                    equipment.setEquipment(EquipmentSlot.Mainhand, undefined);
+                }
+                else {
+                    selectedItem.amount = newItemStackCount;
+                }
+            });
+        }
+    }
+    //================================================
+    /**
+     * 
+     * @param {Player} player
+     * @param {*} removeCount  
+     * @param {boolean} [overrideCreativeMode=false] 
+     * @returns {ItemStack | undefined}
+     */
+    static mainHandRemoveSome (player, removeCount=1,overrideCreativeMode = false) {
+
+        if (!overrideCreativeMode && player.getGameMode().startsWith('c'))
+            return;
+
+        const equipment = player.getComponent('equippable');
+        if (!equipment)
+            return;
+
+        const selectedItem = equipment.getEquipment(EquipmentSlot.Mainhand);
+        if (!selectedItem)
+            return;
+
+        const newItemStackCount = selectedItem.amount - removeCount;
         if (newItemStackCount >= 0) {
             system.run(() => {
                 if (newItemStackCount == 0) {

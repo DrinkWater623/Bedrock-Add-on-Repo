@@ -1,12 +1,11 @@
 //@ts-check
-/**
- * Created by DrinkWater623
- * 
- * Change Log:
- *  20240831 - Created
- *  20241206 - Added mainHandTypeId, mainHandItemStack and used those in the other functions
- *  20241209 - Add overrideCreativeMode to mainHandRemoveOne
- */
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20250105b - add MainHandItemCount, mainHandRemoveSome
+========================================================================*/
 import { Player, Block, EquipmentSlot, ItemStack, system } from '@minecraft/server';
 //=============================================================================
 export class PlayerLib {
@@ -59,10 +58,10 @@ export class PlayerLib {
      * @param {boolean} [overrideCreativeMode=false] 
      * @returns {ItemStack | undefined}
      */
-    static mainHandRemoveOne (player,overrideCreativeMode=false) {
+    static mainHandRemoveOne (player, overrideCreativeMode = false) {
 
         if (!overrideCreativeMode && player.getGameMode().startsWith('c'))
-            return
+            return;
 
         const equipment = player.getComponent('equippable');
         if (!equipment)
@@ -83,5 +82,55 @@ export class PlayerLib {
                 }
             });
         }
+    }
+    //================================================
+    /**
+     * 
+     * @param {Player} player
+     * @param {*} removeCount  
+     * @param {boolean} [overrideCreativeMode=false] 
+     * @returns {ItemStack | undefined}
+     */
+    static mainHandRemoveSome (player, removeCount=1,overrideCreativeMode = false) {
+
+        if (!overrideCreativeMode && player.getGameMode().startsWith('c'))
+            return;
+
+        const equipment = player.getComponent('equippable');
+        if (!equipment)
+            return;
+
+        const selectedItem = equipment.getEquipment(EquipmentSlot.Mainhand);
+        if (!selectedItem)
+            return;
+
+        const newItemStackCount = selectedItem.amount - removeCount;
+        if (newItemStackCount >= 0) {
+            system.run(() => {
+                if (newItemStackCount == 0) {
+                    equipment.setEquipment(EquipmentSlot.Mainhand, undefined);
+                }
+                else {
+                    selectedItem.amount = newItemStackCount;
+                }
+            });
+        }
+    }
+    //==============================================================================
+    /**
+     * 
+     * @param {Player} player 
+     * @returns {number}
+     */
+    static mainHandItemCount (player) {
+        const equipment = player.getComponent('equippable');
+        if (!equipment)
+            return 0;
+
+        const selectedItem = equipment.getEquipment(EquipmentSlot.Mainhand);
+        if (!selectedItem)
+            return 0;
+
+        return selectedItem.amount;
     }
 }
