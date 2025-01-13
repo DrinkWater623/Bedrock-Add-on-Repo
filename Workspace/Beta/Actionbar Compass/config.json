@@ -13,7 +13,7 @@
 		"name": "ActionBar Compass",
 		"license":"GPL-3.0-only",
 		"url": "https://github.com/DrinkWater623",
-		"description": "Tells you which direction you are facing on the Action Bar",
+		"description": "Tells you which direction you are facing / XYZ Coords on the Action Bar",
 		"min_engine_version": [1,21,0],							
 		"BP":{
 			"header_uuid": "888ea32d-cee2-426e-bb2e-2622648d3d37",
@@ -50,13 +50,13 @@
 				]
 			},			
 			"build": {
-				"export": {"readOnly":false,"target":"local","bpName":"'DW_ABC_stable_bp'","rpName": "'DW_ABC_stable_rp'"},
+				"export": {"readOnly":false,"target":"local","bpName":"project.name+'_Stable_bp'","rpName": "project.name+'_Stable_rp'"},
 				"filters": [	
 					{"profile":"template-stable"},
 					{
 						"filter":"mani_fest",
 						"settings":{
-							"name": "DW ABC : ActionBar Compass",
+							"name": "ActionBar Compass",
 							"beta":false,"preview":false,
 							"BP":{
 								"js":"main.js",
@@ -72,14 +72,14 @@
 				]
 			},
 			"build-beta": {
-				"export": {"readOnly":false,"target":"local","bpName":"'DW_ABC_beta_bp'","rpName": "'DW_ABC_beta_rp'"},
+				"export": {"readOnly":false,"target":"local","bpName":"project.name+'_Beta_bp'","rpName": "project.name+'_Beta_rp'"},
 				"filters": [	
 					{"profile":"template-beta"},												
 					{
 						"filter":"mani_fest",
 						"settings":{
-							"name": "DW ABC : ActionBar Compass w/ Chat Toggle Commands",
-							"description": "Tells you which direction you are facing and/or XYZ Coords on the Action Bar. Use :abc & :xyz to toggle on/off",
+							"name": "ActionBar Compass w/ Chat Toggle Commands",
+							"description": "Velocity / Direction / xyz Coord",
 							"min_engine_version": [1,21,0],
 							"beta":true,"preview":false,
 							"BP":{
@@ -111,10 +111,7 @@
 			},
 			"preview": {
 				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
-				"filters": [
-					{"profile":"template-stable"},
-					{"filter":"mani_fest","settings":{"preview":true,"BP":{"js":"main.js"}}}
-				]
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"preview":true}}]
 			},
 			"preview-beta": {
 				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},

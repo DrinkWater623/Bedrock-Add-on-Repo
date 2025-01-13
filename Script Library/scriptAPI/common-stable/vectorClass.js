@@ -7,36 +7,8 @@ URL: https://github.com/DrinkWater623
 Last Update: 20241230 - exported rotationToCardinalDirection
 ========================================================================*/
 import { Player, world } from "@minecraft/server";
-//============================================================================
-/**
- * @param {number} number  
- * @param { number } decimalPlaces 
- * @returns {number}
- * 
-*/
-function round (number, decimalPlaces = 0) {
-    if (decimalPlaces <= 0) return Math.round(number);
-    let multiplier = parseInt('1' + ('0'.repeat(decimalPlaces)));
-    return Math.round(number * multiplier) / multiplier;
-}
+import { round } from "../common-other/mathLib";
 //==============================================================================
-// Move these to other lib
-/**
- * 
- * @param {number} rotation 
- * @returns 
- */
-export function rotationToCompassDirection (rotation) {
-    const dirs = [ "S", "S W", "W", "N W", "N", "N E", "E", "S E", "S" ];
-    let dir = Math.round((rotation % 360) / 8);
-    if (dir < 0) dir += 8;
-    return dirs[ dir ]
-        .replace("N", "north")
-        .replace("S", "south")
-        .replace("E", "east")
-        .replace("W", "west")
-        .replace(" ", "-");
-}
 //==============================================================================
 /**
  * 

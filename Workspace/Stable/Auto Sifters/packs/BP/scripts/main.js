@@ -1,7 +1,7 @@
 //@ts-check
 /* =====================================================================
 Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
-License: GPL-3.0-only
+License: MIT
 URL: https://github.com/DrinkWater623
 ========================================================================
 Last Update: 20241229 - reOrg and add License

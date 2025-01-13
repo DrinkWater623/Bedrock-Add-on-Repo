@@ -1,23 +1,13 @@
 //@ts-check
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20250110 - ListObjects recursion
+========================================================================*/
 import { world, BlockPermutation, Player, World, ItemStack, Block, system } from '@minecraft/server';
 import { Vector3Lib as vec3 } from './vectorClass.js';
-//=============================================================================
-/* 
-Created by: https://github.com/DrinkWater623
-Usage:
-    Use as class and instance methods for testing/debugging to chat
-
-Change Log
-    20240630 - altered a little to not ask for valid chatSend all the time and 
-                added default to constructor and
-                own title for lists
-                TODO: add playerInfo
-    20240824 - Rename
-                add JDoc
-                add to common lib folder
-    20240830 - added override to consoleLog/Warn/Success... not error
-             - added detail to player geo.. the different math functions 
-*/
 //=============================================================================
 // For Debugging
 /**
@@ -149,6 +139,8 @@ export class Debug {
             this.#log(`${title} (${entries.length})`, chatSend);
             for (const [ key, value ] of entries) {
                 this.#log(`==> ${key}: ${value}`, chatSend);
+                if (typeof value == 'object')
+                    this.listObjectInnards(value,chatSend,key,override)
             }
         }
     };

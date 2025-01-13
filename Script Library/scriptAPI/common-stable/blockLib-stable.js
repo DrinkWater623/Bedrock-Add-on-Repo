@@ -4,7 +4,7 @@ Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev
 License: GPL-3.0-only
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20250105f - Added GetBlockState/GetBlock/PlaceBlock Classes
+Last Update: 20250105g - Bug Fixes
 ========================================================================*/
 import { Block, BlockPermutation, Direction, system } from "@minecraft/server";
 import { blocksDotJson } from "../common-data/blocks.json";
@@ -236,11 +236,8 @@ export class GetBlockState {
 
         const stateValue = block.permutation.getState(stateName);
         let errMsg = '';
-        if (!stateValue) {
-            errMsg = `${block.typeId} is missing valid ${stateName} state`;
-        }
-        else if (typeof stateValue != expectedType)
-            errMsg = `${block.typeId} ${stateName} trait is not a string: ${stateValue}`;
+       if (typeof stateValue != expectedType)
+            errMsg = `${block.typeId} ${stateName} trait is not a ${expectedType}: ${stateValue}`;
 
         if (errMsg) {
             if (fail)
@@ -279,7 +276,7 @@ export class GetBlockState {
      * @returns {string}
      */
     static string (block, stateName, fail = true, defaultValue = '') {
-        const retValue = GetBlockState.getBlockState(block, stateName, 'number', fail);
+        const retValue = GetBlockState.getBlockState(block, stateName, 'string', fail);
 
         //if not fail, return default value
         if (typeof retValue != 'string')
@@ -297,7 +294,7 @@ export class GetBlockState {
      * @returns {boolean}
      */
     static boolean (block, stateName, fail = true, defaultValue = false) {
-        const retValue = GetBlockState.getBlockState(block, stateName, 'number', fail);
+        const retValue = GetBlockState.getBlockState(block, stateName, 'boolean', fail);
 
         //if not fail, return default value
         if (typeof retValue != 'boolean')
