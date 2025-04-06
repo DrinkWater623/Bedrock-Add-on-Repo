@@ -1,0 +1,8 @@
+{
+    "settings": {
+        "ns": "dw623",
+        "addon": "sea_sponge",        
+        "blockFormatVersion":"1.21.50",
+        "item_format_version":"1.21.50"
+    }
+}

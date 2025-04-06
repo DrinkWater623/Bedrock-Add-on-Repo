@@ -14,7 +14,8 @@
 		"description": "Sifts sand, gravel, concrete powder, snow & mud to find hidden loot",													
 		"license":"GPL-3.0-only",
 		"url": "https://github.com/DrinkWater623",
-		"min_engine_version": [1,21,50],
+		"version": [1,0,1],
+		"min_engine_version": [1,21,70],
 		"BP":{
 			"header_uuid": "b934be1c-8067-4771-9720-f416f52d8782",
 			"module_uuid": "8643034c-8fa7-4c92-8811-4aea44b05ecd",

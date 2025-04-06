@@ -1,0 +1,15 @@
+{
+    "pools": [
+        {                
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "dw623:wet_sea_sponge_stem_part",
+                    "weight": 100,
+                    "count": 9
+                }
+            ]
+        }
+    ]
+}

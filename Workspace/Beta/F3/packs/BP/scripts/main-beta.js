@@ -3,11 +3,12 @@
  * Notes:  This is only called via manifest when Beta Config is used 
  *         This will call the stable portion 1st
  */
-import { world } from '@minecraft/server';
+import { system, world } from '@minecraft/server';
 import { main_stable, masterDevDebugInitialize } from './main-stable.js';
 import { alertLog, pack, dev, toggles } from './settings.js';
 import * as piwb from './events-beta/playerInteractWithBlock.js';
 import { PlayerChatCommands } from "./events-beta/chat_cmds-beta.js";
+import { playerBlockViewShow } from './fn-stable.js';
 //==============================================================================
 const chatCmds = new PlayerChatCommands(pack.commandPrefix);
 //==============================================================================
@@ -28,6 +29,14 @@ function main_beta () {
         if (toggles.piwb_aft)
             piwb.playerInteractWithBlock_both(event);
     });
+
+    system.runInterval(() =>{
+        if (toggles.blockView) {
+            world.getAllPlayers().forEach(p =>{
+                playerBlockViewShow(p);
+            })
+        }
+    },20)
 }
 //==============================================================================
 masterDevDebugInitialize();

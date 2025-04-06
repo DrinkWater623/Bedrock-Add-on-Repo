@@ -1,0 +1,14 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {"identifier":"dw623_sea_sponge:dry_stem_parts_to_sponge.recipe"},      
+    "tags": [ "crafting_table" ],      
+    "pattern": ["###","###","###"],
+    "key":    {
+      "#":{"item":"dw623:dry_sea_sponge_stem_part"}
+    },
+    "unlock": [{"item":"dw623:dry_sea_sponge_stem_part"}],
+    "result": {"item":"minecraft:sponge"}
+  }
+}
+//Note partials will take all 9

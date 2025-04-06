@@ -1,16 +1,18 @@
 //@ts-check
+//File: blockLib-Stable
 /* =====================================================================
 Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
 License: GPL-3.0-only
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20250105g - Bug Fixes
+Last Update: 20250116a - Added isSameBlock
 ========================================================================*/
 import { Block, BlockPermutation, Direction, system } from "@minecraft/server";
 import { blocksDotJson } from "../common-data/blocks.json";
 import { sound_definitions } from "../common-data/sound_definitions";
 import { ChatMsg } from "./consoleClass";
 import { woodBlocks } from "../common-data/block-data";
+import { Vector3Lib } from "./vectorClass";
 //=============================================================================
 export class GetBlock {
     /**
@@ -236,7 +238,7 @@ export class GetBlockState {
 
         const stateValue = block.permutation.getState(stateName);
         let errMsg = '';
-       if (typeof stateValue != expectedType)
+        if (typeof stateValue != expectedType)
             errMsg = `${block.typeId} ${stateName} trait is not a ${expectedType}: ${stateValue}`;
 
         if (errMsg) {
@@ -333,7 +335,7 @@ export class GetBlockStates {
             if (!stateValueTypeFilter || typeof value == stateValueTypeFilter) {
                 ctr++;
                 entries.set(key, value);
-            }           
+            }
         }
 
         if (ctr) return entries;
@@ -345,7 +347,7 @@ export class GetBlockStates {
      * @returns {undefined | Map}
      */
     static numbers (block) {
-        return  GetBlockStates.getBlockStates(block, 'number');
+        return GetBlockStates.getBlockStates(block, 'number');
     }
     /**
      * 
@@ -353,7 +355,7 @@ export class GetBlockStates {
      * @returns {undefined | Map}
      */
     static strings (block) {
-        return  GetBlockStates.getBlockStates(block, 'string');
+        return GetBlockStates.getBlockStates(block, 'string');
     }
     /**
      * 
@@ -361,7 +363,7 @@ export class GetBlockStates {
      * @returns {undefined | Map}
      */
     static booleans (block) {
-        return  GetBlockStates.getBlockStates(block, 'boolean');
+        return GetBlockStates.getBlockStates(block, 'boolean');
     }
 }
 //==============================================================================
@@ -444,6 +446,20 @@ export class PlaceBlock {
         const permutation = BlockPermutation.resolve(newTypeId).withState(stateName, stateValue);
         return PlaceBlock.permutation(block, permutation, sound, soundsLike);
     }
+}
+/**
+ * 
+ * @param {Block} block_1 
+ * @param {Block} block_2 
+ * @returns {boolean}
+ */
+export function isSameBlock (block_1, block_2) {
+    if (!block_1.isValid()) return false;
+    if (!block_2.isValid()) return false;
+
+    if (block_1.typeId != block_2.typeId) return false;
+
+    return Vector3Lib.isSameLocation(block_1.location, block_2.location,false);
 }
 //==============================================================================
 // End of File

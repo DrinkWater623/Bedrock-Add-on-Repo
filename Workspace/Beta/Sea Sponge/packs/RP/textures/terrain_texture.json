@@ -1,0 +1,20 @@
+{
+  "resource_pack_name": "dw623",
+  "texture_name": "atlas.terrain",
+  "num_mip_levels": 4,
+  "padding": 8,
+  "texture_data": {    
+    "sea_sponge_top_dry": {
+      "textures": "textures/blocks/dw623/sea_sponge_top_wet.png"
+    },      
+    "sea_sponge_top_wet": {
+      "textures": "textures/blocks/dw623/sea_sponge_top_dry.png"
+    } ,    
+    "sea_sponge_side_dry": {
+      "textures": "textures/blocks/vanilla/sponge_dry"
+    },      
+    "sea_sponge_side_wet": {
+      "textures": "textures/blocks/vanilla/sponge_wet"
+    }     
+  }
+}

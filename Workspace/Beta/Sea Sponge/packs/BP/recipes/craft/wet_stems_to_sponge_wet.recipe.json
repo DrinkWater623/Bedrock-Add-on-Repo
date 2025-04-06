@@ -1,0 +1,15 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {"identifier":"dw623_sea_sponge:wet_sea_sponge_stem_to_sponge_wet.recipe"},      
+    "tags": [ "crafting_table" ],      
+    "pattern": ["###"],
+    "key":    {
+      "#":{"item":"dw623:wet_sea_sponge_stem"}
+    },
+    "unlock": [{"item":"dw623:wet_sea_sponge_stem"}],
+    "result": {"item":"minecraft:wet_sponge"}
+  }
+}
+//Note partials will take all 9
+//TODO: add blast furnace to dry

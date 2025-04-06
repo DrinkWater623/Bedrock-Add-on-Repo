@@ -1,0 +1,15 @@
+{
+    "pools": [
+        {                
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "dw623:sea_sponge_stump",
+                    "weight": 100,
+                    "count": 3
+                }
+            ]
+        }
+    ]
+}

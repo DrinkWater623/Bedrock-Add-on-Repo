@@ -1,0 +1,159 @@
+{
+  /*
+    Difference: Chops all 3, but can chop a 3rd of the stem at a time
+  */  
+  "format_version": "1.21.50", 
+  "minecraft:block": {
+    "description": {
+      "identifier": "dw623:sea_sponge_v2",
+      "states": {                    
+        "int:stems":[ 3,2,1,0 ]
+      }        
+    },
+    "components": {     
+      //=====================
+      // Custom to this block  
+      //=====================
+      "minecraft:custom_components": ["dw623:checkFloorAndWater","dw623:wet_sea_sponge_chanceGrow"],
+      "minecraft:geometry": {
+        "identifier": "geometry.dw623.sea_sponge_block.v2",
+        "bone_visibility": {
+          "stem_top": "q.block_state('int:stems') == 3",
+          "stem_middle": "q.block_state('int:stems') >= 2",
+          "stem_bottom": "q.block_state('int:stems') >= 1",
+          "stumps": true
+        }
+      },
+      //=====================
+      // Modular parts - same      
+      //=====================
+      "tag:minecraft:is_axe_item_destructible": {},
+      "tag:minecraft:is_hoe_item_destructible": {},
+      "tag:minecraft:is_sword_destructible": {},
+      "minecraft:loot": "/loot_tables/empty.json",
+      "minecraft:tick": {"interval_range": [10,10],"looping": true},        
+      "minecraft:display_name": "Sea Sponge",
+      "minecraft:map_color": "#E5E533",    
+      "minecraft:destructible_by_explosion": false,
+      "minecraft:flammable": false,
+      "minecraft:collision_box": {"origin":[-5,0,-5],"size":[10,16,10]},
+      "minecraft:selection_box": {"origin":[-5,0,-5],"size":[10,16,10]},
+      "minecraft:material_instances": {
+        "*":{"texture":"sea_sponge_side_wet"},
+        "top":{"texture":"sea_sponge_top_wet"}
+      },
+      //=====================
+      //Common bu multiple modules is not working
+      //=====================
+      "minecraft:placement_filter": {
+        "conditions": [
+          {
+            //only underwater, but custom component & features will take care of that
+            "allowed_faces": ["up"]
+          }
+        ]
+      },
+      "minecraft:liquid_detection": {
+        "detection_rules": [
+          {
+            "liquid_type": "water",
+            "can_contain_liquid": true,
+            "on_liquid_touches": "no_reaction"
+          }
+        ]
+      }
+    },
+    "permutations":[
+      {
+        "condition": "q.block_state('int:stems') == 3",
+        "components": {              
+          //"minecraft:loot": "/loot_tables/dw623/sea_sponges/wet_sea_sponge_part_stems_h3.loot.json",
+          "minecraft:collision_box": {"origin":[-5,0,-5],"size":[10,16,10]},
+          "minecraft:selection_box": {"origin":[-5,0,-5],"size":[10,16,10]}
+        }
+      },
+      {
+        "condition": "q.block_state('int:stems') == 2",
+        "components": {                         
+          //"minecraft:loot": "/loot_tables/dw623/sea_sponges/wet_sea_sponge_part_stems_h2.loot.json",
+          "minecraft:collision_box": {"origin":[-5,0,-5],"size":[10,11,10]},
+          "minecraft:selection_box": {"origin":[-5,0,-5],"size":[10,11,10]}
+        }
+      },
+      {
+        "condition": "q.block_state('int:stems') == 1",
+        "components": {              
+          //"minecraft:loot": "/loot_tables/dw623/sea_sponges/wet_sea_sponge_part_stems_h1.loot.json",
+          "minecraft:collision_box": {"origin":[-5,0,-5],"size":[10,6,10]},
+          "minecraft:selection_box": {"origin":[-5,0,-5],"size":[10,6,10]}
+        }
+      },            
+      {
+        "condition": "q.block_state('int:stems') >= 1",
+        "components": {              
+          "minecraft:destructible_by_mining": {          
+            "seconds_to_destroy": 16.25,
+            "item_specific_speeds":[
+              // for shears - this is for interaction, leaves stubs... rest destroys block
+              //{"item":{"tags":"q.all_tags('minecraft:is_shears','wooden_tier')"}    ,"destroy_speed": 0.5},
+              //rest destroys block
+              {"item":{"tags":"q.all_tags('minecraft:is_axe','wooden_tier')"}    ,"destroy_speed": 4},
+              {"item":{"tags":"q.all_tags('minecraft:is_axe','stone_tier')"}     ,"destroy_speed": 3},
+              {"item":{"tags":"q.all_tags('minecraft:is_axe','iron_tier')"}      ,"destroy_speed": 2},
+              {"item":{"tags":"q.all_tags('minecraft:is_axe','golden_tier')"}    ,"destroy_speed": 1.5},
+              {"item":{"tags":"q.all_tags('minecraft:is_axe','diamond_tier')"}   ,"destroy_speed": 1},
+              {"item":{"tags":"q.all_tags('minecraft:is_axe','netherite_tier')"} ,"destroy_speed": 0.5}, 
+
+              {"item":{"tags":"q.all_tags('minecraft:is_sword','wooden_tier')"}    ,"destroy_speed": 4},
+              {"item":{"tags":"q.all_tags('minecraft:is_sword','stone_tier')"}     ,"destroy_speed": 3},
+              {"item":{"tags":"q.all_tags('minecraft:is_sword','iron_tier')"}      ,"destroy_speed": 2},
+              {"item":{"tags":"q.all_tags('minecraft:is_sword','golden_tier')"}    ,"destroy_speed": 1.5},
+              {"item":{"tags":"q.all_tags('minecraft:is_sword','diamond_tier')"}   ,"destroy_speed": 1},
+              {"item":{"tags":"q.all_tags('minecraft:is_sword','netherite_tier')"} ,"destroy_speed": 0.5}, 
+              //hoe is sharp like axe, not as user friendly tho
+              {"item":{"tags":"q.all_tags('minecraft:is_hoe','wooden_tier')"}    ,"destroy_speed": 5},
+              {"item":{"tags":"q.all_tags('minecraft:is_hoe','stone_tier')"}     ,"destroy_speed": 4},
+              {"item":{"tags":"q.all_tags('minecraft:is_hoe','iron_tier')"}      ,"destroy_speed": 3},
+              {"item":{"tags":"q.all_tags('minecraft:is_hoe','golden_tier')"}    ,"destroy_speed": 2.5},
+              {"item":{"tags":"q.all_tags('minecraft:is_hoe','diamond_tier')"}   ,"destroy_speed": 2},
+              {"item":{"tags":"q.all_tags('minecraft:is_hoe','netherite_tier')"} ,"destroy_speed": 1}, 
+              //triple because has to pick each one - common sense
+              {"item":{"tags":"q.all_tags('minecraft:is_pickaxe','wooden_tier')"}    ,"destroy_speed": 12},
+              {"item":{"tags":"q.all_tags('minecraft:is_pickaxe','stone_tier')"}     ,"destroy_speed": 9},
+              {"item":{"tags":"q.all_tags('minecraft:is_pickaxe','iron_tier')"}      ,"destroy_speed": 6},
+              {"item":{"tags":"q.all_tags('minecraft:is_pickaxe','golden_tier')"}    ,"destroy_speed": 4.5},
+              {"item":{"tags":"q.all_tags('minecraft:is_pickaxe','diamond_tier')"}   ,"destroy_speed": 3},
+              {"item":{"tags":"q.all_tags('minecraft:is_pickaxe','netherite_tier')"} ,"destroy_speed": 1.58},
+              //double because not as sharp, but has wider spread than a pick
+              {"item":{"tags":"q.all_tags('minecraft:is_shovel','wooden_tier')"}    ,"destroy_speed": 8},
+              {"item":{"tags":"q.all_tags('minecraft:is_shovel','stone_tier')"}     ,"destroy_speed": 6},
+              {"item":{"tags":"q.all_tags('minecraft:is_shovel','iron_tier')"}      ,"destroy_speed": 4},
+              {"item":{"tags":"q.all_tags('minecraft:is_shovel','golden_tier')"}    ,"destroy_speed": 3},
+              {"item":{"tags":"q.all_tags('minecraft:is_shovel','diamond_tier')"}   ,"destroy_speed": 2},
+              {"item":{"tags":"q.all_tags('minecraft:is_shovel','netherite_tier')"} ,"destroy_speed": 1}
+            ]
+          } 
+        }
+      },                
+      {
+        "condition": "q.block_state('int:stems') == 0",
+        "components": {              
+          //"minecraft:loot": "/loot_tables/dw623/sea_sponges/sea_sponge_stumps.loot.json",
+          "minecraft:collision_box": {"origin":[-5,0,-5],"size":[10,1,10]},
+          "minecraft:selection_box": {"origin":[-5,0,-5],"size":[10,1,10]},
+          "minecraft:destructible_by_mining": {          
+            "seconds_to_destroy": 1.5,
+            "item_specific_speeds":[
+              {"item":{"tags":"q.all_tags('minecraft:is_tool','wooden_tier')"}    ,"destroy_speed": 1.0},
+              {"item":{"tags":"q.all_tags('minecraft:is_tool','stone_tier')"}     ,"destroy_speed": 0.7},
+              {"item":{"tags":"q.all_tags('minecraft:is_tool','iron_tier')"}      ,"destroy_speed": 0.4},
+              {"item":{"tags":"q.all_tags('minecraft:is_tool','golden_tier')"}    ,"destroy_speed": 0.2},
+              {"item":{"tags":"q.all_tags('minecraft:is_tool','diamond_tier')"}   ,"destroy_speed": 0.25},
+              {"item":{"tags":"q.all_tags('minecraft:is_tool','netherite_tier')"} ,"destroy_speed": 0.125}
+            ]
+          } 
+        }
+      }
+    ]
+  }
+}

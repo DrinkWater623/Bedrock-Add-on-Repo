@@ -1,0 +1,22 @@
+{
+  /* Use as item*/
+  "format_version": "1.21.50",
+  "minecraft:block": {
+    "description": {
+      "identifier": "dw623:dry_sea_sponge_stem",
+      "menu_category": {
+          "category": "nature","group": "itemGroup.name.coral"
+      }
+    },
+    "components": {    
+      "minecraft:display_name": "Dry Sea Sponge Stem",
+      "minecraft:geometry": {"identifier": "geometry.dw623.sea_sponge_stem.full"},
+      "minecraft:material_instances": {
+        "*":{"texture":"sea_sponge_side_dry"},
+        "top":{"texture":"sea_sponge_top_dry"}
+      },
+      //Cannot Place
+      "minecraft:placement_filter":{"conditions":[{"allowed_faces":[],"block_filter":[]}]}        
+    }
+  }
+}

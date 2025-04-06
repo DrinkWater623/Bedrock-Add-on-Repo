@@ -13,7 +13,8 @@
 		"name": "Tree Spider",
 		"description": "Friendly Spider that makes webs",
 		"license":"GPL-3.0-only",
-		"url": "https://github.com/DrinkWater623",													
+		"url": "https://github.com/DrinkWater623",
+		"version": [1,0,1],													
 		"min_engine_version": [1,21,50],							
 		"BP":{
 			"header_uuid": "60156da2-e8e1-4ac8-8d66-18690ad45da2",

@@ -1,42 +1,15 @@
 //@ts-check
+//File: VectorClass.js
 /* =====================================================================
 Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
 License: GPL-3.0-only
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20241230 - exported rotationToCardinalDirection
+Last Update: 20250116 - Added isSameLocation
 ========================================================================*/
 import { Player, world } from "@minecraft/server";
-//============================================================================
-/**
- * @param {number} number  
- * @param { number } decimalPlaces 
- * @returns {number}
- * 
-*/
-function round (number, decimalPlaces = 0) {
-    if (decimalPlaces <= 0) return Math.round(number);
-    let multiplier = parseInt('1' + ('0'.repeat(decimalPlaces)));
-    return Math.round(number * multiplier) / multiplier;
-}
+import { round } from "../common-other/mathLib";
 //==============================================================================
-// Move these to other lib
-/**
- * 
- * @param {number} rotation 
- * @returns 
- */
-export function rotationToCompassDirection (rotation) {
-    const dirs = [ "S", "S W", "W", "N W", "N", "N E", "E", "S E", "S" ];
-    let dir = Math.round((rotation % 360) / 8);
-    if (dir < 0) dir += 8;
-    return dirs[ dir ]
-        .replace("N", "north")
-        .replace("S", "south")
-        .replace("E", "east")
-        .replace("W", "west")
-        .replace(" ", "-");
-}
 //==============================================================================
 /**
  * 
@@ -44,14 +17,14 @@ export function rotationToCompassDirection (rotation) {
  * @returns { 'south' | 'west' | 'north' | 'east'}
  */
 export function rotationToCardinalDirection (rotation) {
-    let dirs = [ "south", "west", "north", "east", "south" ];    
+    let dirs = [ "south", "west", "north", "east", "south" ];
     let dir = Math.round((rotation % 360) / 90);
     if (dir < 0) dir += 4;
 
     //@ts-ignore    
     return dirs[ dir ];
 
-    
+
 }
 //==============================================================================
 //==============================================================================
@@ -112,7 +85,26 @@ export class Vector3Lib {
             z: Math.abs(vector.z)
         };
     }
+    //==============================================================================
+    /**
+     * 
+     * @param {import("@minecraft/server").Vector3} vector_1 
+     * @param {import("@minecraft/server").Vector3} vector_2 
+     * @param {boolean} [exact=false]
+     * @param {number} [exactDecimals=2] 
+     * @returns {boolean}
+     */
+    static isSameLocation (vector_1, vector_2, exact = false,exactDecimals=2) {
 
+        const v1 = exact ? this.round(vector_1,exactDecimals) : this.floor(vector_1)
+        const v2 = exact ? this.round(vector_2,exactDecimals) : this.floor(vector_2)        
+
+        if (v1.x != v2.x) return false;
+        if (v1.y != v2.y) return false;
+        if (v1.z != v2.z) return false;
+        return true;
+
+    }
     //==============================================================================
     /**
     * @param { import("@minecraft/server").Vector3 } vector
@@ -355,7 +347,7 @@ export class FaceLocationGrid {
         if (![ 'up', 'down' ].includes(this.blockFace))
             return;
 
-        const direction = rotationToCardinalDirection(rotationY);        
+        const direction = rotationToCardinalDirection(rotationY);
         //world.sendMessage(`rotationY=${Math.round(rotationY,1} - -angle = Dir=${direction}`)
         this.adjustUpDownToPlayerDirection(direction);
     }

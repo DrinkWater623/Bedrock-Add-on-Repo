@@ -68,3 +68,20 @@ export function playerF3Show (player, mapKey) {
     player.sendMessage('\n\n');
 }
 //==============================================================================
+/**
+ * 
+ * @param {Player} player 
+ */
+export function playerBlockViewShow (player) {
+    const { x, y, z } = player.getHeadLocation();
+    const blockRay =
+        player.dimension.getBlockFromRay(
+            { x, y: y + 0.1, z },
+            player.getViewDirection(),
+            { maxDistance: 16, includeLiquidBlocks: true, includePassableBlocks: true }
+        );
+    if (blockRay) {
+        const { block, face, faceLocation } = blockRay;
+        
+    }
+}

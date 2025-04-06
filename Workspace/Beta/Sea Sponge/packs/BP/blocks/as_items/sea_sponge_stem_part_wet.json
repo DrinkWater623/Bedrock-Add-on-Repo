@@ -1,0 +1,22 @@
+{
+  /* Use as item*/
+  "format_version": "1.21.50",
+  "minecraft:block": {
+    "description": {
+      "identifier": "dw623:wet_sea_sponge_stem_part",
+      "menu_category": {
+          "category": "nature","group": "itemGroup.name.coral"
+      }
+    },
+    "components": {    
+      "minecraft:display_name": "Wet Sea Sponge Stem Part",
+      "minecraft:geometry": {"identifier": "geometry.dw623.sea_sponge_stem.part"},
+      "minecraft:material_instances": {
+        "*":{"texture":"sea_sponge_side_wet"},
+        "top":{"texture":"sea_sponge_top_wet"}
+      },
+      //Cannot Place
+      "minecraft:placement_filter":{"conditions":[{"allowed_faces":[],"block_filter":[]}]}         
+    }
+  }
+}

@@ -30,7 +30,9 @@ export const toggles = {
     ppb_b4: false, //beta
 
     //Player Interact With Entity
-    piwe_b4: false
+    piwe_b4: false,
+
+    blockView:false
 };
 export const dev = {
     debug: false,

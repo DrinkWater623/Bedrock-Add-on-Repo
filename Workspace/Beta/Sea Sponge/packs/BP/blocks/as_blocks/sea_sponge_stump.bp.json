@@ -1,0 +1,57 @@
+{
+/* 
+  Use as item - but can be placed down temp, and if player has 3 - them scripts will make the stump block
+*/
+  "format_version": "1.21.50", 
+  "minecraft:block": {
+    "description": {
+      "identifier": "dw623:sea_sponge_stump",
+      "menu_category": {
+          "category": "nature","group": "itemGroup.name.coral"
+      }
+    },
+    "components": {    
+      "minecraft:loot": "/loot_tables/empty.json",      
+      "minecraft:display_name": "Sea Sponge Stump",
+      "minecraft:geometry": {"identifier": "geometry.dw623.sea_sponge_stump"},
+      "minecraft:material_instances": {
+        "*":{"texture":"sea_sponge_side_dry"},
+        "top":{"texture":"sea_sponge_top_dry"}
+      },
+      //=====================
+      //Common bu multiple modules is not working
+      //=====================
+      "minecraft:placement_filter": {
+        "conditions": [
+          {
+            //only underwater, but custom component & features will take care of that
+            "allowed_faces": ["up"],
+            "block_filter": [             
+              {"name":"minecraft:sand"},
+              {"name":"minecraft:gravel"},
+              {"name":"minecraft:dirt"},
+              {"name":"minecraft:stone"},
+              {
+                "name": "dw623:sea_sponge_v1",
+                "states": {"bool:stems":true}
+              },
+              {
+                "name": "dw623:sea_sponge_v2",
+                "states": {"int:stems":3}
+              }
+            ]
+          }
+        ]
+      },
+      "minecraft:liquid_detection": {
+        "detection_rules": [
+          {
+            "liquid_type": "water",
+            "can_contain_liquid": true,
+            "on_liquid_touches": "no_reaction"
+          }
+        ]
+      }      
+    }
+  }
+}
