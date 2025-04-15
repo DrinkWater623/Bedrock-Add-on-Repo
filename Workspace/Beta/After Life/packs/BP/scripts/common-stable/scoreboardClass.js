@@ -1,7 +1,14 @@
 //@ts-check
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
 import { system, world, DisplaySlotId, TicksPerSecond } from '@minecraft/server';
 import { worldRun } from './runCommandClass.js';
-import { globalConstantsLib } from './globalConstantsClass.js';
+import { Ticks } from '../common-data/globalConstantsLib.js';
 //===================================================================
 export class ScoreboardLib {
 
@@ -214,17 +221,17 @@ export class ScoreboardLib {
         ScoreboardLib.create(scoreboardName);
 
         let job = 0;
-        const interval = initialsWhich.includes('t') ? 1 : initialsWhich.includes('s') ? TicksPerSecond : initialsWhich.includes('m') ? globalConstantsLib.TicksPerMinute : globalConstantsLib.TicksPerHour;
+        const interval = initialsWhich.includes('t') ? 1 : initialsWhich.includes('s') ? TicksPerSecond : initialsWhich.includes('m') ? Ticks.perMinute : Ticks.perHour;
         system.runTimeout(() => {
             const sb = world.scoreboard.getObjective(scoreboardName);
             if (sb) {
                 const tickOffset = system.currentTick;
                 job = system.runInterval(() => {
                     if (initialsWhich.includes('t')) sb.setScore('System Ticks', system.currentTick - tickOffset);
-                    if (initialsWhich.includes('s')) sb.setScore('System Seconds', Math.trunc((system.currentTick - tickOffset) / TicksPerSecond));
-                    if (initialsWhich.includes('m')) sb.setScore('System Minutes', Math.trunc((system.currentTick - tickOffset) / globalConstantsLib.TicksPerMinute));
-                    if (initialsWhich.includes('h')) sb.setScore('System Hours', Math.trunc((system.currentTick - tickOffset) / globalConstantsLib.TicksPerHour));
-                    if (initialsWhich.includes('d')) sb.setScore('System Days', Math.trunc((system.currentTick - tickOffset) / globalConstantsLib.TicksPerDay));
+                    if (initialsWhich.includes('s')) sb.setScore('System Seconds', Math.trunc((system.currentTick - tickOffset) / Ticks.perSecond));
+                    if (initialsWhich.includes('m')) sb.setScore('System Minutes', Math.trunc((system.currentTick - tickOffset) / Ticks.perMinute));
+                    if (initialsWhich.includes('h')) sb.setScore('System Hours', Math.trunc((system.currentTick - tickOffset) / Ticks.perHour));
+                    if (initialsWhich.includes('d')) sb.setScore('System Days', Math.trunc((system.currentTick - tickOffset) / Ticks.perDay));
                 }, interval);
             }
         }, 0);

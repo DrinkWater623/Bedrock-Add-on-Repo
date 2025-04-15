@@ -1,7 +1,15 @@
 // @ts-check
-//=====================================================================
-// Copyright (C) 2024 DrinkWater623/PinkSalt623  License: GPL-3.0-only
-//=====================================================================
+const releaseVersion = "2024.12.29"
+/*
+=====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only (https://www.gnu.org/licenses/gpl-3.0.html)
+CliffNotes: Using my files within Minecraft Bedrock MarketPlace is prohibited without written permission.  All code must remain freely visible and license passed along.
+URL: https://github.com/DrinkWater623
+========================================================================
+Intended for use with Regolith
+========================================================================
+*/
 // Global variables - Part 1
 //=====================================================================
 const fs = require("fs");
@@ -1651,11 +1659,11 @@ function manifestBuild (pSettings) {
     //if (pSettings.dependencies && pSettings.dependencies.length) manifest.dependencies = pSettings.dependencies;
 
     manifest.metadata = {
-        "authors": [ (pSettings.author || cmdLineSettingsJson.author) || "Add author name here"],
-        "url": pSettings.url || cmdLineSettingsJson.url,
+        "authors": (pSettings.author || cmdLineSettingsJson.author || "Add author name here").split(','),
+        "url": pSettings.url || cmdLineSettingsJson.url || 'Add url here',
         "license": pSettings.license || cmdLineSettingsJson.license || "GPL-3.0-only",
         "generated_with": {
-            "regolith_filter_mani_fest": [ "2024.12.24" ]
+            "regolith_filter_mani_fest": [ releaseVersion ]
         }
     };
 

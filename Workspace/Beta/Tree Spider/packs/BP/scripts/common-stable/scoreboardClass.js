@@ -1,5 +1,12 @@
 //@ts-check
-import { system, world, DisplaySlotId } from '@minecraft/server';
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
+import { system, world, DisplaySlotId, TicksPerSecond } from '@minecraft/server';
 import { worldRun } from './runCommandClass.js';
 import { Ticks } from '../common-data/globalConstantsLib.js';
 //===================================================================
@@ -180,7 +187,7 @@ export class ScoreboardLib {
      * @returns 
      */
     static secondsCounterStart (scoreboardName, entryName) {
-        return ScoreboardLib.tickCounterStart(scoreboardName, entryName, 1, Ticks.perSecond);
+        return ScoreboardLib.tickCounterStart(scoreboardName, entryName, 1, TicksPerSecond);
     }
     //===================================================================
     /**
@@ -190,7 +197,7 @@ export class ScoreboardLib {
      * @returns 
      */
     static minutesCounterStart (scoreboardName, entryName) {
-        return ScoreboardLib.tickCounterStart(scoreboardName, entryName, 1, Ticks.perSecond * 60);
+        return ScoreboardLib.tickCounterStart(scoreboardName, entryName, 1, TicksPerSecond * 60);
     }
     //===================================================================
     /**
@@ -200,7 +207,7 @@ export class ScoreboardLib {
      * @returns 
      */
     static hoursCounterStart (scoreboardName, entryName) {
-        return ScoreboardLib.tickCounterStart(scoreboardName, entryName, 1, Ticks.perSecond * 60 * 60);
+        return ScoreboardLib.tickCounterStart(scoreboardName, entryName, 1, TicksPerSecond * 60 * 60);
     }
     //===================================================================
     /**
@@ -214,7 +221,7 @@ export class ScoreboardLib {
         ScoreboardLib.create(scoreboardName);
 
         let job = 0;
-        const interval = initialsWhich.includes('t') ? 1 : initialsWhich.includes('s') ? Ticks.perSecond : initialsWhich.includes('m') ? Ticks.perMinute : Ticks.perHour;
+        const interval = initialsWhich.includes('t') ? 1 : initialsWhich.includes('s') ? TicksPerSecond : initialsWhich.includes('m') ? Ticks.perMinute : Ticks.perHour;
         system.runTimeout(() => {
             const sb = world.scoreboard.getObjective(scoreboardName);
             if (sb) {

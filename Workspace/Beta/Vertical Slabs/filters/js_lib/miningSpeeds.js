@@ -1,5 +1,13 @@
 //@ts-checkts
 /*
+=====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only (https://www.gnu.org/licenses/gpl-3.0.html)
+CliffNotes: Using my files within Minecraft Bedrock MarketPlace is prohibited without written permission.  All code must remain freely visible and license passed along.
+URL: https://github.com/DrinkWater623
+========================================================================
+*/
+/*
     Start of a table I will keep for this
     1) Table Data: https://minecraft.wiki/w/Breaking
     2) Fix in Excel
@@ -5205,35 +5213,20 @@ class Mining_Speeds {
             'hyphae',
             'wooden_log',
             'wooden_wood',
-            'crafter'
+            'crafter',
+            'rose',
+            'tulip'
         ];
+        likeLogs.forEach(id => { this.#copyEntry(tempData, 'log', id); });
 
-        let lastLog;
-        likeLogs.forEach(id => {
-            if (!lastLog) lastLog = 'log';
-            this.#copyEntry(tempData, lastLog, id);
-            lastLog = id;
-        });
+       // this.#copyEntry(tempData, 'wooden_slab', 'wooden_double_slab');
 
-        // this.#copyEntry(tempData, 'wooden_slab', 'wooden_double_slab');
-        //these need to be in there as stone slabs
-        this.#copyEntry(tempData, 'end_stone', 'end_stone_brick');
-        this.#copyEntry(tempData, 'end_stone_brick', 'end_stone_brick_slab');
-        this.#copyEntry(tempData, 'stone_slabs', 'smooth_stone_slab');
-        this.#copyEntry(tempData, 'bamboo_block', 'bamboo_slab');
-        this.#copyEntry(tempData, 'smooth_stone_slab', 'quartz_slab');
         this.#copyEntry(tempData, 'stone_button', 'wooden_button');
-        this.#copyEntry(tempData, 'quartz_slab', 'smooth_quartz_slab');
         this.#copyEntry(tempData, 'sand', 'red_sand');
-        this.#copyEntry(tempData, 'granite', 'resin_bricks');
-        this.#copyEntry(tempData, 'smooth_quartz_slab', 'stone_brick_slab');
-        this.#copyEntry(tempData, 'resin_bricks', 'resin_brick_slab');
-        this.#copyEntry(tempData, 'resin_brick_slab', 'resin_stairs');
-        this.#copyEntry(tempData, 'resin_stairs', 'resin_wall');
-        this.#copyEntry(tempData, 'stone_brick_slab', 'sandstone_slab');
-        this.#copyEntry(tempData, 'sandstone_slab', 'red_sandstone_slab');
-
-
+        this.#copyEntry(tempData, 'mud_bricks', 'resin_bricks');
+        this.#copyEntry(tempData, 'mud_bricks', 'resin_stairs');
+        this.#copyEntry(tempData, 'mud_bricks', 'resin_wall');
+        this.#copyEntry(tempData, 'quartz_block', 'quartz_slab');
         this.#copyEntry(tempData, 'fire', 'soul_fire');
 
         this.#copyEntry(tempData, 'lapis_lazuli_block', 'lapis_block');
@@ -5245,11 +5238,15 @@ class Mining_Speeds {
         this.#copyEntry(tempData, 'sea_lantern', 'seaLantern');
         this.#copyEntry(tempData, 'lily_pad', 'waterlily');
         this.#copyEntry(tempData, 'frog_spawn', 'frogspawn');
+        this.#copyEntry(tempData, 'bamboo_block', 'bamboo_slab');
 
         this.#copyEntry(tempData, 'nether_wart_block', 'warped_wart_block');
         this.#copyEntry(tempData, 'vines', 'pale_hanging_moss');
         this.#copyEntry(tempData, 'mushroom', 'fungus');
-        this.#copyEntry(tempData, 'sapling', 'propagule');        
+        this.#copyEntry(tempData, 'sapling', 'propagule');
+
+        const slabs = tempData.filter(f => f.block.endsWith('_slab')).map(m => m.block)
+        slabs.forEach(e => {this.#copyEntry(tempData, e, e.replace('_slab','_double_slab'))})
 
         const flowers = [
             'allium',
@@ -5266,13 +5263,8 @@ class Mining_Speeds {
             'rose',
             'tulip'
         ];
-        let lastFlower
-        flowers.forEach(flower => { 
-            if(!lastFlower) lastFlower='flower'
-            this.#copyEntry(tempData, lastFlower, flower); 
-            lastFlower=flower
-        });
-
+        flowers.forEach(flower => { this.#copyEntry(tempData, 'flower', flower); });
+        
         const heads = [
             'creeper_head',
             'piglin_head',
@@ -5287,16 +5279,9 @@ class Mining_Speeds {
             'frame',
             'frog_spawn',
             'resin_clump',
-            'resin_block'
+            'resin_block'            
         ];
         byHand.forEach(id => { this.#copyEntry(tempData, 'torch', id); });
-
-        const slabs = tempData.filter(f => f.block.endsWith('_slab')).map(m => m.block);
-        slabs.forEach(e => {
-            const newSlab = e.replace('_slab', '_double_slab');
-            this.#copyEntry(tempData, e, newSlab);
-        });
-
         //===========
         // Wood
         //===========
@@ -5378,27 +5363,22 @@ class Mining_Speeds {
         // Final List
         //===========
 
-        //const miningSpeedStageData = tempData.sort((a, b) => a.block.length - b.block.length).reverse();
+        const miningSpeedStageData = tempData.sort((a, b) => a.block.length - b.block.length).reverse();
 
         //Add Index #, so it can always go in this order for matching
         let ctr = 0;
-        tempData.forEach(o => o.index = ctr++);
-
-        // tempData.forEach(o => {
-        //     console.log(`${o.index}: ${o.block}`);
-        // });       
-        //  throw new Error('Force Stop');
+        miningSpeedStageData.forEach(o => o.index = ctr++);
 
         //Configure Data
-        this.miningSpeedData = tempData.map(o => {
+        this.miningSpeedData = miningSpeedStageData.map(o => {
             return {
-                ctr: o.index,
+                ctr: o.ctr,
                 block: o.block,
                 hardness: o.hardness,
-                lowest_tool_material: o.lowest,
+                lowest_tool_material: o.lowest,                
                 materials: {
-                    least: o.lowest,
-                    base: o.lowest == 'hand' ? o.hand : o.lowest == 'wood' ? o.wooden : o.lowest == 'stone' ? o.stone : o.lowest == 'iron' ? o.iron : o.lowest == 'diamond' ? o.diamond : o.lowest == 'netherite' ? o.netherite : 'creative',
+                    least:o.lowest,
+                    base:o.lowest=='hand' ? o.hand : o.lowest=='wood' ? o.wooden :o.lowest=='stone' ? o.stone :o.lowest=='iron' ? o.iron : o.lowest=='diamond' ? o.diamond : o.lowest=='netherite' ? o.netherite : 'creative',
                     hand: o.hand,
                     wooden: o.wooden,
                     stone: o.stone,
@@ -5409,60 +5389,60 @@ class Mining_Speeds {
                 },
                 //best_tool: o.best_tool ?? "",
                 tools: {
-                    best: o.best_tool ?? "",
+                    best:o.best_tool ?? "",
                     material: o.lowest,
-                    base: o.lowest == 'hand' ? o.hand : o.lowest == 'wood' ? o.wooden : o.lowest == 'stone' ? o.stone : o.lowest == 'iron' ? o.iron : o.lowest == 'diamond' ? o.diamond : o.lowest == 'netherite' ? o.netherite : 'creative',
+                    base:o.lowest=='hand' ? o.hand : o.lowest=='wood' ? o.wooden :o.lowest=='stone' ? o.stone :o.lowest=='iron' ? o.iron : o.lowest=='diamond' ? o.diamond : o.lowest=='netherite' ? o.netherite : 'creative',
                     hand: o.hand,
-                    shears: o.shears == -1 ? o.hand : o.shears,
+                    shears:          o.shears == -1 ? o.hand : o.shears,
                     //TODO: test mace on stuff
-                    mace: o.lowest == 'hand' ? round(o.hand / 2, 2) : round((o.stone + o.iron) / 2, 2),
-                    wooden_sword: o.sword > 0 ? o.sword : o.hand,
-                    stone_sword: o.sword > 0 ? o.sword : o.hand,
-                    iron_sword: o.sword > 0 ? o.sword : o.hand,
-                    diamond_sword: o.sword > 0 ? o.sword : o.hand,
-                    netherite_sword: o.sword > 0 ? o.sword : o.hand,
-                    golden_sword: o.sword > 0 ? o.sword : o.hand,
+                    mace:            o.lowest == 'hand' ? round(o.hand / 2, 2) : round((o.stone + o.iron) / 2, 2),
+                    wooden_sword:    o.sword > 0 ? o.sword : o.hand,   
+                    stone_sword:     o.sword > 0 ? o.sword : o.hand,   
+                    iron_sword:      o.sword > 0 ? o.sword : o.hand,   
+                    diamond_sword:   o.sword > 0 ? o.sword : o.hand,   
+                    netherite_sword: o.sword > 0 ? o.sword : o.hand,   
+                    golden_sword:    o.sword > 0 ? o.sword : o.hand,                   
                 }
             };
         });
 
-        this.miningSpeedData.forEach(o => {
+        this.miningSpeedData.forEach(o => {            
             // negative means, how long, but drop nothing   
-            let material = o.materials.wooden;
-            o.tools.wooden_axe = o.tools.best != 'axe' ? o.tools.hand : material;
+            let material=o.materials.wooden;           
+            o.tools.wooden_axe     = o.tools.best != 'axe'     ? o.tools.hand : material;
             o.tools.wooden_pickaxe = o.tools.best != 'pickaxe' ? o.tools.hand : material;
-            o.tools.wooden_shovel = o.tools.best != 'shovel' ? o.tools.hand : material;
-            o.tools.wooden_hoe = o.tools.best != 'hoe' ? o.tools.hand : material;
+            o.tools.wooden_shovel  = o.tools.best != 'shovel'  ? o.tools.hand : material;
+            o.tools.wooden_hoe     = o.tools.best != 'hoe'     ? o.tools.hand : material; 
 
-            material = o.materials.stone;
-            o.tools.stone_axe = o.tools.best != 'axe' ? o.tools.hand : material;
+            material=o.materials.stone;
+            o.tools.stone_axe     = o.tools.best != 'axe'     ? o.tools.hand : material;
             o.tools.stone_pickaxe = o.tools.best != 'pickaxe' ? o.tools.hand : material;
-            o.tools.stone_shovel = o.tools.best != 'shovel' ? o.tools.hand : material;
-            o.tools.stone_hoe = o.tools.best != 'hoe' ? o.tools.hand : material;
-
-            material = o.materials.golden;
-            o.tools.golden_axe = o.tools.best != 'axe' ? o.tools.hand : material;
+            o.tools.stone_shovel  = o.tools.best != 'shovel'  ? o.tools.hand : material;
+            o.tools.stone_hoe     = o.tools.best != 'hoe'     ? o.tools.hand : material; 
+            
+            material=o.materials.golden;
+            o.tools.golden_axe     = o.tools.best != 'axe'     ? o.tools.hand : material;
             o.tools.golden_pickaxe = o.tools.best != 'pickaxe' ? o.tools.hand : material;
-            o.tools.golden_shovel = o.tools.best != 'shovel' ? o.tools.hand : material;
-            o.tools.golden_hoe = o.tools.best != 'hoe' ? o.tools.hand : material;
+            o.tools.golden_shovel  = o.tools.best != 'shovel'  ? o.tools.hand : material;
+            o.tools.golden_hoe     = o.tools.best != 'hoe'     ? o.tools.hand : material; 
 
-            material = o.materials.iron;
-            o.tools.iron_axe = o.tools.best != 'axe' ? o.tools.hand : material;
+            material=o.materials.iron;
+            o.tools.iron_axe     = o.tools.best != 'axe'     ? o.tools.hand : material;
             o.tools.iron_pickaxe = o.tools.best != 'pickaxe' ? o.tools.hand : material;
-            o.tools.iron_shovel = o.tools.best != 'shovel' ? o.tools.hand : material;
-            o.tools.iron_hoe = o.tools.best != 'hoe' ? o.tools.hand : material;
+            o.tools.iron_shovel  = o.tools.best != 'shovel'  ? o.tools.hand : material;
+            o.tools.iron_hoe     = o.tools.best != 'hoe'     ? o.tools.hand : material; 
 
-            material = o.materials.diamond;
-            o.tools.diamond_axe = o.tools.best != 'axe' ? o.tools.hand : material;
+            material=o.materials.diamond;
+            o.tools.diamond_axe     = o.tools.best != 'axe'     ? o.tools.hand : material;
             o.tools.diamond_pickaxe = o.tools.best != 'pickaxe' ? o.tools.hand : material;
-            o.tools.diamond_shovel = o.tools.best != 'shovel' ? o.tools.hand : material;
-            o.tools.diamond_hoe = o.tools.best != 'hoe' ? o.tools.hand : material;
+            o.tools.diamond_shovel  = o.tools.best != 'shovel'  ? o.tools.hand : material;
+            o.tools.diamond_hoe     = o.tools.best != 'hoe'     ? o.tools.hand : material; 
 
-            material = o.materials.netherite;
-            o.tools.netherite_axe = o.tools.best != 'axe' ? o.tools.hand : material;
+            material=o.materials.netherite;
+            o.tools.netherite_axe     = o.tools.best != 'axe'     ? o.tools.hand : material;
             o.tools.netherite_pickaxe = o.tools.best != 'pickaxe' ? o.tools.hand : material;
-            o.tools.netherite_shovel = o.tools.best != 'shovel' ? o.tools.hand : material;
-            o.tools.netherite_hoe = o.tools.best != 'hoe' ? o.tools.hand : material;
+            o.tools.netherite_shovel  = o.tools.best != 'shovel'  ? o.tools.hand : material;
+            o.tools.netherite_hoe     = o.tools.best != 'hoe'     ? o.tools.hand : material;             
         });
 
         //Special Lists
@@ -5476,23 +5456,17 @@ class Mining_Speeds {
      * @param {string} to 
      */
     #copyEntry (list, from, to) {
-        const copy = list.filter(o => o.block === from);        
-        if (!copy || copy.length == 0) {
-            console.log(`from does not exist: ${from}`);
+        const copy = list.filter(o => o.block === from);
+        if (!copy || copy.length == 0)
             return;
-        }        
 
-        if (list.some(o => o.block === to)) {
-            console.log(`to exists: ${to}`);
+        if (list.some(o => o.block === to))
             return;
-        }
 
-        const newRecord = Object.assign({},copy[0])
-        console.log(`Copying: ${newRecord.block} to ${to}`);
-        newRecord.block = to;
-        list.push(newRecord);
+        console.log(`Copying: ${copy[0].block} to ${to}`);
+        copy[0].block = to;
+        list.push(copy[0]);
     }
-
     listBlocks (stop = false) {
         this.miningSpeedData.forEach(o => {
             console.log(o.block);
@@ -5544,7 +5518,7 @@ class Mining_Speeds {
 
             'andesite',
             'amethyst',
-            'cobblestone',
+            'cobblestone',            
             'basalt',
             'blackstone',
             'campfire',
@@ -5558,7 +5532,6 @@ class Mining_Speeds {
             'grass',
             'gravel',
             'lantern',
-            'mud_brick',
             'mud',
             'nether',
             'nylium',

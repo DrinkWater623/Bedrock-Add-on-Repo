@@ -1,3 +1,12 @@
+'''
+=====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+======================================================================
+Beware: Not intended for use outside of Regolith
+'''
+
 from pathlib import Path
 import os
 import stat
@@ -52,3 +61,4 @@ if __name__ == "__main__":
 
     delete_folders_starting_with_dot(Path("./BP"))
     delete_folders_starting_with_dot(Path("./RP"))
+    delete_folders_starting_with_dot(Path("./data"))

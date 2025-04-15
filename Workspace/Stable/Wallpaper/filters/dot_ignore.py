@@ -1,3 +1,12 @@
+'''
+=====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+======================================================================
+Beware: Not intended for use outside of Regolith
+'''
+
 from pathlib import Path
 import os
 import stat

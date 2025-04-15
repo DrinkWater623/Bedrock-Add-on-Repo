@@ -1,13 +1,14 @@
 //@ts-check
+//File: mcDebugClass.js
 /* =====================================================================
 Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
 License: GPL-3.0-only
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20250110 - ListObjects recursion
+Last Update: 20250116 - Add Block from Ray Cast if different from View
 ========================================================================*/
 import { world, BlockPermutation, Player, World, ItemStack, Block, system } from '@minecraft/server';
-import { Vector3Lib as vec3 } from './vectorClass.js';
+import { Vector3Lib as vec3, Vector2Lib, Vector3Lib } from './vectorClass.js';
 //=============================================================================
 // For Debugging
 /**
@@ -285,17 +286,32 @@ export class Debug {
                     msg += `\n==> §eEntity:§r ${e.entity.typeId} ${e.entity.nameTag ? e.entity.nameTag : ''} §e@§r ${vec3.toString(e.entity.location)} §eDistance:§r ${e.distance}`;
                 });
             }
-            const blockView = player.getBlockFromViewDirection({ maxDistance: 10 });
-            if (blockView) {
-                msg += `\n\n${fTitle('==* getBlockFromViewDirection(max=10)):')} `;
-                msg += `\n==> §eBlock:§r ${blockView.block.typeId}`;
-                msg += `\n==> §eBlock Location:§r ${vec3.toString(blockView.block.location,0,true,',')}`;
-                msg += `\n==> §eBlock Face:§r ${blockView.face}`;
-                msg += `\n==> §eBlock Face Location:§r ${vec3.toString(blockView.faceLocation, 1, true, ',')}`;
+            const blockViewVd = player.getBlockFromViewDirection({ maxDistance: 16, includeLiquidBlocks: true, includePassableBlocks: true });
+            if (blockViewVd) {
+                msg += `\n\n${fTitle('==* getBlockFromViewDirection(max=16)):')} `;
+                this.listObjectInnards(blockViewVd.block)
+                //msg += `\n==> §eBlock:§r ${blockViewVd.block.typeId}`;
+                //msg += `\n==> §eBlock Location:§r ${vec3.toString(blockViewVd.block.location,0,true,',')}`;
+                msg += `\n==> §eBlock Face:§r ${blockViewVd.face}`;
+                msg += `\n==> §eBlock Face Location:§r ${vec3.toString(blockViewVd.faceLocation, 1, true, ',')}`;
 
-                const pixel = vec3.truncate({x:(blockView.faceLocation.x*15)+1,y:(blockView.faceLocation.y*15)+1,z:(blockView.faceLocation.z*15)+1})
+                const pixel = vec3.truncate({x:(blockViewVd.faceLocation.x*15)+1,y:(blockViewVd.faceLocation.y*15)+1,z:(blockViewVd.faceLocation.z*15)+1})
                 msg += `\n==> §eBlock Face Pixel:§r ${vec3.toString(pixel, 0, true, ',')}`;
+            }
+            const blockViewRay = player.dimension.getBlockFromRay(
+                { maxDistance: 16, includeLiquidBlocks: true, includePassableBlocks: true });
 
+                
+            if (blockViewRay && (!blockViewVd || !Vector3Lib.isSameLocation(blockViewVd.block.location, blockViewRay.block.location))) {
+                msg += `\n\n${fTitle('==* getBlockFromViewDirection(max=16)):')} `;
+                this.listObjectInnards(blockViewRay.block)
+                //msg += `\n==> §eBlock:§r ${blockViewVd.block.typeId}`;
+                //msg += `\n==> §eBlock Location:§r ${vec3.toString(blockViewVd.block.location,0,true,',')}`;
+                msg += `\n==> §eBlock Face:§r ${blockViewRay.face}`;
+                msg += `\n==> §eBlock Face Location:§r ${vec3.toString(blockViewRay.faceLocation, 1, true, ',')}`;
+
+                const pixel = vec3.truncate({x:(blockViewRay.faceLocation.x*15)+1,y:(blockViewRay.faceLocation.y*15)+1,z:(blockViewRay.faceLocation.z*15)+1})
+                msg += `\n==> §eBlock Face Pixel:§r ${vec3.toString(pixel, 0, true, ',')}`;
             }
         }
 
