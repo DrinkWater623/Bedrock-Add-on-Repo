@@ -1,14 +1,11 @@
 //@ts-check
-/**
- * Created by https://github.com/DrinkWater623
- * 
- * Change Log
- *  20240827 - Created - to hold functions related to entities
- *  20240903 - added closestPlayers
- *  20241009 - Added getAllEntities()
- *  20241211 - Made sure everyone had same file (b)
- */
-//==============================================================================
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
 import { world, system, Player, Entity, Block } from "@minecraft/server";
 import { Vector3Lib as vec3 } from './vectorClass.js';
 //==============================================================================

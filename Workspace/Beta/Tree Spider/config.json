@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
-	"author": "DrinkWater623, Update Block Dev",
+	"author": "DrinkWater623,Update Block Dev",
 	"name": "Tree_Spider",
 	"packs": {
 		"behaviorPack": "./packs/BP",

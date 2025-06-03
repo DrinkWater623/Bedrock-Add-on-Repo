@@ -1,11 +1,11 @@
 //@ts-check
-//=============================================================================
-/*
-    Written By:     "https://github.com/DrinkWater623"
-
-    Last Update:    20241208 - created
-                    20241209 - added endsWithNumber
-*/
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20250603 - Combine
+========================================================================*/
 //=============================================================================
 /**
  * 
@@ -47,6 +47,22 @@ export function minusLastWord (text, delimiter = ' ') {
 
     words.pop();
     return words.join(delimiter);
+}
+//========================================================================*/
+/**
+ * 
+ * @param {number} number
+ * @returns string 
+ */
+export function numberWithSuffix(number){
+
+    const numberString = number.toString()
+
+    if (numberString.endsWith('1')) return numberString+'st'
+    if (numberString.endsWith('2')) return numberString+'nd'
+    if (numberString.endsWith('3')) return numberString+'rd'
+
+    return numberString+'th'
 }
 //=============================================================================
 // End of File

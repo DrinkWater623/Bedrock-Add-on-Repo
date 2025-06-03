@@ -1,12 +1,12 @@
 //@ts-check
-//=============================================================================
-/*
-    Written By:     "https://github.com/DrinkWater623"
-    Last Update:    20241110 - add debug to .player
-                    20241211 - add ability to send plain in ChatMsg
-                                added better sendTo control
-*/
-import { Player, system, World, world } from "@minecraft/server";
+/* =====================================================================
+Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only
+URL: https://github.com/DrinkWater623
+========================================================================
+Last Update: 20241229 - reOrg and add License
+========================================================================*/
+import { Player, World, world } from "@minecraft/server";
 //=============================================================================
 export class ConsoleAlert {
     /**
