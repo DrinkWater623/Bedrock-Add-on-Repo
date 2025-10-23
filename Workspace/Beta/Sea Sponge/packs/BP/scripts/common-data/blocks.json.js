@@ -1,5 +1,19 @@
+// @ts-check
+
+/** @typedef {boolean | Record<string, unknown>} Isotropic */
+/** @typedef {{ 
+ * ambient_occlusion_exponent?: number,
+ * carried_textures?:string | object, 
+ * isotropic?:Isotropic,
+ * sounds?: string,
+ * sound?: string, 
+ * textures?: string | object
+ * }} BlockMeta 
+ * */
+/** @type {Record<string, BlockMeta>} */
+
 export const blocksDotJson = {
-    //"format_version": "1.21.40",
+    // "format_version" : "1.21.40",
     "acacia_button": {
         "sound": "wood",
         "textures": "acacia_planks"
@@ -29,7 +43,7 @@ export const blocksDotJson = {
         "textures": "acacia_sign"
     },
     "acacia_leaves": {
-        "brightness_gamma": 0.80,
+        "ambient_occlusion_exponent": 0.80,
         "carried_textures": "acacia_leaves_carried",
         "isotropic": {
             "down": true,
@@ -46,6 +60,10 @@ export const blocksDotJson = {
             "up": "acacia_log_top"
         }
     },
+    "acacia_planks": {
+        "sound": "wood",
+        "textures": "acacia_planks"
+    },
     "acacia_pressure_plate": {
         "sound": "wood",
         "textures": "acacia_planks"
@@ -53,6 +71,10 @@ export const blocksDotJson = {
     "acacia_sapling": {
         "sound": "grass",
         "textures": "acacia_sapling"
+    },
+    "acacia_shelf": {
+        "sound": "shelf",
+        "textures": "acacia_shelf"
     },
     "acacia_slab": {
         "sound": "wood",
@@ -156,6 +178,7 @@ export const blocksDotJson = {
         }
     },
     "azalea_leaves": {
+        "ambient_occlusion_exponent": 0.80,
         "isotropic": {
             "down": true,
             "up": true
@@ -164,6 +187,7 @@ export const blocksDotJson = {
         "textures": "azalea_leaves"
     },
     "azalea_leaves_flowered": {
+        "ambient_occlusion_exponent": 0.80,
         "isotropic": {
             "down": true,
             "up": true
@@ -251,6 +275,10 @@ export const blocksDotJson = {
         "carried_textures": "bamboo_carried",
         "sound": "bamboo_sapling",
         "textures": "bamboo_sapling"
+    },
+    "bamboo_shelf": {
+        "sound": "shelf",
+        "textures": "bamboo_shelf"
     },
     "bamboo_slab": {
         "sound": "bamboo_wood",
@@ -386,7 +414,7 @@ export const blocksDotJson = {
         "textures": "birch_sign"
     },
     "birch_leaves": {
-        "brightness_gamma": 0.80,
+        "ambient_occlusion_exponent": 0.80,
         "carried_textures": "birch_leaves_carried",
         "isotropic": {
             "down": true,
@@ -403,6 +431,10 @@ export const blocksDotJson = {
             "up": "birch_log_top"
         }
     },
+    "birch_planks": {
+        "sound": "wood",
+        "textures": "birch_planks"
+    },
     "birch_pressure_plate": {
         "sound": "wood",
         "textures": "birch_planks"
@@ -410,6 +442,10 @@ export const blocksDotJson = {
     "birch_sapling": {
         "sound": "grass",
         "textures": "birch_sapling"
+    },
+    "birch_shelf": {
+        "sound": "shelf",
+        "textures": "birch_shelf"
     },
     "birch_slab": {
         "sound": "wood",
@@ -488,7 +524,7 @@ export const blocksDotJson = {
         }
     },
     "black_terracotta": {
-        "sound": "stone",
+        "sound": "terracotta",
         "textures": "black_terracotta"
     },
     "black_wool": {
@@ -590,7 +626,7 @@ export const blocksDotJson = {
         }
     },
     "blue_terracotta": {
-        "sound": "stone",
+        "sound": "terracotta",
         "textures": "blue_terracotta"
     },
     "blue_wool": {
@@ -733,7 +769,7 @@ export const blocksDotJson = {
         }
     },
     "brown_terracotta": {
-        "sound": "stone",
+        "sound": "terracotta",
         "textures": "brown_terracotta"
     },
     "brown_wool": {
@@ -778,6 +814,11 @@ export const blocksDotJson = {
         "sound": "amethyst_block",
         "textures": "budding_amethyst"
     },
+    "bush": {
+        "carried_textures": "bush_carried",
+        "sound": "grass",
+        "textures": "bush"
+    },
     "cactus": {
         "sound": "cloth",
         "textures": {
@@ -785,6 +826,10 @@ export const blocksDotJson = {
             "side": "cactus_side",
             "up": "cactus_top"
         }
+    },
+    "cactus_flower": {
+        "sound": "cactus_flower",
+        "textures": "cactus_flower"
     },
     "cake": {
         "sound": "cloth",
@@ -920,6 +965,7 @@ export const blocksDotJson = {
         }
     },
     "chain": {
+        "carried_textures": "chain_carried",
         "sound": "chain",
         "textures": {
             "down": "chain1",
@@ -967,6 +1013,7 @@ export const blocksDotJson = {
         "textures": "cherry_planks"
     },
     "cherry_leaves": {
+        "ambient_occlusion_exponent": 0.80,
         "sound": "cherry_leaves",
         "textures": "cherry_leaves"
     },
@@ -989,6 +1036,10 @@ export const blocksDotJson = {
     "cherry_sapling": {
         "sound": "bamboo_sapling",
         "textures": "cherry_sapling"
+    },
+    "cherry_shelf": {
+        "sound": "shelf",
+        "textures": "cherry_shelf"
     },
     "cherry_slab": {
         "sound": "cherry_wood",
@@ -1054,7 +1105,7 @@ export const blocksDotJson = {
         "textures": "chiseled_deepslate"
     },
     "chiseled_nether_bricks": {
-        "sound": "stone",
+        "sound": "nether_brick",
         "textures": "chiseled_nether_bricks"
     },
     "chiseled_polished_blackstone": {
@@ -1070,7 +1121,7 @@ export const blocksDotJson = {
         }
     },
     "chiseled_red_sandstone": {
-        "brightness_gamma": 0.70,
+        "ambient_occlusion_exponent": 1.0,
         "isotropic": {
             "down": true,
             "up": true
@@ -1087,7 +1138,7 @@ export const blocksDotJson = {
         "textures": "chiseled_resin_bricks"
     },
     "chiseled_sandstone": {
-        "brightness_gamma": 0.70,
+        "ambient_occlusion_exponent": 1.0,
         "isotropic": {
             "down": true,
             "up": true
@@ -1225,6 +1276,10 @@ export const blocksDotJson = {
         "sound": "stone",
         "textures": "conduit"
     },
+    "copper_bars": {
+        "sound": "copper",
+        "textures": "copper_bars"
+    },
     "copper_block": {
         "isotropic": false,
         "sound": "copper",
@@ -1235,6 +1290,27 @@ export const blocksDotJson = {
         "sound": "copper_bulb",
         "textures": "copper_bulb"
     },
+    "copper_chain": {
+        "carried_textures": "copper_chain_carried",
+        "sound": "chain",
+        "textures": {
+            "down": "copper_chain1",
+            "side": "copper_chain2",
+            "up": "copper_chain1"
+        }
+    },
+    "copper_chest": {
+        "isotropic": false,
+        "sound": "copper_chest",
+        "textures": {
+            "down": "copper_chest_inventory_top",
+            "east": "copper_chest_inventory_side",
+            "north": "copper_chest_inventory_side",
+            "south": "copper_chest_inventory_front",
+            "up": "copper_chest_inventory_top",
+            "west": "copper_chest_inventory_side"
+        }
+    },
     "copper_door": {
         "sound": "copper",
         "textures": {
@@ -1243,14 +1319,27 @@ export const blocksDotJson = {
             "up": "copper_door_bottom"
         }
     },
+    "copper_golem_statue": {
+        "sound": "copper_golem_statue",
+        "textures": "copper_block"
+    },
     "copper_grate": {
         "sound": "copper_grate",
         "textures": "copper_grate"
+    },
+    "copper_lantern": {
+        "carried_textures": "copper_lantern_carried",
+        "sound": "lantern",
+        "textures": "copper_lantern"
     },
     "copper_ore": {
         "isotropic": false,
         "sound": "stone",
         "textures": "copper_ore"
+    },
+    "copper_torch": {
+        "sound": "wood",
+        "textures": "copper_torch"
     },
     "copper_trapdoor": {
         "sound": "copper",
@@ -1325,7 +1414,7 @@ export const blocksDotJson = {
         "textures": "cracked_deepslate_tiles"
     },
     "cracked_nether_bricks": {
-        "sound": "stone",
+        "sound": "nether_brick",
         "textures": "cracked_nether_bricks"
     },
     "cracked_polished_blackstone_bricks": {
@@ -1447,6 +1536,10 @@ export const blocksDotJson = {
             "west": "crimson_roots"
         }
     },
+    "crimson_shelf": {
+        "sound": "shelf",
+        "textures": "crimson_shelf"
+    },
     "crimson_slab": {
         "sound": "nether_wood",
         "textures": "crimson_planks"
@@ -1479,7 +1572,7 @@ export const blocksDotJson = {
         "textures": "crimson_sign"
     },
     "crying_obsidian": {
-        "brightness_gamma": 2.0,
+        "ambient_occlusion_exponent": 2.0,
         "isotropic": true,
         "sound": "stone",
         "textures": "crying_obsidian"
@@ -1500,7 +1593,7 @@ export const blocksDotJson = {
         "textures": "cut_copper"
     },
     "cut_red_sandstone": {
-        "brightness_gamma": 0.70,
+        "ambient_occlusion_exponent": 1.0,
         "isotropic": {
             "down": true,
             "up": true
@@ -1512,6 +1605,14 @@ export const blocksDotJson = {
             "up": "flattened_redsandstone_top"
         }
     },
+    "cut_red_sandstone_double_slab": {
+        "sound": "stone",
+        "textures": {
+            "down": "cut_red_sandstone_slab_top",
+            "side": "cut_red_sandstone_slab_side",
+            "up": "cut_red_sandstone_slab_top"
+        }
+    },
     "cut_red_sandstone_slab": {
         "sound": "stone",
         "textures": {
@@ -1521,7 +1622,7 @@ export const blocksDotJson = {
         }
     },
     "cut_sandstone": {
-        "brightness_gamma": 0.70,
+        "ambient_occlusion_exponent": 1.0,
         "isotropic": {
             "down": true,
             "up": true
@@ -1531,6 +1632,14 @@ export const blocksDotJson = {
             "down": "flattened_sandstone_top",
             "side": "cut_sandstone",
             "up": "flattened_sandstone_top"
+        }
+    },
+    "cut_sandstone_double_slab": {
+        "sound": "stone",
+        "textures": {
+            "down": "cut_sandstone_slab_top",
+            "side": "cut_sandstone_slab_side",
+            "up": "cut_sandstone_slab_top"
         }
     },
     "cut_sandstone_slab": {
@@ -1593,7 +1702,7 @@ export const blocksDotJson = {
         }
     },
     "cyan_terracotta": {
-        "sound": "stone",
+        "sound": "terracotta",
         "textures": "cyan_terracotta"
     },
     "cyan_wool": {
@@ -1641,7 +1750,7 @@ export const blocksDotJson = {
         "textures": "darkoak_sign"
     },
     "dark_oak_leaves": {
-        "brightness_gamma": 0.80,
+        "ambient_occlusion_exponent": 0.80,
         "carried_textures": "big_oak_leaves_carried",
         "isotropic": {
             "down": true,
@@ -1658,6 +1767,10 @@ export const blocksDotJson = {
             "up": "dark_oak_log_top"
         }
     },
+    "dark_oak_planks": {
+        "sound": "wood",
+        "textures": "dark_oak_planks"
+    },
     "dark_oak_pressure_plate": {
         "sound": "wood",
         "textures": "dark_oak_planks"
@@ -1665,6 +1778,10 @@ export const blocksDotJson = {
     "dark_oak_sapling": {
         "sound": "grass",
         "textures": "dark_oak_sapling"
+    },
+    "dark_oak_shelf": {
+        "sound": "shelf",
+        "textures": "dark_oak_shelf"
     },
     "dark_oak_slab": {
         "sound": "wood",
@@ -1839,7 +1956,7 @@ export const blocksDotJson = {
         "textures": "dead_tube_coral_wall_fan"
     },
     "deadbush": {
-        "sound": "grass",
+        "sound": "deadbush",
         "textures": "deadbush"
     },
     "decorated_pot": {
@@ -2087,6 +2204,18 @@ export const blocksDotJson = {
         "sound": "stone",
         "textures": "skull"
     },
+    "dried_ghast": {
+        "carried_textures": "dried_ghast_tentacles",
+        "sound": "dried_ghast",
+        "textures": {
+            "down": "dried_ghast_bottom",
+            "east": "dried_ghast_left",
+            "north": "dried_ghast_back",
+            "south": "dried_ghast_front",
+            "up": "dried_ghast_top",
+            "west": "dried_ghast_right"
+        }
+    },
     "dried_kelp_block": {
         "carried_textures": {
             "down": "dried_kelp_block_top",
@@ -2209,10 +2338,35 @@ export const blocksDotJson = {
         "sound": "copper",
         "textures": "exposed_copper"
     },
+    "exposed_copper_bars": {
+        "sound": "copper",
+        "textures": "exposed_copper_bars"
+    },
     "exposed_copper_bulb": {
         "isotropic": false,
         "sound": "copper_bulb",
         "textures": "exposed_copper_bulb"
+    },
+    "exposed_copper_chain": {
+        "carried_textures": "exposed_copper_chain_carried",
+        "sound": "chain",
+        "textures": {
+            "down": "exposed_copper_chain1",
+            "side": "exposed_copper_chain2",
+            "up": "exposed_copper_chain1"
+        }
+    },
+    "exposed_copper_chest": {
+        "isotropic": false,
+        "sound": "copper_chest",
+        "textures": {
+            "down": "exposed_copper_chest_inventory_top",
+            "east": "exposed_copper_chest_inventory_side",
+            "north": "exposed_copper_chest_inventory_side",
+            "south": "exposed_copper_chest_inventory_front",
+            "up": "exposed_copper_chest_inventory_top",
+            "west": "exposed_copper_chest_inventory_side"
+        }
     },
     "exposed_copper_door": {
         "sound": "copper",
@@ -2222,9 +2376,18 @@ export const blocksDotJson = {
             "up": "exposed_copper_door_bottom"
         }
     },
+    "exposed_copper_golem_statue": {
+        "sound": "copper_golem_statue",
+        "textures": "exposed_copper"
+    },
     "exposed_copper_grate": {
         "sound": "copper_grate",
         "textures": "exposed_copper_grate"
+    },
+    "exposed_copper_lantern": {
+        "carried_textures": "exposed_copper_lantern_carried",
+        "sound": "lantern",
+        "textures": "exposed_copper_lantern"
     },
     "exposed_copper_trapdoor": {
         "sound": "copper",
@@ -2249,6 +2412,11 @@ export const blocksDotJson = {
         "isotropic": false,
         "sound": "copper",
         "textures": "exposed_cut_copper"
+    },
+    "exposed_lightning_rod": {
+        "isotropic": false,
+        "sound": "copper",
+        "textures": "exposed_lightning_rod"
     },
     "farmland": {
         "sound": "gravel",
@@ -2302,6 +2470,11 @@ export const blocksDotJson = {
         "sound": "stone",
         "textures": "fire_coral_wall_fan"
     },
+    "firefly_bush": {
+        "carried_textures": "firefly_bush_carried",
+        "sound": "firefly_bush",
+        "textures": "firefly_bush"
+    },
     "fletching_table": {
         "sound": "wood",
         "textures": {
@@ -2341,7 +2514,7 @@ export const blocksDotJson = {
             "side": "flowing_water_grey",
             "up": "still_water_grey"
         }
-    },    
+    },
     "frame": {
         "sound": "itemframe",
         "textures": "itemframe_background"
@@ -2393,7 +2566,7 @@ export const blocksDotJson = {
         "textures": "glow_lichen"
     },
     "glowingobsidian": {
-        "brightness_gamma": 0.80,
+        "ambient_occlusion_exponent": 1.0,
         "sound": "stone",
         "textures": "glowing_obsidian"
     },
@@ -2523,7 +2696,7 @@ export const blocksDotJson = {
         }
     },
     "gray_terracotta": {
-        "sound": "stone",
+        "sound": "terracotta",
         "textures": "gray_terracotta"
     },
     "gray_wool": {
@@ -2582,7 +2755,7 @@ export const blocksDotJson = {
         }
     },
     "green_terracotta": {
-        "sound": "stone",
+        "sound": "terracotta",
         "textures": "green_terracotta"
     },
     "green_wool": {
@@ -2606,7 +2779,7 @@ export const blocksDotJson = {
     },
     "hardened_clay": {
         "isotropic": true,
-        "sound": "stone",
+        "sound": "terracotta",
         "textures": "hardened_clay"
     },
     "hay_block": {
@@ -2622,7 +2795,7 @@ export const blocksDotJson = {
         "textures": "heavy_core"
     },
     "heavy_weighted_pressure_plate": {
-        "sound": "metal",
+        "sound": "iron",
         "textures": "iron_block"
     },
     "honey_block": {
@@ -2726,7 +2899,7 @@ export const blocksDotJson = {
         "textures": "stone"
     },
     "iron_bars": {
-        "sound": "metal",
+        "sound": "iron",
         "textures": {
             "down": "iron_bars",
             "east": "iron_bars_edge",
@@ -2737,11 +2910,11 @@ export const blocksDotJson = {
         }
     },
     "iron_block": {
-        "sound": "metal",
+        "sound": "iron",
         "textures": "iron_block"
     },
     "iron_door": {
-        "sound": "metal",
+        "sound": "iron",
         "textures": {
             "down": "door_lower",
             "side": "door_upper",
@@ -2753,7 +2926,7 @@ export const blocksDotJson = {
         "textures": "iron_ore"
     },
     "iron_trapdoor": {
-        "sound": "metal",
+        "sound": "iron",
         "textures": "iron_trapdoor"
     },
     "jigsaw": {
@@ -2803,7 +2976,7 @@ export const blocksDotJson = {
         "textures": "jungle_sign"
     },
     "jungle_leaves": {
-        "brightness_gamma": 0.80,
+        "ambient_occlusion_exponent": 0.80,
         "carried_textures": "jungle_leaves_carried",
         "isotropic": {
             "down": true,
@@ -2820,6 +2993,10 @@ export const blocksDotJson = {
             "up": "jungle_log_top"
         }
     },
+    "jungle_planks": {
+        "sound": "wood",
+        "textures": "jungle_planks"
+    },
     "jungle_pressure_plate": {
         "sound": "wood",
         "textures": "jungle_planks"
@@ -2827,6 +3004,10 @@ export const blocksDotJson = {
     "jungle_sapling": {
         "sound": "grass",
         "textures": "jungle_sapling"
+    },
+    "jungle_shelf": {
+        "sound": "shelf",
+        "textures": "jungle_shelf"
     },
     "jungle_slab": {
         "sound": "wood",
@@ -2912,8 +3093,13 @@ export const blocksDotJson = {
             "west": "cauldron_water"
         }
     },
+    "leaf_litter": {
+        "carried_textures": "leaf_litter_carried",
+        "sound": "leaf_litter",
+        "textures": "leaf_litter"
+    },
     "leaves": {
-        "brightness_gamma": 0.80,
+        "ambient_occlusion_exponent": 0.80,
         "carried_textures": "leaves_carried",
         "isotropic": {
             "down": true,
@@ -2923,7 +3109,7 @@ export const blocksDotJson = {
         "textures": "leaves"
     },
     "leaves2": {
-        "brightness_gamma": 0.80,
+        "ambient_occlusion_exponent": 0.80,
         "carried_textures": "leaves_carried2",
         "isotropic": {
             "down": true,
@@ -3073,7 +3259,7 @@ export const blocksDotJson = {
         }
     },
     "light_blue_terracotta": {
-        "sound": "stone",
+        "sound": "terracotta",
         "textures": "light_blue_terracotta"
     },
     "light_blue_wool": {
@@ -3128,7 +3314,7 @@ export const blocksDotJson = {
         }
     },
     "light_gray_terracotta": {
-        "sound": "stone",
+        "sound": "terracotta",
         "textures": "light_gray_terracotta"
     },
     "light_gray_wool": {
@@ -3209,7 +3395,7 @@ export const blocksDotJson = {
         }
     },
     "lime_terracotta": {
-        "sound": "stone",
+        "sound": "terracotta",
         "textures": "lime_terracotta"
     },
     "lime_wool": {
@@ -3363,7 +3549,7 @@ export const blocksDotJson = {
         }
     },
     "magenta_terracotta": {
-        "sound": "stone",
+        "sound": "terracotta",
         "textures": "magenta_terracotta"
     },
     "magenta_wool": {
@@ -3404,7 +3590,7 @@ export const blocksDotJson = {
         "textures": "mangrove_sign"
     },
     "mangrove_leaves": {
-        "brightness_gamma": 0.80,
+        "ambient_occlusion_exponent": 0.80,
         "carried_textures": "mangrove_leaves_carried",
         "sound": "grass",
         "textures": "mangrove_leaves"
@@ -3440,6 +3626,10 @@ export const blocksDotJson = {
             "up": "mangrove_roots_top",
             "west": "mangrove_roots_side"
         }
+    },
+    "mangrove_shelf": {
+        "sound": "shelf",
+        "textures": "mangrove_shelf"
     },
     "mangrove_slab": {
         "sound": "wood",
@@ -3515,6 +3705,10 @@ export const blocksDotJson = {
     "mossy_cobblestone_wall": {
         "sound": "stone",
         "textures": "mossy_cobblestone_wall"
+    },
+    "mossy_stone_brick_double_slab": {
+        "sound": "stone",
+        "textures": "mossy_stone_brick_slab"
     },
     "mossy_stone_brick_slab": {
         "sound": "stone",
@@ -3598,7 +3792,7 @@ export const blocksDotJson = {
         }
     },
     "nether_brick": {
-        "brightness_gamma": 0.80,
+        "ambient_occlusion_exponent": 1.0,
         "sound": "nether_brick",
         "textures": "nether_brick"
     },
@@ -3611,7 +3805,7 @@ export const blocksDotJson = {
         "textures": "nether_brick"
     },
     "nether_brick_slab": {
-        "sound": "stone",
+        "sound": "nether_brick",
         "textures": "nether_brick_slab"
     },
     "nether_brick_stairs": {
@@ -3619,7 +3813,7 @@ export const blocksDotJson = {
         "textures": "nether_brick"
     },
     "nether_brick_wall": {
-        "sound": "stone",
+        "sound": "nether_brick",
         "textures": "nether_brick_wall"
     },
     "nether_gold_ore": {
@@ -3651,6 +3845,10 @@ export const blocksDotJson = {
         "sound": "metal",
         "textures": "reactor_core"
     },
+    "normal_stone_double_slab": {
+        "sound": "stone",
+        "textures": "normal_stone_slab"
+    },
     "normal_stone_slab": {
         "sound": "stone",
         "textures": "normal_stone_slab"
@@ -3676,7 +3874,7 @@ export const blocksDotJson = {
         "textures": "sign"
     },
     "oak_leaves": {
-        "brightness_gamma": 0.80,
+        "ambient_occlusion_exponent": 0.80,
         "carried_textures": "oak_leaves_carried",
         "isotropic": {
             "down": true,
@@ -3693,9 +3891,17 @@ export const blocksDotJson = {
             "up": "oak_log_top"
         }
     },
+    "oak_planks": {
+        "sound": "wood",
+        "textures": "oak_planks"
+    },
     "oak_sapling": {
         "sound": "grass",
         "textures": "oak_sapling"
+    },
+    "oak_shelf": {
+        "sound": "shelf",
+        "textures": "oak_shelf"
     },
     "oak_slab": {
         "sound": "wood",
@@ -3722,7 +3928,7 @@ export const blocksDotJson = {
         }
     },
     "obsidian": {
-        "brightness_gamma": 2.0,
+        "ambient_occlusion_exponent": 2.0,
         "isotropic": true,
         "sound": "stone",
         "textures": "obsidian"
@@ -3792,7 +3998,7 @@ export const blocksDotJson = {
         }
     },
     "orange_terracotta": {
-        "sound": "stone",
+        "sound": "terracotta",
         "textures": "orange_terracotta"
     },
     "orange_tulip": {
@@ -3816,10 +4022,35 @@ export const blocksDotJson = {
         "sound": "copper",
         "textures": "oxidized_copper"
     },
+    "oxidized_copper_bars": {
+        "sound": "copper",
+        "textures": "oxidized_copper_bars"
+    },
     "oxidized_copper_bulb": {
         "isotropic": false,
         "sound": "copper_bulb",
         "textures": "oxidized_copper_bulb"
+    },
+    "oxidized_copper_chain": {
+        "carried_textures": "oxidized_copper_chain_carried",
+        "sound": "chain",
+        "textures": {
+            "down": "oxidized_copper_chain1",
+            "side": "oxidized_copper_chain2",
+            "up": "oxidized_copper_chain1"
+        }
+    },
+    "oxidized_copper_chest": {
+        "isotropic": false,
+        "sound": "copper_chest_oxidized",
+        "textures": {
+            "down": "oxidized_copper_chest_inventory_top",
+            "east": "oxidized_copper_chest_inventory_side",
+            "north": "oxidized_copper_chest_inventory_side",
+            "south": "oxidized_copper_chest_inventory_front",
+            "up": "oxidized_copper_chest_inventory_top",
+            "west": "oxidized_copper_chest_inventory_side"
+        }
     },
     "oxidized_copper_door": {
         "sound": "copper",
@@ -3829,9 +4060,18 @@ export const blocksDotJson = {
             "up": "oxidized_copper_door_bottom"
         }
     },
+    "oxidized_copper_golem_statue": {
+        "sound": "copper_golem_statue",
+        "textures": "oxidized_copper"
+    },
     "oxidized_copper_grate": {
         "sound": "copper_grate",
         "textures": "oxidized_copper_grate"
+    },
+    "oxidized_copper_lantern": {
+        "carried_textures": "oxidized_copper_lantern_carried",
+        "sound": "lantern",
+        "textures": "oxidized_copper_lantern"
     },
     "oxidized_copper_trapdoor": {
         "sound": "copper",
@@ -3856,6 +4096,11 @@ export const blocksDotJson = {
         "isotropic": false,
         "sound": "copper",
         "textures": "oxidized_cut_copper"
+    },
+    "oxidized_lightning_rod": {
+        "isotropic": false,
+        "sound": "copper",
+        "textures": "oxidized_lightning_rod"
     },
     "packed_ice": {
         "sound": "glass",
@@ -3907,7 +4152,7 @@ export const blocksDotJson = {
         "textures": "pale_oak_planks"
     },
     "pale_oak_leaves": {
-        "ambient_occlusion_exponent": 0.80,
+        "ambient_occlusion_exponent": 1.0,
         "sound": "grass",
         "textures": "pale_oak_leaves"
     },
@@ -3930,6 +4175,10 @@ export const blocksDotJson = {
     "pale_oak_sapling": {
         "sound": "grass",
         "textures": "pale_oak_sapling"
+    },
+    "pale_oak_shelf": {
+        "sound": "shelf",
+        "textures": "pale_oak_shelf"
     },
     "pale_oak_slab": {
         "sound": "wood",
@@ -4041,7 +4290,7 @@ export const blocksDotJson = {
         }
     },
     "pink_terracotta": {
-        "sound": "stone",
+        "sound": "terracotta",
         "textures": "pink_terracotta"
     },
     "pink_tulip": {
@@ -4404,7 +4653,7 @@ export const blocksDotJson = {
         }
     },
     "purple_terracotta": {
-        "sound": "stone",
+        "sound": "terracotta",
         "textures": "purple_terracotta"
     },
     "purple_wool": {
@@ -4556,7 +4805,7 @@ export const blocksDotJson = {
         }
     },
     "red_nether_brick": {
-        "brightness_gamma": 0.80,
+        "ambient_occlusion_exponent": 1.0,
         "sound": "nether_brick",
         "textures": "red_nether_brick"
     },
@@ -4565,26 +4814,26 @@ export const blocksDotJson = {
         "textures": "red_nether_brick_slab"
     },
     "red_nether_brick_slab": {
-        "sound": "stone",
+        "sound": "nether_brick",
         "textures": "red_nether_brick_slab"
     },
     "red_nether_brick_stairs": {
-        "brightness_gamma": 0.80,
+        "ambient_occlusion_exponent": 1.0,
         "sound": "nether_brick",
         "textures": "red_nether_brick"
     },
     "red_nether_brick_wall": {
-        "sound": "stone",
+        "sound": "nether_brick",
         "textures": "red_nether_brick_wall"
     },
     "red_sand": {
-        "brightness_gamma": 0.550,
+        "ambient_occlusion_exponent": 0.550,
         "isotropic": true,
         "sound": "sand",
         "textures": "red_sand"
     },
     "red_sandstone": {
-        "brightness_gamma": 0.70,
+        "ambient_occlusion_exponent": 1.0,
         "isotropic": {
             "down": true,
             "up": true
@@ -4647,7 +4896,7 @@ export const blocksDotJson = {
         }
     },
     "red_terracotta": {
-        "sound": "stone",
+        "sound": "terracotta",
         "textures": "red_terracotta"
     },
     "red_tulip": {
@@ -4737,6 +4986,7 @@ export const blocksDotJson = {
         "textures": "resin_clump"
     },
     "respawn_anchor": {
+        "ambient_occlusion_exponent": 2.0,
         "sound": "metal",
         "textures": {
             "down": "respawn_anchor_bottom",
@@ -4757,13 +5007,13 @@ export const blocksDotJson = {
         }
     },
     "sand": {
-        "brightness_gamma": 0.550,
+        "ambient_occlusion_exponent": 0.550,
         "isotropic": true,
         "sound": "sand",
         "textures": "flattened_sand"
     },
     "sandstone": {
-        "brightness_gamma": 0.70,
+        "ambient_occlusion_exponent": 1.0,
         "isotropic": {
             "down": true,
             "up": true
@@ -4879,6 +5129,10 @@ export const blocksDotJson = {
             "west": "seagrass_tall_top_b"
         }
     },
+    "short_dry_grass": {
+        "sound": "grass",
+        "textures": "short_dry_grass"
+    },
     "short_grass": {
         "carried_textures": "short_grass_carried",
         "sound": "grass",
@@ -4953,6 +5207,10 @@ export const blocksDotJson = {
         "sound": "stone",
         "textures": "smooth_quartz"
     },
+    "smooth_quartz_double_slab": {
+        "sound": "stone",
+        "textures": "smooth_quartz_slab"
+    },
     "smooth_quartz_slab": {
         "sound": "stone",
         "textures": "smooth_quartz_slab"
@@ -4962,7 +5220,7 @@ export const blocksDotJson = {
         "textures": "stair_smooth_quartz_block"
     },
     "smooth_red_sandstone": {
-        "brightness_gamma": 0.70,
+        "ambient_occlusion_exponent": 1.0,
         "isotropic": {
             "down": true,
             "up": true
@@ -4987,7 +5245,7 @@ export const blocksDotJson = {
         "textures": "smooth_red_sandstone"
     },
     "smooth_sandstone": {
-        "brightness_gamma": 0.70,
+        "ambient_occlusion_exponent": 1.0,
         "isotropic": {
             "down": true,
             "up": true
@@ -5044,13 +5302,13 @@ export const blocksDotJson = {
         }
     },
     "snow": {
-        "brightness_gamma": 0.450,
+        "ambient_occlusion_exponent": 1.0,
         "isotropic": true,
         "sound": "snow",
         "textures": "snow"
     },
     "snow_layer": {
-        "brightness_gamma": 0.450,
+        "ambient_occlusion_exponent": 1.0,
         "isotropic": true,
         "sound": "snow",
         "textures": "snow"
@@ -5133,7 +5391,7 @@ export const blocksDotJson = {
         "textures": "spruce_sign"
     },
     "spruce_leaves": {
-        "brightness_gamma": 0.80,
+        "ambient_occlusion_exponent": 0.80,
         "carried_textures": "spruce_leaves_carried",
         "isotropic": {
             "down": true,
@@ -5150,6 +5408,10 @@ export const blocksDotJson = {
             "up": "spruce_log_top"
         }
     },
+    "spruce_planks": {
+        "sound": "wood",
+        "textures": "spruce_planks"
+    },
     "spruce_pressure_plate": {
         "sound": "wood",
         "textures": "spruce_planks"
@@ -5157,6 +5419,10 @@ export const blocksDotJson = {
     "spruce_sapling": {
         "sound": "grass",
         "textures": "spruce_sapling"
+    },
+    "spruce_shelf": {
+        "sound": "shelf",
+        "textures": "spruce_shelf"
     },
     "spruce_slab": {
         "sound": "wood",
@@ -5505,6 +5771,7 @@ export const blocksDotJson = {
         "textures": "suspicious_gravel"
     },
     "suspicious_sand": {
+        "ambient_occlusion_exponent": 0.550,
         "sound": "suspicious_sand",
         "textures": "suspicious_sand"
     },
@@ -5519,6 +5786,10 @@ export const blocksDotJson = {
             "up": "sweet_berry_bush_1",
             "west": "sweet_berry_bush_3"
         }
+    },
+    "tall_dry_grass": {
+        "sound": "grass",
+        "textures": "tall_dry_grass"
     },
     "tall_grass": {
         "carried_textures": "tall_grass_carried",
@@ -5671,7 +5942,7 @@ export const blocksDotJson = {
         "textures": "turtle_egg"
     },
     "twisting_vines": {
-        "sound": "vines",
+        "sound": "weeping_vines",
         "textures": {
             "down": "twisting_vines_bottom",
             "east": "twisting_vines_base",
@@ -5814,6 +6085,10 @@ export const blocksDotJson = {
             "west": "warped_roots"
         }
     },
+    "warped_shelf": {
+        "sound": "shelf",
+        "textures": "warped_shelf"
+    },
     "warped_slab": {
         "sound": "nether_wood",
         "textures": "warped_planks"
@@ -5870,10 +6145,35 @@ export const blocksDotJson = {
         "sound": "copper",
         "textures": "copper_block"
     },
+    "waxed_copper_bars": {
+        "sound": "copper",
+        "textures": "copper_bars"
+    },
     "waxed_copper_bulb": {
         "isotropic": false,
         "sound": "copper_bulb",
         "textures": "copper_bulb"
+    },
+    "waxed_copper_chain": {
+        "carried_textures": "copper_chain_carried",
+        "sound": "chain",
+        "textures": {
+            "down": "copper_chain1",
+            "side": "copper_chain2",
+            "up": "copper_chain1"
+        }
+    },
+    "waxed_copper_chest": {
+        "isotropic": false,
+        "sound": "copper_chest",
+        "textures": {
+            "down": "copper_chest_inventory_top",
+            "east": "copper_chest_inventory_side",
+            "north": "copper_chest_inventory_side",
+            "south": "copper_chest_inventory_front",
+            "up": "copper_chest_inventory_top",
+            "west": "copper_chest_inventory_side"
+        }
     },
     "waxed_copper_door": {
         "sound": "copper",
@@ -5883,9 +6183,18 @@ export const blocksDotJson = {
             "up": "copper_door_bottom"
         }
     },
+    "waxed_copper_golem_statue": {
+        "sound": "copper_golem_statue",
+        "textures": "copper_block"
+    },
     "waxed_copper_grate": {
         "sound": "copper_grate",
         "textures": "copper_grate"
+    },
+    "waxed_copper_lantern": {
+        "carried_textures": "copper_lantern_carried",
+        "sound": "lantern",
+        "textures": "copper_lantern"
     },
     "waxed_copper_trapdoor": {
         "sound": "copper",
@@ -5920,10 +6229,35 @@ export const blocksDotJson = {
         "sound": "copper",
         "textures": "exposed_copper"
     },
+    "waxed_exposed_copper_bars": {
+        "sound": "copper",
+        "textures": "exposed_copper_bars"
+    },
     "waxed_exposed_copper_bulb": {
         "isotropic": false,
         "sound": "copper_bulb",
         "textures": "exposed_copper_bulb"
+    },
+    "waxed_exposed_copper_chain": {
+        "carried_textures": "exposed_copper_chain_carried",
+        "sound": "chain",
+        "textures": {
+            "down": "exposed_copper_chain1",
+            "side": "exposed_copper_chain2",
+            "up": "exposed_copper_chain1"
+        }
+    },
+    "waxed_exposed_copper_chest": {
+        "isotropic": false,
+        "sound": "copper_chest",
+        "textures": {
+            "down": "exposed_copper_chest_inventory_top",
+            "east": "exposed_copper_chest_inventory_side",
+            "north": "exposed_copper_chest_inventory_side",
+            "south": "exposed_copper_chest_inventory_front",
+            "up": "exposed_copper_chest_inventory_top",
+            "west": "exposed_copper_chest_inventory_side"
+        }
     },
     "waxed_exposed_copper_door": {
         "sound": "copper",
@@ -5933,9 +6267,18 @@ export const blocksDotJson = {
             "up": "exposed_copper_door_bottom"
         }
     },
+    "waxed_exposed_copper_golem_statue": {
+        "sound": "copper_golem_statue",
+        "textures": "exposed_copper"
+    },
     "waxed_exposed_copper_grate": {
         "sound": "copper_grate",
         "textures": "exposed_copper_grate"
+    },
+    "waxed_exposed_copper_lantern": {
+        "carried_textures": "exposed_copper_lantern_carried",
+        "sound": "lantern",
+        "textures": "exposed_copper_lantern"
     },
     "waxed_exposed_copper_trapdoor": {
         "sound": "copper",
@@ -5961,6 +6304,16 @@ export const blocksDotJson = {
         "sound": "copper",
         "textures": "exposed_cut_copper"
     },
+    "waxed_exposed_lightning_rod": {
+        "isotropic": false,
+        "sound": "copper",
+        "textures": "exposed_lightning_rod"
+    },
+    "waxed_lightning_rod": {
+        "isotropic": false,
+        "sound": "copper",
+        "textures": "lightning_rod"
+    },
     "waxed_oxidized_chiseled_copper": {
         "sound": "copper",
         "textures": "oxidized_chiseled_copper"
@@ -5970,10 +6323,35 @@ export const blocksDotJson = {
         "sound": "copper",
         "textures": "oxidized_copper"
     },
+    "waxed_oxidized_copper_bars": {
+        "sound": "copper",
+        "textures": "oxidized_copper_bars"
+    },
     "waxed_oxidized_copper_bulb": {
         "isotropic": false,
         "sound": "copper_bulb",
         "textures": "oxidized_copper_bulb"
+    },
+    "waxed_oxidized_copper_chain": {
+        "carried_textures": "oxidized_copper_chain_carried",
+        "sound": "chain",
+        "textures": {
+            "down": "oxidized_copper_chain1",
+            "side": "oxidized_copper_chain2",
+            "up": "oxidized_copper_chain1"
+        }
+    },
+    "waxed_oxidized_copper_chest": {
+        "isotropic": false,
+        "sound": "copper_chest_oxidized",
+        "textures": {
+            "down": "oxidized_copper_chest_inventory_top",
+            "east": "oxidized_copper_chest_inventory_side",
+            "north": "oxidized_copper_chest_inventory_side",
+            "south": "oxidized_copper_chest_inventory_front",
+            "up": "oxidized_copper_chest_inventory_top",
+            "west": "oxidized_copper_chest_inventory_side"
+        }
     },
     "waxed_oxidized_copper_door": {
         "sound": "copper",
@@ -5983,9 +6361,18 @@ export const blocksDotJson = {
             "up": "oxidized_copper_door_bottom"
         }
     },
+    "waxed_oxidized_copper_golem_statue": {
+        "sound": "copper_golem_statue",
+        "textures": "oxidized_copper"
+    },
     "waxed_oxidized_copper_grate": {
         "sound": "copper_grate",
         "textures": "oxidized_copper_grate"
+    },
+    "waxed_oxidized_copper_lantern": {
+        "carried_textures": "oxidized_copper_lantern_carried",
+        "sound": "lantern",
+        "textures": "oxidized_copper_lantern"
     },
     "waxed_oxidized_copper_trapdoor": {
         "sound": "copper",
@@ -6011,6 +6398,11 @@ export const blocksDotJson = {
         "sound": "copper",
         "textures": "oxidized_cut_copper"
     },
+    "waxed_oxidized_lightning_rod": {
+        "isotropic": false,
+        "sound": "copper",
+        "textures": "oxidized_lightning_rod"
+    },
     "waxed_weathered_chiseled_copper": {
         "sound": "copper",
         "textures": "weathered_chiseled_copper"
@@ -6020,10 +6412,35 @@ export const blocksDotJson = {
         "sound": "copper",
         "textures": "weathered_copper"
     },
+    "waxed_weathered_copper_bars": {
+        "sound": "copper",
+        "textures": "weathered_copper_bars"
+    },
     "waxed_weathered_copper_bulb": {
         "isotropic": false,
         "sound": "copper_bulb",
         "textures": "weathered_copper_bulb"
+    },
+    "waxed_weathered_copper_chain": {
+        "carried_textures": "weathered_copper_chain_carried",
+        "sound": "chain",
+        "textures": {
+            "down": "weathered_copper_chain1",
+            "side": "weathered_copper_chain2",
+            "up": "weathered_copper_chain1"
+        }
+    },
+    "waxed_weathered_copper_chest": {
+        "isotropic": false,
+        "sound": "copper_chest_weathered",
+        "textures": {
+            "down": "weathered_copper_chest_inventory_top",
+            "east": "weathered_copper_chest_inventory_side",
+            "north": "weathered_copper_chest_inventory_side",
+            "south": "weathered_copper_chest_inventory_front",
+            "up": "weathered_copper_chest_inventory_top",
+            "west": "weathered_copper_chest_inventory_side"
+        }
     },
     "waxed_weathered_copper_door": {
         "sound": "copper",
@@ -6033,9 +6450,18 @@ export const blocksDotJson = {
             "up": "weathered_copper_door_bottom"
         }
     },
+    "waxed_weathered_copper_golem_statue": {
+        "sound": "copper_golem_statue",
+        "textures": "weathered_copper"
+    },
     "waxed_weathered_copper_grate": {
         "sound": "copper_grate",
         "textures": "weathered_copper_grate"
+    },
+    "waxed_weathered_copper_lantern": {
+        "carried_textures": "weathered_copper_lantern_carried",
+        "sound": "lantern",
+        "textures": "weathered_copper_lantern"
     },
     "waxed_weathered_copper_trapdoor": {
         "sound": "copper",
@@ -6061,6 +6487,11 @@ export const blocksDotJson = {
         "sound": "copper",
         "textures": "weathered_cut_copper"
     },
+    "waxed_weathered_lightning_rod": {
+        "isotropic": false,
+        "sound": "copper",
+        "textures": "weathered_lightning_rod"
+    },
     "weathered_chiseled_copper": {
         "sound": "copper",
         "textures": "weathered_chiseled_copper"
@@ -6070,10 +6501,35 @@ export const blocksDotJson = {
         "sound": "copper",
         "textures": "weathered_copper"
     },
+    "weathered_copper_bars": {
+        "sound": "copper",
+        "textures": "weathered_copper_bars"
+    },
     "weathered_copper_bulb": {
         "isotropic": false,
         "sound": "copper_bulb",
         "textures": "weathered_copper_bulb"
+    },
+    "weathered_copper_chain": {
+        "carried_textures": "weathered_copper_chain_carried",
+        "sound": "chain",
+        "textures": {
+            "down": "weathered_copper_chain1",
+            "side": "weathered_copper_chain2",
+            "up": "weathered_copper_chain1"
+        }
+    },
+    "weathered_copper_chest": {
+        "isotropic": false,
+        "sound": "copper_chest_weathered",
+        "textures": {
+            "down": "weathered_copper_chest_inventory_top",
+            "east": "weathered_copper_chest_inventory_side",
+            "north": "weathered_copper_chest_inventory_side",
+            "south": "weathered_copper_chest_inventory_front",
+            "up": "weathered_copper_chest_inventory_top",
+            "west": "weathered_copper_chest_inventory_side"
+        }
     },
     "weathered_copper_door": {
         "sound": "copper",
@@ -6083,9 +6539,18 @@ export const blocksDotJson = {
             "up": "weathered_copper_door_bottom"
         }
     },
+    "weathered_copper_golem_statue": {
+        "sound": "copper_golem_statue",
+        "textures": "weathered_copper"
+    },
     "weathered_copper_grate": {
         "sound": "copper_grate",
         "textures": "weathered_copper_grate"
+    },
+    "weathered_copper_lantern": {
+        "carried_textures": "weathered_copper_lantern_carried",
+        "sound": "lantern",
+        "textures": "weathered_copper_lantern"
     },
     "weathered_copper_trapdoor": {
         "sound": "copper",
@@ -6111,12 +6576,17 @@ export const blocksDotJson = {
         "sound": "copper",
         "textures": "weathered_cut_copper"
     },
+    "weathered_lightning_rod": {
+        "isotropic": false,
+        "sound": "copper",
+        "textures": "weathered_lightning_rod"
+    },
     "web": {
         "sound": "web",
         "textures": "web"
     },
     "weeping_vines": {
-        "sound": "vines",
+        "sound": "weeping_vines",
         "textures": {
             "down": "weeping_vines_bottom",
             "east": "weeping_vines_base",
@@ -6187,7 +6657,7 @@ export const blocksDotJson = {
         }
     },
     "white_terracotta": {
-        "sound": "stone",
+        "sound": "terracotta",
         "textures": "white_terracotta"
     },
     "white_tulip": {
@@ -6197,6 +6667,11 @@ export const blocksDotJson = {
     "white_wool": {
         "sound": "cloth",
         "textures": "wool_colored_white"
+    },
+    "wildflowers": {
+        "carried_textures": "wildflowers_carried",
+        "sound": "pink_petals",
+        "textures": "wildflowers"
     },
     "wither_rose": {
         "sound": "grass",
@@ -6290,7 +6765,7 @@ export const blocksDotJson = {
         }
     },
     "yellow_terracotta": {
-        "sound": "stone",
+        "sound": "terracotta",
         "textures": "yellow_terracotta"
     },
     "yellow_wool": {

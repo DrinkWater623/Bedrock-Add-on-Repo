@@ -4,7 +4,7 @@ Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev
 License: GPL-3.0-only
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20250105a - Created
+Last Update: 20250105b - Created
 ========================================================================*/
 import { Block, ItemStack, system } from "@minecraft/server";
 //=============================================================================

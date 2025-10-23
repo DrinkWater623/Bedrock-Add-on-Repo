@@ -39,7 +39,7 @@ export class Debug {
      * @param {World|Player} [chatScope ]
      */
     #ValidChatSend (chatScope) {
-        if (chatScope instanceof Player) if (chatScope.isValid()) return chatScope;
+        if (chatScope instanceof Player) if (chatScope.isValid) return chatScope;
         return world;
     }
     /**
@@ -243,7 +243,7 @@ export class Debug {
      */
     playerInfo (player, chatSend = this.chatSend, title = "§ePlayer Info:", override = false, details = '') {
         if (!(override || this.debugOn)) return;
-        if (!player.isValid()) return;
+        if (!player.isValid) return;
         const fTitle = (s = '') => { return `§b${s}§r`; };
         if (title) this.#log(title,chatSend);
         let msg = ''
@@ -299,6 +299,8 @@ export class Debug {
                 msg += `\n==> §eBlock Face Pixel:§r ${vec3.toString(pixel, 0, true, ',')}`;
             }
             const blockViewRay = player.dimension.getBlockFromRay(
+                player.location,
+                player.getViewDirection(),
                 { maxDistance: 16, includeLiquidBlocks: true, includePassableBlocks: true });
 
                 

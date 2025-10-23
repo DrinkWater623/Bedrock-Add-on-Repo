@@ -1,9 +1,34 @@
+// @ts-check
 /* =====================================================================
 From MC Data
 Last Update: 20241229 - reOrg and add License
 ========================================================================*/
+//"format_version" : "1.20.20",
+/**
+ * @typedef {string | {
+ *   name: string, 
+ *    load_on_low_memory?:boolean,
+ *    volume?: number, 
+ *    weight?: number, 
+ *    is3D?: boolean, 
+ *    pitch?: number, 
+ *    stream?: boolean
+ *    }
+ * } SoundEntry
+ */
+/** @typedef {{ 
+ *    __use_legacy_max_distance?:boolean
+ *    category?: string, 
+ *    max_distance?: number|null, 
+ *    min_distance?: number|null, 
+ *    volume?: number,   
+ *    pitch?: number,   
+ *    sounds?: SoundEntry[],
+ *    subtitle?: string }} SoundDef
+ *    
+ */
+/** @type {Record<string, SoundDef>} */
 export const sound_definitions = {
-   //"format_version" : "1.20.20",
    "ambient.basalt_deltas.additions": {
       "category": "ambient",
       "max_distance": null,
@@ -931,7 +956,7 @@ export const sound_definitions = {
       ]
    },
    "ambient.weather.lightning.impact": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "weather",
       "max_distance": null,
       "min_distance": 100.0,
@@ -943,7 +968,7 @@ export const sound_definitions = {
       ]
    },
    "ambient.weather.rain": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "weather",
       "max_distance": null,
       "min_distance": 100.0,
@@ -967,8 +992,23 @@ export const sound_definitions = {
          }
       ]
    },
+   "ambient.weather.the_end_light_flash": {
+      "category": "weather",
+      "max_distance": null,
+      "min_distance": 100.0,
+      "sounds": [
+         "sounds/ambient/weather/end_flash1",
+         "sounds/ambient/weather/end_flash2",
+         "sounds/ambient/weather/end_flash3",
+         "sounds/ambient/weather/end_flash4",
+         "sounds/ambient/weather/end_flash5",
+         "sounds/ambient/weather/end_flash6",
+         "sounds/ambient/weather/end_flash7",
+         "sounds/ambient/weather/end_flash8"
+      ]
+   },
    "ambient.weather.thunder": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "weather",
       "max_distance": null,
       "min_distance": 100.0,
@@ -985,33 +1025,25 @@ export const sound_definitions = {
       "category": "player",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/event/mob_effects/bad_omen"
-      ]
+      "sounds": [ "sounds/event/mob_effects/bad_omen" ]
    },
    "apply_effect.raid_omen": {
       "category": "player",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/event/mob_effects/raid_omen"
-      ]
+      "sounds": [ "sounds/event/mob_effects/raid_omen" ]
    },
    "apply_effect.trial_omen": {
       "category": "player",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/event/mob_effects/trial_omen"
-      ]
+      "sounds": [ "sounds/event/mob_effects/trial_omen" ]
    },
    "armor.break_wolf": {
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/armor/break_wolf"
-      ]
+      "sounds": [ "sounds/armor/break_wolf" ]
    },
    "armor.crack_wolf": {
       "category": "neutral",
@@ -1036,7 +1068,7 @@ export const sound_definitions = {
       ]
    },
    "armor.equip_chain": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -1049,8 +1081,21 @@ export const sound_definitions = {
          "sounds/armor/equip_chain6"
       ]
    },
+   "armor.equip_copper": {
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/armor/equip_copper1",
+         "sounds/armor/equip_copper2",
+         "sounds/armor/equip_copper3",
+         "sounds/armor/equip_copper4",
+         "sounds/armor/equip_copper5",
+         "sounds/armor/equip_copper6"
+      ]
+   },
    "armor.equip_diamond": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -1064,7 +1109,7 @@ export const sound_definitions = {
       ]
    },
    "armor.equip_generic": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -1078,7 +1123,7 @@ export const sound_definitions = {
       ]
    },
    "armor.equip_gold": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -1092,7 +1137,7 @@ export const sound_definitions = {
       ]
    },
    "armor.equip_iron": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -1106,7 +1151,7 @@ export const sound_definitions = {
       ]
    },
    "armor.equip_leather": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -1160,40 +1205,31 @@ export const sound_definitions = {
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/armor/unequip_wolf1",
-         "sounds/armor/unequip_wolf2"
-      ]
+      "sounds": [ "sounds/armor/unequip_wolf1", "sounds/armor/unequip_wolf2" ]
    },
    "beacon.activate": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/beacon/activate"
-      ]
+      "sounds": [ "sounds/block/beacon/activate" ]
    },
    "beacon.ambient": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/beacon/ambient"
-      ]
+      "sounds": [ "sounds/block/beacon/ambient" ]
    },
    "beacon.deactivate": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/beacon/deactivate"
-      ]
+      "sounds": [ "sounds/block/beacon/deactivate" ]
    },
    "beacon.power": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1204,7 +1240,7 @@ export const sound_definitions = {
       ]
    },
    "block.bamboo.break": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1236,7 +1272,7 @@ export const sound_definitions = {
       ]
    },
    "block.bamboo.fall": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1268,7 +1304,7 @@ export const sound_definitions = {
       ]
    },
    "block.bamboo.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1300,7 +1336,7 @@ export const sound_definitions = {
       ]
    },
    "block.bamboo.place": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1332,7 +1368,7 @@ export const sound_definitions = {
       ]
    },
    "block.bamboo.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1366,7 +1402,7 @@ export const sound_definitions = {
       ]
    },
    "block.bamboo_sapling.break": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1398,7 +1434,7 @@ export const sound_definitions = {
       ]
    },
    "block.bamboo_sapling.place": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1430,7 +1466,7 @@ export const sound_definitions = {
       ]
    },
    "block.barrel.close": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1442,7 +1478,7 @@ export const sound_definitions = {
       ]
    },
    "block.barrel.open": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1521,7 +1557,7 @@ export const sound_definitions = {
       ]
    },
    "block.bell.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1554,7 +1590,7 @@ export const sound_definitions = {
       ]
    },
    "block.blastfurnace.fire_crackle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1577,8 +1613,33 @@ export const sound_definitions = {
          "sounds/random/bowhit4"
       ]
    },
+   "block.cactus_flower.break": {
+      "__use_legacy_max_distance": true,
+      "category": "block",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/cactus_flower/break1",
+         "sounds/block/cactus_flower/break2",
+         "sounds/block/cactus_flower/break3",
+         "sounds/block/cactus_flower/break4",
+         "sounds/block/cactus_flower/break5"
+      ]
+   },
+   "block.cactus_flower.place": {
+      "__use_legacy_max_distance": true,
+      "category": "block",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/cactus_flower/place1",
+         "sounds/block/cactus_flower/place2",
+         "sounds/block/cactus_flower/place3",
+         "sounds/block/cactus_flower/place4"
+      ]
+   },
    "block.campfire.crackle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": 24.0,
       "min_distance": null,
@@ -1592,7 +1653,7 @@ export const sound_definitions = {
       ]
    },
    "block.cartography_table.use": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1611,8 +1672,21 @@ export const sound_definitions = {
          }
       ]
    },
+   "block.cave_vines.place": {
+      "__use_legacy_max_distance": true,
+      "category": "block",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/cave_vines/break1",
+         "sounds/block/cave_vines/break2",
+         "sounds/block/cave_vines/break3",
+         "sounds/block/cave_vines/break4",
+         "sounds/block/cave_vines/break5"
+      ]
+   },
    "block.chorusflower.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1623,7 +1697,7 @@ export const sound_definitions = {
       ]
    },
    "block.chorusflower.grow": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1646,7 +1720,7 @@ export const sound_definitions = {
       ]
    },
    "block.composter.empty": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1666,7 +1740,7 @@ export const sound_definitions = {
       ]
    },
    "block.composter.fill": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1694,7 +1768,7 @@ export const sound_definitions = {
       ]
    },
    "block.composter.fill_success": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1718,7 +1792,7 @@ export const sound_definitions = {
       ]
    },
    "block.composter.ready": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1765,8 +1839,100 @@ export const sound_definitions = {
          }
       ]
    },
+   "block.copper_chest.closed": {
+      "category": "block",
+      "max_distance": 12.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/copper_chest/close1",
+         "sounds/block/copper_chest/close2",
+         "sounds/block/copper_chest/close3"
+      ]
+   },
+   "block.copper_chest.open": {
+      "category": "block",
+      "max_distance": 12.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/copper_chest/open1",
+         "sounds/block/copper_chest/open2",
+         "sounds/block/copper_chest/open3"
+      ]
+   },
+   "block.copper_chest.oxidized.closed": {
+      "category": "block",
+      "max_distance": 12.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/copper_chest/oxidized_close1",
+         "sounds/block/copper_chest/oxidized_close2",
+         "sounds/block/copper_chest/oxidized_close3"
+      ]
+   },
+   "block.copper_chest.oxidized.open": {
+      "category": "block",
+      "max_distance": 12.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/copper_chest/oxidized_open1",
+         "sounds/block/copper_chest/oxidized_open2",
+         "sounds/block/copper_chest/oxidized_open3"
+      ]
+   },
+   "block.copper_chest.weathered.closed": {
+      "category": "block",
+      "max_distance": 12.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/copper_chest/weathered_close1",
+         "sounds/block/copper_chest/weathered_close2",
+         "sounds/block/copper_chest/weathered_close3"
+      ]
+   },
+   "block.copper_chest.weathered.open": {
+      "category": "block",
+      "max_distance": 12.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/copper_chest/weathered_open1",
+         "sounds/block/copper_chest/weathered_open2",
+         "sounds/block/copper_chest/weathered_open3"
+      ]
+   },
+   "block.copper_golem_statue.break": {
+      "category": "block",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/copper_golem_statue/break1",
+         "sounds/block/copper_golem_statue/break2",
+         "sounds/block/copper_golem_statue/break3"
+      ]
+   },
+   "block.copper_golem_statue.hit": {
+      "category": "block",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/copper_golem_statue/hit1",
+         "sounds/block/copper_golem_statue/hit2",
+         "sounds/block/copper_golem_statue/hit3",
+         "sounds/block/copper_golem_statue/hit4"
+      ]
+   },
+   "block.copper_golem_statue.place": {
+      "category": "block",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/copper_golem_statue/place1",
+         "sounds/block/copper_golem_statue/place2",
+         "sounds/block/copper_golem_statue/place3",
+         "sounds/block/copper_golem_statue/place4"
+      ]
+   },
    "block.creaking_heart.ambient": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": 16.0,
       "min_distance": null,
@@ -1778,25 +1944,21 @@ export const sound_definitions = {
       ]
    },
    "block.creaking_heart.break": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": 16.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/creaking_heart/break"
-      ]
+      "sounds": [ "sounds/block/creaking_heart/break" ]
    },
    "block.creaking_heart.fall": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": 16.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/creaking_heart/fall"
-      ]
+      "sounds": [ "sounds/block/creaking_heart/fall" ]
    },
    "block.creaking_heart.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1809,7 +1971,7 @@ export const sound_definitions = {
       ]
    },
    "block.creaking_heart.place": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1821,16 +1983,14 @@ export const sound_definitions = {
       ]
    },
    "block.creaking_heart.spawn_mob": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": 16.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/creaking_heart/spawn_mob"
-      ]
+      "sounds": [ "sounds/block/creaking_heart/spawn_mob" ]
    },
    "block.creaking_heart.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": 16.0,
       "min_distance": null,
@@ -1844,7 +2004,7 @@ export const sound_definitions = {
       ]
    },
    "block.creaking_heart.trail": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": 16.0,
       "min_distance": null,
@@ -1856,6 +2016,69 @@ export const sound_definitions = {
          "sounds/block/creaking_heart/trail5",
          "sounds/block/creaking_heart/trail6",
          "sounds/block/creaking_heart/trail7"
+      ]
+   },
+   "block.deadbush.ambient": {
+      "__use_legacy_max_distance": true,
+      "category": "block",
+      "max_distance": 64.0,
+      "min_distance": null,
+      "sounds": [
+         {
+            "name": "sounds/block/deadbush/bushrustle1",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/deadbush/bushrustle2",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/deadbush/bushrustle3",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/deadbush/creakysand1",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/deadbush/crickets",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/deadbush/howlingwind1",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/deadbush/insect1",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/deadbush/leaves",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/deadbush/movingsand1",
+            "volume": 1.0,
+            "weight": 2
+         },
+         {
+            "name": "sounds/block/deadbush/movingsand2",
+            "volume": 1.0,
+            "weight": 2
+         },
+         {
+            "name": "sounds/block/deadbush/movingsand3",
+            "volume": 1.0,
+            "weight": 2
+         }
       ]
    },
    "block.decorated_pot.insert": {
@@ -1908,6 +2131,151 @@ export const sound_definitions = {
          }
       ]
    },
+   "block.dried_ghast.ambient": {
+      "category": "block",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/dried_ghast/ambient1",
+         "sounds/block/dried_ghast/ambient2",
+         "sounds/block/dried_ghast/ambient3",
+         "sounds/block/dried_ghast/ambient4"
+      ]
+   },
+   "block.dried_ghast.ambient_water": {
+      "category": "block",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/dried_ghast/ambient_water1",
+         "sounds/block/dried_ghast/ambient_water2"
+      ]
+   },
+   "block.dried_ghast.break": {
+      "category": "block",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [ "sounds/block/dried_ghast/break" ]
+   },
+   "block.dried_ghast.fall": {
+      "category": "player",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/dried_ghast/step/step1",
+         "sounds/block/dried_ghast/step/step2",
+         "sounds/block/dried_ghast/step/step3",
+         "sounds/block/dried_ghast/step/step4",
+         "sounds/block/dried_ghast/step/step5",
+         "sounds/block/dried_ghast/step/step6"
+      ]
+   },
+   "block.dried_ghast.place": {
+      "category": "block",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/dried_ghast/place/place1",
+         "sounds/block/dried_ghast/place/place2",
+         "sounds/block/dried_ghast/place/place3",
+         "sounds/block/dried_ghast/place/place4",
+         "sounds/block/dried_ghast/place/place5",
+         "sounds/block/dried_ghast/place/place6"
+      ]
+   },
+   "block.dried_ghast.place_in_water": {
+      "category": "block",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [ "sounds/block/dried_ghast/placeinwater" ]
+   },
+   "block.dried_ghast.state_change": {
+      "category": "block",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [ "sounds/block/dried_ghast/transition" ]
+   },
+   "block.dried_ghast.step": {
+      "category": "player",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/dried_ghast/step/step1",
+         "sounds/block/dried_ghast/step/step2",
+         "sounds/block/dried_ghast/step/step3",
+         "sounds/block/dried_ghast/step/step4",
+         "sounds/block/dried_ghast/step/step5",
+         "sounds/block/dried_ghast/step/step6"
+      ]
+   },
+   "block.dry_grass.ambient.attached": {
+      "__use_legacy_max_distance": true,
+      "category": "block",
+      "max_distance": 80.0,
+      "min_distance": null,
+      "sounds": [
+         {
+            "name": "sounds/block/sand/wind1",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/wind2",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/wind3",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/wind4",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/wind5",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/wind6",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/wind7",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/wind8",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/wind9",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/wind10",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/wind11",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/wind12",
+            "volume": 1.0,
+            "weight": 1
+         }
+      ]
+   },
    "block.enchanting_table.use": {
       "category": "block",
       "max_distance": null,
@@ -1928,16 +2296,14 @@ export const sound_definitions = {
       ]
    },
    "block.end_portal.spawn": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/end_portal/endportal"
-      ]
+      "sounds": [ "sounds/block/end_portal/endportal" ]
    },
    "block.end_portal_frame.fill": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -1990,7 +2356,7 @@ export const sound_definitions = {
       ]
    },
    "block.eyeblossom.ambient": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": 16.0,
       "min_distance": null,
@@ -2004,7 +2370,7 @@ export const sound_definitions = {
       ]
    },
    "block.eyeblossom.close": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": 16.0,
       "min_distance": null,
@@ -2015,16 +2381,14 @@ export const sound_definitions = {
       ]
    },
    "block.eyeblossom.close_long": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": 16.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/eyeblossom/close_long"
-      ]
+      "sounds": [ "sounds/block/eyeblossom/close_long" ]
    },
    "block.eyeblossom.open": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": 16.0,
       "min_distance": null,
@@ -2036,25 +2400,84 @@ export const sound_definitions = {
       ]
    },
    "block.eyeblossom.open_long": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": 16.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/eyeblossom/open_long"
-      ]
+      "sounds": [ "sounds/block/eyeblossom/open_long" ]
    },
    "block.false_permissions": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
+      "sounds": [ "sounds/block/permissions/shimmer/shimmerblock" ]
+   },
+   "block.firefly_bush.ambient": {
+      "__use_legacy_max_distance": true,
+      "category": "block",
+      "max_distance": 64.0,
+      "min_distance": null,
       "sounds": [
-         "sounds/block/permissions/shimmer/shimmerblock"
+         {
+            "name": "sounds/block/firefly_bush/ambient1",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/firefly_bush/ambient2",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/firefly_bush/ambient3",
+            "volume": 1.0,
+            "weight": 2
+         },
+         {
+            "name": "sounds/block/firefly_bush/ambient4",
+            "volume": 1.0,
+            "weight": 2
+         },
+         {
+            "name": "sounds/block/firefly_bush/ambient5",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/firefly_bush/ambient6",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/firefly_bush/ambient7",
+            "volume": 1.0,
+            "weight": 2
+         },
+         {
+            "name": "sounds/block/firefly_bush/ambient8",
+            "volume": 1.0,
+            "weight": 2
+         },
+         {
+            "name": "sounds/block/firefly_bush/ambient9",
+            "volume": 1.0,
+            "weight": 2
+         },
+         {
+            "name": "sounds/block/firefly_bush/ambient10",
+            "volume": 1.0,
+            "weight": 2
+         },
+         {
+            "name": "sounds/block/firefly_bush/ambient11",
+            "volume": 1.0,
+            "weight": 1
+         }
       ]
    },
    "block.furnace.lit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2067,7 +2490,7 @@ export const sound_definitions = {
       ]
    },
    "block.grindstone.use": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2087,7 +2510,7 @@ export const sound_definitions = {
       ]
    },
    "block.itemframe.add_item": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2099,7 +2522,7 @@ export const sound_definitions = {
       ]
    },
    "block.itemframe.break": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2110,7 +2533,7 @@ export const sound_definitions = {
       ]
    },
    "block.itemframe.place": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2122,7 +2545,7 @@ export const sound_definitions = {
       ]
    },
    "block.itemframe.remove_item": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2134,7 +2557,7 @@ export const sound_definitions = {
       ]
    },
    "block.itemframe.rotate_item": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2146,7 +2569,7 @@ export const sound_definitions = {
       ]
    },
    "block.lantern.break": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2163,7 +2586,7 @@ export const sound_definitions = {
       ]
    },
    "block.lantern.fall": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2180,7 +2603,7 @@ export const sound_definitions = {
       ]
    },
    "block.lantern.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2197,7 +2620,7 @@ export const sound_definitions = {
       ]
    },
    "block.lantern.place": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2230,7 +2653,7 @@ export const sound_definitions = {
       ]
    },
    "block.lantern.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2246,8 +2669,48 @@ export const sound_definitions = {
          "sounds/block/lantern/break6"
       ]
    },
+   "block.leaf_litter.break": {
+      "__use_legacy_max_distance": true,
+      "category": "block",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/leaf_litter/break1",
+         "sounds/block/leaf_litter/break2",
+         "sounds/block/leaf_litter/break3",
+         "sounds/block/leaf_litter/break4",
+         "sounds/block/leaf_litter/break5"
+      ]
+   },
+   "block.leaf_litter.place": {
+      "__use_legacy_max_distance": true,
+      "category": "block",
+      "max_distance": 64.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/leaf_litter/place1",
+         "sounds/block/leaf_litter/place2",
+         "sounds/block/leaf_litter/place3",
+         "sounds/block/leaf_litter/place4",
+         "sounds/block/leaf_litter/place5"
+      ]
+   },
+   "block.leaf_litter.step": {
+      "__use_legacy_max_distance": true,
+      "category": "player",
+      "max_distance": 64.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/leaf_litter/step1",
+         "sounds/block/leaf_litter/step2",
+         "sounds/block/leaf_litter/step3",
+         "sounds/block/leaf_litter/step4",
+         "sounds/block/leaf_litter/step5",
+         "sounds/block/leaf_litter/step6"
+      ]
+   },
    "block.loom.use": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2328,7 +2791,7 @@ export const sound_definitions = {
       ]
    },
    "block.mob_spawner.break": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2348,7 +2811,7 @@ export const sound_definitions = {
       ]
    },
    "block.mob_spawner.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2631,7 +3094,7 @@ export const sound_definitions = {
       ]
    },
    "block.pale_hanging_moss.ambient": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": 16.0,
       "min_distance": null,
@@ -2654,7 +3117,7 @@ export const sound_definitions = {
       ]
    },
    "block.resin.break": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2667,16 +3130,14 @@ export const sound_definitions = {
       ]
    },
    "block.resin.fall": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/resin/fall"
-      ]
+      "sounds": [ "sounds/block/resin/fall" ]
    },
    "block.resin.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2689,7 +3150,7 @@ export const sound_definitions = {
       ]
    },
    "block.resin.place": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2701,7 +3162,7 @@ export const sound_definitions = {
       ]
    },
    "block.resin.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -2714,25 +3175,21 @@ export const sound_definitions = {
       ]
    },
    "block.resin_brick.break": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/resin_brick/break"
-      ]
+      "sounds": [ "sounds/block/resin_brick/break" ]
    },
    "block.resin_brick.fall": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/resin_brick/fall"
-      ]
+      "sounds": [ "sounds/block/resin_brick/fall" ]
    },
    "block.resin_brick.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2745,7 +3202,7 @@ export const sound_definitions = {
       ]
    },
    "block.resin_brick.place": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2758,7 +3215,7 @@ export const sound_definitions = {
       ]
    },
    "block.resin_brick.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -2770,8 +3227,121 @@ export const sound_definitions = {
          "sounds/block/resin_brick/step5"
       ]
    },
+   "block.sand.ambient": {
+      "__use_legacy_max_distance": true,
+      "category": "block",
+      "max_distance": 64.0,
+      "min_distance": null,
+      "sounds": [
+         {
+            "name": "sounds/block/sand/sand1",
+            "volume": 1.0,
+            "weight": 2
+         },
+         {
+            "name": "sounds/block/sand/sand2",
+            "volume": 1.0,
+            "weight": 2
+         },
+         {
+            "name": "sounds/block/sand/sand3",
+            "volume": 1.0,
+            "weight": 2
+         },
+         {
+            "name": "sounds/block/sand/sand4",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/sand5",
+            "volume": 1.0,
+            "weight": 2
+         },
+         {
+            "name": "sounds/block/sand/sand6",
+            "volume": 1.0,
+            "weight": 2
+         },
+         {
+            "name": "sounds/block/sand/sand7",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/sand8",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/sand9",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/sand10",
+            "volume": 1.0,
+            "weight": 2
+         },
+         {
+            "name": "sounds/block/sand/sand11",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/sand12",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/sand13",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/sand14",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/sand15",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/sand16",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/sand17",
+            "volume": 1.0,
+            "weight": 1
+         },
+         {
+            "name": "sounds/block/sand/sand18",
+            "volume": 1.0,
+            "weight": 2
+         },
+         {
+            "name": "sounds/block/sand/sand19",
+            "volume": 1.0,
+            "weight": 2
+         },
+         {
+            "name": "sounds/block/sand/sand20",
+            "volume": 1.0,
+            "weight": 2
+         },
+         {
+            "name": "sounds/block/sand/sand21",
+            "volume": 1.0,
+            "weight": 1
+         }
+      ]
+   },
    "block.scaffolding.break": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2800,7 +3370,7 @@ export const sound_definitions = {
       ]
    },
    "block.scaffolding.climb": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2818,7 +3388,7 @@ export const sound_definitions = {
       ]
    },
    "block.scaffolding.fall": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2836,7 +3406,7 @@ export const sound_definitions = {
       ]
    },
    "block.scaffolding.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2854,7 +3424,7 @@ export const sound_definitions = {
       ]
    },
    "block.scaffolding.place": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2879,7 +3449,7 @@ export const sound_definitions = {
       ]
    },
    "block.scaffolding.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2894,6 +3464,77 @@ export const sound_definitions = {
          "sounds/step/scaffold5",
          "sounds/step/scaffold6",
          "sounds/step/scaffold7"
+      ]
+   },
+   "block.shelf.activate": {
+      "category": "block",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/shelf/activate/activate1",
+         "sounds/block/shelf/activate/activate2",
+         "sounds/block/shelf/activate/activate3"
+      ]
+   },
+   "block.shelf.break": {
+      "category": "block",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/shelf/break/break1",
+         "sounds/block/shelf/break/break2",
+         "sounds/block/shelf/break/break3",
+         "sounds/block/shelf/break/break4",
+         "sounds/block/shelf/break/break5",
+         "sounds/block/shelf/break/break6"
+      ]
+   },
+   "block.shelf.deactivate": {
+      "category": "block",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/shelf/deactivate/deactivate1",
+         "sounds/block/shelf/deactivate/deactivate2",
+         "sounds/block/shelf/deactivate/deactivate3"
+      ]
+   },
+   "block.shelf.multi_swap": {
+      "category": "block",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/shelf/multi_swap/multi_swap1",
+         "sounds/block/shelf/multi_swap/multi_swap2",
+         "sounds/block/shelf/multi_swap/multi_swap3"
+      ]
+   },
+   "block.shelf.open": {
+      "category": "block",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/block/copper_chest/open" ]
+   },
+   "block.shelf.place_item": {
+      "category": "block",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/shelf/place_item/place_item1",
+         "sounds/block/shelf/place_item/place_item2",
+         "sounds/block/shelf/place_item/place_item3",
+         "sounds/block/shelf/place_item/place_item4"
+      ]
+   },
+   "block.shelf.single_swap": {
+      "category": "block",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/shelf/single_swap/single_swap1",
+         "sounds/block/shelf/single_swap/single_swap2",
+         "sounds/block/shelf/single_swap/single_swap3",
+         "sounds/block/shelf/single_swap/single_swap4"
       ]
    },
    "block.sign.waxed_interact_fail": {
@@ -2925,7 +3566,7 @@ export const sound_definitions = {
       ]
    },
    "block.smoker.smoke": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2964,7 +3605,7 @@ export const sound_definitions = {
       ]
    },
    "block.stonecutter.use": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -2990,7 +3631,7 @@ export const sound_definitions = {
       ]
    },
    "block.sweet_berry_bush.break": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -3002,7 +3643,7 @@ export const sound_definitions = {
       ]
    },
    "block.sweet_berry_bush.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -3012,7 +3653,7 @@ export const sound_definitions = {
       ]
    },
    "block.sweet_berry_bush.pick": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -3022,7 +3663,7 @@ export const sound_definitions = {
       ]
    },
    "block.sweet_berry_bush.place": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -3036,7 +3677,7 @@ export const sound_definitions = {
       ]
    },
    "block.turtle_egg.break": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -3046,7 +3687,7 @@ export const sound_definitions = {
       ]
    },
    "block.turtle_egg.crack": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -3059,13 +3700,120 @@ export const sound_definitions = {
       ]
    },
    "block.turtle_egg.drop": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
       "sounds": [
          "sounds/block/turtle_egg/drop_egg1",
          "sounds/block/turtle_egg/drop_egg2"
+      ]
+   },
+   "block.weeping_vines.break": {
+      "__use_legacy_max_distance": true,
+      "category": "block",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/roots/break1",
+         "sounds/block/roots/break2",
+         "sounds/block/roots/break3",
+         "sounds/block/roots/break4",
+         "sounds/block/roots/break5",
+         "sounds/block/roots/break6"
+      ]
+   },
+   "block.weeping_vines.fall": {
+      "__use_legacy_max_distance": true,
+      "category": "player",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/roots/break1",
+         "sounds/block/roots/break2",
+         "sounds/block/roots/break3",
+         "sounds/block/roots/break4",
+         "sounds/block/roots/break5",
+         "sounds/block/roots/break6"
+      ]
+   },
+   "block.weeping_vines.hit": {
+      "__use_legacy_max_distance": true,
+      "category": "block",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/roots/break1",
+         "sounds/block/roots/break2",
+         "sounds/block/roots/break3",
+         "sounds/block/roots/break4",
+         "sounds/block/roots/break5",
+         "sounds/block/roots/break6"
+      ]
+   },
+   "block.weeping_vines.jump": {
+      "__use_legacy_max_distance": true,
+      "category": "player",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/roots/step1",
+         "sounds/block/roots/step2",
+         "sounds/block/roots/step3",
+         "sounds/block/roots/step4",
+         "sounds/block/roots/step5"
+      ]
+   },
+   "block.weeping_vines.land": {
+      "__use_legacy_max_distance": true,
+      "category": "player",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/roots/step1",
+         "sounds/block/roots/step2",
+         "sounds/block/roots/step3",
+         "sounds/block/roots/step4",
+         "sounds/block/roots/step5"
+      ]
+   },
+   "block.weeping_vines.place": {
+      "__use_legacy_max_distance": true,
+      "category": "block",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/roots/break1",
+         "sounds/block/roots/break2",
+         "sounds/block/roots/break3",
+         "sounds/block/roots/break4",
+         "sounds/block/roots/break5",
+         "sounds/block/roots/break6"
+      ]
+   },
+   "block.weeping_vines.step": {
+      "__use_legacy_max_distance": true,
+      "category": "player",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/roots/step1",
+         "sounds/block/roots/step2",
+         "sounds/block/roots/step3",
+         "sounds/block/roots/step4",
+         "sounds/block/roots/step5"
+      ]
+   },
+   "block.weeping_vines.use": {
+      "__use_legacy_max_distance": true,
+      "category": "block",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/vine/break1",
+         "sounds/block/vine/break2",
+         "sounds/block/vine/break3",
+         "sounds/block/vine/break4"
       ]
    },
    "bloom.sculk_catalyst": {
@@ -3089,7 +3837,7 @@ export const sound_definitions = {
       ]
    },
    "bottle.dragonbreath": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "bottle",
       "max_distance": null,
       "min_distance": null,
@@ -3102,10 +3850,7 @@ export const sound_definitions = {
       "category": "bottle",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/bottle/empty1",
-         "sounds/bottle/empty2"
-      ]
+      "sounds": [ "sounds/bottle/empty1", "sounds/bottle/empty2" ]
    },
    "bottle.fill": {
       "category": "bottle",
@@ -3468,6 +4213,22 @@ export const sound_definitions = {
          }
       ]
    },
+   "break.iron": {
+      "__use_legacy_max_distance": true,
+      "category": "block",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/iron/break1",
+         "sounds/block/iron/break2",
+         "sounds/block/iron/break3",
+         "sounds/block/iron/break4",
+         "sounds/block/iron/break5",
+         "sounds/block/iron/break6",
+         "sounds/block/iron/break7",
+         "sounds/block/iron/break8"
+      ]
+   },
    "break.large_amethyst_bud": {
       "category": "block",
       "max_distance": null,
@@ -3687,7 +4448,7 @@ export const sound_definitions = {
       ]
    },
    "break.sponge": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -3773,7 +4534,7 @@ export const sound_definitions = {
       ]
    },
    "break.wet_sponge": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -3852,7 +4613,7 @@ export const sound_definitions = {
       ]
    },
    "bubble.down": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -3865,16 +4626,14 @@ export const sound_definitions = {
       ]
    },
    "bubble.downinside": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/bubbles/whirlpool_inside"
-      ]
+      "sounds": [ "sounds/bubbles/whirlpool_inside" ]
    },
    "bubble.pop": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -3885,7 +4644,7 @@ export const sound_definitions = {
       ]
    },
    "bubble.up": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -3898,16 +4657,14 @@ export const sound_definitions = {
       ]
    },
    "bubble.upinside": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/bubbles/upwards_inside"
-      ]
+      "sounds": [ "sounds/bubbles/upwards_inside" ]
    },
    "bucket.empty_fish": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -3921,7 +4678,7 @@ export const sound_definitions = {
       ]
    },
    "bucket.empty_lava": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -3944,7 +4701,7 @@ export const sound_definitions = {
       ]
    },
    "bucket.empty_water": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -3958,7 +4715,7 @@ export const sound_definitions = {
       ]
    },
    "bucket.fill_fish": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -3972,7 +4729,7 @@ export const sound_definitions = {
       ]
    },
    "bucket.fill_lava": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -3989,13 +4746,10 @@ export const sound_definitions = {
       "category": "player",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/bucket/fill_powder_snow1",
-         "sounds/bucket/fill_powder_snow2"
-      ]
+      "sounds": [ "sounds/bucket/fill_powder_snow1", "sounds/bucket/fill_powder_snow2" ]
    },
    "bucket.fill_water": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -4067,9 +4821,7 @@ export const sound_definitions = {
       "category": "player",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/item/bundle/insert_fail"
-      ]
+      "sounds": [ "sounds/item/bundle/insert_fail" ]
    },
    "bundle.remove_one": {
       "category": "player",
@@ -4116,7 +4868,7 @@ export const sound_definitions = {
       ]
    },
    "camera.take_picture": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -4127,7 +4879,7 @@ export const sound_definitions = {
       ]
    },
    "cauldron.adddye": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -4139,7 +4891,7 @@ export const sound_definitions = {
       ]
    },
    "cauldron.cleanarmor": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -4151,7 +4903,7 @@ export const sound_definitions = {
       ]
    },
    "cauldron.cleanbanner": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -4163,7 +4915,7 @@ export const sound_definitions = {
       ]
    },
    "cauldron.dyearmor": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -4175,7 +4927,7 @@ export const sound_definitions = {
       ]
    },
    "cauldron.explode": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -4199,7 +4951,7 @@ export const sound_definitions = {
       ]
    },
    "cauldron.fillpotion": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -4211,7 +4963,7 @@ export const sound_definitions = {
       ]
    },
    "cauldron.fillwater": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -4223,7 +4975,7 @@ export const sound_definitions = {
       ]
    },
    "cauldron.takepotion": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -4235,7 +4987,7 @@ export const sound_definitions = {
       ]
    },
    "cauldron.takewater": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -4299,9 +5051,7 @@ export const sound_definitions = {
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/bamboo_wood_button/bamboo_wood_button"
-      ]
+      "sounds": [ "sounds/block/bamboo_wood_button/bamboo_wood_button" ]
    },
    "click_off.bamboo_wood_pressure_plate": {
       "category": "block",
@@ -4319,9 +5069,7 @@ export const sound_definitions = {
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/cherry_wood_button/cherry_wood_click"
-      ]
+      "sounds": [ "sounds/block/cherry_wood_button/cherry_wood_click" ]
    },
    "click_off.cherry_wood_pressure_plate": {
       "category": "block",
@@ -4351,9 +5099,7 @@ export const sound_definitions = {
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/nether_wood_button/nether_wood_button"
-      ]
+      "sounds": [ "sounds/block/nether_wood_button/nether_wood_button" ]
    },
    "click_off.nether_wood_pressure_plate": {
       "category": "block",
@@ -4395,9 +5141,7 @@ export const sound_definitions = {
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/bamboo_wood_button/bamboo_wood_button"
-      ]
+      "sounds": [ "sounds/block/bamboo_wood_button/bamboo_wood_button" ]
    },
    "click_on.bamboo_wood_pressure_plate": {
       "category": "block",
@@ -4415,9 +5159,7 @@ export const sound_definitions = {
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/cherry_wood_button/cherry_wood_click"
-      ]
+      "sounds": [ "sounds/block/cherry_wood_button/cherry_wood_click" ]
    },
    "click_on.cherry_wood_pressure_plate": {
       "category": "block",
@@ -4447,9 +5189,7 @@ export const sound_definitions = {
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/nether_wood_button/nether_wood_button"
-      ]
+      "sounds": [ "sounds/block/nether_wood_button/nether_wood_button" ]
    },
    "click_on.nether_wood_pressure_plate": {
       "category": "block",
@@ -4739,25 +5479,21 @@ export const sound_definitions = {
       ]
    },
    "conduit.activate": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/conduit/activate"
-      ]
+      "sounds": [ "sounds/block/conduit/activate" ]
    },
    "conduit.ambient": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/conduit/ambient"
-      ]
+      "sounds": [ "sounds/block/conduit/ambient" ]
    },
    "conduit.attack": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -4768,16 +5504,14 @@ export const sound_definitions = {
       ]
    },
    "conduit.deactivate": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/conduit/deactivate"
-      ]
+      "sounds": [ "sounds/block/conduit/deactivate" ]
    },
    "conduit.short": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -4814,7 +5548,7 @@ export const sound_definitions = {
       ]
    },
    "crafter.craft": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": 5.0,
       "min_distance": null,
@@ -4838,7 +5572,7 @@ export const sound_definitions = {
       ]
    },
    "crafter.fail": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": 3.0,
       "min_distance": null,
@@ -4850,7 +5584,7 @@ export const sound_definitions = {
       ]
    },
    "crossbow.loading.end": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -4862,7 +5596,7 @@ export const sound_definitions = {
       ]
    },
    "crossbow.loading.middle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -4874,16 +5608,14 @@ export const sound_definitions = {
       ]
    },
    "crossbow.loading.start": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/crossbow/loading_start"
-      ]
+      "sounds": [ "sounds/crossbow/loading_start" ]
    },
    "crossbow.quick_charge.end": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -4897,7 +5629,7 @@ export const sound_definitions = {
       ]
    },
    "crossbow.quick_charge.middle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -4908,7 +5640,7 @@ export const sound_definitions = {
       ]
    },
    "crossbow.quick_charge.start": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -4919,7 +5651,7 @@ export const sound_definitions = {
       ]
    },
    "crossbow.shoot": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -4930,7 +5662,7 @@ export const sound_definitions = {
       ]
    },
    "damage.fallbig": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -4942,7 +5674,7 @@ export const sound_definitions = {
       ]
    },
    "damage.fallsmall": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -5060,7 +5792,7 @@ export const sound_definitions = {
       ]
    },
    "dig.cloth": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -5140,7 +5872,7 @@ export const sound_definitions = {
       ]
    },
    "dig.grass": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -5155,7 +5887,7 @@ export const sound_definitions = {
       ]
    },
    "dig.gravel": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -5347,7 +6079,7 @@ export const sound_definitions = {
       ]
    },
    "dig.sand": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -5377,7 +6109,7 @@ export const sound_definitions = {
       ]
    },
    "dig.snow": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -5443,7 +6175,7 @@ export const sound_definitions = {
       ]
    },
    "dig.stone": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -5473,7 +6205,7 @@ export const sound_definitions = {
       ]
    },
    "dig.wood": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -5523,13 +6255,11 @@ export const sound_definitions = {
       ]
    },
    "elytra.loop": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": 5.0,
-      "sounds": [
-         "sounds/elytra/elytra_loop"
-      ]
+      "sounds": [ "sounds/elytra/elytra_loop" ]
    },
    "entity.generic.splash": {
       "category": "ambient",
@@ -5585,7 +6315,7 @@ export const sound_definitions = {
       ]
    },
    "entity.zombie.converted_to_drowned": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -5977,7 +6707,7 @@ export const sound_definitions = {
       ]
    },
    "fall.cloth": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -6092,7 +6822,7 @@ export const sound_definitions = {
       ]
    },
    "fall.egg": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -6104,7 +6834,7 @@ export const sound_definitions = {
       ]
    },
    "fall.grass": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -6118,7 +6848,7 @@ export const sound_definitions = {
       ]
    },
    "fall.gravel": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -6155,7 +6885,7 @@ export const sound_definitions = {
       ]
    },
    "fall.ladder": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -6355,7 +7085,7 @@ export const sound_definitions = {
       ]
    },
    "fall.sand": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -6407,7 +7137,7 @@ export const sound_definitions = {
       ]
    },
    "fall.slime": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -6420,7 +7150,7 @@ export const sound_definitions = {
       ]
    },
    "fall.snow": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -6482,7 +7212,7 @@ export const sound_definitions = {
       ]
    },
    "fall.stone": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -6539,7 +7269,7 @@ export const sound_definitions = {
       ]
    },
    "fall.wood": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -6553,7 +7283,7 @@ export const sound_definitions = {
       ]
    },
    "fire.fire": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -6565,61 +7295,49 @@ export const sound_definitions = {
       ]
    },
    "fire.ignite": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/fire/ignite"
-      ]
+      "sounds": [ "sounds/fire/ignite" ]
    },
    "firework.blast": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "ambient",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/fireworks/blast1"
-      ]
+      "sounds": [ "sounds/fireworks/blast1" ]
    },
    "firework.large_blast": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "ambient",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/fireworks/largeBlast1"
-      ]
+      "sounds": [ "sounds/fireworks/largeBlast1" ]
    },
    "firework.launch": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "ambient",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/fireworks/launch1"
-      ]
+      "sounds": [ "sounds/fireworks/launch1" ]
    },
    "firework.shoot": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "ambient",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/bow"
-      ]
+      "sounds": [ "sounds/random/bow" ]
    },
    "firework.twinkle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "ambient",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/fireworks/twinkle1"
-      ]
+      "sounds": [ "sounds/fireworks/twinkle1" ]
    },
    "game.player.attack.nodamage": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -6644,7 +7362,7 @@ export const sound_definitions = {
       ]
    },
    "game.player.attack.strong": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -6677,7 +7395,7 @@ export const sound_definitions = {
       ]
    },
    "game.player.die": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -6691,7 +7409,7 @@ export const sound_definitions = {
       ]
    },
    "game.player.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -6842,7 +7560,7 @@ export const sound_definitions = {
       ]
    },
    "hit.anvil": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -7100,7 +7818,7 @@ export const sound_definitions = {
       ]
    },
    "hit.cloth": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -7223,7 +7941,7 @@ export const sound_definitions = {
       ]
    },
    "hit.grass": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -7240,7 +7958,7 @@ export const sound_definitions = {
       ]
    },
    "hit.gravel": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -7282,8 +8000,20 @@ export const sound_definitions = {
          "sounds/step/honey_block5"
       ]
    },
+   "hit.iron": {
+      "__use_legacy_max_distance": true,
+      "category": "block",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/iron/step1",
+         "sounds/block/iron/step2",
+         "sounds/block/iron/step3",
+         "sounds/block/iron/step4"
+      ]
+   },
    "hit.ladder": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -7547,7 +8277,7 @@ export const sound_definitions = {
       ]
    },
    "hit.sand": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -7631,7 +8361,7 @@ export const sound_definitions = {
       ]
    },
    "hit.slime": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -7644,7 +8374,7 @@ export const sound_definitions = {
       ]
    },
    "hit.snow": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -7689,7 +8419,7 @@ export const sound_definitions = {
       ]
    },
    "hit.sponge": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -7731,7 +8461,7 @@ export const sound_definitions = {
       ]
    },
    "hit.stone": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -7817,7 +8547,7 @@ export const sound_definitions = {
       ]
    },
    "hit.wet_sponge": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -7829,7 +8559,7 @@ export const sound_definitions = {
       ]
    },
    "hit.wood": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -7849,73 +8579,55 @@ export const sound_definitions = {
       "category": "record",
       "max_distance": 256.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/item/horn/call0"
-      ]
+      "sounds": [ "sounds/item/horn/call0" ]
    },
    "horn.call.1": {
       "category": "record",
       "max_distance": 256.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/item/horn/call1"
-      ]
+      "sounds": [ "sounds/item/horn/call1" ]
    },
    "horn.call.2": {
       "category": "record",
       "max_distance": 256.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/item/horn/call2"
-      ]
+      "sounds": [ "sounds/item/horn/call2" ]
    },
    "horn.call.3": {
       "category": "record",
       "max_distance": 256.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/item/horn/call3"
-      ]
+      "sounds": [ "sounds/item/horn/call3" ]
    },
    "horn.call.4": {
       "category": "record",
       "max_distance": 256.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/item/horn/call4"
-      ]
+      "sounds": [ "sounds/item/horn/call4" ]
    },
    "horn.call.5": {
       "category": "record",
       "max_distance": 256.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/item/horn/call5"
-      ]
+      "sounds": [ "sounds/item/horn/call5" ]
    },
    "horn.call.6": {
       "category": "record",
       "max_distance": 256.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/item/horn/call6"
-      ]
+      "sounds": [ "sounds/item/horn/call6" ]
    },
    "horn.call.7": {
       "category": "record",
       "max_distance": 256.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/item/horn/call7"
-      ]
+      "sounds": [ "sounds/item/horn/call7" ]
    },
    "hud.bubble.pop": {
       "category": "ui",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/bubbles/hud_bubble"
-      ]
+      "sounds": [ "sounds/bubbles/hud_bubble" ]
    },
    "insert.chiseled_bookshelf": {
       "category": "block",
@@ -8056,7 +8768,7 @@ export const sound_definitions = {
       ]
    },
    "item.book.page_turn": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "ui",
       "max_distance": null,
       "min_distance": null,
@@ -8076,7 +8788,7 @@ export const sound_definitions = {
       ]
    },
    "item.book.put": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -8092,7 +8804,7 @@ export const sound_definitions = {
       ]
    },
    "item.shield.block": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -8133,20 +8845,16 @@ export const sound_definitions = {
       "category": "player",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/item/spyglass/stop"
-      ]
+      "sounds": [ "sounds/item/spyglass/stop" ]
    },
    "item.spyglass.use": {
       "category": "player",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/item/spyglass/use"
-      ]
+      "sounds": [ "sounds/item/spyglass/use" ]
    },
    "item.trident.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -8157,7 +8865,7 @@ export const sound_definitions = {
       ]
    },
    "item.trident.hit_ground": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -8185,7 +8893,7 @@ export const sound_definitions = {
       ]
    },
    "item.trident.return": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -8238,7 +8946,7 @@ export const sound_definitions = {
       ]
    },
    "item.trident.riptide_1": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -8252,7 +8960,7 @@ export const sound_definitions = {
       ]
    },
    "item.trident.riptide_2": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -8266,7 +8974,7 @@ export const sound_definitions = {
       ]
    },
    "item.trident.riptide_3": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -8280,7 +8988,7 @@ export const sound_definitions = {
       ]
    },
    "item.trident.throw": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -8299,14 +9007,11 @@ export const sound_definitions = {
       ]
    },
    "item.trident.thunder": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/item/trident/thunder1",
-         "sounds/item/trident/thunder2"
-      ],
+      "sounds": [ "sounds/item/trident/thunder1", "sounds/item/trident/thunder2" ],
       "volume": 1000.0
    },
    "jump.ancient_debris": {
@@ -8410,7 +9115,7 @@ export const sound_definitions = {
       ]
    },
    "jump.cloth": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -8495,7 +9200,7 @@ export const sound_definitions = {
       ]
    },
    "jump.grass": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -8510,7 +9215,7 @@ export const sound_definitions = {
       ]
    },
    "jump.gravel": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -8703,7 +9408,7 @@ export const sound_definitions = {
       ]
    },
    "jump.sand": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -8747,7 +9452,7 @@ export const sound_definitions = {
       ]
    },
    "jump.slime": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -8760,7 +9465,7 @@ export const sound_definitions = {
       ]
    },
    "jump.snow": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -8834,7 +9539,7 @@ export const sound_definitions = {
       ]
    },
    "jump.stone": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -8864,7 +9569,7 @@ export const sound_definitions = {
       ]
    },
    "jump.wood": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -8967,7 +9672,7 @@ export const sound_definitions = {
       ]
    },
    "land.cloth": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -9043,7 +9748,7 @@ export const sound_definitions = {
       ]
    },
    "land.grass": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -9055,7 +9760,7 @@ export const sound_definitions = {
       ]
    },
    "land.gravel": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -9217,7 +9922,7 @@ export const sound_definitions = {
       ]
    },
    "land.sand": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -9255,7 +9960,7 @@ export const sound_definitions = {
       ]
    },
    "land.slime": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -9268,7 +9973,7 @@ export const sound_definitions = {
       ]
    },
    "land.snow": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -9330,7 +10035,7 @@ export const sound_definitions = {
       ]
    },
    "land.stone": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -9354,7 +10059,7 @@ export const sound_definitions = {
       ]
    },
    "land.wood": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -9365,8 +10070,14 @@ export const sound_definitions = {
          "sounds/jump/wood4"
       ]
    },
+   "lead.break": {
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/lead/break" ]
+   },
    "leashknot.break": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -9377,7 +10088,7 @@ export const sound_definitions = {
       ]
    },
    "leashknot.place": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -9388,7 +10099,7 @@ export const sound_definitions = {
       ]
    },
    "liquid.lava": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -9400,39 +10111,30 @@ export const sound_definitions = {
       ]
    },
    "liquid.lavapop": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/liquid/lavapop"
-      ]
+      "sounds": [ "sounds/liquid/lavapop" ]
    },
    "liquid.water": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/liquid/water"
-      ]
+      "sounds": [ "sounds/liquid/water" ]
    },
    "lodestone_compass.link_compass_to_lodestone": {
       "category": "block",
       "max_distance": 7.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/item/lock_compass1",
-         "sounds/item/lock_compass2"
-      ]
+      "sounds": [ "sounds/item/lock_compass1", "sounds/item/lock_compass2" ]
    },
    "mace.heavy_smash_ground": {
       "category": "player",
       "max_distance": 6.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/item/mace/smash_ground_heavy"
-      ]
+      "sounds": [ "sounds/item/mace/smash_ground_heavy" ]
    },
    "mace.smash_air": {
       "category": "player",
@@ -9456,31 +10158,25 @@ export const sound_definitions = {
       ]
    },
    "minecart.base": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/minecart/base"
-      ]
+      "sounds": [ "sounds/minecart/base" ]
    },
    "minecart.inside": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/minecart/inside"
-      ]
+      "sounds": [ "sounds/minecart/inside" ]
    },
    "mob.agent.spawn": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/anvil_land"
-      ]
+      "sounds": [ "sounds/random/anvil_land" ]
    },
    "mob.allay.death": {
       "category": "neutral",
@@ -9519,19 +10215,19 @@ export const sound_definitions = {
       "sounds": [
          {
             "name": "sounds/mob/allay/idle_without_item1",
-            "volume": 0.120
+            "volume": 0.0240
          },
          {
             "name": "sounds/mob/allay/idle_without_item2",
-            "volume": 0.120
+            "volume": 0.0240
          },
          {
             "name": "sounds/mob/allay/idle_without_item3",
-            "volume": 0.120
+            "volume": 0.0240
          },
          {
             "name": "sounds/mob/allay/idle_without_item4",
-            "volume": 0.120
+            "volume": 0.0240
          }
       ]
    },
@@ -9808,9 +10504,7 @@ export const sound_definitions = {
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/armadillo/peek"
-      ]
+      "sounds": [ "sounds/mob/armadillo/peek" ]
    },
    "mob.armadillo.roll": {
       "category": "neutral",
@@ -9863,12 +10557,10 @@ export const sound_definitions = {
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/armadillo/unroll_start"
-      ]
+      "sounds": [ "sounds/mob/armadillo/unroll_start" ]
    },
    "mob.armor_stand.break": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -9880,7 +10572,7 @@ export const sound_definitions = {
       ]
    },
    "mob.armor_stand.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -9892,7 +10584,7 @@ export const sound_definitions = {
       ]
    },
    "mob.armor_stand.land": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -9904,7 +10596,7 @@ export const sound_definitions = {
       ]
    },
    "mob.armor_stand.place": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -9930,10 +10622,7 @@ export const sound_definitions = {
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/axolotl/death1",
-         "sounds/mob/axolotl/death2"
-      ]
+      "sounds": [ "sounds/mob/axolotl/death1", "sounds/mob/axolotl/death2" ]
    },
    "mob.axolotl.hurt": {
       "category": "neutral",
@@ -10007,16 +10696,14 @@ export const sound_definitions = {
       ]
    },
    "mob.bat.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/bat/death"
-      ]
+      "sounds": [ "sounds/mob/bat/death" ]
    },
    "mob.bat.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -10028,25 +10715,35 @@ export const sound_definitions = {
       ]
    },
    "mob.bat.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
       "sounds": [
-         "sounds/mob/bat/idle1",
-         "sounds/mob/bat/idle2",
-         "sounds/mob/bat/idle3",
-         "sounds/mob/bat/idle4"
+         {
+            "name": "sounds/mob/bat/idle1",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/bat/idle2",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/bat/idle3",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/bat/idle4",
+            "volume": 0.20
+         }
       ]
    },
    "mob.bat.takeoff": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/bat/takeoff"
-      ]
+      "sounds": [ "sounds/mob/bat/takeoff" ]
    },
    "mob.bee.aggressive": {
       "category": "neutral",
@@ -10119,33 +10816,41 @@ export const sound_definitions = {
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/bee/sting"
-      ]
+      "sounds": [ "sounds/mob/bee/sting" ]
    },
    "mob.blaze.breathe": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
       "sounds": [
-         "sounds/mob/blaze/breathe1",
-         "sounds/mob/blaze/breathe2",
-         "sounds/mob/blaze/breathe3",
-         "sounds/mob/blaze/breathe4"
+         {
+            "name": "sounds/mob/blaze/breathe1",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/blaze/breathe2",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/blaze/breathe3",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/blaze/breathe4",
+            "volume": 0.20
+         }
       ]
    },
    "mob.blaze.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/blaze/death"
-      ]
+      "sounds": [ "sounds/mob/blaze/death" ]
    },
    "mob.blaze.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -10157,16 +10862,11 @@ export const sound_definitions = {
       ]
    },
    "mob.blaze.shoot": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
-      "max_distance": null,
+      "max_distance": 32.0,
       "min_distance": null,
-      "sounds": [
-         {
-            "name": "sounds/mob/ghast/fireball4",
-            "volume": 3
-         }
-      ],
+      "sounds": [ "sounds/mob/ghast/fireball4" ],
       "subtitle": "subtitles.entity.blaze.shoot"
    },
    "mob.bogged.ambient": {
@@ -10184,9 +10884,7 @@ export const sound_definitions = {
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/bogged/death"
-      ]
+      "sounds": [ "sounds/mob/bogged/death" ]
    },
    "mob.bogged.hurt": {
       "category": "hostile",
@@ -10236,10 +10934,7 @@ export const sound_definitions = {
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/breeze/death1",
-         "sounds/mob/breeze/death2"
-      ]
+      "sounds": [ "sounds/mob/breeze/death1", "sounds/mob/breeze/death2" ]
    },
    "mob.breeze.deflect": {
       "category": "hostile",
@@ -10314,27 +11009,19 @@ export const sound_definitions = {
       "category": "hostile",
       "max_distance": 16.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/breeze/jump1",
-         "sounds/mob/breeze/jump2"
-      ]
+      "sounds": [ "sounds/mob/breeze/jump1", "sounds/mob/breeze/jump2" ]
    },
    "mob.breeze.land": {
       "category": "hostile",
       "max_distance": 16.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/breeze/land1",
-         "sounds/mob/breeze/land2"
-      ]
+      "sounds": [ "sounds/mob/breeze/land1", "sounds/mob/breeze/land2" ]
    },
    "mob.breeze.shoot": {
       "category": "hostile",
       "max_distance": 24.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/breeze/shoot"
-      ]
+      "sounds": [ "sounds/mob/breeze/shoot" ]
    },
    "mob.breeze.slide": {
       "category": "hostile",
@@ -10442,10 +11129,7 @@ export const sound_definitions = {
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/camel/death1",
-         "sounds/mob/camel/death2"
-      ]
+      "sounds": [ "sounds/mob/camel/death1", "sounds/mob/camel/death2" ]
    },
    "mob.camel.eat": {
       "category": "neutral",
@@ -10598,7 +11282,7 @@ export const sound_definitions = {
       ]
    },
    "mob.cat.beg": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -10621,24 +11305,17 @@ export const sound_definitions = {
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/cat/beg1",
-         "sounds/mob/cat/beg2",
-         "sounds/mob/cat/beg3"
-      ]
+      "sounds": [ "sounds/mob/cat/beg1", "sounds/mob/cat/beg2", "sounds/mob/cat/beg3" ]
    },
    "mob.cat.eat": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/cat/eat1",
-         "sounds/mob/cat/eat2"
-      ]
+      "sounds": [ "sounds/mob/cat/eat1", "sounds/mob/cat/eat2" ]
    },
    "mob.cat.hiss": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -10658,7 +11335,7 @@ export const sound_definitions = {
       ]
    },
    "mob.cat.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -10669,7 +11346,7 @@ export const sound_definitions = {
       ]
    },
    "mob.cat.meow": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -10693,7 +11370,7 @@ export const sound_definitions = {
       ]
    },
    "mob.cat.purr": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -10713,7 +11390,7 @@ export const sound_definitions = {
       ]
    },
    "mob.cat.purreow": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -10729,7 +11406,7 @@ export const sound_definitions = {
       ]
    },
    "mob.cat.straymeow": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -10753,26 +11430,21 @@ export const sound_definitions = {
       ]
    },
    "mob.chicken.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/chicken/hurt1",
-         "sounds/mob/chicken/hurt2"
-      ]
+      "sounds": [ "sounds/mob/chicken/hurt1", "sounds/mob/chicken/hurt2" ]
    },
    "mob.chicken.plop": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/chicken/plop"
-      ]
+      "sounds": [ "sounds/mob/chicken/plop" ]
    },
    "mob.chicken.say": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -10786,17 +11458,196 @@ export const sound_definitions = {
       ]
    },
    "mob.chicken.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
+      "sounds": [ "sounds/mob/chicken/step1", "sounds/mob/chicken/step2" ]
+   },
+   "mob.copper_golem.becoming_statue": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
       "sounds": [
-         "sounds/mob/chicken/step1",
-         "sounds/mob/chicken/step2"
+         "sounds/mob/copper_golem/regular/become_statue1",
+         "sounds/mob/copper_golem/regular/become_statue2",
+         "sounds/mob/copper_golem/regular/become_statue3",
+         "sounds/mob/copper_golem/regular/become_statue4"
+      ]
+   },
+   "mob.copper_golem.chest_interaction.put_item": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/copper_golem/chest_interaction/put_item" ]
+   },
+   "mob.copper_golem.chest_interaction.put_item_fail": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/copper_golem/chest_interaction/put_item_fail" ]
+   },
+   "mob.copper_golem.chest_interaction.take_item": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/copper_golem/chest_interaction/take_item" ]
+   },
+   "mob.copper_golem.chest_interaction.take_item_fail": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/copper_golem/chest_interaction/take_item_fail" ]
+   },
+   "mob.copper_golem.death": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/copper_golem/regular/death" ]
+   },
+   "mob.copper_golem.hurt": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/copper_golem/regular/hurt1",
+         "sounds/mob/copper_golem/regular/hurt2",
+         "sounds/mob/copper_golem/regular/hurt3",
+         "sounds/mob/copper_golem/regular/hurt4"
+      ]
+   },
+   "mob.copper_golem.oxidized.death": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/copper_golem/oxidized/death" ]
+   },
+   "mob.copper_golem.oxidized.hurt": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/copper_golem/oxidized/hurt1",
+         "sounds/mob/copper_golem/oxidized/hurt2",
+         "sounds/mob/copper_golem/oxidized/hurt3",
+         "sounds/mob/copper_golem/oxidized/hurt4"
+      ]
+   },
+   "mob.copper_golem.oxidized.spin": {
+      "category": "neutral",
+      "max_distance": 12.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/copper_golem/oxidized/spin1",
+         "sounds/mob/copper_golem/oxidized/spin2",
+         "sounds/mob/copper_golem/oxidized/spin3",
+         "sounds/mob/copper_golem/oxidized/spin4",
+         "sounds/mob/copper_golem/oxidized/spin5",
+         "sounds/mob/copper_golem/oxidized/spin6",
+         "sounds/mob/copper_golem/oxidized/spin7"
+      ]
+   },
+   "mob.copper_golem.oxidized.step": {
+      "category": "neutral",
+      "max_distance": 12.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/copper_golem/oxidized/step1",
+         "sounds/mob/copper_golem/oxidized/step2",
+         "sounds/mob/copper_golem/oxidized/step3",
+         "sounds/mob/copper_golem/oxidized/step4",
+         "sounds/mob/copper_golem/oxidized/step5",
+         "sounds/mob/copper_golem/oxidized/step6",
+         "sounds/mob/copper_golem/oxidized/step7",
+         "sounds/mob/copper_golem/oxidized/step8",
+         "sounds/mob/copper_golem/oxidized/step9"
+      ]
+   },
+   "mob.copper_golem.spawn": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/copper_golem/regular/spawn" ]
+   },
+   "mob.copper_golem.spin": {
+      "category": "neutral",
+      "max_distance": 12.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/copper_golem/regular/spin1",
+         "sounds/mob/copper_golem/regular/spin2",
+         "sounds/mob/copper_golem/regular/spin3",
+         "sounds/mob/copper_golem/regular/spin4",
+         "sounds/mob/copper_golem/regular/spin5",
+         "sounds/mob/copper_golem/regular/spin6",
+         "sounds/mob/copper_golem/regular/spin7"
+      ]
+   },
+   "mob.copper_golem.step": {
+      "category": "neutral",
+      "max_distance": 12.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/copper_golem/regular/step1",
+         "sounds/mob/copper_golem/regular/step2",
+         "sounds/mob/copper_golem/regular/step3",
+         "sounds/mob/copper_golem/regular/step4",
+         "sounds/mob/copper_golem/regular/step5",
+         "sounds/mob/copper_golem/regular/step6",
+         "sounds/mob/copper_golem/regular/step7",
+         "sounds/mob/copper_golem/regular/step8",
+         "sounds/mob/copper_golem/regular/step9"
+      ]
+   },
+   "mob.copper_golem.weathered.death": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/copper_golem/weathered/death" ]
+   },
+   "mob.copper_golem.weathered.hurt": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/copper_golem/weathered/hurt1",
+         "sounds/mob/copper_golem/weathered/hurt2",
+         "sounds/mob/copper_golem/weathered/hurt3",
+         "sounds/mob/copper_golem/weathered/hurt4"
+      ]
+   },
+   "mob.copper_golem.weathered.spin": {
+      "category": "neutral",
+      "max_distance": 12.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/copper_golem/weathered/spin1",
+         "sounds/mob/copper_golem/weathered/spin2",
+         "sounds/mob/copper_golem/weathered/spin3",
+         "sounds/mob/copper_golem/weathered/spin4",
+         "sounds/mob/copper_golem/weathered/spin5",
+         "sounds/mob/copper_golem/weathered/spin6",
+         "sounds/mob/copper_golem/weathered/spin7"
+      ]
+   },
+   "mob.copper_golem.weathered.step": {
+      "category": "neutral",
+      "max_distance": 12.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/copper_golem/weathered/step1",
+         "sounds/mob/copper_golem/weathered/step2",
+         "sounds/mob/copper_golem/weathered/step3",
+         "sounds/mob/copper_golem/weathered/step4",
+         "sounds/mob/copper_golem/weathered/step5",
+         "sounds/mob/copper_golem/weathered/step6",
+         "sounds/mob/copper_golem/weathered/step7",
+         "sounds/mob/copper_golem/weathered/step8",
+         "sounds/mob/copper_golem/weathered/step9"
       ]
    },
    "mob.cow.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -10807,7 +11658,7 @@ export const sound_definitions = {
       ]
    },
    "mob.cow.milk": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -10818,7 +11669,7 @@ export const sound_definitions = {
       ]
    },
    "mob.cow.say": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -10833,7 +11684,7 @@ export const sound_definitions = {
       ]
    },
    "mob.cow.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -10845,16 +11696,14 @@ export const sound_definitions = {
       ]
    },
    "mob.creaking.activate": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": 16.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/creaking/activate"
-      ]
+      "sounds": [ "sounds/mob/creaking/activate" ]
    },
    "mob.creaking.ambient": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": 16.0,
       "min_distance": null,
@@ -10868,7 +11717,7 @@ export const sound_definitions = {
       ]
    },
    "mob.creaking.attack": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -10880,25 +11729,21 @@ export const sound_definitions = {
       ]
    },
    "mob.creaking.deactivate": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": 16.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/creaking/deactivate"
-      ]
+      "sounds": [ "sounds/mob/creaking/deactivate" ]
    },
    "mob.creaking.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": 16.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/creaking/death"
-      ]
+      "sounds": [ "sounds/mob/creaking/death" ]
    },
    "mob.creaking.freeze": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": 16.0,
       "min_distance": null,
@@ -10910,16 +11755,14 @@ export const sound_definitions = {
       ]
    },
    "mob.creaking.spawn": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": 16.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/creaking/spawn"
-      ]
+      "sounds": [ "sounds/mob/creaking/spawn" ]
    },
    "mob.creaking.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -10932,7 +11775,7 @@ export const sound_definitions = {
       ]
    },
    "mob.creaking.sway": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -10944,16 +11787,14 @@ export const sound_definitions = {
       ]
    },
    "mob.creaking.twitch": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": 16.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/creaking/twitch"
-      ]
+      "sounds": [ "sounds/mob/creaking/twitch" ]
    },
    "mob.creaking.unfreeze": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": 16.0,
       "min_distance": null,
@@ -10964,16 +11805,14 @@ export const sound_definitions = {
       ]
    },
    "mob.creeper.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/creeper/death"
-      ]
+      "sounds": [ "sounds/mob/creeper/death" ]
    },
    "mob.creeper.say": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -10988,7 +11827,7 @@ export const sound_definitions = {
       ]
    },
    "mob.dolphin.attack": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -10999,27 +11838,21 @@ export const sound_definitions = {
       ]
    },
    "mob.dolphin.blowhole": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/dolphin/blowhole1",
-         "sounds/mob/dolphin/blowhole2"
-      ]
+      "sounds": [ "sounds/mob/dolphin/blowhole1", "sounds/mob/dolphin/blowhole2" ]
    },
    "mob.dolphin.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/dolphin/death1",
-         "sounds/mob/dolphin/death2"
-      ]
+      "sounds": [ "sounds/mob/dolphin/death1", "sounds/mob/dolphin/death2" ]
    },
    "mob.dolphin.eat": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -11030,7 +11863,7 @@ export const sound_definitions = {
       ]
    },
    "mob.dolphin.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -11041,7 +11874,7 @@ export const sound_definitions = {
       ]
    },
    "mob.dolphin.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -11058,7 +11891,7 @@ export const sound_definitions = {
       ]
    },
    "mob.dolphin.idle_water": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -11079,7 +11912,7 @@ export const sound_definitions = {
       ]
    },
    "mob.dolphin.jump": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -11090,17 +11923,14 @@ export const sound_definitions = {
       ]
    },
    "mob.dolphin.play": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/dolphin/play1",
-         "sounds/mob/dolphin/play2"
-      ]
+      "sounds": [ "sounds/mob/dolphin/play1", "sounds/mob/dolphin/play2" ]
    },
    "mob.dolphin.splash": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -11111,7 +11941,7 @@ export const sound_definitions = {
       ]
    },
    "mob.dolphin.swim": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -11123,27 +11953,21 @@ export const sound_definitions = {
       ]
    },
    "mob.drowned.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/drowned/death1",
-         "sounds/mob/drowned/death2"
-      ]
+      "sounds": [ "sounds/mob/drowned/death1", "sounds/mob/drowned/death2" ]
    },
    "mob.drowned.death_water": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/drowned/water/death1",
-         "sounds/mob/drowned/water/death2"
-      ]
+      "sounds": [ "sounds/mob/drowned/water/death1", "sounds/mob/drowned/water/death2" ]
    },
    "mob.drowned.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11154,7 +11978,7 @@ export const sound_definitions = {
       ]
    },
    "mob.drowned.hurt_water": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11165,7 +11989,7 @@ export const sound_definitions = {
       ]
    },
    "mob.drowned.say": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11181,7 +12005,7 @@ export const sound_definitions = {
       ]
    },
    "mob.drowned.say_water": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11196,17 +12020,14 @@ export const sound_definitions = {
       ]
    },
    "mob.drowned.shoot": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/item/trident/throw1",
-         "sounds/item/trident/throw2"
-      ]
+      "sounds": [ "sounds/item/trident/throw1", "sounds/item/trident/throw2" ]
    },
    "mob.drowned.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11219,7 +12040,7 @@ export const sound_definitions = {
       ]
    },
    "mob.drowned.swim": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11231,25 +12052,21 @@ export const sound_definitions = {
       ]
    },
    "mob.elderguardian.curse": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/guardian/curse"
-      ]
+      "sounds": [ "sounds/mob/guardian/curse" ]
    },
    "mob.elderguardian.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/guardian/elder_death"
-      ]
+      "sounds": [ "sounds/mob/guardian/elder_death" ]
    },
    "mob.elderguardian.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11261,7 +12078,7 @@ export const sound_definitions = {
       ]
    },
    "mob.elderguardian.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11273,7 +12090,7 @@ export const sound_definitions = {
       ]
    },
    "mob.enderdragon.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11285,7 +12102,7 @@ export const sound_definitions = {
       ]
    },
    "mob.enderdragon.flap": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11317,7 +12134,7 @@ export const sound_definitions = {
       ]
    },
    "mob.enderdragon.growl": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11341,7 +12158,7 @@ export const sound_definitions = {
       ]
    },
    "mob.enderdragon.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11365,16 +12182,14 @@ export const sound_definitions = {
       ]
    },
    "mob.endermen.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/endermen/death"
-      ]
+      "sounds": [ "sounds/mob/endermen/death" ]
    },
    "mob.endermen.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11386,7 +12201,7 @@ export const sound_definitions = {
       ]
    },
    "mob.endermen.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11402,7 +12217,7 @@ export const sound_definitions = {
       ]
    },
    "mob.endermen.portal": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11415,7 +12230,7 @@ export const sound_definitions = {
       ]
    },
    "mob.endermen.scream": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11430,16 +12245,14 @@ export const sound_definitions = {
       ]
    },
    "mob.endermen.stare": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/endermen/stare"
-      ]
+      "sounds": [ "sounds/mob/endermen/stare" ]
    },
    "mob.endermite.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11450,16 +12263,14 @@ export const sound_definitions = {
       ]
    },
    "mob.endermite.kill": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/silverfish/kill"
-      ]
+      "sounds": [ "sounds/mob/silverfish/kill" ]
    },
    "mob.endermite.say": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11471,7 +12282,7 @@ export const sound_definitions = {
       ]
    },
    "mob.endermite.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11483,16 +12294,14 @@ export const sound_definitions = {
       ]
    },
    "mob.evocation_fangs.attack": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/evocation_illager/fangs"
-      ]
+      "sounds": [ "sounds/mob/evocation_illager/fangs" ]
    },
    "mob.evocation_illager.ambient": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11504,7 +12313,7 @@ export const sound_definitions = {
       ]
    },
    "mob.evocation_illager.cast_spell": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11514,7 +12323,7 @@ export const sound_definitions = {
       ]
    },
    "mob.evocation_illager.celebrate": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11525,7 +12334,7 @@ export const sound_definitions = {
       ]
    },
    "mob.evocation_illager.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11535,7 +12344,7 @@ export const sound_definitions = {
       ]
    },
    "mob.evocation_illager.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11545,7 +12354,7 @@ export const sound_definitions = {
       ]
    },
    "mob.evocation_illager.prepare_attack": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11555,25 +12364,21 @@ export const sound_definitions = {
       ]
    },
    "mob.evocation_illager.prepare_summon": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/evocation_illager/prepare_summon"
-      ]
+      "sounds": [ "sounds/mob/evocation_illager/prepare_summon" ]
    },
    "mob.evocation_illager.prepare_wololo": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/evocation_illager/prepare_wololo"
-      ]
+      "sounds": [ "sounds/mob/evocation_illager/prepare_wololo" ]
    },
    "mob.fish.flop": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -11585,7 +12390,7 @@ export const sound_definitions = {
       ]
    },
    "mob.fish.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -11597,7 +12402,7 @@ export const sound_definitions = {
       ]
    },
    "mob.fish.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -11612,7 +12417,7 @@ export const sound_definitions = {
       ]
    },
    "mob.fox.aggro": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11648,7 +12453,7 @@ export const sound_definitions = {
       ]
    },
    "mob.fox.ambient": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -11681,7 +12486,7 @@ export const sound_definitions = {
       ]
    },
    "mob.fox.bite": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -11704,7 +12509,7 @@ export const sound_definitions = {
       ]
    },
    "mob.fox.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -11720,7 +12525,7 @@ export const sound_definitions = {
       ]
    },
    "mob.fox.eat": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -11740,7 +12545,7 @@ export const sound_definitions = {
       ]
    },
    "mob.fox.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -11764,7 +12569,7 @@ export const sound_definitions = {
       ]
    },
    "mob.fox.screech": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -11788,7 +12593,7 @@ export const sound_definitions = {
       ]
    },
    "mob.fox.sleep": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -11816,7 +12621,7 @@ export const sound_definitions = {
       ]
    },
    "mob.fox.sniff": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -11840,7 +12645,7 @@ export const sound_definitions = {
       ]
    },
    "mob.fox.spit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -12097,7 +12902,7 @@ export const sound_definitions = {
       ]
    },
    "mob.ghast.affectionate_scream": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": 80.0,
       "min_distance": 0.0,
@@ -12109,7 +12914,7 @@ export const sound_definitions = {
       ]
    },
    "mob.ghast.charge": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": 80.0,
       "min_distance": 0.0,
@@ -12122,7 +12927,7 @@ export const sound_definitions = {
       ]
    },
    "mob.ghast.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": 80.0,
       "min_distance": 0.0,
@@ -12134,16 +12939,14 @@ export const sound_definitions = {
       ]
    },
    "mob.ghast.fireball": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/ghast/fireball4"
-      ]
+      "sounds": [ "sounds/mob/ghast/fireball4" ]
    },
    "mob.ghast.moan": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": 80.0,
       "min_distance": 0.0,
@@ -12151,36 +12954,36 @@ export const sound_definitions = {
          {
             "load_on_low_memory": true,
             "name": "sounds/mob/ghast/moan1",
-            "volume": 0.50
+            "volume": 0.10
          },
          {
             "name": "sounds/mob/ghast/moan2",
-            "volume": 0.50
+            "volume": 0.10
          },
          {
             "name": "sounds/mob/ghast/moan3",
-            "volume": 0.50
+            "volume": 0.10
          },
          {
             "name": "sounds/mob/ghast/moan4",
-            "volume": 0.50
+            "volume": 0.10
          },
          {
             "name": "sounds/mob/ghast/moan5",
-            "volume": 0.50
+            "volume": 0.10
          },
          {
             "name": "sounds/mob/ghast/moan6",
-            "volume": 0.50
+            "volume": 0.10
          },
          {
             "name": "sounds/mob/ghast/moan7",
-            "volume": 0.50
+            "volume": 0.10
          }
       ]
    },
    "mob.ghast.scream": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": 80.0,
       "min_distance": 0.0,
@@ -12207,6 +13010,45 @@ export const sound_definitions = {
             "volume": 0.50
          }
       ]
+   },
+   "mob.ghastling.ambient": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/ghastling/ambient1",
+         "sounds/mob/ghastling/ambient2",
+         "sounds/mob/ghastling/ambient3",
+         "sounds/mob/ghastling/ambient4",
+         "sounds/mob/ghastling/ambient5",
+         "sounds/mob/ghastling/ambient6",
+         "sounds/mob/ghastling/ambient7"
+      ]
+   },
+   "mob.ghastling.death": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/ghastling/death" ]
+   },
+   "mob.ghastling.hurt": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/ghastling/hurt1",
+         "sounds/mob/ghastling/hurt2",
+         "sounds/mob/ghastling/hurt3",
+         "sounds/mob/ghastling/hurt4",
+         "sounds/mob/ghastling/hurt5"
+      ]
+   },
+   "mob.ghastling.spawn": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "pitch": 0.50,
+      "sounds": [ "sounds/mob/ghastling/spawn" ]
    },
    "mob.glow_squid.ambient": {
       "category": "neutral",
@@ -12606,7 +13448,7 @@ export const sound_definitions = {
       ]
    },
    "mob.guardian.ambient": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -12618,7 +13460,7 @@ export const sound_definitions = {
       ]
    },
    "mob.guardian.attack_loop": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -12630,16 +13472,14 @@ export const sound_definitions = {
       ]
    },
    "mob.guardian.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/guardian/guardian_death"
-      ]
+      "sounds": [ "sounds/mob/guardian/guardian_death" ]
    },
    "mob.guardian.flop": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -12651,7 +13491,7 @@ export const sound_definitions = {
       ]
    },
    "mob.guardian.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -12663,16 +13503,14 @@ export const sound_definitions = {
       ]
    },
    "mob.guardian.land_death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/guardian/land_death"
-      ]
+      "sounds": [ "sounds/mob/guardian/land_death" ]
    },
    "mob.guardian.land_hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -12684,7 +13522,7 @@ export const sound_definitions = {
       ]
    },
    "mob.guardian.land_idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -12694,6 +13532,119 @@ export const sound_definitions = {
          "sounds/mob/guardian/land_idle3",
          "sounds/mob/guardian/land_idle4"
       ]
+   },
+   "mob.happy_ghast.ambient": {
+      "category": "neutral",
+      "max_distance": 64.0,
+      "min_distance": null,
+      "sounds": [
+         {
+            "load_on_low_memory": true,
+            "name": "sounds/mob/happy_ghast/ambient1",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/happy_ghast/ambient2",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/happy_ghast/ambient3",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/happy_ghast/ambient4",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/happy_ghast/ambient5",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/happy_ghast/ambient6",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/happy_ghast/ambient7",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/happy_ghast/ambient8",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/happy_ghast/ambient9",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/happy_ghast/ambient10",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/happy_ghast/ambient11",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/happy_ghast/ambient12",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/happy_ghast/ambient13",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/happy_ghast/ambient14",
+            "volume": 0.20
+         }
+      ]
+   },
+   "mob.happy_ghast.death": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/happy_ghast/death" ]
+   },
+   "mob.happy_ghast.goggles_down": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/happy_ghast/goggles_down" ]
+   },
+   "mob.happy_ghast.goggles_up": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/happy_ghast/goggles_up" ]
+   },
+   "mob.happy_ghast.harness_equip": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/happy_ghast/harness_equip" ]
+   },
+   "mob.happy_ghast.harness_unequip": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/happy_ghast/harness_unequip" ]
+   },
+   "mob.happy_ghast.hurt": {
+      "category": "neutral",
+      "max_distance": 16.0,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/happy_ghast/hurt1",
+         "sounds/mob/happy_ghast/hurt2",
+         "sounds/mob/happy_ghast/hurt3",
+         "sounds/mob/happy_ghast/hurt4",
+         "sounds/mob/happy_ghast/hurt5",
+         "sounds/mob/happy_ghast/hurt6"
+      ]
+   },
+   "mob.happy_ghast.ride": {
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": 5.0,
+      "sounds": [ "sounds/mob/happy_ghast/ghast_ride" ]
    },
    "mob.hoglin.ambient": {
       "category": "hostile",
@@ -12820,10 +13771,7 @@ export const sound_definitions = {
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/hoglin/converted1",
-         "sounds/mob/hoglin/converted2"
-      ]
+      "sounds": [ "sounds/mob/hoglin/converted1", "sounds/mob/hoglin/converted2" ]
    },
    "mob.hoglin.death": {
       "category": "hostile",
@@ -12959,25 +13907,21 @@ export const sound_definitions = {
       "subtitle": "subtitles.mob.hoglin.step"
    },
    "mob.horse.angry": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/horse/angry1"
-      ]
+      "sounds": [ "sounds/mob/horse/angry1" ]
    },
    "mob.horse.armor": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/horse/armor"
-      ]
+      "sounds": [ "sounds/mob/horse/armor" ]
    },
    "mob.horse.breathe": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -12988,35 +13932,28 @@ export const sound_definitions = {
       ]
    },
    "mob.horse.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/horse/death"
-      ]
+      "sounds": [ "sounds/mob/horse/death" ]
    },
    "mob.horse.donkey.angry": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/horse/donkey/angry1",
-         "sounds/mob/horse/donkey/angry2"
-      ]
+      "sounds": [ "sounds/mob/horse/donkey/angry1", "sounds/mob/horse/donkey/angry2" ]
    },
    "mob.horse.donkey.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/horse/donkey/death"
-      ]
+      "sounds": [ "sounds/mob/horse/donkey/death" ]
    },
    "mob.horse.donkey.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13027,7 +13964,7 @@ export const sound_definitions = {
       ]
    },
    "mob.horse.donkey.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13038,7 +13975,7 @@ export const sound_definitions = {
       ]
    },
    "mob.horse.eat": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13051,7 +13988,7 @@ export const sound_definitions = {
       ]
    },
    "mob.horse.gallop": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13063,7 +14000,7 @@ export const sound_definitions = {
       ]
    },
    "mob.horse.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13074,8 +14011,14 @@ export const sound_definitions = {
          "sounds/mob/horse/hit4"
       ]
    },
+   "mob.horse.horse_armor_unequip": {
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/horse/horse_armor_unequip" ]
+   },
    "mob.horse.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13086,43 +14029,35 @@ export const sound_definitions = {
       ]
    },
    "mob.horse.jump": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/horse/jump"
-      ]
+      "sounds": [ "sounds/mob/horse/jump" ]
    },
    "mob.horse.land": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/horse/land"
-      ]
+      "sounds": [ "sounds/mob/horse/land" ]
    },
    "mob.horse.leather": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/horse/leather"
-      ]
+      "sounds": [ "sounds/mob/horse/leather" ]
    },
    "mob.horse.skeleton.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/horse/skeleton/death"
-      ]
+      "sounds": [ "sounds/mob/horse/skeleton/death" ]
    },
    "mob.horse.skeleton.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13134,7 +14069,7 @@ export const sound_definitions = {
       ]
    },
    "mob.horse.skeleton.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13145,7 +14080,7 @@ export const sound_definitions = {
       ]
    },
    "mob.horse.soft": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13159,7 +14094,7 @@ export const sound_definitions = {
       ]
    },
    "mob.horse.wood": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13173,16 +14108,14 @@ export const sound_definitions = {
       ]
    },
    "mob.horse.zombie.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/horse/zombie/death"
-      ]
+      "sounds": [ "sounds/mob/horse/zombie/death" ]
    },
    "mob.horse.zombie.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13194,7 +14127,7 @@ export const sound_definitions = {
       ]
    },
    "mob.horse.zombie.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13205,7 +14138,7 @@ export const sound_definitions = {
       ]
    },
    "mob.husk.ambient": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -13219,33 +14152,24 @@ export const sound_definitions = {
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/husk/convert1",
-         "sounds/mob/husk/convert2"
-      ]
+      "sounds": [ "sounds/mob/husk/convert1", "sounds/mob/husk/convert2" ]
    },
    "mob.husk.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/husk/death1",
-         "sounds/mob/husk/death2"
-      ]
+      "sounds": [ "sounds/mob/husk/death1", "sounds/mob/husk/death2" ]
    },
    "mob.husk.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/husk/hurt1",
-         "sounds/mob/husk/hurt2"
-      ]
+      "sounds": [ "sounds/mob/husk/hurt1", "sounds/mob/husk/hurt2" ]
    },
    "mob.husk.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -13283,16 +14207,14 @@ export const sound_definitions = {
       ]
    },
    "mob.irongolem.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/irongolem/death"
-      ]
+      "sounds": [ "sounds/mob/irongolem/death" ]
    },
    "mob.irongolem.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -13307,21 +14229,17 @@ export const sound_definitions = {
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/irongolem/repair"
-      ]
+      "sounds": [ "sounds/mob/irongolem/repair" ]
    },
    "mob.irongolem.throw": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/irongolem/throw"
-      ]
+      "sounds": [ "sounds/mob/irongolem/throw" ]
    },
    "mob.irongolem.walk": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -13333,26 +14251,27 @@ export const sound_definitions = {
       ]
    },
    "mob.llama.angry": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/llama/angry1"
-      ]
+      "sounds": [ "sounds/mob/llama/angry1" ]
+   },
+   "mob.llama.carpet_unequip": {
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/llama/carpet_unequip" ]
    },
    "mob.llama.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/llama/death1",
-         "sounds/mob/llama/death2"
-      ]
+      "sounds": [ "sounds/mob/llama/death1", "sounds/mob/llama/death2" ]
    },
    "mob.llama.eat": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13363,7 +14282,7 @@ export const sound_definitions = {
       ]
    },
    "mob.llama.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13374,7 +14293,7 @@ export const sound_definitions = {
       ]
    },
    "mob.llama.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13387,17 +14306,14 @@ export const sound_definitions = {
       ]
    },
    "mob.llama.spit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/llama/spit1",
-         "sounds/mob/llama/spit2"
-      ]
+      "sounds": [ "sounds/mob/llama/spit1", "sounds/mob/llama/spit2" ]
    },
    "mob.llama.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13410,16 +14326,14 @@ export const sound_definitions = {
       ]
    },
    "mob.llama.swag": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/llama/swag"
-      ]
+      "sounds": [ "sounds/mob/llama/swag" ]
    },
    "mob.magmacube.big": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -13434,7 +14348,7 @@ export const sound_definitions = {
       ]
    },
    "mob.magmacube.jump": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -13446,7 +14360,7 @@ export const sound_definitions = {
       ]
    },
    "mob.magmacube.small": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -13462,7 +14376,7 @@ export const sound_definitions = {
       ]
    },
    "mob.mooshroom.convert": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13478,7 +14392,7 @@ export const sound_definitions = {
       ]
    },
    "mob.mooshroom.eat": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13534,7 +14448,7 @@ export const sound_definitions = {
       ]
    },
    "mob.mooshroom.suspicious_milk": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13578,7 +14492,7 @@ export const sound_definitions = {
       ]
    },
    "mob.ocelot.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13601,7 +14515,7 @@ export const sound_definitions = {
       ]
    },
    "mob.ocelot.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13625,7 +14539,7 @@ export const sound_definitions = {
       ]
    },
    "mob.panda.bite": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -13636,7 +14550,7 @@ export const sound_definitions = {
       ]
    },
    "mob.panda.cant_breed": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13649,7 +14563,7 @@ export const sound_definitions = {
       ]
    },
    "mob.panda.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -13661,7 +14575,7 @@ export const sound_definitions = {
       ]
    },
    "mob.panda.eat": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13684,7 +14598,7 @@ export const sound_definitions = {
       ]
    },
    "mob.panda.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -13698,7 +14612,7 @@ export const sound_definitions = {
       ]
    },
    "mob.panda.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13715,7 +14629,7 @@ export const sound_definitions = {
       ]
    },
    "mob.panda.idle.aggressive": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13734,7 +14648,7 @@ export const sound_definitions = {
       ]
    },
    "mob.panda.idle.worried": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13748,16 +14662,14 @@ export const sound_definitions = {
       ]
    },
    "mob.panda.presneeze": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/panda/pre_sneeze"
-      ]
+      "sounds": [ "sounds/mob/panda/pre_sneeze" ]
    },
    "mob.panda.sneeze": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13768,7 +14680,7 @@ export const sound_definitions = {
       ]
    },
    "mob.panda.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13781,7 +14693,7 @@ export const sound_definitions = {
       ]
    },
    "mob.panda_baby.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13799,7 +14711,7 @@ export const sound_definitions = {
       ]
    },
    "mob.parrot.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13811,7 +14723,7 @@ export const sound_definitions = {
       ]
    },
    "mob.parrot.eat": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13822,7 +14734,7 @@ export const sound_definitions = {
       ]
    },
    "mob.parrot.fly": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13838,40 +14750,53 @@ export const sound_definitions = {
       ]
    },
    "mob.parrot.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/parrot/hurt1",
-         "sounds/mob/parrot/hurt2"
-      ]
+      "sounds": [ "sounds/mob/parrot/hurt1", "sounds/mob/parrot/hurt2" ]
    },
    "mob.parrot.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
       "sounds": [
-         "sounds/mob/parrot/idle1",
-         "sounds/mob/parrot/idle2",
-         "sounds/mob/parrot/idle3",
-         "sounds/mob/parrot/idle4",
-         "sounds/mob/parrot/idle5",
-         "sounds/mob/parrot/idle6"
+         {
+            "name": "sounds/mob/parrot/idle1",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/parrot/idle2",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/parrot/idle3",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/parrot/idle4",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/parrot/idle5",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/parrot/idle6",
+            "volume": 0.20
+         }
       ]
    },
    "mob.parrot.imitate_creaking": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/parrot/imitate_creaking"
-      ]
+      "sounds": [ "sounds/mob/parrot/imitate_creaking" ]
    },
    "mob.parrot.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13884,17 +14809,14 @@ export const sound_definitions = {
       ]
    },
    "mob.phantom.bite": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/phantom/bite1",
-         "sounds/mob/phantom/bite2"
-      ]
+      "sounds": [ "sounds/mob/phantom/bite1", "sounds/mob/phantom/bite2" ]
    },
    "mob.phantom.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -13918,7 +14840,7 @@ export const sound_definitions = {
       ]
    },
    "mob.phantom.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -13929,20 +14851,35 @@ export const sound_definitions = {
       ]
    },
    "mob.phantom.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
       "sounds": [
-         "sounds/mob/phantom/idle1",
-         "sounds/mob/phantom/idle2",
-         "sounds/mob/phantom/idle3",
-         "sounds/mob/phantom/idle4",
-         "sounds/mob/phantom/idle5"
+         {
+            "name": "sounds/mob/phantom/idle1",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/phantom/idle2",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/phantom/idle3",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/phantom/idle4",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/phantom/idle5",
+            "volume": 0.20
+         }
       ]
    },
    "mob.phantom.swoop": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -13954,7 +14891,7 @@ export const sound_definitions = {
       ]
    },
    "mob.pig.boost": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13967,16 +14904,14 @@ export const sound_definitions = {
       ]
    },
    "mob.pig.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/pig/death"
-      ]
+      "sounds": [ "sounds/mob/pig/death" ]
    },
    "mob.pig.say": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -13990,7 +14925,7 @@ export const sound_definitions = {
       ]
    },
    "mob.pig.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -14395,7 +15330,7 @@ export const sound_definitions = {
       "subtitle": "subtitles.mob.piglin_brute.step"
    },
    "mob.pillager.celebrate": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14408,7 +15343,7 @@ export const sound_definitions = {
       ]
    },
    "mob.pillager.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14421,7 +15356,7 @@ export const sound_definitions = {
       ]
    },
    "mob.pillager.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14435,7 +15370,7 @@ export const sound_definitions = {
       ]
    },
    "mob.pillager.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14489,7 +15424,7 @@ export const sound_definitions = {
       ]
    },
    "mob.polarbear.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14500,7 +15435,7 @@ export const sound_definitions = {
       ]
    },
    "mob.polarbear.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14512,7 +15447,7 @@ export const sound_definitions = {
       ]
    },
    "mob.polarbear.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -14524,7 +15459,7 @@ export const sound_definitions = {
       ]
    },
    "mob.polarbear.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -14536,7 +15471,7 @@ export const sound_definitions = {
       ]
    },
    "mob.polarbear.warning": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14548,7 +15483,7 @@ export const sound_definitions = {
       ]
    },
    "mob.polarbear_baby.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -14560,7 +15495,7 @@ export const sound_definitions = {
       ]
    },
    "mob.rabbit.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -14572,7 +15507,7 @@ export const sound_definitions = {
       ]
    },
    "mob.rabbit.hop": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -14596,7 +15531,7 @@ export const sound_definitions = {
       ]
    },
    "mob.rabbit.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -14620,7 +15555,7 @@ export const sound_definitions = {
       ]
    },
    "mob.rabbit.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -14644,7 +15579,7 @@ export const sound_definitions = {
       ]
    },
    "mob.ravager.ambient": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14660,7 +15595,7 @@ export const sound_definitions = {
       ]
    },
    "mob.ravager.bite": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14674,17 +15609,14 @@ export const sound_definitions = {
       ]
    },
    "mob.ravager.celebrate": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/ravager/celebrate1",
-         "sounds/mob/ravager/celebrate2"
-      ]
+      "sounds": [ "sounds/mob/ravager/celebrate1", "sounds/mob/ravager/celebrate2" ]
    },
    "mob.ravager.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14695,7 +15627,7 @@ export const sound_definitions = {
       ]
    },
    "mob.ravager.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14707,7 +15639,7 @@ export const sound_definitions = {
       ]
    },
    "mob.ravager.roar": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14722,7 +15654,7 @@ export const sound_definitions = {
       ]
    },
    "mob.ravager.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14735,7 +15667,7 @@ export const sound_definitions = {
       ]
    },
    "mob.ravager.stun": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14749,7 +15681,7 @@ export const sound_definitions = {
       ]
    },
    "mob.sheep.say": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -14763,16 +15695,14 @@ export const sound_definitions = {
       ]
    },
    "mob.sheep.shear": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/sheep/shear"
-      ]
+      "sounds": [ "sounds/mob/sheep/shear" ]
    },
    "mob.sheep.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -14785,7 +15715,7 @@ export const sound_definitions = {
       ]
    },
    "mob.shulker.ambient": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14800,7 +15730,7 @@ export const sound_definitions = {
       ]
    },
    "mob.shulker.bullet.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14812,7 +15742,7 @@ export const sound_definitions = {
       ]
    },
    "mob.shulker.close": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14825,7 +15755,7 @@ export const sound_definitions = {
       ]
    },
    "mob.shulker.close.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14838,7 +15768,7 @@ export const sound_definitions = {
       ]
    },
    "mob.shulker.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14850,7 +15780,7 @@ export const sound_definitions = {
       ]
    },
    "mob.shulker.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14862,7 +15792,7 @@ export const sound_definitions = {
       ]
    },
    "mob.shulker.open": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14878,7 +15808,7 @@ export const sound_definitions = {
       ]
    },
    "mob.shulker.shoot": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14902,17 +15832,14 @@ export const sound_definitions = {
       ]
    },
    "mob.shulker.teleport": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/endermen/portal",
-         "sounds/mob/endermen/portal2"
-      ]
+      "sounds": [ "sounds/mob/endermen/portal", "sounds/mob/endermen/portal2" ]
    },
    "mob.silverfish.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14923,16 +15850,14 @@ export const sound_definitions = {
       ]
    },
    "mob.silverfish.kill": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/silverfish/kill"
-      ]
+      "sounds": [ "sounds/mob/silverfish/kill" ]
    },
    "mob.silverfish.say": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14944,7 +15869,7 @@ export const sound_definitions = {
       ]
    },
    "mob.silverfish.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14966,16 +15891,14 @@ export const sound_definitions = {
       ]
    },
    "mob.skeleton.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/skeleton/death"
-      ]
+      "sounds": [ "sounds/mob/skeleton/death" ]
    },
    "mob.skeleton.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -14987,7 +15910,7 @@ export const sound_definitions = {
       ]
    },
    "mob.skeleton.say": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -15001,7 +15924,7 @@ export const sound_definitions = {
       ]
    },
    "mob.skeleton.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -15016,18 +15939,15 @@ export const sound_definitions = {
       ]
    },
    "mob.slime.attack": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/slime/attack1",
-         "sounds/mob/slime/attack2"
-      ],
+      "sounds": [ "sounds/mob/slime/attack1", "sounds/mob/slime/attack2" ],
       "subtitle": "subtitles.entity.slime.attack"
    },
    "mob.slime.big": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -15042,7 +15962,7 @@ export const sound_definitions = {
       ]
    },
    "mob.slime.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -15055,7 +15975,7 @@ export const sound_definitions = {
       "subtitle": "subtitles.entity.slime.death"
    },
    "mob.slime.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -15068,7 +15988,7 @@ export const sound_definitions = {
       "subtitle": "subtitles.entity.slime.hurt"
    },
    "mob.slime.jump": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -15081,7 +16001,7 @@ export const sound_definitions = {
       "subtitle": "subtitles.entity.slime.squish"
    },
    "mob.slime.small": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -15097,7 +16017,7 @@ export const sound_definitions = {
       ]
    },
    "mob.slime.squish": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -15113,19 +16033,13 @@ export const sound_definitions = {
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/sniffer/death1",
-         "sounds/mob/sniffer/death2"
-      ]
+      "sounds": [ "sounds/mob/sniffer/death1", "sounds/mob/sniffer/death2" ]
    },
    "mob.sniffer.digging": {
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/sniffer/longdig1",
-         "sounds/mob/sniffer/longdig2"
-      ]
+      "sounds": [ "sounds/mob/sniffer/longdig1", "sounds/mob/sniffer/longdig2" ]
    },
    "mob.sniffer.drop_seed": {
       "category": "neutral",
@@ -15222,9 +16136,7 @@ export const sound_definitions = {
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/sniffer/plop"
-      ]
+      "sounds": [ "sounds/mob/sniffer/plop" ]
    },
    "mob.sniffer.searching": {
       "category": "neutral",
@@ -15314,7 +16226,7 @@ export const sound_definitions = {
       ]
    },
    "mob.snowgolem.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15325,7 +16237,7 @@ export const sound_definitions = {
       ]
    },
    "mob.snowgolem.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15336,25 +16248,21 @@ export const sound_definitions = {
       ]
    },
    "mob.snowgolem.shoot": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/bow"
-      ]
+      "sounds": [ "sounds/random/bow" ]
    },
    "mob.spider.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/spider/death"
-      ]
+      "sounds": [ "sounds/mob/spider/death" ]
    },
    "mob.spider.say": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -15369,7 +16277,7 @@ export const sound_definitions = {
       ]
    },
    "mob.spider.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -15384,7 +16292,7 @@ export const sound_definitions = {
       ]
    },
    "mob.squid.ambient": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15397,7 +16305,7 @@ export const sound_definitions = {
       ]
    },
    "mob.squid.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15408,7 +16316,7 @@ export const sound_definitions = {
       ]
    },
    "mob.squid.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15430,7 +16338,7 @@ export const sound_definitions = {
       ]
    },
    "mob.stray.ambient": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -15442,17 +16350,14 @@ export const sound_definitions = {
       ]
    },
    "mob.stray.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/stray/death1",
-         "sounds/mob/stray/death2"
-      ]
+      "sounds": [ "sounds/mob/stray/death1", "sounds/mob/stray/death2" ]
    },
    "mob.stray.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -15464,7 +16369,7 @@ export const sound_definitions = {
       ]
    },
    "mob.stray.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -15660,7 +16565,7 @@ export const sound_definitions = {
       ]
    },
    "mob.turtle.ambient": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15671,7 +16576,7 @@ export const sound_definitions = {
       ]
    },
    "mob.turtle.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15682,7 +16587,7 @@ export const sound_definitions = {
       ]
    },
    "mob.turtle.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15695,17 +16600,14 @@ export const sound_definitions = {
       ]
    },
    "mob.turtle.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/turtle/walk1",
-         "sounds/mob/turtle/walk2"
-      ]
+      "sounds": [ "sounds/mob/turtle/walk1", "sounds/mob/turtle/walk2" ]
    },
    "mob.turtle.swim": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15718,7 +16620,7 @@ export const sound_definitions = {
       ]
    },
    "mob.turtle_baby.born": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15729,27 +16631,21 @@ export const sound_definitions = {
       ]
    },
    "mob.turtle_baby.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/turtle_baby/death1",
-         "sounds/mob/turtle_baby/death2"
-      ]
+      "sounds": [ "sounds/mob/turtle_baby/death1", "sounds/mob/turtle_baby/death2" ]
    },
    "mob.turtle_baby.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/turtle_baby/hurt1",
-         "sounds/mob/turtle_baby/hurt2"
-      ]
+      "sounds": [ "sounds/mob/turtle_baby/hurt1", "sounds/mob/turtle_baby/hurt2" ]
    },
    "mob.turtle_baby.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15760,20 +16656,38 @@ export const sound_definitions = {
          "sounds/mob/turtle_baby/shamble4"
       ]
    },
+   "mob.unsaddle": {
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/armor/unsaddle" ]
+   },
    "mob.vex.ambient": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
       "sounds": [
-         "sounds/mob/vex/idle1",
-         "sounds/mob/vex/idle2",
-         "sounds/mob/vex/idle3",
-         "sounds/mob/vex/idle4"
+         {
+            "name": "sounds/mob/vex/idle1",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/vex/idle2",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/vex/idle3",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/vex/idle4",
+            "volume": 0.20
+         }
       ]
    },
    "mob.vex.charge": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -15784,36 +16698,28 @@ export const sound_definitions = {
       ]
    },
    "mob.vex.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/vex/death1",
-         "sounds/mob/vex/death2"
-      ]
+      "sounds": [ "sounds/mob/vex/death1", "sounds/mob/vex/death2" ]
    },
    "mob.vex.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/vex/hurt1",
-         "sounds/mob/vex/hurt2"
-      ]
+      "sounds": [ "sounds/mob/vex/hurt1", "sounds/mob/vex/hurt2" ]
    },
    "mob.villager.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/villager/death"
-      ]
+      "sounds": [ "sounds/mob/villager/death" ]
    },
    "mob.villager.haggle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15824,7 +16730,7 @@ export const sound_definitions = {
       ]
    },
    "mob.villager.hit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15836,7 +16742,7 @@ export const sound_definitions = {
       ]
    },
    "mob.villager.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15847,7 +16753,7 @@ export const sound_definitions = {
       ]
    },
    "mob.villager.no": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15858,7 +16764,7 @@ export const sound_definitions = {
       ]
    },
    "mob.villager.yes": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15869,7 +16775,7 @@ export const sound_definitions = {
       ]
    },
    "mob.vindicator.celebrate": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -15879,7 +16785,7 @@ export const sound_definitions = {
       ]
    },
    "mob.vindicator.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -15889,7 +16795,7 @@ export const sound_definitions = {
       ]
    },
    "mob.vindicator.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -15900,7 +16806,7 @@ export const sound_definitions = {
       ]
    },
    "mob.vindicator.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -15913,16 +16819,14 @@ export const sound_definitions = {
       ]
    },
    "mob.wanderingtrader.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/wandering_trader/death"
-      ]
+      "sounds": [ "sounds/mob/wandering_trader/death" ]
    },
    "mob.wanderingtrader.disappeared": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15932,7 +16836,7 @@ export const sound_definitions = {
       ]
    },
    "mob.wanderingtrader.drink_milk": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15945,16 +16849,14 @@ export const sound_definitions = {
       ]
    },
    "mob.wanderingtrader.drink_potion": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/wandering_trader/drink_potion"
-      ]
+      "sounds": [ "sounds/mob/wandering_trader/drink_potion" ]
    },
    "mob.wanderingtrader.haggle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15965,7 +16867,7 @@ export const sound_definitions = {
       ]
    },
    "mob.wanderingtrader.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15977,7 +16879,7 @@ export const sound_definitions = {
       ]
    },
    "mob.wanderingtrader.idle": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -15990,7 +16892,7 @@ export const sound_definitions = {
       ]
    },
    "mob.wanderingtrader.no": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -16003,7 +16905,7 @@ export const sound_definitions = {
       ]
    },
    "mob.wanderingtrader.reappeared": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -16013,7 +16915,7 @@ export const sound_definitions = {
       ]
    },
    "mob.wanderingtrader.yes": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -16076,26 +16978,19 @@ export const sound_definitions = {
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/warden/death_1",
-         "sounds/mob/warden/death_2"
-      ]
+      "sounds": [ "sounds/mob/warden/death_1", "sounds/mob/warden/death_2" ]
    },
    "mob.warden.dig": {
       "category": "hostile",
       "max_distance": 80.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/warden/dig"
-      ]
+      "sounds": [ "sounds/mob/warden/dig" ]
    },
    "mob.warden.emerge": {
       "category": "hostile",
       "max_distance": 80.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/warden/emerge"
-      ]
+      "sounds": [ "sounds/mob/warden/emerge" ]
    },
    "mob.warden.heartbeat": {
       "category": "hostile",
@@ -16266,7 +17161,7 @@ export const sound_definitions = {
       ]
    },
    "mob.witch.ambient": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -16284,7 +17179,7 @@ export const sound_definitions = {
       ]
    },
    "mob.witch.celebrate": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -16295,7 +17190,7 @@ export const sound_definitions = {
       ]
    },
    "mob.witch.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -16306,7 +17201,7 @@ export const sound_definitions = {
       ]
    },
    "mob.witch.drink": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -16318,7 +17213,7 @@ export const sound_definitions = {
       ]
    },
    "mob.witch.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -16329,7 +17224,7 @@ export const sound_definitions = {
       ]
    },
    "mob.witch.throw": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -16340,37 +17235,45 @@ export const sound_definitions = {
       ]
    },
    "mob.wither.ambient": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
       "sounds": [
-         "sounds/mob/wither/idle1",
-         "sounds/mob/wither/idle2",
-         "sounds/mob/wither/idle3",
-         "sounds/mob/wither/idle4"
+         {
+            "name": "sounds/mob/wither/idle1",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/wither/idle2",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/wither/idle3",
+            "volume": 0.20
+         },
+         {
+            "name": "sounds/mob/wither/idle4",
+            "volume": 0.20
+         }
       ]
    },
    "mob.wither.break_block": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/zombie/woodbreak"
-      ]
+      "sounds": [ "sounds/mob/zombie/woodbreak" ]
    },
    "mob.wither.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/wither/death"
-      ]
+      "sounds": [ "sounds/mob/wither/death" ]
    },
    "mob.wither.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -16382,7 +17285,7 @@ export const sound_definitions = {
       ]
    },
    "mob.wither.shoot": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -16394,16 +17297,14 @@ export const sound_definitions = {
       ]
    },
    "mob.wither.spawn": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/wither/spawn"
-      ]
+      "sounds": [ "sounds/mob/wither/spawn" ]
    },
    "mob.wolf.bark": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -16413,17 +17314,123 @@ export const sound_definitions = {
          "sounds/mob/wolf/bark3"
       ]
    },
-   "mob.wolf.death": {
-      "__use_legacy_max_distance": "true",
+   "mob.wolf.big.bark": {
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
       "sounds": [
-         "sounds/mob/wolf/death"
+         "sounds/mob/wolf/big/bark1",
+         "sounds/mob/wolf/big/bark2",
+         "sounds/mob/wolf/big/bark3"
       ]
    },
+   "mob.wolf.big.death": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/big/death" ]
+   },
+   "mob.wolf.big.growl": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/wolf/big/growl1",
+         "sounds/mob/wolf/big/growl2",
+         "sounds/mob/wolf/big/growl3"
+      ]
+   },
+   "mob.wolf.big.hurt": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/wolf/big/hurt1",
+         "sounds/mob/wolf/big/hurt2",
+         "sounds/mob/wolf/big/hurt3"
+      ]
+   },
+   "mob.wolf.big.panting": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/big/panting" ]
+   },
+   "mob.wolf.big.whine": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/big/whine" ]
+   },
+   "mob.wolf.cute.bark": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/wolf/cute/bark1",
+         "sounds/mob/wolf/cute/bark2",
+         "sounds/mob/wolf/cute/bark3"
+      ]
+   },
+   "mob.wolf.cute.death": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/cute/death" ]
+   },
+   "mob.wolf.cute.growl": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/wolf/cute/growl1",
+         "sounds/mob/wolf/cute/growl2",
+         "sounds/mob/wolf/cute/growl3"
+      ]
+   },
+   "mob.wolf.cute.hurt": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/wolf/cute/hurt1",
+         "sounds/mob/wolf/cute/hurt2",
+         "sounds/mob/wolf/cute/hurt3"
+      ]
+   },
+   "mob.wolf.cute.panting": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/cute/panting" ]
+   },
+   "mob.wolf.cute.whine": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/cute/whine" ]
+   },
+   "mob.wolf.death": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/death" ]
+   },
    "mob.wolf.growl": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -16433,8 +17440,62 @@ export const sound_definitions = {
          "sounds/mob/wolf/growl3"
       ]
    },
+   "mob.wolf.grumpy.bark": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/wolf/grumpy/bark1",
+         "sounds/mob/wolf/grumpy/bark2",
+         "sounds/mob/wolf/grumpy/bark3"
+      ]
+   },
+   "mob.wolf.grumpy.death": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/grumpy/death" ]
+   },
+   "mob.wolf.grumpy.growl": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/wolf/grumpy/growl1",
+         "sounds/mob/wolf/grumpy/growl2",
+         "sounds/mob/wolf/grumpy/growl3"
+      ]
+   },
+   "mob.wolf.grumpy.hurt": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/wolf/grumpy/hurt1",
+         "sounds/mob/wolf/grumpy/hurt2",
+         "sounds/mob/wolf/grumpy/hurt3"
+      ]
+   },
+   "mob.wolf.grumpy.panting": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/grumpy/panting" ]
+   },
+   "mob.wolf.grumpy.whine": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/grumpy/whine" ]
+   },
    "mob.wolf.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -16444,26 +17505,184 @@ export const sound_definitions = {
          "sounds/mob/wolf/hurt3"
       ]
    },
-   "mob.wolf.panting": {
-      "__use_legacy_max_distance": "true",
+   "mob.wolf.mad.bark": {
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
       "sounds": [
-         "sounds/mob/wolf/panting"
+         "sounds/mob/wolf/mad/bark1",
+         "sounds/mob/wolf/mad/bark2",
+         "sounds/mob/wolf/mad/bark3"
       ]
+   },
+   "mob.wolf.mad.death": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/mad/death" ]
+   },
+   "mob.wolf.mad.growl": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/wolf/mad/growl1",
+         "sounds/mob/wolf/mad/growl2",
+         "sounds/mob/wolf/mad/growl3"
+      ]
+   },
+   "mob.wolf.mad.hurt": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/wolf/mad/hurt1",
+         "sounds/mob/wolf/mad/hurt2",
+         "sounds/mob/wolf/mad/hurt3"
+      ]
+   },
+   "mob.wolf.mad.panting": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/mad/panting" ]
+   },
+   "mob.wolf.mad.whine": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/mad/whine" ]
+   },
+   "mob.wolf.panting": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/panting" ]
+   },
+   "mob.wolf.puglin.bark": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/wolf/puglin/bark1",
+         "sounds/mob/wolf/puglin/bark2",
+         "sounds/mob/wolf/puglin/bark3"
+      ]
+   },
+   "mob.wolf.puglin.death": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/puglin/death" ]
+   },
+   "mob.wolf.puglin.growl": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/wolf/puglin/growl1",
+         "sounds/mob/wolf/puglin/growl2",
+         "sounds/mob/wolf/puglin/growl3"
+      ]
+   },
+   "mob.wolf.puglin.hurt": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/wolf/puglin/hurt1",
+         "sounds/mob/wolf/puglin/hurt2",
+         "sounds/mob/wolf/puglin/hurt3"
+      ]
+   },
+   "mob.wolf.puglin.panting": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/puglin/panting" ]
+   },
+   "mob.wolf.puglin.whine": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/puglin/whine" ]
+   },
+   "mob.wolf.sad.bark": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/wolf/sad/bark1",
+         "sounds/mob/wolf/sad/bark2",
+         "sounds/mob/wolf/sad/bark3"
+      ]
+   },
+   "mob.wolf.sad.death": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/sad/death" ]
+   },
+   "mob.wolf.sad.growl": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/wolf/sad/growl1",
+         "sounds/mob/wolf/sad/growl2",
+         "sounds/mob/wolf/sad/growl3"
+      ]
+   },
+   "mob.wolf.sad.hurt": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/mob/wolf/sad/hurt1",
+         "sounds/mob/wolf/sad/hurt2",
+         "sounds/mob/wolf/sad/hurt3"
+      ]
+   },
+   "mob.wolf.sad.panting": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/sad/panting" ]
+   },
+   "mob.wolf.sad.whine": {
+      "__use_legacy_max_distance": true,
+      "category": "neutral",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [ "sounds/mob/wolf/sad/whine" ]
    },
    "mob.wolf.shake": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/wolf/shake"
-      ]
+      "sounds": [ "sounds/mob/wolf/shake" ]
    },
    "mob.wolf.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
@@ -16476,13 +17695,11 @@ export const sound_definitions = {
       ]
    },
    "mob.wolf.whine": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "neutral",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/wolf/whine"
-      ]
+      "sounds": [ "sounds/mob/wolf/whine" ]
    },
    "mob.zoglin.angry": {
       "category": "hostile",
@@ -16498,10 +17715,7 @@ export const sound_definitions = {
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/zoglin/attack1",
-         "sounds/mob/zoglin/attack2"
-      ]
+      "sounds": [ "sounds/mob/zoglin/attack1", "sounds/mob/zoglin/attack2" ]
    },
    "mob.zoglin.death": {
       "category": "hostile",
@@ -16555,35 +17769,28 @@ export const sound_definitions = {
       ]
    },
    "mob.zombie.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/zombie/death"
-      ]
+      "sounds": [ "sounds/mob/zombie/death" ]
    },
    "mob.zombie.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/zombie/hurt1",
-         "sounds/mob/zombie/hurt2"
-      ]
+      "sounds": [ "sounds/mob/zombie/hurt1", "sounds/mob/zombie/hurt2" ]
    },
    "mob.zombie.remedy": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/zombie/remedy"
-      ]
+      "sounds": [ "sounds/mob/zombie/remedy" ]
    },
    "mob.zombie.say": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -16597,7 +17804,7 @@ export const sound_definitions = {
       ]
    },
    "mob.zombie.step": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -16610,16 +17817,14 @@ export const sound_definitions = {
       ]
    },
    "mob.zombie.unfect": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/zombie/unfect"
-      ]
+      "sounds": [ "sounds/mob/zombie/unfect" ]
    },
    "mob.zombie.wood": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -16631,25 +17836,21 @@ export const sound_definitions = {
       ]
    },
    "mob.zombie.woodbreak": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/zombie/woodbreak"
-      ]
+      "sounds": [ "sounds/mob/zombie/woodbreak" ]
    },
    "mob.zombie_villager.death": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/zombie_villager/death"
-      ]
+      "sounds": [ "sounds/mob/zombie_villager/death" ]
    },
    "mob.zombie_villager.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -16659,7 +17860,7 @@ export const sound_definitions = {
       ]
    },
    "mob.zombie_villager.say": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -16673,7 +17874,7 @@ export const sound_definitions = {
       ]
    },
    "mob.zombiepig.zpig": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -16685,7 +17886,7 @@ export const sound_definitions = {
       ]
    },
    "mob.zombiepig.zpigangry": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -16697,16 +17898,14 @@ export const sound_definitions = {
       ]
    },
    "mob.zombiepig.zpigdeath": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/mob/zombiepig/zpigdeath"
-      ]
+      "sounds": [ "sounds/mob/zombiepig/zpigdeath" ]
    },
    "mob.zombiepig.zpighurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": null,
       "min_distance": null,
@@ -16719,7 +17918,7 @@ export const sound_definitions = {
       ]
    },
    "music.game": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "music",
       "max_distance": null,
       "min_distance": null,
@@ -16848,7 +18047,37 @@ export const sound_definitions = {
             "load_on_low_memory": true,
             "name": "sounds/music/game/yakusoku",
             "stream": true,
-            "volume": 0.80
+            "volume": 0.40
+         },
+         {
+            "load_on_low_memory": true,
+            "name": "sounds/music/game/below_and_above",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "load_on_low_memory": true,
+            "name": "sounds/music/game/broken_clocks",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "load_on_low_memory": true,
+            "name": "sounds/music/game/fireflies",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "load_on_low_memory": true,
+            "name": "sounds/music/game/lilypad",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "load_on_low_memory": true,
+            "name": "sounds/music/game/os_piano",
+            "stream": true,
+            "volume": 0.40
          }
       ]
    },
@@ -16891,7 +18120,7 @@ export const sound_definitions = {
       ]
    },
    "music.game.creative": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "music",
       "max_distance": null,
       "min_distance": null,
@@ -16935,7 +18164,7 @@ export const sound_definitions = {
       ]
    },
    "music.game.credits": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "music",
       "max_distance": null,
       "min_distance": null,
@@ -17049,7 +18278,7 @@ export const sound_definitions = {
       ]
    },
    "music.game.end": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "music",
       "max_distance": null,
       "min_distance": null,
@@ -17063,7 +18292,7 @@ export const sound_definitions = {
       ]
    },
    "music.game.endboss": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "music",
       "max_distance": null,
       "min_distance": null,
@@ -17375,7 +18604,7 @@ export const sound_definitions = {
       ]
    },
    "music.game.nether": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "music",
       "max_distance": null,
       "min_distance": null,
@@ -17490,7 +18719,7 @@ export const sound_definitions = {
          }
       ]
    },
-   "music.game.soul_sand_valley": {
+   "music.game.soulsand_valley": {
       "category": "music",
       "max_distance": null,
       "min_distance": null,
@@ -17525,19 +18754,6 @@ export const sound_definitions = {
             "name": "sounds/music/game/nether/nether4",
             "stream": true,
             "weight": 1
-         }
-      ]
-   },
-   "music.game.soulsand_valley": {
-      "category": "music",
-      "max_distance": null,
-      "min_distance": null,
-      "sounds": [
-         {
-            "load_on_low_memory": true,
-            "name": "sounds/music/game/nether/so_below",
-            "stream": true,
-            "volume": 0.150
          }
       ]
    },
@@ -17630,7 +18846,7 @@ export const sound_definitions = {
       "sounds": []
    },
    "music.game.water": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "music",
       "max_distance": null,
       "min_distance": null,
@@ -17876,56 +19092,11 @@ export const sound_definitions = {
       ]
    },
    "music.menu": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "music",
       "max_distance": null,
       "min_distance": null,
       "sounds": [
-         {
-            "name": "sounds/music/game/deeper",
-            "stream": true,
-            "volume": 0.40
-         },
-         {
-            "name": "sounds/music/game/eld_unknown",
-            "stream": true,
-            "volume": 0.40
-         },
-         {
-            "name": "sounds/music/game/endless",
-            "stream": true,
-            "volume": 0.40
-         },
-         {
-            "name": "sounds/music/game/featherfall",
-            "stream": true,
-            "volume": 0.40
-         },
-         {
-            "name": "sounds/music/game/komorebi",
-            "stream": true,
-            "volume": 0.80
-         },
-         {
-            "name": "sounds/music/game/pokopoko",
-            "stream": true,
-            "volume": 0.80
-         },
-         {
-            "name": "sounds/music/game/puzzlebox",
-            "stream": true,
-            "volume": 0.40
-         },
-         {
-            "name": "sounds/music/game/watcher",
-            "stream": true,
-            "volume": 0.40
-         },
-         {
-            "name": "sounds/music/game/yakusoku",
-            "stream": true,
-            "volume": 0.80
-         },
          {
             "name": "sounds/music/menu/menu1",
             "stream": true,
@@ -17943,6 +19114,31 @@ export const sound_definitions = {
          },
          {
             "name": "sounds/music/menu/menu4",
+            "stream": true,
+            "volume": 0.30
+         },
+         {
+            "name": "sounds/music/game/below_and_above",
+            "stream": true,
+            "volume": 0.30
+         },
+         {
+            "name": "sounds/music/game/broken_clocks",
+            "stream": true,
+            "volume": 0.30
+         },
+         {
+            "name": "sounds/music/game/fireflies",
+            "stream": true,
+            "volume": 0.30
+         },
+         {
+            "name": "sounds/music/game/lilypad",
+            "stream": true,
+            "volume": 0.30
+         },
+         {
+            "name": "sounds/music/game/os_piano",
             "stream": true,
             "volume": 0.30
          }
@@ -18008,10 +19204,15 @@ export const sound_definitions = {
       "min_distance": null,
       "sounds": [
          {
-            "name": "sounds/music/game/bromeliad",
+            "name": "sounds/music/game/below_and_above",
             "stream": true,
             "volume": 0.40,
-            "weight": 3
+            "weight": 2
+         },
+         {
+            "name": "sounds/music/game/bromeliad",
+            "stream": true,
+            "volume": 0.40
          },
          {
             "name": "sounds/music/game/calm1",
@@ -18028,14 +19229,12 @@ export const sound_definitions = {
          {
             "name": "sounds/music/game/echo_in_the_wind",
             "stream": true,
-            "volume": 0.40,
-            "weight": 3
+            "volume": 0.40
          },
          {
             "name": "sounds/music/game/featherfall",
             "stream": true,
-            "volume": 0.40,
-            "weight": 3
+            "volume": 0.40
          },
          {
             "name": "sounds/music/game/left_to_bloom",
@@ -18066,10 +19265,15 @@ export const sound_definitions = {
       "min_distance": null,
       "sounds": [
          {
-            "name": "sounds/music/game/crescent_dunes",
+            "name": "sounds/music/game/fireflies",
             "stream": true,
             "volume": 0.40,
-            "weight": 3
+            "weight": 2
+         },
+         {
+            "name": "sounds/music/game/crescent_dunes",
+            "stream": true,
+            "volume": 0.40
          },
          {
             "name": "sounds/music/game/hal1",
@@ -18228,6 +19432,119 @@ export const sound_definitions = {
          }
       ]
    },
+   "music.overworld.forest": {
+      "category": "music",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         {
+            "name": "sounds/music/game/broken_clocks",
+            "stream": true,
+            "volume": 0.40,
+            "weight": 2
+         },
+         {
+            "name": "sounds/music/game/bromeliad",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/calm2",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/comforting_memories",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/hal4",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/piano1",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/floating_dream",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/hal3",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/nuance1",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/left_to_bloom",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/hal2",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/piano3",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/calm1",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/one_more_day",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/nuance2",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/hal1",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/aerie",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/firebugs",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/labyrinthine",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/calm3",
+            "stream": true,
+            "volume": 0.40
+         },
+         {
+            "name": "sounds/music/game/piano2",
+            "stream": true,
+            "volume": 0.40
+         }
+      ]
+   },
    "music.overworld.grove": {
       "category": "music",
       "max_distance": null,
@@ -18235,24 +19552,28 @@ export const sound_definitions = {
       "sounds": [
          {
             "load_on_low_memory": true,
-            "name": "sounds/music/game/comforting_memories",
+            "name": "sounds/music/game/lilypad",
             "stream": true,
             "volume": 0.40,
-            "weight": 1
+            "weight": 2
+         },
+         {
+            "load_on_low_memory": true,
+            "name": "sounds/music/game/comforting_memories",
+            "stream": true,
+            "volume": 0.40
          },
          {
             "load_on_low_memory": true,
             "name": "sounds/music/game/infinite_amethyst",
             "stream": true,
-            "volume": 0.40,
-            "weight": 1
+            "volume": 0.40
          },
          {
             "load_on_low_memory": true,
             "name": "sounds/music/game/wending",
             "stream": true,
-            "volume": 0.40,
-            "weight": 1
+            "volume": 0.40
          },
          {
             "load_on_low_memory": true,
@@ -18275,38 +19596,32 @@ export const sound_definitions = {
          {
             "load_on_low_memory": true,
             "name": "sounds/music/game/piano3",
-            "stream": true,
-            "weight": 1
+            "stream": true
          },
          {
             "load_on_low_memory": true,
             "name": "sounds/music/game/calm1",
-            "stream": true,
-            "weight": 1
+            "stream": true
          },
          {
             "load_on_low_memory": true,
             "name": "sounds/music/game/calm2",
-            "stream": true,
-            "weight": 1
+            "stream": true
          },
          {
             "load_on_low_memory": true,
             "name": "sounds/music/game/calm3",
-            "stream": true,
-            "weight": 1
+            "stream": true
          },
          {
             "load_on_low_memory": true,
             "name": "sounds/music/game/nuance1",
-            "stream": true,
-            "weight": 1
+            "stream": true
          },
          {
             "load_on_low_memory": true,
             "name": "sounds/music/game/nuance2",
-            "stream": true,
-            "weight": 1
+            "stream": true
          }
       ]
    },
@@ -18496,60 +19811,57 @@ export const sound_definitions = {
       ]
    },
    "music.overworld.lush_caves": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "music",
       "max_distance": null,
       "min_distance": null,
       "sounds": [
          {
-            "name": "sounds/music/game/an_ordinary_day",
+            "name": "sounds/music/game/os_piano",
             "stream": true,
             "volume": 0.40,
             "weight": 2
+         },
+         {
+            "name": "sounds/music/game/an_ordinary_day",
+            "stream": true,
+            "volume": 0.40
          },
          {
             "name": "sounds/music/game/left_to_bloom",
             "stream": true,
-            "volume": 0.40,
-            "weight": 4
+            "volume": 0.40
          },
          {
             "name": "sounds/music/game/one_more_day",
             "stream": true,
-            "volume": 0.40,
-            "weight": 2
+            "volume": 0.40
          },
          {
             "name": "sounds/music/game/echo_in_the_wind",
             "stream": true,
-            "volume": 0.40,
-            "weight": 2
+            "volume": 0.40
          },
          {
             "name": "sounds/music/game/floating_dream",
             "stream": true,
-            "volume": 0.40,
-            "weight": 2
+            "volume": 0.40
          },
          {
             "name": "sounds/music/game/piano3",
-            "stream": true,
-            "weight": 2
+            "stream": true
          },
          {
             "name": "sounds/music/game/calm1",
-            "stream": true,
-            "weight": 2
+            "stream": true
          },
          {
             "name": "sounds/music/game/calm2",
-            "stream": true,
-            "weight": 2
+            "stream": true
          },
          {
             "name": "sounds/music/game/calm3",
-            "stream": true,
-            "weight": 2
+            "stream": true
          },
          {
             "name": "sounds/music/game/aerie",
@@ -18569,8 +19881,7 @@ export const sound_definitions = {
          {
             "name": "sounds/music/game/featherfall",
             "stream": true,
-            "volume": 0.40,
-            "weight": 2
+            "volume": 0.40
          }
       ]
    },
@@ -18766,7 +20077,7 @@ export const sound_definitions = {
       ]
    },
    "note.banjo": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 48.0,
       "min_distance": null,
@@ -18778,7 +20089,7 @@ export const sound_definitions = {
       ]
    },
    "note.bass": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 48.0,
       "min_distance": null,
@@ -18790,7 +20101,7 @@ export const sound_definitions = {
       ]
    },
    "note.bassattack": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 48.0,
       "min_distance": null,
@@ -18802,7 +20113,7 @@ export const sound_definitions = {
       ]
    },
    "note.bd": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 48.0,
       "min_distance": null,
@@ -18814,7 +20125,7 @@ export const sound_definitions = {
       ]
    },
    "note.bell": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 48.0,
       "min_distance": null,
@@ -18826,7 +20137,7 @@ export const sound_definitions = {
       ]
    },
    "note.bit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 48.0,
       "min_distance": null,
@@ -18838,7 +20149,7 @@ export const sound_definitions = {
       ]
    },
    "note.chime": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 48.0,
       "min_distance": null,
@@ -18850,7 +20161,7 @@ export const sound_definitions = {
       ]
    },
    "note.cow_bell": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 48.0,
       "min_distance": null,
@@ -18865,12 +20176,10 @@ export const sound_definitions = {
       "category": "record",
       "max_distance": 48.0,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/fuse"
-      ]
+      "sounds": [ "sounds/random/fuse" ]
    },
    "note.didgeridoo": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 48.0,
       "min_distance": null,
@@ -18893,7 +20202,7 @@ export const sound_definitions = {
       ]
    },
    "note.flute": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 48.0,
       "min_distance": null,
@@ -18905,7 +20214,7 @@ export const sound_definitions = {
       ]
    },
    "note.guitar": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 48.0,
       "min_distance": null,
@@ -18917,7 +20226,7 @@ export const sound_definitions = {
       ]
    },
    "note.harp": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 48.0,
       "min_distance": null,
@@ -18929,7 +20238,7 @@ export const sound_definitions = {
       ]
    },
    "note.hat": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 48.0,
       "min_distance": null,
@@ -18941,7 +20250,7 @@ export const sound_definitions = {
       ]
    },
    "note.iron_xylophone": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 48.0,
       "min_distance": null,
@@ -18964,7 +20273,7 @@ export const sound_definitions = {
       ]
    },
    "note.pling": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 48.0,
       "min_distance": null,
@@ -18987,7 +20296,7 @@ export const sound_definitions = {
       ]
    },
    "note.snare": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 48.0,
       "min_distance": null,
@@ -19010,7 +20319,7 @@ export const sound_definitions = {
       ]
    },
    "note.xylophone": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 48.0,
       "min_distance": null,
@@ -19035,17 +20344,13 @@ export const sound_definitions = {
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/item/ominous_bottle/dispose"
-      ]
+      "sounds": [ "sounds/item/ominous_bottle/dispose" ]
    },
    "ominous_item_spawner.about_to_spawn_item": {
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/trial_spawner/about_to_spawn_item"
-      ]
+      "sounds": [ "sounds/block/trial_spawner/about_to_spawn_item" ]
    },
    "ominous_item_spawner.spawn_item": {
       "category": "block",
@@ -19298,7 +20603,7 @@ export const sound_definitions = {
       ]
    },
    "open_door.copper": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -19782,6 +21087,22 @@ export const sound_definitions = {
          "sounds/block/hanging_roots/break4"
       ]
    },
+   "place.iron": {
+      "__use_legacy_max_distance": true,
+      "category": "block",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/iron/break1",
+         "sounds/block/iron/break2",
+         "sounds/block/iron/break3",
+         "sounds/block/iron/break4",
+         "sounds/block/iron/break5",
+         "sounds/block/iron/break6",
+         "sounds/block/iron/break7",
+         "sounds/block/iron/break8"
+      ]
+   },
    "place.large_amethyst_bud": {
       "category": "block",
       "max_distance": null,
@@ -19812,22 +21133,22 @@ export const sound_definitions = {
       "sounds": [
          {
             "name": "sounds/block/amethyst_cluster/place1",
-            "pitch:": 1.10,
+            "pitch": 1.10,
             "volume": 0.50
          },
          {
             "name": "sounds/block/amethyst_cluster/place2",
-            "pitch:": 1.10,
+            "pitch": 1.10,
             "volume": 0.50
          },
          {
             "name": "sounds/block/amethyst_cluster/place3",
-            "pitch:": 1.10,
+            "pitch": 1.10,
             "volume": 0.50
          },
          {
             "name": "sounds/block/amethyst_cluster/place4",
-            "pitch:": 1.10,
+            "pitch": 1.10,
             "volume": 0.50
          }
       ]
@@ -19968,28 +21289,28 @@ export const sound_definitions = {
       "sounds": [
          {
             "name": "sounds/block/amethyst_cluster/place1",
-            "pitch:": 1.20,
+            "pitch": 1.20,
             "volume": 0.40
          },
          {
             "name": "sounds/block/amethyst_cluster/place2",
-            "pitch:": 1.20,
+            "pitch": 1.20,
             "volume": 0.40
          },
          {
             "name": "sounds/block/amethyst_cluster/place3",
-            "pitch:": 1.20,
+            "pitch": 1.20,
             "volume": 0.40
          },
          {
             "name": "sounds/block/amethyst_cluster/place4",
-            "pitch:": 1.20,
+            "pitch": 1.20,
             "volume": 0.40
          }
       ]
    },
    "place.sponge": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -20081,7 +21402,7 @@ export const sound_definitions = {
       ]
    },
    "place.wet_sponge": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -20093,31 +21414,25 @@ export const sound_definitions = {
       ]
    },
    "portal.portal": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/portal/portal"
-      ]
+      "sounds": [ "sounds/portal/portal" ]
    },
    "portal.travel": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "ambient",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/portal/travel"
-      ]
+      "sounds": [ "sounds/portal/travel" ]
    },
    "portal.trigger": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "ambient",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/portal/trigger"
-      ]
+      "sounds": [ "sounds/portal/trigger" ]
    },
    "power.off.sculk_sensor": {
       "category": "block",
@@ -20148,13 +21463,10 @@ export const sound_definitions = {
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/pumpkin/carve1",
-         "sounds/block/pumpkin/carve2"
-      ]
+      "sounds": [ "sounds/block/pumpkin/carve1", "sounds/block/pumpkin/carve2" ]
    },
    "raid.horn": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "hostile",
       "max_distance": 128.0,
       "min_distance": null,
@@ -20179,43 +21491,35 @@ export const sound_definitions = {
       ]
    },
    "random.anvil_break": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/anvil_break"
-      ]
+      "sounds": [ "sounds/random/anvil_break" ]
    },
    "random.anvil_land": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/anvil_land"
-      ]
+      "sounds": [ "sounds/random/anvil_land" ]
    },
    "random.anvil_use": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/anvil_use"
-      ]
+      "sounds": [ "sounds/random/anvil_use" ]
    },
    "random.bow": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/bow"
-      ]
+      "sounds": [ "sounds/random/bow" ]
    },
    "random.bowhit": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -20230,7 +21534,7 @@ export const sound_definitions = {
       ]
    },
    "random.break": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -20242,34 +21546,28 @@ export const sound_definitions = {
       ]
    },
    "random.burp": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/burp"
-      ]
+      "sounds": [ "sounds/random/burp" ]
    },
    "random.chestclosed": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/chestclosed"
-      ]
+      "sounds": [ "sounds/random/chestclosed" ]
    },
    "random.chestopen": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/chestopen"
-      ]
+      "sounds": [ "sounds/random/chestopen" ]
    },
    "random.click": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "ui",
       "max_distance": null,
       "min_distance": null,
@@ -20282,7 +21580,7 @@ export const sound_definitions = {
       ]
    },
    "random.door_close": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -20306,7 +21604,7 @@ export const sound_definitions = {
       ]
    },
    "random.door_open": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -20330,13 +21628,11 @@ export const sound_definitions = {
       ]
    },
    "random.drink": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/drink"
-      ]
+      "sounds": [ "sounds/random/drink" ]
    },
    "random.drink_honey": {
       "category": "player",
@@ -20359,7 +21655,7 @@ export const sound_definitions = {
       ]
    },
    "random.eat": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -20373,25 +21669,21 @@ export const sound_definitions = {
       ]
    },
    "random.enderchestclosed": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/enderchest/close"
-      ]
+      "sounds": [ "sounds/block/enderchest/close" ]
    },
    "random.enderchestopen": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/enderchest/open"
-      ]
+      "sounds": [ "sounds/block/enderchest/open" ]
    },
    "random.explode": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -20406,16 +21698,14 @@ export const sound_definitions = {
       ]
    },
    "random.fizz": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/fizz"
-      ]
+      "sounds": [ "sounds/random/fizz" ]
    },
    "random.fuse": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -20427,7 +21717,7 @@ export const sound_definitions = {
       ]
    },
    "random.glass": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -20438,7 +21728,7 @@ export const sound_definitions = {
       ]
    },
    "random.hurt": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -20450,7 +21740,7 @@ export const sound_definitions = {
       ]
    },
    "random.levelup": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -20474,7 +21764,7 @@ export const sound_definitions = {
       ]
    },
    "random.orb": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -20486,25 +21776,21 @@ export const sound_definitions = {
       ]
    },
    "random.pop": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/pop"
-      ]
+      "sounds": [ "sounds/random/pop" ]
    },
    "random.pop2": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/pop2"
-      ]
+      "sounds": [ "sounds/random/pop2" ]
    },
    "random.potion.brewed": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -20514,34 +21800,28 @@ export const sound_definitions = {
       ]
    },
    "random.screenshot": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "ui",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/happy_cam3"
-      ]
+      "sounds": [ "sounds/random/happy_cam3" ]
    },
    "random.shulkerboxclosed": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/shulker_box/close"
-      ]
+      "sounds": [ "sounds/block/shulker_box/close" ]
    },
    "random.shulkerboxopen": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/shulker_box/open"
-      ]
+      "sounds": [ "sounds/block/shulker_box/open" ]
    },
    "random.splash": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -20565,7 +21845,7 @@ export const sound_definitions = {
       ]
    },
    "random.swim": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -20580,38 +21860,30 @@ export const sound_definitions = {
       ]
    },
    "random.toast": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "ui",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/toast"
-      ]
+      "sounds": [ "sounds/random/toast" ]
    },
    "random.toast_recipe_unlocking_in": {
       "category": "ui",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/toast_recipe_unlocking_in"
-      ]
+      "sounds": [ "sounds/random/toast_recipe_unlocking_in" ]
    },
    "random.toast_recipe_unlocking_out": {
       "category": "ui",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/toast_recipe_unlocking_out"
-      ]
+      "sounds": [ "sounds/random/toast_recipe_unlocking_out" ]
    },
    "random.totem": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/random/use_totem"
-      ]
+      "sounds": [ "sounds/random/use_totem" ]
    },
    "random.wood_click": {
       "category": "block",
@@ -20626,7 +21898,7 @@ export const sound_definitions = {
       ]
    },
    "record.11": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 64.0,
       "min_distance": null,
@@ -20640,7 +21912,7 @@ export const sound_definitions = {
       ]
    },
    "record.13": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 64.0,
       "min_distance": null,
@@ -20654,7 +21926,7 @@ export const sound_definitions = {
       ]
    },
    "record.5": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 64.0,
       "min_distance": null,
@@ -20668,7 +21940,7 @@ export const sound_definitions = {
       ]
    },
    "record.blocks": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 64.0,
       "min_distance": null,
@@ -20682,7 +21954,7 @@ export const sound_definitions = {
       ]
    },
    "record.cat": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 64.0,
       "min_distance": null,
@@ -20696,7 +21968,7 @@ export const sound_definitions = {
       ]
    },
    "record.chirp": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 64.0,
       "min_distance": null,
@@ -20710,7 +21982,7 @@ export const sound_definitions = {
       ]
    },
    "record.creator": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 64.0,
       "min_distance": null,
@@ -20723,7 +21995,7 @@ export const sound_definitions = {
       ]
    },
    "record.creator_music_box": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 64.0,
       "min_distance": null,
@@ -20736,7 +22008,7 @@ export const sound_definitions = {
       ]
    },
    "record.far": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 64.0,
       "min_distance": null,
@@ -20749,8 +22021,20 @@ export const sound_definitions = {
          }
       ]
    },
+   "record.lava_chicken": {
+      "category": "record",
+      "max_distance": 64.0,
+      "min_distance": null,
+      "sounds": [
+         {
+            "name": "sounds/music/game/records/lava_chicken",
+            "stream": true,
+            "volume": 0.50
+         }
+      ]
+   },
    "record.mall": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 64.0,
       "min_distance": null,
@@ -20764,7 +22048,7 @@ export const sound_definitions = {
       ]
    },
    "record.mellohi": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 64.0,
       "min_distance": null,
@@ -20778,7 +22062,7 @@ export const sound_definitions = {
       ]
    },
    "record.otherside": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 64.0,
       "min_distance": null,
@@ -20805,7 +22089,7 @@ export const sound_definitions = {
       ]
    },
    "record.precipice": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 64.0,
       "min_distance": null,
@@ -20818,7 +22102,7 @@ export const sound_definitions = {
       ]
    },
    "record.relic": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 0.0,
       "min_distance": null,
@@ -20832,7 +22116,7 @@ export const sound_definitions = {
       ]
    },
    "record.stal": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 64.0,
       "min_distance": null,
@@ -20846,7 +22130,7 @@ export const sound_definitions = {
       ]
    },
    "record.strad": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 64.0,
       "min_distance": null,
@@ -20859,8 +22143,20 @@ export const sound_definitions = {
          }
       ]
    },
+   "record.tears": {
+      "category": "record",
+      "max_distance": 64.0,
+      "min_distance": null,
+      "sounds": [
+         {
+            "name": "sounds/music/game/records/tears",
+            "stream": true,
+            "volume": 0.50
+         }
+      ]
+   },
    "record.wait": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 64.0,
       "min_distance": null,
@@ -20874,7 +22170,7 @@ export const sound_definitions = {
       ]
    },
    "record.ward": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "record",
       "max_distance": 64.0,
       "min_distance": null,
@@ -21014,7 +22310,7 @@ export const sound_definitions = {
       ]
    },
    "sign.dye.use": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "max_distance": null,
       "min_distance": null,
       "sounds": [
@@ -21025,7 +22321,7 @@ export const sound_definitions = {
       ]
    },
    "sign.ink_sac.use": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "max_distance": null,
       "min_distance": null,
       "sounds": [
@@ -21051,7 +22347,7 @@ export const sound_definitions = {
       ]
    },
    "sponge.absorb": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -21440,7 +22736,7 @@ export const sound_definitions = {
       ]
    },
    "step.cloth": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -21641,7 +22937,7 @@ export const sound_definitions = {
       ]
    },
    "step.grass": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -21658,7 +22954,7 @@ export const sound_definitions = {
       ]
    },
    "step.gravel": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -21707,7 +23003,7 @@ export const sound_definitions = {
       ]
    },
    "step.heavy_core": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -21741,8 +23037,20 @@ export const sound_definitions = {
          "sounds/step/honey_block5"
       ]
    },
+   "step.iron": {
+      "__use_legacy_max_distance": true,
+      "category": "player",
+      "max_distance": null,
+      "min_distance": null,
+      "sounds": [
+         "sounds/block/iron/step1",
+         "sounds/block/iron/step2",
+         "sounds/block/iron/step3",
+         "sounds/block/iron/step4"
+      ]
+   },
    "step.ladder": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -21980,7 +23288,7 @@ export const sound_definitions = {
       ]
    },
    "step.sand": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -22077,7 +23385,7 @@ export const sound_definitions = {
       ]
    },
    "step.slime": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -22090,7 +23398,7 @@ export const sound_definitions = {
       ]
    },
    "step.snow": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -22135,7 +23443,7 @@ export const sound_definitions = {
       ]
    },
    "step.sponge": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -22178,7 +23486,7 @@ export const sound_definitions = {
       ]
    },
    "step.stone": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -22302,7 +23610,7 @@ export const sound_definitions = {
       ]
    },
    "step.wet_sponge": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -22314,7 +23622,7 @@ export const sound_definitions = {
       ]
    },
    "step.wood": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -22347,22 +23655,18 @@ export const sound_definitions = {
       ]
    },
    "tile.piston.in": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/tile/piston/in"
-      ]
+      "sounds": [ "sounds/tile/piston/in" ]
    },
    "tile.piston.out": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/tile/piston/out"
-      ]
+      "sounds": [ "sounds/tile/piston/out" ]
    },
    "tilt_down.big_dripleaf": {
       "category": "block",
@@ -22457,9 +23761,7 @@ export const sound_definitions = {
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/trial_spawner/charge_activate"
-      ]
+      "sounds": [ "sounds/block/trial_spawner/charge_activate" ]
    },
    "trial_spawner.close_shutter": {
       "category": "block",
@@ -22633,7 +23935,7 @@ export const sound_definitions = {
       ]
    },
    "ui.cartography_table.take_result": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -22675,7 +23977,7 @@ export const sound_definitions = {
       ]
    },
    "ui.hardcore_disable": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "ui",
       "max_distance": null,
       "min_distance": null,
@@ -22687,7 +23989,7 @@ export const sound_definitions = {
       ]
    },
    "ui.hardcore_enable": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "ui",
       "max_distance": null,
       "min_distance": null,
@@ -22699,7 +24001,7 @@ export const sound_definitions = {
       ]
    },
    "ui.hardcore_toggle_press": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "ui",
       "max_distance": null,
       "min_distance": null,
@@ -22711,7 +24013,7 @@ export const sound_definitions = {
       ]
    },
    "ui.loom.select_pattern": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -22739,7 +24041,7 @@ export const sound_definitions = {
       ]
    },
    "ui.loom.take_result": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -22755,7 +24057,7 @@ export const sound_definitions = {
       ]
    },
    "ui.stonecutter.take_result": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -22865,7 +24167,7 @@ export const sound_definitions = {
       ]
    },
    "use.cloth": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -22958,21 +24260,19 @@ export const sound_definitions = {
       ]
    },
    "use.grass": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
       "sounds": [
-         "sounds/step/grass1",
-         "sounds/step/grass2",
-         "sounds/step/grass3",
-         "sounds/step/grass4",
-         "sounds/step/grass5",
-         "sounds/step/grass6"
+         "sounds/block/grass/flatten1",
+         "sounds/block/grass/flatten2",
+         "sounds/block/grass/flatten3",
+         "sounds/block/grass/flatten4"
       ]
    },
    "use.gravel": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -23010,7 +24310,7 @@ export const sound_definitions = {
       ]
    },
    "use.ladder": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -23173,7 +24473,7 @@ export const sound_definitions = {
       ]
    },
    "use.sand": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -23215,7 +24515,7 @@ export const sound_definitions = {
       ]
    },
    "use.slime": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -23228,7 +24528,7 @@ export const sound_definitions = {
       ]
    },
    "use.snow": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -23299,7 +24599,7 @@ export const sound_definitions = {
       ]
    },
    "use.stone": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -23328,17 +24628,15 @@ export const sound_definitions = {
       ]
    },
    "use.wood": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
       "sounds": [
-         "sounds/step/wood1",
-         "sounds/step/wood2",
-         "sounds/step/wood3",
-         "sounds/step/wood4",
-         "sounds/step/wood5",
-         "sounds/step/wood6"
+         "sounds/item/axe/strip1",
+         "sounds/item/axe/strip2",
+         "sounds/item/axe/strip3",
+         "sounds/item/axe/strip4"
       ]
    },
    "vault.activate": {
@@ -23363,7 +24661,7 @@ export const sound_definitions = {
       ]
    },
    "vault.break": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -23386,17 +24684,13 @@ export const sound_definitions = {
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/trial_spawner/close_shutter"
-      ]
+      "sounds": [ "sounds/block/trial_spawner/close_shutter" ]
    },
    "vault.deactivate": {
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/vault/deactivate"
-      ]
+      "sounds": [ "sounds/block/vault/deactivate" ]
    },
    "vault.eject_item": {
       "category": "block",
@@ -23427,25 +24721,19 @@ export const sound_definitions = {
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/vault/insert"
-      ]
+      "sounds": [ "sounds/block/vault/insert" ]
    },
    "vault.insert_item_fail": {
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/vault/insert_fail"
-      ]
+      "sounds": [ "sounds/block/vault/insert_fail" ]
    },
    "vault.open_shutter": {
       "category": "block",
       "max_distance": null,
       "min_distance": null,
-      "sounds": [
-         "sounds/block/vault/open_shutter"
-      ]
+      "sounds": [ "sounds/block/vault/open_shutter" ]
    },
    "vault.place": {
       "category": "block",
@@ -23459,7 +24747,7 @@ export const sound_definitions = {
       ]
    },
    "vault.reject_rewarded_player": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "block",
       "max_distance": null,
       "min_distance": null,
@@ -23485,7 +24773,7 @@ export const sound_definitions = {
       ]
    },
    "vr.stutterturn": {
-      "__use_legacy_max_distance": "true",
+      "__use_legacy_max_distance": true,
       "category": "player",
       "max_distance": null,
       "min_distance": null,
@@ -23507,4 +24795,4 @@ export const sound_definitions = {
          "sounds/item/wind_charge/wind_burst3"
       ]
    }
-}
+};

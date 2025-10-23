@@ -37,7 +37,7 @@ export class EntityLib {
         entities.forEach((e, i) => {
             system.runTimeout(() => {
                 // TODO: capture fails                 
-                if (e.isValid()) { e.kill(); }
+                if (e.isValid) { e.kill(); }
             }, (i + 1) * 5);
         });
     }
@@ -69,7 +69,7 @@ export class EntityLib {
      * @param {world|Player} [displayTo=world] 
      */
     static listEntities (title = "", entities = [], displayTo = world) {
-        if (displayTo instanceof Player && !displayTo.isValid())
+        if (displayTo instanceof Player && !displayTo.isValid)
             return;
         
         let msg = "";
@@ -86,7 +86,7 @@ export class EntityLib {
      * @returns {Block | undefined}
      */
     static currentBlock (entity) {
-        if (!entity || !entity.isValid()) return undefined;
+        if (!entity || !entity.isValid) return undefined;
         return entity.dimension.getBlock(entity.location);
     }
     //==============================================================================
@@ -95,7 +95,7 @@ export class EntityLib {
      * @returns {number | undefined}
      */
     static markVariant_get (entity) {
-        if (!entity || !entity.isValid()) return undefined;
+        if (!entity || !entity.isValid) return undefined;
         return entity.getComponent('minecraft:mark_variant')?.value;
     }
     //==============================================================================
@@ -104,7 +104,7 @@ export class EntityLib {
      * @returns {number | undefined}
      */
     static variant_get (entity) {
-        if (!entity || !entity.isValid()) return undefined;
+        if (!entity || !entity.isValid) return undefined;
         return entity.getComponent('minecraft:variant')?.value;
     }
     //==============================================================================
@@ -113,7 +113,7 @@ export class EntityLib {
      * @returns {string[] }
      */
     static families_get (entity) {
-        if (!entity || !entity.isValid()) return [];
+        if (!entity || !entity.isValid) return [];
         return entity.getComponent('minecraft:type_family')?.getTypeFamilies() || [];
     }
     //==============================================================================
@@ -123,7 +123,7 @@ export class EntityLib {
      * @returns {boolean}
      */
     static isFamily (entity, familyQuery) {
-        if (!entity || !entity.isValid()) return false;
+        if (!entity || !entity.isValid) return false;
         const families = entity.getComponent('minecraft:type_family')?.getTypeFamilies();
         return families?.includes(familyQuery) || false;
     }

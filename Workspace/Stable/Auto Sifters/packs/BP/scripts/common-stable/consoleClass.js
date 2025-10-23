@@ -6,7 +6,7 @@ URL: https://github.com/DrinkWater623
 ========================================================================
 Last Update: 20241229 - reOrg and add License
 ========================================================================*/
-import { Player, World, world } from "@minecraft/server";
+import { Player, World, world} from "@minecraft/server";
 //=============================================================================
 export class ConsoleAlert {
     /**

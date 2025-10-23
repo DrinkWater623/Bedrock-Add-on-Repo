@@ -31,23 +31,22 @@ export function rotationToCardinalDirection (rotation) {
 export class Vector3Lib {
     //==============================================================================
     /**
-     * 
-     * @param {object} vector 
-     * @param {boolean} [exact=true] 
-     * @returns boolean
+     * True if `vector` has numeric x, y, z. When `exact` is true, extra props are disallowed.
+     * @param {unknown} vector
+     * @param {boolean} [exact=true]
+     * @returns {vector is import("@minecraft/server").Vector3}
      */
     static isVector3 (vector, exact = true) {
-        if (typeof vector != 'object') return false;
-        if (exact && Object.keys(vector).length > 3) return false;
-        if (!Object.hasOwn(vector, 'x')) return false;
-        if (!Object.hasOwn(vector, 'y')) return false;
-        if (!Object.hasOwn(vector, 'z')) return false;
-        const { x, y, z } = vector;
-        if (typeof x != 'number') return false;
-        if (typeof y != 'number') return false;
-        if (typeof z != 'number') return false;
+        if (!vector || typeof vector !== 'object') return false;
 
-        return true;
+        // Disallow any extras when exact=true (but allow exactly 3 or fewer keys otherwise)
+        if (exact && Object.keys(vector).length !== 3) return false;
+
+        const v = /** @type {Record<string, unknown>} */ (vector);
+        return Object.hasOwn(v, 'x') && Object.hasOwn(v, 'y') && Object.hasOwn(v, 'z')
+            && typeof v.x === 'number' && Number.isFinite(v.x)
+            && typeof v.y === 'number' && Number.isFinite(v.y)
+            && typeof v.z === 'number' && Number.isFinite(v.z);
     }
     //==============================================================================
     /**
@@ -94,10 +93,10 @@ export class Vector3Lib {
      * @param {number} [exactDecimals=2] 
      * @returns {boolean}
      */
-    static isSameLocation (vector_1, vector_2, exact = false,exactDecimals=2) {
+    static isSameLocation (vector_1, vector_2, exact = false, exactDecimals = 2) {
 
-        const v1 = exact ? this.round(vector_1,exactDecimals) : this.floor(vector_1)
-        const v2 = exact ? this.round(vector_2,exactDecimals) : this.floor(vector_2)        
+        const v1 = exact ? this.round(vector_1, exactDecimals) : this.floor(vector_1);
+        const v2 = exact ? this.round(vector_2, exactDecimals) : this.floor(vector_2);
 
         if (v1.x != v2.x) return false;
         if (v1.y != v2.y) return false;
@@ -211,23 +210,21 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param  { Object }  vector
-    * @returns {  import("@minecraft/server").Vector3 } 
-    */
+     * Coerces a value into a Minecraft Vector3. Missing or non-number x/y/z become 0.
+     *
+     * @param {Partial<{ x: number, y: number, z: number }> | null | undefined} vector
+     * @returns {import("@minecraft/server").Vector3}
+     */
     static toVector3 (vector) {
-        const temp = { ...vector };
-        if (!Object.hasOwn(temp, 'x')) temp.x = 0;
-        if (!Object.hasOwn(temp, 'y')) temp.y = 0;
-        if (!Object.hasOwn(temp, 'z')) temp.z = 0;
-        if (typeof temp.x != 'number') temp.x = 0;
-        if (typeof temp.y != 'number') temp.y = 0;
-        if (typeof temp.z != 'number') temp.z = 0;
+        const obj = (vector && typeof vector === 'object')
+            ? /** @type {Record<string, unknown>} */ (vector)
+            : {};
 
-        return {
-            x: temp.x,
-            y: temp.y,
-            z: temp.z
-        };
+        const x = Number.isFinite(obj.x) ? /** @type {number} */ (obj.x) : 0;
+        const y = Number.isFinite(obj.y) ? /** @type {number} */ (obj.y) : 0;
+        const z = Number.isFinite(obj.z) ? /** @type {number} */ (obj.z) : 0;
+
+        return { x, y, z };
     }
     //==============================================================================
     /**
@@ -313,7 +310,7 @@ export class FaceLocationGrid {
         this.#og_yDelta = this.yDelta;
 
         //auto done, but you can do later
-        if ([ 'up', 'down' ].includes(this.blockFace) && player && player.isValid()) {
+        if ([ 'up', 'down' ].includes(this.blockFace) && player && player.isValid) {
             this.adjustUpDownToPlayerRotation(player);
         }
     }
@@ -335,7 +332,7 @@ export class FaceLocationGrid {
     adjustUpDownToPlayerRotation (player) {
         if ([ 'up', 'down' ].includes(this.blockFace) &&
             player &&
-            player.isValid())
+            player.isValid)
             this.adjustUpDownToPlayerAngle(player.getRotation().y);
     }
     //for up/down can alter to be relative to player rotation
@@ -391,37 +388,29 @@ export class FaceLocationGrid {
 export class Vector2Lib {
     //==============================================================================
     /**
-     * 
-     * @param {object} vector 
-     * @param {boolean} [exact=true] 
-     * @returns boolean
+     * True if `vector` has numeric x and y. When `exact` is true, extra props are disallowed.
+     * @param {unknown} vector
+     * @param {boolean} [exact=true]
+     * @returns {vector is { x: number, y: number }}
      */
     static isVector2 (vector, exact = true) {
-        if (typeof vector != 'object') return false;
-        if (exact && Object.keys(vector).length > 2) return false;
-        if (!Object.hasOwn(vector, 'x')) return false;
-        if (!Object.hasOwn(vector, 'y')) return false;
-        const { x, y } = vector;
-        if (typeof x != 'number') return false;
-        if (typeof y != 'number') return false;
+        if (!vector || typeof vector !== 'object') return false;
+        if (exact && Object.keys(vector).length !== 2) return false;
 
-        return true;
+        const v = /** @type {Record<string, unknown>} */ (vector);
+        return Object.hasOwn(v, 'x') && Object.hasOwn(v, 'y')
+            && typeof v.x === 'number' && typeof v.y === 'number';
     }
     //==============================================================================
     /**
-     * 
-     * @param {object} vector 
-     * @returns boolean
-     */
+     * @param {{ x?: number, y?: number }} vector
+    * @returns {boolean}
+    */
     static hasVectorXY (vector) {
-        if (typeof vector != 'object') return false;
-        if (!Object.hasOwn(vector, 'x')) return false;
-        if (!Object.hasOwn(vector, 'y')) return false;
+        if (!vector || typeof vector !== 'object') return false;
+        if (!Object.hasOwn(vector, 'x') || !Object.hasOwn(vector, 'y')) return false;
         const { x, y } = vector;
-        if (typeof x != 'number') return false;
-        if (typeof y != 'number') return false;
-
-        return true;
+        return typeof x === 'number' && typeof y === 'number';
     }
     //==============================================================================
     /**
@@ -546,20 +535,20 @@ export class Vector2Lib {
     }
     //==============================================================================
     /**
-    * @param  { Object }  vector
-    * @returns { import("@minecraft/server").Vector2 } 
-    */
+     * Coerces a value into a Minecraft Vector3. Missing or non-number x/y/z become 0.
+     *
+     * @param {Partial<{ x: number, y: number }> | null | undefined} vector
+     * @returns {import("@minecraft/server").Vector2}
+     */
     static toVector2 (vector) {
-        const temp = { ...vector };
-        if (!Object.hasOwn(temp, 'x')) temp.x = 0;
-        if (!Object.hasOwn(temp, 'y')) temp.y = 0;
-        if (typeof temp.x != 'number') temp.x = 0;
-        if (typeof temp.y != 'number') temp.y = 0;
+        const obj = (vector && typeof vector === 'object')
+            ? /** @type {Record<string, unknown>} */ (vector)
+            : {};
 
-        return {
-            x: temp.x,
-            y: temp.y
-        };
+        const x = Number.isFinite(obj.x) ? /** @type {number} */ (obj.x) : 0;
+        const y = Number.isFinite(obj.y) ? /** @type {number} */ (obj.y) : 0;
+
+        return { x, y };
     }
     //==============================================================================
     /**

@@ -18,7 +18,7 @@ export class DynamicPropertyLib {
      * @param {number} [qty=0] 
      */
     static add (entity, propertyName, qty = 0) {
-        if (entity instanceof World || entity.isValid()) {
+        if (entity instanceof World || entity.isValid) {
             const currentQty = DynamicPropertyLib.getNumber(entity, propertyName);
             entity.setDynamicProperty(propertyName, currentQty + qty);
         }
@@ -34,8 +34,8 @@ export class DynamicPropertyLib {
         if (!propertyName) return 0;
 
         let sum = 0;
-        entities.filter(e => e.isValid()).forEach(e => {
-            if (e.isValid()) sum += DynamicPropertyLib.getNumber(e, propertyName);
+        entities.filter(e => e.isValid).forEach(e => {
+            if (e.isValid) sum += DynamicPropertyLib.getNumber(e, propertyName);
         });
 
         return sum;
@@ -48,7 +48,7 @@ export class DynamicPropertyLib {
      * @returns {number} 
      */
     static getNumber (entity, propertyName) {
-        if (entity instanceof World || entity.isValid()) {
+        if (entity instanceof World || entity.isValid) {
             const currentQty = entity.getDynamicProperty(propertyName);
             if (!currentQty || typeof currentQty != 'number') {
                 entity.setDynamicProperty(propertyName, 0);
@@ -67,7 +67,7 @@ export class DynamicPropertyLib {
      * @param {import("@minecraft/server").Vector3} location
      */
     static setVector (entity, propertyName, location) {
-        if (entity.isValid()) {
+        if (entity.isValid) {
             entity.setDynamicProperty(propertyName, location);
         }
     }
@@ -79,7 +79,7 @@ export class DynamicPropertyLib {
      * @returns {import("@minecraft/server").Vector3 | undefined} 
      */
     static getVector (entity, propertyName) {
-        if (entity.isValid()) {
+        if (entity.isValid) {
             const location = entity.getDynamicProperty(propertyName);
             if (!location || typeof location != 'object') return undefined;
             return location;
@@ -96,7 +96,7 @@ export class DynamicPropertyLib {
     * @returns {string} 
     */
     static getString (entity, propertyName) {
-        if (entity instanceof World || entity.isValid()) {
+        if (entity instanceof World || entity.isValid) {
             const currentValue = entity.getDynamicProperty(propertyName);
             if (!currentValue || typeof currentValue != 'string') {
                 entity.setDynamicProperty(propertyName, '');

@@ -25,7 +25,7 @@ export class GetBlock {
      */
     static adjacent (block, blockFace, opposite = false, debug = false) {
 
-        if (!block || !block.isValid()) {
+        if (!block || !block.isValid) {
             return undefined;
         }
 
@@ -222,14 +222,14 @@ export class GetBlockState {
     /**
      * 
      * @param {Block} block
-     * @param {string} stateName
+     * @param {keyof import("@minecraft/vanilla-data").BlockStateSuperset} stateName
      * @param {('string'|'number'|'boolean')} expectedType 
      * @param {boolean} [fail=true]   
      * @returns 
      */
-    static getBlockState (block, stateName, expectedType, fail = true) {
+    static getBlockStateOLD (block, stateName, expectedType, fail = true) {
 
-        if (!block || !block.isValid()) {
+        if (!block || !block.isValid) {
             if (fail)
                 throw new Error("Invalid Block");
 
@@ -250,11 +250,38 @@ export class GetBlockState {
 
         return stateValue;
     }
+    // @ts-check
+    /**
+     * @param {Block} block
+     * @param {keyof import("@minecraft/vanilla-data").BlockStateSuperset} stateName
+     * @param {'string'|'number'|'boolean'} expectedType
+     * @param {boolean} [fail=true]
+     * @returns {string|number|boolean|undefined}
+     */
+    static getBlockState (block, stateName, expectedType, fail = true) {
+        if (!block || !block.isValid) {
+            if (fail) throw new Error("Invalid Block");
+            return;
+        }
+
+        const perm = /** @type {import("@minecraft/server").BlockPermutation} */ (block.permutation);
+        /** @type {unknown} */
+        const stateValue = perm.getState(stateName);
+
+        if (typeof stateValue !== expectedType) {
+            const msg = `${block.typeId} ${String(stateName)} trait is not a ${expectedType}: ${stateValue}`;
+            if (fail) throw new Error(msg);
+            return undefined;
+        }
+
+        return /** @type {any} */ (stateValue);
+    }
+
     //=========================================================================
     /**
      * 
      * @param {Block} block
-     * @param {string} stateName
+     * @param {keyof import("@minecraft/vanilla-data").BlockStateSuperset} stateName
      * @param {boolean} [fail=true]   
      * @param {number} defaultValue      * 
      * @returns {number}
@@ -272,7 +299,7 @@ export class GetBlockState {
     /**
      * 
      * @param {Block} block
-     * @param {string} stateName
+     * @param {keyof import("@minecraft/vanilla-data").BlockStateSuperset} stateName
      * @param {boolean} [fail=true]   
      * @param {string} defaultValue      * 
      * @returns {string}
@@ -290,7 +317,7 @@ export class GetBlockState {
     /**
      * 
      * @param {Block} block
-     * @param {string} stateName
+     * @param {keyof import("@minecraft/vanilla-data").BlockStateSuperset} stateName
      * @param {boolean} defaultValue      * 
      * @param {boolean} [fail=true]   
      * @returns {boolean}
@@ -308,7 +335,7 @@ export class GetBlockState {
 /**
  * 
  * @param {Block} block
- * @param {string} stateName
+ * @param {keyof import("@minecraft/vanilla-data").BlockStateSuperset} stateName
  * @param {('string'|'number'|'boolean')} expectedType 
  * @param {boolean} [fail=true]   
  * @returns 
@@ -322,7 +349,7 @@ export class GetBlockStates {
      * 
      * @param {Block} block
      * @param {('string'|'number'|'boolean'|undefined)} [stateValueTypeFilter =undefined]
-     * @returns {undefined | Map}
+     * @returns {undefined | Map<any,any>}
      */
     static getBlockStates (block, stateValueTypeFilter = undefined) {
         const blockStates = block.permutation.getAllStates;
@@ -344,7 +371,7 @@ export class GetBlockStates {
     /**
      * 
      * @param {Block} block
-     * @returns {undefined | Map}
+     * @returns {undefined | Map<any,number>}
      */
     static numbers (block) {
         return GetBlockStates.getBlockStates(block, 'number');
@@ -352,7 +379,7 @@ export class GetBlockStates {
     /**
      * 
      * @param {Block} block
-     * @returns {undefined | Map}
+     * @returns {undefined | Map<any,string>}
      */
     static strings (block) {
         return GetBlockStates.getBlockStates(block, 'string');
@@ -360,7 +387,7 @@ export class GetBlockStates {
     /**
      * 
      * @param {Block} block
-     * @returns {undefined | Map}
+     * @returns {undefined | Map<any,boolean>}
      */
     static booleans (block) {
         return GetBlockStates.getBlockStates(block, 'boolean');
@@ -378,7 +405,7 @@ export class PlaceBlock {
      */
     static typeId (block, typeId, sound = '?', soundsLike = '') {
 
-        if (!block.isValid()) return false;
+        if (!block.isValid) return false;
 
         if (sound == '?')
             sound = GetBlock.sound(typeId, soundsLike);
@@ -399,7 +426,7 @@ export class PlaceBlock {
      * @param {string} [soundsLike=''] 
      */
     static permutation (block, permutation, sound = '?', soundsLike = '') {
-        if (!block.isValid()) return false;
+        if (!block.isValid) return false;
 
         if (sound == '?') {
             sound = GetBlock.sound(permutation.type.id, soundsLike);
@@ -419,7 +446,7 @@ export class PlaceBlock {
      * 
      * @param {Block} block 
      * @param {string} newTypeId 
-     * @param {Object} states
+     * @param {Record<string,string | number | boolean>} states
      * @param {string} [sound='']
      * @param {string} [soundsLike=''] 
      */
@@ -437,7 +464,7 @@ export class PlaceBlock {
      * 
      * @param {Block} block 
      * @param {string} newTypeId 
-     * @param {string} stateName
+     * @param {keyof import("@minecraft/vanilla-data").BlockStateSuperset} stateName
      * @param {boolean | number | string} stateValue
      * @param {string} [sound='']
      * @param {string} [soundsLike=''] 
@@ -454,12 +481,12 @@ export class PlaceBlock {
  * @returns {boolean}
  */
 export function isSameBlock (block_1, block_2) {
-    if (!block_1.isValid()) return false;
-    if (!block_2.isValid()) return false;
+    if (!block_1.isValid) return false;
+    if (!block_2.isValid) return false;
 
     if (block_1.typeId != block_2.typeId) return false;
 
-    return Vector3Lib.isSameLocation(block_1.location, block_2.location,false);
+    return Vector3Lib.isSameLocation(block_1.location, block_2.location, false);
 }
 //==============================================================================
 // End of File
