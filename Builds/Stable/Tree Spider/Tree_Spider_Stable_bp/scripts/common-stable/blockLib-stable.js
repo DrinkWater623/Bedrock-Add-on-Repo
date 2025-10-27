@@ -7,7 +7,7 @@ URL: https://github.com/DrinkWater623
 ========================================================================
 Last Update: 20250116a - Added isSameBlock
 ========================================================================*/
-import { Block, BlockPermutation, BlockVolume, Dimension,Direction, system } from "@minecraft/server";
+import { Block, BlockPermutation, BlockVolume, Dimension, Direction, system } from "@minecraft/server";
 import { blocksDotJson } from "../common-data/blocks.json";
 import { sound_definitions } from "../common-data/sound_definitions";
 import { ChatMsg } from "./consoleClass";

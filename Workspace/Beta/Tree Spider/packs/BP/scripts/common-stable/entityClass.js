@@ -1,15 +1,27 @@
 //@ts-check
 /* =====================================================================
-Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
 License: GPL-3.0-only
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20241229 - reOrg and add License
+Last Update: 20251024 - Add event trigger
 ========================================================================*/
 import { world, system, Player, Entity, Block } from "@minecraft/server";
 import { Vector3Lib as vec3 } from './vectorClass.js';
 //==============================================================================
 export class EntityLib {
+    //==============================================================================
+    /**
+     * 
+     * @param {Entity} entity 
+     * @param {string} trigger 
+     */
+    static eventTrigger (entity, trigger) {
+    if (entity.isValid)
+        system.runTimeout(() => {
+            system.run(() => { entity.triggerEvent(trigger); });
+        }, 1);
+    }
     //==============================================================================
     /**
      * 

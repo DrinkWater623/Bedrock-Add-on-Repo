@@ -4,11 +4,26 @@ Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev
 License: GPL-3.0-only
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20241229 - reOrg and add License
+Last Update: 20251024 - Add get boolean value and propertyExists()
 ========================================================================*/
 import { Entity, World } from "@minecraft/server";
 //==============================================================================
 export class DynamicPropertyLib {
+
+    //====================================== Query
+    /**
+    * 
+    * @param {Entity | World} entity
+    * @param {string} propertyName
+    * @returns {boolean} 
+    */
+    static propertyExists (entity, propertyName) {
+        if (entity instanceof World || entity.isValid) {
+            const currentValue = entity.getDynamicProperty(propertyName);
+            return (typeof currentValue !== 'undefined');
+        }
+        else return false;
+    }
 
     //======================================  Numbers
     /**
@@ -105,5 +120,24 @@ export class DynamicPropertyLib {
             return currentValue;
         }
         else return '';
+    }
+
+    //====================================== Bools
+    /**
+    * 
+    * @param {Entity | World} entity
+    * @param {string} propertyName
+    * @returns {boolean} 
+    */
+    static getBoolean (entity, propertyName) {
+        if (entity instanceof World || entity.isValid) {
+            const currentValue = entity.getDynamicProperty(propertyName);
+            if (typeof currentValue != 'boolean') {
+                entity.setDynamicProperty(propertyName, false);
+                return false;
+            }
+            return currentValue;
+        }
+        else return false;
     }
 }
