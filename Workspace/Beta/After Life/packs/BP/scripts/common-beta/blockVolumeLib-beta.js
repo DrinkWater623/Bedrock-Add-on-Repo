@@ -1,12 +1,12 @@
 //@ts-check
 /* =====================================================================
-Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
 License: GPL-3.0-only
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20241230 - reOrg as LBeta Block Volume Library
+Last Update: 20251026 - move stable stuff out
 ========================================================================*/
-import { Dimension, BlockVolume, system, Block } from "@minecraft/server";
+import { Dimension, system, Block } from "@minecraft/server";
 import { blocksAround } from "../common-stable/blockLib-stable";
 //=========================================================================
 /**
