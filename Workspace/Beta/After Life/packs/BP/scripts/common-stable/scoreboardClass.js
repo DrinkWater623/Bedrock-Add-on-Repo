@@ -4,7 +4,7 @@ Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev
 License: GPL-3.0-only
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20241229 - reOrg and add License
+Last Update: 20251027 - add for display to list
 ========================================================================*/
 import { system, world, DisplaySlotId, TicksPerSecond } from '@minecraft/server';
 import { worldRun } from './runCommandClass.js';
@@ -126,6 +126,21 @@ export class ScoreboardLib {
         if (!sb) return false;
 
         world.scoreboard.removeObjective(scoreboardName);
+    }
+    //===================================================================
+    /**
+    * 
+    * @param {string} scoreboardName 
+    */
+    static list_set (scoreboardName) {
+        const sb = world.scoreboard.getObjective(scoreboardName);
+        if (!sb) return false;
+        system.run(() => { world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.List, { objective: sb }); });
+        return true;
+    }
+    static list_clear () {
+        world.scoreboard.clearObjectiveAtDisplaySlot(DisplaySlotId.List);
+        return true;
     }
     //===================================================================
     /**

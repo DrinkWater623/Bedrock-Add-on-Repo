@@ -47,38 +47,15 @@
 			"build": {				
 				"export": {"readOnly":false,"target":"local","bpName":"project.name+'_Stable_bp'","rpName": "project.name+'_Stable_rp'"},
 				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"beta":false,"preview":false}}]
-			},
-			"build-beta": {
-				"export": {"readOnly":false,"target":"local","bpName":"project.name+'_Beta_bp'","rpName": "project.name+'_Beta_rp'"},
-				"filters": [{"profile":"template-beta"},{"filter":"mani_fest","settings":{"beta":true,"preview":false,"BP":{"js":"main-beta.js"}}}]
-			},	
+			},			
 			"stable": {
 				"export": {"readOnly":false,"target":"development"},
 				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"beta":false}}]
 			},
-			"beta": {
-				"export": {"readOnly":false,"target":"development"},
-				"filters": [{"profile":"template-beta"},{"filter":"mani_fest","settings":{"beta":true,"BP":{"js":"main-beta.js"}}}]
-			},
 			"preview": {
 				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
 				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"preview":true}}]
-			},
-			"preview-beta": {
-				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
-				"filters": [
-					{"profile":"template-beta"},
-					{"filter":"mani_fest",
-						"settings":{							
-							"preview":true,"beta":true,
-							"BP":{
-								"js":"main-beta.js",
-								"dependencies":{"module_name":"@minecraft/server","version":"1.15.0-beta"}
-							}
-						}
-					}
-				]
-			}
+			}			
 		}
 	}
 }

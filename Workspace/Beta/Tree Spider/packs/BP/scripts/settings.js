@@ -1,4 +1,5 @@
-//@ts-check
+// settings.js
+// @ts-check
 /* =====================================================================
 Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
 License: GPL-3.0-only
@@ -15,25 +16,15 @@ import { ConsoleAlert, ChatMsg } from "./common-stable/consoleClass";
 export const pack = {
     packName: 'Tree Spider',
     beta: false,
-    commandNamespace: "tree_spider:",
-    isLoadAlertsOn: false,
-    /* 
-    Use only to override world debug dynamic vars 
-    This will use the dev debug settings (see fn-debug.js)
-    instead of the dynamic vars already in the world (if ever saved)
-    False will allow dev to upload to DV upon initialization only
-    */
-    allowDebugOverride: false
-    //TODO: test new debug scoreboards
+    worldLoaded:false,
+    fullNameSpace: "dw623_tree_spider",
+    isLoadAlertsOn: false        
 };
 //==============================================================================
 export const alertLog = new ConsoleAlert(`§d${pack.packName}§r`);
 export const chatLog = new ChatMsg(`§b${pack.packName}§r`);
 //==============================================================================
 export const dynamicVars = {
-    // World Properties
-    allowDebug: 'allowDebug',
-
     //-- Entity Dynamic Properties --
     aliveTicks: 'aliveTicks',
     lastActiveTick: 'lastActiveTick',
@@ -43,14 +34,20 @@ export const dynamicVars = {
     // Entity Activity
     websCreated: 'websCreated',
     websExpanded: 'websExpanded',
-    eggsLaid: 'eggsLaid'
+    websEntered: 'websEntered',
+    eggsLaid: 'eggsLaid',
+    entityBorn:'entityBorn',
+    entityLoads:'entityLoads',
+    entitySpawns:'entitySpawns'
 };
 //==============================================================================
 export const entityEvents = {
     despawnEventName: 'despawn_me',
     replaceEventName: 'replace_me',
     stayInWebEventName: 'stay_in_web_start',
-    wanderEventName: 'wander_around_start'
+    wanderEventName: 'wander_around_start',
+    baby_stayInWebEventName: 'baby_stay_in_web_start',
+    baby_wanderEventName: 'baby_wander_around_start'
 };
 //==============================================================================
 //Change this to change the entity

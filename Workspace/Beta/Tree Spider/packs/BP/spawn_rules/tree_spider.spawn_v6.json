@@ -92,7 +92,7 @@
         "minecraft:spawns_on_surface": {},
         "minecraft:distance_filter": {"min": 24,"max": 128},
         "minecraft:weight": {"default":100 },
-        "minecraft:density_limit": {"surface":10,"underground":0},  
+        "minecraft:density_limit": {"surface":25,"underground":0},  
         "minecraft:biome_filter": 
         {
           "any_of": [

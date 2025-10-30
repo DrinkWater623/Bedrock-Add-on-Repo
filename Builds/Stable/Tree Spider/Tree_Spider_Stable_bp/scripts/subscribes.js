@@ -65,7 +65,7 @@ export const debugSubscriptions = {
 
             this.handler = world.afterEvents.entityDie.subscribe(fn, { entityTypes: [ watchFor.typeId ] });
             this.on = true;
-            alertLog.success("§aInstalled afterEvents.entityDie §c(debug mode)", debug.dev.debugSubscriptions);
+            alertLog.success("§aInstalled afterEvents.entityDie §4(debug mode)", debug.dev.debugSubscriptions);
         },
         unsubscribe () {
             if (!this.on) return;
@@ -95,7 +95,7 @@ export const debugSubscriptions = {
 
             this.handler = world.afterEvents.entityRemove.subscribe(fn, { entityTypes: [ watchFor.typeId ] });
             this.on = true;
-            alertLog.success("§aInstalled afterEvents.entityRemove §c(debug mode)", debug.dev.debugSubscriptions);
+            alertLog.success("§aInstalled afterEvents.entityRemove §4(debug mode)", debug.dev.debugSubscriptions);
         },
         unsubscribe () {
             if (!this.on) return;
@@ -127,7 +127,7 @@ export const debugSubscriptions = {
             };
             this.handler = world.beforeEvents.entityRemove.subscribe(fn);
             this.on = true;
-            alertLog.success("§aInstalled beforeEvents.entityRemove §c(debug mode)", debug.dev.debugSubscriptions);
+            alertLog.success("§aInstalled beforeEvents.entityRemove §4(debug mode)", debug.dev.debugSubscriptions);
         },
         unsubscribe () {
             if (!this.on) return;
@@ -174,7 +174,7 @@ function afterEvents_worldLoad () {
             debug.getDebugDynamicVars();
         }
 
-        alertLog.success(`§aInstalling Add-on ${pack.packName} - ${pack.beta ? '§6Beta' : '§bStable'}  ${debug.dev.debug ? '§c(Debug Mode)' : ''}`, debug.dev.debugPackLoad || pack.isLoadAlertsOn);
+        alertLog.success(`§aInstalling Add-on ${pack.packName} - ${pack.beta ? '§6Beta' : '§bStable'}  ${debug.dev.debug ? '§4(debug mode)' : ''}`, debug.dev.debugPackLoad || pack.isLoadAlertsOn);
 
         if (debug.dev.debug) {
             debugSubscriptions.setup();
@@ -187,7 +187,7 @@ function afterEvents_worldLoad () {
             }, Ticks.perMinute * watchFor.stalledCheckRunInterval);
         }, Ticks.perMinute * watchFor.stalledCheckRunInterval);
 
-        alertLog.success("§aFinished afterEvents.worldLoad §c(debug mode)", debug.dev.debugSubscriptions);
+        alertLog.success("§aFinished afterEvents.worldLoad §4(debug mode)", debug.dev.debugSubscriptions);
     });
 }
 //==============================================================================

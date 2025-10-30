@@ -58,7 +58,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
     },
     
     "$template": {                
-        "format_version": "1.21.0",
+        "format_version": "1.21.120",
         "minecraft:entity": {
             "description": {
                 "identifier": "dw623:tree_spider",
@@ -104,23 +104,25 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                             {
                                 "filters": {
                                     "any_of":[
-                                        {"test":"is_family","subject":"other","value":"creeper"},
-                                        {"test":"is_family","subject":"other","value":"slime"},
-                                        {"test":"is_family","subject":"other","value":"magma"},
-                                        {"test":"is_family","subject":"other","value":"pillager"},
-                                        {"test":"is_family","subject":"other","value":"villager"},
-                                        {"test":"is_family","subject":"other","value":"wandering_trader"},
-                                        {"test":"is_family","subject":"other","value":"parrot"},
-                                        {"test":"is_family","subject":"other","value":"horse"},
-                                        {"test":"is_family","subject":"other","value":"mule"},
-                                        {"test":"is_family","subject":"other","value":"donkey"},
-                                        {"test":"is_family","subject":"other","value":"llama"},
-                                        {"test":"is_family","subject":"other","value":"frog"},
-                                        {"test":"is_family","subject":"other","value":"sheep"},
-                                        {"test":"is_family","subject":"other","value":"cow"},
+                                        {"test":"is_family","subject":"other","value":"animal"},
+                                        {"test":"is_family","subject":"other","value":"armor_stand"},
+                                        {"test":"is_family","subject":"other","value":"cat"},
                                         {"test":"is_family","subject":"other","value":"chicken"},
+                                        {"test":"is_family","subject":"other","value":"cow"},
+                                        {"test":"is_family","subject":"other","value":"creeper"},
+                                        {"test":"is_family","subject":"other","value":"donkey"},
+                                        {"test":"is_family","subject":"other","value":"frog"},
+                                        {"test":"is_family","subject":"other","value":"horse"},
+                                        {"test":"is_family","subject":"other","value":"llama"},
+                                        {"test":"is_family","subject":"other","value":"magma"},
+                                        {"test":"is_family","subject":"other","value":"mule"},
                                         {"test":"is_family","subject":"other","value":"ocelot"},
-                                        {"test":"is_family","subject":"other","value":"cat"}
+                                        {"test":"is_family","subject":"other","value":"parrot"},
+                                        {"test":"is_family","subject":"other","value":"pillager"},
+                                        {"test":"is_family","subject":"other","value":"sheep"},
+                                        {"test":"is_family","subject":"other","value":"slime"},
+                                        {"test":"is_family","subject":"other","value":"villager"},
+                                        {"test":"is_family","subject":"other","value":"wandering_trader"}
                                     ]
                                 }
                             }
@@ -225,13 +227,13 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                         "minecraft:damage_sensor": {
                             "triggers": [
                                 //fall
-                                {"cause":"fall","deals_damage":false},
+                                {"cause":"fall","deals_damage":"no"},
                                 //bush
-                                {"on_damage":{"filters":{"test":"is_block","subject":"block","value":"minecraft:sweet_berry_bush"}},"deals_damage":false},
+                                {"on_damage":{"filters":{"test":"is_block","subject":"block","value":"minecraft:sweet_berry_bush"}},"deals_damage":"no"},
                                 //other entity
                                 {
                                     "cause": "all",
-                                    "deals_damage": true,
+                                    "deals_damage": "yes",
                                     "on_damage": {
                                         "event": "{{value}}_go_attack",
                                         "filters": {
@@ -262,7 +264,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                                 //fall
                                 {
                                     "cause": "fall",
-                                    "deals_damage": false
+                                    "deals_damage": "no"
                                 },
                                 //bush
                                 {
@@ -273,7 +275,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                                             "value": "minecraft:sweet_berry_bush"
                                         }
                                     },
-                                    "deals_damage": false
+                                    "deals_damage": "no"
                                 }
                             ]
                         },
@@ -316,7 +318,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                     "minecraft:behavior.move_to_block": {
                         "priority": 2,"start_chance": 1,"target_selection_method": "nearest","target_blocks": ["minecraft:web"],
                         "tick_interval": 10,"speed_multiplier": 0.5,
-                        "goal_radius": 1,"search_range": 3,"search_height": 3
+                        "goal_radius": 1,"search_range": 3,"search_height": 8
                         //had to add cause could not take web, kept coming back
                         //,"on_reach": [{"event":"non_event","target":"self"}] 
                         //FIXME: for some reason, placeWeb event was still going -see if real bug later  
@@ -592,24 +594,24 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                 */      
             },
             "events": {  
-                "non_event":{"queue_command": {"command":["scriptevent chatOnly:EntityActivity§c nonEvent"]}},
+                "non_event":{"queue_command": {"command":["scriptevent chatOnly:ignore nonEvent"]}},
                 //---------------------------------    
                 // Natural Adult Life
                 //---------------------------------                        
                 "minecraft:entity_spawned": {
-                    "sequence":[                        
-                        {"queue_command": {"command":["scriptevent registerSB:EntityAlert §aSpawned"]}},
+                    "sequence":[            
+                        //HERE            
+                        {"queue_command": {"command":["scriptevent registerSB:NewEntity spawned"]}},
                         {"add":{"component_groups":["spider_adult","adult_spider_calm"]}},
                         {"trigger":"look_for_web_nearest_start"}
                     ]                   
-                },   
-                
+                },                   
                 //---------------------------------            
                 "adult_go_attack": {
                     "sequence":[                    
                         {
                             "filters":{"test":"bool_property","domain":"bit:debug", "value":true},
-                            "queue_command": {"command":["scriptevent chatOnly:EntityActivity §c*Adult attacked"]}
+                            "queue_command": {"command":["scriptevent chatOnly:AlertLog §c*Adult attacked"]}
                         },
                         {
                             "remove": {"component_groups":["adult_spider_calm"]},
@@ -621,7 +623,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                     "sequence":[                        
                         {
                             "filters":{"test":"bool_property","domain":"bit:debug", "value":true},
-                            "queue_command": {"command":["scriptevent chatOnly:EntityActivity §d*Adult calmed"]}},
+                            "queue_command": {"command":["scriptevent chatOnly:AlertLog §d*Adult calmed"]}},
                         {
                             "remove":{"component_groups":["adult_spider_attack"]},
                             "add":{"component_groups":["adult_spider_calm","avoid_other_spiders_and_eggs"]}
@@ -697,15 +699,16 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                 "stay_in_web_start":{
                     "sequence":[                        
                         {"add":{"component_groups":["stay_in_web","stay_in_web_timer","avoid_eggs"]}},
-                        {"queue_command": {"command":["scriptevent chatOnly:EntityActivity §2STAYING IN WEB"]}}
+                        // this is not acted  upon, just logs in SB if debug is on
+                        {"queue_command": {"command":["scriptevent DebugSBOnly Staying in Web"]}}
                     ]
                 },
                 "stay_in_web_end": {
                     //Needs to turn back on physics and gravity here   
                     "sequence":[                        
                         {"randomize": [   
-                            {"weight":50,"trigger":"stay_in_web_choose_next"},  
-                            {"weight":50,
+                            {"weight":30,"trigger":"stay_in_web_choose_next"},  
+                            {"weight":70,
                             "remove":{"component_groups":["avoid_eggs"]},
                             "add":{"component_groups":["lay_egg_sac"]}
                         }
@@ -732,9 +735,9 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                 //---------------------------------            
                 "stay_in_web_choose_next": {
                     "randomize": [   
-                        {"weight":60,"trigger":"wander_around_start"},  
-                        {"weight":30,"trigger":"expand_web"},
-                        {"weight":10,"trigger":"stay_in_web_start"}
+                        {"weight":20,"trigger":"wander_around_start"},  
+                        {"weight":60,"trigger":"expand_web"},
+                        {"weight":20,"trigger":"stay_in_web_start"}
                         
                     ]        
                 }, 
@@ -748,9 +751,9 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                 },
                 "wander_around_end": {
                     "randomize": [
-                        {"weight":60,"trigger":"look_for_web_nearest_start"}, 
-                        {"weight":20,"trigger":"wander_around_start"},
-                        {"weight":20,"trigger":"look_for_log_nearest_start"}
+                        {"weight":50,"trigger":"look_for_web_nearest_start"}, 
+                        {"weight":10,"trigger":"wander_around_start"},
+                        {"weight":40,"trigger":"look_for_log_nearest_start"}
                     ]
                 },
                 //---------------------------------            
@@ -762,14 +765,15 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                     "add":{"component_groups":["spider_baby","baby_spider_calm","entity_born_script_event_delay_timer","avoid_eggs"]}
                 },
                 "entity_born_script_event": { //because of the multiple script events in same tick..
-                    "queue_command": {"command":["scriptevent registerSB:EntityAlert §bBorn"]},
+                //HERE
+                    "queue_command": {"command":["scriptevent registerSB:NewEntity born"]},
                     "add":{"component_groups":["baby_wander_around_delay_timer"]}
                 },                
                 "baby_ageable_grow_up": {  
                     "sequence":[
                         {
                             "filters":{"test":"bool_property","domain":"bit:debug", "value":true},
-                            "queue_command": {"command":["scriptevent registerSB:EntityAlert §bPuberty"]}
+                            "queue_command": {"command":["scriptevent registerSB:GrowUp puberty"]}
                         },
                         {"remove":{"component_groups":["spider_baby"]}},
                         {"add":{"component_groups":["spider_adult","become_adult_activity_delay_timer"]}}                        
@@ -782,7 +786,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                     "sequence":[ 
                         {
                             "filters":{"test":"bool_property","domain":"bit:debug", "value":true},
-                            "queue_command": {"command":["scriptevent chatOnly:EntityActivity §c*Baby attacked"]}
+                            "queue_command": {"command":["scriptevent chatOnly:AlertLog §c*Baby attacked"]}
                         },
                         {
                             "remove": {"component_groups":["baby_spider_calm"]},
@@ -794,7 +798,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                     "sequence":[ 
                         {
                             "filters":{"test":"bool_property","domain":"bit:debug", "value":true},
-                            "queue_command": {"command":["scriptevent chatOnly:EntityActivity §d*baby calmed"]}
+                            "queue_command": {"command":["scriptevent chatOnly:AlertLog §d*baby calmed"]}
                         },                        
                         {
                             "remove":{"component_groups":["baby_spider_attack"]},

@@ -1,3 +1,4 @@
+// fn-debug.js
 //@ts-check
 /* =====================================================================
 Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
@@ -7,109 +8,134 @@ URL: https://github.com/DrinkWater623
 ========================================================================
 Last Update: 20251023 - Sep out debug stuff
 ========================================================================*/
-import { system, TicksPerSecond, world } from "@minecraft/server";
-import { alertLog, watchFor } from './settings.js';
+import { ScoreboardObjective, system, TicksPerSecond, world, DisplaySlotId } from "@minecraft/server";
+import { alertLog, chatLog, pack, watchFor } from './settings.js';
 import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
 import { EntityLib } from "./common-stable/entityClass.js";
-import { DynamicPropertyLib } from "./common-stable/dynamicPropertyClass.js";
 import { Ticks } from "./common-data/globalConstantsLib.js";
 //==============================================================================
 // JSDoc Makes the squiggly red lines go away....
 //==============================================================================
-/** @typedef {import("@minecraft/server").ScoreboardObjective} ScoreboardObjective */
+
 //==============================================================================
 /** Core shape without index signature. */
 //==============================================================================
+ /** @typedef {{
+  * base: string;
+  * name: string;
+  * display: string;
+  * sbId: ScoreboardObjective;
+  * }} sbListObject */;
+
 /** @typedef {{
  *  debug: boolean;
- *  debugGamePlay: boolean;
  *  debugEntityActivity: boolean;
  *  debugEntityAlert: boolean;
  *  debugPackLoad: boolean;
  *  debugSubscriptions: boolean;
- *  debugLoadAndSpawn: boolean;
- *  debugScoreboardsAllow: boolean;
- *  debugScoreboardList: string[]; 
- *  debugTimeCountersOn: boolean;
+ *  debugScoreboardBaseName: string,
+ *  debugScoreboardBaseDisplay: string,
  *  debugTimers: 'mh' | 'smh';
  *  debugTimeCountersRunId: number;
  *  allOff(this: Dev): void;
  *  allOn(this: Dev): void;
  *  anyOn(this: Dev): void;
- * }} DevCore */;
+ * }} DevObject */;
 
 /** @typedef {{
  * sbEntitiesScoreboard: ScoreboardObjective | undefined;
  * sbEntitiesName: string
  * sbStatsScoreboard: ScoreboardObjective | undefined;
- * sbStatsName: string
- * createAllScoreboardNames(this: DebugScoreboards): void;
+ * sbStatsName: string;
+ * ScoreboardList: sbListObject[]; 
+ * adultSpiders: string;
+ * babySpiders: string;
+ * eggsInWebs: string;
+ * born:string;
+ * spawned:string; 
+ * loaded:string; 
+ * growUp:string; 
+ * died: string;
+ * removed: string;
+ * stalled:string;
+ * stalledNamed:string; 
+ * newWeb:string;
+ * expandWeb:string;
+ * enterWeb: string;
+ * layEgg:string;
+ * timeCountersOn: boolean;
+ * timers: string;
+ * timeCountersRunId: number; 
+ * entityCountersRunId: number; 
  * createAllScoreboardObjectives(this: DebugScoreboards): void;
- * createAll(this: DebugScoreboards): void;
- * }} DebugScoreboardsCore */;
+ * ifNoReasonForScoreBoardToShow(this: DebugScoreboards): void; 
+ * resetAll(this: DebugScoreboards): void; 
+ * show(this:DebugScoreboards): void;
+ * showReverse(this:DebugScoreboards): void;
+ * unShow(this:DebugScoreboards): void;
+ * zeroAll(this: DebugScoreboards): void;
+ * countersOff(this: DebugScoreboards): void;
+ * countersOn(this: DebugScoreboards): void;
+ * }} DebugScoreboardsObject */;
+
 //==============================================================================
 /** Allow bracket indexing like dev[key]. */
 //==============================================================================
-/** @typedef {DevCore & Record<string, unknown>} Dev */
-/** @typedef {DebugScoreboardsCore & Record<string, unknown>} DebugScoreboards */
+/** @typedef {DevObject & Record<string, unknown>} Dev */
+/** @typedef {DebugScoreboardsObject & Record<string, unknown>} DebugScoreboards */
 //==============================================================================
-export const dynamicVarsDebug = {
-    // World Properties
-    allowDebug: 'allowDebug',
-    allowScoreboards: 'allowScoreboards',
-    //Debug Msg Types
-    allowMsgsEntityActivity: 'allowMsgsEntityActivity',
-    allowMsgsEntityAlert: 'allowMsgsEntityAlert',
-    allowMsgsGamePlay: 'debugGamePlay',
-    allowMsgsLoadAndSpawn: 'allowMsgsLoadAndSpawn',
-    allowMsgsPackLoad: 'allowMsgsPackLoad',
-    allowMsgsSubscriptions: 'allowMsgsSubscriptions',
-};
-
+const debugFunctions = false;
+//==============================================================================
 export const dev =
 /** @type {Dev} */ ({
-        debug: false,
+        debug: true,
         // -- Debug areas of concern
-        debugGamePlay: false,
-        debugEntityActivity: false,
-        debugEntityAlert: false,
-        debugPackLoad: false,
-        debugSubscriptions: false,
-        debugLoadAndSpawn: false,
+        debugEntityActivity: true,
+        debugEntityAlert: true,
+        debugPackLoad: true,
+        debugSubscriptions: true,
         // ---
-        debugScoreboardsAllow: false,
-        debugScoreboardList: [],
-        debugScoreboardBaseName: 'dw623_tree_spider',
+        debugScoreboardBaseName: pack.fullNameSpace,
         debugScoreboardBaseDisplay: '§aTree Spider§6',
         // ---
-        debugTimeCountersOn: false,
         debugTimers: 'mh', // was smh, but don't need seconds
         debugTimeCountersRunId: 0,
 
         /** @this {Dev} */
         allOff () {
+            alertLog.log("* function dev.allOff ()", debugFunctions);
+            let noChange = true && !this.debug;
+
             for (const [ k, v ] of Object.entries(this)) {
                 if (k.startsWith('debug') && typeof v === 'boolean') {
+                    noChange = noChange && !v;
                     this[ k ] = /** @type {unknown} */ (false);
                 }
             }
-            // keep the summary flag in sync
+
             this.debug = false;
-            ifNoReasonForScoreBoardToShow();
+            if (pack.worldLoaded && !noChange) debugVarChange();
         },
 
         /** @this {Dev} */
         allOn () {
+            alertLog.log("* function dev.allOn ()", true);
+            let noChange = true && this.debug;
+
             for (const [ k, v ] of Object.entries(this)) {
                 if (k.startsWith('debug') && typeof v === 'boolean') {
+                    noChange = noChange && v;
                     this[ k ] = /** @type {unknown} */ (true);
                 }
             }
             this.debug = true;
+            if (pack.worldLoaded && !noChange) debugVarChange();
         },
 
         /** @this {Dev} */
         anyOn () {
+            alertLog.log("* function dev.anyOn ()", debugFunctions);
+
             let any = false;
             for (const [ k, v ] of Object.entries(this)) {
                 if (k.startsWith('debug') && typeof v === 'boolean') {
@@ -130,170 +156,199 @@ export const debugScoreboards =
         sbStatsScoreboard: undefined,
         sbStatsName: '',
 
-        /** @type string[] */
-        sbList: [],
+        /** @type sbListObject[] */
+        ScoreboardList: [],
 
-        createAllScoreboardNames () {
-            for (const [ k, v ] of Object.entries(this)) {
-                if (k.startsWith('sb') && k.endsWith('Name') && v === '') {
-                    const base = k.replace('sb', '').replace('Name', '');
-                    const name = dev.debugScoreboardName + '_' + base.toLowerCase();
-                    this[ k ] = name;
-                    dev.debugScoreboardList.push(name);
-                }
-            }
-        },
+        //sb Stat Entries
+        adultSpiders: "ctr: §aAdult spiders",
+        babySpiders: "ctr: §bBaby spiders",
+        eggsInWebs: "ctr: §gEggs in Webs",
+        born: "Entity: §bBorn",
+        spawned: "Entity: §aSpawned",
+        loaded: "Entity: §2Loaded",
+        growUp: "Entity: §2Puberty",
+        died: 'Entity: §cDied',
+        removed: 'Entity: §4Removed',
+        stalled: 'Entity: §pStalled',
+        stalledNamed: 'Entity Named: §vStalled',
+        newWeb: 'Webs: §fNew',
+        expandWeb: 'Webs: §3Expand',
+        enterWeb: 'Webs: §dEntered',
+        layEgg: 'Eggs: §gLaid',
+
+        //sb Timers Jobs
+        timeCountersOn: false,
+        timers: 'mh', // was smh, but don't need seconds
+        timeCountersRunId: 0,
+        entityCountersRunId: 0,
+
         createAllScoreboardObjectives () {
+            alertLog.log("* function debugScoreboards.createAllScoreboardObjectives ()", debugFunctions);
+
             for (const [ k, v ] of Object.entries(this)) {
                 if (k.startsWith('sb') && k.endsWith('Scoreboard') && typeof v === 'undefined') {
                     const base = k.replace('sb', '').replace('Scoreboard', '');
-                    const name = dev.debugScoreboardName + '_' + base.toLowerCase();
+                    const name = dev.debugScoreboardBaseName + '_' + base.toLowerCase();
+                    const displayName = dev.debugScoreboardBaseDisplay + ' ' + base;
+
                     let sb = world.scoreboard.getObjective(name);
 
                     if (!sb) {
-                        const displayName = dev.debugScoreboardDisplayName + ' ' + base;
                         sb = world.scoreboard.addObjective(name, displayName);
                     }
+
+                    this.ScoreboardList.push({
+                        base: base,
+                        name: name,
+                        display: displayName,
+                        sbId: sb
+                    });
 
                     this[ k ] = sb;
                 }
             }
         },
-        createAll () {
-            this.createAllScoreboardNames();
-            this.createAllScoreboardObjectives();
+        ifNoReasonForScoreBoardToShow () {
+            if (!dev.debug) this.unShow();
+        },
+        resetAll () {
+            alertLog.log("* function debugScoreboards.resetAll ()", debugFunctions);
+
+            if (this.ScoreboardList.length == 0)
+                this.createAllScoreboardObjectives();
+
+            this.ScoreboardList.forEach(sb => {
+                ScoreboardLib.delete(sb.name);
+                sb.sbId = world.scoreboard.addObjective(sb.name, sb.display);
+                alertLog.success(`§cReset Scoreboard ${sb.display}`, debugFunctions);
+            });
+
+            this.show();
+        },
+        show () {
+            alertLog.log("* function debugScoreboards.show ()", debugFunctions);
+            
+            if (this.sbStatsScoreboard?.isValid) world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.Sidebar, { objective: this.sbStatsScoreboard });
+            if (this.sbEntitiesScoreboard?.isValid) world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.List, { objective: this.sbEntitiesScoreboard });
+
+            ScoreboardLib.sideBar_set(this.sbStatsName);
+            //ScoreboardLib.list_set(this.sbEntitiesName);
+        },
+        showReverse () {
+            alertLog.log("* function debugScoreboards.showReverse ()", debugFunctions);
+            
+            if (this.sbEntitiesScoreboard?.isValid) world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.Sidebar, { objective: this.sbEntitiesScoreboard });
+            if (this.sbStatsScoreboard?.isValid) world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.List, { objective: this.sbStatsScoreboard });
+            //ScoreboardLib.sideBar_set(this.sbEntitiesName);
+            //ScoreboardLib.list_set(this.sbStatsName);
+        },
+        unShow () {
+            alertLog.log("* function debugScoreboards.unShow ()", debugFunctions);
+
+            if (this.ScoreboardList.length == 0) return;
+
+            ScoreboardLib.sideBar_clear();
+            ScoreboardLib.list_clear();
+        },
+        zeroAll () {
+            alertLog.log("* function debugScoreboards.zeroAll ()", debugFunctions);
+
+            if (this.ScoreboardList.length == 0) return;
+
+            this.ScoreboardList.forEach(sb => {
+                ScoreboardLib.setZeroAll(sb.name);
+                alertLog.success(`Zeroed Scoreboard ${sb.display}`, debugFunctions);
+            });
+        },
+        countersOff () {
+            alertLog.log("* debugScoreboards.countersOff ()", debugFunctions);
+
+            //--- Timers and where
+            if (this.timeCountersRunId) {
+                system.clearRun(this.timeCountersRunId);
+                this.timeCountersRunId = 0;
+                alertLog.success("Scoreboard timers turned off", debugFunctions);
+            }
+
+            if (this.entityCountersRunId) {
+                system.clearRun(this.entityCountersRunId);
+                this.entityCountersRunId = 0;
+                alertLog.success("Entity Counters turned off", debugFunctions);
+            }
+        },
+        countersOn () {
+            alertLog.log("* debugScoreboards.countersOn ()", debugFunctions);
+            if (!dev.debug) return;
+            if (!dev.debugEntityActivity) return;
+
+            //--- Timers and where
+            if (!this.timeCountersRunId) {
+                this.timeCountersRunId = ScoreboardLib.systemTimeCountersStart(debugScoreboards.sbStatsName, dev.debugTimers);
+                alertLog.success("Scoreboard timers turned on", debugFunctions);
+            }
+
+            if (!this.entityCountersRunId) {
+                system.runTimeout(() => {
+                    this.entityCountersRunId = system.runInterval(() => { treeSpiderEntityCounts(); }, Ticks.perMinute / 6);
+                }, TicksPerSecond * 6);
+                alertLog.success("Entity Counters turned on", debugFunctions);
+            }
         }
     });
+
 //==============================================================================
-export function getDebugDynamicVars () {
+export function debugScoreboardSetups (resetAll = true) {
+    alertLog.log("* function debugScoreboardSetups ()", debugFunctions);
 
-    if (!DynamicPropertyLib.propertyExists(world, dynamicVarsDebug.allowDebug)) {
-        //Initialize to settings
-        setDebugDynamicVars();
+    if (debugScoreboards.ScoreboardList.length == 0) {
+        debugScoreboards.createAllScoreboardObjectives();
     }
 
-    dev.debug = DynamicPropertyLib.getBoolean(world, dynamicVarsDebug.allowDebug);
-    dev.debugScoreboardsAllow = DynamicPropertyLib.getBoolean(world, dynamicVarsDebug.allowScoreboards);
-    dev.debugEntityActivity = DynamicPropertyLib.getBoolean(world, dynamicVarsDebug.allowMsgsEntityActivity);
-    dev.debugEntityAlert = DynamicPropertyLib.getBoolean(world, dynamicVarsDebug.allowMsgsEntityAlert);
-    dev.debugGamePlay = DynamicPropertyLib.getBoolean(world, dynamicVarsDebug.allowMsgsGamePlay);
-    dev.debugLoadAndSpawn = DynamicPropertyLib.getBoolean(world, dynamicVarsDebug.allowMsgsLoadAndSpawn);
-    dev.debugPackLoad = DynamicPropertyLib.getBoolean(world, dynamicVarsDebug.allowMsgsPackLoad);
-    dev.debugSubscriptions = DynamicPropertyLib.getBoolean(world, dynamicVarsDebug.allowMsgsSubscriptions);
+    if (resetAll) debugScoreboards.resetAll();
 
-    dev.anyOn();
-    if (dev.debug == false) dev.allOff();
-}
-//==============================================================================
-/**
- * @summary Sets Debug Dynamic Vars to what is in dev settings
- */
-export function setDebugDynamicVars () {
-    dev.anyOn();
-    if (dev.debug == false) dev.allOff();
-
-    world.setDynamicProperty(dynamicVarsDebug.allowDebug, dev.debug);
-    world.setDynamicProperty(dynamicVarsDebug.allowScoreboards, dev.debugScoreboardsAllow);
-
-    world.setDynamicProperty(dynamicVarsDebug.allowMsgsEntityActivity, dev.debugEntityActivity);
-    world.setDynamicProperty(dynamicVarsDebug.allowMsgsEntityAlert, dev.debugEntityAlert);
-    world.setDynamicProperty(dynamicVarsDebug.allowMsgsGamePlay, dev.debugGamePlay);
-    world.setDynamicProperty(dynamicVarsDebug.allowMsgsLoadAndSpawn, dev.debugLoadAndSpawn);
-    world.setDynamicProperty(dynamicVarsDebug.allowMsgsPackLoad, dev.debugPackLoad);
-    world.setDynamicProperty(dynamicVarsDebug.allowMsgsSubscriptions, dev.debugSubscriptions);
-}
-//==============================================================================
-export function debugScoreboardSetups () {
-
-    if (!dev.debugScoreboardsAllow) return;
-
-    debugScoreboards.createAll();
-
-    //TODO: move to a function in debugScoreboards
-    //clearing scoreboards
-    if (dev.debugGamePlay || dev.debugEntityAlert || dev.debugEntityActivity || dev.debugLoadAndSpawn) {
-        //list of scoreboards to reset
-        const scoreboards = world.scoreboard.getObjectives();
-        scoreboards.forEach(sb => {
-            if (dev.debugScoreboardList.includes(sb.id)) {
-                const participants = sb.getParticipants();
-                alertLog.success(`Clearing Scoreboard ${sb.displayName}`, dev.debugPackLoad && (dev.debugEntityActivity || dev.debugEntityAlert));
-                participants.forEach(p => { system.run(() => { sb.removeParticipant(p); }); });
-            }
-        });
-
-        debugTimerSetup();
+    if (dev.debug) {
+        debugScoreboards.countersOn();
+        debugScoreboards.show();
     }
-}
-//==============================================================================
-function debugTimerSetup () {
-    //--- Timers and where
-    if (dev.debugGamePlay || dev.debugEntityAlert || dev.debugEntityActivity) {
-        dev.debugTimeCountersRunId = ScoreboardLib.systemTimeCountersStart(debugScoreboards.sbStatsName, dev.debugTimers);
-        system.runTimeout(() => {
-            system.runInterval(() => { treeSpiderEntityCounts(); }, Ticks.perMinute / 6);
-            system.runTimeout(() => { ScoreboardLib.sideBar_set(debugScoreboards.sbStatsName); }, TicksPerSecond / 4);
-        }, TicksPerSecond * 6);
-    }
-    else {
-        dev.debugTimeCountersRunId = 0;
-        system.runTimeout(() => { ScoreboardLib.sideBar_clear(); }, TicksPerSecond / 4);
-    }
-
-    dev.debugTimeCountersOn = !!dev.debugTimeCountersRunId;
-}
-//==============================================================================
-export function ifNoReasonForScoreBoardToShow () {
-    if (!(dev.debugEntityActivity || dev.debugEntityAlert || dev.debugGamePlay))
-        ScoreboardLib.sideBar_clear();
-}
-//===================================================================
-export function timersToggle () {
-
-    if (dev.debugTimeCountersOn) {
-        dev.debugTimeCountersOn = false;
-        if (dev.debugTimeCountersRunId) system.clearRun(dev.debugTimeCountersRunId);
-        dev.debugTimeCountersRunId = 0;
-    }
-    else {
-        if (debugScoreboards.sbStatsScoreboard) {
-            dev.debugTimeCountersOn = true;
-            dev.debugTimeCountersRunId = ScoreboardLib.systemTimeCountersStart(debugScoreboards.sbStatsName, dev.debugTimers);
-        }
-    }
+    else
+        debugScoreboards.ifNoReasonForScoreBoardToShow();
 }
 //===================================================================
 /**
  * 
  * @param {boolean} [override =false]
  */
-export function treeSpiderEntityCounts (override = false) {
+function treeSpiderEntityCounts (override = false) {
 
-    if (override || dev.debugGamePlay || dev.debugEntityActivity || dev.debugEntityAlert) {
+    const eggCount = EntityLib.getAllEntities({ type: watchFor.egg_typeId }).length;
+    if (eggCount) system.run(() => {
+        debugScoreboards.sbStatsScoreboard?.setScore(debugScoreboards.eggsInWebs, eggCount);
+    });
 
-        const eggCount = EntityLib.getAllEntities({ type: watchFor.egg_typeId }).length;
-        if (eggCount) system.run(() => {
-            const msg = "§gEggs in Webs";
-            debugScoreboards.sbStatsScoreboard?.setScore(msg, eggCount);
-        });
+    const entities_all = EntityLib.getAllEntities({ type: watchFor.typeId });
 
-        const entities_all = EntityLib.getAllEntities({ type: watchFor.typeId });
-        //const entities_all = world.getDimension("overworld").getEntities({ type: watchFor.typeId });
-        if (entities_all.length === 0) return;
+    system.runTimeout(() => {
+        const entities = entities_all.filter(e => { return e.isValid && !e.hasComponent('minecraft:is_baby'); });
+        debugScoreboards.sbStatsScoreboard?.setScore(debugScoreboards.adultSpiders, entities.length);
+        debugScoreboards.sbStatsScoreboard?.setScore(debugScoreboards.babySpiders, entities_all.length - entities.length);
+    }, 1);
 
-        system.runTimeout(() => {
+}
+//==============================================================================
+export function debugVarChange () {
+    //Not knowing what the change is, so do not do too much
+    alertLog.log("* function debugVarChange ()", debugFunctions);
 
-            const entities = entities_all.filter(e => { return !e.hasComponent('minecraft:is_baby'); });
-            debugScoreboards.sbStatsScoreboard?.setScore("§6Adult spiders", entities.length);
+    dev.anyOn();
 
-            const babyMsg = "§bBaby spiders";
-            if (entities.length === 0) {
-                debugScoreboards.sbStatsScoreboard?.setScore(babyMsg, entities_all.length);
-            }
-            else if (entities_all.length - entities.length) {
-                debugScoreboards.sbStatsScoreboard?.setScore(babyMsg, entities_all.length - entities.length);
-            }
-        }, 1);
+    if (dev.debug) {
+        if (debugScoreboards.ScoreboardList.length == 0) {
+            debugScoreboardSetups();
+        }
+    }
+    else {
+        debugScoreboards.unShow();
+        debugScoreboards.countersOff();
     }
 }
 //==============================================================================
