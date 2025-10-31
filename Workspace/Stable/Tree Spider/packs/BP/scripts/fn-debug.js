@@ -11,6 +11,7 @@ Last Update: 20251023 - Sep out debug stuff
 import { ScoreboardObjective, system, TicksPerSecond, world, DisplaySlotId } from "@minecraft/server";
 import { alertLog, chatLog, pack, watchFor } from './settings.js';
 import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
+import { ScoreboardTimers } from "./common-stable/timers.js";
 import { EntityLib } from "./common-stable/entityClass.js";
 import { Ticks } from "./common-data/globalConstantsLib.js";
 //==============================================================================
@@ -20,7 +21,7 @@ import { Ticks } from "./common-data/globalConstantsLib.js";
 //==============================================================================
 /** Core shape without index signature. */
 //==============================================================================
- /** @typedef {{
+/** @typedef {{
   * base: string;
   * name: string;
   * display: string;
@@ -67,15 +68,15 @@ import { Ticks } from "./common-data/globalConstantsLib.js";
  * timers: string;
  * timeCountersRunId: number; 
  * entityCountersRunId: number; 
- * createAllScoreboardObjectives(this: DebugScoreboards): void;
+ * createAllScoreboardObjectives(this: DebugScoreboards, reCreate: boolean): void;
+ * countersOff(this: DebugScoreboards): void;
+ * countersOn(this: DebugScoreboards): void;
  * ifNoReasonForScoreBoardToShow(this: DebugScoreboards): void; 
  * resetAll(this: DebugScoreboards): void; 
  * show(this:DebugScoreboards): void;
  * showReverse(this:DebugScoreboards): void;
  * unShow(this:DebugScoreboards): void;
  * zeroAll(this: DebugScoreboards): void;
- * countersOff(this: DebugScoreboards): void;
- * countersOn(this: DebugScoreboards): void;
  * }} DebugScoreboardsObject */;
 
 //==============================================================================
@@ -182,20 +183,18 @@ export const debugScoreboards =
         timeCountersRunId: 0,
         entityCountersRunId: 0,
 
-        createAllScoreboardObjectives () {
-            alertLog.log("* function debugScoreboards.createAllScoreboardObjectives ()", debugFunctions);
+        createAllScoreboardObjectives (reCreate = false) {
+            alertLog.log(`* function debugScoreboards.createAllScoreboardObjectives (reCreate = ${reCreate})`, debugFunctions);
+
+            if (reCreate) this.ScoreboardList = [];
 
             for (const [ k, v ] of Object.entries(this)) {
-                if (k.startsWith('sb') && k.endsWith('Scoreboard') && typeof v === 'undefined') {
+
+                if (k.startsWith('sb') && k.endsWith('Scoreboard') && (reCreate || typeof v === 'undefined')) {
                     const base = k.replace('sb', '').replace('Scoreboard', '');
                     const name = dev.debugScoreboardBaseName + '_' + base.toLowerCase();
                     const displayName = dev.debugScoreboardBaseDisplay + ' ' + base;
-
-                    let sb = world.scoreboard.getObjective(name);
-
-                    if (!sb) {
-                        sb = world.scoreboard.addObjective(name, displayName);
-                    }
+                    const sb = ScoreboardLib.create(name, displayName, reCreate);
 
                     this.ScoreboardList.push({
                         base: base,
@@ -207,58 +206,6 @@ export const debugScoreboards =
                     this[ k ] = sb;
                 }
             }
-        },
-        ifNoReasonForScoreBoardToShow () {
-            if (!dev.debug) this.unShow();
-        },
-        resetAll () {
-            alertLog.log("* function debugScoreboards.resetAll ()", debugFunctions);
-
-            if (this.ScoreboardList.length == 0)
-                this.createAllScoreboardObjectives();
-
-            this.ScoreboardList.forEach(sb => {
-                ScoreboardLib.delete(sb.name);
-                sb.sbId = world.scoreboard.addObjective(sb.name, sb.display);
-                alertLog.success(`§cReset Scoreboard ${sb.display}`, debugFunctions);
-            });
-
-            this.show();
-        },
-        show () {
-            alertLog.log("* function debugScoreboards.show ()", debugFunctions);
-            
-            if (this.sbStatsScoreboard?.isValid) world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.Sidebar, { objective: this.sbStatsScoreboard });
-            if (this.sbEntitiesScoreboard?.isValid) world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.List, { objective: this.sbEntitiesScoreboard });
-
-            ScoreboardLib.sideBar_set(this.sbStatsName);
-            //ScoreboardLib.list_set(this.sbEntitiesName);
-        },
-        showReverse () {
-            alertLog.log("* function debugScoreboards.showReverse ()", debugFunctions);
-            
-            if (this.sbEntitiesScoreboard?.isValid) world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.Sidebar, { objective: this.sbEntitiesScoreboard });
-            if (this.sbStatsScoreboard?.isValid) world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.List, { objective: this.sbStatsScoreboard });
-            //ScoreboardLib.sideBar_set(this.sbEntitiesName);
-            //ScoreboardLib.list_set(this.sbStatsName);
-        },
-        unShow () {
-            alertLog.log("* function debugScoreboards.unShow ()", debugFunctions);
-
-            if (this.ScoreboardList.length == 0) return;
-
-            ScoreboardLib.sideBar_clear();
-            ScoreboardLib.list_clear();
-        },
-        zeroAll () {
-            alertLog.log("* function debugScoreboards.zeroAll ()", debugFunctions);
-
-            if (this.ScoreboardList.length == 0) return;
-
-            this.ScoreboardList.forEach(sb => {
-                ScoreboardLib.setZeroAll(sb.name);
-                alertLog.success(`Zeroed Scoreboard ${sb.display}`, debugFunctions);
-            });
         },
         countersOff () {
             alertLog.log("* debugScoreboards.countersOff ()", debugFunctions);
@@ -283,7 +230,7 @@ export const debugScoreboards =
 
             //--- Timers and where
             if (!this.timeCountersRunId) {
-                this.timeCountersRunId = ScoreboardLib.systemTimeCountersStart(debugScoreboards.sbStatsName, dev.debugTimers);
+                this.timeCountersRunId = ScoreboardTimers.systemTimeCountersStart(debugScoreboards.sbStatsName, dev.debugTimers);
                 alertLog.success("Scoreboard timers turned on", debugFunctions);
             }
 
@@ -293,18 +240,68 @@ export const debugScoreboards =
                 }, TicksPerSecond * 6);
                 alertLog.success("Entity Counters turned on", debugFunctions);
             }
-        }
+        },
+        ifNoReasonForScoreBoardToShow () {
+            if (!dev.debug) this.unShow();
+        },
+        resetAll () {
+            //TODO: Confirm
+            alertLog.log("* function debugScoreboards.resetAll ()", debugFunctions);
+            this.countersOff()
+            this.createAllScoreboardObjectives(true)
+            this.countersOn()
+            this.show();
+        },
+        show (tickDelay = 0) {
+            alertLog.log("* function debugScoreboards.show ()", debugFunctions);
+
+            //if (this.sbStatsScoreboard?.isValid) world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.Sidebar, { objective: this.sbStatsScoreboard });
+            //if (this.sbEntitiesScoreboard?.isValid) world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.List, { objective: this.sbEntitiesScoreboard });
+
+            if (this.sbEntitiesScoreboard) ScoreboardLib.list_set(this.sbEntitiesScoreboard, tickDelay);
+            if (this.sbStatsScoreboard) ScoreboardLib.sideBar_set(this.sbStatsScoreboard, tickDelay);
+        },
+        showReverse (tickDelay = 0) {
+            alertLog.log("* function debugScoreboards.showReverse ()", debugFunctions);
+
+            //if (this.sbEntitiesScoreboard?.isValid) world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.Sidebar, { objective: this.sbEntitiesScoreboard });
+            //if (this.sbStatsScoreboard?.isValid) world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.List, { objective: this.sbStatsScoreboard });
+
+            if (this.sbStatsScoreboard) ScoreboardLib.list_set(this.sbStatsScoreboard, tickDelay);
+            if (this.sbEntitiesScoreboard) ScoreboardLib.sideBar_set(this.sbEntitiesScoreboard, tickDelay);
+        },
+        unShow (tickDelay = 0) {
+            alertLog.log("* function debugScoreboards.unShow ()", debugFunctions);
+
+            if (!this.sbEntitiesScoreboard || !this.sbStatsScoreboard) return;
+            const side = ScoreboardLib.sidBar_query();
+            const list = ScoreboardLib.list_query()
+
+            if (side && side.isValid) {
+                if ([ this.sbEntitiesName, this.sbStatsName].includes(side.id))
+                    ScoreboardLib.sideBar_clear(tickDelay);
+            }
+
+            if (list && list.isValid) {
+                if ([ this.sbEntitiesName, this.sbStatsName ].includes(list.id))
+                    ScoreboardLib.list_clear(tickDelay);
+            }
+        },
+        zeroAll () {
+            alertLog.log("* function debugScoreboards.zeroAll ()", debugFunctions);
+
+            this.ScoreboardList.forEach(sb => {
+                ScoreboardLib.setZeroAll(sb.sbId);
+                alertLog.success(`Zeroed Scoreboard ${sb.display}`, debugFunctions);
+            });
+        }        
     });
 
 //==============================================================================
 export function debugScoreboardSetups (resetAll = true) {
     alertLog.log("* function debugScoreboardSetups ()", debugFunctions);
 
-    if (debugScoreboards.ScoreboardList.length == 0) {
-        debugScoreboards.createAllScoreboardObjectives();
-    }
-
-    if (resetAll) debugScoreboards.resetAll();
+    debugScoreboards.createAllScoreboardObjectives(resetAll);
 
     if (dev.debug) {
         debugScoreboards.countersOn();

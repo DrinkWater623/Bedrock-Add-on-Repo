@@ -62,9 +62,6 @@ export const watchFor = {
     assumeNoWebsPossibleIfOver: 60,
     explosiveProjectiles: [],
     validated: false,  //TODO: - validate exists when pack loaded, if not, turn everything OFF
-    //scoreboardName: 'tree_spider_monitor',
-    //scoreboardDisplayName: '§aTree Spider §bMonitor',
-    //scoreboard: world.scoreboard.getObjective(`tree_spider_monitor`),
     //TODO: automate the log and leaves list with vanilla-data
     target_logs: [
         "minecraft:mangrove_roots", "minecraft:acacia_log", "minecraft:birch_log",

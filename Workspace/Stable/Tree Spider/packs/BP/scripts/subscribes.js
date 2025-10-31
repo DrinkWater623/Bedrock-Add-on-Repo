@@ -256,7 +256,7 @@ export const debugSubscriptions = {
                         if (event.removedEntity.isValid) {
                             if (event.removedEntity.nameTag) debug.debugScoreboards.sbEntitiesScoreboard?.removeParticipant(event.removedEntity.nameTag);
                             debug.debugScoreboards.sbEntitiesScoreboard?.removeParticipant(event.removedEntity);
-                            ScoreboardLib.sub(debug.debugScoreboards.sbStatsName, debug.debugScoreboards.adultSpiders, 1);
+                            ScoreboardLib.decrement(debug.debugScoreboards.sbStatsName, debug.debugScoreboards.adultSpiders, 1);
                         }
                     }, 1);
             };
