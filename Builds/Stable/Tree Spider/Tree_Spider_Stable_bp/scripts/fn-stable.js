@@ -12,7 +12,7 @@ import { chatLog, watchFor, dynamicVars, entityEvents } from './settings.js';
 import { Vector3Lib } from './common-stable/vectorClass.js';
 import { DynamicPropertyLib } from "./common-stable/dynamicPropertyClass.js";
 import { EntityLib } from "./common-stable/entityClass.js";
-import { worldRun } from "./common-stable/runCommandClass.js";
+import { worldRun } from "./common-stable/worldRunLib.js";
 import { blocksAround_locations } from "./common-stable/blockLib-stable.js";
 import * as debug from "./fn-debug.js";
 //==============================================================================

@@ -1,0 +1,56 @@
+{
+  /*
+    ?? spawns_above_block_filter
+    TODO: add saplings after get to work on top
+  
+  */
+  "format_version": "1.8.0",
+  "minecraft:spawn_rules": {
+    "description": {
+      "identifier": "dw623:tree_spider",
+      "population_control": "animal"
+    },
+    "conditions": [      
+      //On Ground  -  Works    
+      { 
+        "minecraft:spawns_on_surface": {},
+        "minecraft:distance_filter": {"min": 24,"max": 64},
+        "minecraft:weight": {"default":25 },
+        "minecraft:density_limit": {"surface":10,"underground":0},  
+        "minecraft:biome_filter": 
+        {
+          "any_of": [
+            {"test":"has_biome_tag","value":"animal"},
+            {"test":"has_biome_tag","value":"forest"},
+            //These do not have animal in their biome list
+            {"test":"has_biome_tag","value":"cherry_grove"},
+            {"test":"has_biome_tag","value":"grove"},
+            {"test":"has_biome_tag","value":"mangrove_swamp"},            
+            {"test":"has_biome_tag","value":"meadow"},
+            {"test":"has_biome_tag","value":"mushroom_island"},              
+            {"test":"has_biome_tag","value":"pale_garden"}  
+          ]
+        },
+        "minecraft:spawns_on_block_filter":[  
+          //Preferred 
+          "minecraft:web",
+          //TODO put this list in code cause same as when spider in web and falls out... possible ground
+          "minecraft:dirt",
+          "minecraft:coarse_dirt",
+          "minecraft:dirt_with_roots",
+          "minecraft:farmland",
+          "minecraft:grass_block",
+          "minecraft:leaf_litter",
+          "minecraft:moss_block",
+          "minecraft:moss_carpet",
+          "minecraft:mud",
+          "minecraft:pale_moss_block",
+          "minecraft:pale_moss_carpet",
+          "minecraft:pink_petals",
+          "minecraft:podzol",
+          "minecraft:wildflowers"
+        ]        
+      }        
+    ]
+  }
+}

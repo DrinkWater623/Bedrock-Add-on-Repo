@@ -1,0 +1,27 @@
+{
+  "format_version": "1.21.50",
+  "minecraft:recipe_shapeless": {
+    "description": {
+      "identifier": "dw623:dead_fly_ball_stick.recipe"
+    },
+    "tags": [ "crafting_table" ],
+    "ingredients": [
+      {
+        "item": "dw623:dead_fly_ball"
+      },
+      {
+        "item": "minecraft:stick"
+      }
+    ],
+	"unlock": [
+          {
+            "item": "dw623:dead_fly_ball",
+			"data": 4
+          }
+        ],
+    "result": {
+      "item": "dw623:dead_fly_ball_stick"
+    }
+  }
+  
+}

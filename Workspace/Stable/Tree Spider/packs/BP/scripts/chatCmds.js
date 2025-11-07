@@ -1,15 +1,23 @@
 // chatCmds.js
 // @ts-check
-import { system, Player, Entity, CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus, CustomCommandParamType, CustomCommandOrigin } from "@minecraft/server";
-import { alertLog, pack } from './settings.js';
-import { EntityLib } from "./common-stable/entityClass.js";
-import * as debug from "./fn-debug.js";
+//==============================================================================
+// Minecraft
+import { system, Player, Entity } from "@minecraft/server";
+import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus, CustomCommandParamType, CustomCommandOrigin } from "@minecraft/server";
+// Shared
+import { Vector3Lib,VectorXZLib } from "./common-stable/vectorClass.js";
+// Local
+import { alertLog, chatLog, pack } from './settings.js';
+import * as debug from "./helpers/fn-debug.js";
 //==============================================================================
 const debugFunctions = false;
 //==============================================================================
 //Enum Names
 const queryOnOff = `${pack.fullNameSpace}:enum_query_on_off`;
 const scoreboard_options = `${pack.fullNameSpace}:scoreboard_options`;
+//==============================================================================
+const SUCCESS = { status: CustomCommandStatus.Success };
+const FAILURE = { status: CustomCommandStatus.Failure };
 //==============================================================================
 /**
  * @param {CustomCommandRegistry} registry 
@@ -98,11 +106,10 @@ function register_debugEntity (registry) {
 
             let msg = '';
             if (arg == 'on') {
-                if (!(debug.dev.debug && debug.dev.debugEntityActivity && debug.dev.debugEntityAlert && debug.dev.debugLoadAndSpawn)) {
-                    debug.dev.debug = true;
-                    debug.dev.debugEntityActivity = true;
-                    debug.dev.debugEntityAlert = true;
-                    debug.dev.debugLoadAndSpawn = true;
+                if (!(debug.devDebug.debugOn && debug.devDebug.watchEntityGoals && debug.devDebug.watchEntityEvents && debug.devDebug.debugLoadAndSpawn)) {
+                    debug.devDebug.debugOn = true;
+                    debug.devDebug.watchEntityGoals = true;
+                    debug.devDebug.watchEntityEvents = true;
 
                     msg = `debugEntity (Activity/Alert/Load/Spawn) is now §aON`;
                     debug.debugVarChange();
@@ -111,11 +118,10 @@ function register_debugEntity (registry) {
                     msg = `debugEntity is already on §aON`;
             }
             else if (arg == 'off') {
-                if ((debug.dev.debugEntityActivity || debug.dev.debugEntityAlert || debug.dev.debugLoadAndSpawn)) {
-                    debug.dev.debugEntityActivity = false;
-                    debug.dev.debugEntityAlert = false;
-                    debug.dev.debugLoadAndSpawn = false;
-                    debug.dev.anyOn();
+                if ((debug.devDebug.watchEntityGoals || debug.devDebug.watchEntityEvents)) {
+                    debug.devDebug.watchEntityGoals = false;
+                    debug.devDebug.watchEntityEvents = false;
+                    debug.devDebug.anyOn();
 
                     msg = `debugEntity (Activity/Alert/Load/Spawn) is now §cOFF`;
                     debug.debugVarChange();
@@ -126,13 +132,13 @@ function register_debugEntity (registry) {
             else
             //Query 
             {
-                if (debug.dev.debug)
-                    msg = `debugEntity:\nActivity${debug.dev.debugEntityActivity ? '§aON' : '§cOFF'}\nAlert:${debug.dev.debugEntityAlert ? '§aON' : '§cOFF'}\nLoad/Spawn:${debug.dev.debugLoadAndSpawn ? '§aON' : '§cOFF'}`;
+                if (debug.devDebug.debugOn)
+                    msg = `debugEntity:\nActivity${debug.devDebug.watchEntityGoals ? '§aON' : '§cOFF'}\nAlert:${debug.devDebug.watchEntityEvents ? '§aON' : '§cOFF'}\nLoad/Spawn:${debug.devDebug.debugLoadAndSpawn ? '§aON' : '§cOFF'}`;
                 else
                     msg = `debugging is §cOFF`;
             }
             const player = origin.sourceEntity;
-            player.sendMessage(`${debug.dev.debugScoreboardBaseDisplay} ${msg}`);
+            player.sendMessage(`${debug.devDebug.sbBaseDisplay} ${msg}`);
         }
         const result = { status: CustomCommandStatus.Success };
         return result;
@@ -145,12 +151,12 @@ function register_debugEntity (registry) {
  * 
  * @param {CustomCommandRegistry} registry 
  */
-function register_debugEntityActivity (registry) {
-    alertLog.log('§v* function register_debugEntityActivity ()', debugFunctions);
+function register_watchEntityGoals (registry) {
+    alertLog.log('§v* function register_watchEntityGoals ()', debugFunctions);
 
     const cmd = {
-        name: `${pack.fullNameSpace}:debug_activity`,
-        description: "Turn on/off/query Entity Activity Debugging",
+        name: `${pack.fullNameSpace}:watch_entity_goals`,
+        description: "Turn on/off/query Watching Entity Goals",
         permissionLevel: CommandPermissionLevel.Admin,
         cheatsRequired: false,
         mandatoryParameters: [
@@ -169,34 +175,34 @@ function register_debugEntityActivity (registry) {
 
             let msg = '';
             if (arg == 'on') {
-                if (!(debug.dev.debug && debug.dev.debugEntityActivity)) {
-                    debug.dev.debug = true;
-                    debug.dev.debugEntityActivity = true;
-                    msg = `debugEntityActivity is now §aON`;
+                if (!(debug.devDebug.debugOn && debug.devDebug.watchEntityGoals)) {
+                    debug.devDebug.debugOn = true;
+                    debug.devDebug.watchEntityGoals = true;
+                    msg = `watchEntityGoals is now §aON`;
                     debug.debugVarChange();
                 }
                 else
-                    msg = `debugEntityActivity is already §aON`;
+                    msg = `watchEntityGoals is already §aON`;
             }
             else if (arg == 'off') {
-                if (debug.dev.debugEntityActivity) {
-                    debug.dev.debugEntityActivity = false;
-                    msg = `debugEntityActivity is now §cOFF`;
+                if (debug.devDebug.watchEntityGoals) {
+                    debug.devDebug.watchEntityGoals = false;
+                    msg = `watchEntityGoals is now §cOFF`;
                     debug.debugVarChange();
                 }
                 else
-                    msg = `debugEntityActivity is already §cOFF`;
+                    msg = `watchEntityGoals is already §cOFF`;
             }
             else
             //Query 
             {
-                if (debug.dev.debug)
-                    msg = `debugEntityActivity is ${debug.dev.debugEntityActivity ? '§aON' : '§cOFF'}`;
+                if (debug.devDebug.debugOn)
+                    msg = `watchEntityGoals is ${debug.devDebug.watchEntityGoals ? '§aON' : '§cOFF'}`;
                 else
                     msg = `debugging is §cOFF`;
             }
             const player = origin.sourceEntity;
-            player.sendMessage(`${debug.dev.debugScoreboardBaseDisplay} ${msg}`);
+            player.sendMessage(`${debug.devDebug.sbBaseDisplay} ${msg}`);
         }
         const result = { status: CustomCommandStatus.Success };
         return result;
@@ -208,12 +214,12 @@ function register_debugEntityActivity (registry) {
 /**
  * @param {CustomCommandRegistry} registry 
  */
-function register_debugEntityAlert (registry) {
-    alertLog.log('§v* function register_debugEntityAlert ()', debugFunctions);
+function register_watchEntityEvents (registry) {
+    alertLog.log('§v* function register_watchEntityEvents ()', debugFunctions);
 
     const cmd = {
-        name: `${pack.fullNameSpace}:debug_alerts`,
-        description: "Turn on/off/query Entity Alert Debugging",
+        name: `${pack.fullNameSpace}:watch_entity_events`,
+        description: "Turn on/off/query Watching Entity Events",
         permissionLevel: CommandPermissionLevel.Admin,
         cheatsRequired: false,
         mandatoryParameters: [
@@ -230,34 +236,34 @@ function register_debugEntityAlert (registry) {
             if (!arg) arg = 'query';
             let msg = '';
             if (arg == 'on') {
-                if (!(debug.dev.debug && debug.dev.debugEntityAlert)) {
-                    debug.dev.debug = true;
-                    debug.dev.debugEntityAlert = true;
-                    msg = `debugEntityAlert is now §aON`;
+                if (!(debug.devDebug.debugOn && debug.devDebug.watchEntityEvents)) {
+                    debug.devDebug.debugOn = true;
+                    debug.devDebug.watchEntityEvents = true;
+                    msg = `watchEntityEvents is now §aON`;
                     debug.debugVarChange();
                 }
                 else
-                    msg = `debugEntityAlert is already §aON`;
+                    msg = `watchEntityEvents is already §aON`;
             }
             else if (arg == 'off') {
-                if (debug.dev.debugEntityAlert) {
-                    debug.dev.debugEntityAlert = false;
-                    msg = `debugEntityAlert is now §cOFF`;
+                if (debug.devDebug.watchEntityEvents) {
+                    debug.devDebug.watchEntityEvents = false;
+                    msg = `watchEntityEvents is now §cOFF`;
                     debug.debugVarChange();
                 }
                 else
-                    msg = `debugEntityAlert is already §cOFF`;
+                    msg = `watchEntityEvents is already §cOFF`;
             }
             else
             //Query 
             {
-                if (debug.dev.debug)
-                    msg = `debugEntityAlert is ${debug.dev.debugEntityAlert ? '§aON' : '§cOFF'}`;
+                if (debug.devDebug.debugOn)
+                    msg = `watchEntityEvents is ${debug.devDebug.watchEntityEvents ? '§aON' : '§cOFF'}`;
                 else
                     msg = `debugging is §cOFF`;
             }
             const player = origin.sourceEntity;
-            player.sendMessage(`${debug.dev.debugScoreboardBaseDisplay} ${msg}`);
+            player.sendMessage(`${debug.devDebug.sbBaseDisplay} ${msg}`);
         }
 
         const result = { status: CustomCommandStatus.Success };
@@ -293,8 +299,8 @@ function register_debug (registry) {
 
             let msg = '';
             if (arg == 'on') {
-                if (!(debug.dev.debug)) {
-                    debug.dev.debug = true;
+                if (!(debug.devDebug.debugOn)) {
+                    debug.devDebug.debugOn = true;
 
                     //TODO: since was off, turn on basic alerts too
 
@@ -305,9 +311,9 @@ function register_debug (registry) {
                     msg = `debugging is already §aON`;
             }
             else if (arg == 'off') {
-                if (debug.dev.debug) {
-                    debug.dev.debug = false;
-                    debug.dev.allOff();
+                if (debug.devDebug.debugOn) {
+                    debug.devDebug.debugOn = false;
+                    debug.devDebug.allOff();
 
                     msg = `debugging is now §cOFF`;
                     debug.debugVarChange();
@@ -318,10 +324,10 @@ function register_debug (registry) {
             else
             //Query 
             {
-                msg = `debugging is ${debug.dev.debug ? '§aON' : '§cOFF'}`;
+                msg = `debugging is ${debug.devDebug.debugOn ? '§aON' : '§cOFF'}`;
             }
             const player = origin.sourceEntity;
-            player.sendMessage(`${debug.dev.debugScoreboardBaseDisplay} ${msg}`);
+            player.sendMessage(`${debug.devDebug.sbBaseDisplay} ${msg}`);
         }
 
         const result = { status: CustomCommandStatus.Success };
@@ -334,58 +340,79 @@ function register_debug (registry) {
 /**
  * @param {CustomCommandRegistry} registry 
  */
-// function register_debugUnlock (registry) {
+function register_delta (registry) {
 
-//     const cmd = {
-//         name: `${pack.fullNameSpace}:debug_unlock`,
-//         description: "Unlock Debugging",
-//         permissionLevel: CommandPermissionLevel.Owner,
-//         cheatsRequired: false,
-//         mandatoryParameters: [
-//             {
-//                 name: "passCode",
-//                 type: CustomCommandParamType.Integer,
-//             }
-//         ]
-//     };
+    const cmd = {
+        name: `${pack.fullNameSpace}:delta`,
+        description: "Display Delta Distance From You",
+        permissionLevel: CommandPermissionLevel.Admin,
+        cheatsRequired: false,
+        mandatoryParameters: [
+            {
+                name: "delta_test",
+                type: CustomCommandParamType.EntitySelector,
+            }
+        ]
+    };
 
-//     /** @type {(origin: CustomCommandOrigin, args: number[]) => import("@minecraft/server").CustomCommandResult} */
-//     const handler = (origin, args) => {
-//         if (origin.sourceEntity instanceof Player) {
+    /** @type {(origin: CustomCommandOrigin, args: Entity[]) => import("@minecraft/server").CustomCommandResult} */
+    const handler = (origin, entities) => {
+        if (!(origin.sourceEntity instanceof Player)) return FAILURE;
+        if (!entities) return FAILURE;
 
-//             if (!(debug.dev.debug || pack.passCodeEntered)) {
+        const player = origin.sourceEntity;
+        const playerLocation = player.location;
 
-//                 const passCode = args[ 0 ];
-//                 let msg = '';
-//                 if (passCode === pack.debugPassCode) {
-//                     pack.passCodeEntered = true;
+        system.run(() => {
+            for (const entity of entities) {
+                if (entity.isValid) {
+                    const { location, nameTag } = entity;
+                    const delta = `§bClosest Player x: ${Math.round(Math.abs(location.x - playerLocation.x))}, y:${Math.round(Math.abs(location.y - playerLocation.y))}, z:${Math.round(Math.abs(location.z - playerLocation.z))}`;
+                    if (nameTag) {
+                        const msg = `query: §l${nameTag}§r §6@ ${Vector3Lib.toString(location, 0, true)} ${delta}`;
+                        chatLog.log(msg);
+                    }
+                }
+                //entity.applyImpulse({ x: 0, y: 1, z: 0 });
+                //entity.dimension.spawnParticle("minecraft:ominous_spawning_particle", entity.location);
+            }
+        });
 
-//                     const lastRegistry = getRegistry();
-//                     // or const lastRegistry = ccRegistry[0]  TODO: try this even if other worked
-//                     // also if works, try just registry to see if the handler saved it
+        return SUCCESS;
+    };
 
-//                     if (lastRegistry) {
-//                         registerCustomCommandsDebug(lastRegistry);
-//                         msg = `${debug.dev.debugScoreboardBaseDisplay} debugging is now §aUnlocked`;
-//                     }
-//                     else {
-//                         msg = `${debug.dev.debugScoreboardBaseDisplay} §cError Getting Registry to Register Debug Commands`;
-//                     }
-//                 }
-//                 else {
-//                     //Only the owner can run this command, so it ok to point to where the code is
-//                     msg = `§cIncorrect Pass Code - Open up script file settings.js to see/change`;
-//                 }
-//                 const player = origin.sourceEntity;
-//                 player.sendMessage(msg);
-//             }
-//         }
-//         const result = { status: CustomCommandStatus.Success };
-//         return result;
-//     };
+    registry.registerCommand(cmd, handler);
+}
+//==============================================================================
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_random_rtp (registry) {
+    const cmd = {
+        name: `${pack.fullNameSpace}:rtp`,
+        description: "Random TP",
+        permissionLevel: CommandPermissionLevel.Admin,
+        cheatsRequired: false
+    };
 
-//     registry.registerCommand(cmd, handler);
-// }
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        if (origin.sourceEntity instanceof Player) {
+            const player = origin.sourceEntity;
+            const currentLocation = origin.sourceEntity.location;
+            const xz = VectorXZLib.randomXZ(5000, { center: currentLocation, minRadius: 1000, avoidZero: true });
+            //const z = rtp.randomXZ(5000,{center:currentLocation,minRadius:1000,avoidZero:true})
+            system.run(() => {
+                player.teleport({ x: xz.x, y: 150, z: xz.z });
+            });
+        }
+
+        const result = { status: CustomCommandStatus.Success };
+        return result;
+    });
+}
 //==============================================================================
 /**
  * @param {CustomCommandRegistry} registry 
@@ -451,15 +478,6 @@ function register_scoreboards (registry) {
 //==============================================================================
 //==============================================================================
 /**
- * 
- * @param {Entity} entity 
- * @param {string} trigger 
- */
-function eventTrigger (entity, trigger) {
-    EntityLib.eventTrigger(entity, trigger);
-}
-//==============================================================================
-/**
  * @param {CustomCommandRegistry} registry 
  */
 export function registerCustomCommands (registry) {
@@ -467,17 +485,19 @@ export function registerCustomCommands (registry) {
 
     //Register Enums here
     register_about(registry);
+    register_random_rtp(registry)
 
-    if (debug.dev.debug) {
-        register_cls(registry);        
+    if (debug.devDebug.debugOn) {
+        register_cls(registry);
+        register_delta(registry);
 
         alertLog.log(`Registering Debug enum: ${queryOnOff}`, debugFunctions);
         registry.registerEnum(queryOnOff, [ "query", "on", "off" ]);
 
         register_debug(registry);
         register_debugEntity(registry);
-        register_debugEntityActivity(registry);
-        register_debugEntityAlert(registry);
+        register_watchEntityGoals(registry);
+        register_watchEntityEvents(registry);
 
         alertLog.log(`Registering Debug enum: ${scoreboard_options}`, debugFunctions);
         registry.registerEnum(scoreboard_options, [ "clear", "reset", "show", "reverse", "zero" ]);

@@ -1,0 +1,358 @@
+{
+  "format_version": "1.21.50",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "dw623:fly",
+      "spawn_category": "creature",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "properties": {
+        "minecraft:has_nectar": {
+          "type": "bool",
+          "client_sync": true,
+          "default": false
+        }
+      }      
+    },
+    //FIXME: needs a life cycle added.... 
+    // ?? check out mingle, see if it can have them hang out together
+    /*
+      when spawned -- 
+        DV for tickStarted
+        fly tick checker every 2 min to kill those over the limit of life-ticks (spider may need this too)
+
+      IDEAS:
+      minecraft:behavior.stalk_and_pounce_on_target - use for zombies, 
+        see https://learn.microsoft.com/en-us/minecraft/creator/reference/content/entityreference/examples/entitygoals/minecraftbehavior_stalk_and_pounce_on_target?view=minecraft-bedrock-stable
+     
+      when spider finds firefly bush:
+        put invisible flies around it that stay around it (invisible version that is programmed to stay around firefly bush forever)
+        see if can pounce on them  
+
+      TODO: check out   
+                      minecraft:behavior.timer_flag_1
+                      minecraft:behavior.run_around_like_crazy
+                      []minecraft:behavior.panic (includes above crazy)
+                      minecraft:behavior.circle_around_anchor
+                      minecraft:behavior.find_cover -> mob to seek shade.
+                      minecraft:behavior.follow_mob
+                      minecraft:behavior.move_around_target
+                      minecraft:follow_range
+    */
+    "component_groups": { 
+      //TODO: find player to annoy, find zombie to buzz around... 
+      //TODO: see if can make buzzing sound and buzzing around animation
+      //maybe have it look for a web to get caught in... and if it finds one, a spider spawns to eat it and leave orbs
+            
+      "if_weather_raining_cg": {
+        "minecraft:environment_sensor": {
+          "triggers": [
+            {
+              "event": "seek_shelter_event",
+              "filters": {"test":"weather","operator":"==","value":"precipitation"}
+            }
+          ]
+        },
+        "minecraft:behavior.find_cover": {
+          "priority": 99,
+          "speed_multiplier": 0,
+          "cooldown_time": 100
+        }
+      },
+      "if_weather_clear_cg": {
+        "minecraft:environment_sensor": {
+          "triggers": [
+            {
+              "event": "abort_sheltering",
+              "filters": {"test":"weather","operator":"==","value":"clear"}
+            }
+          ]
+        },
+        "minecraft:behavior.find_cover": {
+          "priority": 0,
+          "speed_multiplier": 0.25,
+          "cooldown_time": 0
+        }
+      },      
+      "default_sound": {
+        "minecraft:ambient_sound_interval": {
+          "event_name": "ambient",
+          "range": 0.0,
+          "value": 0.0
+        }
+      },
+      "duplicate_me": {
+        "minecraft:spawn_entity": {
+          "entities": [{
+            "min_wait_time": 0,
+            "max_wait_time": 1,
+            "spawn_entity": "dw623:fly",
+            "single_use": true,
+            "num_to_spawn": 1,
+            "spawn_event": "minecraft:entity_spawned"
+          }]
+        }
+      },
+      "duplicate_me_2": {
+        "minecraft:spawn_entity": {
+          "entities": [{
+            "min_wait_time": 0,
+            "max_wait_time": 1,
+            "spawn_entity": "dw623:fly",
+            "single_use": true,
+            "num_to_spawn": 2,
+            "spawn_event": "minecraft:entity_spawned"
+          }]
+        }
+      }
+    },
+    //TODO:  Later
+    //will need to make it so they can disappear into a breathable home object...
+    // so maybe while in block, invisible and in air, visible.. that may work
+    // then when looking for shelter/home can find block, then go inside and STAY for a bit or while need to shelter
+    "components": {
+      //stats
+      "minecraft:type_family": {"family":["fly","dw623","pest"]},      
+      "minecraft:balloonable": {"mass":0.5},
+      "minecraft:scale": {"value":0.20},
+      "minecraft:collision_box": {"width":0.55,"height":0.5},
+      "minecraft:mark_variant": {"value":1}, // == no stinger in bee entity file.. can fix later      
+      "minecraft:conditional_bandwidth_optimization": {},
+      "minecraft:is_hidden_when_invisible": {},
+      "minecraft:health": {"value":20,"max":20},
+      "minecraft:physics": {},
+      "minecraft:pushable": {"is_pushable":true,"is_pushable_by_piston":true},
+      "minecraft:breathable": {        
+        "total_supply":5,"suffocate_time":-1,
+        "breathe_blocks": [
+          "minecraft:composter",
+          "minecraft:acacia_leaves","minecraft:birch_leaves","minecraft:cherry_leaves","minecraft:jungle_leaves",
+          "minecraft:dark_oak_leaves","minecraft:mangrove_leaves","minecraft:oak_leaves","minecraft:pale_oak_leaves","minecraft:spruce_leaves",
+          "minecraft:azalea","minecraft:azalea_leaves","minecraft:azalea_leaves_flowered",
+          "minecraft:web"
+          // ?? TODO: add nature
+        ]
+      },  
+      //movement
+      "minecraft:game_event_movement_tracking": {"emit_flap":true},      
+      "minecraft:behavior.float": {"priority":19},
+      "minecraft:behavior.random_fly": {
+        "priority": 10,
+        "xz_dist": 5,
+        "y_dist": 3,
+        "y_offset": 1,
+        "speed_multiplier": 0.25, //0.5,
+        "can_land_on_trees": true,
+        "avoid_damage_blocks": true
+      },
+      "minecraft:behavior.random_hover": {
+        "priority": 9,
+        "xz_dist": 5,
+        "y_dist": 1,
+        "y_offset": -1,
+        "interval": 1,
+        "hover_height": [ 0.25, 1 ]
+      },
+      "minecraft:can_fly": {},
+      "minecraft:flying_speed": {"value":0.25}, //TODO: maybe have fly faster if attacked
+      "minecraft:movement": {"value":0.4},
+      "minecraft:movement.hover": {},
+      "minecraft:jump.static": {},
+      "minecraft:navigation.hover": {
+        "can_path_from_air": true,
+        "can_path_over_lava": true,
+        "can_path_over_water": true,
+        "can_pass_doors": true,
+        "can_sink": false,
+        "avoid_water": true,
+        "avoid_damage_blocks": true,
+        "avoid_sun": false
+      },
+      //goals
+      "minecraft:behavior.move_to_block": {
+        "priority": 5,
+        "tick_interval": 1,
+        "start_chance": 0.4,
+        "search_range": 16,
+        "search_height": 4,
+        "speed_multiplier": 0.5,
+        "goal_radius": 1.0,
+        //"stay_duration": 20.0, 
+        "target_selection_method": "random",
+        "target_offset": [ 0, 0.25, 0 ],
+        "target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false},          
+        "target_blocks": [
+          //fruit or food
+          "minecraft:beehive",
+          "minecraft:bee_nest",
+          "minecraft:cake", //list other cakes
+          "minecraft:cane",
+          "minecraft:composter",
+          "minecraft:glow_berries",
+          "minecraft:honey_block",
+          "minecraft:honeycomb_block",
+          "minecraft:oak_leaves", //has apples
+          "minecraft:sweet_berry_bush"
+        ] //,"on_stay_completed": [{"event":"spawn_friend","target":"self"}]
+      },            
+      // with others  
+      "minecraft:behavior.avoid_mob_type": {
+        "priority": 4,
+        "avoid_target_xz":3,
+        "max_dist": 2,
+        "max_flee": 4,
+        "sprint_distance":2,
+        "entity_types": [                            
+          {
+            "filters": {
+              "any_of":[
+                {"test":"is_family","subject":"other","value":"bee"},
+                {"test":"is_family","subject":"other","value":"cat"},
+                {"test":"is_family","subject":"other","value":"chicken"},
+                {"test":"is_family","subject":"other","value":"frog"},
+                {"test":"is_family","subject":"other","value":"parrot"}
+              ]
+            }
+          }
+        ]
+      } ,    
+      "minecraft:attack": {"damage": 0.01},
+      "minecraft:behavior.panic": {"priority":2,"speed_multiplier":0.5},
+      "minecraft:behavior.nearest_attackable_target": {
+        "priority": 15,
+        "entity_types": [
+          {
+            "filters": {
+              "any_of":[                
+                {"test":"is_family","subject":"other","value":"zombie"},
+                {"test":"is_family","subject":"other","value":"minecraft:zombie_villager"}
+              ]              
+            },
+            "max_dist": 16
+          }
+        ]
+      },
+      "minecraft:behavior.follow_mob": {
+        "priority": 10,
+        "search_range": 8,
+        "stop_distance": 0.25,
+        "speed_multiplier": 0.25,
+        "use_home_position_restriction": false,
+        "preferred_actor_type": "zombie",
+        "filters": {
+          "any_of": [
+            {"test":"is_family","subject":"other","value":"tree_spider"},
+            {"test":"is_family","subject":"other","value":"camel"},
+            {"test":"is_family","subject":"other","value":"cow"},
+            {"test":"is_family","subject":"other","value":"donkey"},
+            {"test":"is_family","subject":"other","value":"goat"},
+            {"test":"is_family","subject":"other","value":"horse"},
+            {"test":"is_family","subject":"other","value":"llama"},
+            {"test":"is_family","subject":"other","value":"mule"},
+            {"test":"is_family","subject":"other","value":"panda"},
+            {"test":"is_family","subject":"other","value":"pig"},
+            {"test":"is_family","subject":"other","value":"polar_bear"},
+            {"test":"is_family","subject":"other","value":"zombie"},
+            {"test":"is_family","subject":"other","value":"zombie_villager"}
+          ]
+        }
+      },
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {"cause":"fall","deals_damage":"no"},
+          {"on_damage":{"filters":{"test":"is_block","subject":"block","value":"minecraft:sweet_berry_bush"}},"deals_damage":"no"}
+        ]
+      },
+      "minecraft:hurt_on_condition": {
+        "damage_conditions": [{"filters":{"test":"in_lava","subject":"self"},"cause":"lava","damage_per_tick":4}]
+      },
+      "minecraft:experience_reward": {"on_death":"Math.Random(1,2)"},
+      //FIXME:  how to flock
+      "minecraft:flocking": {
+        "in_water": false,
+        "match_variants": false,
+        "use_center_of_mass": false,
+        "low_flock_limit": 2,
+        "high_flock_limit": 5,
+        "goal_weight": 2,
+        "loner_chance": 0,
+        "influence_radius": 8,
+        "breach_influence": 0,
+        "separation_weight": 1.75,
+        "separation_threshold": 3,
+        "cohesion_weight": 1.85,
+        "cohesion_threshold": 6.5,
+        "innner_cohesion_threshold": 1.5,
+        "min_height": 5,
+        "max_height": 5,
+        "block_distance": 2,
+        "block_weight": 0.85
+      }, 
+      //TODO:  why not .temp_float ?????
+      "minecraft:behavior.tempt": {
+        "priority": 5,
+        "speed_multiplier": 0.25,
+        "within_radius": 5,
+        "can_tempt_vertically": true,
+        "items": [
+          "dw623:rotten_flesh_kabob",
+          "dw623:rotten_flesh_block",
+          "minecraft:apple",
+          "minecraft:cake", //TODO: the other color cake
+          "minecraft:cookie",
+          "minecraft:glow_berries",
+          "minecraft:honey_bottle",
+          "minecraft:pumpkin_pie",
+          "minecraft:poisonous_potato",
+          "minecraft:rotten_flesh",
+          "minecraft:spider_eye",
+          "minecraft:suspicious_stew",
+          "minecraft:sweet_berries"          
+        ]
+      },
+      "minecraft:interact": {
+        "interactions": [
+          {
+            //TODO: use to capture and make bottle of flies
+            "on_interact": {
+              "filters": {
+                "all_of": [
+                  { "test": "is_family", "subject" : "other", "value" :  "player"},
+                  { "test": "has_equipment", "domain": "hand", "subject": "other", "value": "minecraft:glass_bottle" }
+                ]
+              },
+              "event": "caught_me_in_a_bottle"
+            }
+            //,"transform_to_item": "dw623:bottle_of_flies" //TODO:
+          }
+        ]
+      },
+      "minecraft:loot": {"table":"loot_tables/entities/fly.json"}
+    },
+    "events": {
+      "minecraft:entity_spawned": {
+        "sequence":[            
+          {"queue_command": {"command":["scriptevent debugLogEvent:NewFly spawned"]}},
+          {"add":{"component_groups":["if_weather_raining_cg"]}}
+        ]
+      },                                  
+      //=====================
+      "seek_shelter_event": {
+        "remove": {"component_groups":["if_weather_raining_cg"]},
+        "add": {"component_groups":["default_sound","if_weather_clear_cg"]}
+      },
+      "abort_sheltering": {
+        "remove": {"component_groups":["if_weather_clear_cg"]},
+        "add": {"component_groups":["if_weather_raining_cg"]}
+      },
+      //=====================
+      //call from scripts when life-cycle is over 
+      //TODO: lead to despawn    
+      "perish_event": {"add":{"component_groups":["perish"]}},
+      //TODO:
+      "caught_me_in_a_bottle": {
+        "add": {"component_groups":[]}
+      }
+    }
+  }
+}

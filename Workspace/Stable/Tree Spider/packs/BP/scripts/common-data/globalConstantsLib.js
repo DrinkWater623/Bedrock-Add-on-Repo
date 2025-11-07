@@ -1,13 +1,16 @@
+// globalConstantsLib.js
+// @ts-check
 /* =====================================================================
-Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
 License: GPL-3.0-only
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20250105 - reOrg
+Change Log: 
+    20250105 - reOrg
+    20251102 - add minecraft ticks
 ========================================================================*/
-//@ts-check
 import { TicksPerSecond } from "@minecraft/server";
-import { MinecraftBlockTypes, MinecraftItemTypes } from "./vanilla-data.js";
+//import { MinecraftBlockTypes, MinecraftItemTypes } from "./vanilla-data.js";
 //========================================================================
 export const mcNameSpace = 'minecraft:';
 //========================================================================
@@ -16,6 +19,9 @@ export class Ticks {
     static perMinute = TicksPerSecond * 60;
     static perHour = this.perMinute * 60;
     static perDay = this.perMinute * 24;
+    static minecraftDay = this.perMinute * 20 ;
+    static minecraftHour = this.minecraftDay / 24;
+    static minecraftMinute = this.minecraftDay / 60;
 }
 //=============================================================================
 //these are in ID order

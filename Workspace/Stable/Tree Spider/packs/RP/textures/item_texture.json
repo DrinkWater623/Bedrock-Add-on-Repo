@@ -1,0 +1,10 @@
+{
+  "resource_pack_name": "dw623_tree_spider",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "bottle_of_flies": {"textures":"textures/items/bottle_of_flies.png"},
+    "dead_fly_ball": {"textures":"textures/items/dead_fly_ball.png"},
+    "dead_fly_ball_stick": {"textures":"textures/items/dead_fly_ball_stick.png"},
+    "rotten_flesh_kabob": {"textures":"textures/items/rotten_flesh_kabob.png"}
+  }
+}

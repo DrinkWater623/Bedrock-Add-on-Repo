@@ -7,7 +7,7 @@ URL: https://github.com/DrinkWater623
 Last Update: 20251026 - add Pale Oak and DW623 as family
 ========================================================================*/
 {
-  "format_version": "1.12.0",
+  "format_version": "1.21.50",
   "minecraft:entity": {
     "description": {
       "identifier": "dw623:tree_spider_egg_sac",
@@ -53,7 +53,8 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
       },
       "minecraft:conditional_bandwidth_optimization": {"default_values":{"max_optimized_distance":80,"max_dropped_ticks":7,"use_motion_prediction_hints":true}},
       //=======================================
-      "minecraft:timer": {"looping":false,"time":[300,600],"time_down_event":{"event":"hatch"}}
+      // 10 to 20 min
+      "minecraft:timer": {"looping":false,"time":[600,1200],"time_down_event":{"event":"hatch"}}
     },
     "events": {
       "despawn_me": {"add":{"component_groups":["instant_despawn"]}},
@@ -61,14 +62,15 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
         "sequence": [
           {
             "filters":{"test":"bool_property","domain":"bit:debug", "value":true},
-            "queue_command": {"command":["scriptevent registerSB:EntityAlert §gEggs Hatched"]}
+            "queue_command": {"command":["scriptevent alertEvent §gEggs Hatched"]}
           },
           {"add":{"component_groups":["hatchlings"]}}
         ]
       },
+      //Called from Spider who spawned the egg
       "log_activity":{
         "filters":{"test":"bool_property","domain":"bit:debug", "value":true},
-        "queue_command": {"command":["scriptevent tree_spider:newEgg"]}
+        "queue_command": {"command":["scriptevent mainEvent:newEgg"]}
       }
     }
   }

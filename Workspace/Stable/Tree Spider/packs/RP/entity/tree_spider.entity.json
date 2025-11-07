@@ -9,7 +9,7 @@
 				"invisible": "spider_invisible"
 			},
 			"textures": {
-				"default": "textures/entity/brown_spider"
+				"default": "textures/entity/spider/brown_spider"
 			},
 			"geometry": {
 				"default": "geometry.tree_spider"

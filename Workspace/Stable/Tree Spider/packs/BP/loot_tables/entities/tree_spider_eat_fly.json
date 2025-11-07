@@ -1,0 +1,54 @@
+{
+	"pools": [
+		{
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "item",
+					"name": "dw623:dead_fly_ball",
+					"weight": 1
+				}
+			],
+			"conditions": [
+				{
+					"condition": "entity_killed",
+					"entity_type": "dw623:fly"
+				}
+			]
+		}
+		//,
+		// {
+		// 	"rolls": 1,
+		// 	"entries": [
+		// 		{
+		// 			"type": "item",
+		// 			"name": "minecraft:xp_orb",
+		// 			"weight": 1
+		// 		}
+		// 	],
+		// 	"conditions": [
+		// 		{
+		// 			"condition": "entity_killed",
+		// 			"entity_type": "dw623:firefly"
+		// 		}
+		// 	]
+		// }
+		/*
+	  {
+        "rolls": 1,
+        "entries": [
+          {
+            "type": "item",
+            "name": "minecraft:slime_ball",
+            "weight": 1
+          }
+        ],
+        "conditions": [
+          {
+            "condition": "entity_killed",
+            "entity_type": "minecraft:slime"
+          }
+        ]
+      }*/
+	]
+}

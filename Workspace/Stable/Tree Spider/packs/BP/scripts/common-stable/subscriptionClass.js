@@ -1,7 +1,7 @@
 // subscriptionClass.js
 // @ts-check
-/**
- * ChatGPT wrote this - not used or tested thoroughly... I need to fine tune
+/** TODO: 
+ * ChatGPT wrote this - not used or tested thoroughly... I need to study and fine tune
  * I needed something that I could use on subscriptions that I needed to be able to turn on/off
  * 
  * Generic Bedrock event subscription wrapper.

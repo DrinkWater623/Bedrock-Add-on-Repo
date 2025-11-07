@@ -1,13 +1,18 @@
-//@ts-check
+// main.js
+// @ts-check
 /**
  * This is called only if beta is not used, 
  */
-import { alertLog,  pack  } from './settings.js';
-import * as debug from "./fn-debug.js";
-import { subscriptionsStable } from './subscribes.js';
 //==============================================================================
-debug.dev.anyOn();
-alertLog.success(`§aInstalling Add-on ${pack.packName} - ${pack.beta ? '§6Beta' : '§bStable'}  ${debug.dev.debug ? '§4(debug mode)' : ''}`, debug.dev.debugPackLoad || pack.isLoadAlertsOn);
+// Local
+import { alertLog, pack } from './settings.js';
+import { subscriptionsStable } from './subscribes.js';
+import { devDebug } from "./helpers/fn-debug.js";
+//==============================================================================
+devDebug.anyOn();
+const msg=`§aInstalling Add-on ${pack.packName} - ${pack.beta ? '§6Beta' : '§bStable'}  ${devDebug.debugOn ? '§4(debug mode)' : ''}`
+alertLog.success(msg, devDebug.debugOn || pack.isLoadAlertsOn);
 subscriptionsStable();
 //==============================================================================
 // End of File
+//==============================================================================

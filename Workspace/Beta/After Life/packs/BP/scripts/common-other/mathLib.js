@@ -1,11 +1,20 @@
-//@ts-check
+// MathLib.js
+// @ts-check
 /* =====================================================================
-Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
-License: GPL-3.0-only
+Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
+License: M.I.T
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20241229 - reOrg and add License
+Change Log: 
+    20241229 - reOrg and add License
+    20251102 - Add some needed functions
 ========================================================================*/
+export const rnd = (min = 0, max = 0) => Math.random() * (max - min) + min;
+export const rndInt = (min = 0, max = 0) => Math.floor(Math.random() * (max - min + 1)) + min;
+export const rndFloat = (min = 0, max = 0) => Math.random() * (max - min) + min;
+export const chance = (p = 0) => Math.random() < p; // p in [0,1]
+export const clamp = (v = 0, min = 0, max = 0) => Math.min(max, Math.max(min, v));
+export const round = (v = 0, d = 0) => Math.round(v * 10 ** d) / 10 ** d;
 /**
  * 
  * @param {number[]} numberArray 
@@ -58,17 +67,5 @@ export function bitArrayAdd (numberArray, numberToAdd = 0, base = 10, minReturnL
     while (numberArray.length < minReturnLength) numberArray.unshift(0);
     
     return numberArray;
-}
-//=============================================================================
-/**
- * @param {number} number  
- * @param { number } decimalPlaces 
- * @returns {number}
- * 
-*/
-export function round (number, decimalPlaces = 0) {
-    if (decimalPlaces <= 0) return Math.round(number);
-    let multiplier = parseInt('1' + ('0'.repeat(decimalPlaces)));
-    return Math.round(number * multiplier) / multiplier;
 }
 //=============================================================================

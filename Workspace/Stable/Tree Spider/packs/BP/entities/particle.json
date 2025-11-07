@@ -1,0 +1,135 @@
+{
+  "format_version": "1.21.50",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "dw623:particle",
+      "spawn_category": "creature",
+      "is_spawnable": true,
+      "is_summonable": true    
+    },
+    "component_groups": { 
+      "instant_despawn":{"minecraft:instant_despawn":{}},               
+      "duplicate_me": {
+        "minecraft:spawn_entity": {
+          "entities": [{
+            "min_wait_time": 0,
+            "max_wait_time": 1,
+            "spawn_entity": "dw623:particle",
+            "single_use": true,
+            "num_to_spawn": 1,
+            "spawn_event": "minecraft:entity_spawned"
+          }]
+        }
+      },
+      "duplicate_me_2": {
+        "minecraft:spawn_entity": {
+          "entities": [{
+            "min_wait_time": 0,
+            "max_wait_time": 1,
+            "spawn_entity": "dw623:particle",
+            "single_use": true,
+            "num_to_spawn": 2,
+            "spawn_event": "minecraft:entity_spawned"
+          }]
+        }
+      },
+      "perish": {
+        "minecraft:experience_reward": {"on_death":"0"},
+        "minecraft:hurt_on_condition":{"damage_conditions":[{"cause":"none","damage_per_tick":999}]}
+      }
+    },
+    "components": {
+      //stats
+      "minecraft:type_family": {"family":["particle","dw623"]},      
+      "minecraft:balloonable": {"mass":0.5},
+      "minecraft:scale": {"value":5},
+      //"minecraft:collision_box": {"width":0.55,"height":0.5},      
+      "minecraft:conditional_bandwidth_optimization": {},
+      "minecraft:is_hidden_when_invisible": {},
+      "minecraft:health": {"value":1,"max":1},
+      "minecraft:physics": {},
+      "minecraft:pushable": {"is_pushable":true,"is_pushable_by_piston":true},   
+      /*   
+      //movement
+      "minecraft:game_event_movement_tracking": {"emit_flap":true},      
+      "minecraft:behavior.float": {"priority":19},
+      "minecraft:behavior.random_fly": {
+        "priority": 5,
+        "xz_dist": 8,
+        "y_dist": 3,
+        "y_offset": 1,
+        "speed_multiplier": 0.25, //0.5,
+        "can_land_on_trees": true,
+        "avoid_damage_blocks": true
+      },
+      "minecraft:behavior.random_hover": {
+        "priority": 9,
+        "xz_dist": 8,
+        "y_dist": 2,
+        "y_offset": -1,
+        "interval": 1,
+        "hover_height": [ 0.25, 1 ]
+      },
+      "minecraft:can_fly": {},
+      "minecraft:flying_speed": {"value":0.10}, 
+      "minecraft:movement": {"value":0.1},
+      "minecraft:movement.hover": {},
+      "minecraft:jump.static": {},
+      "minecraft:navigation.hover": {
+        "can_path_from_air": true,
+        "can_path_over_lava": true,
+        "can_path_over_water": true,
+        "can_pass_doors": true,
+        "can_sink": false,
+        "avoid_water": true,
+        "avoid_damage_blocks": true,
+        "avoid_sun": false
+      },
+      */
+      //goals
+      "minecraft:behavior.look_at_player": {
+        "priority": 3,
+        "look_distance": 6,
+        "probability": 1
+      },
+      "minecraft:behavior.move_to_block": {
+        "priority": 5,
+        "tick_interval": 1,
+        "start_chance": 0.5,
+        "search_range": 8,
+        "search_height": 4,
+        "goal_radius": 2.0,
+        "target_selection_method": "nearest",
+        "target_offset": [ 0, 1, 0 ],
+        "target_blocks":["minecraft:firefly_bush"] 
+      },                  
+      "minecraft:behavior.follow_mob": {
+        "priority": 10,
+        "search_range": 32,
+        "stop_distance": 3,
+        "speed_multiplier": 0.25,
+        "use_home_position_restriction": false,
+        "preferred_actor_type": "mob",
+        "filters": {"test":"is_family","subject":"other","value":"tree_spider"}
+      },
+      "minecraft:hurt_on_condition": {
+        "damage_conditions": [{"filters":{"test":"in_lava","subject":"self"},"cause":"lava","damage_per_tick":4}]
+      },
+      "minecraft:experience_reward": {"on_death":"1"}
+      /*"minecraft:environment_sensor":{
+        "triggers":[{
+          "event":"perish_event",
+          "filters":{ "test": "is_daytime", "operator": "==", "value": true }               
+        }]
+      }*/
+    },
+    "events": {
+      "minecraft:entity_spawned": {
+        "sequence":[            
+          {"queue_command": {"command":["scriptevent debugLogEvent:NewParticle spawned"]}}
+        ]
+      },                                  
+      "perish_event": {"add":{"component_groups":["perish"]}}
+    }
+  }
+}

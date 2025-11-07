@@ -7,7 +7,7 @@ URL: https://github.com/DrinkWater623
 Last Update: 20241229 - reOrg and add License
 ========================================================================*/
 import { system, world, DisplaySlotId, TicksPerSecond } from '@minecraft/server';
-import { worldRun } from './runCommandClass.js';
+import { worldRun } from './worldRunLib.js';
 import { Ticks } from '../common-data/globalConstantsLib.js';
 //===================================================================
 export class ScoreboardLib {

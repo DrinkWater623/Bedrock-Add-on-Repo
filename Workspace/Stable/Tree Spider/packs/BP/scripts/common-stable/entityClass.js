@@ -6,8 +6,11 @@ URL: https://github.com/DrinkWater623
 ========================================================================
 Last Update: 20251024 - Add event trigger
 ========================================================================*/
-import { world, system, Player, Entity, Block } from "@minecraft/server";
+import { world, system, Player, Entity, Block, Dimension } from "@minecraft/server";
+import { rndInt } from "../common-other/mathLib.js";
 import { Vector3Lib as vec3 } from './vectorClass.js';
+//==============================================================================
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
 //==============================================================================
 export class EntityLib {
     //==============================================================================
@@ -17,10 +20,10 @@ export class EntityLib {
      * @param {string} trigger 
      */
     static eventTrigger (entity, trigger) {
-    if (entity.isValid)
-        system.runTimeout(() => {
-            system.run(() => { entity.triggerEvent(trigger); });
-        }, 1);
+        if (entity.isValid)
+            system.runTimeout(() => {
+                system.run(() => { entity.triggerEvent(trigger); });
+            }, 1);
     }
     //==============================================================================
     /**
@@ -83,7 +86,7 @@ export class EntityLib {
     static listEntities (title = "", entities = [], displayTo = world) {
         if (displayTo instanceof Player && !displayTo.isValid)
             return;
-        
+
         let msg = "";
         msg = title;
         entities.forEach((entity, i) => {
@@ -139,4 +142,21 @@ export class EntityLib {
         const families = entity.getComponent('minecraft:type_family')?.getTypeFamilies();
         return families?.includes(familyQuery) || false;
     }
+}
+/**
+ * Spawn an entity after a random tick delay if the chunk is loaded.
+ * @param {Dimension} dim
+ * @param {Vector3} loc
+ * @param {string} typeId
+ * @param {number} [min=1]
+ * @param {number} [max=100]
+ */
+export function spawnAfterRandomTicks (dim, loc, typeId, min = 1, max = 100) {
+    const delay = rndInt(Math.max(0, min), Math.max(min, max));
+    system.runTimeout(() => {
+        if (dim.isChunkLoaded(loc)) {
+            // @ts-ignore spawnEntity exists at runtime
+            dim.spawnEntity(typeId, loc);
+        }
+    }, delay);
 }

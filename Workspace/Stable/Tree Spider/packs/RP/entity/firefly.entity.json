@@ -1,0 +1,46 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "dw623:firefly",
+      "materials": {
+        "default": "entity_emissive_alpha" //"entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/fly/firefly_test1",
+        "angry": "textures/entity/fly/firefly_test1",
+        "nectar": "textures/entity/fly/firefly_test1",
+        "angry_nectar": "textures/entity/fly/firefly_test1"
+      },
+      "geometry": {
+        "default": "geometry.bee"
+      },
+      "animations": {
+        "flying": "animation.bee.flying",
+        "drip": "controller.animation.bee.drip",
+        "controller_bee_sting": "controller.animation.bee.sting",
+        "bee_sting": "animation.bee.sting",
+        "bee_no_stinger": "animation.bee.no_stinger",
+        "bee_fly_bobbing": "animation.bee.fly.bobbing",
+        "bee_root_controller": "controller.animation.bee.root"
+      },
+      "particle_effects": {
+        "nectar_dripping": "minecraft:nectar_drip_particle"
+      },
+      "scripts": {
+        "animate": [
+          "bee_root_controller",
+          {
+            "bee_no_stinger": "query.mark_variant == 1"
+          }
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bee"
+      ],
+      "spawn_egg": {
+        "texture": "spawn_egg_bee"
+      }
+    }
+  }
+}

@@ -1,3 +1,6 @@
 entity.dw623:tree_spider.name=Tree Spider
-item.spawn_egg.entity.dw623:tree_spider.name=Spawn Tree Spider
+entity.dw623:firefly.name=Fire Fly
+entity.dw623:fly.name=Fly
 entity.dw623:tree_spider_egg_sac.name=Tree Spider Egg Sac
+
+item.spawn_egg.entity.dw623:tree_spider.name=Spawn Tree Spider

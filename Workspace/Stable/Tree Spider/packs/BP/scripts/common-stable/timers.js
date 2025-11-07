@@ -11,6 +11,7 @@ Change Log:
 import { system, ScoreboardObjective, TicksPerSecond } from '@minecraft/server';
 import { ScoreboardLib } from './scoreboardClass.js';
 import { Ticks } from '../common-data/globalConstantsLib.js';
+import { alertLog } from '../settings.js';
 //===================================================================
 export class ScoreboardTimers {
     //===================================================================
@@ -75,13 +76,15 @@ export class ScoreboardTimers {
      * @returns {number}
      */
     static systemTimeCountersStart (scoreboard, initialsWhich = 'tsmhd') {
+        alertLog.log(`* function systemTimeCountersStart (${initialsWhich})`)
+
         let sb = ScoreboardLib.getScoreboard(scoreboard);
         if (!sb) { if (typeof scoreboard == 'string') sb = ScoreboardLib.create(scoreboard); }
         if (!sb || !sb.isValid) return 0;
 
         let job = 0;
         const interval = initialsWhich.includes('t') ? 1 : initialsWhich.includes('s') ? TicksPerSecond : initialsWhich.includes('m') ? Ticks.perMinute : Ticks.perHour;
-        system.runTimeout(() => {
+        system.run(() => {
             const tickOffset = system.currentTick;
             job = system.runInterval(() => {
                 if (sb && sb.isValid) {
@@ -92,7 +95,8 @@ export class ScoreboardTimers {
                     if (initialsWhich.includes('d')) sb.setScore('System Days', Math.trunc((system.currentTick - tickOffset) / Ticks.perDay));
                 }
             }, interval);
-        }, 0);
+            alertLog.log(`Timer runInterval Job = ${job}`)
+        });
 
         return job;
     }

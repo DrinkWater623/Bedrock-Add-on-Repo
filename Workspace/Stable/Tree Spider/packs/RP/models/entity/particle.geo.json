@@ -1,0 +1,43 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.particle_flat",
+				"texture_width": 1,
+				"texture_height": 1,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 1.5,
+				"visible_bounds_offset": [0, 0.25, 0]
+			},
+			"bones": [
+				{
+					"name": "bb_main",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [0, 0, -1], "size": [1, 0, 1], "uv": [2, 1]}
+					]
+				}
+			]
+		},
+		{
+			"description": {
+				"identifier": "geometry.full_box",
+				"texture_width": 1,
+				"texture_height": 1,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 1.5,
+				"visible_bounds_offset": [0, 0.25, 0]
+			},
+			"bones": [
+				{
+					"name": "bb_main",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-1, 1, -0.5], "size": [5, 1, 5], "pivot": [-1, 0.5, -0.5], "rotation": [0, 0, 90], "uv": [2, 1]}
+					]
+				}
+			]
+		}
+	]
+}
