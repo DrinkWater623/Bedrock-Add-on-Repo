@@ -8,19 +8,21 @@ URL: https://github.com/DrinkWater623
 ========================================================================
 Last Update: 20251023 - add in stable stuff and update to api 2.0 and move debug-only stuff out
 ========================================================================*/
-import { world, system, EntityInitializationCause } from "@minecraft/server";
+import { world, system, EntityInitializationCause, Player } from "@minecraft/server";
 //Shared
 import { Ticks } from "./common-data/globalConstantsLib.js";
-import { chance } from "./common-other/mathLib.js";
+import { chance, rndInt } from "./common-other/mathLib.js";
 import { DynamicPropertyLib } from "./common-stable/dynamicPropertyClass.js";
 import { Vector3Lib } from "./common-stable/vectorClass.js";
 //Local
-import { alertLog, pack, watchFor, dynamicVars,thisPackEntities } from './settings.js';
+import { alertLog, pack, watchFor, dynamicVars, thisPackEntities } from './settings.js';
 import { registerCustomCommands } from "./chatCmds.js";
+import { spiderSpawnFromValidNatureBlock, rattleEntityFromBlockWithItem } from './helpers/fn-blocks.js';
 import { devDebug, debugScoreboards } from "./helpers/fn-debug.js";
-import { spiderSpawnFromValidNatureBlock, } from './helpers/fn-blocks.js';
+import { entityEventProcess, lastTickAndLocationRegister, stalledSpiderCheckAndFix, flyPopulationCheck, spiderPopulationCheck, spawnEntityAtLocation, hourlyChime } from './helpers/fn-entities.js';
 import { validLongToolForInteractToShakeSpidersOut } from './helpers/fn-items.js';
-import { entityEventProcess, lastTickAndLocationRegister, stalledEntityCheckAndFix, hourlyChime } from './helpers/fn-entities.js';
+//import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
+import { airBlock } from "./common-data/block-data.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /** The function type subscribe expects. */
@@ -57,15 +59,12 @@ const entityDebugSubscriptions = {
                 const entity = event.deadEntity;
                 const { nameTag, dimension, location } = entity;
                 const whyDied = event.damageSource.cause;
-
-                const msg = `§l${nameTag ? nameTag : "No-Name"}§r §c Died via ${whyDied} @ ${Vector3Lib.toString(location, 0, true)} -§r afterEvents.entityDie ()`;
-                alertLog.warn(msg);
-
+                const msg = `§r§l${nameTag ? nameTag : "No-Name"}§r §c Died via ${whyDied} @ ${Vector3Lib.toString(location, 0, true)} -§r afterEvents.entityDie ()`;
+                alertLog.warn(msg, devDebug.watchEntitySubscriptions);
                 system.runTimeout(() => {
-                    debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.died, 1);
-                    debugScoreboards.sbEntitiesScoreboard?.removeParticipant(entity);
-                    if (nameTag)
-                        debugScoreboards.sbEntitiesScoreboard?.removeParticipant(nameTag);
+                    const x = `die: §c${whyDied}`;
+                    debugScoreboards.sbDeathsScoreboard?.addScore(x, 1);
+                    debugScoreboards.sbStatsScoreboard?.addScore(x, 1);
                 }, 1);
             };
 
@@ -107,8 +106,8 @@ const entityDebugSubscriptions = {
                     //means re-load???
                     system.runTimeout(() => {
                         lastTickAndLocationRegister(entity); //This is the most needed part...
-                        DynamicPropertyLib.add(entity, dynamicVars.entityLoads, 1);
                         debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.loaded, 1);
+                        DynamicPropertyLib.add(entity, dynamicVars.entityLoads, 1);
                         const msg = `§l${nameTag}§r §eLoaded in Biome ${dimension.getBiome(location).id} @ ${Vector3Lib.toString(location, 0, true)} §r- afterEvents.entityLoad()`;
                         alertLog.log(msg, devDebug.watchEntitySubscriptions);
                     }, 1);
@@ -145,7 +144,6 @@ const entityDebugSubscriptions = {
             const fn = (event) => {
                 system.runTimeout(() => {
                     debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.removed, 1);
-                    debugScoreboards.sbEntitiesScoreboard?.removeParticipant(event.removedEntityId);
                 }, 1);
             };
 
@@ -184,7 +182,6 @@ const entityDebugSubscriptions = {
                 const { dimension, location, nameTag } = entity;
 
                 system.runTimeout(() => {
-                    debugScoreboards.sbEntitiesScoreboard?.addScore(nameTag || entity, 1);
 
                     alertLog.log(`§aEntity Spawned (${event.cause}) in Biome ${dimension.getBiome(location).id}: §l${nameTag}§r§6 @ ${Vector3Lib.toString(location, 0, true)}`, devDebug.watchEntitySubscriptions || devDebug.watchEntityGoals);
 
@@ -234,12 +231,13 @@ const entityDebugSubscriptions = {
 
                 const entity = event.removedEntity;
                 const { nameTag, dimension, location } = entity;
+                const isUnLoaded = DynamicPropertyLib.getBoolean(entity, 'isUnloaded');
+                const isStalled = DynamicPropertyLib.getBoolean(entity, 'isStalled');
 
                 system.runTimeout(() => {
+                    debugScoreboards.sbDeathsScoreboard?.addScore(debugScoreboards.removed, 1);
                     debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.removed, 1);
-                    if (entity.isValid) debugScoreboards.sbEntitiesScoreboard?.removeParticipant(entity);
-                    if (nameTag) debugScoreboards.sbEntitiesScoreboard?.removeParticipant(nameTag);
-                    //ScoreboardLib.decrement(debugScoreboards.sbStatsName, debugScoreboards.adultSpiders, 1);
+
 
                     //TODO:  see if I can get my coordinates and do the math for how far away these are  --  too many removes right after spawn
                     // See if can find out WHY despawning soo much
@@ -250,8 +248,8 @@ const entityDebugSubscriptions = {
                         delta = `§bClosest Player x: ${Math.round(Math.abs(location.x - playerLocation.x))}, y:${Math.round(Math.abs(location.y - playerLocation.y))}, z:${Math.round(Math.abs(location.z - playerLocation.z))}`;
                     }
 
-                    const msg = `§l${nameTag}§r §6Removed @ ${Vector3Lib.toString(location, 0, true)} ${delta}§r - beforeEvents.entityRemove()`;
-                    alertLog.log(msg, devDebug.watchEntitySubscriptions || devDebug.watchEntityIssues);
+                    const msg = `§l${nameTag}§r §6Removed @ ${Vector3Lib.toString(location, 0, true)} ${delta}§r(${isUnLoaded ? '' : ' loaded'}(${isStalled ? ' stalled' : ''})- beforeEvents.entityRemove()`;
+                    alertLog.log(msg, devDebug.watchEntitySubscriptions);
 
                 }, 1);
             };
@@ -322,11 +320,29 @@ function afterEvents_worldLoad () {
         }
 
         //Start testing for stalled entities every x min after y delay 
-        system.runTimeout(() => {
-            system.runInterval(() => {
-                stalledEntityCheckAndFix();
+        if (watchFor.stalledCheckRunInterval) {
+            system.runTimeout(() => {
+                system.runInterval(() => {
+                    stalledSpiderCheckAndFix();
+                }, Ticks.perMinute * watchFor.stalledCheckRunInterval);
             }, Ticks.perMinute * watchFor.stalledCheckRunInterval);
-        }, Ticks.perMinute * watchFor.stalledCheckRunInterval);
+        }
+
+        if (watchFor.flyPopulationCheckRunInterval) {
+            system.runTimeout(() => {
+                system.runInterval(() => {
+                    flyPopulationCheck();
+                }, Ticks.perMinute * watchFor.flyPopulationCheckRunInterval);
+            }, rndInt(Ticks.perMinute, Ticks.perMinute * watchFor.flyPopulationCheckRunInterval));
+        }
+
+        if (watchFor.spiderPopulationCheckRunInterval) {
+            system.runTimeout(() => {
+                system.runInterval(() => {
+                    spiderPopulationCheck();
+                }, Ticks.perMinute * watchFor.spiderPopulationCheckRunInterval);
+            }, rndInt(Ticks.perSecond, Ticks.perMinute * watchFor.spiderPopulationCheckRunInterval));
+        }
 
         alertLog.log('§8x function afterEvents_worldLoad()', debugFunctionsOn);
     });
@@ -370,7 +386,7 @@ function afterEvents_playerInteractWithBlock () {
         if (!validLongToolForInteractToShakeSpidersOut(event.itemStack.typeId)) return;
 
         system.runTimeout(() => {
-            alertLog.log('afterEvents_playerInteractWithBlock')
+            alertLog.log('afterEvents_playerInteractWithBlock');
             spiderSpawnFromValidNatureBlock(event.block, 0.30, { minTicks: 40, maxTicks: 100 });
         }, 1);
 
@@ -378,17 +394,22 @@ function afterEvents_playerInteractWithBlock () {
 }
 //==============================================================================
 function beforeEvents_playerInteractWithBlock () {
+    //FIXME: determine if this can be afterEvents... if arm swing on custom item works
     world.beforeEvents.playerInteractWithBlock.subscribe((event) => {
-        event.cancel=false;
+        event.cancel = false;
         if (!event.isFirstEvent) return;
-        if (!event.itemStack) return;
-        if (!validLongToolForInteractToShakeSpidersOut(event.itemStack.typeId)) return;
+        const { block, itemStack } = event;
+        if (!itemStack) return;
+        if (!block) return;
 
-        system.runTimeout(() => {
-            alertLog.log('beforeEvents_playerInteractWithBlock')
-            spiderSpawnFromValidNatureBlock(event.block, 0.30, { minTicks: 40, maxTicks: 100 });
-        }, 1);
-
+        const validItemList = [
+            "dw623:bottle_of_flies", //this gets moved to interact with entity Spider
+            "dw623:dead_fly_ball_stick",
+            "dw623:rotten_flesh_kabob"
+        ];
+        if (validItemList.includes(itemStack.typeId)) {
+            rattleEntityFromBlockWithItem(block, itemStack.typeId, event.blockFace);
+        }
     });
 }
 //==============================================================================
@@ -396,17 +417,27 @@ function afterEvents_playerPlaceBlock () {
     world.afterEvents.playerPlaceBlock.subscribe((event) => {
 
         if (!chance(0.50)) return;
-        
+
         const { block } = event;
         if (!block.isValid) return;
-        
+
         // increase chance if placing food source
-        if (block.typeId !== watchFor.food_typeId) if (!chance(0.50)) return;
+        //if (block.typeId !== watchFor.food_typeId) if (!chance(0.50)) return;
 
-        system.runTimeout(() => {            
-            spiderSpawnFromValidNatureBlock(block, 0.30, { minTicks: 20, maxTicks: 100 });
+        system.runTimeout(() => {
+            if (block.typeId === 'minecraft:web') {
+                const entityId = chance(0.5) ? watchFor.typeId : watchFor.egg_typeId;
+                const max = entityId == watchFor.egg_typeId ? 1 : 2;
+                spawnEntityAtLocation(entityId, block.dimension, Vector3Lib.toCenter(block.location), 1, max, 40, 100);
+            }
+            else if (block.typeId === 'minecraft:composter') {
+                const above = block.above();
+                if (!above || !above.isValid) return;
+                spawnEntityAtLocation(watchFor.fly_typeId, above.dimension, above.location, 3, 6, 40, 200);
+            }
+            else
+                spiderSpawnFromValidNatureBlock(block, 0.30, { minTicks: 20, maxTicks: 100 });
         }, 1);
-
     });
 }
 //==============================================================================
@@ -419,12 +450,16 @@ export function subscriptionsStable () {
     //This is vital to outside tree_spider.json
     afterEvents_scriptEventReceive();
 
-    if (devDebug.watchEntitySubscriptions) entityDebugSubscriptions.setup();
+    //turn on, devDebug.watchEntitySubscriptions will turn off the messages, this way, I get the scoreboard
+    if (devDebug.debugOn) entityDebugSubscriptions.setup();
 
-    //Chance to have spiders spawn when placing a firefly_bush
+    //TODO: test
+    //Chance to have spiders/spider-egg spawn if firefly_bush
+    //Chance to have flies spawn if composter
     afterEvents_playerPlaceBlock();
 
-    //Interact with certain blocks with a stick can have a spider scurry out of it
+    //FIXME:Interact with certain blocks with a stick can have a spider scurry out of it
+    // not working or maybe is, cannot swing, so looks weird, have to make own things to do this.
     //afterEvents_playerInteractWithBlock(); -- does not work
     beforeEvents_playerInteractWithBlock();
 
@@ -433,3 +468,50 @@ export function subscriptionsStable () {
 //==============================================================================
 // End of File
 //==============================================================================
+/*
+//helping another in BAO -  DELETE ME
+function it () {
+    world.afterEvents.entityHurt.subscribe(({ damageSource, hurtEntity }) => {
+        // Make sure the source is a player
+        const player = damageSource?.damagingEntity;
+        if (!player || !(player instanceof Player)) return; //REFACTORED:
+
+        // Check if Busoshoku is active
+        //REFACTORED: to avoid error if player json is messed with
+        const busoshoku_on = player.getProperty("busoshoku_on");  //FIXME: name space on property ???
+        if (!busoshoku_on || !(typeof busoshoku_on == 'boolean')) return;
+
+        if (busoshoku_on) {
+            const hakiExp = player.getProperty("op_asa:b_haki_exp");
+            if (!hakiExp || !(typeof hakiExp == 'number')) return; // ADDED:
+
+            if (hakiExp < 50) {
+                player.setProperty("op_asa:b_haki_exp", hakiExp + 1);
+
+                // First acquisition
+                if (hakiExp === 0) {
+                    player.setProperty("op_asa:b_haki", 1); //FIXME:  name is not the same as above
+                    player.playSound("random.levelup");
+                    player.sendMessage({ rawtext: [ { translate: "rawtext.b_haki_1.acquired" } ] });
+                }
+                // Level up every 10 exp
+                else if (hakiExp % 10 === 9) {
+                    player.playSound("random.levelup");
+                    player.sendMessage({ rawtext: [ { translate: "rawtext.b_haki_1.levelup" } ] });
+                    //TODO: add the random level up code
+                }
+                // Normal EXP gain
+                else {
+                    player.playSound("random.orb");
+                    player.sendMessage({ rawtext: [ { translate: "rawtext.b_haki_1.exp" } ] });
+                    //TODO: add the code to give random code
+                }
+            }
+            else {
+                // Max level reached
+                player.sendMessage({ rawtext: [ { translate: "rawtext.b_haki_1.levelmax" } ] });
+            }
+        }
+
+    });
+}*/

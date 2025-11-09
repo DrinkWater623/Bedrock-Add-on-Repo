@@ -2,13 +2,15 @@
 // @ts-check
 //==============================================================================
 // Minecraft
-import { system, Player, Entity } from "@minecraft/server";
+import { system, Player, Entity, world, TimeOfDay } from "@minecraft/server";
 import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus, CustomCommandParamType, CustomCommandOrigin } from "@minecraft/server";
 // Shared
-import { Vector3Lib,VectorXZLib } from "./common-stable/vectorClass.js";
+import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
+import { Vector3Lib, VectorXZLib } from "./common-stable/vectorClass.js";
 // Local
 import { alertLog, chatLog, pack } from './settings.js';
 import * as debug from "./helpers/fn-debug.js";
+import { GetWorldTime } from "./helpers/fn-entities.js";
 //==============================================================================
 const debugFunctions = false;
 //==============================================================================
@@ -77,6 +79,131 @@ function register_cls (registry) {
     };
 
     registry.registerCommand(cmd, handler);
+}
+//==============================================================================
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_midnight (registry) {
+    const cmd = {
+        name: `${pack.fullNameSpace}:midnight`,
+        description: "Set Time to Midnight",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
+    };
+
+    /** @type {(origin: CustomCommandOrigin, args: number[]) => import("@minecraft/server").CustomCommandResult} */
+    const handler = (origin, args) => {
+        if (origin.sourceEntity instanceof Player) {
+            world.setAbsoluteTime(TimeOfDay.Midnight);
+        }
+        const result = { status: CustomCommandStatus.Success };
+        return result;
+    };
+
+    registry.registerCommand(cmd, handler);
+}
+//==============================================================================
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_getGeoInfo (registry) {
+    const cmd = {
+        name: `${pack.fullNameSpace}:geo`,
+        description: "Show Current Location Information",
+        permissionLevel: CommandPermissionLevel.Admin,
+        cheatsRequired: false
+
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        if (origin.sourceEntity instanceof Player) {
+            const player = origin.sourceEntity;
+            player.sendMessage(`§l§gTime: ${GetWorldTime().hours}:00`);
+            const { dimension, location, name } = player;
+
+            const inBiome = dimension.getBiome(location);
+            if (!inBiome) return FAILURE;
+            player.sendMessage(`§aYou (${name}) are in the ${inBiome.id} biome`);
+
+            const inBlock = dimension?.getBlock(location);
+            if (!inBlock) return FAILURE;
+            const onBlock = inBlock.below();
+            if (!onBlock) return FAILURE;
+            const headLevelBlock = inBlock.above();
+            if (!headLevelBlock) return FAILURE;
+
+            system.runTimeout(() => {
+
+                player.sendMessage(`§gStanding on ${onBlock.typeId} @ ${Vector3Lib.toString(onBlock.location, 0, true)}`);
+                player.sendMessage(`§e         in ${inBlock.typeId}  @ ${Vector3Lib.toString(inBlock.location, 0, true)}`);
+                player.sendMessage(`§f         with a skylight level of ${onBlock.getSkyLightLevel()}`);
+
+                const locationCenter = headLevelBlock.center();
+
+                const topMostBlock = dimension.getTopmostBlock(locationCenter);
+                if (topMostBlock) {
+                    player.sendMessage(`\n§bTop most block from ${Vector3Lib.toString(locationCenter, 0, true)} is ${topMostBlock.typeId} @ ${Vector3Lib.toString(topMostBlock.location, 0, true)}`);
+                }
+
+                const direction = { x: 0, y: 1, z: 0 };
+                const rayCastUpBlock = dimension.getBlockFromRay(locationCenter, direction);
+                if (rayCastUpBlock) {
+                    player.sendMessage(`§vFirst Block above your head is ${rayCastUpBlock.block.typeId}`);
+                }
+
+                //Light level grid 3x3
+                /**@type number[] */
+                const lightGrid = [];
+                //north
+                for (let i = 0; i < 3; i++) {
+                    let block = i === 0 ? onBlock.north() : i === 1 ? onBlock : onBlock.south();
+                    if (block) {
+                        const west = block.west();
+                        const east = block.east();
+
+                        if (west) {
+                            const sky = west.getSkyLightLevel();
+                            lightGrid.push(typeof sky === 'number' ? sky : -2);
+                        }
+                        else lightGrid.push(-1);
+
+                        if (block) {
+                            const sky = block.getSkyLightLevel();
+                            lightGrid.push(typeof sky === 'number' ? sky : -2);
+                        }
+                        else lightGrid.push(-1);
+
+                        if (east) {
+                            const sky = east.getSkyLightLevel();
+                            lightGrid.push(typeof sky === 'number' ? sky : -2);
+                        }
+                        else lightGrid.push(-1);
+                    }
+                    else {
+                        lightGrid.push(-1);
+                        lightGrid.push(-1);
+                        lightGrid.push(-1);
+                    }
+                }
+                let msg = `\n§dLight Levels Around §aYou§r`;
+                for (let i = 0; i < 3; i++) {
+                    msg += `\n`;
+                    for (let j = 0; j < 3; j++) {
+                        const k = j + (i * 3);
+                        msg += `   §${k == 4 ? 'a' : 'r'}${lightGrid[ k ] >= 0 && lightGrid[ k ] < 10 ? '0' : ''}${lightGrid[ k ]}`;
+                    }
+                }
+                player.sendMessage(msg);
+            }, 1);
+            //later add entity counts around me
+        }
+
+        const result = { status: CustomCommandStatus.Success };
+        return result;
+    });
 }
 //==============================================================================
 /**
@@ -420,7 +547,7 @@ function register_random_rtp (registry) {
 function register_scoreboards (registry) {
     alertLog.log('§v* function register_scoreboards ()', debugFunctions);
     const cmd = {
-        name: `${pack.fullNameSpace}:scoreboards`,
+        name: `${pack.fullNameSpace}:sb`,
         description: "Scoreboards",
         permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false,
@@ -445,26 +572,53 @@ function register_scoreboards (registry) {
                 });
             }
             else if (arg == 'reset') {
+                const side = ScoreboardLib.sidBar_query()?.id;
+                if (side)
+                    system.run(() => {
+                        debug.debugScoreboards.reset(false);
+                        system.runTimeout(() => { debug.debugScoreboards.showThisSB(side); }, 1);
+                    });
+                else
+                    chatLog.warn('There is no scoreboard showing, nothing to reset.  §lDid you mean to use reset_all?')
+            }
+            else if (arg == 'reset_all') {
+                const side = ScoreboardLib.sidBar_query()?.id;
                 system.run(() => {
-                    debug.debugScoreboards.resetAll();
-                    system.runTimeout(() => {
-                        debug.debugScoreboards.show();
-                    }, 1);
+                    debug.debugScoreboards.reset(true);
+                    system.runTimeout(() => { if (side) debug.debugScoreboards.showThisSB(side); }, 1);
                 });
             }
-            else if (arg == 'show') {
+            else if (arg == 'stats') {
                 system.run(() => {
-                    debug.debugScoreboards.show();
+                    chatLog.log(`Switching to ${debug.debugScoreboards.sbStatsScoreboard?.displayName}`)
+                    debug.debugScoreboards.showThisSB(debug.debugScoreboards.sbStatsName);
                 });
             }
-            else if (arg == 'reverse') {
+            else if (arg == 'counters') {
                 system.run(() => {
-                    debug.debugScoreboards.showReverse();
+                    chatLog.log(`Switching to ${debug.debugScoreboards.sbCtrsScoreboard?.displayName}`)
+                    debug.debugScoreboards.showThisSB(debug.debugScoreboards.sbCtrsName);
+                });
+            }
+            else if (arg == 'deaths') {
+                system.run(() => {
+                    chatLog.log(`Switching to ${debug.debugScoreboards.sbDeathsScoreboard?.displayName}`)
+                    debug.debugScoreboards.showThisSB(debug.debugScoreboards.sbDeathsName);
                 });
             }
             else if (arg == 'zero') {
+                const side = ScoreboardLib.sidBar_query()?.id;
+                if (side)
+                    system.run(() => {
+                        debug.debugScoreboards.zero(false);
+                        system.runTimeout(() => { debug.debugScoreboards.showThisSB(side); }, 1);
+                    });
+                else
+                    chatLog.warn('There is no scoreboard showing, nothing to zero.  §lDid you mean to use zero_all?')
+            }
+            else if (arg == 'zero_all') {
                 system.run(() => {
-                    debug.debugScoreboards.zeroAll();
+                    debug.debugScoreboards.zero(true);
                 });
             }
 
@@ -485,11 +639,14 @@ export function registerCustomCommands (registry) {
 
     //Register Enums here
     register_about(registry);
-    register_random_rtp(registry)
+    register_random_rtp(registry);
 
     if (debug.devDebug.debugOn) {
         register_cls(registry);
         register_delta(registry);
+
+        register_getGeoInfo(registry);
+        register_midnight(registry);
 
         alertLog.log(`Registering Debug enum: ${queryOnOff}`, debugFunctions);
         registry.registerEnum(queryOnOff, [ "query", "on", "off" ]);
@@ -500,7 +657,7 @@ export function registerCustomCommands (registry) {
         register_watchEntityEvents(registry);
 
         alertLog.log(`Registering Debug enum: ${scoreboard_options}`, debugFunctions);
-        registry.registerEnum(scoreboard_options, [ "clear", "reset", "show", "reverse", "zero" ]);
+        registry.registerEnum(scoreboard_options, [ "clear", "reset","reset_all", "stats", "counters", "deaths", "zero", "zero_all" ]);
 
         register_scoreboards(registry);
     }

@@ -8,8 +8,9 @@ URL: https://github.com/DrinkWater623
 Change Log
     20241229 - DW623 - reOrg and add License
     20251102 - DW623 - Changed Name 
+    20251107 - DW623 - fix potential problem with worldRun
 ========================================================================*/
-import { system, world } from '@minecraft/server';
+import { Dimension, system, world } from '@minecraft/server';
 
 // Shared
 
@@ -17,33 +18,36 @@ import { system, world } from '@minecraft/server';
 // Local to project, all my projects have one
 // @ts-ignore
 import { alertLog } from '../settings';
+//==============================================================================
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
 //===================================================================
 /**
  * 
  * @param {string} command 
- * @param {string} [dimension='overworld'] 
+ * @param {string | Dimension} [dimension='overworld'] 
  * @param {number} tickDelay
+ * @param {Vector3 | undefined} [locationPreCheck=null] 
  * 
  */
-export function worldRun (command, dimension = 'overworld', tickDelay = 0) {
+export function worldRun (command, dimension = 'overworld', tickDelay = 0, locationPreCheck = undefined) {
 
     if (!command) return false;
 
-    const dimensionObj = world.getDimension(dimension);
-    if (!dimensionObj) {
-        alertLog.error(`Invalid Dimension: ${dimension}`, true);
-        return false;
-    }
+    const dimensionObj = typeof dimension == 'string' ? world.getDimension(dimension) : dimension;
+    if (!dimensionObj) return false;
 
-    // if (tickDelay < 0) tickDelay = 0 ---test first
+    //TODO: if (tickDelay < 0) tickDelay = 0 ---test first
 
     system.runTimeout(() => {
+        if (locationPreCheck) if (!dimensionObj.isChunkLoaded(locationPreCheck)) return;
+
         try {
             dimensionObj.runCommand(command);
         } catch (error) {
             alertLog.error(`§b*worldRun() - §6command:§r ${command}\n§cError:§e${error}`, true);
         }
     }, tickDelay);
+
     return true;
 }
 //===================================================================
@@ -60,7 +64,7 @@ export function worldRunInterval (command, dimension = 'overworld', tickInterval
     if (!command) return false;
 
     const dimensionObj = world.getDimension(dimension);
-    if (!dimensionObj) return false
+    if (!dimensionObj) return false;
 
     if (tickInterval < 1) tickInterval = 1;
     const callback = system.runInterval(() => {

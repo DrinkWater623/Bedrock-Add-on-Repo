@@ -1,12 +1,13 @@
 // blockLib.js
-//@ts-check
-//File: blockLib-Stable
+// @ts-check
 /* =====================================================================
-Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
+Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
 License: GPL-3.0-only
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20250116a - Added isSameBlock
+Change Log:
+    20250116a - Added isSameBlock
+    20251108 - added isValidBlock and isInValidBlock
 ========================================================================*/
 import { Block, BlockPermutation, BlockVolume, Dimension,Direction, system } from "@minecraft/server";
 import { blocksDotJson } from "../common-data/blocks.json";
@@ -15,6 +16,25 @@ import { ChatMsg } from "./consoleClass";
 import { woodBlocks } from "../common-data/block-data";
 import { Vector3Lib } from "./vectorClass";
 //=============================================================================
+/**
+     * 
+     * @param {Block| undefined } block
+     * @returns {boolean} 
+     */
+export function isInValidBlock(block){
+    return !isValidBlock(block)
+}
+//=============================================================================
+/**
+     * 
+     * @param {Block| undefined} block
+     * @returns {boolean} 
+     */
+export function isValidBlock(block){
+    if(!block) return false
+    if (!block.isValid) return false
+    return true
+}
 //==============================================================================
 /**
  * @summary Beta: dimension.getBlocks

@@ -4,13 +4,16 @@ Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev
 License: GPL-3.0-only
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20251024 - Add event trigger
+Change Log: 
+    20251024 - Add event trigger
+    20251107 - Refactor get players and entities and add for each dimension
 ========================================================================*/
 import { world, system, Player, Entity, Block, Dimension } from "@minecraft/server";
 import { rndInt } from "../common-other/mathLib.js";
 import { Vector3Lib as vec3 } from './vectorClass.js';
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
+/** @typedef {import("@minecraft/server").EntityQueryOptions} EntityQueryOptions */
 //==============================================================================
 export class EntityLib {
     //==============================================================================
@@ -57,25 +60,75 @@ export class EntityLib {
         });
     }
     //==============================================================================
-    /**
-     * @param { import("@minecraft/server").EntityQueryOptions } queryOption
+    /**     
+     * @param { EntityQueryOptions | undefined} queryOptions 
      * @returns {Entity[]}
      */
-    static getAllEntities (queryOption) {
-        const entities = world.getDimension("overworld").getEntities(queryOption);
-        world.getDimension("nether").getEntities(queryOption).forEach(entity => entities.push(entity));
-        world.getDimension("the_end").getEntities(queryOption).forEach(entity => entities.push(entity));
-        return entities;
+    static getEndEntities (queryOptions = {}) {
+        return world.getDimension("the_end").getEntities(queryOptions);
     }
     //==============================================================================
     /**     
+     * @param { EntityQueryOptions | undefined} queryOptions 
+     * @returns {Entity[]}
+     */
+    static getNetherEntities (queryOptions = {}) {
+        return world.getDimension("nether").getEntities(queryOptions);
+    }
+    //==============================================================================
+    /**
+     * @param { EntityQueryOptions | undefined} queryOptions      
+     * @returns {Entity[]}
+     */
+    static getOverworldEntities (queryOptions = {}) {
+        return world.getDimension("overworld").getEntities(queryOptions);
+    }
+    //==============================================================================
+    /**
+     * @param { EntityQueryOptions | undefined} queryOptions 
+     * @returns {Entity[]}
+     */
+    static getAllEntities (queryOptions = {}) {
+        const entities = this.getOverworldEntities(queryOptions);
+        this.getEndEntities(queryOptions).forEach(entity => entities.push(entity));
+        this.getNetherEntities(queryOptions).forEach(entity => entities.push(entity));
+        return entities;
+    }
+    //==============================================================================
+    //==============================================================================
+    /**     
+     * @param { EntityQueryOptions | undefined} queryOptions 
      * @returns {Player[]}
      */
-    static getAllPlayers () {
-        const entities = world.getDimension("overworld").getPlayers();
-        world.getDimension("nether").getPlayers().forEach(entity => entities.push(entity));
-        world.getDimension("the_end").getPlayers().forEach(entity => entities.push(entity));
-        return entities;
+    static getEndPlayers (queryOptions = {}) {
+        return world.getDimension("the_end").getPlayers(queryOptions);
+    }
+    //==============================================================================
+    /**     
+     * @param { EntityQueryOptions | undefined} queryOptions 
+     * @returns {Player[]}
+     */
+    static getNetherPlayers (queryOptions = {}) {
+        return world.getDimension("nether").getPlayers(queryOptions);
+    }
+    //==============================================================================
+    /**
+     * @param { EntityQueryOptions | undefined} queryOptions      
+     * @returns {Player[]}
+     */
+    static getOverworldPlayers (queryOptions = {}) {
+        return world.getDimension("overworld").getPlayers(queryOptions);
+    }
+    //==============================================================================
+    /**   
+     * @param { EntityQueryOptions | undefined} queryOptions  
+     * @returns {Player[]}
+     */
+    static getAllPlayers (queryOptions = {}) {
+        const players = this.getOverworldPlayers(queryOptions);
+        this.getEndPlayers(queryOptions).forEach(entity => players.push(entity));
+        this.getNetherPlayers(queryOptions).forEach(entity => players.push(entity));
+        return players;
     }
     //==============================================================================
     /**
@@ -145,18 +198,21 @@ export class EntityLib {
 }
 /**
  * Spawn an entity after a random tick delay if the chunk is loaded.
- * @param {Dimension} dim
- * @param {Vector3} loc
+ * @param {Dimension | undefined} dimension
+ * @param {Vector3 | undefined} location
  * @param {string} typeId
  * @param {number} [min=1]
  * @param {number} [max=100]
  */
-export function spawnAfterRandomTicks (dim, loc, typeId, min = 1, max = 100) {
+export function spawnAfterRandomTicks (dimension, location, typeId, min = 1, max = 100) {
+    if (!location) return
+    if (!dimension || !dimension.isChunkLoaded(location)) return
+    
     const delay = rndInt(Math.max(0, min), Math.max(min, max));
     system.runTimeout(() => {
-        if (dim.isChunkLoaded(loc)) {
+        if (dimension.isChunkLoaded(location)) {
             // @ts-ignore spawnEntity exists at runtime
-            dim.spawnEntity(typeId, loc);
+            dimension.spawnEntity(typeId, location);
         }
     }, delay);
 }

@@ -12,20 +12,21 @@ Last Update: 20251023 - Update and sep out debug-only stuff and add the stable s
 // import { MinecraftEntityTypes, MinecraftEffectTypes } from "@minecraft/vanilla-data";
 //==============================================================================
 // Minecraft
-import { Entity, system, Block, world } from "@minecraft/server";
+import { Entity, system, Block, world, Dimension, GameMode, Player, DimensionType, TicksPerDay } from "@minecraft/server";
 // Shared
-import { airBlock } from "../common-data/block-data.js";
+import { airBlock, leafBlocks } from "../common-data/block-data.js";
 import { Ticks } from "../common-data/globalConstantsLib.js";
 import { makeRandomName } from "../common-other/randomNames.js";
 import { rndInt, chance } from "../common-other/mathLib.js";
-import { Vector3Lib, } from '../common-stable/vectorClass.js';
+import { isInValidBlock, isValidBlock } from "../common-stable/blockLib-stable.js";
 import { DynamicPropertyLib } from "../common-stable/dynamicPropertyClass.js";
 import { EntityLib } from "../common-stable/entityClass.js";
-import { worldRun } from "../common-stable/worldRunLib.js"
+import { Vector3Lib, } from '../common-stable/vectorClass.js';
+import { worldRun } from "../common-stable/worldRunLib.js";
 // Local
 import { closestWeb, closestExpandableWebLocation, targetBlockAdjacent } from "./fn-blocks.js";
 import { devDebug, debugScoreboards } from "./fn-debug.js";
-import { alertLog,  watchFor, dynamicVars, entityEvents } from '../settings.js';
+import { alertLog, watchFor, dynamicVars, entityEvents } from '../settings.js';
 //==============================================================================
 const debugFunctions = false;
 //==============================================================================
@@ -33,6 +34,7 @@ const debugFunctions = false;
 /** cache once (watchFor is stable) */
 const AIR_BLOCK = airBlock;
 const HOME_ID = watchFor.home_typeId;
+const leaves = [ ...leafBlocks ];
 //===================================================================
 /**
  * @param {Entity} entity 
@@ -78,9 +80,8 @@ function fireFlyFood (entity) {
     const fireflyLocation = { x: location.x, y: location.y + 3, z: location.z };
     system.runTimeout(() => {
         const cmd = `summon ${watchFor.firefly_typeId} ${Vector3Lib.toString(fireflyLocation, 1, false, ' ')} 0 0 minecraft:entity_spawned`;
-        for (let i = 0; i < 5; i++){
-            if (entity.isValid) worldRun(cmd, entity.dimension.id, 1);            
-            //dimension.spawnEntity(watchFor.firefly_typeId, fireflyLocation);
+        for (let i = 0; i < rndInt(2, 5); i++) {
+            if (entity.isValid) worldRun(cmd, entity.dimension.id, 1);
         }
     });
 
@@ -160,8 +161,8 @@ function enterWeb (entity, isBaby = false) {
             //Log
             system.runTimeout(() => {
                 if (isInWeb(entity)) {
-                    if (devDebug.watchEntityEvents || devDebug.watchEntityGoals) debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.enterWeb, 1);
                     DynamicPropertyLib.add(entity, dynamicVars.websEntered, 1);
+                    if (devDebug.debugOn) debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.enterWeb, 1);
                 }
                 else {
                     alertLog.warn(`${entity.nameTag || entity.id} May Have Entered Web @ ${Vector3Lib.toString(webBlock.location, 0, true)}`, devDebug.watchEntityEvents);
@@ -206,8 +207,11 @@ function expandWeb (entity) {
         if (isInWeb(entity)) {
             entity.nameTag;
             alertLog.success(`${entity.nameTag || entity.id} Expanded Web @ ${Vector3Lib.toString(newWeb.location, 0, true)}`, devDebug.watchEntityEvents);
-            debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.expandWeb, 1);
             DynamicPropertyLib.add(entity, dynamicVars.websExpanded, 1);
+            if (devDebug.debugOn) {
+                debugScoreboards.sbCtrsScoreboard?.addScore(debugScoreboards.webs, 1);
+                debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.expandWeb, 1);
+            }
         }
         else {
             alertLog.warn(`${entity.nameTag || entity.id} May Have Expanded Web @ ${Vector3Lib.toString(newWeb.location, 0, true)}`, devDebug.watchEntityEvents);
@@ -252,8 +256,11 @@ function placeWeb (entity) {
     system.runTimeout(() => {
         if (isInWeb(entity)) {
             alertLog.log(`§l${entity.nameTag || entity.id}§r §5Placed New Web @ ${Vector3Lib.toString(inBlock.location, 0, true)}`, devDebug.watchEntityEvents);
-            debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.newWeb, 1);
             DynamicPropertyLib.add(entity, dynamicVars.websCreated, 1);
+            if (devDebug.debugOn) {
+                debugScoreboards.sbCtrsScoreboard?.addScore(debugScoreboards.webs, 1);
+                debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.newWeb, 1);
+            }
         }
         else {
             alertLog.warn(`§l${entity.nameTag || entity.id}§r §6May have Placed New Web @ ${Vector3Lib.toString(inBlock.location, 0, true)}`, devDebug.watchEntityEvents);
@@ -318,7 +325,7 @@ function newEgg (entity) {
     if (!inBlock) { return; }
 
     system.runTimeout(() => {
-        debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.layEgg, 1);
+        if (devDebug.debugOn) debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.layEgg, 1);
         if (entity.isValid) entity.teleport(inBlock.center());
     }, 1);
 }
@@ -403,6 +410,9 @@ function hasMovedRegister (entity, tickDelay = 0) {
 
     //if it moved, it is active - remember in web, collision is OFF, so cannot be moved by accident
     lastTickAndLocationRegister(entity);
+    entity.setDynamicProperty('isStalled', false);
+    entity.setDynamicProperty('isUnloaded', false);
+
     return true;
 
 }
@@ -456,129 +466,268 @@ function setHungerChance (entity, hungerChance = 0.25, debug = false) {
  * Find all stalled tree spiders
  * Current tick .... 5 min off from Last Updated Tick
  */
-export function stalledEntityCheckAndFix () {
-    //this sb keeps the last activity tick.. so if diff is over 5 min, it is stalled or out of range    
-    //const debug = true;
-    const entities = EntityLib.getAllEntities({ type: watchFor.typeId });
-    if (entities.length === 0) return;
+export function flyPopulationCheck () {
+    let fliesKilled = false;
 
-    alertLog.log('§l§6Checking for Stalled Tree Spiders', devDebug.watchEntityIssues);
+    const flies = EntityLib.getAllEntities({ type: watchFor.typeId });
+    if (flies.length > 0) {
+        flies.forEach(e => {
+            if (e.isValid) {
+                const firstTick = DynamicPropertyLib.getNumber(e, 'firstLifeCycleTIck');
+                if (firstTick == 0) {
+                    e.setDynamicProperty('firstLifeCycleTIck', system.currentTick);
+                }
+                else {
+                    const delta = system.currentTick - firstTick;
+                    if (delta > watchFor.flyLifeCycleTicks) {
+                        fliesKilled = true;
+                        system.runTimeout(() => { e.kill(); }, rndInt(20, 100));
+                    }
+                }
+            }
+        });
+    }
 
-    entities.filter(e => { return !e.hasComponent('minecraft:is_baby'); }).forEach(e => {
-        if (hasMovedRegister(e)) return;
+    system.runTimeout(() => {
+        // via Spiders
+        const spiders = EntityLib.getAllEntities({ type: watchFor.typeId })
+            .filter(e => { e.isValid; })
+            .filter(e => { e.dimension.isChunkLoaded(e.location); });
 
-        clearBadHungerIndicators(e);
+        if (spiders.length === 0) {
+            spiderPopulationCheck();
+            return;
+        }
 
-        entityStallCheck_lastTick(e);
-    });
+        spiders.forEach(e => {
+            if (e.isValid) {
+                hasMovedRegister(e);
+                const { dimension, location, nameTag } = e;
+                const locationStr = Vector3Lib.toString(location, 1, false, ' ');
+                const entitySearchOptions = {
+                    type: watchFor.fly_typeId,
+                    location: location,
+                    maxDistance: 64
+                };
+                const flies = dimension.getEntities(entitySearchOptions);
+
+                if (flies.length < 3) { //spawn some in
+                    alertLog.log(`§l${nameTag} - §6Low fly count = ${flies.length} - Spawning some in`, devDebug.watchEntityIssues);
+                    if (e && e.isValid) {
+                        const cmd = `summon ${watchFor.fly_typeId} ${locationStr} 0 0 minecraft:entity_spawned`;
+                        const max = rndInt(1, 6);
+                        for (let i = 0; i < max; i++) {
+                            if (e.isValid) worldRun(cmd, dimension, rndInt(20, 60), location); //rnd so spider has time to move away
+                        }
+                    }
+                }
+            }
+        });
+    }, fliesKilled ? 105 : 1);
+}
+//===================================================================
+/**
+ * @param {string} entityTypeId 
+ * @param {Dimension | undefined} dimension 
+ * @param {Vector3 | undefined} location 
+ * @param {number} [minEntities=1] 
+ * @param {number} [maxEntities=1] 
+ * @param {number} [maxTickDelay=1] 
+ * @param {number} [minTickDelay=1] 
+ */
+export function spawnEntityAtLocation (entityTypeId, dimension, location, minEntities = 1, maxEntities = 1, minTickDelay = 1, maxTickDelay = 1) {
+    if (!location) return;
+    if (!dimension || !dimension.isChunkLoaded(location)) return;
+
+    if (maxEntities < 1 || minEntities > maxEntities) maxEntities = minEntities;
+    if (maxTickDelay < minTickDelay) maxTickDelay = minTickDelay;
+
+    const locationStr = Vector3Lib.toString(location, 1, false, ' ');
+    const cmd = `summon ${entityTypeId} ${locationStr} 0 0 minecraft:entity_spawned`;
+    let max = minEntities === maxEntities ? minEntities : rndInt(minEntities, maxEntities);
+
+    for (let i = 0; i < max; i++) {
+        worldRun(cmd, dimension, rndInt(minTickDelay, maxTickDelay), location); //rnd so spider has time to move away
+    }
 }
 //===================================================================
 /**
  * 
+ * @param {Player} player 
+ */
+function spawnSpidersAroundPlayerIfNeeded (player) {
+    if (!player.isValid || player.dimension.id !== 'overworld') return;
+
+    const { dimension, location } = player;
+    const entitySearchOptions = {
+        type: watchFor.typeId,
+        location: location,
+        maxDistance: 32
+    };
+    const closeSpiders = dimension.getEntities(entitySearchOptions);
+
+    if (closeSpiders.length <= 2) {
+        debugScoreboards.sbStatsScoreboard?.addScore('ety: Added', 1);
+        alertLog.warn(`§lSpawning spiders around ${player.name}`, devDebug.debugOn);
+        spawnEntityAtLocation(watchFor.typeId, dimension, location, 1, 3, 1, 100);
+    }
+}
+//temp here - put in entityLib
+/**
+ * 
+ * @param {Player} p 
+ */
+function isOutside (p) {
+    if (!p.isValid) return false;
+
+    const { dimension } = p;
+
+    const inBlock = dimension.getBlock(p.location);
+    if (!inBlock || !inBlock.isValid) return false;
+    const playerFeetLocation = inBlock.center();
+
+    /*
+    Since getTopmostBlock returns the top most SOLID block, meaning it does not count leaves and water and webs (yay)
+    I can use it to determine outside-ish
+    */
+    const topSolidBlock = dimension.getTopmostBlock(playerFeetLocation);
+    if (!topSolidBlock) return false;
+
+    if ([ 'overworld', 'the_end' ].includes(dimension.id)) {
+        if (topSolidBlock.location.y <= playerFeetLocation.y) return true;
+        //maybe under a tree, so more checking, if it was a log
+        if (!topSolidBlock.typeId.includes('log')) return false;
+    }
+    //NOT FINISHED with the logic to make it solid.  parm should be dimension,location to check, not player FIXME:
+    // so I can call it to check the 3x3 space around the player recursively if space does not have something in it.
+    //FIXME:  should check a 3x3 area, in case outside, but under something
+    if (dimension.id === 'overworld') return false;
+
+
+    return true;
+}
+//temp here - put in entityLib
+/**
+ * 
+ * @param {Player} p 
+ */
+function isInForest (p) {
+    if (!isOutside(p)) return false;
+
+    const { dimension, location } = p;
+    const inBiome = dimension.getBiome(location).id;
+
+    if (inBiome.includes('cave')) return false;
+    if (inBiome.includes('underground')) return false;
+    if (inBiome.includes('deep_dark')) return false;
+
+    if (inBiome.includes('forest')) return true;
+    if (inBiome.includes('jungle')) return true;
+    if (inBiome.includes('savanna')) return true;
+    if (inBiome.includes('hills')) return true;
+    if (inBiome.includes('mountain')) return true;
+    if (inBiome.includes('tiaga')) return true;
+    if (inBiome.includes('bamboo')) return true;
+    if (inBiome.includes('swamp')) return true;
+    if (inBiome.includes('garden')) return true;
+
+    return false;
+}
+//===================================================================
+export function spiderPopulationCheck () {
+
+    const players = EntityLib.getOverworldPlayers();
+
+    players.forEach(p => {
+        system.runTimeout(() => {
+            if (p.isValid &&
+                p.location.y >= 60 &&
+                (p.isOnGround || p.getGameMode() === GameMode.Creative) &&
+                isInForest(p)
+            ) {
+                spawnSpidersAroundPlayerIfNeeded(p);
+            }
+        }, rndInt(10, 20));
+    });
+}
+//===================================================================
+/**
  * @param {Entity} entity 
  */
 function entityStallCheck_lastTick (entity) {
+    if (!entity.isValid) return;
 
-    const { id, dimension, location, nameTag } = entity;
-
-    let markVar = entity.getComponent('minecraft:mark_variant')?.value;
-    if (typeof markVar == 'undefined') markVar = -1;
-
+    const { dimension, location, nameTag } = entity;
     const locationStr = Vector3Lib.toString(location, 0, true);
-    const inBlock = EntityLib.currentBlock(entity);
-    let msg = '';
+
+    if (!dimension.isChunkLoaded(location)) {
+        const isUnloaded = DynamicPropertyLib.getBoolean(entity, 'isUnloaded');
+        if (!isUnloaded) {
+            //report once
+            alertLog.warn(`§l${nameTag}§r§c is in an unLoaded Chunk §r@ ${locationStr}`, devDebug.debugOn);
+            entity.setDynamicProperty('isUnloaded', true);
+            if (devDebug.debugOn) debugScoreboards.sbStatsScoreboard?.addScore('ety: §j§lUnloaded Chunk', 1);
+        }
+        return;
+    }
 
     let lastActiveTick = DynamicPropertyLib.getNumber(entity, dynamicVars.lastActiveTick);
     const deltaTicks = system.currentTick - lastActiveTick;
     DynamicPropertyLib.add(entity, dynamicVars.aliveTicks, deltaTicks);
 
-    //TODO: using name tag is not stopping system from removing it - any fix for this?
-    const isPet = entity.hasComponent('minecraft:persistent') || entity.hasTag('pet');
-
-    if (!lastActiveTick || isPet) {
+    if (!lastActiveTick) {
         lastTickAndLocationRegister(entity);
         return;
     }
     const deltaMinutes = Math.trunc((deltaTicks / 20) / 60);
-
-    if (devDebug.watchEntityIssues)
-        if (deltaMinutes > (watchFor.assumedStalledIfOver * 0.75) && deltaMinutes < watchFor.assumedStalledIfOver) {
-            const msg = `§r§l${nameTag}§r is Pre-Stalled (${deltaMinutes}m)=75% @ ${locationStr} - Killing Soon ${Math.trunc(watchFor.assumedStalledIfOver * 0.25)}m`;
-            alertLog.warn(msg);
-            return;
-        }
-
     if (deltaMinutes < watchFor.assumedStalledIfOver) return;
-    //-----------------------------------------------------------------------
-    if (inBlock && inBlock.typeId == HOME_ID) {
 
-        //I am not seeing this message - so maybe this is not a thing, but do not want to NOT do this - just in case
-        msg = `§r§l${nameTag}§r §cStalled in Web (${deltaMinutes}m - mv=${markVar}) @ ${locationStr} - Sending Wander Event `;
-        alertLog.warn(msg, devDebug.watchEntityIssues);
+    const alreadyStalled = DynamicPropertyLib.getBoolean(entity, 'isStalled');
 
-        system.runTimeout(() => {
-            if (entity.isValid) {
-                entity.setDynamicProperty(dynamicVars.lastWebActivityTick, system.currentTick);
-                entity.triggerEvent(entityEvents.wanderEventName);
-            }
-        }, 1);
-
-        return;
-    }
-    //-----------------------------------------------------------------------
-    /*
-    if (isPet) {
-        //summon one with same name
-        killDelay = 1;
-        debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.stalled, 1);
-        const cmd = `summon ${watchFor.typeId} ${Vector3Lib.toString(location, 1, false, ' ')} 0 0 minecraft:entity_spawned "${nameTag}"`;
-        alertLog.warn(`Replacing stalled pet spider ${nameTag} (${deltaMinutes} min)`, devDebug.watchEntityIssues);
-        system.runTimeout(() => {
-            if (entity.isValid) {
-                worldRun(cmd, entity.dimension.id, 1);
-                if (entityEvents.replaceEventName)
-                    entity.triggerEvent(entityEvents.replaceEventName);
-                else
-                    entity.kill();
-            }
-        }, killDelay);
-        return;
-    }
-    */
-    //-----------------------------------------------------------------------
-    if (!entity.isValid) return;
-    if (devDebug.watchEntityIssues) debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.stalled, 1);
-    // For now, just kill, no replacing - try to check the pre-stalled ones to see what is wrong... no need for kill msg
-    //msg = `§r§l${nameTag ? nameTag : watchFor.display}§r§c Stalled (${deltaMinutes}m) @ ${locationStr} - Fixing `;
-    //alertLog.warn(msg, devDebug.watchEntityIssues);
-    entity.kill();
-    return;
-
-    /*
-    //How many spiders in area
-    const spiders = dimension.getEntities({ location: location, families: [ "tree_spider" ], maxDistance: watchFor.populationRadius * 2 });
-    if (spiders.length >= watchFor.populationLimit || !entityEvents.replaceEventName) {
-        entity.kill();
-        return;
-    }
-
-    alertLog.warn(`§r§l${nameTag || id}§r §6 running event ${entityEvents.replaceEventName} (${deltaMinutes} min)`, devDebug.watchEntityIssues);
-    entity.triggerEvent(entityEvents.replaceEventName);
-
-    //See if still valid, if so... kill
-    system.runTimeout(() => {
-        if (!entity.isValid) return;
-
-        alertLog.warn(`§r§l${nameTag}§r§c is still alive... so killing stalled spider (${deltaMinutes} min)`, devDebug.watchEntityIssues);
-        entity.kill();
-
-        if (spiders.length < watchFor.populationLimit) {
-            alertLog.log(`§lReplacement Spider Summoned§r @ ${locationStr}`, devDebug.debugOn);
-            const cmd = `summon ${watchFor.typeId} ${Vector3Lib.toString(location, 1, false, ' ')} 0 0 minecraft:entity_spawned`;
-            worldRun(cmd, dimension.id, 1);
+    if (alreadyStalled) {
+        if (devDebug.debugOn) {
+            debugScoreboards.sbStatsScoreboard?.addScore('ety: §c§lKilled', 1);
+            const msg = `§r§l${nameTag}§r§v is Stalled (${deltaMinutes}m) @ ${locationStr} - §l§cKilled`;
+            alertLog.warn(msg);
         }
-    }, 5 * 20); //5 seconds
-    */
+        entity.kill();
+        return;
+    }
+
+    if (devDebug.debugOn) {
+        const msg = `§r§l${nameTag}§r§v is Stalled (${deltaMinutes}m) @ ${locationStr} - §cGo Check Why`;
+        alertLog.warn(msg);
+    }
+
+    system.runTimeout(() => {
+        if (entity.isValid) {
+            debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.stalled, 1);
+            entity.setDynamicProperty('isStalled', true);
+            entity.triggerEvent(entityEvents.wanderEventName);
+            system.runTimeout(() => {
+                if (entity.isValid) {
+                    entity.applyImpulse({ x: 1, y: 4, z: 1 });
+                }
+            }, 5);
+        }
+    }, 1);
+
+    return;
+}
+//===================================================================
+export function stalledSpiderCheckAndFix () {
+
+    const entities = EntityLib.getAllEntities({ type: watchFor.typeId });
+    if (entities.length === 0) {
+        spiderPopulationCheck();
+        return;
+    }
+
+    entities.filter(e => { return !e.hasComponent('minecraft:is_baby'); }).forEach(e => {
+        if (hasMovedRegister(e)) return;
+        clearBadHungerIndicators(e);
+        entityStallCheck_lastTick(e);
+    });
 }
 //===================================================================
 // --- Helper: Tree Spider–style names ---
@@ -629,7 +778,7 @@ export function makeSpiderEggName (overrides = {}) {
     }).toLowerCase();
 }
 //====================================================================
-function GetWorldTime () {
+export function GetWorldTime () {
     const daytime = world.getTimeOfDay() + 6000;
     const datetime = new Date(daytime * 3.6 * 1000);
 
@@ -662,12 +811,9 @@ export function entityEventProcess (entity, id, message) {
         hasMovedRegister(entity);
 
         if (!nameTag && (watchFor.allowFakeNameTags || devDebug.debugOn)) {
-            nameTag = makeSpiderName();
-            if (nameTag && entity.isValid) entity.nameTag = nameTag; else return;
+            nameTag = makeSpiderName() || 'Little Tree Spider';
+            if (entity.isValid) entity.nameTag = nameTag; else return;
         }
-
-        //activity on other scoreboard
-        if (devDebug.debugOn && nameTag) debugScoreboards.sbEntitiesScoreboard?.addScore(nameTag, 1);
     }
     else if (typeId == watchFor.egg_typeId) {
 
@@ -793,5 +939,5 @@ export function entityEventProcess (entity, id, message) {
     alertLog.error(`Unhandled Entity JSON Communication:\nId: ${id}\nMessage: ${note}`, devDebug.debugOn);
     return;
 }
-//====================================================================
+
 // End of File

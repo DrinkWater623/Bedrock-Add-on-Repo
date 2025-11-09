@@ -92,8 +92,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                 "instant_despawn":{
                     //"minecraft:instant_despawn":{}
                     "minecraft:hurt_on_condition":{"damage_conditions":[{"cause":"none","damage_per_tick":999}]}
-                },
-                
+                },                
                 "replace_me_and_despawn":{
                     "minecraft:timer": {"looping":false,"time":3.0,"time_down_event":{"event":"despawn_me"}},
                     "minecraft:spawn_entity": {
@@ -103,6 +102,19 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                                 "spawn_entity": "dw623:tree_spider",
                                 "single_use": true,
                                 "num_to_spawn": 1,
+                                "spawn_event": "minecraft:entity_spawned"
+                            }
+                        ]
+                    }
+                },
+                "add_flies":{
+                    "minecraft:spawn_entity": {
+                        "entities": [
+                            {
+                                "min_wait_time": 0,"max_wait_time": 60,
+                                "spawn_entity": "dw623:fly",
+                                "single_use": true,
+                                "num_to_spawn": 3,
                                 "spawn_event": "minecraft:entity_spawned"
                             }
                         ]
@@ -601,6 +613,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                 "entity_born_script_event_delay_timer":{"minecraft:timer": {"looping":false,"time":0.1,"time_down_event":{"event":"entity_born_script_event"}}}
             },
             "components": {
+                "minecraft:persistent":{},
                 //-----------------------------------------------            
                 "minecraft:is_hidden_when_invisible": {},
                 "minecraft:navigation.climb": {"avoid_water":true,"can_jump":true,"avoid_portals":true,"avoid_damage_blocks":true}, 
@@ -614,6 +627,13 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                 "minecraft:behavior.random_look_around": {"priority":10,"look_time":[1,3],"look_distance": 8},
                 "minecraft:behavior.look_at_player": {"priority":20,"look_distance":6.0,"target_distance": 4.0,"probability":0.02,"look_time":[1,2]},
                 //-----------------------------------------------
+                "minecraft:damage_sensor": {
+                    "triggers": [
+                        {"cause":"fall","deals_damage":"no"},
+                        {"on_damage":{"filters":{"test":"is_block","subject":"block","value":"minecraft:sweet_berry_bush"}},"deals_damage":"no"},
+                        {"on_damage":{"filters":{"test":"is_block","subject":"block","value":"minecraft:cactus"}},"deals_damage":"no"}
+                    ]
+                },
                 "minecraft:floats_in_liquid":{},
                 "minecraft:physics":{"has_collision":true,"has_gravity":true},
                 "minecraft:jump.static": {"jump_power": 1.5}, 
@@ -623,42 +643,31 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                 "minecraft:conditional_bandwidth_optimization": {},
                 "minecraft:nameable": {"default_trigger": {"event":"become_name_tagged","target":"self"}},
                 //TODO: test more -- do we really need this
-                "minecraft:despawn": {
-                    "despawn_from_chance": false,
-                    "despawn_from_inactivity": false,
-                    "despawn_from_distance": {
-                        "max_distance": 128,
-                        "min_distance": 96
-                    },
-                    "despawn_from_simulation_edge": false,
-                    "filters": {
-                        "any_of": [{
-                                "all_of": [{
-                                        "test": "is_persistent",
-                                        "value": false
-                                    },
-                                    {
-                                        "test": "distance_to_nearest_player",
-                                        "operator": ">",
-                                        "value": 96
-                                    }
-                                ]
-                            },
-                            {
-                                "all_of": [{
-                                        "test": "is_persistent",
-                                        "value": true
-                                    },                                    
-                                    {
-                                        "test": "distance_to_nearest_player",
-                                        "operator": ">",
-                                        "value": 128
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                  }, //see if need to make 48-64
+                // "minecraft:despawn": {
+                //     "despawn_from_chance": false,
+                //     "despawn_from_inactivity": false,
+                //     "despawn_from_distance": {
+                //         "max_distance": 128,
+                //         "min_distance": 96
+                //     },
+                //     "despawn_from_simulation_edge": false,
+                //     "filters": {
+                //         "any_of": [
+                //             {
+                //                 "all_of": [{
+                //                         "test": "is_persistent",
+                //                         "value": true
+                //                     },                                    
+                //                     {
+                //                         "test": "distance_to_nearest_player",
+                //                         "operator": ">",
+                //                         "value": 128
+                //                     }
+                //                 ]
+                //             }
+                //         ]
+                //     }
+                //   }, //see if need to make 48-64
                 //-----------------------------------------------
                 "minecraft:type_family": {"family":["tree_spider","dw623"]}, //,"arthropod" took out mob to see if can get to spawn on leaves
                 "minecraft:ambient_sound_interval": {"event_name":"imitate.cave_spider","range":3,"value":2},
@@ -779,7 +788,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                 "minecraft:entity_spawned": {
                     "sequence":[            
                         {"queue_command": {"command":["scriptevent debugLogEvent:NewEntity spawned"]}},
-                        {"add":{"component_groups":["spider_adult","adult_spider_calm"]}},
+                        {"add":{"component_groups":["spider_adult","adult_spider_calm","add_flies"]}},
                         {"trigger":"look_for_web_nearest_start"}
                     ]                   
                 },                   
@@ -942,8 +951,8 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                     "sequence":[                        
                         {"randomize": [
                             //TODO: monitor for population control... reduce eggs if needed   
-                            {"weight":95,"trigger":"stay_in_web_choose_next"},  
-                            {"weight":5,
+                            {"weight":80,"trigger":"stay_in_web_choose_next"},  
+                            {"weight":20,
                             "remove":{"component_groups":["avoid_eggs"]},
                             "add":{"component_groups":["lay_egg_sac"]}
                         }
@@ -971,9 +980,9 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                 //---------------------------------            
                 "stay_in_web_choose_next": {
                     "randomize": [   
-                        {"weight":20,"trigger":"expand_web"},
-                        {"weight":30,"trigger":"wander_around_start"},                        
-                        {"weight":50,"trigger":"stay_in_web_start"}
+                        {"weight":30,"trigger":"expand_web"},
+                        {"weight":40,"trigger":"wander_around_start"},                        
+                        {"weight":30,"trigger":"stay_in_web_start"}
                     ]        
                 }, 
                 //---------------------------------          
@@ -1005,11 +1014,15 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                 // Babies R Us - born from egg in a web
                 //---------------------------------
                 "minecraft:entity_born": {                    
-                    "add":{"component_groups":["spider_baby","baby_spider_calm","entity_born_script_event_delay_timer","avoid_eggs"]}
+                    "add":{"component_groups":[
+                        "spider_baby",
+                        "baby_spider_calm",
+                        "entity_born_script_event_delay_timer",
+                        "avoid_eggs"]}
                 },
                 "entity_born_script_event": { //because of the multiple script events in same tick..
                     "queue_command": {"command":["scriptevent debugLogEvent:NewEntity born"]},
-                    "add":{"component_groups":["baby_wander_around_delay_timer"]}
+                    "add":{"component_groups":["baby_wander_around_delay_timer","add_flies"]}
                 },                
                 "baby_ageable_grow_up": {  
                     "sequence":[

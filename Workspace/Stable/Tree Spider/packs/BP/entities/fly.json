@@ -141,7 +141,7 @@
         "xz_dist": 5,
         "y_dist": 3,
         "y_offset": 1,
-        "speed_multiplier": 0.25, //0.5,
+        "speed_multiplier": 0.20, //0.5,
         "can_land_on_trees": true,
         "avoid_damage_blocks": true
       },
@@ -154,7 +154,7 @@
         "hover_height": [ 0.25, 1 ]
       },
       "minecraft:can_fly": {},
-      "minecraft:flying_speed": {"value":0.25}, //TODO: maybe have fly faster if attacked
+      "minecraft:flying_speed": {"value":0.20}, //TODO: maybe have fly faster if attacked
       "minecraft:movement": {"value":0.4},
       "minecraft:movement.hover": {},
       "minecraft:jump.static": {},
@@ -169,25 +169,27 @@
         "avoid_sun": false
       },
       //goals
+      //TODO: at night , have it be firefly bush, so spiders can kill them
       "minecraft:behavior.move_to_block": {
         "priority": 5,
         "tick_interval": 1,
         "start_chance": 0.4,
         "search_range": 16,
         "search_height": 4,
-        "speed_multiplier": 0.5,
+        //"speed_multiplier": 0.5,
         "goal_radius": 1.0,
         //"stay_duration": 20.0, 
         "target_selection_method": "random",
         "target_offset": [ 0, 0.25, 0 ],
         "target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false},          
         "target_blocks": [
+          "minecraft:web",
           //fruit or food
+          "minecraft:composter",
           "minecraft:beehive",
           "minecraft:bee_nest",
           "minecraft:cake", //list other cakes
           "minecraft:cane",
-          "minecraft:composter",
           "minecraft:glow_berries",
           "minecraft:honey_block",
           "minecraft:honeycomb_block",
@@ -233,9 +235,9 @@
         ]
       },
       "minecraft:behavior.follow_mob": {
-        "priority": 10,
+        "priority": 50,
         "search_range": 8,
-        "stop_distance": 0.25,
+        "stop_distance": 0.5,
         "speed_multiplier": 0.25,
         "use_home_position_restriction": false,
         "preferred_actor_type": "zombie",
@@ -318,7 +320,7 @@
               "filters": {
                 "all_of": [
                   { "test": "is_family", "subject" : "other", "value" :  "player"},
-                  { "test": "has_equipment", "domain": "hand", "subject": "other", "value": "minecraft:glass_bottle" }
+                  { "test": "has_equipment", "domain": "hand", "subject": "other", "value": "minecraft:honey_bottle" }
                 ]
               },
               "event": "caught_me_in_a_bottle"
@@ -327,6 +329,14 @@
           }
         ]
       },
+      "minecraft:despawn": {
+        "despawn_from_chance": false,
+        "despawn_from_inactivity": false,
+        "despawn_from_distance": {"max_distance":64,"min_distance":32},
+        "despawn_from_simulation_edge": true,
+        "filters": {"test":"distance_to_nearest_player","operator":">","value":64}
+      }, 
+      //-------------------------------------
       "minecraft:loot": {"table":"loot_tables/entities/fly.json"}
     },
     "events": {
@@ -351,6 +361,7 @@
       "perish_event": {"add":{"component_groups":["perish"]}},
       //TODO:
       "caught_me_in_a_bottle": {
+        // needs to disappear, up to 5 around it and give player a bottle of flies
         "add": {"component_groups":[]}
       }
     }

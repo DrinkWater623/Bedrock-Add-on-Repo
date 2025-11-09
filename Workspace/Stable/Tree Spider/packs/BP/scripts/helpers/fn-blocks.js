@@ -8,16 +8,20 @@ URL: https://github.com/DrinkWater623
 ========================================================================
 Last Update: 20251023 - add in stable stuff and update to api 2.0 and move debug-only stuff out
 ========================================================================*/
-import { Block } from "@minecraft/server";
+import { system, Block } from "@minecraft/server";
 //Shared
 import { airBlock } from "../common-data/block-data.js";
 import * as vanillaBlocks from "../common-data/block-data.js";
-import { chance } from "../common-other/mathLib.js";
 import { spawnAfterRandomTicks } from "../common-stable/entityClass.js";
+import { chance, rndInt } from "../common-other/mathLib.js";
+import { GetBlock, isInValidBlock, isValidBlock } from "../common-stable/blockLib-stable.js";
 //Local
-import { watchFor } from '../settings.js';
+import { watchFor, alertLog } from '../settings.js';
+import { spawnEntityAtLocation, hourlyChime } from './fn-entities.js';
+
 //===================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
+/** @typedef {Block | undefined} PossibleBlock*/
 /** The function type subscribe expects. */
 //===================================================================
 const debugFunctionsOn = false;
@@ -43,7 +47,7 @@ const allowedSpiderHangoutNatureBlocks = [
 ].concat(leaves).concat(saplings).concat(tallPlants);
 //===================================================================
 /**
- * @param {string} blockTypeId 
+ * @param {string | undefined} blockTypeId 
  * @returns {boolean} 
  */
 export function validNatureBlockForSpiders (blockTypeId) {
@@ -53,7 +57,7 @@ export function validNatureBlockForSpiders (blockTypeId) {
 
     //if any custom
     const suffixList = [
-        'leaves', 'saplings', 'bush','litter' //?? web - would there be custom webs?
+        'leaves', 'saplings', 'bush', 'litter' //?? web - would there be custom webs?
     ];
 
     suffixList.forEach(itemSfx => {
@@ -64,20 +68,21 @@ export function validNatureBlockForSpiders (blockTypeId) {
 }
 /**
  * 
- * @param {Block} block
+ * @param {Block | undefined} block
  * @param {number} [spawnChance=1]  
  * @param {{ minTicks: number; maxTicks: number; }} [opts={minTicks:0,maxTicks:1}] 
  */
 export function spiderSpawnFromValidNatureBlock (block, spawnChance = 1, opts = { minTicks: 0, maxTicks: 1 }) {
+    if (!isValidBlock(block)) return;
     if (!chance(spawnChance)) return;
 
-    if (!block || !block.isValid) return;
-    if (!validNatureBlockForSpiders(block.typeId)) return;
+    //if (!block || !block.isValid) return;
+    if (!validNatureBlockForSpiders(block?.typeId)) return;
 
     const minTicks = 0 || opts?.minTicks;
     const maxTicks = 0 || opts?.maxTicks;
 
-    spawnAfterRandomTicks(block.dimension, block.location, watchFor.typeId, minTicks, maxTicks);
+    spawnAfterRandomTicks(block?.dimension, block?.location, watchFor.typeId, minTicks, maxTicks);
 }
 //===================================================================
 //===================================================================
@@ -178,5 +183,75 @@ export function targetBlockAdjacent (block) {
     return false;
 }
 //===================================================================
+//====================================================================
+/**
+ * 
+ * @param {Block | undefined} blockHit 
+ * @param {string} itemUsed
+ */
+export function rattleEntityFromBlockWithItem (blockHit, itemUsed, blockFace = "") {
+    if (!blockHit || !blockHit.isValid) return;
+    const blockTypeID = blockHit.typeId;
+    const aboveBlock = blockHit.above();
+    const aboveBlockList = [
+        "minecraft:composter",
+        "minecraft:cauldron"
+    ];
+
+    //=======
+    //Spiders
+    //=======
+    if (itemUsed == "dw623:dead_fly_ball_stick") {
+        //TODO: add chance
+        system.runTimeout(() => {
+            alertLog.log('beforeEvents_playerInteractWithBlock (dead_fly_ball_stick)');
+            spiderSpawnFromValidNatureBlock(blockHit, 0.30, { minTicks: 30, maxTicks: 80 });
+        }, 1);
+        return;
+    }
+
+    //======
+    //Both - may need this one to be in subs to take itemStack
+    //======
+    if (itemUsed == "dw623:bottle_of_flies") {
+        system.runTimeout(() => {
+            alertLog.log('beforeEvents_playerInteractWithBlock (bottle_of_flies)');
+            
+            const block = GetBlock.adjacent(blockHit, blockFace);
+            if (!block || !block.isAir) return;
+
+            //TODO: add glass break sound
+
+            if (blockTypeID === watchFor.home_typeId) {
+                spawnEntityAtLocation(watchFor.typeId, block.dimension, block.location, 1, 1, 20, 100);                
+            }
+            
+            //TODO: need to vary location in web for flies
+            spawnEntityAtLocation(watchFor.fly_typeId, block.dimension, block.location, 5, 10, 20, 100);
+        }, 1);
+        return;
+    }
+    //======
+    //Flies
+    //======
+    if (aboveBlockList.includes(blockHit.typeId))
+        if (!aboveBlock || !aboveBlock.isValid || aboveBlock.typeId !== airBlock) return;
+
+    if (itemUsed == "dw623:rotten_flesh_kabob") {
+        //TODO: add chance
+        system.runTimeout(() => {
+            alertLog.log('beforeEvents_playerInteractWithBlock (rotten_flesh_kabob)');
+            if (aboveBlockList.includes(blockHit.typeId)) {
+                spawnEntityAtLocation(watchFor.fly_typeId, aboveBlock?.dimension, aboveBlock?.location, 1, 3, 20, 100);
+                return;
+            }
+
+            //FIXME: need to adjust for face hit, if composter - on top, or leaves, do face
+        }, 1);
+        return;
+    }
+
+
+}
 // End of File
 //===================================================================
