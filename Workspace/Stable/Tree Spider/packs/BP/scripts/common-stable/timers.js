@@ -7,11 +7,11 @@ URL: https://github.com/DrinkWater623
 ========================================================================
 Change Log:    
     20251030 - separate out to own file
+    20251110 - Added getWorldTime
 ========================================================================*/
-import { system, ScoreboardObjective, TicksPerSecond } from '@minecraft/server';
+import { world,system, ScoreboardObjective, TicksPerSecond } from '@minecraft/server';
 import { ScoreboardLib } from './scoreboardClass.js';
 import { Ticks } from '../common-data/globalConstantsLib.js';
-import { alertLog } from '../settings.js';
 //===================================================================
 export class ScoreboardTimers {
     //===================================================================
@@ -76,15 +76,13 @@ export class ScoreboardTimers {
      * @returns {number}
      */
     static systemTimeCountersStart (scoreboard, initialsWhich = 'tsmhd') {
-        alertLog.log(`* function systemTimeCountersStart (${initialsWhich})`)
-
         let sb = ScoreboardLib.getScoreboard(scoreboard);
         if (!sb) { if (typeof scoreboard == 'string') sb = ScoreboardLib.create(scoreboard); }
         if (!sb || !sb.isValid) return 0;
 
         let job = 0;
         const interval = initialsWhich.includes('t') ? 1 : initialsWhich.includes('s') ? TicksPerSecond : initialsWhich.includes('m') ? Ticks.perMinute : Ticks.perHour;
-        system.run(() => {
+        system.runTimeout(() => {
             const tickOffset = system.currentTick;
             job = system.runInterval(() => {
                 if (sb && sb.isValid) {
@@ -95,11 +93,18 @@ export class ScoreboardTimers {
                     if (initialsWhich.includes('d')) sb.setScore('System Days', Math.trunc((system.currentTick - tickOffset) / Ticks.perDay));
                 }
             }, interval);
-            alertLog.log(`Timer runInterval Job = ${job}`)
-        });
+        }, 0);
 
         return job;
     }
 }
+//====================================================================
+export function getWorldTime () {
+    const daytime = world.getTimeOfDay() + 6000;
+    const datetime = new Date(daytime * 3.6 * 1000);
+    
+    return { hours: datetime.getHours(), minutes: datetime.getMinutes() };
+}
 //===================================================================
 //End of File
+//===================================================================

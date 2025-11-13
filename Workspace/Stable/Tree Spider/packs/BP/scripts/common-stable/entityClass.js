@@ -1,4 +1,5 @@
-//@ts-check
+// entityClass.js
+// @ts-check
 /* =====================================================================
 Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
 License: GPL-3.0-only
@@ -21,12 +22,13 @@ export class EntityLib {
      * 
      * @param {Entity} entity 
      * @param {string} trigger 
+     * @param {number} [tickDelay=0] 
      */
-    static eventTrigger (entity, trigger) {
+    static eventTrigger (entity, trigger, tickDelay = 0) {
         if (entity.isValid)
             system.runTimeout(() => {
                 system.run(() => { entity.triggerEvent(trigger); });
-            }, 1);
+            }, tickDelay);
     }
     //==============================================================================
     /**
@@ -195,6 +197,31 @@ export class EntityLib {
         const families = entity.getComponent('minecraft:type_family')?.getTypeFamilies();
         return families?.includes(familyQuery) || false;
     }
+    //==============================================================================
+    /**
+     * @param {Entity} entity  
+     * @param {number} [tickDelay=0] 
+     */
+    static centerAlign (entity, tickDelay = 0) {
+        if (!entity.isValid) return;
+        system.runTimeout(() => {
+            const locationCenter = entity.dimension.getBlock(entity.location)?.center();
+            if (locationCenter) entity.teleport(locationCenter);
+        }, tickDelay);
+    }
+    //==============================================================================
+    /** 
+     * @param {Entity} entity 
+     * @param {Vector3} location
+     * @param {number} [tickDelay=0]  
+     */
+    static teleportAndCenter (entity, location, tickDelay = 0) {
+        system.runTimeout(() => {
+            //this.centerAlign(entity, 0); //why? this
+            entity.teleport((location));
+            system.runTimeout(() => { this.centerAlign(entity); }, 1);
+        }, tickDelay);
+    }
 }
 /**
  * Spawn an entity after a random tick delay if the chunk is loaded.
@@ -204,10 +231,10 @@ export class EntityLib {
  * @param {number} [min=1]
  * @param {number} [max=100]
  */
-export function spawnAfterRandomTicks (dimension, location, typeId, min = 1, max = 100) {
-    if (!location) return
-    if (!dimension || !dimension.isChunkLoaded(location)) return
-    
+export function spawnEntityAfterRandomTicks (dimension, location, typeId, min = 1, max = 100) {
+    if (!location) return;
+    if (!dimension || !dimension.isChunkLoaded(location)) return;
+
     const delay = rndInt(Math.max(0, min), Math.max(min, max));
     system.runTimeout(() => {
         if (dimension.isChunkLoaded(location)) {
@@ -215,4 +242,57 @@ export function spawnAfterRandomTicks (dimension, location, typeId, min = 1, max
             dimension.spawnEntity(typeId, location);
         }
     }, delay);
+}
+//===================================================================
+/**
+ * @param {string} entityTypeId 
+ * @param {Dimension} dimension 
+ * @param {Vector3 } location 
+ * @param {number} [minEntities=1] 
+ * @param {number} [maxEntities=1] 
+ * @param {number} [maxTickDelay=1] 
+ * @param {number} [minTickDelay=1] 
+ * @param {string} [event="minecraft:entity_spawned"] 
+ */
+export function spawnEntityAtLocation (entityTypeId, dimension, location, minEntities = 1, maxEntities = 1, minTickDelay = 1, maxTickDelay = 1, event = "minecraft:entity_spawned") {
+    if (!location) return;
+    if (!dimension || !dimension.isChunkLoaded(location)) return;
+
+    if (maxEntities < 1 || minEntities > maxEntities) maxEntities = minEntities;
+    if (maxTickDelay < minTickDelay) maxTickDelay = minTickDelay;
+
+    const locationStr = vec3.toString(location, 1, false, ' ');
+    const cmd = `summon ${entityTypeId} ${locationStr} 0 0 ${event}`;
+    let max = minEntities === maxEntities ? minEntities : rndInt(minEntities, maxEntities);
+
+    for (let i = 0; i < max; i++) {
+        // @ts-ignore spawnEntity exists at runtime
+        dimension.spawnEntity(entityTypeId, location);
+    }
+}
+//===================================================================
+/**
+ * @param {string} entityTypeId 
+ * @param {Dimension | undefined} dimension 
+ * @param {Vector3 | undefined} location 
+ * @param {number} [minEntities=1] 
+ * @param {number} [maxEntities=1] 
+ * @param {number} [maxTickDelay=1] 
+ * @param {number} [minTickDelay=1] 
+ * @param {string} [event="minecraft:entity_spawned"] 
+ */
+ function spawnEntityAtLocationX (entityTypeId, dimension, location, minEntities = 1, maxEntities = 1, minTickDelay = 1, maxTickDelay = 1, event = "minecraft:entity_spawned") {
+    if (!location) return;
+    if (!dimension || !dimension.isChunkLoaded(location)) return;
+
+    if (maxEntities < 1 || minEntities > maxEntities) maxEntities = minEntities;
+    if (maxTickDelay < minTickDelay) maxTickDelay = minTickDelay;
+
+    const locationStr = vec3.toString(location, 1, false, ' ');
+    const cmd = `summon ${entityTypeId} ${locationStr} 0 0 ${event}`;
+    let max = minEntities === maxEntities ? minEntities : rndInt(minEntities, maxEntities);
+
+    // for (let i = 0; i < max; i++) {
+    //     worldRun(cmd, dimension, rndInt(minTickDelay, maxTickDelay), location); //rnd so spider has time to move away
+    // }
 }

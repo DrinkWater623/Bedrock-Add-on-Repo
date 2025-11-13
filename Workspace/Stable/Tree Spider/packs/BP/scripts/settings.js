@@ -104,7 +104,13 @@ export const watchFor = {
         "minecraft:pointed_dripstone",
         "minecraft:brown_mushroom_block", "minecraft:red_mushroom_block",
         "minecraft:big_drip_leaf"
+    ],
+    customItemList: [
+        "dw623:bottle_of_flies", //this gets moved to interact with entity Spider
+        "dw623:dead_fly_ball_stick",
+        "dw623:rotten_flesh_kabob"
     ]
+
 };
 export const thisPackEntities = [
     watchFor.typeId,

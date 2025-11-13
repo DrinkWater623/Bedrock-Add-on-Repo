@@ -13,16 +13,18 @@ import { world, system, EntityInitializationCause, Player } from "@minecraft/ser
 import { Ticks } from "./common-data/globalConstantsLib.js";
 import { chance, rndInt } from "./common-other/mathLib.js";
 import { DynamicPropertyLib } from "./common-stable/dynamicPropertyClass.js";
+import { spawnEntityAtLocation } from "./common-stable/entityClass.js";
 import { Vector3Lib } from "./common-stable/vectorClass.js";
 //Local
 import { alertLog, pack, watchFor, dynamicVars, thisPackEntities } from './settings.js';
 import { registerCustomCommands } from "./chatCmds.js";
-import { spiderSpawnFromValidNatureBlock, rattleEntityFromBlockWithItem } from './helpers/fn-blocks.js';
-import { devDebug, debugScoreboards } from "./helpers/fn-debug.js";
-import { entityEventProcess, lastTickAndLocationRegister, stalledSpiderCheckAndFix, flyPopulationCheck, spiderPopulationCheck, spawnEntityAtLocation, hourlyChime } from './helpers/fn-entities.js';
+import { spiderSpawnFromValidNatureBlock, rattleEntityFromBlockWithItem, validNatureBlockForSpiders } from './helpers/fn-blocks.js';
+import { devDebug } from "./helpers/fn-debug.js";
+import { entityEventProcess, lastTickAndLocationRegister, stalledSpiderCheckAndFix, flyPopulationCheck, spiderPopulationCheck, } from './helpers/fn-entities.js';
 import { validLongToolForInteractToShakeSpidersOut } from './helpers/fn-items.js';
-//import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
 import { airBlock } from "./common-data/block-data.js";
+//import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
+
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /** The function type subscribe expects. */
@@ -63,8 +65,8 @@ const entityDebugSubscriptions = {
                 alertLog.warn(msg, devDebug.watchEntitySubscriptions);
                 system.runTimeout(() => {
                     const x = `die: §c${whyDied}`;
-                    debugScoreboards.sbDeathsScoreboard?.addScore(x, 1);
-                    debugScoreboards.sbStatsScoreboard?.addScore(x, 1);
+                    devDebug.dsb.increment('deaths', x);
+                    devDebug.dsb.increment('stats', x);
                 }, 1);
             };
 
@@ -80,137 +82,6 @@ const entityDebugSubscriptions = {
                 world.afterEvents.entityDie.unsubscribe(this.handler);
                 this.handler = null;
                 alertLog.success("§aUninstalled afterEvents.entityDie)", debugSubscriptionsOn);
-            }
-            this.on = false;
-        }
-    },
-    afterEntityLoad: {
-        on: false,
-        /** @type {AfterEntityLoadHandle | null} */
-        handler: null,
-
-        subscribe () {
-            if (this.on) return;
-            alertLog.log("* entityDebugSubscriptions.afterEntityLoad.subscribe ()", debugFunctionsOn);
-
-            /** @type {AfterEntityLoadHandler} */
-            const fn = (event) => {
-                const entity = event.entity;
-
-                if (!entity || !entity.isValid) return;
-                if (entity.typeId !== watchFor.typeId) return;
-
-                const { dimension, location, nameTag } = entity;
-
-                if (nameTag) {
-                    //means re-load???
-                    system.runTimeout(() => {
-                        lastTickAndLocationRegister(entity); //This is the most needed part...
-                        debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.loaded, 1);
-                        DynamicPropertyLib.add(entity, dynamicVars.entityLoads, 1);
-                        const msg = `§l${nameTag}§r §eLoaded in Biome ${dimension.getBiome(location).id} @ ${Vector3Lib.toString(location, 0, true)} §r- afterEvents.entityLoad()`;
-                        alertLog.log(msg, devDebug.watchEntitySubscriptions);
-                    }, 1);
-                }
-            };
-
-            this.handler = world.afterEvents.entityLoad.subscribe(fn);
-            this.on = true;
-            alertLog.success("§aInstalled afterEvents.afterEntityLoad §4(debug mode)", debugSubscriptionsOn);
-        },
-        unsubscribe () {
-            alertLog.warn("* entityDebugSubscriptions.afterEntityLoad.unsubscribe ()", debugFunctionsOn);
-            if (!this.on) return;
-
-            if (this.handler) {
-                world.afterEvents.entityLoad.unsubscribe(this.handler);
-                this.handler = null;
-                alertLog.success("§aUninstalled afterEvents.afterEntityLoad)", debugSubscriptionsOn);
-            }
-            this.on = false;
-        }
-    },
-    //Turned Off - Redundant - beforeEntityRemove can handle all
-    afterEntityRemove: {
-        on: false,
-        /** @type {AfterEntityRemovedHandle | null} */
-        handler: null,
-
-        subscribe () {
-            alertLog.log("* entityDebugSubscriptions.afterEntityRemove.subscribe ()", debugFunctionsOn);
-            if (this.on) return;
-
-            /** @type {AfterEntityRemovedHandler} */
-            const fn = (event) => {
-                system.runTimeout(() => {
-                    debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.removed, 1);
-                }, 1);
-            };
-
-            this.handler = world.afterEvents.entityRemove.subscribe(fn, { entityTypes: [ watchFor.typeId ] });
-            this.on = true;
-            alertLog.success("§aInstalled afterEvents.entityRemove §4(debug mode)", debugSubscriptionsOn);
-        },
-        unsubscribe () {
-            alertLog.log("* entityDebugSubscriptions.afterEntityRemove.unsubscribe ()", debugFunctionsOn);
-            if (!this.on) return;
-
-            if (this.handler) {
-                world.afterEvents.entityRemove.unsubscribe(this.handler);
-                this.handler = null;
-                alertLog.success("§aUninstalled afterEvents.entityRemove)", debugSubscriptionsOn);
-            }
-            this.on = false;
-        }
-    },
-    //Not Used - because redundant = and every entity when more efficient for scriptEvent inside entity to do it
-    //But keep in case they ever get rid of scriptEvent... we will need this for debugging and naming
-    afterEntitySpawn: {
-        on: false,
-        /** @type {AfterEntitySpawnHandle | null} */
-        handler: null,
-
-        subscribe () {
-            if (this.on) return;
-
-            /** @type {AfterEntitySpawnHandler} */
-            const fn = (event) => {
-                const entity = event.entity;
-                if (!entity) return;
-                if (entity.typeId !== watchFor.typeId) return;
-
-                const { dimension, location, nameTag } = entity;
-
-                system.runTimeout(() => {
-
-                    alertLog.log(`§aEntity Spawned (${event.cause}) in Biome ${dimension.getBiome(location).id}: §l${nameTag}§r§6 @ ${Vector3Lib.toString(location, 0, true)}`, devDebug.watchEntitySubscriptions || devDebug.watchEntityGoals);
-
-                    if (event.cause === EntityInitializationCause.Born) {
-                        debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.born, 1);
-                        DynamicPropertyLib.add(entity, dynamicVars.entityBorn, 1);
-                    }
-                    else if (event.cause === EntityInitializationCause.Loaded) {
-                        debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.loaded, 1);
-                        DynamicPropertyLib.add(entity, dynamicVars.entityLoads, 1);
-                    }
-                    else if (event.cause === EntityInitializationCause.Spawned) {
-                        debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.spawned, 1);
-                        DynamicPropertyLib.add(entity, dynamicVars.entitySpawns, 1);
-                    }
-                }, 1);
-            };
-
-            this.handler = world.afterEvents.entitySpawn.subscribe(fn);
-            this.on = true;
-            alertLog.success("§aInstalled afterEvents.entitySpawn §4(debug mode)", debugSubscriptionsOn);
-        },
-        unsubscribe () {
-            if (!this.on) return;
-
-            if (this.handler) {
-                world.afterEvents.entitySpawn.unsubscribe(this.handler);
-                this.handler = null;
-                alertLog.success("§aUninstalled afterEvents.entitySpawn)", debugSubscriptionsOn);
             }
             this.on = false;
         }
@@ -235,8 +106,7 @@ const entityDebugSubscriptions = {
                 const isStalled = DynamicPropertyLib.getBoolean(entity, 'isStalled');
 
                 system.runTimeout(() => {
-                    debugScoreboards.sbDeathsScoreboard?.addScore(debugScoreboards.removed, 1);
-                    debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.removed, 1);
+                    devDebug.dsb.incrementMany([ 'deaths', 'stats' ], 'removed', 1, 1);
 
 
                     //TODO:  see if I can get my coordinates and do the math for how far away these are  --  too many removes right after spawn
@@ -272,7 +142,6 @@ const entityDebugSubscriptions = {
     allOff () {
         alertLog.log("* const entityDebugSubscriptions.allOff ()");
         this.afterEntityDie.unsubscribe();
-        this.afterEntityLoad.unsubscribe();
         //this.afterEntityRemove.unsubscribe();
         //this.afterEntitySpawn.unsubscribe();
         this.beforeEntityRemove.unsubscribe();
@@ -280,7 +149,6 @@ const entityDebugSubscriptions = {
     allOn () {
         alertLog.log("* const entityDebugSubscriptions.allOn ()");
         this.afterEntityDie.subscribe();
-        this.afterEntityLoad.subscribe();
         //this.afterEntityRemove.subscribe();
         //this.afterEntitySpawn.subscribe();
         this.beforeEntityRemove.subscribe();
@@ -288,10 +156,127 @@ const entityDebugSubscriptions = {
     setup () {
         alertLog.log("* const entityDebugSubscriptions.setup ()", debugFunctionsOn);
         this.afterEntityDie.subscribe();
-        this.afterEntityLoad.subscribe();
         //this.afterEntityRemove.subscribe(); //not needed and redundant to beforeEntityRemove
         //this.afterEntitySpawn.subscribe(); // this is called load/born/spawn  - events are taking care of born/spawn
         this.beforeEntityRemove.subscribe();
+    }
+};
+const entitySubscriptions = {
+    //TODO: have event wander start for spiders
+    afterEntityLoad: {
+        on: false,
+        /** @type {AfterEntityLoadHandle | null} */
+        handler: null,
+
+        subscribe () {
+            if (this.on) return;
+            alertLog.log("* entityDebugSubscriptions.afterEntityLoad.subscribe ()", debugFunctionsOn);
+
+            /** @type {AfterEntityLoadHandler} */
+            const fn = (event) => {
+                const entity = event.entity;
+
+                if (!entity || !entity.isValid) return;
+                if (entity.typeId !== watchFor.typeId) return;
+
+                const { dimension, location, nameTag } = entity;
+
+                if (nameTag) {
+                    //means re-load???
+                    system.runTimeout(() => {
+                        lastTickAndLocationRegister(entity); //This is the most needed part...
+                        DynamicPropertyLib.add(entity, dynamicVars.entityLoads, 1);
+                        if (devDebug.debugOn) {
+                            devDebug.dsb.increment('stats', 'loaded');
+                            const msg = `§l${nameTag}§r §eLoaded in Biome ${dimension.getBiome(location).id} @ ${Vector3Lib.toString(location, 0, true)} §r- afterEvents.entityLoad()`;
+                            alertLog.log(msg, devDebug.watchEntitySubscriptions);
+                        }
+                    }, 1);
+                }
+            };
+
+            this.handler = world.afterEvents.entityLoad.subscribe(fn);
+            this.on = true;
+            alertLog.success("§aInstalled afterEvents.afterEntityLoad §4(debug mode)", debugSubscriptionsOn);
+        },
+        unsubscribe () {
+            alertLog.warn("* entityDebugSubscriptions.afterEntityLoad.unsubscribe ()", debugFunctionsOn);
+            if (!this.on) return;
+
+            if (this.handler) {
+                world.afterEvents.entityLoad.unsubscribe(this.handler);
+                this.handler = null;
+                alertLog.success("§aUninstalled afterEvents.afterEntityLoad)", debugSubscriptionsOn);
+            }
+            this.on = false;
+        }
+    },
+    //Not Used - because redundant = and every entity when more efficient for scriptEvent inside entity to do it
+    //But keep in case they ever get rid of scriptEvent... we will need this for debugging and naming
+    afterEntitySpawn: {
+        on: false,
+        /** @type {AfterEntitySpawnHandle | null} */
+        handler: null,
+
+        subscribe () {
+            if (this.on) return;
+
+            /** @type {AfterEntitySpawnHandler} */
+            const fn = (event) => {
+                const entity = event.entity;
+                if (!entity) return;
+                if (entity.typeId !== watchFor.typeId) return;
+
+                const { dimension, location, nameTag } = entity;
+
+                system.runTimeout(() => {
+
+                    alertLog.log(`§aEntity Spawned (${event.cause}) in Biome ${dimension.getBiome(location).id}: §l${nameTag}§r§6 @ ${Vector3Lib.toString(location, 0, true)}`, devDebug.watchEntitySubscriptions || devDebug.watchEntityGoals);
+
+                    if (event.cause === EntityInitializationCause.Born) {
+                        devDebug.dsb.increment('stats', 'born', 1, 1);
+                        DynamicPropertyLib.add(entity, dynamicVars.entityBorn, 1);
+                    }
+                    else if (event.cause === EntityInitializationCause.Loaded) {
+                        devDebug.dsb.increment('stats', 'loaded', 1, 1);
+                        DynamicPropertyLib.add(entity, dynamicVars.entityLoads, 1);
+                    }
+                    else if (event.cause === EntityInitializationCause.Spawned) {
+                        devDebug.dsb.increment('stats', 'spawned');
+                        DynamicPropertyLib.add(entity, dynamicVars.entitySpawns, 1);
+                    }
+                }, 1);
+            };
+
+            this.handler = world.afterEvents.entitySpawn.subscribe(fn);
+            this.on = true;
+            alertLog.success("§aInstalled afterEvents.entitySpawn §4(debug mode)", debugSubscriptionsOn);
+        },
+        unsubscribe () {
+            if (!this.on) return;
+
+            if (this.handler) {
+                world.afterEvents.entitySpawn.unsubscribe(this.handler);
+                this.handler = null;
+                alertLog.success("§aUninstalled afterEvents.entitySpawn)", debugSubscriptionsOn);
+            }
+            this.on = false;
+        }
+    },
+    allOff () {
+        alertLog.log("* const entityDebugSubscriptions.allOff ()", debugFunctionsOn);
+        this.afterEntityLoad.unsubscribe();
+        this.afterEntitySpawn.unsubscribe();
+    },
+    allOn () {
+        alertLog.log("* const entityDebugSubscriptions.allOn ()", debugFunctionsOn);
+        this.afterEntityLoad.subscribe();
+        //this.afterEntitySpawn.subscribe();
+    },
+    setup () {
+        alertLog.log("* const entityDebugSubscriptions.setup ()", debugFunctionsOn);
+        this.afterEntityLoad.subscribe();
+        //this.afterEntitySpawn.subscribe(); // this is called load/born/spawn  - events are taken care of born/spawn
     }
 };
 //==============================================================================
@@ -315,8 +300,8 @@ function afterEvents_worldLoad () {
         }
 
         if (devDebug.debugOn) {
-            debugScoreboards.setup();
-            hourlyChime();
+            devDebug.dsb.setDebug(true);
+            devDebug.dsb_setup();
         }
 
         //Start testing for stalled entities every x min after y delay 
@@ -379,37 +364,23 @@ function beforeEvents_startup () {
     alertLog.log('§8x function beforeEvents_startup()', debugFunctionsOn);
 }
 //==============================================================================
-function afterEvents_playerInteractWithBlock () {
-    world.afterEvents.playerInteractWithBlock.subscribe((event) => {
-        if (!event.isFirstEvent) return;
-        if (!event.itemStack) return;
-        if (!validLongToolForInteractToShakeSpidersOut(event.itemStack.typeId)) return;
-
-        system.runTimeout(() => {
-            alertLog.log('afterEvents_playerInteractWithBlock');
-            spiderSpawnFromValidNatureBlock(event.block, 0.30, { minTicks: 40, maxTicks: 100 });
-        }, 1);
-
-    });
-}
 //==============================================================================
 function beforeEvents_playerInteractWithBlock () {
-    //FIXME: determine if this can be afterEvents... if arm swing on custom item works
+    
     world.beforeEvents.playerInteractWithBlock.subscribe((event) => {
         event.cancel = false;
         if (!event.isFirstEvent) return;
+        alertLog.log('>> world.beforeEvents.playerInteractWithBlock.subscribe((event)',debugSubscriptionsOn);
         const { block, itemStack } = event;
-        if (!itemStack) return;
-        if (!block) return;
+        if (!itemStack || !block) return;
 
-        const validItemList = [
-            "dw623:bottle_of_flies", //this gets moved to interact with entity Spider
-            "dw623:dead_fly_ball_stick",
-            "dw623:rotten_flesh_kabob"
-        ];
-        if (validItemList.includes(itemStack.typeId)) {
+        if (watchFor.customItemList.includes(itemStack.typeId)) {
             rattleEntityFromBlockWithItem(block, itemStack.typeId, event.blockFace);
+            return;
         }
+
+        //Add Other stuff if needed
+        return;
     });
 }
 //==============================================================================
@@ -417,27 +388,49 @@ function afterEvents_playerPlaceBlock () {
     world.afterEvents.playerPlaceBlock.subscribe((event) => {
 
         if (!chance(0.50)) return;
-
         const { block } = event;
         if (!block.isValid) return;
+        const { typeId, dimension, location } = block;
+        const locationCtr = Vector3Lib.toCenter(location);
 
-        // increase chance if placing food source
-        //if (block.typeId !== watchFor.food_typeId) if (!chance(0.50)) return;
+        if (typeId === 'minecraft:web') {
+            const entityId = chance(0.5) ? watchFor.typeId : watchFor.egg_typeId;
+            const max = entityId == watchFor.egg_typeId ? 1 : 2;
+            spawnEntityAtLocation(entityId, dimension, locationCtr, 1, max, 40, 100);
+            return;
+        }
 
-        system.runTimeout(() => {
-            if (block.typeId === 'minecraft:web') {
-                const entityId = chance(0.5) ? watchFor.typeId : watchFor.egg_typeId;
-                const max = entityId == watchFor.egg_typeId ? 1 : 2;
-                spawnEntityAtLocation(entityId, block.dimension, Vector3Lib.toCenter(block.location), 1, max, 40, 100);
-            }
-            else if (block.typeId === 'minecraft:composter') {
-                const above = block.above();
-                if (!above || !above.isValid) return;
-                spawnEntityAtLocation(watchFor.fly_typeId, above.dimension, above.location, 3, 6, 40, 200);
-            }
-            else
-                spiderSpawnFromValidNatureBlock(block, 0.30, { minTicks: 20, maxTicks: 100 });
-        }, 1);
+        if (typeId === 'minecraft:composter') {
+            const above = block.above();
+            if (!above || !above.isValid || above.typeId !== airBlock) return;
+            spawnEntityAtLocation(watchFor.fly_typeId, dimension, locationCtr, 3, 6, 40, 200);
+            return;
+        }
+
+        if (typeId === 'dw623:rotten_flesh_block') {
+            //TODO: needs to be block face location
+            const above = block.above();
+            if (!above || !above.isValid || above.typeId !== airBlock) return;
+            spawnEntityAtLocation(watchFor.fly_typeId, dimension, locationCtr, 1, 2, 40, 200);
+            return;
+        }
+        //========================    Less Likely
+        if (!chance(0.75)) return;
+        //========================    Less Likely
+
+        if (typeId === 'minecraft:cauldron') {
+            const above = block.above();
+            if (!above || !above.isValid || above.typeId !== airBlock) return;
+            const entityId = chance(0.6) ? watchFor.typeId : watchFor.fly_typeId;
+            const maxEntities = entityId===watchFor.typeId ? 1 : 3
+            spawnEntityAtLocation(entityId, dimension, locationCtr, 1, maxEntities, 40, 200);
+            return;
+        }
+
+        if (validNatureBlockForSpiders(typeId)) {         
+            spawnEntityAtLocation(watchFor.typeId, dimension, locationCtr, 1, 1, 40, 200);            
+            return;
+        }
     });
 }
 //==============================================================================
@@ -450,7 +443,7 @@ export function subscriptionsStable () {
     //This is vital to outside tree_spider.json
     afterEvents_scriptEventReceive();
 
-    //turn on, devDebug.watchEntitySubscriptions will turn off the messages, this way, I get the scoreboard
+    entitySubscriptions.setup();
     if (devDebug.debugOn) entityDebugSubscriptions.setup();
 
     //TODO: test
@@ -460,7 +453,7 @@ export function subscriptionsStable () {
 
     //FIXME:Interact with certain blocks with a stick can have a spider scurry out of it
     // not working or maybe is, cannot swing, so looks weird, have to make own things to do this.
-    //afterEvents_playerInteractWithBlock(); -- does not work
+    //afterEvents_playerInteractWithBlock();
     beforeEvents_playerInteractWithBlock();
 
     alertLog.log('§8x function subscriptionsStable ()', debugFunctionsOn);
@@ -468,50 +461,3 @@ export function subscriptionsStable () {
 //==============================================================================
 // End of File
 //==============================================================================
-/*
-//helping another in BAO -  DELETE ME
-function it () {
-    world.afterEvents.entityHurt.subscribe(({ damageSource, hurtEntity }) => {
-        // Make sure the source is a player
-        const player = damageSource?.damagingEntity;
-        if (!player || !(player instanceof Player)) return; //REFACTORED:
-
-        // Check if Busoshoku is active
-        //REFACTORED: to avoid error if player json is messed with
-        const busoshoku_on = player.getProperty("busoshoku_on");  //FIXME: name space on property ???
-        if (!busoshoku_on || !(typeof busoshoku_on == 'boolean')) return;
-
-        if (busoshoku_on) {
-            const hakiExp = player.getProperty("op_asa:b_haki_exp");
-            if (!hakiExp || !(typeof hakiExp == 'number')) return; // ADDED:
-
-            if (hakiExp < 50) {
-                player.setProperty("op_asa:b_haki_exp", hakiExp + 1);
-
-                // First acquisition
-                if (hakiExp === 0) {
-                    player.setProperty("op_asa:b_haki", 1); //FIXME:  name is not the same as above
-                    player.playSound("random.levelup");
-                    player.sendMessage({ rawtext: [ { translate: "rawtext.b_haki_1.acquired" } ] });
-                }
-                // Level up every 10 exp
-                else if (hakiExp % 10 === 9) {
-                    player.playSound("random.levelup");
-                    player.sendMessage({ rawtext: [ { translate: "rawtext.b_haki_1.levelup" } ] });
-                    //TODO: add the random level up code
-                }
-                // Normal EXP gain
-                else {
-                    player.playSound("random.orb");
-                    player.sendMessage({ rawtext: [ { translate: "rawtext.b_haki_1.exp" } ] });
-                    //TODO: add the code to give random code
-                }
-            }
-            else {
-                // Max level reached
-                player.sendMessage({ rawtext: [ { translate: "rawtext.b_haki_1.levelmax" } ] });
-            }
-        }
-
-    });
-}*/

@@ -13,19 +13,23 @@ Last Update: 20251023 - Update and sep out debug-only stuff and add the stable s
 //==============================================================================
 // Minecraft
 import { Entity, system, Block, world, Dimension, GameMode, Player, DimensionType, TicksPerDay } from "@minecraft/server";
-// Shared
+// Shared Data
 import { airBlock, leafBlocks } from "../common-data/block-data.js";
 import { Ticks } from "../common-data/globalConstantsLib.js";
+// Shared Other
 import { makeRandomName } from "../common-other/randomNames.js";
 import { rndInt, chance } from "../common-other/mathLib.js";
-import { isInValidBlock, isValidBlock } from "../common-stable/blockLib-stable.js";
+// Shared Stable
+import { isInForest, isOutside } from "../common-stable/biomeLib.js";
+import { closestAdjacentBlockTypeId, isBlockAdjacentToTypeId } from "../common-stable/blockLib-stable.js";
 import { DynamicPropertyLib } from "../common-stable/dynamicPropertyClass.js";
-import { EntityLib } from "../common-stable/entityClass.js";
+import { EntityLib,spawnEntityAtLocation } from "../common-stable/entityClass.js";
+import { getWorldTime } from "../common-stable/timers.js";
 import { Vector3Lib, } from '../common-stable/vectorClass.js';
 import { worldRun } from "../common-stable/worldRunLib.js";
 // Local
-import { closestWeb, closestExpandableWebLocation, targetBlockAdjacent } from "./fn-blocks.js";
-import { devDebug, debugScoreboards } from "./fn-debug.js";
+import { targetBlockAdjacent } from "./fn-blocks.js";
+import { devDebug } from "./fn-debug.js";
 import { alertLog, watchFor, dynamicVars, entityEvents } from '../settings.js';
 //==============================================================================
 const debugFunctions = false;
@@ -36,29 +40,282 @@ const AIR_BLOCK = airBlock;
 const HOME_ID = watchFor.home_typeId;
 const leaves = [ ...leafBlocks ];
 //===================================================================
-/**
- * @param {Entity} entity 
- * @returns {boolean}
- */
-function isInWeb (entity) {
-    if (!entity.isValid) return false;
+class Web {
+    //===================================================================
+    /**
+     * @summary Used to determine if Spider Entity is stalled, so it can be replaced later
+     * @param {Entity} entity
+     * @param {number} [tickDelay=0]   
+     */
+    static activityRegister (entity, tickDelay = 0) {
+        system.runTimeout(() => {
+            if (!entity.isValid) return;
+            entity.setDynamicProperty(dynamicVars.lastWebActivityTick, system.currentTick);
+            entity.setDynamicProperty(dynamicVars.lastActiveTick, system.currentTick);
+            entity.setDynamicProperty(dynamicVars.lastLocation, entity.location);
+        }, tickDelay);
+    }
+    /**
+     * Returns adjacent web (any side at 1 block) or a web straight above within `numberOfBlocksMax`,
+     * scanning upward only through air. Stops if a non-air, non-web block is hit.
+    
+     * @param {Block} block 
+     * @param {number} numberOfBlocksAboveMax 
+     * @returns {Block | undefined}
+     * @summary Returns block of adjacent web or web (number of blocks) above
+     */
+    static closestAdjacentWeb (block, numberOfBlocksAboveMax = 8) {
 
-    const { dimension, location } = entity;
-    const inBlock = dimension.getBlock(location);
+        const try1 = closestAdjacentBlockTypeId(block, HOME_ID);
+        if (try1) return try1;
 
-    if (!inBlock) return false;
-    if (inBlock.typeId === HOME_ID) return true;
+        //try 2
+        //now above only
+        if (numberOfBlocksAboveMax <= 1) return;
 
-    return false;
+        //ChatGPT - Look above starting at 2nd block, until max is reached, as long as block is air
+        let up = block.above(); // 1 above (already checked in neighbors)
+        if (!up) return;
+
+        for (let i = 2; i <= numberOfBlocksAboveMax; i++) {
+            up = up.above();
+            if (!up) break;
+
+            const id = up.typeId;
+            if (id === HOME_ID) return up;                 // found web
+            if (id !== AIR_BLOCK) break;             // blocked by something else
+        }
+
+        //Found None
+        return;
+    }
+    //===================================================================
+    //TODO: refactor for move to block lib
+    /** 
+     *  Returns adjacent air block that has non-air block above it
+     * @param {Block} block 
+     * @returns {Block | undefined}
+     * @summary Returns block of adjacent air
+     */
+    static closestExpandableWebLocation (block) {
+
+        //order changed for preference
+        const neighbors = [
+            block.east(),
+            block.west(),
+            block.north(),
+            block.south(),
+            block.above(),
+            block.below()
+        ];
+
+        for (const nb of neighbors) {
+            const id = nb?.typeId;
+            if (id && id === airBlock) {
+                const above = nb.above();
+                if (above && above.typeId !== airBlock) return nb;
+            }
+        }
+
+        //Found None
+        return;
+    }
+    //===================================================================
+    /**
+     * @param {Entity} entity 
+     * @returns {boolean}
+     */
+    static insideWebBlock (entity) {
+        if (!entity.isValid) return false;
+
+        const { dimension, location } = entity;
+        const inBlock = dimension.getBlock(location);
+
+        if (!inBlock) return false;
+        if (inBlock.typeId === HOME_ID) return true;
+
+        return false;
+    }
+    //===================================================================
+    /**
+     * @param {Block} block
+     * @returns {boolean}  
+     */
+    static isAdjacent (block) {
+        return isBlockAdjacentToTypeId(block, HOME_ID);
+    }
+    //===================================================================
+    /**
+     * @param {Entity} entity 
+     * @param {boolean} isBaby 
+     * @returns {boolean} 
+     */
+    static enterWeb (entity, isBaby = false) {
+        const { dimension, location } = entity;
+        const locationStr = Vector3Lib.toString(location, 0, true);
+        const inBlock = dimension.getBlock(location);
+
+        if (!inBlock) return false;
+
+        Web.activityRegister(entity);
+        let webBlock = inBlock.typeId == HOME_ID ? inBlock : Web.closestAdjacentWeb(inBlock, 8);
+
+        if (!webBlock) {
+            system.runTimeout(() => {
+                isBaby ? entity.triggerEvent(entityEvents.baby_wanderEventName) : entity.triggerEvent(entityEvents.wanderEventName);
+            }, 1);
+            return false;
+        }
+
+        const alertMsg = inBlock.typeId == HOME_ID ? `§l${entity.nameTag || entity.id}§r §bAlready in Web @ ${locationStr} - enterWeb()` : `§l${entity.nameTag || entity.id}§r§b Entering Web @ ${Vector3Lib.toString(webBlock.location, 0, true)}`;
+        alertLog.log(alertMsg, devDebug.watchEntityEvents);
+
+        EntityLib.teleportAndCenter(entity, webBlock); //1 tick out
+        system.runTimeout(() => {
+            system.runTimeout(() => {
+                isBaby ? entity.triggerEvent(entityEvents.baby_stayInWebEventName) : entity.triggerEvent(entityEvents.stayInWebEventName);
+                //Log
+                system.runTimeout(() => {
+                    if (Web.insideWebBlock(entity)) {
+                        DynamicPropertyLib.add(entity, dynamicVars.websEntered, 1);
+                        devDebug.dsb.increment('stats', 'enterWeb')                         
+                    }
+                    else {
+                        alertLog.warn(`${entity.nameTag || entity.id} May Have Entered Web @ ${Vector3Lib.toString(webBlock.location, 0, true)}`, devDebug.watchEntityEvents);
+                    }
+                }, 1);
+            }, 1);
+        }, 2);
+
+        return true;
+    }
+    //===================================================================
+    /**
+     * @param {Entity} entity 
+     * @returns {boolean}
+     */
+    static expandWeb (entity) {
+        const { dimension, location } = entity;
+        const inBlock = dimension.getBlock(location);
+        if (!inBlock) return false;
+
+        if (inBlock.typeId !== HOME_ID) {
+            Web.activityRegister(entity);
+            system.runTimeout(() => {
+                entity.triggerEvent(entityEvents.wanderEventName);
+            }, 1);
+            return false;
+        }
+
+        const newWeb = Web.closestExpandableWebLocation(inBlock);
+        if (!newWeb) {
+            Web.activityRegister(entity);
+            system.runTimeout(() => {
+                entity.triggerEvent(entityEvents.wanderEventName);
+            }, 1);
+            return false;
+        }
+
+        this.setWebAndEnter(entity, newWeb); // 3 ticks
+
+        //Log
+        system.runTimeout(() => {
+            if (Web.insideWebBlock(entity)) {
+                entity.nameTag;
+                alertLog.success(`${entity.nameTag || entity.id} Expanded Web @ ${Vector3Lib.toString(newWeb.location, 0, true)}`, devDebug.watchEntityEvents);
+                DynamicPropertyLib.add(entity, dynamicVars.websExpanded, 1);
+                if (devDebug.debugOn) {
+                    devDebug.dsb.increment('stats', 'expandWeb') 
+                    devDebug.dsb.increment('ctrs', 'webs')                     
+                }
+            }
+            else {
+                alertLog.warn(`${entity.nameTag || entity.id} May Have Expanded Web @ ${Vector3Lib.toString(newWeb.location, 0, true)}`, devDebug.watchEntityEvents);
+            }
+        }, 4);
+
+        return true;
+    }
+    //==============================================================================
+    /**
+     * @param {Entity} entity 
+     * @returns {boolean}
+     */
+    static placeWeb (entity) {
+        //this cannot be called unless spider is next to a target block, so place in air if cannot determine
+        const { dimension, location } = entity;
+        const inBlock = dimension.getBlock(location);
+
+        if (!inBlock) { return false; }
+
+        if (inBlock.typeId == HOME_ID) {
+            Web.activityRegister(entity);
+            system.run(() => {
+                entity.teleport(inBlock.center());
+                entity.triggerEvent(entityEvents.stayInWebEventName);
+            });
+            return true;
+        }
+
+        //has to be in air now... AND    
+        //I do not want diagonal webs, so reset to wander if a valid target block is not adjacent
+        if (inBlock.typeId !== airBlock || !targetBlockAdjacent(inBlock)) {
+            Web.activityRegister(entity);
+            system.run(() => entity.triggerEvent(entityEvents.wanderEventName));
+            return false;
+        }
+
+        //Place Web
+        this.setWebAndEnter(entity, inBlock.location); // 3 ticks
+
+        //Log
+        system.runTimeout(() => {
+            if (Web.insideWebBlock(entity)) {
+                alertLog.log(`§l${entity.nameTag || entity.id}§r §5Placed New Web @ ${Vector3Lib.toString(inBlock.location, 0, true)}`, devDebug.watchEntityEvents);
+                DynamicPropertyLib.add(entity, dynamicVars.websCreated, 1);
+                if (devDebug.debugOn) {
+                    devDebug.dsb.increment('ctrs', 'webs') 
+                    devDebug.dsb.increment('stats', 'newWeb')                     
+                }
+            }
+            else {
+                alertLog.warn(`§l${entity.nameTag || entity.id}§r §6May have Placed New Web @ ${Vector3Lib.toString(inBlock.location, 0, true)}`, devDebug.watchEntityEvents);
+            }
+        }, 4);
+
+        return true;
+    }
+    //===================================================================
+    /**
+     * @param {Entity} entity 
+     * @param {import("@minecraft/server").Vector3} location 
+     */
+    static setWebAndEnter (entity, location) {
+        //...and stay
+
+        system.runTimeout(() => {
+
+            entity.dimension.setBlockType(location, HOME_ID);
+            DynamicPropertyLib.add(entity, dynamicVars.websCreated, 1);
+            Web.activityRegister(entity);
+
+            system.runTimeout(() => {
+                EntityLib.teleportAndCenter(entity, location, 0);
+                system.runTimeout(() => {
+                    entity.triggerEvent(entityEvents.stayInWebEventName);
+                }, 1);
+            }, 1);
+        }, 1);
+    }
 }
 //==============================================================================
 /**
  * @param {Entity} entity 
  */
-export function welcomeBack (entity) {
+function welcomeBack (entity) {
 
     //entity.nameTag || entity
-    webActivityRegister(entity);
+    Web.activityRegister(entity);
     DynamicPropertyLib.add(entity, dynamicVars.websCreated, 0);  //initializes if undefined
     DynamicPropertyLib.add(entity, dynamicVars.eggsLaid, 0);
 }
@@ -128,228 +385,19 @@ function fireFlyFood (entity) {
         //entity.triggerEvent(entityEvents.lookForWebEventName);
     }, minutesInTicks + (20 * 3));
 }
-//===================================================================
-/**
- * @param {Entity} entity 
- * @param {boolean} isBaby 
- * @returns {boolean} 
- */
-function enterWeb (entity, isBaby = false) {
-    const { dimension, location } = entity;
-    const locationStr = Vector3Lib.toString(location, 0, true);
-    const inBlock = dimension.getBlock(location);
 
-    if (!inBlock) return false;
-
-    webActivityRegister(entity);
-    let webBlock = inBlock.typeId == HOME_ID ? inBlock : closestWeb(inBlock, 8);
-
-    if (!webBlock) {
-        system.runTimeout(() => {
-            isBaby ? entity.triggerEvent(entityEvents.baby_wanderEventName) : entity.triggerEvent(entityEvents.wanderEventName);
-        }, 1);
-        return false;
-    }
-
-    const alertMsg = inBlock.typeId == HOME_ID ? `§l${entity.nameTag || entity.id}§r §bAlready in Web @ ${locationStr} - enterWeb()` : `§l${entity.nameTag || entity.id}§r§b Entering Web @ ${Vector3Lib.toString(webBlock.location, 0, true)}`;
-    alertLog.log(alertMsg, devDebug.watchEntityEvents);
-
-    teleportAndCenter(entity, webBlock); //1 tick out
-    system.runTimeout(() => {
-        system.runTimeout(() => {
-            isBaby ? entity.triggerEvent(entityEvents.baby_stayInWebEventName) : entity.triggerEvent(entityEvents.stayInWebEventName);
-            //Log
-            system.runTimeout(() => {
-                if (isInWeb(entity)) {
-                    DynamicPropertyLib.add(entity, dynamicVars.websEntered, 1);
-                    if (devDebug.debugOn) debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.enterWeb, 1);
-                }
-                else {
-                    alertLog.warn(`${entity.nameTag || entity.id} May Have Entered Web @ ${Vector3Lib.toString(webBlock.location, 0, true)}`, devDebug.watchEntityEvents);
-                }
-            }, 1);
-        }, 1);
-    }, 2);
-
-    return true;
-}
-//===================================================================
-/**
- * @param {Entity} entity 
- * @returns {boolean}
- */
-function expandWeb (entity) {
-    const { dimension, location } = entity;
-    const inBlock = dimension.getBlock(location);
-    if (!inBlock) return false;
-
-    if (inBlock.typeId !== HOME_ID) {
-        webActivityRegister(entity);
-        system.runTimeout(() => {
-            entity.triggerEvent(entityEvents.wanderEventName);
-        }, 1);
-        return false;
-    }
-
-    const newWeb = closestExpandableWebLocation(inBlock);
-    if (!newWeb) {
-        webActivityRegister(entity);
-        system.runTimeout(() => {
-            entity.triggerEvent(entityEvents.wanderEventName);
-        }, 1);
-        return false;
-    }
-
-    setWebAndEnter(entity, newWeb); // 3 ticks
-
-    //Log
-    system.runTimeout(() => {
-        if (isInWeb(entity)) {
-            entity.nameTag;
-            alertLog.success(`${entity.nameTag || entity.id} Expanded Web @ ${Vector3Lib.toString(newWeb.location, 0, true)}`, devDebug.watchEntityEvents);
-            DynamicPropertyLib.add(entity, dynamicVars.websExpanded, 1);
-            if (devDebug.debugOn) {
-                debugScoreboards.sbCtrsScoreboard?.addScore(debugScoreboards.webs, 1);
-                debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.expandWeb, 1);
-            }
-        }
-        else {
-            alertLog.warn(`${entity.nameTag || entity.id} May Have Expanded Web @ ${Vector3Lib.toString(newWeb.location, 0, true)}`, devDebug.watchEntityEvents);
-        }
-    }, 4);
-
-    return true;
-}
-//==============================================================================
-/**
- * @param {Entity} entity 
- * @returns {boolean}
- */
-function placeWeb (entity) {
-    //this cannot be called unless spider is next to a target block, so place in air if cannot determine
-    const { dimension, location } = entity;
-    const inBlock = dimension.getBlock(location);
-
-    if (!inBlock) { return false; }
-
-    if (inBlock.typeId == HOME_ID) {
-        webActivityRegister(entity);
-        system.run(() => {
-            entity.teleport(inBlock.center());
-            entity.triggerEvent(entityEvents.stayInWebEventName);
-        });
-        return true;
-    }
-
-    //has to be in air now... AND    
-    //I do not want diagonal webs, so reset to wander if a valid target block is not adjacent
-    if (inBlock.typeId !== airBlock || !targetBlockAdjacent(inBlock)) {
-        webActivityRegister(entity);
-        system.run(() => entity.triggerEvent(entityEvents.wanderEventName));
-        return false;
-    }
-
-    //Place Web
-    setWebAndEnter(entity, inBlock.location); // 3 ticks
-
-    //Log
-    system.runTimeout(() => {
-        if (isInWeb(entity)) {
-            alertLog.log(`§l${entity.nameTag || entity.id}§r §5Placed New Web @ ${Vector3Lib.toString(inBlock.location, 0, true)}`, devDebug.watchEntityEvents);
-            DynamicPropertyLib.add(entity, dynamicVars.websCreated, 1);
-            if (devDebug.debugOn) {
-                debugScoreboards.sbCtrsScoreboard?.addScore(debugScoreboards.webs, 1);
-                debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.newWeb, 1);
-            }
-        }
-        else {
-            alertLog.warn(`§l${entity.nameTag || entity.id}§r §6May have Placed New Web @ ${Vector3Lib.toString(inBlock.location, 0, true)}`, devDebug.watchEntityEvents);
-        }
-    }, 4);
-
-    return true;
-}
-//===================================================================
-/**
- * @param {Block} block
- * @returns {boolean}  
- */
-function webAdjacent (block) {
-
-    const neighbors = [
-        block.above(),
-        block.below(),
-        block.east(),
-        block.west(),
-        block.north(),
-        block.south(),
-    ];
-
-    for (const nb of neighbors) {
-        const id = nb?.typeId;
-        if (id && id === HOME_ID) return true;
-    }
-    return false;
-}
-//===================================================================
-/**
- * @param {Entity} entity 
- * @param {import("@minecraft/server").Vector3} location 
- */
-function setWebAndEnter (entity, location) {
-    //...and stay
-
-    system.runTimeout(() => {
-
-        entity.dimension.setBlockType(location, HOME_ID);
-        DynamicPropertyLib.add(entity, dynamicVars.websCreated, 1);
-        webActivityRegister(entity);
-
-        system.runTimeout(() => {
-            teleportAndCenter(entity, location);
-
-            system.runTimeout(() => {
-                entity.triggerEvent(entityEvents.stayInWebEventName);
-            }, 1);
-        }, 1);
-    }, 1);
-}
 //===================================================================
 /**
  * @param {Entity} entity 
  */
 function newEgg (entity) {
-    const dimension = entity.dimension;
-    const inBlock = dimension.getBlock(entity.location);
-
-    if (!inBlock) { return; }
-
-    system.runTimeout(() => {
-        if (devDebug.debugOn) debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.layEgg, 1);
-        if (entity.isValid) entity.teleport(inBlock.center());
-    }, 1);
-}
-//===================================================================
-/**
- * 
- * @param {Entity} entity 
- * @param {import("@minecraft/server").Vector3} location 
- */
-function teleportAndCenter (entity, location) {
-    system.runTimeout(() => {
-        centerAlign(entity);
-        entity.teleport((location));
-        system.runTimeout(() => { centerAlign(entity); }, 1);
-    }, 1);
-}
-//===================================================================
-/**
- * @param {Entity} entity  
- */
-function centerAlign (entity) {
     if (!entity.isValid) return;
-    const center = entity.dimension.getBlock(entity.location)?.center();
-    if (center) entity.teleport(center);
+
+    const inBlock = entity.dimension.getBlock(entity.location);
+    if (!inBlock || !inBlock.isValid) return;
+
+    devDebug.dsb.increment('stats', 'layEgg');
+    system.runTimeout(() => { EntityLib.centerAlign(entity); }, 1);
 }
 //===================================================================
 /**
@@ -371,20 +419,6 @@ function lastLocationRegister (entity, tickDelay = 0) {
 export function lastTickAndLocationRegister (entity, tickDelay = 0) {
     system.runTimeout(() => {
         if (!entity.isValid) return;
-        entity.setDynamicProperty(dynamicVars.lastActiveTick, system.currentTick);
-        entity.setDynamicProperty(dynamicVars.lastLocation, entity.location);
-    }, tickDelay);
-}
-//===================================================================
-/**
- * @summary Used to determine if Spider Entity is stalled, so it can be replaced later
- * @param {Entity} entity
- * @param {number} [tickDelay=0]   
- */
-function webActivityRegister (entity, tickDelay = 0) {
-    system.runTimeout(() => {
-        if (!entity.isValid) return;
-        entity.setDynamicProperty(dynamicVars.lastWebActivityTick, system.currentTick);
         entity.setDynamicProperty(dynamicVars.lastActiveTick, system.currentTick);
         entity.setDynamicProperty(dynamicVars.lastLocation, entity.location);
     }, tickDelay);
@@ -424,7 +458,7 @@ function hasMovedRegister (entity, tickDelay = 0) {
 function clearBadHungerIndicators (entity) {
     if (!entity || !entity.isValid) return;
 
-    const hourOfDay = GetWorldTime().hours;
+    const hourOfDay = getWorldTime().hours;
     const satiated = entity.hasTag('satiated');
     const hungry = entity.hasTag('hungry');
 
@@ -446,7 +480,7 @@ function setHungerChance (entity, hungerChance = 0.25, debug = false) {
     const { location, nameTag } = entity;
     const locationStr = Vector3Lib.toString(location, 0, true);
 
-    const hourOfDay = GetWorldTime().hours;
+    const hourOfDay = getWorldTime().hours;
     const satiated = entity.hasTag('satiated');
     const hungry = entity.hasTag('hungry');
 
@@ -525,31 +559,7 @@ export function flyPopulationCheck () {
         });
     }, fliesKilled ? 105 : 1);
 }
-//===================================================================
-/**
- * @param {string} entityTypeId 
- * @param {Dimension | undefined} dimension 
- * @param {Vector3 | undefined} location 
- * @param {number} [minEntities=1] 
- * @param {number} [maxEntities=1] 
- * @param {number} [maxTickDelay=1] 
- * @param {number} [minTickDelay=1] 
- */
-export function spawnEntityAtLocation (entityTypeId, dimension, location, minEntities = 1, maxEntities = 1, minTickDelay = 1, maxTickDelay = 1) {
-    if (!location) return;
-    if (!dimension || !dimension.isChunkLoaded(location)) return;
 
-    if (maxEntities < 1 || minEntities > maxEntities) maxEntities = minEntities;
-    if (maxTickDelay < minTickDelay) maxTickDelay = minTickDelay;
-
-    const locationStr = Vector3Lib.toString(location, 1, false, ' ');
-    const cmd = `summon ${entityTypeId} ${locationStr} 0 0 minecraft:entity_spawned`;
-    let max = minEntities === maxEntities ? minEntities : rndInt(minEntities, maxEntities);
-
-    for (let i = 0; i < max; i++) {
-        worldRun(cmd, dimension, rndInt(minTickDelay, maxTickDelay), location); //rnd so spider has time to move away
-    }
-}
 //===================================================================
 /**
  * 
@@ -567,72 +577,13 @@ function spawnSpidersAroundPlayerIfNeeded (player) {
     const closeSpiders = dimension.getEntities(entitySearchOptions);
 
     if (closeSpiders.length <= 2) {
-        debugScoreboards.sbStatsScoreboard?.addScore('ety: Added', 1);
+        devDebug.dsb.increment('stats', 'Spiders Added');
         alertLog.warn(`§lSpawning spiders around ${player.name}`, devDebug.debugOn);
         spawnEntityAtLocation(watchFor.typeId, dimension, location, 1, 3, 1, 100);
     }
 }
-//temp here - put in entityLib
-/**
- * 
- * @param {Player} p 
- */
-function isOutside (p) {
-    if (!p.isValid) return false;
-
-    const { dimension } = p;
-
-    const inBlock = dimension.getBlock(p.location);
-    if (!inBlock || !inBlock.isValid) return false;
-    const playerFeetLocation = inBlock.center();
-
-    /*
-    Since getTopmostBlock returns the top most SOLID block, meaning it does not count leaves and water and webs (yay)
-    I can use it to determine outside-ish
-    */
-    const topSolidBlock = dimension.getTopmostBlock(playerFeetLocation);
-    if (!topSolidBlock) return false;
-
-    if ([ 'overworld', 'the_end' ].includes(dimension.id)) {
-        if (topSolidBlock.location.y <= playerFeetLocation.y) return true;
-        //maybe under a tree, so more checking, if it was a log
-        if (!topSolidBlock.typeId.includes('log')) return false;
-    }
-    //NOT FINISHED with the logic to make it solid.  parm should be dimension,location to check, not player FIXME:
-    // so I can call it to check the 3x3 space around the player recursively if space does not have something in it.
-    //FIXME:  should check a 3x3 area, in case outside, but under something
-    if (dimension.id === 'overworld') return false;
 
 
-    return true;
-}
-//temp here - put in entityLib
-/**
- * 
- * @param {Player} p 
- */
-function isInForest (p) {
-    if (!isOutside(p)) return false;
-
-    const { dimension, location } = p;
-    const inBiome = dimension.getBiome(location).id;
-
-    if (inBiome.includes('cave')) return false;
-    if (inBiome.includes('underground')) return false;
-    if (inBiome.includes('deep_dark')) return false;
-
-    if (inBiome.includes('forest')) return true;
-    if (inBiome.includes('jungle')) return true;
-    if (inBiome.includes('savanna')) return true;
-    if (inBiome.includes('hills')) return true;
-    if (inBiome.includes('mountain')) return true;
-    if (inBiome.includes('tiaga')) return true;
-    if (inBiome.includes('bamboo')) return true;
-    if (inBiome.includes('swamp')) return true;
-    if (inBiome.includes('garden')) return true;
-
-    return false;
-}
 //===================================================================
 export function spiderPopulationCheck () {
 
@@ -643,6 +594,7 @@ export function spiderPopulationCheck () {
             if (p.isValid &&
                 p.location.y >= 60 &&
                 (p.isOnGround || p.getGameMode() === GameMode.Creative) &&
+                isOutside(p) &&
                 isInForest(p)
             ) {
                 spawnSpidersAroundPlayerIfNeeded(p);
@@ -666,7 +618,7 @@ function entityStallCheck_lastTick (entity) {
             //report once
             alertLog.warn(`§l${nameTag}§r§c is in an unLoaded Chunk §r@ ${locationStr}`, devDebug.debugOn);
             entity.setDynamicProperty('isUnloaded', true);
-            if (devDebug.debugOn) debugScoreboards.sbStatsScoreboard?.addScore('ety: §j§lUnloaded Chunk', 1);
+            devDebug.dsb.increment('stats', 'chunkUnloaded');
         }
         return;
     }
@@ -686,7 +638,7 @@ function entityStallCheck_lastTick (entity) {
 
     if (alreadyStalled) {
         if (devDebug.debugOn) {
-            debugScoreboards.sbStatsScoreboard?.addScore('ety: §c§lKilled', 1);
+            devDebug.dsb.increment('stats', 'killed');
             const msg = `§r§l${nameTag}§r§v is Stalled (${deltaMinutes}m) @ ${locationStr} - §l§cKilled`;
             alertLog.warn(msg);
         }
@@ -701,7 +653,7 @@ function entityStallCheck_lastTick (entity) {
 
     system.runTimeout(() => {
         if (entity.isValid) {
-            debugScoreboards.sbStatsScoreboard?.addScore(debugScoreboards.stalled, 1);
+            devDebug.dsb.increment('stats', 'stalled');
             entity.setDynamicProperty('isStalled', true);
             entity.triggerEvent(entityEvents.wanderEventName);
             system.runTimeout(() => {
@@ -732,7 +684,7 @@ export function stalledSpiderCheckAndFix () {
 //===================================================================
 // --- Helper: Tree Spider–style names ---
 // Favor sibilants, light vowels, and -y/-ie endings. You can override anything via `overrides`.
-export function makeSpiderName (overrides = {}) {
+function makeSpiderName (overrides = {}) {
     return makeRandomName({
         consonants: [ 's', 'z', 'ph', 'sh', 'ch', 'th', 'f', 'v', 'h', 'l', 'r', 'n', 'm', 'k', 'g', 't', 'd', 'w' ],
         vowels: [ 'i', 'e', 'y', 'a', 'o' ],
@@ -756,8 +708,8 @@ export function makeSpiderName (overrides = {}) {
 }
 // --- Helper: Tree Spider–style names ---
 // Favor sibilants, light vowels, and -y/-ie endings. You can override anything via `overrides`.
-export function makeSpiderEggName (overrides = {}) {
-    // i.e. like eggBert, Eggie
+function makeSpiderEggName (overrides = {}) {
+    // i.e. like eggBert
     return 'Eg' + makeRandomName({
         consonants: [ 's', 'z', 'f', 'v', 'l', 'r', 'n', 'm', 't', 'd', 'w', 'ph' ],
         vowels: [ 'i', 'e', 'y', 'a', 'o' ],
@@ -777,21 +729,7 @@ export function makeSpiderEggName (overrides = {}) {
         ...overrides
     }).toLowerCase();
 }
-//====================================================================
-export function GetWorldTime () {
-    const daytime = world.getTimeOfDay() + 6000;
-    const datetime = new Date(daytime * 3.6 * 1000);
 
-    return { hours: datetime.getHours(), minutes: datetime.getMinutes() };
-}
-export function hourlyChime () {
-    const now = () => { return `§l§gTime: ${GetWorldTime().hours}:00`; };
-    alertLog.log(`Start ${now()}`, devDebug.debugOn);
-
-    system.runInterval(() => {
-        alertLog.log(now(), devDebug.debugOn);
-    }, Ticks.minecraftHour);
-}
 //====================================================================
 /**
  * @summary Process the event/messages passed from the entity itself - called from the subscribe with a one tick delay already
@@ -811,7 +749,7 @@ export function entityEventProcess (entity, id, message) {
         hasMovedRegister(entity);
 
         if (!nameTag && (watchFor.allowFakeNameTags || devDebug.debugOn)) {
-            nameTag = makeSpiderName() || 'Little Tree Spider';
+            nameTag = makeSpiderName() || 'Lil Tree Spider';
             if (entity.isValid) entity.nameTag = nameTag; else return;
         }
     }
@@ -823,11 +761,11 @@ export function entityEventProcess (entity, id, message) {
         }
     }
     else if (typeId === watchFor.fly_typeId) {
-        if (id === 'debugLogEvent:NewFly') debugScoreboards.sbStatsScoreboard?.addScore('§l§cNew Fly', 1);
+        if (id === 'debugLogEvent:NewFly') devDebug.dsb.increment('stats', 'newFlies');
         return;
     }
     else if (typeId === watchFor.firefly_typeId) {
-        if (id === 'debugLogEvent:NewFireFly') debugScoreboards.sbStatsScoreboard?.addScore('§lNew Fire Fly', 1);
+        if (id === 'debugLogEvent:NewFireFly') devDebug.dsb.increment('stats', 'newFireflies');
         return;
     }
 
@@ -838,9 +776,9 @@ export function entityEventProcess (entity, id, message) {
     //Main Events
     if (id.startsWith('mainEvent')) {
 
-        if (id === `mainEvent:enterWeb`) { enterWeb(entity, message == 'baby' ? true : false); return; }
-        if (id === `mainEvent:expandWeb`) { expandWeb(entity); return; }
-        if (id === `mainEvent:placeWeb`) { placeWeb(entity); return; }
+        if (id === `mainEvent:enterWeb`) { Web.enterWeb(entity, message == 'baby' ? true : false); return; }
+        if (id === `mainEvent:expandWeb`) { Web.expandWeb(entity); return; }
+        if (id === `mainEvent:placeWeb`) { Web.placeWeb(entity); return; }
         if (id === `mainEvent:newEgg`) { newEgg(entity); return; }
         if (id === `mainEvent:layEgg`) { DynamicPropertyLib.add(entity, dynamicVars.eggsLaid, 1); return; }
         if (id === `mainEvent:eatFireflies`) { fireFlyFood(entity); return; }
@@ -886,25 +824,22 @@ export function entityEventProcess (entity, id, message) {
     if (id.startsWith('debugLogEvent')) {
         if (id === 'debugLogEvent:NewEntity') {
             if (message == 'born') {
-                const sbEntry = debugScoreboards.born;
                 DynamicPropertyLib.add(entity, dynamicVars.entityBorn, 1);
-                debugScoreboards.sbStatsScoreboard?.addScore(sbEntry, 1);
+                devDebug.dsb.increment('stats', 'born');
                 alertLog.log(`§bNew Baby Born§r in Biome ${dimension.getBiome(location).id}: §l${nameTag}§r§6  @ ${locationStr}`, devDebug.watchEntityEvents || devDebug.watchEntityGoals);
                 return;
             }
 
             if (message == 'spawned') {
-                const sbEntry = debugScoreboards.spawned;
                 DynamicPropertyLib.add(entity, dynamicVars.entitySpawns, 1);
-                debugScoreboards.sbStatsScoreboard?.addScore(sbEntry, 1);
+                devDebug.dsb.increment('stats', 'spawned');
                 alertLog.log(`§aNew Adult Spawned§r in Biome ${dimension.getBiome(location).id}: §l${nameTag}§r§6  @ ${locationStr} - scriptEventReceive ()`, devDebug.watchEntityEvents || devDebug.watchEntityGoals);
                 return;
             }
         }
 
         if (message == 'puberty' && devDebug.watchEntityEvents) {
-            const sbEntry = debugScoreboards.growUp;
-            debugScoreboards.sbStatsScoreboard?.addScore(sbEntry, 1);
+            devDebug.dsb.increment('stats', 'grewUp');
             alertLog.log(`§l${nameTag}§r §bGrew Up @ ${locationStr}`);
             return;
         }

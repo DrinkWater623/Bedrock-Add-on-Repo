@@ -684,7 +684,7 @@ export class ScoreboardLib {
     /**
     * @returns {ScoreboardObjective | undefined}
     */
-    static sidBar_query () {
+    static sideBar_query () {
         return queryDisplayLotId(DisplaySlotId.Sidebar);
     }
 }

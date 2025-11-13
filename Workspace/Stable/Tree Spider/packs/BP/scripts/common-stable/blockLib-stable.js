@@ -35,6 +35,53 @@ export function isValidBlock(block){
     if (!block.isValid) return false
     return true
 }
+/**
+ * @param {Block} block 
+ * @param {string} blockTypeId 
+ * @returns {Block | undefined}
+ */
+export function closestAdjacentBlockTypeId (block, blockTypeId) {
+
+    const neighbors = [
+        block.above(),
+        block.below(),
+        block.east(),
+        block.west(),
+        block.north(),
+        block.south(),
+    ];
+
+    for (const nb of neighbors) {
+        const id = nb?.typeId;
+        if (id && id === blockTypeId) return nb;
+    }
+
+    //Found None
+    return;
+}
+//===================================================================
+/**
+ * @param {Block} homeBlock
+ * @param {string} lookForTypeId 
+ * @returns {boolean}  
+ */
+export function isBlockAdjacentToTypeId (homeBlock, lookForTypeId) {
+
+    const neighbors = [
+        homeBlock.above(),
+        homeBlock.below(),
+        homeBlock.east(),
+        homeBlock.west(),
+        homeBlock.north(),
+        homeBlock.south(),
+    ];
+
+    for (const nb of neighbors) {
+        const id = nb?.typeId;
+        if (id && id === lookForTypeId) return true;
+    }
+    return false;
+}
 //==============================================================================
 /**
  * @summary Beta: dimension.getBlocks

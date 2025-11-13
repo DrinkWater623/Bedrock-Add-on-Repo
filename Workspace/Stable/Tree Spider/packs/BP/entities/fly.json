@@ -196,6 +196,28 @@
           "minecraft:oak_leaves", //has apples
           "minecraft:sweet_berry_bush"
         ] //,"on_stay_completed": [{"event":"spawn_friend","target":"self"}]
+      },
+      "minecraft:behavior.snacking":{
+        "priority": 10,
+        "items": [
+          "dw623:rotten_flesh_kabob",
+          "dw623:rotten_flesh_block",
+          "minecraft:apple",
+          "minecraft:cake", //TODO: the other color cake
+          "minecraft:cane",
+          "minecraft:cookie",
+          "minecraft:glow_berries",
+          "minecraft:honey_block",
+          "minecraft:honey_bottle",
+          "minecraft:pumpkin_pie",
+          "minecraft:poisonous_potato",
+          "minecraft:rotten_flesh",
+          "minecraft:spider_eye",
+          "minecraft:suspicious_stew",
+          "minecraft:sweet_berries"          
+        ],
+        "snacking_cooldown": 20,
+        "snacking_stop_chance": 0.25
       },            
       // with others  
       "minecraft:behavior.avoid_mob_type": {
@@ -303,6 +325,7 @@
           "minecraft:cake", //TODO: the other color cake
           "minecraft:cookie",
           "minecraft:glow_berries",
+          "minecraft:honey_block",
           "minecraft:honey_bottle",
           "minecraft:pumpkin_pie",
           "minecraft:poisonous_potato",

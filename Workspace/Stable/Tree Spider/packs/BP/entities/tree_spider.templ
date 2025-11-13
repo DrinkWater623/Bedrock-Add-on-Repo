@@ -51,9 +51,11 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
             {
                 "mark":5   ,"type":"nature"    ,"avoid_others":true,"on_reach_event":"make_web",
                 "target_blocks": [   
-                    "minecraft:sunflower","minecraft:lilac","minecraft:rose_bush" ,"minecraft:peony",
-                    "minecraft:sweet_berry_bush","minecraft:firefly_bush",
+                    //"minecraft:sunflower","minecraft:lilac","minecraft:rose_bush" ,"minecraft:peony",
+                    //"minecraft:sweet_berry_bush",
+                    "minecraft:firefly_bush",
                     "minecraft:big_drip_leaf"
+                    //TODO: add berries back later and more of for eating flies that may be around them
                 ] 
             },
             {
@@ -107,7 +109,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                         ]
                     }
                 },
-                "add_flies":{
+                "cg:add_flies":{
                     "minecraft:spawn_entity": {
                         "entities": [
                             {
@@ -120,7 +122,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                         ]
                     }
                 },                
-                "spider_adult": {
+                "cg:spider_adult": {
                     "minecraft:attack": {"damage":2,"effect_name": "slowness","effect_duration": 4},
                     "minecraft:loot": {	"table": "loot_tables/entities/spider.json" },
                     "minecraft:scale": {"value":0.50},
@@ -288,6 +290,16 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                     }
                 },
                 "notice_flies_less":{
+                    "minecraft:behavior.snacking": {
+                        "priority": 50,
+                        "items": [
+                            "dw623:dead_fly_ball",
+                            "dw623:dead_fly_ball_stick"
+                        ],
+                        "snacking_cooldown": 60,
+                        "snacking_cooldown_min": 1,
+                        "snacking_stop_chance": 0.75
+                    },
                     "minecraft:behavior.nearest_attackable_target": {
                         "priority": 50,
                         "entity_types": [
@@ -298,15 +310,15 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                         ]
                     },
                     "minecraft:behavior.stalk_and_pounce_on_target": {
-                    "priority": 50,
-                    "stalk_speed": 1.2,
-                    "max_stalk_dist": 4,
-                    "leap_height": 4,
-                    "leap_dist": 4,
-                    "pounce_max_dist": 2,
-                    "interest_time": 3,
-                    "stuck_time": 2,
-                    "strike_dist": 1
+                        "priority": 50,
+                        "stalk_speed": 1.2,
+                        "max_stalk_dist": 4,
+                        "leap_height": 4,
+                        "leap_dist": 4,
+                        "pounce_max_dist": 2,
+                        "interest_time": 3,
+                        "stuck_time": 2,
+                        "strike_dist": 1
                     },
                     //eat vs nearest attackable ????
                     "minecraft:behavior.eat_mob": {
@@ -320,6 +332,16 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                     }   
                 },
                 "notice_flies_more":{
+                    "minecraft:behavior.snacking": {
+                        "priority": 25,
+                        "items": [
+                            "dw623:dead_fly_ball",
+                            "dw623:dead_fly_ball_stick"
+                        ],
+                        "snacking_cooldown": 30,
+                        "snacking_cooldown_min": 0.5,
+                        "snacking_stop_chance": 0.5
+                    },
                     "minecraft:behavior.nearest_attackable_target": {
                         "priority": 5,
                         "entity_types": [
@@ -788,7 +810,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                 "minecraft:entity_spawned": {
                     "sequence":[            
                         {"queue_command": {"command":["scriptevent debugLogEvent:NewEntity spawned"]}},
-                        {"add":{"component_groups":["spider_adult","adult_spider_calm","add_flies"]}},
+                        {"add":{"component_groups":["cg:spider_adult","cg:adult_spider_calm","cg:add_flies"]}},
                         {"trigger":"look_for_web_nearest_start"}
                     ]                   
                 },                   
@@ -949,17 +971,19 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                 "stay_in_web_end": {
                     //Needs to turn back on physics and gravity here   
                     "sequence":[                        
-                        {"randomize": [
-                            //TODO: monitor for population control... reduce eggs if needed   
-                            {"weight":80,"trigger":"stay_in_web_choose_next"},  
-                            {"weight":20,
-                            "remove":{"component_groups":["avoid_eggs"]},
-                            "add":{"component_groups":["lay_egg_sac"]}
-                        }
+                        {"randomize": [                            
+                            {"weight":750,"trigger":"stay_in_web_choose_next"},  
+                            {"weight":25,"trigger":"lay_egg_sac_start"}
                         ]}
                     ]                    
                 },                
                 //---------------------------------            
+                "lay_egg_sac_start":{                    
+                    "sequence":[                                                
+                        {"remove":{"component_groups":["avoid_eggs"]}},                        
+                        {"add":{"component_groups":["lay_egg_sac"]}}
+                    ]  
+                },
                 "lay_egg_sac_end":{                    
                     "sequence":[                        
                         {"queue_command": {"command":["scriptevent mainEvent:layEgg"]}},
@@ -980,9 +1004,9 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                 //---------------------------------            
                 "stay_in_web_choose_next": {
                     "randomize": [   
-                        {"weight":30,"trigger":"expand_web"},
+                        {"weight":35,"trigger":"expand_web"},
                         {"weight":40,"trigger":"wander_around_start"},                        
-                        {"weight":30,"trigger":"stay_in_web_start"}
+                        {"weight":25,"trigger":"stay_in_web_start"}
                     ]        
                 }, 
                 //---------------------------------          
@@ -1002,10 +1026,15 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                     
                 },
                 "wander_around_end": {
-                    "randomize": [
-                        {"weight":40,"trigger":"look_for_web_nearest_start"}, 
-                        {"weight":40,"trigger":"wander_around_start"},
-                        {"weight":20,"trigger":"look_for_log_nearest_start"}
+                    "sequence":[                         
+                        {
+                            "filter":{},
+                            "randomize": [
+                                {"weight":40,"trigger":"look_for_web_nearest_start"}, 
+                                {"weight":40,"trigger":"wander_around_start"},
+                                {"weight":20,"trigger":"look_for_log_nearest_start"}
+                            ]
+                        }
                     ]
                 },
                 //---------------------------------            
@@ -1022,17 +1051,17 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                 },
                 "entity_born_script_event": { //because of the multiple script events in same tick..
                     "queue_command": {"command":["scriptevent debugLogEvent:NewEntity born"]},
-                    "add":{"component_groups":["baby_wander_around_delay_timer","add_flies"]}
+                    "add":{"component_groups":["baby_wander_around_delay_timer","cg:add_flies"]}
                 },                
                 "baby_ageable_grow_up": {  
                     "sequence":[
                         {"queue_command": {"command":["scriptevent debugLogEvent:GrowUp puberty"]}},
                         {"remove":{"component_groups":["spider_baby"]}},
-                        {"add":{"component_groups":["spider_adult","become_adult_activity_delay_timer"]}}                        
+                        {"add":{"component_groups":["cg:spider_adult","become_adult_activity_delay_timer"]}}                        
                     ]
                 },
                 "become_adult_activity_set": {
-                    "add":{"component_groups":["adult_spider_calm","look_for_log_nearest_start_delay_timer"]}
+                    "add":{"component_groups":["cg:adult_spider_calm","look_for_log_nearest_start_delay_timer"]}
                 },                                                                                                
                 "baby_enter_web":{"queue_command":{"command":["scriptevent mainEvent:enterWeb baby"]}}, 
                 "baby_look_for_web_start": {
