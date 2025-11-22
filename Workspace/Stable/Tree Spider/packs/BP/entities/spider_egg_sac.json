@@ -13,10 +13,43 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
       "identifier": "dw623:tree_spider_egg_sac",
       //"runtime_identifier": "minecraft:egg",
       "is_spawnable": true,
-      "is_summonable": true,
-      "properties":{"bit:debug":{"type":"bool","default":false}}
+      "is_summonable": true
     },
     "component_groups": {
+      "cg:temp_validation": {
+          "minecraft:type_family": {"family":["tree_spider_egg_sac","dw623","dw623_validation"]}, 
+          "minecraft:scale": {"value":0.125},
+          "minecraft:physics":{"has_collision":false,"has_gravity":false},
+          //"minecraft:timer": {"looping":false,"time":5.0,"time_down_event":{"event":"despawn_me"}},
+          "minecraft:breathable": {
+              "breathes_air": true,                    
+              "breathes_lava": true,
+              "breathes_solids": true,
+              "breathes_water": true,
+              "generates_bubbles": false
+          },
+          "minecraft:behavior.avoid_mob_type": {
+              "priority": 1,                        
+              "avoid_target_xz":16,
+              "max_dist": 8,
+              "max_flee": 8,
+              "walk_speed_multiplier": 5,
+              "sprint_speed_multiplier": 5,
+              "sprint_distance":8,
+              "entity_types": [                            
+                  {
+                      "filters": {
+                          "any_of":[
+                              {"test":"is_family","subject":"other","value":"mob"},
+                              {"test":"is_family","subject":"other","value":"animal"},
+                              {"test":"is_family","subject":"other","value":"monster"},
+                              {"test":"is_family","subject":"other","value":"player"}
+                          ]
+                      }
+                  }
+              ]
+          }                     
+      },
       "instant_despawn":{"minecraft:instant_despawn":{}},
       "hatchlings":{
         "minecraft:timer": {"looping":false,"time":[30,600],"time_down_event":{"event":"despawn_me"}},
@@ -31,47 +64,54 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
             }
           ]
         }        
-      } 
-    },
-    "components": {         
-      "minecraft:scale": {"value":0.3},
-      "minecraft:type_family": {"family":["tree_spider_egg_sac","mob","dw623"]},
-      "minecraft:despawn":{"filters":{"test":"in_block","operator": "!=","value":"minecraft:web"}},
-      "minecraft:collision_box": {"width":0.2,"height":0.2},      
-      "minecraft:physics":{"has_collision":false,"has_gravity":false},
-      "minecraft:pushable": {"is_pushable":false,"is_pushable_by_piston":true},      
-      "minecraft:breathable": {
-          "breathes_air": true,
-          "breathe_blocks": [
-              "minecraft:web",
-              "minecraft:acacia_leaves","minecraft:birch_leaves","minecraft:cherry_leaves","minecraft:jungle_leaves",
-              "minecraft:dark_oak_leaves","minecraft:mangrove_leaves","minecraft:oak_leaves","minecraft:spruce_leaves",
-              "minecraft:azalea","minecraft:azalea_leaves","minecraft:azalea_leaves_flowered"    
-          ],
-          "total_supply": 600,
-          "suffocate_time":1
       },
-      "minecraft:conditional_bandwidth_optimization": {"default_values":{"max_optimized_distance":80,"max_dropped_ticks":7,"use_motion_prediction_hints":true}},
+      "cg:standard_egg":{
+        "minecraft:scale": {"value":0.3},
+        "minecraft:despawn":{"filters":{"test":"in_block","operator": "!=","value":"minecraft:web"}},
+        "minecraft:collision_box": {"width":0.2,"height":0.2},      
+        "minecraft:physics":{"has_collision":false,"has_gravity":false},
+        "minecraft:pushable": {"is_pushable":false,"is_pushable_by_piston":true},      
+        "minecraft:breathable": {
+            "breathes_air": true,
+            "breathe_blocks": [
+                "minecraft:web",
+                "minecraft:acacia_leaves","minecraft:birch_leaves","minecraft:cherry_leaves","minecraft:jungle_leaves",
+                "minecraft:dark_oak_leaves","minecraft:mangrove_leaves","minecraft:oak_leaves","minecraft:spruce_leaves",
+                "minecraft:azalea","minecraft:azalea_leaves","minecraft:azalea_leaves_flowered"    
+            ],
+            "total_supply": 600,
+            "suffocate_time":1
+        },
+        "minecraft:conditional_bandwidth_optimization": {"default_values":{"max_optimized_distance":80,"max_dropped_ticks":7,"use_motion_prediction_hints":true}},
       //=======================================
       // 10 to 20 min
       "minecraft:timer": {"looping":false,"time":[600,1200],"time_down_event":{"event":"hatch"}}
+
+      } 
+    },
+    "components": {         
+      "minecraft:type_family": {"family":["tree_spider_egg_sac","mob","dw623"]}
     },
     "events": {
+      "dw623:entity_validation":{
+          "sequence":[            
+              {"queue_command": {"command":["scriptevent entity:validation egg_sac"]}},
+              {"add":{"component_groups":["cg:temp_validation"]}}                        
+          ]
+      },
+      "minecraft:entity_spawned": {
+        "sequence":[            
+          {"queue_command": {"command":["scriptevent mainEvent:newEgg"]}},
+          {"add":{"component_groups":["cg:standard_egg"]}}
+        ]
+      },  
       "despawn_me": {"add":{"component_groups":["instant_despawn"]}},
       "hatch":{
         "sequence": [
-          {
-            "filters":{"test":"bool_property","domain":"bit:debug", "value":true},
-            "queue_command": {"command":["scriptevent alertEvent §gEggs Hatched"]}
-          },
+          {"queue_command":{"command":["scriptevent alertEvent:egg §gEggs Hatched"]}},
           {"add":{"component_groups":["hatchlings"]}}
         ]
-      },
-      //Called from Spider who spawned the egg
-      "log_activity":{
-        "filters":{"test":"bool_property","domain":"bit:debug", "value":true},
-        "queue_command": {"command":["scriptevent mainEvent:newEgg"]}
-      }
+      }      
     }
   }
 }

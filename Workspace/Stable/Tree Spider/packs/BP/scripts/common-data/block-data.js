@@ -7,6 +7,7 @@ URL: https://github.com/DrinkWater623
 ========================================================================
 Change Log
     20250103 - Created
+    20251118 - Added logs/stairs
 ========================================================================
 TODO: add more types as I need them or think of them   
 ========================================================================*/
@@ -94,10 +95,21 @@ export const gravityBlocks = vanillaBlocks
 // regular tree leaves and stuff
 //=============================================================================
 export const leafBlocks = vanillaBlocks
-    .filter(blockName => {return blockName.endsWith('_leaves');});
+    .filter(blockName => { return blockName.endsWith('_leaves'); })
+    .concat(["minecraft:azalea", "minecraft:azalea_leaves_flowered"]);
+
+export const logBlocks = vanillaBlocks
+    .filter(blockName => { return blockName.endsWith('_log'); })
+    .concat(["minecraft:warped_stem", "minecraft:crimson_stem"]);
 
 export const saplingBlocks = vanillaBlocks
-    .filter(blockName => {return blockName.endsWith('_sapling');});
+    .filter(blockName => { return blockName.endsWith('_sapling'); });
+
+export const plankBlocks = vanillaBlocks
+    .filter(blockName => { return blockName.endsWith('_planks'); });
+
+export const stairBlocks = vanillaBlocks
+    .filter(blockName => { return blockName.endsWith('_stairs'); });
 //=============================================================================
 export const tallNatureBlocks = [
     "minecraft:rose_bush",
@@ -109,6 +121,6 @@ export const tallNatureBlocks = [
     "minecraft:tall_grass",
     "minecraft:tall_dry_grass",
     'minecraft:large_fern'
-]
+];
 // End of File
 //=============================================================================

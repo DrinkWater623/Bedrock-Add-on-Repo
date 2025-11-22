@@ -13,7 +13,7 @@
       "minecraft:display_name": {"value":"Rotten flesh kabob"},
       "minecraft:hand_equipped": true,      
       "minecraft:max_stack_size": 1,
-       "minecraft:use_animation": "brush",
+      "minecraft:use_animation": "spear",
       "minecraft:use_modifiers": {
         "emit_vibrations":true,
         "movement_modifier": 0.35,        

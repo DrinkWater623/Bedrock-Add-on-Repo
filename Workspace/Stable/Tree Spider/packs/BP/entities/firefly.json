@@ -15,6 +15,40 @@
       }      
     },
     "component_groups": { 
+      "cg:temp_validation": {
+          "minecraft:type_family": {"family":["firefly","dw623","dw623_validation"]}, 
+          "minecraft:scale": {"value":0.125},
+          "minecraft:physics":{"has_collision":false,"has_gravity":false},
+          //"minecraft:timer": {"looping":false,"time":5.0,"time_down_event":{"event":"despawn_me"}},
+          "minecraft:breathable": {
+              "breathes_air": true,                    
+              "breathes_lava": true,
+              "breathes_solids": true,
+              "breathes_water": true,
+              "generates_bubbles": false
+          },
+          "minecraft:behavior.avoid_mob_type": {
+              "priority": 1,                        
+              "avoid_target_xz":16,
+              "max_dist": 8,
+              "max_flee": 8,
+              "walk_speed_multiplier": 5,
+              "sprint_speed_multiplier": 5,
+              "sprint_distance":8,
+              "entity_types": [                            
+                  {
+                      "filters": {
+                          "any_of":[
+                              {"test":"is_family","subject":"other","value":"mob"},
+                              {"test":"is_family","subject":"other","value":"animal"},
+                              {"test":"is_family","subject":"other","value":"monster"},
+                              {"test":"is_family","subject":"other","value":"player"}
+                          ]
+                      }
+                  }
+              ]
+          }                     
+      },
       "instant_despawn":{"minecraft:instant_despawn":{}},               
       "duplicate_me": {
         "minecraft:spawn_entity": {
@@ -43,92 +77,102 @@
       "perish": {
         "minecraft:experience_reward": {"on_death":"0"},
         "minecraft:hurt_on_condition":{"damage_conditions":[{"cause":"none","damage_per_tick":999}]}
+      },
+      "cg:standard_firefly":{
+        "minecraft:balloonable": {"mass":0.5},
+        "minecraft:scale": {"value":0.15},
+        "minecraft:collision_box": {"width":0.55,"height":0.5},
+        "minecraft:mark_variant": {"value":1}, 
+        "minecraft:conditional_bandwidth_optimization": {},
+        "minecraft:is_hidden_when_invisible": {},
+        "minecraft:health": {"value":1,"max":1},
+        "minecraft:physics": {},
+        "minecraft:pushable": {"is_pushable":true,"is_pushable_by_piston":true},      
+        //movement
+        "minecraft:game_event_movement_tracking": {"emit_flap":true},      
+        "minecraft:behavior.float": {"priority":19},
+        "minecraft:behavior.random_fly": {
+          "priority": 5,
+          "xz_dist": 4,
+          "y_dist": 2,
+          "y_offset": 1,
+          "speed_multiplier": 0.25, //0.5,
+          "can_land_on_trees": true,
+          "avoid_damage_blocks": true
+        },
+        "minecraft:behavior.random_hover": {
+          "priority": 9,
+          "xz_dist": 4,
+          "y_dist": 1,
+          "y_offset": -1,
+          "interval": 1,
+          "hover_height": [ 0.25, 1 ]
+        },
+        "minecraft:can_fly": {},
+        "minecraft:flying_speed": {"value":0.10}, 
+        "minecraft:movement": {"value":0.1},
+        "minecraft:movement.hover": {},
+        "minecraft:jump.static": {},
+        "minecraft:navigation.hover": {
+          "can_path_from_air": true,
+          "can_path_over_lava": true,
+          "can_path_over_water": true,
+          "can_pass_doors": true,
+          "can_sink": false,
+          "avoid_water": true,
+          "avoid_damage_blocks": true,
+          "avoid_sun": false
+        },
+        //goals
+        "minecraft:behavior.move_to_block": {
+          "priority": 5,
+          "tick_interval": 1,
+          "start_chance": 0.5,
+          "search_range": 8,
+          "search_height": 4,
+          "goal_radius": 2.0,
+          "target_selection_method": "nearest",
+          "target_offset": [ 0, 1, 0 ],
+          "target_blocks":["minecraft:firefly_bush"] 
+        },                  
+        "minecraft:behavior.follow_mob": {
+          "priority": 10,
+          "search_range": 32,
+          "stop_distance": 3,
+          "speed_multiplier": 0.25,
+          "use_home_position_restriction": false,
+          "preferred_actor_type": "mob",
+          "filters": {"test":"is_family","subject":"other","value":"tree_spider"}
+        },
+        "minecraft:hurt_on_condition": {
+          "damage_conditions": [{"filters":{"test":"in_lava","subject":"self"},"cause":"lava","damage_per_tick":4}]
+        },
+        "minecraft:attack": {"damage":0},
+        "minecraft:experience_reward": {"on_death":"1"},
+        "minecraft:environment_sensor":{
+          "triggers":[{
+            "event":"perish_event",
+            "filters":{ "test": "is_daytime", "operator": "==", "value": true }               
+          }]
+        }
       }
     },
     "components": {
       //stats
-      "minecraft:type_family": {"family":["firefly","dw623"]},      
-      "minecraft:balloonable": {"mass":0.5},
-      "minecraft:scale": {"value":0.15},
-      "minecraft:collision_box": {"width":0.55,"height":0.5},
-      "minecraft:mark_variant": {"value":1}, 
-      "minecraft:conditional_bandwidth_optimization": {},
-      "minecraft:is_hidden_when_invisible": {},
-      "minecraft:health": {"value":1,"max":1},
-      "minecraft:physics": {},
-      "minecraft:pushable": {"is_pushable":true,"is_pushable_by_piston":true},      
-      //movement
-      "minecraft:game_event_movement_tracking": {"emit_flap":true},      
-      "minecraft:behavior.float": {"priority":19},
-      "minecraft:behavior.random_fly": {
-        "priority": 5,
-        "xz_dist": 4,
-        "y_dist": 2,
-        "y_offset": 1,
-        "speed_multiplier": 0.25, //0.5,
-        "can_land_on_trees": true,
-        "avoid_damage_blocks": true
-      },
-      "minecraft:behavior.random_hover": {
-        "priority": 9,
-        "xz_dist": 4,
-        "y_dist": 1,
-        "y_offset": -1,
-        "interval": 1,
-        "hover_height": [ 0.25, 1 ]
-      },
-      "minecraft:can_fly": {},
-      "minecraft:flying_speed": {"value":0.10}, 
-      "minecraft:movement": {"value":0.1},
-      "minecraft:movement.hover": {},
-      "minecraft:jump.static": {},
-      "minecraft:navigation.hover": {
-        "can_path_from_air": true,
-        "can_path_over_lava": true,
-        "can_path_over_water": true,
-        "can_pass_doors": true,
-        "can_sink": false,
-        "avoid_water": true,
-        "avoid_damage_blocks": true,
-        "avoid_sun": false
-      },
-      //goals
-      "minecraft:behavior.move_to_block": {
-        "priority": 5,
-        "tick_interval": 1,
-        "start_chance": 0.5,
-        "search_range": 8,
-        "search_height": 4,
-        "goal_radius": 2.0,
-        "target_selection_method": "nearest",
-        "target_offset": [ 0, 1, 0 ],
-        "target_blocks":["minecraft:firefly_bush"] 
-      },                  
-      "minecraft:behavior.follow_mob": {
-        "priority": 10,
-        "search_range": 32,
-        "stop_distance": 3,
-        "speed_multiplier": 0.25,
-        "use_home_position_restriction": false,
-        "preferred_actor_type": "mob",
-        "filters": {"test":"is_family","subject":"other","value":"tree_spider"}
-      },
-      "minecraft:hurt_on_condition": {
-        "damage_conditions": [{"filters":{"test":"in_lava","subject":"self"},"cause":"lava","damage_per_tick":4}]
-      },
-      "minecraft:attack": {"damage":0},
-      "minecraft:experience_reward": {"on_death":"1"},
-      "minecraft:environment_sensor":{
-        "triggers":[{
-          "event":"perish_event",
-          "filters":{ "test": "is_daytime", "operator": "==", "value": true }               
-        }]
-      }
+      "minecraft:type_family": {"family":["firefly","dw623","mob"]}
+      
     },
     "events": {
+      "dw623:entity_validation":{
+          "sequence":[            
+              {"queue_command": {"command":["scriptevent entity:validation firefly"]}},
+              {"add":{"component_groups":["cg:temp_validation"]}}                        
+          ]
+      },
       "minecraft:entity_spawned": {
         "sequence":[            
-          {"queue_command": {"command":["scriptevent debugLogEvent:NewFireFly spawned"]}}
+          {"queue_command": {"command":["scriptevent debugLogEvent:NewFireFly spawned"]}},
+          {"add":{"component_groups":["cg:standard_firefly"]}}
         ]
       },                                  
       "perish_event": {"add":{"component_groups":["perish"]}}

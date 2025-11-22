@@ -35,6 +35,7 @@ const now = () => { return `§l§gTime: ${getWorldTime().hours}:00`; };
  * @property {boolean} watchEntitySubscriptions
  * @property {boolean} watchEntityEating
  * @property {boolean} watchEntityIssues
+ * @property {boolean} watchPlayerActions
  * @property {boolean} watchTempIssues
  * @property {() => void} allOff
  * @property {() => void} allOn
@@ -47,20 +48,22 @@ const debugFunctions = false; //for the devDebug object
 //==============================================================================
 /** @type {DevObject} */
 export const devDebug = {
+    // Customize this to the project
     // flags
     debugOn: true,
-    debugSubscriptionsOn: true,
+    debugSubscriptionsOn: false,
     debugFunctionsOn: false,
-    watchBlockSubscriptions: true,
+    watchBlockSubscriptions: false,
     watchEntityGoals: false,
     watchEntityEvents: false,
     watchEntitySubscriptions: false,
     watchEntityEating: false,
-    watchEntityIssues: false,
-    watchTempIssues:true,
+    watchEntityIssues: true,
+    watchPlayerActions: false,
+    watchTempIssues: false,
 
     allOff () {
-        alertLog.log("* function dev.allOff ()", debugFunctions);
+        alertLog.log("* function dev.allOff ()");
         let noChange = !this.debugOn;
         for (const [ k, v ] of Object.entries(this)) {
             if (typeof v === "boolean") {
@@ -72,7 +75,6 @@ export const devDebug = {
         this.debugOn = false;
         // keep dsb in sync
         this.dsb.setDebug(false);
-        if (pack.worldLoaded && !noChange) debugVarChange();
     },
 
     allOn () {
@@ -88,7 +90,6 @@ export const devDebug = {
         this.debugOn = true;
         // keep dsb in sync
         this.dsb.setDebug(true);
-        if (pack.worldLoaded && !noChange) debugVarChange();
     },
 
     anyOn () {
@@ -98,6 +99,7 @@ export const devDebug = {
             if (typeof v === "boolean") any = any || v;
         }
         this.debugOn = any;
+        // keep dsb in sync
         this.dsb.setDebug(any);
     },
 
@@ -146,20 +148,20 @@ export const devDebug = {
         // Generic interval job for your entity counts (runs while debugOn true)
         this.dsb.registerIntervalJob(
             "entityCounter",
-            () => { if (!this.debugOn) return; thisAddOn_EntityCounts(); },
+            () => { if (this.debugOn) thisAddOn_EntityCounts(); },
             Ticks.perMinute / 6,
             [ "Ctrs" ]
         );
 
         this.dsb.registerIntervalJob(
             "hourlyChime",
-            () => { if (!this.debugOn) return; alertLog.log(now(), devDebug.debugOn); },
-            Ticks.minecraftDay,
+            () => { alertLog.log(now(),this.debugOn); },
+            Ticks.minecraftHour,
             [ "Ctrs" ]
         );
 
         // Start all registered jobs
-        alertLog.log(now(), devDebug.debugOn);
+        alertLog.log(`Start ${now()}`, this.debugOn);
         thisAddOn_EntityCounts();
         this.dsb.countersOn();
         this.dsb.show("Stats");
@@ -181,7 +183,7 @@ function thisAddOn_EntityCounts (override = false) {
     const eggCount = EntityLib.getAllEntities({ type: watchFor.egg_typeId }).length;
     //if (eggCount) system.run(() => {    });
 
-    const entities_all = EntityLib.getAllEntities({ type: watchFor.typeId });
+    const entities_all = EntityLib.getAllEntities({ type: watchFor.spider_typeId });
 
     system.runTimeout(() => {
         const entities = entities_all.filter(e => { return e.isValid && !e.hasComponent('minecraft:is_baby'); });
@@ -198,17 +200,12 @@ function thisAddOn_EntityCounts (override = false) {
     }, 1);
 }
 //==============================================================================
-export function debugVarChange () {
-    alertLog.log("* function debugVarChange ()", debugFunctions);
-    devDebug.anyOn();
-}
-//==============================================================================
 // End of File
 //====================================================================
 
-export function hourlyChime () {
-    alertLog.log(`Start ${now()}`, devDebug.debugOn);
-    system.runInterval(() => {
-        alertLog.log(now(), devDebug.debugOn);
-    }, Ticks.minecraftHour);
-}
+// export function hourlyChime () {
+//     alertLog.log(`Start ${now()}`, devDebug.debugOn);
+//     system.runInterval(() => {
+//         alertLog.log(now(), devDebug.debugOn);
+//     }, Ticks.minecraftHour);
+// }

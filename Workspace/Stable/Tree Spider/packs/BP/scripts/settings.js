@@ -10,6 +10,7 @@ Last Update: 20251024 - move dev to debug and add world dynamic vars
 import { TicksPerDay } from "@minecraft/server";
 // Shared
 import { ConsoleAlert, ChatMsg } from "./common-stable/consoleClass";
+import { leafBlocks, logBlocks, tallNatureBlocks } from "./common-data/block-data";
 //==============================================================================
 /**
  *  Owner is to edit this file as needed - Note: debug vars in fn-debug
@@ -20,13 +21,20 @@ export const pack = {
     beta: false,
     worldLoaded: false,
     fullNameSpace: "dw623_tree_spider",
-    isLoadAlertsOn: false
+    isLoadAlertsOn: false,
+    /* @type {Map<string,boolean>} */
+    validatedEntities:new Map(),    
+    /* @type {Map<string,boolean>} */
+    validatedBlocks:new Map(),    
+    /* @type {Map<string,boolean>} */
+    validatedItems:new Map()
 };
 //==============================================================================
 export const alertLog = new ConsoleAlert(`§d${pack.packName}§r`);
 export const chatLog = new ChatMsg(`§b${pack.packName}§r`);
 //==============================================================================
-export const dynamicVars = {
+// These are used in subscribes.js and fn-entities,js
+export const entityDynamicVars = {
     //-- Entity Dynamic Properties --
     aliveTicks: 'aliveTicks',
     lastActiveTick: 'lastActiveTick',
@@ -43,80 +51,71 @@ export const dynamicVars = {
     entitySpawns: 'entitySpawns'
 };
 //==============================================================================
-export const entityEvents = {
-    despawnEventName: 'despawn_me',
-    replaceEventName: 'replace_me',
-    stayInWebEventName: 'stay_in_web_start',
-    wanderEventName: 'wander_around_start',
-    eatFireFliesEventName: 'catch_and_eat_fireflies',
-    lookForWebEventName: 'look_for_web_nearest_start',
-    baby_stayInWebEventName: 'baby_stay_in_web_start',
-    baby_wanderEventName: 'baby_wander_around_start'
-};
-//==============================================================================
 //Change this to change the entity
 export const watchFor = {
     validated: false,  //TODO: - validate exists when pack loaded, if not, turn everything OFF
-    typeId: "dw623:tree_spider",
-    family: "tree_spider",
-    display: "Tree Spider",
+
+    // Spiders
+    spider_typeId: "dw623:tree_spider",
     egg_typeId: "dw623:tree_spider_egg_sac",
-    firefly_typeId: "dw623:firefly",
-    fly_typeId: "dw623:fly",
-    home_typeId: 'minecraft:web',
-    food_typeId: 'minecraft:firefly_bush',
+    spider_home_typeId: 'minecraft:web',
+    spider_foodBlock_typeId: 'minecraft:firefly_bush',
+    display: "Tree Spider",
+    family: "tree_spider",
     allowFakeNameTags: true,
-    // To control how many - so that within ? time not too many spiders
-    populationControlOn: false,
-    populationRadius: 16,
-    populationLimit: 5,
-    //
+    spiderPopulationCheckRunInterval: 0, //3,
+    spiderPopulationRadius: 16,
+    spiderPopulationLimit: 5,
     hungryChance: 0.30,
     orbChance: 0.60,
-    // Used by stall checker
     stalledCheckRunInterval: 3, //set to zero to turn off
     assumedStalledIfOver: 5,
 
+    // Flies
+    fly_typeId: "dw623:fly",
+    fly_home_typeId: "minecraft:composter",
+    fly_food_blocks: [
+        "dw623:rotten_flesh_block",
+        "minecraft:cane",
+        "minecraft:sweet_berry_bush",
+        "minecraft:cave_vines_body_with_berries" ],
     flyPopulationCheckRunInterval: 5,
-    //Life Cycle - 3 wks per Alexa.    
-    flyLifeCycleTicks: TicksPerDay * 3,
+    flyLifeCycleTicks: TicksPerDay * 3, //Life Cycle - 3 wks per Alexa.    
 
-    spiderPopulationCheckRunInterval: 0, //3,
+    // Fireflies
+    firefly_typeId: "dw623:firefly",
+    firefly_home_typeId: 'minecraft:firefly_bush',
 
+    packEntityList () {
+        return [
+            this.spider_typeId,
+            this.egg_typeId,
+            this.fly_typeId,
+            this.firefly_typeId
+        ];
+    },
 
-    //TODO: automate the log and leaves list with vanilla-data in startup
-    //      - maybe, would be better if something available via code, not js
-    target_logs: [
-        "minecraft:mangrove_roots", "minecraft:acacia_log", "minecraft:birch_log",
-        "minecraft:cherry_log", "minecraft:dark_oak_log", "minecraft:jungle_log",
-        "minecraft:mangrove_log", "minecraft:oak_log", "minecraft:pale_oak_log", "minecraft:spruce_log",
-        "minecraft:warped_stem", "minecraft:crimson_stem", "minecraft:mushroom_stem"
-    ],
-    target_leaves: [
-        "minecraft:warped_wart_block", "minecraft:shroomlight", "minecraft:nether_wart_block",
-        "minecraft:acacia_leaves", "minecraft:birch_leaves", "minecraft:cherry_leaves", "minecraft:jungle_leaves",
-        "minecraft:dark_oak_leaves", "minecraft:mangrove_leaves", "minecraft:oak_leaves", "minecraft:pale_oak_leaves", "minecraft:spruce_leaves",
-        "minecraft:azalea", "minecraft:azalea_leaves", "minecraft:azalea_leaves_flowered"
-    ],
+    target_logs: [ "minecraft:mangrove_roots", "minecraft:mushroom_stem", ...logBlocks ],
+
+    target_leaves: [ ...leafBlocks ],
+
     target_nature: [
-        "minecraft:sunflower", "minecraft:lilac", "minecraft:rose_bush", "minecraft:peony",
-        "minecraft:large_fern", "minecraft:tall_grass", "minecraft:sweet_berry_bush",
-        "minecraft:pointed_dripstone",
+        "minecraft:sweet_berry_bush", "minecraft:spore_blossom",
         "minecraft:brown_mushroom_block", "minecraft:red_mushroom_block",
-        "minecraft:big_drip_leaf"
-    ],
+        "minecraft:big_drip_leaf", ...tallNatureBlocks ],
+
     customItemList: [
-        "dw623:bottle_of_flies", //this gets moved to interact with entity Spider
+        "dw623:bottle_of_flies",        //this gets moved to interact with entity Spider
         "dw623:dead_fly_ball_stick",
         "dw623:rotten_flesh_kabob"
     ]
 
 };
 export const thisPackEntities = [
-    watchFor.typeId,
-    watchFor.egg_typeId,
-    watchFor.fly_typeId,
-    watchFor.firefly_typeId
+    {entityTypeID:watchFor.spider_typeId,   validated:false},
+    {entityTypeID:watchFor.egg_typeId,      validated:false},
+    {entityTypeID:watchFor.fly_typeId,      validated:false},
+    {entityTypeID:watchFor.firefly_typeId,  validated:false}
 ];
 //==============================================================================
 // End of File

@@ -7,11 +7,13 @@ URL: https://github.com/DrinkWater623
 ========================================================================
 Change Log:
     20251110 - Created
+    20251122 - Fixed multiple Minutes per SB
 ========================================================================*/
-import { system ,ScoreboardObjective} from "@minecraft/server";
+import { system, ScoreboardObjective } from "@minecraft/server";
 import { ScoreboardLib } from "./scoreboardClass.js";
+import { Ticks } from "../common-data/globalConstantsLib.js";
 /** ---------------------------------------------------------------------------
- * Types
+ * Types 
  * ------------------------------------------------------------------------- */
 /** Bases a job should run against:
  *  - "*"  → one timer per known base
@@ -20,7 +22,12 @@ import { ScoreboardLib } from "./scoreboardClass.js";
 /** @typedef {"*" | string[]} JobBases */
 
 /** A registered interval job descriptor. */
-/** @typedef {{ id: string, bases: JobBases, fn: () => void, interval: number }} IntervalJob */
+/** @typedef {{ 
+ * on: boolean,
+ * id: string, 
+ * bases: JobBases, 
+ * fn: () => void, 
+ * interval: number }} IntervalJob */
 
 /** ---------------------------------------------------------------------------
  * Small utilities
@@ -76,7 +83,7 @@ export class DebugScoreboards {
 
     /** Built-in time counter job config */
     /** @public */ this.timeCounterLabel = "§vMinutes";
-    /** @public */ this.timeCounterIntervalTicks = 20 * 60; // 1 minute default
+    /** @public */ this.timeCounterIntervalTicks = Ticks.perMinute; // 1 minute default
     /** @private */ this._timeJobId = "__time__";
     }
 
@@ -201,7 +208,7 @@ export class DebugScoreboards {
         const label = this._label(entryKey);
         const run = () => { if (sb.isValid) sb.addScore(label, by); };
         const d = ticks(tickDelay);
-        d > 0 ? system.runTimeout(run, d) : run();
+        d > -1 ? system.runTimeout(run, d) : run();
         return true;
     }
 
@@ -215,7 +222,7 @@ export class DebugScoreboards {
      */
     incrementMany (baseNames, entryKey, by = 1, tickDelay = 0) {
         let ok = false;
-        for (const b of baseNames) ok = this.increment(b, entryKey, by, tickDelay) || ok;
+        for (const b of baseNames) { ok = this.increment(b, entryKey, by, tickDelay) || ok; }
         return ok;
     }
 
@@ -283,7 +290,7 @@ export class DebugScoreboards {
         if (enable) {
             this.registerIntervalJob(this._timeJobId, () => {
                 this.incrementMany(this._bases, this.timeCounterLabel, 1);
-            }, this.timeCounterIntervalTicks, "*");
+            }, this.timeCounterIntervalTicks, [ this._bases[ 0 ] ]);
         } else {
             this.unregisterIntervalJob(this._timeJobId);
         }

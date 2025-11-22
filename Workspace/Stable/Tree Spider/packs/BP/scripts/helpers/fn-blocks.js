@@ -17,7 +17,7 @@ import { chance } from "../common-other/mathLib.js";
 import { GetBlock, isValidBlock } from "../common-stable/blockLib-stable.js";
 //Local
 import { watchFor, alertLog } from '../settings.js';
-
+import { devDebug } from "./fn-debug.js";
 
 //===================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
@@ -25,9 +25,10 @@ import { watchFor, alertLog } from '../settings.js';
 /** The function type subscribe expects. */
 //===================================================================
 const debugFunctionsOn = false;
+const watchPlayerActions = devDebug.watchPlayerActions;
 //===================================================================
 const AIR_BLOCK = airBlock;
-const HOME_ID = watchFor.home_typeId;
+const HOME_ID = watchFor.spider_home_typeId;
 
 //===================================================================
 /** @type {ReadonlySet<string>} */ const LEAVES = new Set(watchFor.target_leaves);
@@ -40,8 +41,8 @@ const saplings = [ ...vanillaBlocks.saplingBlocks ];
 const tallPlants = [ ...vanillaBlocks.tallNatureBlocks ];
 //===================================================================
 const allowedSpiderHangoutNatureBlocks = [
-    watchFor.home_typeId,
-    watchFor.food_typeId, //firefly bush
+    watchFor.spider_home_typeId,
+    watchFor.spider_foodBlock_typeId, //firefly bush
     'minecraft:deadbush',
     'minecraft:mangrove_roots',
 ].concat(leaves).concat(saplings).concat(tallPlants);
@@ -110,7 +111,7 @@ export function spiderSpawnFromValidNatureBlock (typeId, dimension, location, sp
     const minTicks = 0 || opts?.minTicks;
     const maxTicks = 0 || opts?.maxTicks;
 
-    spawnEntityAfterRandomTicks(dimension, location, watchFor.typeId, minTicks, maxTicks);
+    spawnEntityAfterRandomTicks(dimension, location, watchFor.spider_typeId, minTicks, maxTicks);
 }
 //===================================================================
 //===================================================================
@@ -144,17 +145,59 @@ export function targetBlockAdjacent (block) {
  * 
  * @param {Block | undefined} blockHit 
  * @param {string} itemUsed
- * @param {string} blockFace
+ * @param {string} blockFaceHit
+ * @param {number} [initialChance=1] 
  */
-export function rattleEntityFromBlockWithItem (blockHit, itemUsed, blockFace) {
+export function rattleEntityFromBlockWithItem (blockHit, itemUsed, blockFaceHit, initialChance = 1) {
     if (!blockHit || !blockHit.isValid) return;
-    alertLog.log('>> rattleEntityFromBlockWithItem');
-    const blockTypeID = blockHit.typeId;
+
+    const _name = 'rattleEntityFromBlockWithItem';
+    const debugMe = watchPlayerActions;
+
+    const blockHitTypeID = blockHit.typeId;
+    alertLog.log(`>> ${_name} (${blockHitTypeID}, ${itemUsed}, blockFaceHit = ${blockFaceHit}, initialChance = ${initialChance})`, debugMe);
+
+    const blockHitDim = blockHit.dimension;
+    const blockHitLoc = blockHit.location;
     const aboveBlock = blockHit.above();
-    const aboveBlockList = [
+
+
+    const containerBlockList = [
         "minecraft:composter",
         "minecraft:cauldron"
     ];
+
+    //======
+    //Both - may need this one to be in subs to take itemStack
+    //======
+    if (itemUsed == "dw623:bottle_of_flies") {
+        system.runTimeout(() => {
+            const adjacentBlock = GetBlock.adjacent(blockHit, blockFaceHit);
+            if (!adjacentBlock || !adjacentBlock.isAir) return;
+
+            adjacentBlock.dimension.playSound("random.glass", adjacentBlock.location);
+
+            if (blockHitTypeID === watchFor.spider_home_typeId) {
+                spawnEntityAtLocation(watchFor.spider_typeId, adjacentBlock.dimension, adjacentBlock.location, 1, 1, 20, 100);
+            }
+
+            //TODO: need to vary location in web for flies
+            spawnEntityAtLocation(watchFor.fly_typeId, adjacentBlock.dimension, adjacentBlock.location, 5, 10, 20, 100);
+        }, 1);
+        return;
+    }
+
+    //The rest can use initialChance
+    if (initialChance < 1) if (!chance(initialChance)) return;
+
+    if (containerBlockList.includes(blockHitTypeID)) {
+        if (!aboveBlock || !aboveBlock.isValid || aboveBlock.typeId !== airBlock) {
+            alertLog.warn(`xx ${_name} - Top of block is not AIR`, debugMe);
+            return;
+        };
+        
+        blockFaceHit = 'up';
+    }
 
     //=======
     //Spiders
@@ -162,44 +205,19 @@ export function rattleEntityFromBlockWithItem (blockHit, itemUsed, blockFace) {
     if (itemUsed == "dw623:dead_fly_ball_stick") {
         //TODO: add chance
         system.runTimeout(() => {
-            alertLog.log('beforeEvents_playerInteractWithBlock (dead_fly_ball_stick)');
             spiderSpawnFromValidNatureBlock(blockHit.typeId, blockHit.dimension, blockHit.location, 0.30, { minTicks: 30, maxTicks: 80 });
         }, 1);
         return;
     }
 
     //======
-    //Both - may need this one to be in subs to take itemStack
-    //======
-    if (itemUsed == "dw623:bottle_of_flies") {
-        system.runTimeout(() => {
-            alertLog.log('beforeEvents_playerInteractWithBlock (bottle_of_flies)');
-
-            const block = GetBlock.adjacent(blockHit, blockFace);
-            if (!block || !block.isAir) return;
-
-            //TODO: add glass break sound
-
-            if (blockTypeID === watchFor.home_typeId) {
-                spawnEntityAtLocation(watchFor.typeId, block.dimension, block.location, 1, 1, 20, 100);
-            }
-
-            //TODO: need to vary location in web for flies
-            spawnEntityAtLocation(watchFor.fly_typeId, block.dimension, block.location, 5, 10, 20, 100);
-        }, 1);
-        return;
-    }
-    //======
     //Flies
-    //======
-    if (aboveBlockList.includes(blockHit.typeId))
-        if (!aboveBlock || !aboveBlock.isValid || aboveBlock.typeId !== airBlock) return;
+    //======    
 
     if (itemUsed == "dw623:rotten_flesh_kabob") {
         //TODO: add chance
         system.runTimeout(() => {
-            alertLog.log('beforeEvents_playerInteractWithBlock (rotten_flesh_kabob)');
-            if (aboveBlockList.includes(blockHit.typeId)) {
+            if (containerBlockList.includes(blockHit.typeId)) {
                 if (aboveBlock) spawnEntityAtLocation(watchFor.fly_typeId, aboveBlock.dimension, aboveBlock.location, 1, 3, 20, 100);
                 return;
             }
@@ -209,7 +227,8 @@ export function rattleEntityFromBlockWithItem (blockHit, itemUsed, blockFace) {
         return;
     }
 
-
+    alertLog.warn(`xx ${_name} - Action not defined for Item`, debugMe);
 }
+//===================================================================
 // End of File
 //===================================================================

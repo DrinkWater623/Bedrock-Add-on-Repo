@@ -12,7 +12,7 @@ Last Update: 20251023 - Update and sep out debug-only stuff and add the stable s
 // import { MinecraftEntityTypes, MinecraftEffectTypes } from "@minecraft/vanilla-data";
 //==============================================================================
 // Minecraft
-import { Entity, system, Block, world, Dimension, GameMode, Player, DimensionType, TicksPerDay } from "@minecraft/server";
+import { Entity, system, Block, GameMode, Player } from "@minecraft/server";
 // Shared Data
 import { airBlock, leafBlocks } from "../common-data/block-data.js";
 import { Ticks } from "../common-data/globalConstantsLib.js";
@@ -23,22 +23,40 @@ import { rndInt, chance } from "../common-other/mathLib.js";
 import { isInForest, isOutside } from "../common-stable/biomeLib.js";
 import { closestAdjacentBlockTypeId, isBlockAdjacentToTypeId } from "../common-stable/blockLib-stable.js";
 import { DynamicPropertyLib } from "../common-stable/dynamicPropertyClass.js";
-import { EntityLib,spawnEntityAtLocation } from "../common-stable/entityClass.js";
+import { EntityLib, spawnEntityAtLocation } from "../common-stable/entityClass.js";
 import { getWorldTime } from "../common-stable/timers.js";
 import { Vector3Lib, } from '../common-stable/vectorClass.js';
 import { worldRun } from "../common-stable/worldRunLib.js";
 // Local
 import { targetBlockAdjacent } from "./fn-blocks.js";
 import { devDebug } from "./fn-debug.js";
-import { alertLog, watchFor, dynamicVars, entityEvents } from '../settings.js';
+import { alertLog, pack, watchFor, entityDynamicVars } from '../settings.js';
 //==============================================================================
-const debugFunctions = false;
+const debugFunctions = false || devDebug.debugFunctionsOn;
+const debugOn = devDebug.debugOn
 //==============================================================================
 //==============================================================================
 /** cache once (watchFor is stable) */
 const AIR_BLOCK = airBlock;
-const HOME_ID = watchFor.home_typeId;
+const HOME_ID = watchFor.spider_home_typeId;
 const leaves = [ ...leafBlocks ];
+export const entityScriptEvents = {
+    //All
+    despawnEventName: 'despawn_me',
+    replaceEventName: 'replace_me',
+    spider_loadedEventName: 'dw623:spider_loaded',
+    //Babies
+    baby_stayInWebEventName: 'dw623:baby_stay_in_web_start',
+    baby_wanderEventName: 'dw623:baby_wander_around_start',
+    baby_spider_loadedEventName: 'dw623:baby_spider_loaded',
+    //Adults
+    eatFireFliesEventName: 'dw623:catch_and_eat_fireflies',
+    entity_validatedEventName: 'dw623:entity_validation',
+    spider_hungryEventName: 'dw623:hungry_start',
+    lookForWebEventName: 'dw623:look_for_web_nearest_start',
+    stayInWebEventName: 'dw623:stay_in_web_start',
+    wanderEventName: 'dw623:wander_around_start'
+};
 //===================================================================
 class Web {
     //===================================================================
@@ -50,9 +68,9 @@ class Web {
     static activityRegister (entity, tickDelay = 0) {
         system.runTimeout(() => {
             if (!entity.isValid) return;
-            entity.setDynamicProperty(dynamicVars.lastWebActivityTick, system.currentTick);
-            entity.setDynamicProperty(dynamicVars.lastActiveTick, system.currentTick);
-            entity.setDynamicProperty(dynamicVars.lastLocation, entity.location);
+            entity.setDynamicProperty(entityDynamicVars.lastWebActivityTick, system.currentTick);
+            entity.setDynamicProperty(entityDynamicVars.lastActiveTick, system.currentTick);
+            entity.setDynamicProperty(entityDynamicVars.lastLocation, entity.location);
         }, tickDelay);
     }
     /**
@@ -162,7 +180,7 @@ class Web {
 
         if (!webBlock) {
             system.runTimeout(() => {
-                isBaby ? entity.triggerEvent(entityEvents.baby_wanderEventName) : entity.triggerEvent(entityEvents.wanderEventName);
+                isBaby ? entity.triggerEvent(entityScriptEvents.baby_wanderEventName) : entity.triggerEvent(entityScriptEvents.wanderEventName);
             }, 1);
             return false;
         }
@@ -173,12 +191,12 @@ class Web {
         EntityLib.teleportAndCenter(entity, webBlock); //1 tick out
         system.runTimeout(() => {
             system.runTimeout(() => {
-                isBaby ? entity.triggerEvent(entityEvents.baby_stayInWebEventName) : entity.triggerEvent(entityEvents.stayInWebEventName);
+                isBaby ? entity.triggerEvent(entityScriptEvents.baby_stayInWebEventName) : entity.triggerEvent(entityScriptEvents.stayInWebEventName);
                 //Log
                 system.runTimeout(() => {
                     if (Web.insideWebBlock(entity)) {
-                        DynamicPropertyLib.add(entity, dynamicVars.websEntered, 1);
-                        devDebug.dsb.increment('stats', 'enterWeb')                         
+                        DynamicPropertyLib.add(entity, entityDynamicVars.websEntered, 1);
+                        devDebug.dsb.increment('stats', 'enterWeb');
                     }
                     else {
                         alertLog.warn(`${entity.nameTag || entity.id} May Have Entered Web @ ${Vector3Lib.toString(webBlock.location, 0, true)}`, devDebug.watchEntityEvents);
@@ -202,7 +220,7 @@ class Web {
         if (inBlock.typeId !== HOME_ID) {
             Web.activityRegister(entity);
             system.runTimeout(() => {
-                entity.triggerEvent(entityEvents.wanderEventName);
+                entity.triggerEvent(entityScriptEvents.wanderEventName);
             }, 1);
             return false;
         }
@@ -211,7 +229,7 @@ class Web {
         if (!newWeb) {
             Web.activityRegister(entity);
             system.runTimeout(() => {
-                entity.triggerEvent(entityEvents.wanderEventName);
+                entity.triggerEvent(entityScriptEvents.wanderEventName);
             }, 1);
             return false;
         }
@@ -223,10 +241,10 @@ class Web {
             if (Web.insideWebBlock(entity)) {
                 entity.nameTag;
                 alertLog.success(`${entity.nameTag || entity.id} Expanded Web @ ${Vector3Lib.toString(newWeb.location, 0, true)}`, devDebug.watchEntityEvents);
-                DynamicPropertyLib.add(entity, dynamicVars.websExpanded, 1);
+                DynamicPropertyLib.add(entity, entityDynamicVars.websExpanded, 1);
                 if (devDebug.debugOn) {
-                    devDebug.dsb.increment('stats', 'expandWeb') 
-                    devDebug.dsb.increment('ctrs', 'webs')                     
+                    devDebug.dsb.increment('stats', 'expandWeb');
+                    devDebug.dsb.increment('ctrs', 'webs');
                 }
             }
             else {
@@ -252,7 +270,7 @@ class Web {
             Web.activityRegister(entity);
             system.run(() => {
                 entity.teleport(inBlock.center());
-                entity.triggerEvent(entityEvents.stayInWebEventName);
+                entity.triggerEvent(entityScriptEvents.stayInWebEventName);
             });
             return true;
         }
@@ -261,7 +279,7 @@ class Web {
         //I do not want diagonal webs, so reset to wander if a valid target block is not adjacent
         if (inBlock.typeId !== airBlock || !targetBlockAdjacent(inBlock)) {
             Web.activityRegister(entity);
-            system.run(() => entity.triggerEvent(entityEvents.wanderEventName));
+            system.run(() => entity.triggerEvent(entityScriptEvents.wanderEventName));
             return false;
         }
 
@@ -272,10 +290,10 @@ class Web {
         system.runTimeout(() => {
             if (Web.insideWebBlock(entity)) {
                 alertLog.log(`§l${entity.nameTag || entity.id}§r §5Placed New Web @ ${Vector3Lib.toString(inBlock.location, 0, true)}`, devDebug.watchEntityEvents);
-                DynamicPropertyLib.add(entity, dynamicVars.websCreated, 1);
+                DynamicPropertyLib.add(entity, entityDynamicVars.websCreated, 1);
                 if (devDebug.debugOn) {
-                    devDebug.dsb.increment('ctrs', 'webs') 
-                    devDebug.dsb.increment('stats', 'newWeb')                     
+                    devDebug.dsb.increment('ctrs', 'webs');
+                    devDebug.dsb.increment('stats', 'newWeb');
                 }
             }
             else {
@@ -296,13 +314,13 @@ class Web {
         system.runTimeout(() => {
 
             entity.dimension.setBlockType(location, HOME_ID);
-            DynamicPropertyLib.add(entity, dynamicVars.websCreated, 1);
+            DynamicPropertyLib.add(entity, entityDynamicVars.websCreated, 1);
             Web.activityRegister(entity);
 
             system.runTimeout(() => {
                 EntityLib.teleportAndCenter(entity, location, 0);
                 system.runTimeout(() => {
-                    entity.triggerEvent(entityEvents.stayInWebEventName);
+                    entity.triggerEvent(entityScriptEvents.stayInWebEventName);
                 }, 1);
             }, 1);
         }, 1);
@@ -316,8 +334,8 @@ function welcomeBack (entity) {
 
     //entity.nameTag || entity
     Web.activityRegister(entity);
-    DynamicPropertyLib.add(entity, dynamicVars.websCreated, 0);  //initializes if undefined
-    DynamicPropertyLib.add(entity, dynamicVars.eggsLaid, 0);
+    DynamicPropertyLib.add(entity, entityDynamicVars.websCreated, 0);  //initializes if undefined
+    DynamicPropertyLib.add(entity, entityDynamicVars.eggsLaid, 0);
 }
 //===================================================================
 /**
@@ -331,7 +349,7 @@ function fireFlyFood (entity) {
     const locationStr = Vector3Lib.toString(location, 2, true);
     alertLog.log(`§l${nameTag} is §aEating Now§r @ ${locationStr}`, devDebug.watchEntityEating);
 
-    entity.triggerEvent(entityEvents.eatFireFliesEventName);
+    entity.triggerEvent(entityScriptEvents.eatFireFliesEventName);
 
     //spawn fireflies
     const fireflyLocation = { x: location.x, y: location.y + 3, z: location.z };
@@ -407,7 +425,7 @@ function newEgg (entity) {
 function lastLocationRegister (entity, tickDelay = 0) {
     system.runTimeout(() => {
         if (!entity.isValid) return;
-        entity.setDynamicProperty(dynamicVars.lastLocation, entity.location);
+        entity.setDynamicProperty(entityDynamicVars.lastLocation, entity.location);
     }, tickDelay);
 }
 //===================================================================
@@ -419,8 +437,8 @@ function lastLocationRegister (entity, tickDelay = 0) {
 export function lastTickAndLocationRegister (entity, tickDelay = 0) {
     system.runTimeout(() => {
         if (!entity.isValid) return;
-        entity.setDynamicProperty(dynamicVars.lastActiveTick, system.currentTick);
-        entity.setDynamicProperty(dynamicVars.lastLocation, entity.location);
+        entity.setDynamicProperty(entityDynamicVars.lastActiveTick, system.currentTick);
+        entity.setDynamicProperty(entityDynamicVars.lastLocation, entity.location);
     }, tickDelay);
 }
 //===================================================================
@@ -432,10 +450,10 @@ export function lastTickAndLocationRegister (entity, tickDelay = 0) {
 function hasMovedRegister (entity, tickDelay = 0) {
     if (!entity.isValid) return;
     const { location } = entity;
-    const lastLocation = DynamicPropertyLib.getVector(entity, dynamicVars.lastLocation);
+    const lastLocation = DynamicPropertyLib.getVector(entity, entityDynamicVars.lastLocation);
 
     if (!lastLocation) {
-        entity.setDynamicProperty(dynamicVars.lastLocation, location);
+        entity.setDynamicProperty(entityDynamicVars.lastLocation, location);
         return true;
     }
 
@@ -489,7 +507,7 @@ function setHungerChance (entity, hungerChance = 0.25, debug = false) {
             alertLog.log(`§l${nameTag} is §cHungry Now§r @ ${locationStr}`, debug);
             entity.addTag('hungry'); //so not all doing it at once
             system.runTimeout(() => {
-                entity.triggerEvent('hungry_start');
+                entity.triggerEvent(entityScriptEvents.spider_hungryEventName);
             }, 10); //<< make this random between how many ticks left before 5am NO.... cause might be doing something important
         }
     }
@@ -503,7 +521,7 @@ function setHungerChance (entity, hungerChance = 0.25, debug = false) {
 export function flyPopulationCheck () {
     let fliesKilled = false;
 
-    const flies = EntityLib.getAllEntities({ type: watchFor.typeId });
+    const flies = EntityLib.getAllEntities({ type: watchFor.spider_typeId });
     if (flies.length > 0) {
         flies.forEach(e => {
             if (e.isValid) {
@@ -524,7 +542,7 @@ export function flyPopulationCheck () {
 
     system.runTimeout(() => {
         // via Spiders
-        const spiders = EntityLib.getAllEntities({ type: watchFor.typeId })
+        const spiders = EntityLib.getAllEntities({ type: watchFor.spider_typeId })
             .filter(e => { e.isValid; })
             .filter(e => { e.dimension.isChunkLoaded(e.location); });
 
@@ -570,7 +588,7 @@ function spawnSpidersAroundPlayerIfNeeded (player) {
 
     const { dimension, location } = player;
     const entitySearchOptions = {
-        type: watchFor.typeId,
+        type: watchFor.spider_typeId,
         location: location,
         maxDistance: 32
     };
@@ -579,11 +597,9 @@ function spawnSpidersAroundPlayerIfNeeded (player) {
     if (closeSpiders.length <= 2) {
         devDebug.dsb.increment('stats', 'Spiders Added');
         alertLog.warn(`§lSpawning spiders around ${player.name}`, devDebug.debugOn);
-        spawnEntityAtLocation(watchFor.typeId, dimension, location, 1, 3, 1, 100);
+        spawnEntityAtLocation(watchFor.spider_typeId, dimension, location, 1, 3, 1, 100);
     }
 }
-
-
 //===================================================================
 export function spiderPopulationCheck () {
 
@@ -616,16 +632,16 @@ function entityStallCheck_lastTick (entity) {
         const isUnloaded = DynamicPropertyLib.getBoolean(entity, 'isUnloaded');
         if (!isUnloaded) {
             //report once
-            alertLog.warn(`§l${nameTag}§r§c is in an unLoaded Chunk §r@ ${locationStr}`, devDebug.debugOn);
             entity.setDynamicProperty('isUnloaded', true);
+            alertLog.warn(`§l${nameTag}§r§c is in an unLoaded Chunk §r@ ${locationStr}`, devDebug.watchEntityIssues);
             devDebug.dsb.increment('stats', 'chunkUnloaded');
         }
         return;
     }
 
-    let lastActiveTick = DynamicPropertyLib.getNumber(entity, dynamicVars.lastActiveTick);
+    let lastActiveTick = DynamicPropertyLib.getNumber(entity, entityDynamicVars.lastActiveTick);
     const deltaTicks = system.currentTick - lastActiveTick;
-    DynamicPropertyLib.add(entity, dynamicVars.aliveTicks, deltaTicks);
+    DynamicPropertyLib.add(entity, entityDynamicVars.aliveTicks, deltaTicks);
 
     if (!lastActiveTick) {
         lastTickAndLocationRegister(entity);
@@ -640,7 +656,7 @@ function entityStallCheck_lastTick (entity) {
         if (devDebug.debugOn) {
             devDebug.dsb.increment('stats', 'killed');
             const msg = `§r§l${nameTag}§r§v is Stalled (${deltaMinutes}m) @ ${locationStr} - §l§cKilled`;
-            alertLog.warn(msg);
+            alertLog.warn(msg, devDebug.watchEntityIssues);
         }
         entity.kill();
         return;
@@ -655,10 +671,12 @@ function entityStallCheck_lastTick (entity) {
         if (entity.isValid) {
             devDebug.dsb.increment('stats', 'stalled');
             entity.setDynamicProperty('isStalled', true);
-            entity.triggerEvent(entityEvents.wanderEventName);
+            entity.triggerEvent(entityScriptEvents.wanderEventName);
             system.runTimeout(() => {
                 if (entity.isValid) {
-                    entity.applyImpulse({ x: 1, y: 4, z: 1 });
+                    entity.applyImpulse({ x: rndInt(-8,8), y: rndInt(1,8), z: rndInt(-8,8) });
+                    const msg = `§r§l${nameTag}§r§v got Impulsed`;
+                    alertLog.log(msg,devDebug.watchEntityIssues);
                 }
             }, 5);
         }
@@ -669,7 +687,7 @@ function entityStallCheck_lastTick (entity) {
 //===================================================================
 export function stalledSpiderCheckAndFix () {
 
-    const entities = EntityLib.getAllEntities({ type: watchFor.typeId });
+    const entities = EntityLib.getAllEntities({ type: watchFor.spider_typeId });
     if (entities.length === 0) {
         spiderPopulationCheck();
         return;
@@ -729,7 +747,6 @@ function makeSpiderEggName (overrides = {}) {
         ...overrides
     }).toLowerCase();
 }
-
 //====================================================================
 /**
  * @summary Process the event/messages passed from the entity itself - called from the subscribe with a one tick delay already
@@ -739,13 +756,21 @@ function makeSpiderEggName (overrides = {}) {
  * @returns 
  */
 export function entityEventProcess (entity, id, message) {
+    if (id === 'entity:validation') alertLog.log(`Entity Event Received: ${id} : ${message}`, debugFunctions);
     if (!entity || !entity.isValid) return;
 
-    const { dimension, typeId, location } = entity;
+    const { typeId } = entity;
+
+    if (id === 'entity:validation') {
+        alertLog.success(`Validated ${message}`,devDebug.watchEntitySubscriptions);
+        pack.validatedEntities.set(typeId, true);
+        return;
+    }
+    const { dimension, location } = entity;
     let { nameTag } = entity;
     const locationStr = Vector3Lib.toString(location, 0, true);
 
-    if (typeId == watchFor.typeId) {
+    if (typeId == watchFor.spider_typeId) {
         hasMovedRegister(entity);
 
         if (!nameTag && (watchFor.allowFakeNameTags || devDebug.debugOn)) {
@@ -780,12 +805,12 @@ export function entityEventProcess (entity, id, message) {
         if (id === `mainEvent:expandWeb`) { Web.expandWeb(entity); return; }
         if (id === `mainEvent:placeWeb`) { Web.placeWeb(entity); return; }
         if (id === `mainEvent:newEgg`) { newEgg(entity); return; }
-        if (id === `mainEvent:layEgg`) { DynamicPropertyLib.add(entity, dynamicVars.eggsLaid, 1); return; }
+        if (id === `mainEvent:layEgg`) { DynamicPropertyLib.add(entity, entityDynamicVars.eggsLaid, 1); return; }
         if (id === `mainEvent:eatFireflies`) { fireFlyFood(entity); return; }
 
         if (id == ('mainEvent:hungryEnd')) {
             alertLog.log(`§l${nameTag} §cCould not find food before daybreak§r @ ${locationStr}`, devDebug.watchEntityEating);
-            entity.triggerEvent(entityEvents.lookForWebEventName);
+            entity.triggerEvent(entityScriptEvents.lookForWebEventName);
             return;
         }
 
@@ -824,14 +849,14 @@ export function entityEventProcess (entity, id, message) {
     if (id.startsWith('debugLogEvent')) {
         if (id === 'debugLogEvent:NewEntity') {
             if (message == 'born') {
-                DynamicPropertyLib.add(entity, dynamicVars.entityBorn, 1);
+                DynamicPropertyLib.add(entity, entityDynamicVars.entityBorn, 1);
                 devDebug.dsb.increment('stats', 'born');
                 alertLog.log(`§bNew Baby Born§r in Biome ${dimension.getBiome(location).id}: §l${nameTag}§r§6  @ ${locationStr}`, devDebug.watchEntityEvents || devDebug.watchEntityGoals);
                 return;
             }
 
             if (message == 'spawned') {
-                DynamicPropertyLib.add(entity, dynamicVars.entitySpawns, 1);
+                DynamicPropertyLib.add(entity, entityDynamicVars.entitySpawns, 1);
                 devDebug.dsb.increment('stats', 'spawned');
                 alertLog.log(`§aNew Adult Spawned§r in Biome ${dimension.getBiome(location).id}: §l${nameTag}§r§6  @ ${locationStr} - scriptEventReceive ()`, devDebug.watchEntityEvents || devDebug.watchEntityGoals);
                 return;
@@ -871,8 +896,9 @@ export function entityEventProcess (entity, id, message) {
     }
 
     const note = `${nameTag} ${message} @ ${locationStr} (event)`;
-    alertLog.error(`Unhandled Entity JSON Communication:\nId: ${id}\nMessage: ${note}`, devDebug.debugOn);
+    alertLog.error(`Unhandled Entity JSON Communication:\nId: ${id}\nMessage: ${note}`,debugOn);
     return;
 }
-
+//====================================================================
 // End of File
+//====================================================================

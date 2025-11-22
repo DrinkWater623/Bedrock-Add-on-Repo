@@ -9,11 +9,11 @@ import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
 import { Vector3Lib, VectorXZLib } from "./common-stable/vectorClass.js";
 // Local
 import { alertLog, chatLog, pack } from './settings.js';
-import { devDebug,debugVarChange } from "./helpers/fn-debug.js";
+import { devDebug } from "./helpers/fn-debug.js";
 import { getWorldTime } from "./common-stable/timers.js";
 //==============================================================================
 const debugFunctions = false;
-const msgPfx = devDebug.dsb.displayPfx
+const msgPfx = devDebug.dsb.displayPfx;
 //==============================================================================
 //Enum Names
 const queryOnOff = `${pack.fullNameSpace}:enum_query_on_off`;
@@ -235,11 +235,11 @@ function register_debugEntity (registry) {
             let msg = '';
             if (arg === 'on') {
                 if (!(devDebug.debugOn && devDebug.watchEntityGoals && devDebug.watchEntityEvents)) {
-                    devDebug.debugOn=true
+                    devDebug.debugOn = true;
                     devDebug.watchEntityGoals = true;
-                    devDebug.watchEntityEvents = true;                    
+                    devDebug.watchEntityEvents = true;
                     msg = `debugEntity (Activity/Alert/Load/Spawn) is now §aON`;
-                    debugVarChange();
+                    devDebug.anyOn();
                 }
                 else
                     msg = `debugEntity is already on §aON`;
@@ -251,7 +251,7 @@ function register_debugEntity (registry) {
                     devDebug.anyOn();
 
                     msg = `debugEntity (Activity/Alert/Load/Spawn) is now §cOFF`;
-                    debugVarChange();
+                    devDebug.anyOn();
                 }
                 else
                     msg = `debugEntity is already §cOFF`;
@@ -306,7 +306,7 @@ function register_watchEntityGoals (registry) {
                     devDebug.debugOn = true;
                     devDebug.watchEntityGoals = true;
                     msg = `watchEntityGoals is now §aON`;
-                    debugVarChange();
+                    devDebug.anyOn();
                 }
                 else
                     msg = `watchEntityGoals is already §aON`;
@@ -315,7 +315,7 @@ function register_watchEntityGoals (registry) {
                 if (devDebug.watchEntityGoals) {
                     devDebug.watchEntityGoals = false;
                     msg = `watchEntityGoals is now §cOFF`;
-                    debugVarChange();
+                    devDebug.anyOn();
                 }
                 else
                     msg = `watchEntityGoals is already §cOFF`;
@@ -367,7 +367,7 @@ function register_watchEntityEvents (registry) {
                     devDebug.debugOn = true;
                     devDebug.watchEntityEvents = true;
                     msg = `watchEntityEvents is now §aON`;
-                    debugVarChange();
+                    devDebug.anyOn();
                 }
                 else
                     msg = `watchEntityEvents is already §aON`;
@@ -376,7 +376,7 @@ function register_watchEntityEvents (registry) {
                 if (devDebug.watchEntityEvents) {
                     devDebug.watchEntityEvents = false;
                     msg = `watchEntityEvents is now §cOFF`;
-                    debugVarChange();
+                    devDebug.anyOn();
                 }
                 else
                     msg = `watchEntityEvents is already §cOFF`;
@@ -432,7 +432,7 @@ function register_debug (registry) {
                     //TODO: since was off, turn on basic alerts too
 
                     msg = `debugging is now §aON`;
-                    debugVarChange();
+                    devDebug.anyOn();
                 }
                 else
                     msg = `debugging is already §aON`;
@@ -443,7 +443,7 @@ function register_debug (registry) {
                     devDebug.allOff();
 
                     msg = `debugging is now §cOFF`;
-                    debugVarChange();
+                    devDebug.anyOn();
                 }
                 else
                     msg = `debugging is already §cOFF`;
@@ -514,7 +514,43 @@ function register_delta (registry) {
 /**
  * @param {CustomCommandRegistry} registry 
  */
-function register_random_rtp (registry) {
+function register_new_test (registry) {
+    const cmd = {
+        name: `${pack.fullNameSpace}:new_test`,
+        description: "Kill Entities, New RTP and Reset Scoreboards",
+        permissionLevel: CommandPermissionLevel.Admin,
+        cheatsRequired: false
+    };
+
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        if (origin.sourceEntity instanceof Player) {
+            const player = origin.sourceEntity;
+            const currentLocation = origin.sourceEntity.location;
+            const xz = VectorXZLib.randomXZ(5000, { center: currentLocation, minRadius: 1000, avoidZero: true });
+            const entities = player.dimension.getEntities({ families: [ 'dw623' ] });
+
+            for (const entity of entities) {
+                system.runTimeout(() => { if (entity.isValid) entity.kill(); }, 1);
+            }
+
+            system.runTimeout(() => {
+                devDebug.dsb.reset({ bases: [], reCreate: true });
+                player.teleport({ x: xz.x, y: 150, z: xz.z });
+            }, 5);
+        }
+
+        const result = { status: CustomCommandStatus.Success };
+        return result;
+    });
+}
+//==============================================================================
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_random_tp (registry) {
     const cmd = {
         name: `${pack.fullNameSpace}:rtp`,
         description: "Random TP",
@@ -575,7 +611,7 @@ function register_scoreboards (registry) {
                 const side = ScoreboardLib.sideBar_query()?.id;
                 if (side)
                     system.run(() => {
-                        devDebug.dsb.reset({bases:[side],reCreate:false});
+                        devDebug.dsb.reset({ bases: [ side ], reCreate: false });
                         system.runTimeout(() => { devDebug.dsb.show(side); }, 1);
                     });
                 else
@@ -584,11 +620,11 @@ function register_scoreboards (registry) {
             else if (arg == 'reset_all') {
                 const side = ScoreboardLib.sideBar_query()?.id;
                 system.run(() => {
-                    devDebug.dsb.reset({bases:[],reCreate:false});
+                    devDebug.dsb.reset({ bases: [], reCreate: false });
                     system.runTimeout(() => { if (side) devDebug.dsb.show(side); }, 1);
                 });
             }
-            else if (['ctrs','deaths','stats'].includes(arg)) {
+            else if ([ 'ctrs', 'deaths', 'stats' ].includes(arg)) {
                 system.run(() => {
                     chatLog.log(`Switching to ${devDebug.dsb.getScoreboardName(arg)}`);
                     devDebug.dsb.show(arg);
@@ -598,7 +634,7 @@ function register_scoreboards (registry) {
                 const side = ScoreboardLib.sideBar_query()?.id;
                 if (side)
                     system.run(() => {
-                        devDebug.dsb.zero([side]);
+                        devDebug.dsb.zero([ side ]);
                         system.runTimeout(() => { devDebug.dsb.show(side); }, 1);
                     });
                 else
@@ -627,12 +663,12 @@ export function registerCustomCommands (registry) {
 
     //Register Enums here
     register_about(registry);
-    register_random_rtp(registry);
+    register_random_tp(registry);
 
     if (devDebug.debugOn) {
         register_cls(registry);
         register_delta(registry);
-
+        register_new_test(registry);
         register_getGeoInfo(registry);
         register_midnight(registry);
 
