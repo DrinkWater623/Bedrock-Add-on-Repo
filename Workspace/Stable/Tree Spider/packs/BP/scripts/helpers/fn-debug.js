@@ -35,6 +35,8 @@ const now = () => { return `§l§gTime: ${getWorldTime().hours}:00`; };
  * @property {boolean} watchEntitySubscriptions
  * @property {boolean} watchEntityEating
  * @property {boolean} watchEntityIssues
+ * @property {boolean} watchEntityPopulation
+ * @property {boolean} watchEntityStalls
  * @property {boolean} watchPlayerActions
  * @property {boolean} watchTempIssues
  * @property {() => void} allOff
@@ -45,6 +47,21 @@ const now = () => { return `§l§gTime: ${getWorldTime().hours}:00`; };
  */
 //==============================================================================
 const debugFunctions = false; //for the devDebug object
+//==============================================================================
+const markVariantLegend = new Map([
+    [ 1, "lf logs" ],
+    [ 2, "lf logs" ],
+    [ 3, "lf leaves" ],
+    [ 4, "lf leaves" ],
+    [ 5, "lf nature" ],
+    [ 6, "lf nature" ],
+    [ 7, "lf webs" ],
+    [ 8, "lf webs" ],
+    [ 9, "lf fire flies" ],
+    [ 10, "eating" ],
+    [ 11, "wandering" ],
+    [ 12, "chilling" ],
+]);
 //==============================================================================
 /** @type {DevObject} */
 export const devDebug = {
@@ -57,8 +74,10 @@ export const devDebug = {
     watchEntityGoals: false,
     watchEntityEvents: false,
     watchEntitySubscriptions: false,
-    watchEntityEating: false,
-    watchEntityIssues: true,
+    watchEntityEating: true,
+    watchEntityIssues: false,
+    watchEntityPopulation: false,
+    watchEntityStalls: true,
     watchPlayerActions: false,
     watchTempIssues: false,
 
@@ -109,7 +128,7 @@ export const devDebug = {
     /** Initialize scoreboards + jobs (call once after world load) */
     dsb_setup () {
         const cfg = {
-            bases: [ "Ctrs", "Stats", "Deaths" ],
+            bases: [ "Ctrs", "Stats", "Deaths", "Actions" ],
             entries: {
                 // Ctr entries
                 adultSpiders: "ctr: §aAdult spiders",
@@ -153,12 +172,19 @@ export const devDebug = {
             [ "Ctrs" ]
         );
 
-        this.dsb.registerIntervalJob(
+        /*this.dsb.registerIntervalJob(
             "hourlyChime",
             () => { alertLog.log(now(),this.debugOn); },
             Ticks.minecraftHour,
             [ "Ctrs" ]
-        );
+        );*/
+
+        /*this.dsb.registerIntervalJob(
+            "newDay",
+            () => { alertLog.log(`New Minecraft Day`,this.debugOn); },
+            Ticks.minecraftDay,
+            [ "Ctrs" ]
+        );*/
 
         // Start all registered jobs
         alertLog.log(`Start ${now()}`, this.debugOn);
@@ -183,29 +209,36 @@ function thisAddOn_EntityCounts (override = false) {
     const eggCount = EntityLib.getAllEntities({ type: watchFor.egg_typeId }).length;
     //if (eggCount) system.run(() => {    });
 
-    const entities_all = EntityLib.getAllEntities({ type: watchFor.spider_typeId });
+    const spiders_all = EntityLib.getAllEntities({ type: watchFor.spider_typeId });
+    //const loaded = spiders_all.filter(e => { return e.dimension.isChunkLoaded(e.location); });
+    //const unLoaded = spiders_all.filter(e => { return !e.dimension.isChunkLoaded(e.location); });
+    const hungry = spiders_all.filter(e => { return e.hasTag('hungry'); });
+    const satiated = spiders_all.filter(e => { return e.hasTag('satiated'); });
 
     system.runTimeout(() => {
-        const entities = entities_all.filter(e => { return e.isValid && !e.hasComponent('minecraft:is_baby'); });
-        const loaded = entities.filter(e => { return e.dimension.isChunkLoaded(e.location); });
-        const unLoaded = entities.filter(e => { return !e.dimension.isChunkLoaded(e.location); });
-        devDebug.dsb.set('ctrs', 'adultSpiders', entities.length, 1);
-        devDebug.dsb.set('ctrs', 'adultSpiders', entities.length, 1);
-        devDebug.dsb.set('ctrs', 'babySpiders', entities_all.length - entities.length, 1);
+        const spiders_adult = spiders_all.filter(e => { return e.isValid && !e.hasComponent('minecraft:is_baby'); });
+        devDebug.dsb.set('ctrs', 'adultSpiders', spiders_adult.length, 1);
+        devDebug.dsb.set('ctrs', 'babySpiders', spiders_all.length - spiders_adult.length, 1);
         devDebug.dsb.set('ctrs', 'eggsInWebs', eggCount, 1);
         devDebug.dsb.set('ctrs', 'flies', flyCount, 1);
         devDebug.dsb.set('ctrs', 'fireflies', fireflyCount, 1);
-        devDebug.dsb.set('ctrs', 'chunkLoaded', loaded.length, 1);
-        devDebug.dsb.set('ctrs', 'chunkUnloaded', unLoaded.length, 1);
+        //devDebug.dsb.set('ctrs', 'chunkLoaded', loaded.length, 1);
+        //devDebug.dsb.set('ctrs', 'chunkUnloaded', unLoaded.length, 1);
+        devDebug.dsb.set('ctrs', 'hungry', hungry.length, 1);
+        devDebug.dsb.set('ctrs', 'satiated', satiated.length, 1);
     }, 1);
+
+    devDebug.dsb.zero([ "actions" ]);
+    spiders_all.forEach(e => {
+        const mv = e.getComponent("mark_variant");
+        if (mv?.isValid) {
+            const action = markVariantLegend.get(mv.value);
+            if (action) devDebug.dsb.increment('actions', action);
+        }
+    });
+    devDebug.dsb.set('actions', 'hungry', hungry.length, 1);
+    devDebug.dsb.set('actions', 'satiated', satiated.length, 1);
 }
 //==============================================================================
 // End of File
 //====================================================================
-
-// export function hourlyChime () {
-//     alertLog.log(`Start ${now()}`, devDebug.debugOn);
-//     system.runInterval(() => {
-//         alertLog.log(now(), devDebug.debugOn);
-//     }, Ticks.minecraftHour);
-// }

@@ -67,6 +67,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
       },
       "cg:standard_egg":{
         "minecraft:scale": {"value":0.3},
+        "minecraft:experience_reward": {"on_death":"1"},
         "minecraft:despawn":{"filters":{"test":"in_block","operator": "!=","value":"minecraft:web"}},
         "minecraft:collision_box": {"width":0.2,"height":0.2},      
         "minecraft:physics":{"has_collision":false,"has_gravity":false},

@@ -45,7 +45,7 @@
       //maybe have it look for a web to get caught in... and if it finds one, a spider spawns to eat it and leave orbs
       "cg:temp_validation": {
           "minecraft:type_family": {"family":["fly","dw623","dw623_validation"]}, 
-          "minecraft:scale": {"value":0.125},
+          "minecraft:scale": {"value":0.2},
           "minecraft:physics":{"has_collision":false,"has_gravity":false},
           //"minecraft:timer": {"looping":false,"time":5.0,"time_down_event":{"event":"despawn_me"}},
           "minecraft:breathable": {
@@ -213,7 +213,6 @@
             "minecraft:beehive",
             "minecraft:bee_nest",
             "minecraft:cake", //list other cakes
-            "minecraft:cane",
             "minecraft:glow_berries",
             "minecraft:honey_block",
             "minecraft:honeycomb_block",
@@ -228,7 +227,7 @@
             "dw623:rotten_flesh_block",
             "minecraft:apple",
             "minecraft:cake", //TODO: the other color cake
-            "minecraft:cane",
+            "minecraft:sugar",
             "minecraft:cookie",
             "minecraft:glow_berries",
             "minecraft:honey_block",
@@ -314,7 +313,7 @@
         "minecraft:hurt_on_condition": {
           "damage_conditions": [{"filters":{"test":"in_lava","subject":"self"},"cause":"lava","damage_per_tick":4}]
         },
-        "minecraft:experience_reward": {"on_death":"Math.Random(1,2)"},
+        "minecraft:experience_reward": {"on_death":"1"},
         //FIXME:  how to flock
         "minecraft:flocking": {
           "in_water": false,
@@ -379,7 +378,7 @@
         "minecraft:despawn": {
           "despawn_from_chance": false,
           "despawn_from_inactivity": false,
-          "despawn_from_distance": {"max_distance":64,"min_distance":32},
+          "despawn_from_distance": {"max_distance":64,"min_distance":48},
           "despawn_from_simulation_edge": true,
           "filters": {"test":"distance_to_nearest_player","operator":">","value":64}
         }, 

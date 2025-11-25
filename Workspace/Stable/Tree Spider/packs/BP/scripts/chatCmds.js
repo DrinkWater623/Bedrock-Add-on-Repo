@@ -70,7 +70,7 @@ function register_cls (registry) {
     /** @type {(origin: CustomCommandOrigin, args: number[]) => import("@minecraft/server").CustomCommandResult} */
     const handler = (origin, args) => {
         if (origin.sourceEntity instanceof Player) {
-            let LineCount = args[ 0 ];
+            let LineCount = args?.length ? args[ 0 ] : 40;
             if (!LineCount) LineCount = 40;
             if (LineCount > 80) LineCount = 80;
             origin.sourceEntity.sendMessage(`${'\n'.repeat(LineCount)}`);
@@ -602,9 +602,9 @@ function register_scoreboards (registry) {
 
             const player = origin.sourceEntity;
 
-            if (arg == 'clear') {
+            if (arg === 'hide') {
                 system.run(() => {
-                    devDebug.dsb.unShow();
+                    devDebug.dsb.hide();
                 });
             }
             else if (arg == 'reset') {
@@ -624,7 +624,7 @@ function register_scoreboards (registry) {
                     system.runTimeout(() => { if (side) devDebug.dsb.show(side); }, 1);
                 });
             }
-            else if ([ 'ctrs', 'deaths', 'stats' ].includes(arg)) {
+            else if ([ 'ctrs', 'deaths', 'stats','actions' ].includes(arg)) {
                 system.run(() => {
                     chatLog.log(`Switching to ${devDebug.dsb.getScoreboardName(arg)}`);
                     devDebug.dsb.show(arg);
@@ -681,7 +681,7 @@ export function registerCustomCommands (registry) {
         register_watchEntityEvents(registry);
 
         alertLog.log(`Registering Debug enum: ${scoreboard_options}`, debugFunctions);
-        registry.registerEnum(scoreboard_options, [ "clear", "reset", "reset_all", "stats", "ctrs", "deaths", "zero", "zero_all" ]);
+        registry.registerEnum(scoreboard_options, [ "hide", "reset", "reset_all", "stats", "ctrs", "actions","deaths", "zero", "zero_all" ]);
 
         register_scoreboards(registry);
     }

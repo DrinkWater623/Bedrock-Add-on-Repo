@@ -99,7 +99,7 @@ export class DebugScoreboards {
         this.debugOn = !!on;
         if (wasOn && !this.debugOn) {
             this.countersOff();
-            this.unShow();
+            this.hide();
         }
     }
 
@@ -404,7 +404,7 @@ export class DebugScoreboards {
      * @param {number} [tickDelay=0]
      * @returns {void}
      */
-    unShow (tickDelay = 0) {
+    hide (tickDelay = 0) {
         const ids = new Set(this._bases.map(b => this.getScoreboardName(b)));
         const side = ScoreboardLib.sideBar_query();
         const list = ScoreboardLib.list_query();

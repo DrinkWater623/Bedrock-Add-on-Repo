@@ -8,7 +8,7 @@ URL: https://github.com/DrinkWater623
 ========================================================================
 Last Update: 20251023 - add in stable stuff and update to api 2.0 and move debug-only stuff out
 ========================================================================*/
-import { world, system, Player } from "@minecraft/server";
+import { world, system } from "@minecraft/server";
 //Enums
 import { EntityInitializationCause } from "@minecraft/server";
 //Subscriptions
@@ -18,17 +18,18 @@ import { EntityInitializationCause } from "@minecraft/server";
 //import { PlayerPlaceBlockAfterEvent, PlayerPlaceBlockAfterEventSignal } from "@minecraft/server";
 //Shared
 import { Ticks } from "./common-data/globalConstantsLib.js";
-import { chance, rndInt } from "./common-other/mathLib.js";
+import { chance } from "./common-other/mathLib.js";
 import { DynamicPropertyLib } from "./common-stable/dynamicPropertyClass.js";
-import { spawnEntityAtLocation } from "./common-stable/entityClass.js";
+import { EntityLib, spawnEntityAtLocation } from "./common-stable/entityClass.js";
 import { Vector3Lib } from "./common-stable/vectorClass.js";
 //Local
-import { alertLog, pack, watchFor, entityDynamicVars, thisPackEntities } from './settings.js';
+import { alertLog, pack, watchFor, entityDynamicVars } from './settings.js';
 import { registerCustomCommands } from "./chatCmds.js";
 import { rattleEntityFromBlockWithItem, validNatureBlockForSpiders } from './helpers/fn-blocks.js';
 import { devDebug } from "./helpers/fn-debug.js";
 import { entityEventProcess, lastTickAndLocationRegister, stalledSpiderCheckAndFix, flyPopulationCheck, spiderPopulationCheck, entityScriptEvents, } from './helpers/fn-entities.js';
 import { airBlock, stairBlocks } from "./common-data/block-data.js";
+import { getWorldTime } from "./common-stable/timers.js";
 //import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
 
 //==============================================================================
@@ -170,7 +171,7 @@ const blockSubscriptions = {
 
             /** @type {AfterPlayerBreakBlockHandler} */
             const fn = (event) => {
-                if (chance(0.7)) return; //30% chance to spawn pests
+                if (!chance(0.15)) return; //25% chance to spawn pests
 
                 const { block, dimension, brokenBlockPermutation, itemStackBeforeBreak } = event;
                 const blockTypeId = brokenBlockPermutation.type.id;
@@ -179,7 +180,7 @@ const blockSubscriptions = {
                 alertLog.success(`>> ${this._subscription}.subscribe(${brokenBlockPermutation}, ${itemStackBeforeBreak})`, watchMe);
 
                 if (watchForBlockTypes_flies.includes(blockTypeId)) {
-                    spawnEntityAtLocation(watchFor.fly_typeId, dimension, location, 1, 3, 1, 20);
+                    spawnEntityAtLocation(watchFor.fly_typeId, dimension, location, 1, 3, 1, 10);
                     return;
                 }
 
@@ -233,13 +234,6 @@ const blockSubscriptions = {
                 const { typeId, dimension, location } = block;
                 const locationCtr = Vector3Lib.toCenter(location);
 
-                if (typeId === watchFor.spider_home_typeId) {
-                    const entityId = chance(0.5) ? watchFor.spider_typeId : watchFor.egg_typeId;
-                    const max = entityId == watchFor.egg_typeId ? 1 : 2;
-                    spawnEntityAtLocation(entityId, dimension, locationCtr, 1, max, 40, 100);
-                    return;
-                }
-
                 if (typeId === watchFor.fly_home_typeId) {
                     const above = block.above();
                     if (!above || !above.isValid || above.typeId !== airBlock) return;
@@ -255,8 +249,14 @@ const blockSubscriptions = {
                     return;
                 }
                 //========================    Less Likely
-                if (!chance(0.75)) return;
+                if (chance(0.75)) return;
                 //========================    Less Likely
+                if (typeId === watchFor.spider_home_typeId) {
+                    const entityId = chance(0.5) ? watchFor.spider_typeId : watchFor.egg_typeId;
+                    const max = entityId == watchFor.egg_typeId ? 1 : 2;
+                    spawnEntityAtLocation(entityId, dimension, locationCtr, 1, max, 40, 100);
+                    return;
+                }
 
                 if (typeId === 'minecraft:cauldron') {
                     const above = block.above();
@@ -549,10 +549,10 @@ const entitySubscriptions = {
                             DynamicPropertyLib.add(entity, entityDynamicVars.entityLoads, 1);
                             devDebug.dsb.increment('stats', 'loaded');
                             const msg = `§l${nameTag}§r §eLoaded in Biome ${dimension.getBiome(location).id} @ ${Vector3Lib.toString(location, 0, true)} §r- ${this._subscription}()`;
-                            alertLog.log(msg,watchEntitySubscriptions);
+                            alertLog.log(msg, watchEntitySubscriptions);
                         }
                         const isBaby = entity.hasComponent('minecraft:is_baby');
-                        entity.triggerEvent(isBaby ? entityScriptEvents.baby_spider_loadedEventName : entityScriptEvents.spider_loadedEventName);
+                        if (entity.isValid) entity.triggerEvent(isBaby ? entityScriptEvents.baby_spider_loadedEventName : entityScriptEvents.spider_loadedEventName);
                     }, 1);
                 }
             };
@@ -717,15 +717,14 @@ function validateEntityFiles (debugMe = false) {
 
         //@ts-expect-error
         const entity = dimension.spawnEntity(typeId, location, { initialPersistence: true, spawnEvent: entityScriptEvents.entity_validatedEventName });
-
         if (entity) {
             alertLog.success(`Entity spawn validated for typeId: ${typeId} - isValid: ${entity.isValid}`, debugMe);
             pack.validatedEntities.set(typeId, true);
-            system.runTimeout(() => { 
+            system.runTimeout(() => {
                 if (entity.isValid) {
                     //entity.applyImpulse({x:0,y:10,z:0})
                     entity.remove();
-                } 
+                }
             }, 10);
         }
         else {
@@ -769,6 +768,19 @@ function validateEntityFiles (debugMe = false) {
             }, Ticks.perMinute * Math.abs(watchFor.spiderPopulationCheckRunInterval));
         }
         else alertLog.warn(`Spider population check interval is set to 0 - not running check`, debugMe);
+
+        if (watchFor.eatFireFliesOnlyAtNight) {
+            alertLog.log(`Starting daytime removal of Fire Flies minecraft hour`, debugMe);
+            system.runInterval(() => {
+                const hourOfDay = getWorldTime().hours;
+                if (hourOfDay > 7 && hourOfDay < 15) {
+                    const fireflies = EntityLib.getAllEntities({ type: watchFor.firefly_typeId });
+                    if (fireflies.length) { fireflies.forEach(e => { if (e.isValid) e.remove(); }); }
+                }
+            }, Ticks.minecraftHour * 1);
+        }
+        else alertLog.log(`Fireflies allowed in daytime`, debugMe);
+        
     }, 5);
 }
 //==============================================================================

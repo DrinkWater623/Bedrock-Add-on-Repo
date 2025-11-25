@@ -12,8 +12,7 @@ Change Log:
 import { world, system, Player, Entity, Block, Dimension } from "@minecraft/server";
 import { rndInt } from "../common-other/mathLib.js";
 import { Vector3Lib as vec3 } from './vectorClass.js';
-import { worldRun } from "./worldRunLib.js";
-import { alertLog } from "../settings.js";
+//import { worldRun } from "./worldRunLib.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /** @typedef {import("@minecraft/server").EntityQueryOptions} EntityQueryOptions */
@@ -252,64 +251,35 @@ export function spawnEntityAfterRandomTicks (dimension, location, typeId, min = 
  * @param {Vector3 } location 
  * @param {number} [minEntities=1] 
  * @param {number} [maxEntities=1] 
- * @param {number} [maxTickDelay=1] 
  * @param {number} [minTickDelay=1] 
+ * @param {number} [maxTickDelay=1] 
  * @param {string} [event="minecraft:entity_spawned"] 
  * @param {string} [varyForBlockFace=''] 
- * @param {boolean} [debug=false]
+ * @returns {number} qtySpawnedSuccessfully;
  */
-export function spawnEntityAtLocation (entityTypeId, dimension, location, minEntities = 1, maxEntities = 1, minTickDelay = 1, maxTickDelay = 1, event = "", varyForBlockFace = '',debug=false) {    
-    alertLog.log(`spawnEntityAtLocation: ${entityTypeId} at ${vec3.toString(location, 0, true, ' ')}`, debug);
-    if (!dimension || !dimension.isChunkLoaded(location)) {
-        alertLog.error(`  - Chunk not loaded at location`, debug);
-        return;
-    }
+export function spawnEntityAtLocation (entityTypeId, dimension, location, minEntities = 1, maxEntities = 1, minTickDelay = 1, maxTickDelay = 1, event = "", varyForBlockFace = '') {
+    if (!location) return 0;
+    if (!dimension || !dimension.isChunkLoaded(location)) return 0;
 
     if (maxEntities < 1 || minEntities > maxEntities) maxEntities = minEntities;
     if (maxTickDelay < minTickDelay) maxTickDelay = minTickDelay;
-    
+
+    const options = { initialPersistence: true };
+    // @ts-ignore
+    if (event) options.spawnEvent = event;
+
     let max = minEntities === maxEntities ? minEntities : rndInt(minEntities, maxEntities);
+    let qtySpawnedSuccessfully = 0;
     for (let i = 0; i < max; i++) {
         if (i > 0 && varyForBlockFace) {
-            //update location string per the blockFace to a random area inside block location
-            //
+            //TODO: update location string per the blockFace to a random area inside block location
         }
 
-        if (event) {
-            const locationStr = vec3.toString(location, 1, false, ' ');    
-            const cmd = `summon ${entityTypeId} ${locationStr} 0 0 ${event}`;
-            alertLog.log(`spawnEntityAtLocation cmd: ${cmd}`, true);
-            worldRun(cmd, dimension, rndInt(minTickDelay, maxTickDelay));
-        }
-        else {
-            // @ts-ignore spawnEntity exists at runtime        
-            dimension.spawnEntity(entityTypeId, location);
-        }
+        // @ts-ignore spawnEntity exists at runtime        
+        const entity = dimension.spawnEntity(entityTypeId, location, options);
+        if (entity) qtySpawnedSuccessfully++;
     }
+
+    return qtySpawnedSuccessfully;
 }
 //===================================================================
-/**
- * @param {string} entityTypeId 
- * @param {Dimension | undefined} dimension 
- * @param {Vector3 | undefined} location 
- * @param {number} [minEntities=1] 
- * @param {number} [maxEntities=1] 
- * @param {number} [maxTickDelay=1] 
- * @param {number} [minTickDelay=1] 
- * @param {string} [event="minecraft:entity_spawned"] 
- */
-function spawnEntityAtLocationX (entityTypeId, dimension, location, minEntities = 1, maxEntities = 1, minTickDelay = 1, maxTickDelay = 1, event = "minecraft:entity_spawned") {
-    if (!location) return;
-    if (!dimension || !dimension.isChunkLoaded(location)) return;
-
-    if (maxEntities < 1 || minEntities > maxEntities) maxEntities = minEntities;
-    if (maxTickDelay < minTickDelay) maxTickDelay = minTickDelay;
-
-    const locationStr = vec3.toString(location, 1, false, ' ');
-    const cmd = `summon ${entityTypeId} ${locationStr} 0 0 ${event}`;
-    let max = minEntities === maxEntities ? minEntities : rndInt(minEntities, maxEntities);
-
-    // for (let i = 0; i < max; i++) {
-    //     worldRun(cmd, dimension, rndInt(minTickDelay, maxTickDelay), location); //rnd so spider has time to move away
-    // }
-}

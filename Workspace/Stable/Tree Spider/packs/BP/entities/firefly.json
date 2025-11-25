@@ -49,42 +49,16 @@
               ]
           }                     
       },
-      "instant_despawn":{"minecraft:instant_despawn":{}},               
-      "duplicate_me": {
-        "minecraft:spawn_entity": {
-          "entities": [{
-            "min_wait_time": 0,
-            "max_wait_time": 1,
-            "spawn_entity": "dw623:firefly",
-            "single_use": true,
-            "num_to_spawn": 1,
-            "spawn_event": "minecraft:entity_spawned"
-          }]
-        }
-      },
-      "duplicate_me_2": {
-        "minecraft:spawn_entity": {
-          "entities": [{
-            "min_wait_time": 0,
-            "max_wait_time": 1,
-            "spawn_entity": "dw623:firefly",
-            "single_use": true,
-            "num_to_spawn": 2,
-            "spawn_event": "minecraft:entity_spawned"
-          }]
-        }
-      },
+      "instant_despawn":{"minecraft:instant_despawn":{}},                    
       "perish": {
         "minecraft:experience_reward": {"on_death":"0"},
         "minecraft:hurt_on_condition":{"damage_conditions":[{"cause":"none","damage_per_tick":999}]}
       },
       "cg:standard_firefly":{
-        "minecraft:balloonable": {"mass":0.5},
-        "minecraft:scale": {"value":0.15},
+        "minecraft:balloonable": {"mass":0.5},        
         "minecraft:collision_box": {"width":0.55,"height":0.5},
         "minecraft:mark_variant": {"value":1}, 
-        "minecraft:conditional_bandwidth_optimization": {},
-        "minecraft:is_hidden_when_invisible": {},
+        "minecraft:conditional_bandwidth_optimization": {},        
         "minecraft:health": {"value":1,"max":1},
         "minecraft:physics": {},
         "minecraft:pushable": {"is_pushable":true,"is_pushable_by_piston":true},      
@@ -93,24 +67,24 @@
         "minecraft:behavior.float": {"priority":19},
         "minecraft:behavior.random_fly": {
           "priority": 5,
-          "xz_dist": 4,
+          "xz_dist": 3,
           "y_dist": 2,
           "y_offset": 1,
-          "speed_multiplier": 0.25, //0.5,
+          "speed_multiplier": 0.1, //0.5,
           "can_land_on_trees": true,
           "avoid_damage_blocks": true
         },
         "minecraft:behavior.random_hover": {
           "priority": 9,
-          "xz_dist": 4,
+          "xz_dist": 3,
           "y_dist": 1,
           "y_offset": -1,
           "interval": 1,
           "hover_height": [ 0.25, 1 ]
         },
         "minecraft:can_fly": {},
-        "minecraft:flying_speed": {"value":0.10}, 
-        "minecraft:movement": {"value":0.1},
+        "minecraft:flying_speed": {"value":0.08}, 
+        "minecraft:movement": {"value":0.08},
         "minecraft:movement.hover": {},
         "minecraft:jump.static": {},
         "minecraft:navigation.hover": {
@@ -126,11 +100,11 @@
         //goals
         "minecraft:behavior.move_to_block": {
           "priority": 5,
-          "tick_interval": 1,
-          "start_chance": 0.5,
+          "tick_interval": 10,
+          "start_chance": 0.75,
           "search_range": 8,
-          "search_height": 4,
-          "goal_radius": 2.0,
+          "search_height": 8,
+          "goal_radius": 1.0,
           "target_selection_method": "nearest",
           "target_offset": [ 0, 1, 0 ],
           "target_blocks":["minecraft:firefly_bush"] 
@@ -148,19 +122,31 @@
           "damage_conditions": [{"filters":{"test":"in_lava","subject":"self"},"cause":"lava","damage_per_tick":4}]
         },
         "minecraft:attack": {"damage":0},
+        // "minecraft:environment_sensor":{
+          //   "triggers":[{
+            //     "event":"perish_event",
+            //     "filters":{ "test": "is_daytime", "operator": "==", "value": true }               
+            //   }]
+            // }
         "minecraft:experience_reward": {"on_death":"1"},
-        "minecraft:environment_sensor":{
-          "triggers":[{
-            "event":"perish_event",
-            "filters":{ "test": "is_daytime", "operator": "==", "value": true }               
-          }]
+        // "minecraft:despawn": {
+        //   "filters": {"test":"is_daytime","value":true},
+        //   "despawn_from_chance": true
+        // },
+        "minecraft:timer": {"looping":false,"time":[600,1200],"time_down_event":{"event":"higher_chance_despawn"}}
+      },
+      "cg:higher_chance_despawn":{
+        "minecraft:despawn": {
+          "filters": {"test":"is_daytime","value":true},
+          "despawn_from_chance": true,
+          "min_range_random_chance":800
         }
       }
     },
     "components": {
       //stats
-      "minecraft:type_family": {"family":["firefly","dw623","mob"]}
-      
+      "minecraft:type_family": {"family":["firefly","dw623","mob"]},
+      "minecraft:scale": {"value":0.10}      
     },
     "events": {
       "dw623:entity_validation":{
@@ -174,7 +160,8 @@
           {"queue_command": {"command":["scriptevent debugLogEvent:NewFireFly spawned"]}},
           {"add":{"component_groups":["cg:standard_firefly"]}}
         ]
-      },                                  
+      },
+      "higher_chance_despawn":{"add":{"component_groups":["cg:higher_chance_despawn"]}},                                  
       "perish_event": {"add":{"component_groups":["perish"]}}
     }
   }

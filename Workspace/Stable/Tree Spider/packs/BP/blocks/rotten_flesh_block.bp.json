@@ -14,7 +14,7 @@
             "minecraft:display_name": "Rotten Flesh Block",
             "minecraft:friction": 0.05,
             "minecraft:geometry": {
-                "identifier": "minecraft:geometry.full_block"
+                "identifier": "minecraft:geometry.full_block"                
             },
             "minecraft:material_instances": {
                 "*": {

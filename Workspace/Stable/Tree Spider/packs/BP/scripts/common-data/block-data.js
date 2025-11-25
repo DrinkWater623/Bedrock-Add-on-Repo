@@ -115,7 +115,6 @@ export const tallNatureBlocks = [
     "minecraft:rose_bush",
     "minecraft:lilac",
     "minecraft:peony",
-    "minecraft:sugar_cane",
     "minecraft:sunflower",
     "minecraft:torchflower",
     "minecraft:tall_grass",
