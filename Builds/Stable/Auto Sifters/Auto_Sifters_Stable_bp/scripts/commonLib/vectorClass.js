@@ -61,10 +61,9 @@ function rotationToCardinalDirection (rotation) {
     let dir = Math.round((rotation % 360) / 90);
     if (dir < 0) dir += 4;
 
-    //@ts-ignore    
-    return dirs[ dir ];
-
     
+    //@ts-ignore    
+    // return dirs[ dir ];    
 }
 //==============================================================================
 //==============================================================================

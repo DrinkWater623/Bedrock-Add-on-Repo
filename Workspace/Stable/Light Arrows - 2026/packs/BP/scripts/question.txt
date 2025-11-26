@@ -1,0 +1,9 @@
+I need help with creating a function or class or whatever for this problem
+
+1. There are six sides to a block in minecraft.  north, south, east, west, up and down.  For NSEW, I know what block face I am dealing with.
+2. I know where on the block the player has interacted with.  I have it broken down to a 3x3 grid, with 0,0 being the lower right corner, no matter what side you are dealing with. 
+3. When a player touches the left side (x=2 and y=1)  or the right side (x=0 and y=1), I want to say which directional edge they are touching.  If they are touching x=0 and y=0, then it is down-east, whereas x=1 and y=2 is just up.
+For example on the south side of the block, the left side is west and the right side is east.  Each side is different.
+
+What can you come up with, in JS, that can take the face (north, south, east, west only) and the x,y coordinates, and return the name for what it represents.
+Let me know if you need more info.
