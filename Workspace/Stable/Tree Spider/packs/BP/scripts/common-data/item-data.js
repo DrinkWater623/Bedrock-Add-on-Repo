@@ -54,6 +54,7 @@ export const vanillaClothes = vanillaItems.filter(item => {
 
     return false;
 });
+//TODO: expand with other stuff... as needed
 //=============================================================================
 // End of File
 //=============================================================================

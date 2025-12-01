@@ -2,12 +2,13 @@
 // @ts-check
 /* =====================================================================
 Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
-License: GPL-3.0-only
+License: M.I.T.
 URL: https://github.com/DrinkWater623
 ========================================================================
 Change Log
     20250116 - Added isSameLocation
     20251103 - Added randomVectorImpulseCapped, VectorXZ
+    20251125 - Added isAdjacent to V3 - moved face grid to diff file
 ========================================================================*/
 import { Player, world } from "@minecraft/server";
 // Shared
@@ -31,8 +32,6 @@ export function rotationToCardinalDirection (rotation) {
 
     //@ts-ignore    
     return dirs[ dir ];
-
-
 }
 //==============================================================================
 //==============================================================================
@@ -111,6 +110,16 @@ export class Vector3Lib {
         if (v1.z != v2.z) return false;
         return true;
 
+    }
+    /**
+    * @param { Vector3 } vector1
+    * @param { Vector3 } vector2
+    * @returns { boolean } 
+    */
+    //==============================================================================
+    static isAdjacent (vector1, vector2) {
+        const xyz = this.delta(vector1,vector2,0,true)
+        return (xyz.x+xyz.y+xyz.z)===1
     }
     //==============================================================================
     /**
@@ -294,142 +303,6 @@ export class Vector3Lib {
         }
 
         return { x, y, z };
-    }
-}
-/**
- * 
- * @param {number} number 
- */
-function decimalPart (number) {
-    return number - Math.trunc(number);
-}
-//==============================================================================
-export class FaceLocationGrid {
-    #og_xDelta = 0;
-    #og_yDelta = 0;
-    /**
-     * 
-     * @param {Vector3} faceLocation 
-     * @param {string} blockFace
-     * @param {boolean} [absolute=false]
-     * @param {Player | undefined} [player = undefined]
-     * @summary Use Absolute to have the grids not be relative to the face side  
-     */
-    constructor(faceLocation, blockFace, absolute = false, player = undefined) {
-        this.faceLocation =
-            Vector3Lib.new(
-                decimalPart(faceLocation.x),
-                decimalPart(faceLocation.y),
-                decimalPart(faceLocation.z)
-            );
-        this.blockFace = blockFace.toLowerCase();
-
-        if ([ 'up', 'down' ].includes(this.blockFace)) {
-            this.xDelta = this.faceLocation.x;
-            this.yDelta = this.faceLocation.z;
-        }
-        else {
-            this.yDelta = this.faceLocation.y;
-            this.xDelta = ([ 'north', 'south' ].includes(this.blockFace)) ? this.faceLocation.x : this.faceLocation.z;
-        }
-
-        if (this.xDelta < 0) this.xDelta = 1 - Math.abs(this.xDelta);
-        if (this.yDelta < 0) this.yDelta = 1 - Math.abs(this.yDelta);
-
-        if (!absolute) {
-            //These need to be reversed per player facing block
-            //for top to bottom and left to right
-            if ([ 'east', 'north' ].includes(this.blockFace)) {
-                this.xDelta = 1 - this.xDelta;
-                this.yDelta = 1 - this.yDelta;
-            }
-            else if ([ 'west', 'south' ].includes(this.blockFace)) {
-                this.yDelta = 1 - this.yDelta;
-            }
-        }
-
-        this.xyDelta = Vector2Lib.new(this.xDelta, this.yDelta);
-        const grid2 = this.grid(2);
-        this.verticalHalf = grid2.y;
-        this.horizontalHalf = grid2.x;
-
-        this.#og_xDelta = this.xDelta;
-        this.#og_yDelta = this.yDelta;
-
-        //auto done, but you can do later
-        if ([ 'up', 'down' ].includes(this.blockFace) && player && player.isValid) {
-            this.adjustUpDownToPlayerRotation(player);
-        }
-    }
-    /**
-     * 
-     * @param {number} base 
-     * @returns {Vector2}
-     */
-    grid (base = 1) {
-        if (base == 0) base = 1;
-        return Vector2Lib.new(Math.floor(this.xDelta * base), Math.floor(this.yDelta * base));
-    }
-
-    //for up/down can alter to be relative to player rotation
-    /**
-     * 
-     * @param {Player} player 
-     */
-    adjustUpDownToPlayerRotation (player) {
-        if ([ 'up', 'down' ].includes(this.blockFace) &&
-            player &&
-            player.isValid)
-            this.adjustUpDownToPlayerAngle(player.getRotation().y);
-    }
-    //for up/down can alter to be relative to player rotation
-    /**
-     * 
-     * @param {number} rotationY      
-     */
-    adjustUpDownToPlayerAngle (rotationY) {
-        if (![ 'up', 'down' ].includes(this.blockFace))
-            return;
-
-        const direction = rotationToCardinalDirection(rotationY);
-        //world.sendMessage(`rotationY=${Math.round(rotationY,1} - -angle = Dir=${direction}`)
-        this.adjustUpDownToPlayerDirection(direction);
-    }
-    //for up/down can alter to be relative to player rotation
-    /**
-     * 
-     * @param {string} direction      
-     */
-    adjustUpDownToPlayerDirection (direction) {
-        if (![ 'up', 'down' ].includes(this.blockFace))
-            return;
-
-        //TODO: figure out later, not needed yet
-        //world.sendMessage(`altering for ${direction}`);
-        switch (direction) {
-            case 'north': [ this.xDelta, this.yDelta ] = [ this.#og_xDelta, this.#og_yDelta ];
-                break;
-            case 'south': [ this.xDelta, this.yDelta ] = [ 1 - this.#og_xDelta, 1 - this.#og_yDelta ];
-                break;
-            case 'west': [ this.xDelta, this.yDelta ] = [ 1 - this.#og_yDelta, this.#og_xDelta ];
-                break;
-            case 'east': [ this.xDelta, this.yDelta ] = [ this.#og_yDelta, 1 - this.#og_xDelta ];
-                break;
-            default:
-                return;
-        }
-
-        if (this.blockFace == 'down') {
-            //reverse for when looking up.  Imagine looking at paper
-            this.xDelta = 1 - this.xDelta;
-            this.yDelta = 1 - this.yDelta;
-        }
-
-        // reset these vars
-        this.xyDelta = Vector2Lib.new(this.xDelta, this.yDelta);
-        const grid2 = this.grid(2);
-        this.verticalHalf = grid2.y;
-        this.horizontalHalf = grid2.x;
     }
 }
 //==============================================================================

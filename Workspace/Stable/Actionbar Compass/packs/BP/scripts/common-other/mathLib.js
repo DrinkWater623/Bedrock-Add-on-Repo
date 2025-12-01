@@ -9,6 +9,8 @@ Change Log:
     20241229 - reOrg and add License
     20251102 - Add some needed functions
 ========================================================================*/
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
+//========================================================================
 export const rnd = (min = 0, max = 0) => Math.random() * (max - min) + min;
 export const rndInt = (min = 0, max = 0) => Math.floor(Math.random() * (max - min + 1)) + min;
 export const rndFloat = (min = 0, max = 0) => Math.random() * (max - min) + min;
@@ -68,4 +70,6 @@ export function bitArrayAdd (numberArray, numberToAdd = 0, base = 10, minReturnL
     
     return numberArray;
 }
+//=============================================================================
+// End of FIle
 //=============================================================================

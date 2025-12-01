@@ -1,11 +1,11 @@
 {
-	"arrows": [
-		{"texture":"glowstone"					,"name":"glowstone"				},		
-		{"texture":"sea_lantern"				,"name":"sea_lantern"				},
-		{"texture":"verdant_froglight_side"		,"name":"verdant_froglight"		},
-		{"texture":"ochre_froglight_side"		,"name":"ochre_froglight"			},
-		{"texture":"pearlescent_froglight_side"	,"name":"pearlescent_froglight"	},
-		{"texture":"shroomlight"				,"name":"shroomlight"				}
+	"materials": [
+		{"texture":"glowstone"					,"name":"glowstone"					,"sound":"glass"		,"isotropic":true 	},		
+		{"texture":"sea_lantern"				,"name":"sea_lantern"				,"sound":"glass"		,"isotropic":true 	},
+		{"texture":"verdant_froglight_side"		,"name":"verdant_froglight"			,"sound":"froglight"	,"isotropic":true 	},
+		{"texture":"ochre_froglight_side"		,"name":"ochre_froglight"			,"sound":"froglight"	,"isotropic":true 	},
+		{"texture":"pearlescent_froglight_side"	,"name":"pearlescent_froglight"		,"sound":"froglight"	,"isotropic":true 	},
+		{"texture":"shroomlight"				,"name":"shroomlight"				,"sound":"shroomlight"	,"isotropic":true 	}
 	],
 	"block_face":[
 		{"dir":"south"  	,"opposite":"north"	},
@@ -19,12 +19,44 @@
 		{"id":2 ,"dir":"north" 		},
 		{"id":3 ,"dir":"east"   	}
 	],
-	"colors": [
-		//{"color":"light_blue","display":"Light Blue","color_id":3,"weight":3},
-		// {"color":"white","display":"White","color_id":0,"weight":40},
-		// {"color":"orange","display":"Orange","color_id":1,"weight":3},
-		// {"color":"yellow","display":"Yellow","color_id":4,"weight":3},
-		// {"color":"lime","display":"Lime","color_id":5,"weight":3},
-		{"color":"pink","display":"Pink","color_id":6,"weight":3}
-	]
+	// "colors": [
+	// 	//{"color":"light_blue","display":"Light Blue","color_id":3,"weight":3},
+	// 	// {"color":"white","display":"White","color_id":0,"weight":40},
+	// 	// {"color":"orange","display":"Orange","color_id":1,"weight":3},
+	// 	// {"color":"yellow","display":"Yellow","color_id":4,"weight":3},
+	// 	// {"color":"lime","display":"Lime","color_id":5,"weight":3},
+	// 	{"color":"pink","display":"Pink","color_id":6,"weight":3}
+	// ],
+	"light_bar_positions":[
+		{"grid":0 ,"geo_sfx":"center_ns"  	,"origin": [-2.5, 0, -8],	"size": [5, 5, 16]},
+		{"grid":1 ,"geo_sfx":"center_ew" 	,"origin": [-8, 0, -2.5],	"size": [16, 5, 5]},
+		{"grid":3 ,"geo_sfx":"east_ns" 		,"origin": [-8, 0, -8],		"size": [5, 5, 16]},
+		{"grid":3 ,"geo_sfx":"west_ns"   	,"origin": [3, 0, -8],		"size": [5, 5, 16]},
+		{"grid":7 ,"geo_sfx":"north_ew" 	,"origin": [-8, 0, -8],		"size": [16, 5, 5]},
+		{"grid":1 ,"geo_sfx":"south_ew"   	,"origin": [-8, 0, 3],		"size": [16, 5, 5]}
+	],
+	// up face is static, so this matches their 0-8 configuration
+	"mini_block_position_center":[
+		{"grid":4 ,"geo_sfx":"center" 	,"origin": [-2.5, 0, -2.5]	}
+	],
+	"mini_block_positions_Up_down":[
+		{"grid":0 ,"geo_sfx":"nw"  		,"origin": [3, 0, -8]		},
+		{"grid":1 ,"geo_sfx":"n" 		,"origin": [-2.5, 0, -8]	},
+		{"grid":2 ,"geo_sfx":"ne" 		,"origin": [-8, 0, -8]		},
+		{"grid":3 ,"geo_sfx":"w"   		,"origin": [3, 0, -2.5]		},		
+		{"grid":5 ,"geo_sfx":"e"   		,"origin": [-8, 0, -2.5]	},
+		{"grid":6 ,"geo_sfx":"sw"   	,"origin": [3, 0, 3]		},
+		{"grid":7 ,"geo_sfx":"s"  	 	,"origin": [-2.5, 0, 3]		},
+		{"grid":8 ,"geo_sfx":"se"  		,"origin": [-8, 0, 3]		}
+	],
+	"mini_block_positions_walls":[
+		{"grid":8 ,"geo_sfx":"nw"  		,"origin": [3, 0, -8]		},
+		{"grid":7 ,"geo_sfx":"n" 		,"origin": [-2.5, 0, -8]	},
+		{"grid":6 ,"geo_sfx":"ne" 		,"origin": [-8, 0, -8]		},
+		{"grid":5 ,"geo_sfx":"w"   		,"origin": [3, 0, -2.5]		},		
+		{"grid":3 ,"geo_sfx":"e"   		,"origin": [-8, 0, -2.5]	},
+		{"grid":2 ,"geo_sfx":"sw"   	,"origin": [3, 0, 3]		},
+		{"grid":1 ,"geo_sfx":"s"  	 	,"origin": [-2.5, 0, 3]		},
+		{"grid":0 ,"geo_sfx":"se"  		,"origin": [-8, 0, 3]		}
+	]	
 }

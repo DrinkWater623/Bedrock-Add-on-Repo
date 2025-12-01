@@ -6,10 +6,11 @@ License: M.I.T
 URL: https://github.com/DrinkWater623
 ========================================================================
 Change Log:
-    20251125 - Created File    
+    20251125 - Created File 
+    20251129 - Fixed xDelta and yDelta per Non Absolute and player location - because it was wrong before   
 ========================================================================*/
 /**
- * @typedef {'north' | 'south' | 'east' | 'west'} BlockSides
+ * @typedef {'north' | 'south' | 'east' | 'west'} CardinalBlockFace
  * 
  * @typedef {'up'|'down'|'north'|'south'|'east'|'west'} BlockFaces
  * @typedef {'Up'|'Down'|'North'|'South'|'East'|'West'} BlockFacesTitle
@@ -27,24 +28,28 @@ Change Log:
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
 //=============================================================================
-import { Player } from "@minecraft/server";
+import { Direction, Player, world } from "@minecraft/server";
 // shared
+import { AngleMath, Compass } from "../common-other/rotationLib";
 import { rotationToCardinalDirection, Vector2Lib, Vector3Lib } from "./vectorClass";
+import { round } from "../common-other/mathLib";
 //=============================================================================
-/** @type {Record<BlockSides, { left: 'north'|'south'|'east'|'west', right: 'north'|'south'|'east'|'west' }>} */
+const compass = new Compass();
+//=============================================================================
+/** @type {Record<string, { face:CardinalBlockFace,left: CardinalBlockFace, right: CardinalBlockFace, opposite: CardinalBlockFace }>} */
 const faceHorizontalMap = {
     // Standing at each face, looking at the block:
     // south face -> facing north: left = west, right = east
-    north: { left: 'west', right: 'east' },
+    north: { face: 'north', left: 'west', right: 'east', opposite: 'south' },
 
     // north face -> facing south: left = east, right = west
-    south: { left: 'east', right: 'west' },
+    south: { face: 'south', left: 'east', right: 'west', opposite: 'north' },
 
     // east face -> facing west: left = south, right = north
-    west: { left: 'south', right: 'north' },
+    west: { face: 'west', left: 'south', right: 'north', opposite: 'east' },
 
     // west face -> facing east: left = north, right = south
-    east: { left: 'north', right: 'south' },
+    east: { face: 'east', left: 'north', right: 'south', opposite: 'west' },
 };
 //=============================================================================
 /**
@@ -53,7 +58,7 @@ const faceHorizontalMap = {
  *
  * (0,0) is the lower-right corner; x increases to the left, y increases upward.
  *
- * @param {BlockSides} face
+ * @param {CardinalBlockFace} face
  * @param {number} x - 0 = right edge, xyMax = left edge
  * @param {number} y - 0 = bottom edge, xyMax = top edge
  * @param {number} [xyMax=2] - max index; 7 = full 16px face at 2px per band
@@ -92,41 +97,83 @@ export class FaceLocationGrid {
      * 
      * @param {import("./vectorClass").Vector3} faceLocation 
      * @param {BlockFaces | BlockFacesTitle} blockFace
-     * @param {boolean} [absolute=false]
-     * @param {Player | undefined} [player = undefined]
-     * @summary Use Absolute to have the grids not be relative to the face side  
+     * @param {Player} player 
+     * @param {boolean} [absolute=false] default false - use true to turn off relativity     
      */
-    constructor(faceLocation, blockFace, absolute = false, player = undefined) {
+    constructor(faceLocation, blockFace, player, absolute = false) {
+
         this.faceLocation =
             Vector3Lib.new(
-                decimalPart(faceLocation.x),
-                decimalPart(faceLocation.y),
-                decimalPart(faceLocation.z)
+                round(decimalPart(faceLocation.x), 2),
+                round(decimalPart(faceLocation.y), 2),
+                round(decimalPart(faceLocation.z), 2)
             );
         this.blockFace = blockFace.toLowerCase();
 
-        if ([ 'up', 'down' ].includes(this.blockFace)) {
-            this.xDelta = this.faceLocation.x;
-            this.yDelta = this.faceLocation.z;
+        this.playerLocation = Vector3Lib.floor(player.location);
+        this.playerRotation = AngleMath.negativeAngleConvert(Math.floor(player.getRotation().y));
+        this.playerCardinalDirection = compass.degrees[ this.playerRotation ].direction.cardinal.toLowerCase();
+        //world.sendMessage(`${this.playerRotation} - ${this.playerCardinalDirection}`)
+
+        //up/down is static   NW corner is zero always
+        this.isWall = ![ 'up', 'down' ].includes(this.blockFace);
+        if (!this.isWall) { //works for grid now
+
+            if (this.blockFace == 'up') {
+                this.xDelta = this.faceLocation.x;
+                this.yDelta = this.faceLocation.z;
+            }
+            else {
+                this.xDelta = 1 - this.faceLocation.x;
+                this.yDelta = this.faceLocation.z;
+            }            
         }
         else {
             this.yDelta = this.faceLocation.y;
             this.xDelta = ([ 'north', 'south' ].includes(this.blockFace)) ? this.faceLocation.x : this.faceLocation.z;
         }
 
-        if (this.xDelta < 0) this.xDelta = 1 - Math.abs(this.xDelta);
-        if (this.yDelta < 0) this.yDelta = 1 - Math.abs(this.yDelta);
+        this.faceMap = faceHorizontalMap[ this.blockFace ];
 
-        if (!absolute) {
-            //These need to be reversed per player facing block
-            //for top to bottom and left to right
-            if ([ 'east', 'north' ].includes(this.blockFace)) {
-                this.xDelta = 1 - this.xDelta;
-                this.yDelta = 1 - this.yDelta;
+        //because depending on + or - coordinates, grid will be off in diff ways
+        if (this.isWall && !absolute && this.playerLocation) {
+
+            /**@type {CardinalBlockFace} */
+            let bFace = this.faceMap.face;
+            let changed = false;
+            // if ([ 'up', 'down' ].includes(this.blockFace)) {
+            //     bFace = rotationToCardinalDirection(this.playerLocation.y);
+            //     bFace = this.faceMap.opposite;
+            //     world.sendMessage(`§l§eAs Face ${bFace}`);
+            // }
+
+            if (this.playerLocation.x < 0 && this.playerLocation.z < 0) {
+                if (bFace == 'east' || bFace == 'north') {
+                    this.xDelta = 1 - this.xDelta;
+                    changed = true;
+                }
             }
-            else if ([ 'west', 'south' ].includes(this.blockFace)) {
-                this.yDelta = 1 - this.yDelta;
+            else if (this.playerLocation.x < 0 && this.playerLocation.z > 0) {
+                if (bFace == 'north' || bFace == 'west') {
+                    this.xDelta = 1 - this.xDelta;
+                    changed = true;
+                }
             }
+            else if (this.playerLocation.x > 0 && this.playerLocation.z > 0) {
+                if (bFace == 'south' || bFace == 'west') {
+                    this.xDelta = 1 - this.xDelta;
+                    changed = true;
+                }
+            }
+            else if (this.playerLocation.x > 0 && this.playerLocation.z < 0) {
+                if (bFace == 'south' || bFace == 'east') {
+                    this.xDelta = 1 - this.xDelta;
+                    changed = true;
+                }
+            }
+            if (changed)
+                world.sendMessage(`§l§aNew§r => og xDelta: ${this.xDelta}     og yDelta: ${this.yDelta}
+            `);
         }
 
         this.xyDelta = Vector2Lib.new(this.xDelta, this.yDelta);
@@ -138,9 +185,9 @@ export class FaceLocationGrid {
         this.#og_yDelta = this.yDelta;
 
         //auto done, but you can do later
-        if ([ 'up', 'down' ].includes(this.blockFace) && player && player.isValid) {
-            this.adjustUpDownToPlayerRotation(player);
-        }
+        // if ([ 'up', 'down' ].includes(this.blockFace) && player && player.isValid) {
+        //     this.adjustUpDownToPlayerRotation(player);
+        // }
     }
     /**
      * 
@@ -184,7 +231,7 @@ export class FaceLocationGrid {
     adjustUpDownToPlayerDirection (direction) {
         if (![ 'up', 'down' ].includes(this.blockFace))
             return;
-
+        world.sendMessage('in here');
         //TODO: figure out later, not needed yet
         //world.sendMessage(`altering for ${direction}`);
         switch (direction) {
@@ -232,7 +279,7 @@ export class FaceLocationGrid {
         const g = this.grid(bands); // g.x, g.y in 0..xyMax
 
         return getHitEdgeName(
-            /** @type {BlockSides} */ (this.blockFace),
+            /** @type {CardinalBlockFace} */(this.blockFace),
             g.x,
             g.y,
             xyMax

@@ -1,5 +1,5 @@
 // @ts-check
-const releaseVersion = "2024.12.29"
+const releaseVersion = "2025.11.30";
 /*
 =====================================================================
 Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
@@ -40,7 +40,7 @@ Change Log:
     20230304 - NAA - Added Julian Style Build Date to the Description (make optional Later)
                     Added default version is [yy,m,d] DW Style
     20240429 - NAA - Added Scripting stuff
-    20240509 Working on multi @minecraft dependencies
+    20240509 - NAA - Working on multi @minecraft dependencies
     20240512 - NAA - Ability to grab author from config.json
     20240513 - Naa - Multi-Server
     20240604 - NAA - Redid practically everything - good enough to use for how I need
@@ -52,7 +52,8 @@ Change Log:
     20240728 - NAA - global settings inside confile.json  "mani_fest":{}  outside of "regolith": {}
     20241104 - NAA - minor logical bugs
     20241224 - NAA - license in manifest and this file.
-    20241229 - NAA = add URL to metadata - change configs to use
+    20241229 - NAA - add URL to metadata - change configs to use
+    20251130 - NAA - fixed bug with no RP manifest if only a lang file. 
     
 TODO:
     () Make is so I can have a dev and rel pack icon - prob can use the data section to hold and use by name or settings has filename
@@ -1174,22 +1175,25 @@ function isLiveResourcePackFolder () {
     let fileList = rpFiles
         .filter(obj => obj.fileName != './RP/pack_icon.png') //does not count 
         .filter(obj => obj.fileName != './RP/manifest.json') //does not count
-        .filter(obj => obj.size > 4);
+        .filter(obj => obj.size > 1);
     if (fileList.length === 0) {
         consoleColor.color("possibleWarn", "==> No Valid Resource Pack Files");
         return false;
     }
-
+    //fileList.forEach(f => {        consoleColor.log(f.fileName);    });
     //Ok if png or tga files or lang files
-    if (fileList.some(obj => obj.parse.dir.startsWith == '/RP/textures/' && [ ".png", ".tga" ].includes(obj.parse.ext))) {
+    if (fileList.some(obj => obj.fileName.includes('RP/textures') && [ ".png", ".tga" ].includes(obj.parse.ext))) {
         consoleColor.success("==> Found RP png/tga Files");
         return true;
     }
-    if (fileList.some(obj => obj.parse.dir.startsWith == '/RP/texts/' && obj.parse.ext == ".lang")) {
+    if (fileList.some(obj => obj.fileName.includes('RP/texts') && obj.fileName.endsWith("lang"))) {
         consoleColor.success("==> Found RP .lang Files");
         return true; //TODO: make sure not emptyish
     }
-
+    if (fileList.some(obj => obj.fileName.endsWith("md"))) {
+        consoleColor.success("==> Found RP .md Files");
+        return true; //TODO: make sure not emptyish
+    }
     //Check JSON files TODO:
     fileList = fileList.filter(obj => obj.parse.ext == ".json");
     if (fileList.length) {
@@ -1197,7 +1201,7 @@ function isLiveResourcePackFolder () {
         return true;
     }
 
-    consoleColor.color("possibleWarn", "==> No Valid Resource Files Files");
+    consoleColor.color("possibleWarn", "==> No Real Valid Resource Pack Files Found");
     debugMax.mute("<== isLiveResourcePackFolder()");
     return false;
 }
@@ -1400,7 +1404,7 @@ function masterConfigSettingsCheck () {
     //------------------------------------------------------------------------------------------
     cmdLineSettingsJson.author = cmdLineSettingsJson.author || configFileSettings.author || "Add Author Name Here";
     cmdLineSettingsJson.url = cmdLineSettingsJson.url || "Add URL Here";
-    cmdLineSettingsJson.license = cmdLineSettingsJson.license || "Add License Here";    
+    cmdLineSettingsJson.license = cmdLineSettingsJson.license || "Add License Here";
     //------------------------------------------------------------------------------------------
     //----------------------------------------
     //Determine if BP and RP Exist
@@ -1494,9 +1498,9 @@ function manifestHeaders_set (pSettings) {
                 pSettings.description ||
                 (cmdLineSettingsJson.description + ' ' + pSettings.type) ||
                 "<" + pSettings.type + " pack description here>")
-                + (pSettings.isScriptingFiles && cmdLineSettingsJson.beta ? "\n§6Requires Beta API§r" : '')
-                + "\n§aBuild Date: " + DateTime + "§r"
-                + ` §gby ${pSettings.author || cmdLineSettingsJson.author}§r`
+            + (pSettings.isScriptingFiles && cmdLineSettingsJson.beta ? "\n§6Requires Beta API§r" : '')
+            + "\n§aBuild Date: " + DateTime + "§r"
+            + ` §gby ${pSettings.author || cmdLineSettingsJson.author}§r`
         ).trim().replace('  ', ' '),
         uuid: pSettings.header_uuid || "new",
         version: pSettings.version || cmdLineSettingsJson.version || [ d.getFullYear() - 2000, d.getMonth() + 1, d.getDate() ],
@@ -1647,7 +1651,7 @@ function manifestParts_control (pSettings) {
 //=======================================================================
 function manifestBuild (pSettings) {
     debug.color("functionStart", "* buildManifest(" + pSettings.type + ")");
-    
+
     const manifest = {
         format_version: 2,
         header: pSettings.header,

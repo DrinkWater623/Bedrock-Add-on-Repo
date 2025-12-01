@@ -2,7 +2,7 @@
     "format_version": "1.20.10",
     "minecraft:recipe_shapeless": {
         "description": {
-            "identifier": "dw623:crafting_table_copper_ingot_to_arrow_template"
+            "identifier": "dw623:craft_copper_ingot_to_arrow_template"
         },
         "tags": ["crafting_table"],
         "ingredients": [

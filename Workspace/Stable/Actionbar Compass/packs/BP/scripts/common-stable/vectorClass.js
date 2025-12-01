@@ -1,15 +1,24 @@
-//@ts-check
-//File: VectorClass.js
+// vectorClass.js
+// @ts-check
 /* =====================================================================
 Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
-License: GPL-3.0-only
+License: M.I.T.
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20250116 - Added isSameLocation
+Change Log
+    20250116 - Added isSameLocation
+    20251103 - Added randomVectorImpulseCapped, VectorXZ
+    20251125 - Added isAdjacent to V3 - moved face grid to diff file
 ========================================================================*/
 import { Player, world } from "@minecraft/server";
-import { round } from "../common-other/mathLib";
+// Shared
+import { rnd, rndInt, clamp, round } from "../common-other/mathLib.js";
 //==============================================================================
+/** @typedef {import("@minecraft/server").Vector2} Vector2 */
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
+/** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
+//==============================================================================
+/** @typedef {{ center?: { x: number, z: number }, minRadius?: number, avoidZero?: boolean }} XZOpts */
 //==============================================================================
 /**
  * 
@@ -23,8 +32,6 @@ export function rotationToCardinalDirection (rotation) {
 
     //@ts-ignore    
     return dirs[ dir ];
-
-
 }
 //==============================================================================
 //==============================================================================
@@ -34,7 +41,7 @@ export class Vector3Lib {
      * True if `vector` has numeric x, y, z. When `exact` is true, extra props are disallowed.
      * @param {unknown} vector
      * @param {boolean} [exact=true]
-     * @returns {vector is import("@minecraft/server").Vector3}
+     * @returns {vector is Vector3}
      */
     static isVector3 (vector, exact = true) {
         if (!vector || typeof vector !== 'object') return false;
@@ -54,7 +61,7 @@ export class Vector3Lib {
      * @param {number} x 
      * @param {number} y 
      * @param {number} z 
-     * @returns {import("@minecraft/server").Vector3}
+     * @returns {Vector3}
      */
     static new (x = 0, y = 0, z = 0) {
         return {
@@ -74,8 +81,8 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector3 } vector
-    * @returns { import("@minecraft/server").Vector3 } 
+    * @param { Vector3 } vector
+    * @returns { Vector3 } 
     */
     static abs (vector) {
         return {
@@ -87,8 +94,8 @@ export class Vector3Lib {
     //==============================================================================
     /**
      * 
-     * @param {import("@minecraft/server").Vector3} vector_1 
-     * @param {import("@minecraft/server").Vector3} vector_2 
+     * @param {Vector3} vector_1 
+     * @param {Vector3} vector_2 
      * @param {boolean} [exact=false]
      * @param {number} [exactDecimals=2] 
      * @returns {boolean}
@@ -104,10 +111,20 @@ export class Vector3Lib {
         return true;
 
     }
+    /**
+    * @param { Vector3 } vector1
+    * @param { Vector3 } vector2
+    * @returns { boolean } 
+    */
+    //==============================================================================
+    static isAdjacent (vector1, vector2) {
+        const xyz = this.delta(vector1,vector2,0,true)
+        return (xyz.x+xyz.y+xyz.z)===1
+    }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector3 } vector
-    * @returns { import("@minecraft/server").Vector3 } 
+    * @param { Vector3 } vector
+    * @returns { Vector3 } 
     */
     static ceiling (vector) {
         return {
@@ -118,11 +135,11 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector3 } vector1
-    * @param { import("@minecraft/server").Vector3 } vector2
+    * @param { Vector3 } vector1
+    * @param { Vector3 } vector2
     * @param { number } decimalPlaces
     * @param { boolean } abs
-    * @returns { import("@minecraft/server").Vector3 } 
+    * @returns { Vector3 } 
     */
     static delta (vector1, vector2, decimalPlaces = 0, abs = false) {
         const xyz = {
@@ -135,8 +152,8 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector3 } vector
-    * @returns { import("@minecraft/server").Vector3 } 
+    * @param { Vector3 } vector
+    * @returns { Vector3 } 
     */
     static floor (vector) {
         return {
@@ -147,8 +164,8 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector3 } vector
-    * @returns { import("@minecraft/server").Vector3 } 
+    * @param { Vector3 } vector
+    * @returns { Vector3 } 
     */
     static round (vector, decimalPlaces = 0) {
         return {
@@ -159,7 +176,7 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector3 } vector
+    * @param { Vector3 } vector
     * @returns { number[] } 
     */
     static toArray (vector) {
@@ -167,8 +184,8 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector3 } vector
-    * @returns { import("@minecraft/server").Vector3 } 
+    * @param { Vector3 } vector
+    * @returns { Vector3 } 
     */
     //FIXME: this cannot be right.. need to get block, then center
     static toCenter (vector) {
@@ -181,7 +198,7 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector3 } vector
+    * @param { Vector3 } vector
     * @param { number } decimalPlaces
     * @param { boolean } showLabels
     * @param { string } delimiter
@@ -203,7 +220,7 @@ export class Vector3Lib {
     //==============================================================================
     /**
     * @param  { Object }  vector
-    * @returns { import("@minecraft/server").Vector2 } 
+    * @returns { Vector2 } 
     */
     static toVector2 (vector) {
         return Vector2Lib.toVector2(vector);
@@ -213,7 +230,7 @@ export class Vector3Lib {
      * Coerces a value into a Minecraft Vector3. Missing or non-number x/y/z become 0.
      *
      * @param {Partial<{ x: number, y: number, z: number }> | null | undefined} vector
-     * @returns {import("@minecraft/server").Vector3}
+     * @returns {Vector3}
      */
     static toVector3 (vector) {
         const obj = (vector && typeof vector === 'object')
@@ -228,8 +245,8 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param  { import("@minecraft/server").Vector3 }  vector3
-    * @returns { import("@minecraft/server").VectorXZ } 
+    * @param  { Vector3 }  vector3
+    * @returns { VectorXZ } 
     */
     static toVectorXz (vector3) {
         return {
@@ -239,8 +256,8 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector3 } vector
-    * @returns { import("@minecraft/server").Vector3 } 
+    * @param { Vector3 } vector
+    * @returns { Vector3 } 
     */
     static truncate (vector) {
         return {
@@ -249,142 +266,46 @@ export class Vector3Lib {
             z: Math.trunc(vector.z)
         };
     }
-}
-/**
- * 
- * @param {number} number 
- */
-function decimalPart (number) {
-    return number - Math.trunc(number);
-}
-export class FaceLocationGrid {
-    #og_xDelta = 0;
-    #og_yDelta = 0;
+    //=============================================================================
     /**
-     * 
-     * @param {import("@minecraft/server").Vector3} faceLocation 
-     * @param {string} blockFace
-     * @param {boolean} [absolute=false]
-     * @param {Player | undefined} [player = undefined]
-     * @summary Use Absolute to have the grids not be relative to the face side  
+     * Random impulse vector:
+     *  x,z ∈ [0,n1]  (or [-n1,n1] if allowNegativeXZ)
+     *  y   ∈ [yMin,n2]  (default yMin = 0.01)
+     *
+     * @param {number} n1
+     * @param {number} n2
+     * @param {{ allowNegativeXZ?: boolean, avoidZeroHorizontal?: boolean, decimals?: number, yMin?: number }} [opts]
+     * @returns {Vector3}
      */
-    constructor(faceLocation, blockFace, absolute = false, player = undefined) {
-        this.faceLocation =
-            Vector3Lib.new(
-                decimalPart(faceLocation.x),
-                decimalPart(faceLocation.y),
-                decimalPart(faceLocation.z)
-            );
-        this.blockFace = blockFace.toLowerCase();
+    static randomVectorImpulseCapped (n1, n2, opts) {
 
-        if ([ 'up', 'down' ].includes(this.blockFace)) {
-            this.xDelta = this.faceLocation.x;
-            this.yDelta = this.faceLocation.z;
-        }
-        else {
-            this.yDelta = this.faceLocation.y;
-            this.xDelta = ([ 'north', 'south' ].includes(this.blockFace)) ? this.faceLocation.x : this.faceLocation.z;
-        }
+        const allowNeg = !!opts?.allowNegativeXZ;
+        const decimals = opts?.decimals ?? 2;
 
-        if (this.xDelta < 0) this.xDelta = 1 - Math.abs(this.xDelta);
-        if (this.yDelta < 0) this.yDelta = 1 - Math.abs(this.yDelta);
+        // Y range: default to [0.01, n2]
+        const yMinRaw = opts?.yMin ?? 0.01;
+        const yHi = Math.max(yMinRaw, n2);         // ensure upper >= lower
+        const yLo = Math.min(yMinRaw, yHi);        // final lower
 
-        if (!absolute) {
-            //These need to be reversed per player facing block
-            //for top to bottom and left to right
-            if ([ 'east', 'north' ].includes(this.blockFace)) {
-                this.xDelta = 1 - this.xDelta;
-                this.yDelta = 1 - this.yDelta;
-            }
-            else if ([ 'west', 'south' ].includes(this.blockFace)) {
-                this.yDelta = 1 - this.yDelta;
-            }
+        const hxMin = allowNeg ? -Math.abs(n1) : 0;
+        const hxMax = Math.abs(n1);
+
+        let x = rnd(hxMin, hxMax);
+        let z = rnd(hxMin, hxMax);
+        let y = rnd(yLo, yHi);
+
+        x = round(clamp(x, hxMin, hxMax), decimals);
+        z = round(clamp(z, hxMin, hxMax), decimals);
+        y = round(clamp(y, yLo, yHi), decimals);
+
+        if (opts?.avoidZeroHorizontal && Math.abs(x) < 1e-6 && Math.abs(z) < 1e-6) {
+            x = round(0.01, decimals);
         }
 
-        this.xyDelta = Vector2Lib.new(this.xDelta, this.yDelta);
-        const grid2 = this.grid(2);
-        this.verticalHalf = grid2.y;
-        this.horizontalHalf = grid2.x;
-
-        this.#og_xDelta = this.xDelta;
-        this.#og_yDelta = this.yDelta;
-
-        //auto done, but you can do later
-        if ([ 'up', 'down' ].includes(this.blockFace) && player && player.isValid) {
-            this.adjustUpDownToPlayerRotation(player);
-        }
-    }
-    /**
-     * 
-     * @param {number} base 
-     * @returns {import("@minecraft/server").Vector2}
-     */
-    grid (base = 1) {
-        if (base == 0) base = 1;
-        return Vector2Lib.new(Math.floor(this.xDelta * base), Math.floor(this.yDelta * base));
-    }
-
-    //for up/down can alter to be relative to player rotation
-    /**
-     * 
-     * @param {Player} player 
-     */
-    adjustUpDownToPlayerRotation (player) {
-        if ([ 'up', 'down' ].includes(this.blockFace) &&
-            player &&
-            player.isValid)
-            this.adjustUpDownToPlayerAngle(player.getRotation().y);
-    }
-    //for up/down can alter to be relative to player rotation
-    /**
-     * 
-     * @param {number} rotationY      
-     */
-    adjustUpDownToPlayerAngle (rotationY) {
-        if (![ 'up', 'down' ].includes(this.blockFace))
-            return;
-
-        const direction = rotationToCardinalDirection(rotationY);
-        //world.sendMessage(`rotationY=${Math.round(rotationY,1} - -angle = Dir=${direction}`)
-        this.adjustUpDownToPlayerDirection(direction);
-    }
-    //for up/down can alter to be relative to player rotation
-    /**
-     * 
-     * @param {string} direction      
-     */
-    adjustUpDownToPlayerDirection (direction) {
-        if (![ 'up', 'down' ].includes(this.blockFace))
-            return;
-
-        //TODO: figure out later, not needed yet
-        //world.sendMessage(`altering for ${direction}`);
-        switch (direction) {
-            case 'north': [ this.xDelta, this.yDelta ] = [ this.#og_xDelta, this.#og_yDelta ];
-                break;
-            case 'south': [ this.xDelta, this.yDelta ] = [ 1 - this.#og_xDelta, 1 - this.#og_yDelta ];
-                break;
-            case 'west': [ this.xDelta, this.yDelta ] = [ 1 - this.#og_yDelta, this.#og_xDelta ];
-                break;
-            case 'east': [ this.xDelta, this.yDelta ] = [ this.#og_yDelta, 1 - this.#og_xDelta ];
-                break;
-            default:
-                return;
-        }
-
-        if (this.blockFace == 'down') {
-            //reverse for when looking up.  Imagine looking at paper
-            this.xDelta = 1 - this.xDelta;
-            this.yDelta = 1 - this.yDelta;
-        }
-
-        // reset these vars
-        this.xyDelta = Vector2Lib.new(this.xDelta, this.yDelta);
-        const grid2 = this.grid(2);
-        this.verticalHalf = grid2.y;
-        this.horizontalHalf = grid2.x;
+        return { x, y, z };
     }
 }
+//==============================================================================
 export class Vector2Lib {
     //==============================================================================
     /**
@@ -417,7 +338,7 @@ export class Vector2Lib {
      * 
      * @param {number} x 
      * @param {number} y 
-     * @returns {import("@minecraft/server").Vector2}
+     * @returns {Vector2}
      */
     static new (x, y) {
         return { x: x, y: y };
@@ -426,15 +347,15 @@ export class Vector2Lib {
     /**
      * 
      * @param {object} vector 
-     * @returns {import("@minecraft/server").Vector2}
+     * @returns {Vector2}
      */
     static strip (vector) {
         return this.toVector2(vector);
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector2 } vector
-    * @returns { import("@minecraft/server").Vector2 } 
+    * @param { Vector2 } vector
+    * @returns { Vector2 } 
     */
     static abs (vector) {
         return {
@@ -445,8 +366,8 @@ export class Vector2Lib {
 
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector2 } vector
-    * @returns { import("@minecraft/server").Vector2 } 
+    * @param { Vector2 } vector
+    * @returns { Vector2 } 
     */
     static ceiling (vector) {
         return {
@@ -456,11 +377,11 @@ export class Vector2Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector2 } vector1
-    * @param { import("@minecraft/server").Vector2 } vector2
+    * @param { Vector2 } vector1
+    * @param { Vector2 } vector2
     * @param { number } decimalPlaces
     * @param { boolean } abs
-    * @returns { import("@minecraft/server").Vector2 } 
+    * @returns { Vector2 } 
     */
     static delta (vector1, vector2, decimalPlaces = 0, abs = false) {
         const xy = {
@@ -472,8 +393,8 @@ export class Vector2Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector2 } vector
-    * @returns { import("@minecraft/server").Vector2 } 
+    * @param { Vector2 } vector
+    * @returns { Vector2 } 
     */
     static floor (vector) {
         return {
@@ -483,8 +404,8 @@ export class Vector2Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector2 } vector
-    * @returns { import("@minecraft/server").Vector2 } 
+    * @param { Vector2 } vector
+    * @returns { Vector2 } 
     */
     static round (vector, decimalPlaces = 0) {
         return {
@@ -494,7 +415,7 @@ export class Vector2Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector2 } vector
+    * @param { Vector2 } vector
     * @returns { number[] } 
     */
     static toArray (vector) {
@@ -502,8 +423,8 @@ export class Vector2Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector2 } vector
-    * @returns { import("@minecraft/server").Vector2 } 
+    * @param { Vector2 } vector
+    * @returns { Vector2 } 
     */
     static toCenter (vector) {
         let xy = Vector2Lib.truncate(vector);
@@ -514,7 +435,7 @@ export class Vector2Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector2 } vector
+    * @param { Vector2 } vector
     * @param { number } decimalPlaces
     * @param { boolean } showLabels
     * @param { string } delimiter
@@ -538,7 +459,7 @@ export class Vector2Lib {
      * Coerces a value into a Minecraft Vector3. Missing or non-number x/y/z become 0.
      *
      * @param {Partial<{ x: number, y: number }> | null | undefined} vector
-     * @returns {import("@minecraft/server").Vector2}
+     * @returns {Vector2}
      */
     static toVector2 (vector) {
         const obj = (vector && typeof vector === 'object')
@@ -552,8 +473,8 @@ export class Vector2Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector2 } vector
-    * @returns { import("@minecraft/server").Vector2 } 
+    * @param { Vector2 } vector
+    * @returns { Vector2 } 
     */
     static truncate (vector) {
         return {
@@ -562,3 +483,36 @@ export class Vector2Lib {
         };
     }
 }
+//==============================================================================
+export class VectorXZLib {
+
+    /**
+     * Pick random X/Z within [-n, n] (inclusive).
+     * @param {number} n
+     * @param {XZOpts} [opts]
+     * @returns {{ x: number, z: number }}
+     */
+    static randomXZ (n = 5000, opts) {
+        const cx = opts?.center?.x ?? 0;
+        const cz = opts?.center?.z ?? 0;
+        const minR = Math.max(0, opts?.minRadius ?? 0);
+        const avoidZero = !!opts?.avoidZero;
+
+        for (let tries = 0; tries < 64; tries++) {
+            const x = rndInt(-n, n) + cx;
+            const z = rndInt(-n, n) + cz;
+
+            if (avoidZero && x === 0 && z === 0) continue;
+            if (minR > 0) {
+                const dx = x - cx, dz = z - cz;
+                if (Math.hypot(dx, dz) < minR) continue;
+            }
+            return { x, z };
+        }
+        // Fallback (very unlikely)
+        return { x: cx, z: cz + (avoidZero ? 1 : 0) };
+    }
+}
+//==============================================================================
+// End of File
+//==============================================================================

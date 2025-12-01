@@ -1,17 +1,16 @@
 // fn-debug.js
-//@ts-check
+// @ts-check
 /* =====================================================================
-Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
-License: GPL-3.0-only (https://www.gnu.org/licenses/gpl-3.0.html)
-CliffNotes: Using my files within Minecraft Bedrock MarketPlace is prohibited without written permission.  All code must remain freely visible and license passed along.
+Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
+License: M.I.T. (https://www.gnu.org/licenses/gpl-3.0.html)
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20251108 
+Last Update: 20251129 
 ========================================================================*/
 // Minecraft
-import { system } from "@minecraft/server";
+
 // Shared
-import { Ticks } from "../common-data/globalConstantsLib.js";
+
 // Local
 import { alertLog, pack, watchFor } from '../settings.js';
 //==============================================================================
@@ -25,7 +24,9 @@ import { alertLog, pack, watchFor } from '../settings.js';
  * @property {boolean} debugOn
  * @property {boolean} debugSubscriptionsOn
  * @property {boolean} debugFunctionsOn
- * @property {boolean} watchBlockSubscriptions *
+ * @property {boolean} debugBlockSubscriptions 
+ * @property {boolean} watchLightBar 
+ * @property {boolean} watchMiniBlock 
  * @property {boolean} watchPlayerActions
  * @property {boolean} watchTempIssues
  * @property {() => void} allOff
@@ -40,10 +41,12 @@ const debugFunctions = false; //for the devDebug object
 export const devDebug = {
     // Customize this to the project
     // flags
-    debugOn: false,
+    debugOn: true,
     debugSubscriptionsOn: false,
-    debugFunctionsOn: true,
-    watchBlockSubscriptions: false,    
+    debugFunctionsOn: false,
+    debugBlockSubscriptions: true,    
+    watchLightBar: true,    
+    watchMiniBlock: true,    
     watchPlayerActions: false,
     watchTempIssues: false,
 

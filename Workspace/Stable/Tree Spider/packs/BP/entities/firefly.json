@@ -1,4 +1,8 @@
 {
+  /*
+        FIXME:  equate despawn chance with light level instead of daytime 
+                add night time no despawn chance
+  */
   "format_version": "1.21.50",
   "minecraft:entity": {
     "description": {
@@ -135,9 +139,17 @@
         // },
         "minecraft:timer": {"looping":false,"time":[600,1200],"time_down_event":{"event":"higher_chance_despawn"}}
       },
+      //may need to convert to jsonte - so can have different levels
+      //after confirm it works well
       "cg:higher_chance_despawn":{
         "minecraft:despawn": {
-          "filters": {"test":"is_daytime","value":true},
+          "filters": {
+            "all_of": [
+                {"test":"is_daytime","value":true},
+                {"test":"is_underground","value":false},
+                {"test":"light_level","value":15}
+              ]            
+            }, 
           "despawn_from_chance": true,
           "min_range_random_chance":800
         }

@@ -21,7 +21,7 @@ export const pack = {
     packName: 'Light Arrows',
     beta: false,
     worldLoaded: false,
-    namespace: "dw623",    
+    namespace: "dw623",
     isLoadAlertsOn: false
 };
 //==============================================================================
@@ -30,7 +30,7 @@ export const chatLog = new ChatMsg(`§f${pack.packName}§r`);
 //==============================================================================
 // Pack detail data used in the scripts
 //==============================================================================
-export const watchFor = {    
+export const watchFor = {
 
     //s/b same as jsonte data
     materialList: [
@@ -42,8 +42,24 @@ export const watchFor = {
         "shroomlight"
     ],
 
-    blockList () {
+    arrowBlocks () {
         return this.materialList.map(m => pack.namespace + ':' + m + '_arrow');
+    },
+    barBlocks () {
+        return this.materialList.map(m => pack.namespace + ':' + m + '_bar');
+    },
+    miniBlocks () {
+        return this.materialList.map(m => pack.namespace + ':' + m + '_mini_block');
+    },
+
+    /**@returns{string[]} */
+    onPlaceBlockList () {
+        const blocks = [
+            ...this.arrowBlocks(),
+            ...this.barBlocks(),
+            ...this.miniBlocks()
+        ];
+        return blocks;
     },
 
     customItemList: [

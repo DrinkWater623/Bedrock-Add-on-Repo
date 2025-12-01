@@ -1,12 +1,18 @@
-//@ts-check
-/* =====================================================================
-Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
-License: MIT
-URL: https://github.com/DrinkWater623
-========================================================================
-Last Update: 20250109 - ReDone
-========================================================================
-*/
-import { main_stable } from './main-stable.js';
+// main.js
+// @ts-check
+/**
+ * This is called only if beta is not used, 
+ */
 //==============================================================================
-main_stable();
+// Local
+import { alertLog, pack } from './settings.js';
+import { subscriptionsStable } from './subscribes.js';
+import { devDebug } from "./helpers/fn-debug.js";
+//==============================================================================
+devDebug.anyOn();
+const msg = `§aInstalling Add-on ${pack.packName} - §bStable ${devDebug.debugOn ? '§4(debug mode)' : ''}`;
+alertLog.success(msg, devDebug.debugOn || pack.isLoadAlertsOn);
+subscriptionsStable();
+//==============================================================================
+// End of File
+//==============================================================================

@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
-	"author": "DrinkWater623, Update Block Dev",
+	"author": "DrinkWater623, Update Block Dev",	
 	"name": "Actionbar_Compass",
 	"packs": {
 		"behaviorPack": "./packs/BP",
@@ -10,15 +10,16 @@
 		"Debug":false,
 		"preview":false,
 		"beta":false,
+		"scripts":true,
 		"name": "ActionBar Compass",
+		"description": "Tells you which direction you are facing / XYZ Coords on the Action Bar",
 		"license":"GPL-3.0-only",
 		"url": "https://github.com/DrinkWater623",
-		"description": "Tells you which direction you are facing / XYZ Coords on the Action Bar",
-		"min_engine_version": [1,21,0],							
+		"min_engine_version": [1,21,50],							
 		"BP":{
 			"header_uuid": "888ea32d-cee2-426e-bb2e-2622648d3d37",
-			"module_uuid": "ab297376-90c2-4d0c-84a0-8276e5c898bb",
-			"dependencies":{"module_name":"@minecraft/server","version":"get"}								
+			"module_uuid": "ab297376-90c2-4d0c-84a0-8276e5c898bb"
+			/*"dependencies":{"module_name":"@minecraft/server","version":"get"}*/
 		},
 		"RP": {
 			"header_uuid": "6fb2964d-0fd8-40e4-9990-a21280c950da",
@@ -27,87 +28,39 @@
 	},
 	"regolith": {
 		"dataPath": "./packs/data",
-		"filterDefinitions": {	
-			"beta_js_ignore": {"runWith":"python","script":"./filters/beta_js_ignore.py"},
+		"filterDefinitions": {
+			"jsonte": {"url":"github.com/MCDevKit/regolith-library","version":"2.14.0"},
 			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
+			"beta_js_ignore": {"runWith":"python","script":"./filters/beta_js_ignore.py"},
 			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
-			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}	
+			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}			
 		},
 		"profiles": {
 			"template-beta": {
-				"export": {"readOnly":false,"target":"local"},				
-				"filters": [											
-					{"filter":"dot_ignore"},					
-					{"filter":"empty_ignore"}
-				]
+				"export": {"readOnly":false,"target":"local","rpName": "'void_rp_'+project.name"},				
+				"filters": [{"filter":"dot_ignore"},{"filter":"jsonte"}]
 			},
 			"template-stable": {
-				"export": {"readOnly":false,"target":"local"},				
+				"export": {"readOnly":false,"target":"local","rpName": "'void_rp_'+project.name"},				
 				"filters": [
-					{"filter":"beta_js_ignore"},
-					{"filter":"dot_ignore"},											
-					{"filter":"empty_ignore"}
-				]
-			},			
-			"build": {
+					/*{"filter":"beta_js_ignore"},*/
+					{"profile":"template-beta"}]
+			},
+			"build": {				
 				"export": {"readOnly":false,"target":"local","bpName":"project.name+'_Stable_bp'","rpName": "project.name+'_Stable_rp'"},
-				"filters": [	
-					{"profile":"template-stable"},
-					{
-						"filter":"mani_fest",
-						"settings":{
-							"name": "ActionBar Compass",
-							"beta":false,"preview":false,
-							"BP":{
-								"js":"main.js",
-								"header_uuid": "8cdf17c7-d7b9-4981-993e-c1866c48d1e9",
-								"module_uuid": "a41a51b7-3dc9-4871-be4d-80bef444d24a"
-							},
-							"RP": {
-								"header_uuid": "7addd738-1e5a-48c9-9fee-eb3b79419a12",
-								"module_uuid": "3d32dbc3-47e4-47d9-af3b-c4afacff968c"
-							}
-						}
-					}
-				]
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"beta":false,"preview":false}}]
 			},
 			"build-beta": {
 				"export": {"readOnly":false,"target":"local","bpName":"project.name+'_Beta_bp'","rpName": "project.name+'_Beta_rp'"},
-				"filters": [	
-					{"profile":"template-beta"},												
-					{
-						"filter":"mani_fest",
-						"settings":{
-							"name": "ActionBar Compass w/ Chat Toggle Commands",
-							"description": "Velocity / Direction / xyz Coord",
-							"min_engine_version": [1,21,0],
-							"beta":true,"preview":false,
-							"BP":{
-								"js":"main-beta.js",
-								"header_uuid": "7616846d-de80-4c4a-92ce-5ef5cbd5809b",
-								"module_uuid": "67f4cb17-f9d9-4d71-86e9-0ec6a38a3772"
-							},
-							"RP": {
-								"header_uuid": "45485d03-941f-48a7-bd45-2776d35594c6",
-								"module_uuid": "cda4f7ab-97db-4133-99d9-b33bc58b6d9f"
-							}
-						}
-					}
-				]
+				"filters": [{"profile":"template-beta"},{"filter":"mani_fest","settings":{"beta":true,"preview":false,"BP":{"js":"main-beta.js"}}}]
 			},	
 			"stable": {
 				"export": {"readOnly":false,"target":"development"},
-				"filters": [
-					{"profile":"template-stable"},		
-					{"filter":"mani_fest","settings":{"beta":false,"BP":{"js":"main.js"}}}
-				]
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"beta":false}}]
 			},
 			"beta": {
 				"export": {"readOnly":false,"target":"development"},
-				"filters": [
-					{"profile":"template-beta"},
-					{"filter":"mani_fest","settings":{"name": "ActionBar Compass w/ Chat Toggle Commands","beta":true,"BP":{"js":"main-beta.js"}}}
-				]
+				"filters": [{"profile":"template-beta"},{"filter":"mani_fest","settings":{"beta":true,"BP":{"js":"main-beta.js"}}}]
 			},
 			"preview": {
 				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
@@ -118,12 +71,11 @@
 				"filters": [
 					{"profile":"template-beta"},
 					{"filter":"mani_fest",
-						"settings":{
-							"name": "ActionBar Compass with Chat Commands",
+						"settings":{							
 							"preview":true,"beta":true,
 							"BP":{
 								"js":"main-beta.js",
-								"dependencies":{"module_name":"@minecraft/server","version":"1.15.0-beta"}
+								"dependencies":{"module_name":"@minecraft/server","version":"1.16.0-beta"}
 							}
 						}
 					}

@@ -459,8 +459,11 @@ const entityDebugSubscriptions = {
                     const players = world.getAllPlayers();
                     let delta = '';
                     if (players) {
-                        const playerLocation = players[ 0 ].location;
-                        delta = `§bClosest Player x: ${Math.round(Math.abs(location.x - playerLocation.x))}, y:${Math.round(Math.abs(location.y - playerLocation.y))}, z:${Math.round(Math.abs(location.z - playerLocation.z))}`;
+                        const player = players[ 0 ];
+                        if (player && player.isValid) {
+                            const playerLocation = players[ 0 ].location;
+                            delta = `§bClosest Player x: ${Math.round(Math.abs(location.x - playerLocation.x))}, y:${Math.round(Math.abs(location.y - playerLocation.y))}, z:${Math.round(Math.abs(location.z - playerLocation.z))}`;
+                        }
                     }
 
                     const msg = `§l${nameTag}§r §6Removed @ ${Vector3Lib.toString(location, 0, true)} ${delta}§r(${isUnLoaded ? '' : ' loaded'}(${isStalled ? ' stalled' : ''})- beforeEvents.entityRemove()`;
@@ -780,7 +783,7 @@ function validateEntityFiles (debugMe = false) {
             }, Ticks.minecraftHour * 1);
         }
         else alertLog.log(`Fireflies allowed in daytime`, debugMe);
-        
+
     }, 5);
 }
 //==============================================================================

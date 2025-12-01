@@ -20,7 +20,7 @@ import { FaceLocationGrid,   } from "./common-stable/blockFace.js";
 //Local
 import { alertLog, chatLog, pack, watchFor } from './settings.js';
 import { devDebug } from "./helpers/fn-debug.js";
-import { lightArrow_onPlace } from "./blockComponent.js";
+import { lightArrow_onPlace ,lightBar_onPlace,lightMiniBlock_onPlace} from "./blockComponent.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /** The function type subscribe expects. */
@@ -79,7 +79,7 @@ const blockSubscriptions = {
                 
                 const itemStack = event.itemStack
                 if (!itemStack ) return;
-                if (!watchFor.blockList().includes(itemStack.typeId)) return;
+                if (!watchFor.onPlaceBlockList().includes(itemStack.typeId)) return;
 
                 const { block } = event;
                 //later verify okay block to place on - maybe
@@ -92,11 +92,11 @@ const blockSubscriptions = {
                 player.setDynamicProperty('dw623:lastInteractBlockLocation',location)
                 player.setDynamicProperty('dw623:lastInteractFaceLocation',faceLocation)
                 player.setDynamicProperty('dw623:lastInteractItemStack',itemStackBlock)                
-
+return
                 const locationStr = Vector3Lib.toString(location, 1, true);
                 const faceLocationStr = Vector3Lib.toString(faceLocation, 1, true);
 
-                const grid = new FaceLocationGrid(faceLocation,event.blockFace,true,event.player)
+                const grid = new FaceLocationGrid(faceLocation,event.blockFace,event.player,true)
                 const grid3=grid.grid(3)
                 const touched = grid.getEdgeName(3)
 
@@ -107,7 +107,7 @@ const blockSubscriptions = {
                     \nFace: ${event.blockFace} 
                     \nFace Location: ${faceLocationStr}
                     \nFace Grid3: ${Vector2Lib.toString(grid3,0,true)} = ${touched}                    
-                `);
+                `,devDebug.watchBlockSubscriptions);
 
                 //Add Other stuff if needed
                 return;
@@ -236,9 +236,15 @@ const systemSubscriptions = {
                 //registerCustomCommands(ccr);
 
                 event.blockComponentRegistry.registerCustomComponent(
-                    'dw623:light_arrow_placement', 
-                    {beforeOnPlayerPlace: e => { lightArrow_onPlace(e)}}
-                
+                    'dw623:on_place_arrow', {beforeOnPlayerPlace: e => { lightArrow_onPlace(e)}}                
+                )
+
+                event.blockComponentRegistry.registerCustomComponent(
+                    'dw623:on_place_bar', {beforeOnPlayerPlace: e => { lightBar_onPlace(e)}}                
+                )
+
+                event.blockComponentRegistry.registerCustomComponent(
+                    'dw623:on_place_mini_block', {beforeOnPlayerPlace: e => { lightMiniBlock_onPlace(e)}}                
                 )
             };
 

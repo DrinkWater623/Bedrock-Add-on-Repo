@@ -1,13 +1,21 @@
-//@ts-check
+// entityClass.js
+// @ts-check
 /* =====================================================================
 Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
 License: GPL-3.0-only
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20251024 - Add event trigger
+Change Log: 
+    20251024 - Add event trigger
+    20251107 - Refactor get players and entities and add for each dimension
 ========================================================================*/
-import { world, system, Player, Entity, Block } from "@minecraft/server";
+import { world, system, Player, Entity, Block, Dimension } from "@minecraft/server";
+import { rndInt } from "../common-other/mathLib.js";
 import { Vector3Lib as vec3 } from './vectorClass.js';
+//import { worldRun } from "./worldRunLib.js";
+//==============================================================================
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
+/** @typedef {import("@minecraft/server").EntityQueryOptions} EntityQueryOptions */
 //==============================================================================
 export class EntityLib {
     //==============================================================================
@@ -15,12 +23,13 @@ export class EntityLib {
      * 
      * @param {Entity} entity 
      * @param {string} trigger 
+     * @param {number} [tickDelay=0] 
      */
-    static eventTrigger (entity, trigger) {
-    if (entity.isValid)
-        system.runTimeout(() => {
-            system.run(() => { entity.triggerEvent(trigger); });
-        }, 1);
+    static eventTrigger (entity, trigger, tickDelay = 0) {
+        if (entity.isValid)
+            system.runTimeout(() => {
+                system.run(() => { entity.triggerEvent(trigger); });
+            }, tickDelay);
     }
     //==============================================================================
     /**
@@ -54,25 +63,75 @@ export class EntityLib {
         });
     }
     //==============================================================================
-    /**
-     * @param { import("@minecraft/server").EntityQueryOptions } queryOption
+    /**     
+     * @param { EntityQueryOptions | undefined} queryOptions 
      * @returns {Entity[]}
      */
-    static getAllEntities (queryOption) {
-        const entities = world.getDimension("overworld").getEntities(queryOption);
-        world.getDimension("nether").getEntities(queryOption).forEach(entity => entities.push(entity));
-        world.getDimension("the_end").getEntities(queryOption).forEach(entity => entities.push(entity));
-        return entities;
+    static getEndEntities (queryOptions = {}) {
+        return world.getDimension("the_end").getEntities(queryOptions);
     }
     //==============================================================================
     /**     
+     * @param { EntityQueryOptions | undefined} queryOptions 
+     * @returns {Entity[]}
+     */
+    static getNetherEntities (queryOptions = {}) {
+        return world.getDimension("nether").getEntities(queryOptions);
+    }
+    //==============================================================================
+    /**
+     * @param { EntityQueryOptions | undefined} queryOptions      
+     * @returns {Entity[]}
+     */
+    static getOverworldEntities (queryOptions = {}) {
+        return world.getDimension("overworld").getEntities(queryOptions);
+    }
+    //==============================================================================
+    /**
+     * @param { EntityQueryOptions | undefined} queryOptions 
+     * @returns {Entity[]}
+     */
+    static getAllEntities (queryOptions = {}) {
+        const entities = this.getOverworldEntities(queryOptions);
+        this.getEndEntities(queryOptions).forEach(entity => entities.push(entity));
+        this.getNetherEntities(queryOptions).forEach(entity => entities.push(entity));
+        return entities;
+    }
+    //==============================================================================
+    //==============================================================================
+    /**     
+     * @param { EntityQueryOptions | undefined} queryOptions 
      * @returns {Player[]}
      */
-    static getAllPlayers () {
-        const entities = world.getDimension("overworld").getPlayers();
-        world.getDimension("nether").getPlayers().forEach(entity => entities.push(entity));
-        world.getDimension("the_end").getPlayers().forEach(entity => entities.push(entity));
-        return entities;
+    static getEndPlayers (queryOptions = {}) {
+        return world.getDimension("the_end").getPlayers(queryOptions);
+    }
+    //==============================================================================
+    /**     
+     * @param { EntityQueryOptions | undefined} queryOptions 
+     * @returns {Player[]}
+     */
+    static getNetherPlayers (queryOptions = {}) {
+        return world.getDimension("nether").getPlayers(queryOptions);
+    }
+    //==============================================================================
+    /**
+     * @param { EntityQueryOptions | undefined} queryOptions      
+     * @returns {Player[]}
+     */
+    static getOverworldPlayers (queryOptions = {}) {
+        return world.getDimension("overworld").getPlayers(queryOptions);
+    }
+    //==============================================================================
+    /**   
+     * @param { EntityQueryOptions | undefined} queryOptions  
+     * @returns {Player[]}
+     */
+    static getAllPlayers (queryOptions = {}) {
+        const players = this.getOverworldPlayers(queryOptions);
+        this.getEndPlayers(queryOptions).forEach(entity => players.push(entity));
+        this.getNetherPlayers(queryOptions).forEach(entity => players.push(entity));
+        return players;
     }
     //==============================================================================
     /**
@@ -83,7 +142,7 @@ export class EntityLib {
     static listEntities (title = "", entities = [], displayTo = world) {
         if (displayTo instanceof Player && !displayTo.isValid)
             return;
-        
+
         let msg = "";
         msg = title;
         entities.forEach((entity, i) => {
@@ -139,4 +198,88 @@ export class EntityLib {
         const families = entity.getComponent('minecraft:type_family')?.getTypeFamilies();
         return families?.includes(familyQuery) || false;
     }
+    //==============================================================================
+    /**
+     * @param {Entity} entity  
+     * @param {number} [tickDelay=0] 
+     */
+    static centerAlign (entity, tickDelay = 0) {
+        if (!entity.isValid) return;
+        system.runTimeout(() => {
+            const locationCenter = entity.dimension.getBlock(entity.location)?.center();
+            if (locationCenter) entity.teleport(locationCenter);
+        }, tickDelay);
+    }
+    //==============================================================================
+    /** 
+     * @param {Entity} entity 
+     * @param {Vector3} location
+     * @param {number} [tickDelay=0]  
+     */
+    static teleportAndCenter (entity, location, tickDelay = 0) {
+        system.runTimeout(() => {
+            //this.centerAlign(entity, 0); //why? this
+            entity.teleport((location));
+            system.runTimeout(() => { this.centerAlign(entity); }, 1);
+        }, tickDelay);
+    }
 }
+/**
+ * Spawn an entity after a random tick delay if the chunk is loaded.
+ * @param {Dimension | undefined} dimension
+ * @param {Vector3 | undefined} location
+ * @param {string} typeId
+ * @param {number} [min=1]
+ * @param {number} [max=100]
+ */
+export function spawnEntityAfterRandomTicks (dimension, location, typeId, min = 1, max = 100) {
+    if (!location) return;
+    if (!dimension || !dimension.isChunkLoaded(location)) return;
+
+    const delay = rndInt(Math.max(0, min), Math.max(min, max));
+    system.runTimeout(() => {
+        if (dimension.isChunkLoaded(location)) {
+            // @ts-ignore spawnEntity exists at runtime
+            dimension.spawnEntity(typeId, location);
+        }
+    }, delay);
+}
+//===================================================================
+/**
+ * @param {string} entityTypeId 
+ * @param {Dimension} dimension 
+ * @param {Vector3 } location 
+ * @param {number} [minEntities=1] 
+ * @param {number} [maxEntities=1] 
+ * @param {number} [minTickDelay=1] 
+ * @param {number} [maxTickDelay=1] 
+ * @param {string} [event="minecraft:entity_spawned"] 
+ * @param {string} [varyForBlockFace=''] 
+ * @returns {number} qtySpawnedSuccessfully;
+ */
+export function spawnEntityAtLocation (entityTypeId, dimension, location, minEntities = 1, maxEntities = 1, minTickDelay = 1, maxTickDelay = 1, event = "", varyForBlockFace = '') {
+    if (!location) return 0;
+    if (!dimension || !dimension.isChunkLoaded(location)) return 0;
+
+    if (maxEntities < 1 || minEntities > maxEntities) maxEntities = minEntities;
+    if (maxTickDelay < minTickDelay) maxTickDelay = minTickDelay;
+
+    const options = { initialPersistence: true };
+    // @ts-ignore
+    if (event) options.spawnEvent = event;
+
+    let max = minEntities === maxEntities ? minEntities : rndInt(minEntities, maxEntities);
+    let qtySpawnedSuccessfully = 0;
+    for (let i = 0; i < max; i++) {
+        if (i > 0 && varyForBlockFace) {
+            //TODO: update location string per the blockFace to a random area inside block location
+        }
+
+        // @ts-ignore spawnEntity exists at runtime        
+        const entity = dimension.spawnEntity(entityTypeId, location, options);
+        if (entity) qtySpawnedSuccessfully++;
+    }
+
+    return qtySpawnedSuccessfully;
+}
+//===================================================================

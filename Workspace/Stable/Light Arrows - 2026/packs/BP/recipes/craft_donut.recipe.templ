@@ -1,0 +1,33 @@
+{
+    "$files": {
+        "array": "materials",
+        "fileName": "craft_{{name}}_donut"
+    },
+    "$template": {
+        "format_version": "1.20.10",
+        "minecraft:recipe_shaped": {
+            "description": {
+                "identifier": "dw623:craft_{{name}}_donut"
+            },
+            "tags":["crafting_table"],
+            "pattern": [
+                "###",
+                "# #",
+                "###"
+            ],
+            "key": {"#":{"item":"dw623:{{name}}_mini_block"}},
+            "priority": 0,
+            "result": {
+                "count": 1,
+                "data": 0,
+                "item": "dw623:{{name}}_donut"
+            },
+            "unlock": [
+                {
+                    "data": 0,
+                    "item": "dw623:{{name}}_mini_block"
+                }
+            ]
+        }
+    }
+}

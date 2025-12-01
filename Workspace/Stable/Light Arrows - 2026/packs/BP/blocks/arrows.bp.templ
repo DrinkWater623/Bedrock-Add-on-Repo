@@ -9,12 +9,12 @@
                 (like it is behind him... will not or should never be naturally that)
     */
     "$scope":{
-		"horizontal": "{{rotations_view_1.filter(x => x.id <= 1)}}",
+		"ceiling_floor": "{{rotations_view_1.filter(x => x.id <= 1)}}",
         "vertical_half": "{{rotations_view_2.filter(x => x.type =='side')}}",  // initial placement     
         "vertical_side": "{{rotations_view_1.filter(x => x.type =='side' && (x.position == 'left' || x.position == 'right'))}}"
     },
     "$files": {
-        "array": "arrows",
+        "array": "materials",
         "fileName": "{{name}}_arrow.bp"
     },
     "$template":{
@@ -29,7 +29,7 @@
                 }
             },
             "components": {
-                "minecraft:custom_components": ["dw623:light_arrow_placement"],
+                "minecraft:custom_components": ["dw623:on_place_arrow"],
                 "tag:minecraft:is_item_tier_destructible":{},
                 "minecraft:display_name":"{{Title(Replace(name, '_', ' '))}} Arrow",
                 "minecraft:light_emission":8,
@@ -45,7 +45,16 @@
                         "ambient_occlusion": false
                     }
                 },                
-                "minecraft:geometry": {"identifier":"geometry.arrow"},                
+                "minecraft:geometry": {"identifier":"geometry.arrow"},  
+                "minecraft:item_visual": {
+                    "geometry":{"identifier": "geometry.arrow_in_hand_higher_thinner"},
+                    "material_instances": {
+                        "*":{
+                            "texture":"{{texture}}",
+                            "render_method": "alpha_test"
+                        }
+                    }
+                },              
                 "minecraft:collision_box": {"origin": [-8,0,-8],"size": [16,1,16]},
                 "minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,1,16]}
             },    
@@ -55,7 +64,7 @@
                 //=========================================================================================================                          
                 //ceiling / floor - pointing where player is facing
                 {
-                    "{{#horizontal}}":{
+                    "{{#ceiling_floor}}":{
                         "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' && q.block_state('minecraft:cardinal_direction') == '{{playerFace}}'",
                         "components": {"minecraft:transformation":{"rotation": "{{rotation}}"      }}
                     }                    
@@ -71,7 +80,7 @@
                             "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' && q.block_state('minecraft:cardinal_direction') == '{{opposite}}' && q.block_state('minecraft:vertical_half') == 'bottom'",
                             "components": {"minecraft:transformation":{"rotation": "{{down}}" }}
                         }
-                ]
+                    ]
                 },
                 //wall - point sideways
                 {

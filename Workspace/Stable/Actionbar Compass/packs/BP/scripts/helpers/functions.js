@@ -1,4 +1,5 @@
-//@ts-check
+// functions.js
+// @ts-check
 /* =====================================================================
 Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
 License: MIT
@@ -8,9 +9,9 @@ Last Update: 20250109 - ReDone
 ========================================================================
 */
 import { Player, system, world } from "@minecraft/server";
-import { Vector3Lib } from "./common-stable/vectorClass";
-import { AngleMath, Compass } from "./common-other/rotationLib";
-import { chatLog, pack } from "./settings";
+import { Vector3Lib } from "../common-stable/vectorClass";
+import { AngleMath, Compass } from "../common-other/rotationLib";
+import { chatLog, pack } from "../settings";
 //=========================================================
 const compass = new Compass();
 //=========================================================
@@ -72,19 +73,6 @@ export function tagToggle (player, tag, description) {
             player.onScreenDisplay.setActionBar(`${pack.packName} ${description} turned §aOn`);
         }
         else chatLog.log(`${description} turned §cOff`, true, player);
-    });
-}
-/**
- * 
- * @param {Player} player 
- */
-export function tagHelp (player) {
-    system.run(() => {
-        chatLog.log(`Type ${pack.commandPrefix}ULCC to toggle Upper Left Corner Coordinates`, player.isOp(), player);
-        chatLog.log(`Type ${pack.commandPrefix}? in chat to see this list`, true, player);
-        chatLog.log(`Compass is ${player.hasTag(pack.tags.compassTag) ? "§cOff" : "§aOn"} - §rType §d${pack.commandPrefix}compass§r in chat to toggle it §aon/§coff`, true, player);
-        chatLog.log(`XYZ is ${player.hasTag(pack.tags.xyzTag) ? "§aOn" : "§cOff"} - §rType §d${pack.commandPrefix}xyz§r in chat to toggle it §aon/§coff`, true, player);
-        chatLog.log(`Velocity is ${player.hasTag(pack.tags.velTag) ? "§aOn" : "§cOff"} - §rType §d${pack.commandPrefix}vel§r in chat to toggle it §aon/§coff`, true, player);
     });
 }
 export function showCoordsToggle () {

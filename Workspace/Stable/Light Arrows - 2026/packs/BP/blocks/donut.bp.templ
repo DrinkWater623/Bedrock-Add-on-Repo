@@ -1,0 +1,71 @@
+{   
+    "$scope":{
+		"horizontal": "{{rotations_view_2.filter(x => x.id <= 1)}}",
+        "block_side": "{{rotations_view_2.filter(x => x.type =='side')}}"  // initial placement     
+    },
+    "$files": {
+        "array": "materials",
+        "fileName": "{{name}}_donut.bp"
+    },
+    "$template":{
+        "format_version": "1.21.70",
+        "minecraft:block": {
+            "description": {
+                "identifier": "dw623:{{name}}_donut",
+                "menu_category": {"category":"items"},
+                "traits": {
+                    "minecraft:placement_position": {"enabled_states":["minecraft:block_face"]},
+                    "minecraft:placement_direction": {"enabled_states":["minecraft:cardinal_direction"]}
+                }
+            },
+            "components": {                
+                "tag:minecraft:is_item_tier_destructible":{},
+                "minecraft:display_name":"{{Title(Replace(name, '_', ' '))}} Donut",
+                "minecraft:light_emission":8,
+                "minecraft:flammable": {
+                    "destroy_chance_modifier": 20,
+                    "catch_chance_modifier": 5
+                },                                            
+                "minecraft:material_instances": {
+                    "*":{
+                        "texture":"{{texture}}",
+                        "render_method": "alpha_test",
+                        "face_dimming": false,
+                        "ambient_occlusion": false
+                    }
+                },                
+                "minecraft:geometry": {"identifier":"geometry.mini_blocks_donut"},  
+                // "minecraft:item_visual": {
+                //     "geometry":{"identifier": "geometry.mini_blocks_donut"},
+                //     "material_instances": {
+                //         "*":{
+                //             "texture":"{{texture}}",
+                //             "render_method": "alpha_test"
+                //         }
+                //     }
+                // },              
+                "minecraft:collision_box": {"origin": [-8,0,-8],"size": [16,5,16]},
+                "minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,5,16]}
+            },    
+            "permutations": [
+                //========================================================================================================= 
+                // Rotations 
+                //=========================================================================================================                          
+                //ceiling / floor
+                {
+                    "{{#horizontal}}":{
+                        "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' ",
+                        "components": {"minecraft:transformation":{"rotation": "{{north}}"      }}
+                    }                    
+                },
+                //walls
+                {
+                    "{{#block_side}}":{
+                            "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' ",
+                            "components": {"minecraft:transformation":{"rotation": "{{up}}"  }}
+                    }                    
+                }                
+            ]
+        }
+    }
+}

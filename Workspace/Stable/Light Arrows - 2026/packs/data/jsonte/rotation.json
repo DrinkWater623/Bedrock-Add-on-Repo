@@ -24,7 +24,7 @@ blockFace=east  "up":[0,90,-90]     "left":[180,0,90]   ,"right":[0,0,-90]      
 */
 //Remember these rotations are for block-face placed on and top of picture, which can consider player facing
     "rotations_view_1":[
-        {"id":0 ,"type":"floor"   ,"blockFace":"up"   ,"playerFace":"north" ,"position":"up"    ,"rotation":[0,0,0]},
+        {"id":0 ,"type":"floor"   ,"blockFace":"up"   ,"playerFace":"north" ,"position":"up"    ,"rotation":[0,0,0] },
         {"id":0 ,"type":"floor"   ,"blockFace":"up"   ,"playerFace":"west"  ,"position":"up"    ,"rotation":[0,90,0]},
         {"id":0 ,"type":"floor"   ,"blockFace":"up"   ,"playerFace":"south" ,"position":"up"    ,"rotation":[0,180,0]},
         {"id":0 ,"type":"floor"   ,"blockFace":"up"   ,"playerFace":"east"  ,"position":"up"    ,"rotation":[0,-90,0]},
@@ -86,7 +86,6 @@ blockFace=east  "up":[0,90,-90]     "left":[180,0,90]   ,"right":[0,0,-90]      
         {"id":5 ,"type":"side"  ,"blockFace":"east"     ,"up":[0,90,-90]     ,"left":[180,0,90]   ,"right":[0,0,-90]      ,"down":[0,-90,-90] }
         
     ],
-
     "degrees":[
         {"oid":1		,"x":0	    ,"y":0	    ,"z":0	},
         {"oid":2		,"x":0	    ,"y":0	    ,"z":90	},

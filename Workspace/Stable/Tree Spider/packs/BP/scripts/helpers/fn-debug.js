@@ -74,7 +74,7 @@ export const devDebug = {
     watchEntityGoals: false,
     watchEntityEvents: false,
     watchEntitySubscriptions: false,
-    watchEntityEating: true,
+    watchEntityEating: false,
     watchEntityIssues: false,
     watchEntityPopulation: false,
     watchEntityStalls: true,

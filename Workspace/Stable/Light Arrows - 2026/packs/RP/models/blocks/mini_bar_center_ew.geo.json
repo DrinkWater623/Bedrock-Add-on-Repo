@@ -1,0 +1,35 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.mini_bar_center_ew",
+				"texture_width": 16,
+				"texture_height": 16,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "block",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{
+							"origin": [-8, 0, -2.5],
+							"size": [16, 5, 5],
+							"uv": {
+								"north": {"uv": [0, 5], "uv_size": [16, 5]},
+								"east": {"uv": [11, 11], "uv_size": [5, 5]},
+								"south": {"uv": [0, 5], "uv_size": [16, 5]},
+								"west": {"uv": [0, 11], "uv_size": [5, 5]},
+								"up": {"uv": [16, 5], "uv_size": [-16, -5]},
+								"down": {"uv": [16, 16], "uv_size": [-16, -5]}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}
