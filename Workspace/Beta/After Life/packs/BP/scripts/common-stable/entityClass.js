@@ -11,7 +11,7 @@ Change Log:
 ========================================================================*/
 import { world, system, Player, Entity, Block, Dimension } from "@minecraft/server";
 import { rndInt } from "../common-other/mathLib.js";
-import { Vector3Lib as vec3 } from './vectorClass.js';
+import { Vector3Lib as vec3 } from '../common-other/vectorClass.js';
 //import { worldRun } from "./worldRunLib.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */

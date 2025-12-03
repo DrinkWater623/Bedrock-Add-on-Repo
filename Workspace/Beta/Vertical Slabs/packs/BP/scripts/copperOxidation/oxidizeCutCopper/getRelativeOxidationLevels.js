@@ -7,12 +7,15 @@
 import { Dimension } from "@minecraft/server";
 import { RelativeOxidationLevel } from "./oxidationLevels";
 import {blockOxidationLevels} from "./blockOxidationLevels"
-
+//=============================================================================
+/** @typedef {import("@minecraft/server").Vector2} Vector2 */
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
+/** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
 const blockCache = {};
 /**
  * 
  * @param {Dimension} dimension 
- * @param {import("@minecraft/server").Vector3} location 
+ * @param {Vector3} location 
  * @returns {block}
  */
 function getCachedBlock (dimension, location) {
@@ -33,7 +36,7 @@ function getCachedBlock (dimension, location) {
 /**
  * 
  * @param {Dimension} dimension 
- * @param {import("@minecraft/server").Vector3} origin 
+ * @param {Vector3} origin 
  * @param {number} relativeTo 
  * @param {number} taxiDistance 
  */

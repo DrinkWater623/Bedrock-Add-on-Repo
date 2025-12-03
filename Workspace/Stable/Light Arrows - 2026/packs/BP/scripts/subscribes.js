@@ -15,12 +15,14 @@ import { world, system } from "@minecraft/server";
 // import { PlayerInteractWithBlockBeforeEvent, PlayerInteractWithBlockBeforeEventSignal } from "@minecraft/server";
 //import { PlayerPlaceBlockAfterEvent, PlayerPlaceBlockAfterEventSignal } from "@minecraft/server";
 //Shared
-import {  Vector2Lib, Vector3Lib } from "./common-stable/vectorClass.js";
-import { FaceLocationGrid,   } from "./common-stable/blockFace.js";
+import { Vector2Lib, Vector3Lib } from "./common-other/vectorClass.js";
+import { FaceLocationGrid, } from "./common-stable/blocks/blockFace.js";
+import { PlayerSubscriptions } from "./common-stable/subscriptions/playerSubs-stable.js";
+import { SystemSubscriptions } from "./common-stable/subscriptions/systemSubs-stable.js";
 //Local
-import { alertLog, chatLog, pack, watchFor } from './settings.js';
+import { alertLog, chatLog, pack, packDisplayName, watchFor } from './settings.js';
 import { devDebug } from "./helpers/fn-debug.js";
-import { lightArrow_onPlace ,lightBar_onPlace,lightMiniBlock_onPlace} from "./blockComponent.js";
+import { lightArrow_onPlace, lightBar_onPlace, lightMiniBlock_onPlace } from "./blockComponent.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /** The function type subscribe expects. */
@@ -41,7 +43,7 @@ import { lightArrow_onPlace ,lightBar_onPlace,lightMiniBlock_onPlace} from "./bl
 const debugOn = false || devDebug.debugOn;
 const debugFunctionsOn = false || devDebug.debugFunctionsOn;
 const debugSubscriptionsOn = devDebug.debugSubscriptionsOn;
-const watchBlockSubscriptions = devDebug.watchBlockSubscriptions;
+const debugBlockSubscriptions = devDebug.debugBlockSubscriptions;
 const watchPlayerActions = devDebug.watchPlayerActions;
 //==============================================================================
 const blockSubscriptions = {
@@ -74,31 +76,31 @@ const blockSubscriptions = {
                 event.cancel = false;
                 if (!event.isFirstEvent) return;
 
-                const player = event.player
-                if(!player || !player.isValid) return
-                
-                const itemStack = event.itemStack
-                if (!itemStack ) return;
+                const player = event.player;
+                if (!player || !player.isValid) return;
+
+                const itemStack = event.itemStack;
+                if (!itemStack) return;
                 if (!watchFor.onPlaceBlockList().includes(itemStack.typeId)) return;
 
                 const { block } = event;
                 //later verify okay block to place on - maybe
 
                 const { typeId, location } = block;
-                const itemStackBlock = itemStack.typeId                
+                const itemStackBlock = itemStack.typeId;
                 const faceLocation = event.faceLocation;
 
                 //save this to player for the custom component to verify/use
-                player.setDynamicProperty('dw623:lastInteractBlockLocation',location)
-                player.setDynamicProperty('dw623:lastInteractFaceLocation',faceLocation)
-                player.setDynamicProperty('dw623:lastInteractItemStack',itemStackBlock)                
-return
+                player.setDynamicProperty('dw623:lastInteractBlockLocation', location);
+                player.setDynamicProperty('dw623:lastInteractFaceLocation', faceLocation);
+                player.setDynamicProperty('dw623:lastInteractItemStack', itemStackBlock);
+                return;
                 const locationStr = Vector3Lib.toString(location, 1, true);
                 const faceLocationStr = Vector3Lib.toString(faceLocation, 1, true);
 
-                const grid = new FaceLocationGrid(faceLocation,event.blockFace,event.player,true)
-                const grid3=grid.grid(3)
-                const touched = grid.getEdgeName(3)
+                const grid = new FaceLocationGrid(faceLocation, event.blockFace, event.player, true);
+                const grid3 = grid.grid(3);
+                const touched = grid.getEdgeName(3);
 
                 chatLog.log(`
                     \n§aBeforePlayerInteractWithBlock Info§r
@@ -106,8 +108,8 @@ return
                     \nItemStack Block: ${itemStackBlock}
                     \nFace: ${event.blockFace} 
                     \nFace Location: ${faceLocationStr}
-                    \nFace Grid3: ${Vector2Lib.toString(grid3,0,true)} = ${touched}                    
-                `,devDebug.watchBlockSubscriptions);
+                    \nFace Grid3: ${Vector2Lib.toString(grid3, 0, true)} = ${touched}                    
+                `, devDebug.watchTempIssues);
 
                 //Add Other stuff if needed
                 return;
@@ -128,7 +130,7 @@ return
             }
             this.on = false;
         }
-    },    
+    },
     // beforePlayerPlace: {
     //     _name: 'beforeEvents.playerPlaceBlock',
     //     _subscription: 'world.beforeEvents.playerPlaceBlock',
@@ -236,16 +238,16 @@ const systemSubscriptions = {
                 //registerCustomCommands(ccr);
 
                 event.blockComponentRegistry.registerCustomComponent(
-                    'dw623:on_place_arrow', {beforeOnPlayerPlace: e => { lightArrow_onPlace(e)}}                
-                )
+                    'dw623:on_place_arrow', { beforeOnPlayerPlace: e => { lightArrow_onPlace(e); } }
+                );
 
                 event.blockComponentRegistry.registerCustomComponent(
-                    'dw623:on_place_bar', {beforeOnPlayerPlace: e => { lightBar_onPlace(e)}}                
-                )
+                    'dw623:on_place_bar', { beforeOnPlayerPlace: e => { lightBar_onPlace(e); } }
+                );
 
                 event.blockComponentRegistry.registerCustomComponent(
-                    'dw623:on_place_mini_block', {beforeOnPlayerPlace: e => { lightMiniBlock_onPlace(e)}}                
-                )
+                    'dw623:on_place_mini_block', { beforeOnPlayerPlace: e => { lightMiniBlock_onPlace(e); } }
+                );
             };
 
             this.handler = system.beforeEvents.startup.subscribe(fn);
@@ -277,13 +279,37 @@ const systemSubscriptions = {
         this.beforeStartup.subscribe(debugMe, watchMe);
     }
 };
+const playerSubs = new PlayerSubscriptions(packDisplayName, debugSubscriptionsOn);
+const systemSubs = new SystemSubscriptions(packDisplayName, debugSubscriptionsOn);
+
+/** @type {BeforeStartupHandler} */
+const onBeforeStartup = (event) => {
+    //const ccr = event.customCommandRegistry;
+    //registerCustomCommands(ccr);
+
+    event.blockComponentRegistry.registerCustomComponent(
+        'dw623:on_place_arrow', { beforeOnPlayerPlace: e => { lightArrow_onPlace(e); } }
+    );
+
+    event.blockComponentRegistry.registerCustomComponent(
+        'dw623:on_place_bar', { beforeOnPlayerPlace: e => { lightBar_onPlace(e); } }
+    );
+
+    event.blockComponentRegistry.registerCustomComponent(
+        'dw623:on_place_mini_block', { beforeOnPlayerPlace: e => { lightMiniBlock_onPlace(e); } }
+    );
+};
 //==============================================================================
 export function subscriptionsStable () {
     const _name = 'function subscriptionsStable';
     alertLog.log(`§v* ${_name} ()`, debugFunctionsOn);
 
-    systemSubscriptions.beforeStartup.subscribe()
-    blockSubscriptions.setup(debugSubscriptionsOn && watchBlockSubscriptions, watchBlockSubscriptions);
+    systemSubs.register({
+     beforeStartup: onBeforeStartup
+ });
+
+    systemSubscriptions.beforeStartup.subscribe();
+    blockSubscriptions.setup(debugSubscriptionsOn && debugBlockSubscriptions, debugBlockSubscriptions);
 
     world.afterEvents.worldLoad.subscribe((event) => {
         pack.worldLoaded = true;

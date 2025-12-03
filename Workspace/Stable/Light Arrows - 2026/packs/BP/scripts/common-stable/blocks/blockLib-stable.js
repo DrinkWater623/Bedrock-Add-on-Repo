@@ -8,14 +8,13 @@ URL: https://github.com/DrinkWater623
 Change Log:
     20250116a - Added isSameBlock
     20251108 - added isValidBlock and isInValidBlock
-    20251202 - fix chatMsg import ref
 ========================================================================*/
 import { Block, BlockPermutation, BlockVolume, Dimension,Direction, system } from "@minecraft/server";
-import { ChatMsg } from "./chatMsgClass";
-import { Vector3Lib } from "../common-other/vectorClass";
-import { blocksDotJson } from "../common-data/blocks.json";
-import { sound_definitions } from "../common-data/sound_definitions";
-import { woodBlocks } from "../common-data/block-data";
+import { blocksDotJson } from "../../common-data/blocks.json";
+import { sound_definitions } from "../../common-data/sound_definitions";
+import { ChatMsg } from "../chatMsgClass";
+import { woodBlocks } from "../../common-data/block-data";
+import { Vector3Lib } from "../../common-other/vectorClass";
 //=============================================================================
 /** @typedef {import("@minecraft/server").Vector2} Vector2 */
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */

@@ -20,7 +20,10 @@
 //==============================================================================
 
 import { Player, world } from "@minecraft/server";
-
+//=============================================================================
+/** @typedef {import("@minecraft/server").Vector2} Vector2 */
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
+/** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
 /**
  * @param {number} number  
  * @param { number } decimalPlaces 
@@ -94,7 +97,7 @@ export class Vector3Lib {
      * @param {number} x 
      * @param {number} y 
      * @param {number} z 
-     * @returns {import("@minecraft/server").Vector3}
+     * @returns {Vector3}
      */
     static new (x = 0, y = 0, z = 0) {
         return {
@@ -114,8 +117,8 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector3 } vector
-    * @returns { import("@minecraft/server").Vector3 } 
+    * @param { Vector3 } vector
+    * @returns { Vector3 } 
     */
     static abs (vector) {
         return {
@@ -127,8 +130,8 @@ export class Vector3Lib {
 
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector3 } vector
-    * @returns { import("@minecraft/server").Vector3 } 
+    * @param { Vector3 } vector
+    * @returns { Vector3 } 
     */
     static ceiling (vector) {
         return {
@@ -139,11 +142,11 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector3 } vector1
-    * @param { import("@minecraft/server").Vector3 } vector2
+    * @param { Vector3 } vector1
+    * @param { Vector3 } vector2
     * @param { number } decimalPlaces
     * @param { boolean } abs
-    * @returns { import("@minecraft/server").Vector3 } 
+    * @returns { Vector3 } 
     */
     static delta (vector1, vector2, decimalPlaces = 0, abs = false) {
         const xyz = {
@@ -156,8 +159,8 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector3 } vector
-    * @returns { import("@minecraft/server").Vector3 } 
+    * @param { Vector3 } vector
+    * @returns { Vector3 } 
     */
     static floor (vector) {
         return {
@@ -168,8 +171,8 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector3 } vector
-    * @returns { import("@minecraft/server").Vector3 } 
+    * @param { Vector3 } vector
+    * @returns { Vector3 } 
     */
     static round (vector, decimalPlaces = 0) {
         return {
@@ -180,7 +183,7 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector3 } vector
+    * @param { Vector3 } vector
     * @returns { number[] } 
     */
     static toArray (vector) {
@@ -188,8 +191,8 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector3 } vector
-    * @returns { import("@minecraft/server").Vector3 } 
+    * @param { Vector3 } vector
+    * @returns { Vector3 } 
     */
     //FIXME: this cannot be right.. need to get block, then center
     static toCenter (vector) {
@@ -202,7 +205,7 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector3 } vector
+    * @param { Vector3 } vector
     * @param { number } decimalPlaces
     * @param { boolean } showLabels
     * @param { string } delimiter
@@ -224,7 +227,7 @@ export class Vector3Lib {
     //==============================================================================
     /**
     * @param  { Object }  vector
-    * @returns { import("@minecraft/server").Vector2 } 
+    * @returns { Vector2 } 
     */
     static toVector2 (vector) {
         return Vector2Lib.toVector2(vector);
@@ -232,7 +235,7 @@ export class Vector3Lib {
     //==============================================================================
     /**
     * @param  { Object }  vector
-    * @returns {  import("@minecraft/server").Vector3 } 
+    * @returns {  Vector3 } 
     */
     static toVector3 (vector) {
         const temp = { ...vector };
@@ -251,8 +254,8 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param  { import("@minecraft/server").Vector3 }  vector3
-    * @returns { import("@minecraft/server").VectorXZ } 
+    * @param  { Vector3 }  vector3
+    * @returns { VectorXZ } 
     */
     static toVectorXz (vector3) {
         return {
@@ -262,8 +265,8 @@ export class Vector3Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector3 } vector
-    * @returns { import("@minecraft/server").Vector3 } 
+    * @param { Vector3 } vector
+    * @returns { Vector3 } 
     */
     static truncate (vector) {
         return {
@@ -285,7 +288,7 @@ export class FaceLocationGrid {
     #og_yDelta = 0;
     /**
      * 
-     * @param {import("@minecraft/server").Vector3} faceLocation 
+     * @param {Vector3} faceLocation 
      * @param {string} blockFace
      * @param {boolean} [absolute=false]
      * @param {Player | undefined} [player = undefined]
@@ -340,7 +343,7 @@ export class FaceLocationGrid {
     /**
      * 
      * @param {number} base 
-     * @returns {import("@minecraft/server").Vector2}
+     * @returns {Vector2}
      */
     grid (base = 1) {
         if (base == 0) base = 1;
@@ -448,7 +451,7 @@ export class Vector2Lib {
      * 
      * @param {number} x 
      * @param {number} y 
-     * @returns {import("@minecraft/server").Vector2}
+     * @returns {Vector2}
      */
     static new (x, y) {
         return { x: x, y: y };
@@ -457,15 +460,15 @@ export class Vector2Lib {
     /**
      * 
      * @param {object} vector 
-     * @returns {import("@minecraft/server").Vector2}
+     * @returns {Vector2}
      */
     static strip (vector) {
         return this.toVector2(vector);
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector2 } vector
-    * @returns { import("@minecraft/server").Vector2 } 
+    * @param { Vector2 } vector
+    * @returns { Vector2 } 
     */
     static abs (vector) {
         return {
@@ -476,8 +479,8 @@ export class Vector2Lib {
 
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector2 } vector
-    * @returns { import("@minecraft/server").Vector2 } 
+    * @param { Vector2 } vector
+    * @returns { Vector2 } 
     */
     static ceiling (vector) {
         return {
@@ -487,11 +490,11 @@ export class Vector2Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector2 } vector1
-    * @param { import("@minecraft/server").Vector2 } vector2
+    * @param { Vector2 } vector1
+    * @param { Vector2 } vector2
     * @param { number } decimalPlaces
     * @param { boolean } abs
-    * @returns { import("@minecraft/server").Vector2 } 
+    * @returns { Vector2 } 
     */
     static delta (vector1, vector2, decimalPlaces = 0, abs = false) {
         const xy = {
@@ -503,8 +506,8 @@ export class Vector2Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector2 } vector
-    * @returns { import("@minecraft/server").Vector2 } 
+    * @param { Vector2 } vector
+    * @returns { Vector2 } 
     */
     static floor (vector) {
         return {
@@ -514,8 +517,8 @@ export class Vector2Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector2 } vector
-    * @returns { import("@minecraft/server").Vector2 } 
+    * @param { Vector2 } vector
+    * @returns { Vector2 } 
     */
     static round (vector, decimalPlaces = 0) {
         return {
@@ -525,7 +528,7 @@ export class Vector2Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector2 } vector
+    * @param { Vector2 } vector
     * @returns { number[] } 
     */
     static toArray (vector) {
@@ -533,8 +536,8 @@ export class Vector2Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector2 } vector
-    * @returns { import("@minecraft/server").Vector2 } 
+    * @param { Vector2 } vector
+    * @returns { Vector2 } 
     */
     static toCenter (vector) {
         let xy = Vector2Lib.truncate(vector);
@@ -545,7 +548,7 @@ export class Vector2Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector2 } vector
+    * @param { Vector2 } vector
     * @param { number } decimalPlaces
     * @param { boolean } showLabels
     * @param { string } delimiter
@@ -567,7 +570,7 @@ export class Vector2Lib {
     //==============================================================================
     /**
     * @param  { Object }  vector
-    * @returns { import("@minecraft/server").Vector2 } 
+    * @returns { Vector2 } 
     */
     static toVector2 (vector) {
         const temp = { ...vector };
@@ -583,8 +586,8 @@ export class Vector2Lib {
     }
     //==============================================================================
     /**
-    * @param { import("@minecraft/server").Vector2 } vector
-    * @returns { import("@minecraft/server").Vector2 } 
+    * @param { Vector2 } vector
+    * @returns { Vector2 } 
     */
     static truncate (vector) {
         return {

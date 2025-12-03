@@ -16,6 +16,10 @@ import { ChatMsg } from "./consoleClass";
 import { woodBlocks } from "../common-data/block-data";
 import { Vector3Lib } from "./vectorClass";
 //=============================================================================
+/** @typedef {import("@minecraft/server").Vector2} Vector2 */
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
+/** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
+//=============================================================================
 /**
      * 
      * @param {Block| undefined } block
@@ -86,12 +90,12 @@ export function isBlockAdjacentToTypeId (homeBlock, lookForTypeId) {
 /**
  * @summary Beta: dimension.getBlocks
  * @param {Dimension} dimension  
- * @param {import("@minecraft/server").Vector3} location 
+ * @param {Vector3} location 
  * @param {number} [radius=1] 
  * @param {import("@minecraft/server").BlockFilter} filter
  * @filter example: { includeTypes: [ "minecraft:air" ] } 
  * @param {boolean} [adjacentOnly=false] 
- * @returns {import("@minecraft/server").Vector3[]}
+ * @returns {Vector3[]}
  */
 export function blocksAround_locations (dimension, location, radius = 1, filter = {}, adjacentOnly = false) {
     const atBlock = dimension.getBlock(location);
@@ -114,7 +118,7 @@ export function blocksAround_locations (dimension, location, radius = 1, filter 
 //=========================================================================
 /**
  * @param {Dimension} dimension  
- * @param {import("@minecraft/server").Vector3} location 
+ * @param {Vector3} location 
  * @param {number} [radius=1]
  * @param {import("@minecraft/server").BlockFilter} filter 
  * @filter example: { includeTypes: [ "minecraft:air" ] } 
@@ -136,11 +140,11 @@ export function blocksAround_typeIds (dimension, location, radius = 1, filter = 
 //=========================================================================
 /**
  * @param {Dimension} dimension  
- * @param {import("@minecraft/server").Vector3} location 
+ * @param {Vector3} location 
  * @param {number} [radius=1] 
  * @param {import("@minecraft/server").BlockFilter} filter 
  * @filter example: { includeTypes: [ "minecraft:air" ] }
- * @returns {{block: Block; offset: import("@minecraft/server").Vector3; radius: number;}[]}
+ * @returns {{block: Block; offset: Vector3; radius: number;}[]}
  */
 export function blocksAround_object (dimension, location, radius = 1, filter = {}) {
     const blockLocations = blocksAround_locations(dimension, location, radius, filter);
@@ -164,7 +168,7 @@ export function blocksAround_object (dimension, location, radius = 1, filter = {
 //=========================================================================
 /**
  * @param {Dimension} dimension  
- * @param {import("@minecraft/server").Vector3} location 
+ * @param {Vector3} location 
  * @param {number} [radius=1] 
  * @param {import("@minecraft/server").BlockFilter} filter 
  * @filter example: { includeTypes: [ "minecraft:air" ] }

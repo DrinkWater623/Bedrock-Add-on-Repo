@@ -6,7 +6,7 @@ import { system, Player, Entity, world, TimeOfDay } from "@minecraft/server";
 import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus, CustomCommandParamType, CustomCommandOrigin } from "@minecraft/server";
 // Shared
 import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
-import { Vector3Lib, VectorXZLib } from "./common-stable/vectorClass.js";
+import { Vector3Lib, VectorXZLib } from "./common-other/vectorClass.js";
 // Local
 import { alertLog, chatLog, pack } from './settings.js';
 import { devDebug } from "./helpers/fn-debug.js";

@@ -9,6 +9,10 @@ import { chatLog, pack } from '../settings.js';
 import { FaceLocationGrid, Vector2Lib, Vector3Lib } from "../commonLib/vectorClass.js";
 import { getAdjacentBlock, getBlockState, slabTypeIDHeight, slabTypeIDSansHeight } from "../fn-stable.js";
 //=============================================================================
+/** @typedef {import("@minecraft/server").Vector2} Vector2 */
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
+/** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
+//=============================================================================
 /*
     Written By:     "https://github.com/DrinkWater623"
 
@@ -37,7 +41,7 @@ export class SlabBeforeEventData {
      * @param {ItemStack} itemStack 
      * @param {Block} block 
      * @param {string} blockFace 
-     * @param {import("@minecraft/server").Vector3} faceLocation 
+     * @param {Vector3} faceLocation 
      * @param {string} eventTypeId 
      */
     constructor(player, itemStack, block, blockFace, faceLocation, eventTypeId, debug = false) {

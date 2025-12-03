@@ -17,7 +17,7 @@
                     "minecraft:placement_position":{"enabled_states":["minecraft:block_face"]}
                     //,"minecraft:placement_direction": {"enabled_states":["minecraft:cardinal_direction"]}
                 },
-                "states": {"dw623:mini_block_position_geo":[4,0,1,2,3,5,6,7,8] }
+                "states": {"dw623:mini_block_position_ptr":[4,0,1,2,3,5,6,7,8] }
             },
             "components": {      
                 "minecraft:custom_components": ["dw623:on_place_mini_block"],          
@@ -46,7 +46,7 @@
                 //=========================================================================================================                          
                 {
                     "{{#mini_block_position_center}}":{
-                        "condition": "query.block_state('dw623:mini_block_position_geo') == {{grid}} ",
+                        "condition": "query.block_state('dw623:mini_block_position_ptr') == {{grid}} ",
                         "components": {
                             "minecraft:geometry":{"identifier":"geometry.mini_block_{{geo_sfx}}"},
                             "minecraft:collision_box": {"origin": "{{origin}}","size": [5,5,5]},
@@ -56,7 +56,7 @@
                 },
                 {
                     "{{#mini_block_positions_Up_down}}":{
-                        "condition": "query.block_state('dw623:mini_block_position_geo') == {{grid}} && (query.block_state('minecraft:block_face') == 'up' ||  query.block_state('minecraft:block_face') == 'down')",
+                        "condition": "query.block_state('dw623:mini_block_position_ptr') == {{grid}} && (query.block_state('minecraft:block_face') == 'up' ||  query.block_state('minecraft:block_face') == 'down')",
                         "components": {
                             "minecraft:geometry":{"identifier":"geometry.mini_block_{{geo_sfx}}"},
                             "minecraft:collision_box": {"origin": "{{origin}}","size": [5,5,5]},
@@ -66,7 +66,7 @@
                 },
                 {
                     "{{#mini_block_positions_walls}}":{
-                        "condition": "query.block_state('dw623:mini_block_position_geo') == {{grid}} && (query.block_state('minecraft:block_face') != 'up' &&  query.block_state('minecraft:block_face') != 'down') ",
+                        "condition": "query.block_state('dw623:mini_block_position_ptr') == {{grid}} && (query.block_state('minecraft:block_face') != 'up' &&  query.block_state('minecraft:block_face') != 'down') ",
                         "components": {
                             "minecraft:geometry":{"identifier":"geometry.mini_block_{{geo_sfx}}"},
                             "minecraft:collision_box": {"origin": "{{origin}}","size": [5,5,5]},

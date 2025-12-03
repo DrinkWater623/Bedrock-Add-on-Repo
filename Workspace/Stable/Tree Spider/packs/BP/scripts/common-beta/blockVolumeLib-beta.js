@@ -8,10 +8,14 @@ Last Update: 20251026 - move stable stuff out
 ========================================================================*/
 import { Dimension, system, Block } from "@minecraft/server";
 import { blocksAround } from "../common-stable/blockLib-stable";
+//=============================================================================
+/** @typedef {import("@minecraft/server").Vector2} Vector2 */
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
+/** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
 //=========================================================================
 /**
  * @param {Dimension} dimension  
- * @param {import("@minecraft/server").Vector3} location 
+ * @param {Vector3} location 
  * @param {number} radius
  * @param {string} fillWithBlockTypeId 
  * @param {import("@minecraft/server").BlockFilter} [replaceFilter] 
@@ -28,7 +32,7 @@ export function fillCommand (dimension, location, radius, fillWithBlockTypeId, r
 //=========================================================================
 /**
 * @param {Dimension} dimension  
-* @param {import("@minecraft/server").Vector3} location 
+* @param {Vector3} location 
 * @param {number} radius
 * @param {import("@minecraft/server").BlockFilter} replaceFilter
 * @filter example: { includeTypes: [ "minecraft:air" ] } 

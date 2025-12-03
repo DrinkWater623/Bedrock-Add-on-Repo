@@ -8,7 +8,7 @@ URL: https://github.com/DrinkWater623
 Last Update: 20250116 - Add Block from Ray Cast if different from View
 ========================================================================*/
 import { world, BlockPermutation, Player, World, ItemStack, Block, system } from '@minecraft/server';
-import { Vector3Lib as vec3, Vector2Lib, Vector3Lib } from './vectorClass.js';
+import { Vector3Lib as vec3, Vector2Lib, Vector3Lib } from '../common-other/vectorClass.js';
 //=============================================================================
 // For Debugging
 /**
@@ -332,7 +332,7 @@ export class Debug {
                 dynamics.forEach(v => {
                     const data = player.getDynamicProperty(v);
                     if (data)
-                        msg += `\n==> §eKey:§r ${v} §edata:§r ${typeof data == 'string' ? v : typeof data == 'object' ? JSON.stringify(data) : data.toString()}`;
+                        msg += `\n==> §eKey:§r ${v} §eData:§r ${typeof data == 'string' ? v : typeof data == 'object' ? JSON.stringify(data) : data.toString()}`;
                 });
             }
         }

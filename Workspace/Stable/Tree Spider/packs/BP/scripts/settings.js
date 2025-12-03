@@ -9,9 +9,10 @@ Last Update: 20251024 - move dev to debug and add world dynamic vars
 ========================================================================*/
 import { TicksPerDay } from "@minecraft/server";
 // Shared
-import { ConsoleAlert, ChatMsg } from "./common-stable/consoleClass";
 import { leafBlocks, logBlocks, tallNatureBlocks } from "./common-data/block-data";
 import { rndFloat, rndInt, round } from "./common-other/mathLib";
+import { ConsoleAlert } from "./common-other/consoleAlertClass";
+import { ChatMsg } from "./common-stable/chatMsgClass";
 //==============================================================================
 /**
  *  Owner is to edit this file as needed - Note: debug vars in fn-debug
@@ -21,7 +22,7 @@ export const pack = {
     packName: 'Tree Spider',
     beta: false,
     worldLoaded: false,
-    fullNameSpace: "dw623_tree_spider", //TODO: think of better name for this
+    fullNameSpace: "dw623_tree_spider", //TODO: think of better name for this see Light Arrows... change later
     isLoadAlertsOn: false,
     /* @type {Map<string,boolean>} */
     //validatedBlocks:new Map(),    

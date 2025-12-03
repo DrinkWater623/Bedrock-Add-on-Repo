@@ -1,7 +1,7 @@
 {    
     "$scope":{
 		"up_down": "{{rotations_view_2.filter(x => x.id <= 1)}}",
-        "block_sides": "{{rotations_view_2.filter(x => x.type =='side')}}"
+        "walls": "{{rotations_view_2.filter(x => x.type =='side')}}"
     },
     "$files": {
         "array": "materials",
@@ -14,7 +14,7 @@
                 "identifier": "dw623:{{name}}_bar",
                 "menu_category": {"category":"items"},
                 "traits": {"minecraft:placement_position":{"enabled_states":["minecraft:block_face"]}},
-                "states": {"dw623:bar_position_geo":{"values":{"min":0,"max":5}} }
+                "states": {"dw623:position_ptr":[5,0,1,2,3,4] }
             },
             "components": {
                 "minecraft:custom_components": ["dw623:on_place_bar"],
@@ -52,7 +52,7 @@
                 //=========================================================================================================                          
                 {
                     "{{#light_bar_positions}}":{
-                        "condition": "query.block_state('dw623:bar_position_geo') == {{grid}} ",
+                        "condition": "query.block_state('dw623:position_ptr') == {{grid}} ",
                         "components": {
                             "minecraft:geometry":{"identifier":"geometry.mini_bar_{{geo_sfx}}"},
                             "minecraft:collision_box": {"origin": "{{origin}}","size": "{{size}}"},
@@ -67,7 +67,7 @@
                     }
                 },
                 {
-                    "{{#block_sides}}":{
+                    "{{#walls}}":{
                         "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}'",
                         "components": {"minecraft:transformation":{"rotation": "{{up}}" }}                                 
                     }                  

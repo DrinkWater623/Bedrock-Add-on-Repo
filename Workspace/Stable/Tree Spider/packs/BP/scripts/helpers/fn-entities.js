@@ -25,7 +25,7 @@ import { closestAdjacentBlockTypeId, isBlockAdjacentToTypeId } from "../common-s
 import { DynamicPropertyLib } from "../common-stable/dynamicPropertyClass.js";
 import { EntityLib, spawnEntityAtLocation } from "../common-stable/entityClass.js";
 import { getWorldTime } from "../common-stable/timers.js";
-import { Vector3Lib, } from '../common-stable/vectorClass.js';
+import { Vector3Lib, } from '../common-other/vectorClass.js';
 // Local
 import { targetBlockAdjacent } from "./fn-blocks.js";
 import { devDebug } from "./fn-debug.js";
@@ -316,7 +316,7 @@ class Web {
     //===================================================================
     /**
      * @param {Entity} entity 
-     * @param {import("@minecraft/server").Vector3} location 
+     * @param {Vector3} location 
      */
     static setWebAndEnter (entity, location) {
         //...and stay

@@ -10,18 +10,21 @@
 //==============================================================================
 import { Dimension, BlockVolume, system, Block } from "@minecraft/server";
 import { Vector3Lib } from "../common-stable/vectorClass";
-
+//=============================================================================
+/** @typedef {import("@minecraft/server").Vector2} Vector2 */
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
+/** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
 export class BlockLib {
 
     /**
      * @summary Beta: dimension.getBlocks
      * @param {Dimension} dimension  
-     * @param {import("@minecraft/server").Vector3} location 
+     * @param {Vector3} location 
      * @param {number} [radius=1] 
      * @param {import("@minecraft/server").BlockFilter} filter
      * @filter example: { includeTypes: [ "minecraft:air" ] } 
      * @param {boolean} [adjacentOnly=false] 
-     * @returns {import("@minecraft/server").Vector3[]}
+     * @returns {Vector3[]}
      */
     static blocksAround_locations (dimension, location, radius = 1, filter = {}, adjacentOnly = false) {
         const atBlock = dimension.getBlock(location);
@@ -44,7 +47,7 @@ export class BlockLib {
     //=========================================================================
     /**
      * @param {Dimension} dimension  
-     * @param {import("@minecraft/server").Vector3} location 
+     * @param {Vector3} location 
      * @param {number} [radius=1]
      * @param {import("@minecraft/server").BlockFilter} filter 
      * @filter example: { includeTypes: [ "minecraft:air" ] } 
@@ -66,7 +69,7 @@ export class BlockLib {
     //=========================================================================
     /**
      * @param {Dimension} dimension  
-     * @param {import("@minecraft/server").Vector3} location 
+     * @param {Vector3} location 
      * @param {number} [radius=1] 
      * @param {import("@minecraft/server").BlockFilter} filter 
      * @filter example: { includeTypes: [ "minecraft:air" ] }
@@ -94,7 +97,7 @@ export class BlockLib {
     //=========================================================================
     /**
      * @param {Dimension} dimension  
-     * @param {import("@minecraft/server").Vector3} location 
+     * @param {Vector3} location 
      * @param {number} [radius=1] 
      * @param {import("@minecraft/server").BlockFilter} filter 
      * @filter example: { includeTypes: [ "minecraft:air" ] }
@@ -110,7 +113,7 @@ export class BlockLib {
     //=========================================================================
     /**
      * @param {Dimension} dimension  
-     * @param {import("@minecraft/server").Vector3} location 
+     * @param {Vector3} location 
      * @param {number} radius
      * @param {string} fillWithBlockTypeId 
      * @param {import("@minecraft/server").BlockFilter} [replaceFilter] 
@@ -127,7 +130,7 @@ export class BlockLib {
     //=========================================================================
     /**
  * @param {Dimension} dimension  
- * @param {import("@minecraft/server").Vector3} location 
+ * @param {Vector3} location 
  * @param {number} radius
  * @param {import("@minecraft/server").BlockFilter} replaceFilter
  * @filter example: { includeTypes: [ "minecraft:air" ] } 

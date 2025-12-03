@@ -1,12 +1,15 @@
 //@ts-check
 import { Dimension, MolangVariableMap } from "@minecraft/server";
-
+//=============================================================================
+/** @typedef {import("@minecraft/server").Vector2} Vector2 */
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
+/** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
 const padding = 0.05;
 const particleAmount = 20;
 /**
  * 
  * @param {Dimension} dimension 
- * @param {import("@minecraft/server").Vector3} blockLocation 
+ * @param {Vector3} blockLocation 
  * @param {import("@minecraft/server").RGB} color 
  */
 export function spawnCopperWaxParticles (dimension, blockLocation, color) {
@@ -25,8 +28,8 @@ export function spawnCopperWaxParticles (dimension, blockLocation, color) {
 }
 /**
  * 
- * @param {import("@minecraft/server").Vector3} blockLocation  
- * @returns {import("@minecraft/server").Vector3}
+ * @param {Vector3} blockLocation  
+ * @returns {Vector3}
  */
 function getRandomParticleLocation (blockLocation) {
     const axes = [ "x", "y", "z" ];

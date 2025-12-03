@@ -9,13 +9,17 @@ Last Update: 20241229 - reOrg and add License
 import { world, system, Dimension, EntityInventoryComponent,Player} from "@minecraft/server";
 import { chatLog, dev } from "./settings";
 import { sendPlayerMessageLater } from "./fn-stable";
+//=============================================================================
+/** @typedef {import("@minecraft/server").Vector2} Vector2 */
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
+/** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
 //==============================================================================
 const deathBotIdentifier = "dw623:death_bot";
 const debug = dev.debugBot
 //==============================================================================
 /**
 * @param { Dimension } dimension
-* @param { import("@minecraft/server").Vector3 } location
+* @param { Vector3 } location
 * @param { Player }  player
 */
 export function launchDeathBots (dimension, location, player) {
@@ -40,7 +44,7 @@ export function launchDeathBots (dimension, location, player) {
 }
 /**
 * @param { import("@minecraft/server").Dimension } dimension
-* @param { import("@minecraft/server").Vector3 } location
+* @param { Vector3 } location
 * @param { import("@minecraft/server").Player }  player
 * @param { number } botNumber
 */
@@ -102,7 +106,7 @@ function botContainerReport (bot, player, botNumber = 1) {
 //============================================================================================================================
 /**
 * @param { import("@minecraft/server").Dimension } dimension
-* @param { import("@minecraft/server").Vector3 } location
+* @param { Vector3 } location
 * @return { import("@minecraft/server").Entity[] }
 */
 function floatingItems (dimension, location, closest = 99, maxDistance = 32) {
@@ -120,7 +124,7 @@ function floatingItems (dimension, location, closest = 99, maxDistance = 32) {
 }
 /**
 * @param { import("@minecraft/server").Dimension } dimension
-* @param { import("@minecraft/server").Vector3 } location
+* @param { Vector3 } location
 * @return { number }
 */
 function floatingItemCount (dimension, location, closest = 99, maxDistance = 32) {

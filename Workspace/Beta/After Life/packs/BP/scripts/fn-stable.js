@@ -9,7 +9,11 @@ Last Update: 20241229 - reOrg and add License
 import { Entity, system, world, Player, World, TicksPerSecond } from "@minecraft/server";
 import { dev, chatLog, dynamicVars } from './settings.js';
 import { DynamicPropertyLib } from "./common-stable/dynamicPropertyClass.js";
-
+//=============================================================================
+//=============================================================================
+/** @typedef {import("@minecraft/server").Vector2} Vector2 */
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
+/** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
 //==============================================================================
 export const dimensionSuffix = (dimensionId = "") => { return dimensionId.replace('minecraft:', '').replace('the_', ''); };
 //==============================================================================
@@ -130,7 +134,7 @@ export function sendPlayerMessageLater (message, player, tickDelay = 1) {
 /**
  * 
  * @param {Entity} entity 
- * @param {import("@minecraft/server").Vector3} location 
+ * @param {Vector3} location 
  */
 export function teleportAndCenter (entity, location) {
     system.runTimeout(() => {

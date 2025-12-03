@@ -8,6 +8,10 @@ Last Update: 20241229 - reOrg and add License
 ========================================================================*/
 import { world, system, Player, ItemStack, BlockPermutation } from '@minecraft/server';
 import { MinecraftBlockTypes, MinecraftItemTypes } from './common-data/vanilla-data.js';
+//=============================================================================
+/** @typedef {import("@minecraft/server").Vector2} Vector2 */
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
+/** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
 //==============================================================================
 /**
 * @param {string } msg
@@ -53,7 +57,7 @@ const waterTypeId = 'minecraft:water'
 //==============================================================================
 class BlockInfo {
     /**
-     * @param { import("@minecraft/server").Vector3 } location
+     * @param { Vector3 } location
      * @param { number} index
      * @param { string} key
      */
@@ -594,7 +598,7 @@ export function missingBlockList () {
     world.sendMessage(`§a===> ${pool.length} Matches\n\n`);
 }
 /**
-* @param { import("@minecraft/server").Vector3 } location
+* @param { Vector3 } location
 */
 function vector3Msg (location) {
     return `${Math.floor(location.x)}, ${Math.floor(location.y)}, ${Math.floor(location.z)}`;

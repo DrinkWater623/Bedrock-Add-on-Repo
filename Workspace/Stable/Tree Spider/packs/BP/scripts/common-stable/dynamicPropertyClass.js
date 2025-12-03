@@ -8,6 +8,10 @@ Last Update: 20251024 - Add get boolean value and propertyExists()
 ========================================================================*/
 import { Entity, World } from "@minecraft/server";
 //==============================================================================
+/** @typedef {import("@minecraft/server").Vector2} Vector2 */
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
+/** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
+//==============================================================================
 export class DynamicPropertyLib {
 
     //====================================== Query
@@ -79,7 +83,7 @@ export class DynamicPropertyLib {
      * 
      * @param {Entity} entity
      * @param {string} propertyName
-     * @param {import("@minecraft/server").Vector3} location
+     * @param {Vector3} location
      */
     static setVector (entity, propertyName, location) {
         if (entity.isValid) {
@@ -91,7 +95,7 @@ export class DynamicPropertyLib {
      * 
      * @param {Entity} entity
      * @param {string} propertyName
-     * @returns {import("@minecraft/server").Vector3 | undefined} 
+     * @returns {Vector3 | undefined} 
      */
     static getVector (entity, propertyName) {
         if (entity.isValid) {

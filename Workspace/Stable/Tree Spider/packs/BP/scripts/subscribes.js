@@ -21,7 +21,7 @@ import { Ticks } from "./common-data/globalConstantsLib.js";
 import { chance } from "./common-other/mathLib.js";
 import { DynamicPropertyLib } from "./common-stable/dynamicPropertyClass.js";
 import { EntityLib, spawnEntityAtLocation } from "./common-stable/entityClass.js";
-import { Vector3Lib } from "./common-stable/vectorClass.js";
+import { Vector3Lib } from "./common-other/vectorClass.js";
 //Local
 import { alertLog, pack, watchFor, entityDynamicVars } from './settings.js';
 import { registerCustomCommands } from "./chatCmds.js";
@@ -71,6 +71,7 @@ const debugSubscriptionsOn = devDebug.debugSubscriptionsOn;
 const watchEntitySubscriptions = devDebug.watchEntitySubscriptions;
 const watchBlockSubscriptions = devDebug.watchBlockSubscriptions;
 const watchPlayerActions = devDebug.watchPlayerActions;
+//TODO: convert to using new classes - remember the turn off part too
 //==============================================================================
 const blockSubscriptions = {
     _name: 'blockSubscriptions',

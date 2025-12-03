@@ -1,13 +1,17 @@
 //@ts-check
 import {   Dimension, ItemStack, system } from "@minecraft/server";
 import {  lootTableItems } from '../settings.js';
+//=============================================================================
+/** @typedef {import("@minecraft/server").Vector2} Vector2 */
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
+/** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
 //==============================================================================
 var itemTestDone = true;
 //==============================================================================
 /**
  * 
  * @param {Dimension} dim 
- * @param {import("@minecraft/server").Vector3} loc 
+ * @param {Vector3} loc 
  */
 function* testLootJob (dim, loc) {
 
@@ -20,7 +24,7 @@ function* testLootJob (dim, loc) {
 /**
  * 
  * @param {Dimension} dimension 
- * @param {import("@minecraft/server").Vector3} location 
+ * @param {Vector3} location 
  */
 export function run_testLoot(dimension,location){
     if (!itemTestDone) {
