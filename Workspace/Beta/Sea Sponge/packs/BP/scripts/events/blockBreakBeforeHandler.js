@@ -6,7 +6,7 @@ import { watchFor } from "../settings";
 import { GetBlockState, GetBlockStates, PlaceBlock } from "../common-stable/blockLib-stable";
 import { spawnLoot } from "../common-stable/itemLib-stable";
 import { waterBlock } from "../common-data/block-data";
-import { FaceLocationGrid, Vector2Lib } from "../common-stable/vectorClass";
+import { FaceLocationGrid, Vector2Lib } from "../common-stable/tools/vectorClass";
 
 //==============================================================================
 /**

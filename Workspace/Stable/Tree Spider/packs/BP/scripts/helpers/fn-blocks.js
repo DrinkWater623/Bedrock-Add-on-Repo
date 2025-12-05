@@ -12,9 +12,9 @@ import { system, Block, Dimension } from "@minecraft/server";
 //Shared
 import { airBlock } from "../common-data/block-data.js";
 import * as vanillaBlocks from "../common-data/block-data.js";
-import { spawnEntityAfterRandomTicks, spawnEntityAtLocation } from "../common-stable/entityClass.js";
-import { chance } from "../common-other/mathLib.js";
-import { GetBlock, isValidBlock } from "../common-stable/blockLib-stable.js";
+import { spawnEntityAfterRandomTicks, spawnEntityAtLocation } from "../common-stable/entities/entityClass.js";
+import { chance } from "../common-stable/tools/mathLib.js";
+import { GetBlock, isValidBlock } from "../common-stable/blocks/blockLib-stable.js";
 //Local
 import { watchFor, alertLog } from '../settings.js';
 import { devDebug } from "./fn-debug.js";

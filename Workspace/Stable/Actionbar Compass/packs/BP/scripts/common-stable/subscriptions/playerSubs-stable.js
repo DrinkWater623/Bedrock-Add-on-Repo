@@ -14,13 +14,14 @@ Change Log:
 // Minecraft
 import { world} from "@minecraft/server";
 // Shared
-import { SubscriptionEntry, SubscriptionOwner } from "../../common-other/subscriptionBaseClass.js";
+import { SubscriptionEntry, SubscriptionOwner } from "./subscriptionBaseClass.js";
 //==============================================================================
 // Typedefs for handlers (function type subscribe expects).
 //  Player Actions
 /** @typedef {Parameters<typeof world.beforeEvents.playerInteractWithBlock.subscribe>[0]} BeforePlayerInteractWithBlockHandler */
 /** @typedef {Parameters<typeof world.afterEvents.playerBreakBlock.subscribe>[0]} AfterPlayerBreakBlockHandler */
 /** @typedef {Parameters<typeof world.afterEvents.playerPlaceBlock.subscribe>[0]} AfterPlayerPlaceBlockHandler */
+/** @typedef {Parameters<typeof world.afterEvents.playerSpawn.subscribe>[0]} AfterPlayerSpawnHandler */
 
 //==============================================================================
 // Typedefs for stored handles (Bedrock returns the function reference).
@@ -28,6 +29,7 @@ import { SubscriptionEntry, SubscriptionOwner } from "../../common-other/subscri
 /** @typedef {ReturnType<typeof world.beforeEvents.playerInteractWithBlock.subscribe>} BeforePlayerInteractWithBlockHandle */
 /** @typedef {ReturnType<typeof world.afterEvents.playerBreakBlock.subscribe>} AfterPlayerBreakBlockHandle */
 /** @typedef {ReturnType<typeof world.afterEvents.playerPlaceBlock.subscribe>} AfterPlayerPlaceBlockHandle */
+/** @typedef {ReturnType<typeof world.afterEvents.playerSpawn.subscribe>} AfterPlayerSpawnHandle */
 //==============================================================================
 // Player subscriptions
 export class PlayerSubscriptions extends SubscriptionOwner {
@@ -58,6 +60,13 @@ export class PlayerSubscriptions extends SubscriptionOwner {
             "afterPlayerPlaceBlock",
             world.afterEvents.playerPlaceBlock
         );
+
+         /** @type {SubscriptionEntry<AfterPlayerSpawnHandler, AfterPlayerSpawnHandle>} */
+        this.afterPlayerSpawn = new SubscriptionEntry(
+            this,
+            "afterPlayerSpawn",
+            world.afterEvents.playerSpawn
+        );
     }
 
     /**
@@ -67,7 +76,8 @@ export class PlayerSubscriptions extends SubscriptionOwner {
      * @param {{
      *   beforePlayerInteractWithBlock?: BeforePlayerInteractWithBlockHandler,
      *   afterPlayerBreakBlock?: AfterPlayerBreakBlockHandler,
-     *   afterPlayerPlaceBlock?: AfterPlayerPlaceBlockHandler
+     *   afterPlayerPlaceBlock?: AfterPlayerPlaceBlockHandler,
+     *   afterPlayerSpawn?:AfterPlayerSpawnHandler
      * }} handlers
      * @param {boolean} [debug=false]
      */
@@ -87,6 +97,12 @@ export class PlayerSubscriptions extends SubscriptionOwner {
         if (handlers.afterPlayerPlaceBlock) {
             this.afterPlayerPlaceBlock.subscribe(
                 handlers.afterPlayerPlaceBlock,
+                debug
+            );
+        }
+        if (handlers.afterPlayerSpawn) {
+            this.afterPlayerSpawn.subscribe(
+                handlers.afterPlayerSpawn,
                 debug
             );
         }

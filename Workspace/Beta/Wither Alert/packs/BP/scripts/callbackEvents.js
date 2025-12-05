@@ -11,7 +11,7 @@ import {
     EntityDieAfterEvent,
     EntityRemoveBeforeEvent
 } from "@minecraft/server";
-import { Vector3Lib as vec3 } from './common-stable/vectorClass.js';
+import { Vector3Lib as vec3 } from './common-stable/tools/vectorClass.js';
 import { watchFor, dev, chatLog } from './settings.js';
 //==============================================================================
 const reloadTime = 10;

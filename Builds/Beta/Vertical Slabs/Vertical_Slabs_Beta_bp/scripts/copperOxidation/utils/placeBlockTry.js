@@ -4,7 +4,7 @@
 //========================================================================
 import { BlockComponentPlayerInteractEvent, Player, Block, ContainerSlot, world } from "@minecraft/server";
 import { getAdjacentBlock } from "../../common-stable/blockLib-stable";
-import { Vector3Lib } from "../../common-stable/vectorClass";
+import { Vector3Lib } from "../../common-stable/tools/vectorClass";
 import { airBlock } from "../../common-data/globalConstantsLib";
 //========================================================================
 

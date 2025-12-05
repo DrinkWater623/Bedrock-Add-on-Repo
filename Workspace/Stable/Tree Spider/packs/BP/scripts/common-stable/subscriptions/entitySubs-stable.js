@@ -16,7 +16,7 @@ TODO: add bulk register - see playerSubs
 // Minecraft
 import { world } from "@minecraft/server";
 // Shared
-import { SubscriptionEntry, SubscriptionOwner } from "../../common-other/subscriptionBaseClass.js";
+import { SubscriptionEntry, SubscriptionOwner } from "./subscriptionBaseClass.js";
 //==============================================================================
 // Typedefs for handlers (function type subscribe expects).
 //  Entities

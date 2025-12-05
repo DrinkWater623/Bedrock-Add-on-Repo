@@ -14,7 +14,7 @@ Change Log:
 // Minecraft
 import {  system } from "@minecraft/server";
 // Shared
-import { SubscriptionEntry, SubscriptionOwner } from "../../common-other/subscriptionBaseClass.js";
+import { SubscriptionEntry, SubscriptionOwner } from "./subscriptionBaseClass.js";
 //==============================================================================
 // Typedefs for handlers (function type subscribe expects).
 // System

@@ -1,0 +1,106 @@
+{
+  "$scope":{    
+    "level_0": "{{potions.filter(p => !p.poison && p.level==0)}}",
+    "level_1": "{{potions.filter(p => !p.poison && p.level==1)}}",
+    "level_2": "{{potions.filter(p => !p.poison && p.level==2)}}",
+
+    "temp_list":[
+      {"potion":"potion"},
+      {"potion":"lingering_potion"},
+      {"potion":"splash_Potion"}
+    ]
+  }, 
+  /*
+minecraft:fire_resistance"   
+minecraft:invisibility"  },
+minecraft:long_fire_resistance
+minecraft:long_invisibility" 
+minecraft:long_nightvision"  
+minecraft:long_strength" },
+minecraft:long_swiftness"},
+minecraft:wind_charged" },
+*/ 
+  "$template": {
+    "tiers": [
+      {
+        "groups": [                    
+          {              
+            "num_to_select": 5,
+            "trades": 
+            [               
+              {
+                "{{#level_0}}":  [
+                  {
+                    "max_uses": 5,"reward_exp":true,
+                    "wants": [{"item":"minecraft:emerald","quantity":1}],
+                    "gives": [{"item":"minecraft:splash_potion:{{potion_id}}","quantity":1}] 
+                  },
+                  {
+                    "max_uses": 5,"reward_exp":true,
+                    "wants": [{"item":"minecraft:emerald","quantity":2}],
+                    "gives": [{"item":"minecraft:potion:{{potion_id}}","quantity":1}] 
+                  },
+                  {
+                    "max_uses": 5,"reward_exp":true,
+                    "wants": [{"item":"minecraft:emerald","quantity":4}],
+                    "gives": [{"item":"minecraft:lingering_potion:{{potion_id}}","quantity":1}] 
+                  }
+                ]
+              }              
+            ]               
+          },
+          {              
+            "num_to_select": 3,
+            "trades": 
+            [               
+              {
+                "{{#level_1}}":  [
+                  {
+                    "max_uses": 5,"reward_exp":true,
+                    "wants": [{"item":"minecraft:emerald","quantity":3}],
+                    "gives": [{"item":"minecraft:splash_potion:{{potion_id}}","quantity":1}] 
+                  },
+                  {
+                    "max_uses": 5,"reward_exp":true,
+                    "wants": [{"item":"minecraft:emerald","quantity":4}],
+                    "gives": [{"item":"minecraft:potion:{{potion_id}}","quantity":1}] 
+                  },
+                  {
+                    "max_uses": 5,"reward_exp":true,
+                    "wants": [{"item":"minecraft:emerald","quantity":6}],
+                    "gives": [{"item":"minecraft:lingering_potion:{{potion_id}}","quantity":1}] 
+                  }
+                ]
+              }              
+            ]               
+          },
+          {              
+            "num_to_select": 2,
+            "trades": 
+            [               
+              {
+                "{{#level_2}}":  [
+                  {
+                    "max_uses": 5,"reward_exp":true,
+                    "wants": [{"item":"minecraft:diamond","quantity":1}],
+                    "gives": [{"item":"minecraft:splash_potion:{{potion_id}}","quantity":1}] 
+                  },
+                  {
+                    "max_uses": 5,"reward_exp":true,
+                    "wants": [{"item":"minecraft:diamond","quantity":2}],
+                    "gives": [{"item":"minecraft:potion:{{potion_id}}","quantity":1}] 
+                  },
+                  {
+                    "max_uses": 5,"reward_exp":true,
+                    "wants": [{"item":"minecraft:diamond","quantity":3}],
+                    "gives": [{"item":"minecraft:lingering_potion:{{potion_id}}","quantity":1}] 
+                  }
+                ]
+              }              
+            ]               
+          }   
+        ]
+      }
+    ]
+  }
+}

@@ -14,7 +14,7 @@ import { system, world } from "@minecraft/server";
 import { watchFor, dev, alertLog, pack, chatLog } from './settings.js';
 import * as events from './callbackEvents.js';
 import { Entities } from "./common-stable/entityClass.js";
-import { Vector3Lib as vec3 } from './common-stable/vectorClass.js';
+import { Vector3Lib as vec3 } from './common-stable/tools/vectorClass.js';
 import * as watchLoop from './watchLoop.js';
 //==============================================================================
 const reloadTime = 10;

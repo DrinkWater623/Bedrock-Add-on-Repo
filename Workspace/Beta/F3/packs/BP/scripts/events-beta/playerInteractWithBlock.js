@@ -8,7 +8,7 @@ import {
 } from "@minecraft/server";
 import { playerF3Add } from "../fn-stable.js";
 import { vanillaLists } from "../settings.js";
-import { FaceLocationGrid, Vector2Lib, Vector3Lib } from '../common-stable/vectorClass.js';
+import { FaceLocationGrid, Vector2Lib, Vector3Lib } from '../common-stable/tools/vectorClass.js';
 //==============================================================================
 /**
  * 

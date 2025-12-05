@@ -5,19 +5,11 @@
 import { system, Player, world } from "@minecraft/server";
 import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus, CustomCommandParamType, CustomCommandOrigin } from "@minecraft/server";
 // Shared
-import { Vector3Lib, VectorXZLib } from "./common-stable/vectorClass.js";
 // Local
-import { alertLog, chatLog, pack } from './settings.js';
+import { alertLog, chatLog, pack, packDisplayName } from './settings.js';
 import { showCoordsToggle, tagToggle } from "./helpers/functions.js";
 //==============================================================================
 const debugFunctions = false;
-//==============================================================================
-//Enum Names
-const queryOnOff = `${pack.cmdNameSpace}:enum_query_on_off`;
-const scoreboard_options = `${pack.cmdNameSpace}:scoreboard_options`;
-//==============================================================================
-const SUCCESS = { status: CustomCommandStatus.Success };
-const FAILURE = { status: CustomCommandStatus.Failure };
 //==============================================================================
 function getWorldTime () {
     const daytime = world.getTimeOfDay() + 6000;
@@ -42,9 +34,12 @@ function register_about (registry) {
     registry.registerCommand(cmd, (origin) => {
         if (origin.sourceEntity instanceof Player) {
 
-            const about = "Tree Spiders are friendly forest spiders that wander around and make webs.";
-
-            origin.sourceEntity.sendMessage(about);
+            origin.sourceEntity.sendMessage(`
+\n${packDisplayName}:                
+§r§a${pack.about}
+§r§b${pack.devUrl}
+§r§c${pack.reportBugs}
+`);
         }
 
         const result = { status: CustomCommandStatus.Success };
@@ -58,7 +53,7 @@ function register_about (registry) {
 function register_admin_coord_toggle (registry) {
     const cmd = {
         name: `${pack.cmdNameSpace}:admin_coord_toggle`,
-        description: "Admin: Toggle where or not coordinates show",
+        description: "Admin: Toggle whether or not paper doll coordinates show",
         permissionLevel: CommandPermissionLevel.Admin,
         cheatsRequired: false
     };
@@ -138,7 +133,7 @@ function register_getGeoInfo (registry) {
                 //top most block, if underground
                 //add list of close by players
                 //list of close monsters
-            }, 1);            
+            }, 1);
         }
 
         const result = { status: CustomCommandStatus.Success };

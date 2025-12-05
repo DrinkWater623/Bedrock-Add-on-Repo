@@ -8,7 +8,7 @@ URL: https://github.com/DrinkWater623
 Last Update: 20250116 - Add Block from Ray Cast if different from View
 ========================================================================*/
 import { world, BlockPermutation, Player, World, ItemStack, Block, system } from '@minecraft/server';
-import { Vector3Lib as vec3, Vector2Lib, Vector3Lib } from '../common-other/vectorClass.js';
+import { Vector3Lib as vec3, Vector2Lib, Vector3Lib } from '../common-stable/tools/vectorClass.js';
 //=============================================================================
 // For Debugging
 /**

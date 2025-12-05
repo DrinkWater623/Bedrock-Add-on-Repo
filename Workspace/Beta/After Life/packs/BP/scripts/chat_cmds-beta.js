@@ -1,7 +1,7 @@
 import { world, system, Player, ChatSendBeforeEvent, TicksPerSecond, EffectTypes } from "@minecraft/server";
 import { dev, pack} from './settings.js';
 import { dimensionSuffix,clearPlayerChatWindow,clearWorldChatWindow } from './fn-stable.js';
-import { Vector3Lib } from "./common-stable/vectorClass.js";
+import { Vector3Lib } from "./common-stable/tools/vectorClass.js";
 //==============================================================================
 const TicksPerMinute = TicksPerSecond * 60;
 export const chatCmds = new PlayerChatCommands(pack.commandPrefix);

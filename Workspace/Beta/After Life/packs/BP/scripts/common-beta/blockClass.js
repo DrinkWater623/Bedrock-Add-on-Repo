@@ -9,7 +9,7 @@
 */
 //==============================================================================
 import { Dimension, BlockVolume, system, Block } from "@minecraft/server";
-import { Vector3Lib } from "../common-stable/vectorClass";
+import { Vector3Lib } from "../common-stable/tools/vectorClass";
 //=============================================================================
 /** @typedef {import("@minecraft/server").Vector2} Vector2 */
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */

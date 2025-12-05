@@ -5,19 +5,19 @@
 import { system, Player, Entity, world, TimeOfDay } from "@minecraft/server";
 import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus, CustomCommandParamType, CustomCommandOrigin } from "@minecraft/server";
 // Shared
-import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
-import { Vector3Lib, VectorXZLib } from "./common-other/vectorClass.js";
+import { ScoreboardLib } from "./common-stable/tools/scoreboardClass.js";
+import { Vector3Lib, VectorXZLib } from "./common-stable/tools/vectorClass.js";
 // Local
-import { alertLog, chatLog, pack } from './settings.js';
+import { alertLog, chatLog, pack, packDisplayName } from './settings.js';
 import { devDebug } from "./helpers/fn-debug.js";
-import { getWorldTime } from "./common-stable/timers.js";
+import { getWorldTime } from "./common-stable/tools/timers.js";
 //==============================================================================
 const debugFunctions = false;
 const msgPfx = devDebug.dsb.displayPfx;
 //==============================================================================
 //Enum Names
-const queryOnOff = `${pack.fullNameSpace}:enum_query_on_off`;
-const scoreboard_options = `${pack.fullNameSpace}:scoreboard_options`;
+const queryOnOff = `${pack.cmdNameSpace}:enum_query_on_off`;
+const scoreboard_options = `${pack.cmdNameSpace}:scoreboard_options`;
 //==============================================================================
 const SUCCESS = { status: CustomCommandStatus.Success };
 const FAILURE = { status: CustomCommandStatus.Failure };
@@ -27,8 +27,8 @@ const FAILURE = { status: CustomCommandStatus.Failure };
  */
 function register_about (registry) {
     const cmd = {
-        name: `${pack.fullNameSpace}:about`,
-        description: "Tree Spider Information",
+        name: `${pack.cmdNameSpace}:about_tree_spiders`,
+        description: "Tree Spider Add-on Information",
         permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
 
@@ -38,10 +38,12 @@ function register_about (registry) {
      */
     registry.registerCommand(cmd, (origin) => {
         if (origin.sourceEntity instanceof Player) {
-
-            const about = "Tree Spiders are friendly forest spiders that wander around and make webs.";
-
-            origin.sourceEntity.sendMessage(about);
+            origin.sourceEntity.sendMessage(`
+\n${packDisplayName}:                
+§r§a${pack.about}
+§r§b${pack.devUrl}
+§r§c${pack.reportBugs}
+`);
         }
 
         const result = { status: CustomCommandStatus.Success };
@@ -52,65 +54,9 @@ function register_about (registry) {
 /**
  * @param {CustomCommandRegistry} registry 
  */
-function register_cls (registry) {
-    const cmd = {
-        name: `${pack.fullNameSpace}:cls`,
-        description: "Clear Chat Window",
-        permissionLevel: CommandPermissionLevel.Any,
-        cheatsRequired: false,
-        optionalParameters: [
-            {
-                name: 'LineCount',
-                type: CustomCommandParamType.Integer
-            }
-        ]
-
-    };
-
-    /** @type {(origin: CustomCommandOrigin, args: number[]) => import("@minecraft/server").CustomCommandResult} */
-    const handler = (origin, args) => {
-        if (origin.sourceEntity instanceof Player) {
-            let LineCount = args?.length ? args[ 0 ] : 40;
-            if (!LineCount) LineCount = 40;
-            if (LineCount > 80) LineCount = 80;
-            origin.sourceEntity.sendMessage(`${'\n'.repeat(LineCount)}`);
-        }
-        const result = { status: CustomCommandStatus.Success };
-        return result;
-    };
-
-    registry.registerCommand(cmd, handler);
-}
-//==============================================================================
-/**
- * @param {CustomCommandRegistry} registry 
- */
-function register_midnight (registry) {
-    const cmd = {
-        name: `${pack.fullNameSpace}:midnight`,
-        description: "Set Time to Midnight",
-        permissionLevel: CommandPermissionLevel.Any,
-        cheatsRequired: false
-    };
-
-    /** @type {(origin: CustomCommandOrigin, args: number[]) => import("@minecraft/server").CustomCommandResult} */
-    const handler = (origin, args) => {
-        if (origin.sourceEntity instanceof Player) {
-            world.setAbsoluteTime(TimeOfDay.Midnight);
-        }
-        const result = { status: CustomCommandStatus.Success };
-        return result;
-    };
-
-    registry.registerCommand(cmd, handler);
-}
-//==============================================================================
-/**
- * @param {CustomCommandRegistry} registry 
- */
 function register_getGeoInfo (registry) {
     const cmd = {
-        name: `${pack.fullNameSpace}:geo`,
+        name: `${pack.cmdNameSpace}:geo`,
         description: "Show Current Location Information",
         permissionLevel: CommandPermissionLevel.Admin,
         cheatsRequired: false
@@ -214,7 +160,7 @@ function register_debugEntity (registry) {
     alertLog.log('§v* function register_debugEntity ()', debugFunctions);
 
     const cmd = {
-        name: `${pack.fullNameSpace}:debug_entity`,
+        name: `${pack.cmdNameSpace}:debug_entity`,
         description: "Turn on/off/query Entity Activity/Alert/Load Messages and Scoreboards Debugging",
         permissionLevel: CommandPermissionLevel.Admin,
         cheatsRequired: false,
@@ -282,7 +228,7 @@ function register_watchEntityGoals (registry) {
     alertLog.log('§v* function register_watchEntityGoals ()', debugFunctions);
 
     const cmd = {
-        name: `${pack.fullNameSpace}:watch_entity_goals`,
+        name: `${pack.cmdNameSpace}:watch_entity_goals`,
         description: "Turn on/off/query Watching Entity Goals",
         permissionLevel: CommandPermissionLevel.Admin,
         cheatsRequired: false,
@@ -345,7 +291,7 @@ function register_watchEntityEvents (registry) {
     alertLog.log('§v* function register_watchEntityEvents ()', debugFunctions);
 
     const cmd = {
-        name: `${pack.fullNameSpace}:watch_entity_events`,
+        name: `${pack.cmdNameSpace}:watch_entity_events`,
         description: "Turn on/off/query Watching Entity Events",
         permissionLevel: CommandPermissionLevel.Admin,
         cheatsRequired: false,
@@ -407,7 +353,7 @@ function register_debug (registry) {
     alertLog.log('§v* function register_debug ()', debugFunctions);
 
     const cmd = {
-        name: `${pack.fullNameSpace}:debug`,
+        name: `${pack.cmdNameSpace}:debug`,
         description: "Turn on/off/query Debugging",
         permissionLevel: CommandPermissionLevel.Admin,
         cheatsRequired: false,
@@ -470,7 +416,7 @@ function register_debug (registry) {
 function register_delta (registry) {
 
     const cmd = {
-        name: `${pack.fullNameSpace}:delta`,
+        name: `${pack.cmdNameSpace}:delta`,
         description: "Display Delta Distance From You",
         permissionLevel: CommandPermissionLevel.Admin,
         cheatsRequired: false,
@@ -516,7 +462,7 @@ function register_delta (registry) {
  */
 function register_new_test (registry) {
     const cmd = {
-        name: `${pack.fullNameSpace}:new_test`,
+        name: `${pack.cmdNameSpace}:new_test`,
         description: "Kill Entities, New RTP and Reset Scoreboards",
         permissionLevel: CommandPermissionLevel.Admin,
         cheatsRequired: false
@@ -550,42 +496,12 @@ function register_new_test (registry) {
 /**
  * @param {CustomCommandRegistry} registry 
  */
-function register_random_tp (registry) {
-    const cmd = {
-        name: `${pack.fullNameSpace}:rtp`,
-        description: "Random TP",
-        permissionLevel: CommandPermissionLevel.Admin,
-        cheatsRequired: false
-    };
-
-    /**
-     * @returns {import("@minecraft/server").CustomCommandResult}
-     */
-    registry.registerCommand(cmd, (origin) => {
-        if (origin.sourceEntity instanceof Player) {
-            const player = origin.sourceEntity;
-            const currentLocation = origin.sourceEntity.location;
-            const xz = VectorXZLib.randomXZ(5000, { center: currentLocation, minRadius: 1000, avoidZero: true });
-            //const z = rtp.randomXZ(5000,{center:currentLocation,minRadius:1000,avoidZero:true})
-            system.run(() => {
-                player.teleport({ x: xz.x, y: 150, z: xz.z });
-            });
-        }
-
-        const result = { status: CustomCommandStatus.Success };
-        return result;
-    });
-}
-//==============================================================================
-/**
- * @param {CustomCommandRegistry} registry 
- */
 function register_scoreboards (registry) {
     alertLog.log('§v* function register_scoreboards ()', debugFunctions);
     const cmd = {
-        name: `${pack.fullNameSpace}:sb`,
+        name: `${pack.cmdNameSpace}:sb`,
         description: "Scoreboards",
-        permissionLevel: CommandPermissionLevel.Any,
+        permissionLevel: CommandPermissionLevel.Admin,
         cheatsRequired: false,
         mandatoryParameters: [
             {
@@ -663,15 +579,12 @@ export function registerCustomCommands (registry) {
 
     //Register Enums here
     register_about(registry);
-    register_random_tp(registry);
-
+    
     if (devDebug.debugOn) {
-        register_cls(registry);
         register_delta(registry);
         register_new_test(registry);
         register_getGeoInfo(registry);
-        register_midnight(registry);
-
+ 
         alertLog.log(`Registering Debug enum: ${queryOnOff}`, debugFunctions);
         registry.registerEnum(queryOnOff, [ "query", "on", "off" ]);
 
@@ -684,9 +597,7 @@ export function registerCustomCommands (registry) {
         registry.registerEnum(scoreboard_options, [ "hide", "reset", "reset_all", "stats", "ctrs", "actions","deaths", "zero", "zero_all" ]);
 
         register_scoreboards(registry);
-    }
-
-    alertLog.log('§8x function registerCustomCommands ()', debugFunctions);
+    }   
 }
 //==============================================================================
 // End of File

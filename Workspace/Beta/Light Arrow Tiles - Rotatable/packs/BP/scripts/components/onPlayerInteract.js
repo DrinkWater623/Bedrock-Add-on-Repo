@@ -1,5 +1,5 @@
 //import { world } from '@minecraft/server';
-import { DirectionInfo } from '../common-other/direction_info.js';
+import { DirectionInfo } from '../common-stable/tools/direction_info.js';
 import { McDebug } from '../common-stable/McDebug.js';
 
 /**

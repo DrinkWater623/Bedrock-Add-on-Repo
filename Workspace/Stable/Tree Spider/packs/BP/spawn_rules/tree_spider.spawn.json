@@ -15,7 +15,7 @@
       { 
         "minecraft:spawns_on_surface": {},
         "minecraft:distance_filter": {"min": 24,"max": 48},
-        "minecraft:weight": {"default":50 },
+        "minecraft:weight": {"default":25 },
         "minecraft:density_limit": {"surface":20,"underground":0},
         //"minecraft:herd": {"min_size":2,"max_size":8}, //added    
         "minecraft:biome_filter": 

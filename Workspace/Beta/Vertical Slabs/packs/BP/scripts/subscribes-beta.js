@@ -7,7 +7,7 @@ URL: https://github.com/DrinkWater623
 Last Update: 20241229 - reOrg and add License
 ========================================================================*/
 import { Direction, world } from "@minecraft/server";
-import { FaceLocationGrid, Vector2Lib, rotationToCardinalDirection} from "./common-stable/vectorClass.js";
+import { FaceLocationGrid, Vector2Lib, rotationToCardinalDirection} from "./common-stable/tools/vectorClass.js";
 import { alertLog, chatLog, dev, pack, watchFor } from './settings.js';
 import { placeDw623Slab } from "./fn-stable.js";
 import { mcNameSpace } from "./common-data/globalConstantsLib.js";

@@ -11,25 +11,23 @@ Last Update: 20251023 - add in stable stuff and update to api 2.0 and move debug
 import { world, system } from "@minecraft/server";
 //Enums
 import { EntityInitializationCause } from "@minecraft/server";
-//Subscriptions
-// import { PlayerBreakBlockAfterEvent, PlayerBreakBlockAfterEventSignal } from "@minecraft/server";
-// import { PlayerInteractWithBlockAfterEvent, PlayerInteractWithBlockAfterEventSignal } from "@minecraft/server";
-// import { PlayerInteractWithBlockBeforeEvent, PlayerInteractWithBlockBeforeEventSignal } from "@minecraft/server";
-//import { PlayerPlaceBlockAfterEvent, PlayerPlaceBlockAfterEventSignal } from "@minecraft/server";
 //Shared
 import { Ticks } from "./common-data/globalConstantsLib.js";
-import { chance } from "./common-other/mathLib.js";
-import { DynamicPropertyLib } from "./common-stable/dynamicPropertyClass.js";
-import { EntityLib, spawnEntityAtLocation } from "./common-stable/entityClass.js";
-import { Vector3Lib } from "./common-other/vectorClass.js";
+import { chance } from "./common-stable/tools/mathLib.js";
+import { Vector3Lib } from "./common-stable/tools/vectorClass.js";
+import { DynamicPropertyLib } from "./common-stable/tools/dynamicPropertyClass.js";
+import { EntityLib, spawnEntityAtLocation } from "./common-stable/entities/entityClass.js";
+import { EntitySubscriptions } from "./common-stable/subscriptions/entitySubs-stable.js";
+import { PlayerSubscriptions } from "./common-stable/subscriptions/playerSubs-stable.js";
+import { SystemSubscriptions } from "./common-stable/subscriptions/systemSubs-stable.js";
 //Local
-import { alertLog, pack, watchFor, entityDynamicVars } from './settings.js';
+import { alertLog, pack, watchFor, entityDynamicVars, packDisplayName } from './settings.js';
 import { registerCustomCommands } from "./chatCmds.js";
 import { rattleEntityFromBlockWithItem, validNatureBlockForSpiders } from './helpers/fn-blocks.js';
 import { devDebug } from "./helpers/fn-debug.js";
 import { entityEventProcess, lastTickAndLocationRegister, stalledSpiderCheckAndFix, flyPopulationCheck, spiderPopulationCheck, entityScriptEvents, } from './helpers/fn-entities.js';
 import { airBlock, stairBlocks } from "./common-data/block-data.js";
-import { getWorldTime } from "./common-stable/timers.js";
+import { getWorldTime } from "./common-stable/tools/timers.js";
 //import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
 
 //==============================================================================
@@ -49,657 +47,234 @@ import { getWorldTime } from "./common-stable/timers.js";
 /** @typedef {Parameters<typeof system.afterEvents.scriptEventReceive.subscribe>[0]} AfterScriptEventReceiveHandler */
 /** @typedef {Parameters<typeof system.beforeEvents.startup.subscribe>[0]} BeforeStartupHandler */
 
-/** The stored handle type (Bedrock returns the function reference). */
-//  Entities
-/** @typedef {ReturnType<typeof world.afterEvents.entityDie.subscribe>} AfterEntityDieHandle */
-/** @typedef {ReturnType<typeof world.afterEvents.entityLoad.subscribe>} AfterEntityLoadHandle */
-/** @typedef {ReturnType<typeof world.afterEvents.entityRemove.subscribe>} AfterEntityRemovedHandle */
-/** @typedef {ReturnType<typeof world.afterEvents.entitySpawn.subscribe>} AfterEntitySpawnHandle */
-/** @typedef {ReturnType<typeof world.beforeEvents.entityRemove.subscribe>} BeforeEntityRemovedHandle */
-//  Blocks
-/** @typedef {ReturnType<typeof world.beforeEvents.playerInteractWithBlock.subscribe>} BeforePlayerInteractWithBlockHandle */
-/** @typedef {ReturnType<typeof world.afterEvents.playerBreakBlock.subscribe>} AfterPlayerBreakBlockHandle */
-/** @typedef {ReturnType<typeof world.afterEvents.playerPlaceBlock.subscribe>} AfterPlayerPlaceBlockHandle */
-// system
-/** @typedef {ReturnType<typeof system.afterEvents.scriptEventReceive.subscribe>} AfterScriptEventReceiveHandle */
-/** @typedef {ReturnType<typeof system.beforeEvents.startup.subscribe>} BeforeStartupHandle */
-
 //==============================================================================
 const debugOn = false || devDebug.debugOn;
 const debugFunctionsOn = false || devDebug.debugFunctionsOn;
 const debugSubscriptionsOn = devDebug.debugSubscriptionsOn;
 const watchEntitySubscriptions = devDebug.watchEntitySubscriptions;
-const watchBlockSubscriptions = devDebug.watchBlockSubscriptions;
 const watchPlayerActions = devDebug.watchPlayerActions;
-//TODO: convert to using new classes - remember the turn off part too
 //==============================================================================
-const blockSubscriptions = {
-    _name: 'blockSubscriptions',
-    //============
-    // To override All
-    debugMe: false,
-    watchMe: false,
-    //============
-    beforePlayerInteract: {
-        _name: 'blockSubscriptions.beforePlayerInteract',
-        _subscription: 'world.beforeEvents.playerInteractWithBlock',
-        //============
-        // To override This
-        debugMe: false,
-        watchMe: false,
-        //============
-        on: false,
-        /** @type {BeforePlayerInteractWithBlockHandle | null} */
-        handler: null,
+//TODO: move to watchFor object in settings
+/** @type {string[]} */
+const watchForBlockTypes_spiders = [
+    watchFor.spider_home_typeId,
+    watchFor.spider_foodBlock_typeId,
+    "minecraft:cauldron",
+    ...watchFor.target_leaves,
+    ...watchFor.target_nature,
+    ...stairBlocks,
+];
+/** @type {string[]} */
+const watchForBlockTypes_flies = [
+    watchFor.fly_home_typeId,
+    ...watchFor.fly_food_blocks
+];
+const watchForBlockTypes = [ ...watchForBlockTypes_spiders ]
+    .concat(watchForBlockTypes_flies);
+//==============================================================================
+/** @type {AfterEntityDieHandler} */
+const onAfterEntityDie_debug = (event) => {
+    const entity = event.deadEntity;
+    const { nameTag, dimension, location } = entity;
+    const whyDied = event.damageSource.cause;
+    const msg = `§r§l${nameTag ? nameTag : "No-Name"}§r §c Died via ${whyDied} @ ${Vector3Lib.toString(location, 0, true)} -§r afterEvents.entityDie ()`;
+    alertLog.warn(msg, watchEntitySubscriptions);
+    system.runTimeout(() => {
+        const x = `die: §c${whyDied}`;
+        devDebug.dsb.increment('deaths', x);
+        devDebug.dsb.increment('stats', x);
+    }, 1);
+};
+//==============================================================================
+/** @type {AfterEntityLoadHandler} */
+const onAfterEntityLoad = (event) => {
+    const entity = event.entity;
 
-        subscribe (debug = false, watch = false) {
-            const debugMe = debug || this.debugMe;
-            const watchMe = watch || this.watchMe;
-            alertLog.log(`* ${this._name}.subscribe ()`, debugFunctionsOn);
-            if (this.on) return;
+    if (!entity || !entity.isValid) return;
+    if (entity.typeId !== watchFor.spider_typeId) return;
 
-            /** @type {BeforePlayerInteractWithBlockHandler} */
-            const fn = (event) => {
-                event.cancel = false;
+    const { dimension, location, nameTag } = entity;
 
-                if (!event.isFirstEvent) return;
-                const { block, itemStack } = event;
-                if (!itemStack || !block) return;
-                alertLog.success(`>> ${this._subscription}.subscribe(event) passed isFirstEvent and itemStack tests`, watchMe);
-
-                if (watchFor.customItemList.includes(itemStack.typeId)) {
-                    alertLog.success(`>> ${this._subscription}.subscribe(event) passed customItemList test`, watchMe);
-                    rattleEntityFromBlockWithItem(block, itemStack.typeId, event.blockFace, 0.6);
-                    return;
-                }
-
-                //Add Other stuff if needed
-                return;
-            };
-
-            this.handler = world.beforeEvents.playerInteractWithBlock.subscribe(fn);
-            this.on = true;
-            alertLog.success(`§aSubscribed to ${this._subscription}`, debugMe);
-        },
-        unsubscribe () {
-            alertLog.warn(`* ${this._name}.unsubscribe ()`);  //Should not happen 
-            if (!this.on) return;
-
-            if (this.handler) {
-                world.beforeEvents.playerInteractWithBlock.unsubscribe(this.handler);
-                this.handler = null;
-                alertLog.success(`§aUnsubscribed to ${this._subscription}`);
+    if (nameTag) {
+        //means re-load???
+        system.runTimeout(() => {
+            lastTickAndLocationRegister(entity); //This is the most needed part...
+            if (watchEntitySubscriptions) {
+                DynamicPropertyLib.add(entity, entityDynamicVars.entityLoads, 1);
+                devDebug.dsb.increment('stats', 'loaded');
+                const msg = `§l${nameTag}§r §eLoaded in Biome ${dimension.getBiome(location).id} @ ${Vector3Lib.toString(location, 0, true)} §r()`;
+                alertLog.log(msg, watchEntitySubscriptions);
             }
-            this.on = false;
-        }
-    },
-    afterPlayerBreak: {
-        _name: 'blockSubscriptions.afterPlayerBreak',
-        _subscription: 'world.afterEvents.playerBreakBlock',
-        //============
-        // To override This
-        debugMe: false,
-        watchMe: false,
-        //============
-        on: false,
-        /** @type {AfterPlayerBreakBlockHandle | null} */
-        handler: null,
-
-        subscribe (debug = false, watch = false) {
-            const debugMe = debug || this.debugMe;
-            const watchMe = watch || this.watchMe;
-            alertLog.log(`* ${this._name}.subscribe ()`, debugFunctionsOn);
-            if (this.on) return;
-
-            /** @type {string[]} */
-            const watchForBlockTypes_spiders = [
-                watchFor.spider_home_typeId,
-                watchFor.spider_foodBlock_typeId,
-                "minecraft:cauldron",
-                ...watchFor.target_leaves,
-                ...watchFor.target_nature,
-                ...stairBlocks,
-            ];
-
-            /** @type {string[]} */
-            const watchForBlockTypes_flies = [
-                watchFor.fly_home_typeId,
-                ...watchFor.fly_food_blocks
-            ];
-
-            const watchForBlockTypes = [ ...watchForBlockTypes_spiders ]
-                .concat(watchForBlockTypes_flies);
-
-            /** @type {AfterPlayerBreakBlockHandler} */
-            const fn = (event) => {
-                if (!chance(0.15)) return; //25% chance to spawn pests
-
-                const { block, dimension, brokenBlockPermutation, itemStackBeforeBreak } = event;
-                const blockTypeId = brokenBlockPermutation.type.id;
-                const location = block.location;
-
-                alertLog.success(`>> ${this._subscription}.subscribe(${brokenBlockPermutation}, ${itemStackBeforeBreak})`, watchMe);
-
-                if (watchForBlockTypes_flies.includes(blockTypeId)) {
-                    spawnEntityAtLocation(watchFor.fly_typeId, dimension, location, 1, 3, 1, 10);
-                    return;
-                }
-
-                if (watchForBlockTypes_spiders.includes(blockTypeId)) {
-                    spawnEntityAtLocation(watchFor.spider_typeId, dimension, location, 1, 1, 1, 20);
-                    return;
-                }
-                return;
-            };
-
-            this.handler = world.afterEvents.playerBreakBlock.subscribe(fn, { blockTypes: watchForBlockTypes });
-            this.on = true;
-            alertLog.success(`§aSubscribed to ${this._subscription}`, debugMe);
-        },
-        unsubscribe () {
-            alertLog.warn(`* ${this._name}.unsubscribe ()`);  //Should not happen 
-            if (!this.on) return;
-
-            if (this.handler) {
-                world.afterEvents.playerBreakBlock.unsubscribe(this.handler);
-                this.handler = null;
-                alertLog.success(`§aUnsubscribed to ${this._subscription}`);
-            }
-            this.on = false;
-        }
-    },
-    afterPlayerPlace: {
-        _name: 'afterEvents.playerPlaceBlock',
-        _subscription: 'world.afterEvents.playerPlaceBlock',
-        //============
-        // To override ON
-        debugMe: false,
-        watchMe: false,
-        //============
-        on: false,
-        /** @type {AfterPlayerPlaceBlockHandle | null} */
-        handler: null,
-
-        subscribe (debug = false, watch = false) {
-            const debugMe = debug || this.debugMe;
-            const watchMe = watch || this.watchMe;
-            alertLog.log(`* ${this._name}.subscribe ()`, debugFunctionsOn);
-            if (this.on) return;
-
-            /** @type {AfterPlayerPlaceBlockHandler} */
-            const fn = (event) => {
-                if (!chance(0.50)) return;
-
-                const { block } = event;
-                if (!block.isValid) return;
-                const { typeId, dimension, location } = block;
-                const locationCtr = Vector3Lib.toCenter(location);
-
-                if (typeId === watchFor.fly_home_typeId) {
-                    const above = block.above();
-                    if (!above || !above.isValid || above.typeId !== airBlock) return;
-                    spawnEntityAtLocation(watchFor.fly_typeId, dimension, locationCtr, 3, 6, 40, 200);
-                    return;
-                }
-
-                if (typeId === 'dw623:rotten_flesh_block') {
-                    //TODO: needs to be block face location
-                    const above = block.above();
-                    if (!above || !above.isValid || above.typeId !== airBlock) return;
-                    spawnEntityAtLocation(watchFor.fly_typeId, dimension, locationCtr, 1, 2, 40, 200);
-                    return;
-                }
-                //========================    Less Likely
-                if (chance(0.75)) return;
-                //========================    Less Likely
-                if (typeId === watchFor.spider_home_typeId) {
-                    const entityId = chance(0.5) ? watchFor.spider_typeId : watchFor.egg_typeId;
-                    const max = entityId == watchFor.egg_typeId ? 1 : 2;
-                    spawnEntityAtLocation(entityId, dimension, locationCtr, 1, max, 40, 100);
-                    return;
-                }
-
-                if (typeId === 'minecraft:cauldron') {
-                    const above = block.above();
-                    if (!above || !above.isValid || above.typeId !== airBlock) return;
-                    const entityId = chance(0.6) ? watchFor.spider_typeId : watchFor.fly_typeId;
-                    const maxEntities = entityId === watchFor.spider_typeId ? 1 : 3;
-                    spawnEntityAtLocation(entityId, dimension, locationCtr, 1, maxEntities, 40, 200);
-                    return;
-                }
-
-                if (validNatureBlockForSpiders(typeId)) {
-                    spawnEntityAtLocation(watchFor.spider_typeId, dimension, locationCtr, 1, 1, 40, 200);
-                    return;
-                }
-            };
-
-            this.handler = world.afterEvents.playerPlaceBlock.subscribe(fn);
-            this.on = true;
-            alertLog.success(`§aSubscribed to ${this._name}`, debugMe);
-        },
-        unsubscribe () {
-            alertLog.warn(`* ${this._name}.unsubscribe ()`);  //Should not happen 
-            if (!this.on) return;
-
-            if (this.handler) {
-                world.afterEvents.playerPlaceBlock.unsubscribe(this.handler);
-                this.handler = null;
-                alertLog.success(`§aUnsubscribed to ${this._subscription}`);
-                this.on = false;
-            }
-        }
-    },
-    allOff () {
-        alertLog.log(`* const ${this._name}.allOff ()`, debugFunctionsOn);
-        this.beforePlayerInteract.unsubscribe();
-        this.afterPlayerBreak.unsubscribe();
-        this.afterPlayerPlace.unsubscribe();
-    },
-    setup (debug = false, watch = false) {
-        const debugMe = debug || this.debugMe;
-        const watchMe = watch || this.watchMe;
-        alertLog.log(`"* const ${this._name}.setup ()"`, debugFunctionsOn);
-        this.beforePlayerInteract.subscribe(debugMe, watchMe || watchPlayerActions);
-        this.afterPlayerBreak.subscribe(debugMe, watchMe || watchPlayerActions);
-        this.afterPlayerPlace.subscribe(debugMe, watchMe || watchPlayerActions);
+            const isBaby = entity.hasComponent('minecraft:is_baby');
+            if (entity.isValid) entity.triggerEvent(isBaby ? entityScriptEvents.baby_spider_loadedEventName : entityScriptEvents.spider_loadedEventName);
+        }, 1);
     }
 };
 //==============================================================================
-const entityDebugSubscriptions = {
-    _name: 'entityDebugSubscriptions',
-    //============
-    // To override
-    debugMe: false,
-    watchMe: false,
-    //============
-    // There is also an afterEvents.entitySpawn, but it has beta elements, so still in beta files - may delete, not useful
-    afterEntityDie: {
-        _name: 'blockSubscriptions.beforePlayerInteract',
-        _subscription: 'world.beforeEvents.playerInteractWithBlock',
-        //============
-        // To override This
-        debugMe: false,
-        watchMe: false,
-        //============
-        on: false,
-        /** @type {AfterEntityDieHandle | null} */
-        handler: null,
+/** @type {AfterEntitySpawnHandler} */
+const onAfterEntitySpawn_debug = (event) => {
+    const entity = event.entity;
+    if (!entity) return;
+    if (entity.typeId !== watchFor.spider_typeId) return;
 
-        subscribe (debug = false, watch = false) {
-            const debugMe = debug || this.debugMe;
-            const watchMe = watch || this.watchMe;
-            alertLog.log(`* ${this._name}.subscribe ()`, debugFunctionsOn);
-            if (this.on) return;
+    const { dimension, location, nameTag } = entity;
 
-            /** @type {AfterEntityDieHandler} */
-            const fn = (event) => {
-                const entity = event.deadEntity;
-                const { nameTag, dimension, location } = entity;
-                const whyDied = event.damageSource.cause;
-                const msg = `§r§l${nameTag ? nameTag : "No-Name"}§r §c Died via ${whyDied} @ ${Vector3Lib.toString(location, 0, true)} -§r afterEvents.entityDie ()`;
-                alertLog.warn(msg, watch);
-                system.runTimeout(() => {
-                    const x = `die: §c${whyDied}`;
-                    devDebug.dsb.increment('deaths', x);
-                    devDebug.dsb.increment('stats', x);
-                }, 1);
-            };
+    system.runTimeout(() => {
+        const msg = `§aEntity Spawned (${event.cause}) in Biome ${dimension.getBiome(location).id}: §l${nameTag}§r§6 @ ${Vector3Lib.toString(location, 0, true)}`;
+        alertLog.log(msg, watchEntitySubscriptions);
 
-            this.handler = world.afterEvents.entityDie.subscribe(fn, { entityTypes: [ watchFor.spider_typeId ] });
-            this.on = true;
-            alertLog.success(`§aSubscribed to ${this._subscription}`, debugMe);
-        },
-        unsubscribe () {
-            alertLog.warn(`* ${this._name}.unsubscribe ()`);  //Should not happen 
-            if (!this.on) return;
-
-            if (this.handler) {
-                world.afterEvents.entityDie.unsubscribe(this.handler);
-                this.handler = null;
-                alertLog.success(`§aUnsubscribed to ${this._subscription}`);
-            }
-            this.on = false;
+        if (event.cause === EntityInitializationCause.Born) {
+            devDebug.dsb.increment('stats', 'born', 1, 1);
+            DynamicPropertyLib.add(entity, entityDynamicVars.entityBorn, 1);
         }
-    },
-    //Not Used - because redundant = and every entity when more efficient for scriptEvent inside entity to do it
-    //But keep in case they ever get rid of scriptEvent... we will need this for debugging and naming
-    afterEntitySpawn: {
-        _name: 'entityDebugSubscriptions.afterEntitySpawn',
-        _subscription: 'world.afterEvents.entitySpawn',
-        //============
-        // To override
-        debugMe: false,
-        watchMe: false,
-        //============
-        on: false,
-        /** @type {AfterEntitySpawnHandle | null} */
-        handler: null,
-
-        subscribe (debug = false, watch = false) {
-            const debugMe = debug || this.debugMe;
-            const watchMe = watch || this.watchMe;
-            alertLog.log(`* ${this._name}.subscribe ()`, debugFunctionsOn);
-            if (this.on) return;
-
-            /** @type {AfterEntitySpawnHandler} */
-            const fn = (event) => {
-                const entity = event.entity;
-                if (!entity) return;
-                if (entity.typeId !== watchFor.spider_typeId) return;
-
-                const { dimension, location, nameTag } = entity;
-
-                system.runTimeout(() => {
-                    const msg = `§aEntity Spawned (${event.cause}) in Biome ${dimension.getBiome(location).id}: §l${nameTag}§r§6 @ ${Vector3Lib.toString(location, 0, true)}`;
-                    alertLog.log(msg, watchMe);
-
-                    if (event.cause === EntityInitializationCause.Born) {
-                        devDebug.dsb.increment('stats', 'born', 1, 1);
-                        DynamicPropertyLib.add(entity, entityDynamicVars.entityBorn, 1);
-                    }
-                    else if (event.cause === EntityInitializationCause.Loaded) {
-                        devDebug.dsb.increment('stats', 'loaded', 1, 1);
-                        DynamicPropertyLib.add(entity, entityDynamicVars.entityLoads, 1);
-                    }
-                    else if (event.cause === EntityInitializationCause.Spawned) {
-                        devDebug.dsb.increment('stats', 'spawned');
-                        DynamicPropertyLib.add(entity, entityDynamicVars.entitySpawns, 1);
-                    }
-                }, 1);
-            };
-
-            this.handler = world.afterEvents.entitySpawn.subscribe(fn);
-            this.on = true;
-            alertLog.success(`§aSubscribed to ${this._subscription}`, debugMe);
-        },
-        unsubscribe () {
-            if (!this.on) return;
-
-            if (this.handler) {
-                world.afterEvents.entitySpawn.unsubscribe(this.handler);
-                this.handler = null;
-                alertLog.success("§aUninstalled afterEvents.entitySpawn)", debugSubscriptionsOn);
-            }
-            this.on = false;
+        else if (event.cause === EntityInitializationCause.Loaded) {
+            devDebug.dsb.increment('stats', 'loaded', 1, 1);
+            DynamicPropertyLib.add(entity, entityDynamicVars.entityLoads, 1);
         }
-    },
-    beforeEntityRemove: {
-        _name: 'entityDebugSubscriptions.beforeEntityRemove',
-        _subscription: 'world.beforeEvents.entityRemove',
-        //============
-        // To override This
-        debugMe: false,
-        watchMe: false,
-        //============
-        on: false,
-        /** @type {BeforeEntityRemovedHandle | null} */
-        handler: null,
-
-        subscribe (debug = false, watch = false) {
-            const debugMe = debug || this.debugMe;
-            const watchMe = watch || this.watchMe;
-            alertLog.log(`* ${this._name}.subscribe ()`, debugFunctionsOn);
-            if (this.on) return;
-
-            /** @type {BeforeEntityRemovedHandler} */
-            const fn = (event) => {
-                // Note: "removed" doesn't necessarily mean "died"
-                if (!event.removedEntity || event.removedEntity.typeId !== watchFor.spider_typeId) return;
-
-                const entity = event.removedEntity;
-                const { nameTag, dimension, location } = entity;
-                const isUnLoaded = DynamicPropertyLib.getBoolean(entity, 'isUnloaded');
-                const isStalled = DynamicPropertyLib.getBoolean(entity, 'isStalled');
-
-                system.runTimeout(() => {
-                    devDebug.dsb.incrementMany([ 'deaths', 'stats' ], 'removed', 1, 1);
-
-                    //TODO:  see if I can get my coordinates and do the math for how far away these are  --  too many removes right after spawn
-                    // See if can find out WHY despawning soo much
-                    const players = world.getAllPlayers();
-                    let delta = '';
-                    if (players) {
-                        const player = players[ 0 ];
-                        if (player && player.isValid) {
-                            const playerLocation = players[ 0 ].location;
-                            delta = `§bClosest Player x: ${Math.round(Math.abs(location.x - playerLocation.x))}, y:${Math.round(Math.abs(location.y - playerLocation.y))}, z:${Math.round(Math.abs(location.z - playerLocation.z))}`;
-                        }
-                    }
-
-                    const msg = `§l${nameTag}§r §6Removed @ ${Vector3Lib.toString(location, 0, true)} ${delta}§r(${isUnLoaded ? '' : ' loaded'}(${isStalled ? ' stalled' : ''})- beforeEvents.entityRemove()`;
-                    alertLog.log(msg, watchMe);
-
-                }, 1);
-            };
-            this.handler = world.beforeEvents.entityRemove.subscribe(fn);
-            this.on = true;
-            alertLog.success(`§aSubscribed to ${this._subscription}`, debugMe);
-        },
-        unsubscribe () {
-            alertLog.warn(`* ${this._name}.unsubscribe ()`);  //Should not happen 
-            if (!this.on) return;
-
-            if (this.handler) {
-                world.beforeEvents.entityRemove.unsubscribe(this.handler);
-                this.handler = null;
-                alertLog.success(`§aUnsubscribed to ${this._subscription}`);
-            }
-            this.on = false;
+        else if (event.cause === EntityInitializationCause.Spawned) {
+            devDebug.dsb.increment('stats', 'spawned');
+            DynamicPropertyLib.add(entity, entityDynamicVars.entitySpawns, 1);
         }
-    },
-    allOff () {
-        alertLog.log(`* const ${this._name}.allOff ()`, debugFunctionsOn);
-        this.afterEntityDie.unsubscribe();
-        this.afterEntitySpawn.unsubscribe();
-        this.beforeEntityRemove.unsubscribe();
-    },
-    allOn () {
-        alertLog.log(`* const ${this._name}.allOn ()`, debugFunctionsOn);
-        this.afterEntityDie.subscribe();
-        //this.afterEntitySpawn.subscribe();
-        this.beforeEntityRemove.subscribe();
-    },
-    setup (debug = false, watch = false) {
-        alertLog.log(`* const ${this._name}.setup ()`, debugFunctionsOn);
-        this.afterEntityDie.subscribe(debug || this.debugMe, watch || this.watchMe);
+    }, 1);
+};
+//==============================================================================
+/** @type {AfterPlayerBreakBlockHandler} */
+const onAfterPlayerBreakBlock = (event) => {
+    if (!chance(0.15)) return; //25% chance to spawn pests
 
-        //this.afterEntityRemove.subscribe(); //not needed and redundant to beforeEntityRemove
-        //this.afterEntitySpawn.subscribe(); // this is called load/born/spawn  - events are taking care of born/spawn
+    const { block, dimension, brokenBlockPermutation, itemStackBeforeBreak } = event;
+    const blockTypeId = brokenBlockPermutation.type.id;
+    const location = block.location;
 
-        this.beforeEntityRemove.subscribe(debug || this.debugMe, watch || this.watchMe);
+
+    if (watchForBlockTypes_flies.includes(blockTypeId)) {
+        spawnEntityAtLocation(watchFor.fly_typeId, dimension, location, 1, 3, 1, 10);
+        return;
+    }
+
+    if (watchForBlockTypes_spiders.includes(blockTypeId)) {
+        spawnEntityAtLocation(watchFor.spider_typeId, dimension, location, 1, 1, 1, 20);
+        return;
+    }
+    return;
+};
+//==============================================================================
+/** @type {AfterPlayerPlaceBlockHandler} */
+const onAfterPlayerPlaceBlock = (event) => {
+    if (!chance(0.50)) return;
+
+    const { block } = event;
+    if (!block.isValid) return;
+    const { typeId, dimension, location } = block;
+    const locationCtr = Vector3Lib.toCenter(location);
+
+    if (typeId === watchFor.fly_home_typeId) {
+        const above = block.above();
+        if (!above || !above.isValid || above.typeId !== airBlock) return;
+        spawnEntityAtLocation(watchFor.fly_typeId, dimension, locationCtr, 3, 6, 40, 200);
+        return;
+    }
+
+    if (typeId === 'dw623:rotten_flesh_block') {
+        //TODO: needs to be block face location
+        const above = block.above();
+        if (!above || !above.isValid || above.typeId !== airBlock) return;
+        spawnEntityAtLocation(watchFor.fly_typeId, dimension, locationCtr, 1, 2, 40, 200);
+        return;
+    }
+    //========================    Less Likely
+    if (chance(0.75)) return;
+    //========================    Less Likely
+    if (typeId === watchFor.spider_home_typeId) {
+        const entityId = chance(0.5) ? watchFor.spider_typeId : watchFor.egg_typeId;
+        const max = entityId == watchFor.egg_typeId ? 1 : 2;
+        spawnEntityAtLocation(entityId, dimension, locationCtr, 1, max, 40, 100);
+        return;
+    }
+
+    if (typeId === 'minecraft:cauldron') {
+        const above = block.above();
+        if (!above || !above.isValid || above.typeId !== airBlock) return;
+        const entityId = chance(0.6) ? watchFor.spider_typeId : watchFor.fly_typeId;
+        const maxEntities = entityId === watchFor.spider_typeId ? 1 : 3;
+        spawnEntityAtLocation(entityId, dimension, locationCtr, 1, maxEntities, 40, 200);
+        return;
+    }
+
+    if (validNatureBlockForSpiders(typeId)) {
+        spawnEntityAtLocation(watchFor.spider_typeId, dimension, locationCtr, 1, 1, 40, 200);
+        return;
     }
 };
 //==============================================================================
-const entitySubscriptions = {
-    _name: 'entitySubscriptions',
-    //============
-    // To override
-    debugMe: false,
-    watchMe: false,
-    //============    
-    afterEntityLoad: {
-        _name: 'entitySubscriptions.afterEntityLoad',
-        _subscription: 'world.afterEvents.entityLoad',
-        //============
-        // To override
-        debugMe: false,
-        watchMe: true,
-        //============
-        on: false,
-        /** @type {AfterEntityLoadHandle | null} */
-        handler: null,
+//move to fn-entities later?
+/** @type {AfterScriptEventReceiveHandler} */
+const onAfterScriptEventReceive = (event) => {
+    const { id, message, sourceEntity: entity } = event;
 
-        subscribe (debug = false, watch = false) {
-            const debugMe = debug || this.debugMe;
-            const watchMe = watch || this.watchMe;
-            alertLog.log(`* ${this._name}.subscribe ()`, debugFunctionsOn);
-            if (this.on) return;
+    if (!entity || !entity.isValid) {
+        return;
+    };
+    if (!watchFor.packEntityList().includes(entity.typeId)) {
+        return;
+    };
 
-            /** @type {AfterEntityLoadHandler} */
-            const fn = (event) => {
-                const entity = event.entity;
+    system.runTimeout(() => {
+        entityEventProcess(entity, id, message);
+    }, 1);
+};
+/** @type {BeforeEntityRemovedHandler} */
+const onBeforeEntityRemoved_debug = (event) => {
+    // Note: "removed" doesn't necessarily mean "died"
+    if (!event.removedEntity || event.removedEntity.typeId !== watchFor.spider_typeId) return;
 
-                if (!entity || !entity.isValid) return;
-                if (entity.typeId !== watchFor.spider_typeId) return;
+    const entity = event.removedEntity;
+    const { nameTag, dimension, location } = entity;
+    const isUnLoaded = DynamicPropertyLib.getBoolean(entity, 'isUnloaded');
+    const isStalled = DynamicPropertyLib.getBoolean(entity, 'isStalled');
 
-                const { dimension, location, nameTag } = entity;
+    system.runTimeout(() => {
+        devDebug.dsb.incrementMany([ 'deaths', 'stats' ], 'removed', 1, 1);
 
-                if (nameTag) {
-                    //means re-load???
-                    system.runTimeout(() => {
-                        lastTickAndLocationRegister(entity); //This is the most needed part...
-                        if (watchMe) {
-                            DynamicPropertyLib.add(entity, entityDynamicVars.entityLoads, 1);
-                            devDebug.dsb.increment('stats', 'loaded');
-                            const msg = `§l${nameTag}§r §eLoaded in Biome ${dimension.getBiome(location).id} @ ${Vector3Lib.toString(location, 0, true)} §r- ${this._subscription}()`;
-                            alertLog.log(msg, watchEntitySubscriptions);
-                        }
-                        const isBaby = entity.hasComponent('minecraft:is_baby');
-                        if (entity.isValid) entity.triggerEvent(isBaby ? entityScriptEvents.baby_spider_loadedEventName : entityScriptEvents.spider_loadedEventName);
-                    }, 1);
-                }
-            };
-
-            this.handler = world.afterEvents.entityLoad.subscribe(fn);
-            this.on = true;
-            alertLog.success(`§aSubscribed to ${this._subscription}`, debugMe);
-        },
-        unsubscribe () {
-            alertLog.warn(`* ${this._name}.unsubscribe ()`);  //Should not happen             
-            if (!this.on) return;
-
-            if (this.handler) {
-                world.afterEvents.entityLoad.unsubscribe(this.handler);
-                this.handler = null;
-                alertLog.success(`§aUnsubscribed to ${this._subscription}`);
+        //TODO:  see if I can get my coordinates and do the math for how far away these are  --  too many removes right after spawn
+        // See if can find out WHY despawning soo much
+        const players = world.getAllPlayers();
+        let delta = '';
+        if (players) {
+            const player = players[ 0 ];
+            if (player && player.isValid) {
+                const playerLocation = players[ 0 ].location;
+                delta = `§bClosest Player x: ${Math.round(Math.abs(location.x - playerLocation.x))}, y:${Math.round(Math.abs(location.y - playerLocation.y))}, z:${Math.round(Math.abs(location.z - playerLocation.z))}`;
             }
-            this.on = false;
         }
-    },
-    allOff () {
-        alertLog.log(`* const ${this._name}.allOff ()`, debugFunctionsOn);
-        this.afterEntityLoad.unsubscribe();
-    },
-    setup (debug = false, watch = false) {
-        const debugMe = debug || this.debugMe;
-        const watchMe = watch || this.watchMe;
-        alertLog.log(`"* const ${this._name}.setup ()"`, debugFunctionsOn);
-        this.afterEntityLoad.subscribe(debugMe, watchMe);
-    }
+
+        const msg = `§l${nameTag}§r §6Removed @ ${Vector3Lib.toString(location, 0, true)} ${delta}§r(${isUnLoaded ? '' : ' loaded'}(${isStalled ? ' stalled' : ''})- beforeEvents.entityRemove()`;
+        alertLog.log(msg, watchEntitySubscriptions);
+
+    }, 1);
 };
 //==============================================================================
-const systemSubscriptions = {
-    _name: 'systemSubscriptions',
-    //============
-    // To override
-    debugMe: false,
-    watchMe: false,
-    //============        
-    afterScriptEvent: {
-        _name: 'systemSubscriptions.afterScriptEvent',
-        _subscription: 'system.afterEvents.scriptEventReceive',
-        //============
-        // To override This
-        debugMe: false,
-        watchMe: false,
-        //============
-        on: false,
-        /** @type {AfterScriptEventReceiveHandle | null} */
-        handler: null,
+/** @type {BeforePlayerInteractWithBlockHandler} */
+const onBeforePlayerInteractWithBlock = (event) => {
+    event.cancel = false;
 
-        subscribe (debug = false, watch = false) {
-            const debugMe = debug || this.debugMe;
-            const watchMe = watch || this.watchMe;
-            alertLog.log(`* ${this._name}.subscribe ()`, debugFunctionsOn);
-            if (this.on) return;
+    if (!event.isFirstEvent) return;
+    const { block, itemStack } = event;
+    if (!itemStack || !block) return;
 
-            /** @type {AfterScriptEventReceiveHandler} */
-            const fn = (event) => {
-                const { id, message, sourceEntity: entity } = event;
-
-                if (!entity || !entity.isValid) {
-                    alertLog.warn(`>> ${this._subscription} event with invalid entity`, debugMe);
-                    return;
-                };
-                if (!watchFor.packEntityList().includes(entity.typeId)) {
-                    alertLog.warn(`>> ${this._subscription} event with non-pack entity typeId: ${entity.typeId}`, debugMe);
-                    return;
-                };
-
-                system.runTimeout(() => {
-                    entityEventProcess(entity, id, message);
-                }, 1);
-            };
-
-            this.handler = system.afterEvents.scriptEventReceive.subscribe(fn);
-            this.on = true;
-            alertLog.success(`§aSubscribed to ${this._subscription}`, debugMe);
-        },
-        unsubscribe () {
-            alertLog.warn(`* ${this._name}.unsubscribe ()`);  //Should not happen 
-            if (!this.on) return;
-
-            if (this.handler) {
-                system.afterEvents.scriptEventReceive.unsubscribe(this.handler);
-                this.handler = null;
-                alertLog.success(`§aUnsubscribed to ${this._subscription}`);
-            }
-            this.on = false;
-        }
-    },
-    beforeStartup: {
-        _name: 'systemSubscriptions.beforeStartup',
-        _subscription: 'system.beforeEvents.startup',
-        //============
-        // To override This
-        debugMe: false,
-        watchMe: false,
-        //============
-        on: false,
-        /** @type {BeforeStartupHandle | null} */
-        handler: null,
-
-        subscribe (debug = false, watch = false) {
-            const debugMe = debug || this.debugMe;
-            const watchMe = watch || this.watchMe;
-            alertLog.log(`* ${this._name}.subscribe ()`, debugFunctionsOn);
-            if (this.on) return;
-
-            /** @type {BeforeStartupHandler} */
-            const fn = (event) => {
-                const ccr = event.customCommandRegistry;
-                registerCustomCommands(ccr);
-            };
-
-            this.handler = system.beforeEvents.startup.subscribe(fn);
-            this.on = true;
-            alertLog.success(`§aSubscribed to ${this._subscription}`, debugMe);
-        },
-        unsubscribe () {
-            alertLog.warn(`* ${this._name}.unsubscribe ()`);  //Should not happen 
-            if (!this.on) return;
-
-            if (this.handler) {
-                system.beforeEvents.startup.unsubscribe(this.handler);
-                this.handler = null;
-                alertLog.success(`§aUnsubscribed to ${this._subscription}`);
-            }
-            this.on = false;
-        }
-    },
-    allOff () {
-        alertLog.log(`* const ${this._name}.allOff ()`, this.debugMe || debugFunctionsOn);
-        this.afterScriptEvent.unsubscribe();
-        this.beforeStartup.unsubscribe();
-    },
-    setup (debug = false, watch = false) {
-        const debugMe = debug || this.debugMe;
-        const watchMe = watch || this.watchMe;
-        alertLog.log(`"* const ${this._name}.setup ()"`, debugFunctionsOn);
-        this.afterScriptEvent.subscribe(debugMe, watchMe);
-        this.beforeStartup.subscribe(debugMe, watchMe);
+    if (watchFor.customItemList.includes(itemStack.typeId)) {
+        rattleEntityFromBlockWithItem(block, itemStack.typeId, event.blockFace, 0.6);
+        return;
     }
+
+    //Add Other stuff if needed
+    return;
+};
+//==============================================================================
+/** @type {BeforeStartupHandler} */
+const onBeforeStartup = (event) => {
+    const ccr = event.customCommandRegistry;
+    registerCustomCommands(ccr);
 };
 //==============================================================================
 //move to fn-entities later?
@@ -739,10 +314,9 @@ function validateEntityFiles (debugMe = false) {
 
     if (!watchFor.validated) {
         alertLog.error(`A ${pack.packName} §lAdd-on entity file is broken or missing. Please fix the issue before using this pack.`);
-        blockSubscriptions.allOff();
-        entitySubscriptions.allOff();
-        systemSubscriptions.allOff();
-        entityDebugSubscriptions.allOff();
+        entitySubs.unsubscribeAll(debugSubscriptionsOn || watchEntitySubscriptions);
+        playerSubs.unsubscribeAll(debugSubscriptionsOn || watchPlayerActions);
+        systemSubs.unsubscribeAll(debugSubscriptionsOn);
         devDebug.allOff();
         return;
     }
@@ -788,21 +362,38 @@ function validateEntityFiles (debugMe = false) {
     }, 5);
 }
 //==============================================================================
+const entitySubs = new EntitySubscriptions(packDisplayName, debugSubscriptionsOn);
+const playerSubs = new PlayerSubscriptions(packDisplayName, debugSubscriptionsOn);
+const systemSubs = new SystemSubscriptions(packDisplayName, debugSubscriptionsOn);
+//==============================================================================
 export function subscriptionsStable () {
     const _name = 'function subscriptionsStable';
     alertLog.log(`§v* ${_name} ()`, debugFunctionsOn);
 
-    systemSubscriptions.beforeStartup.subscribe(debugSubscriptionsOn, false);
-    systemSubscriptions.afterScriptEvent.subscribe(debugSubscriptionsOn && watchEntitySubscriptions, watchEntitySubscriptions);
-    entitySubscriptions.setup(debugSubscriptionsOn && watchEntitySubscriptions, watchEntitySubscriptions);
-    blockSubscriptions.setup(debugSubscriptionsOn && watchBlockSubscriptions, watchBlockSubscriptions);
+
+    systemSubs.register({
+        afterScriptEventReceive: onAfterScriptEventReceive,
+        beforeStartup: onBeforeStartup
+    });
+
+    entitySubs.afterEntityLoad.subscribe(onAfterEntityLoad);
+    
+    playerSubs.register({
+        afterPlayerBreakBlock: onAfterPlayerBreakBlock,
+        afterPlayerPlaceBlock: onAfterPlayerPlaceBlock,
+        beforePlayerInteractWithBlock: onBeforePlayerInteractWithBlock
+    });
 
     world.afterEvents.worldLoad.subscribe((event) => {
         pack.worldLoaded = true;
         alertLog.success(`Subscribed to world.afterEvents.worldLoad`, debugSubscriptionsOn);
 
         if (debugOn) {
-            entityDebugSubscriptions.setup(debugSubscriptionsOn && watchEntitySubscriptions, watchEntitySubscriptions);
+            entitySubs.register({
+                afterEntityDie: onAfterEntityDie_debug,
+                //afterEntitySpawn:onAfterEntitySpawn_debug,  redundant but keep code
+                beforeEntityRemoved: onBeforeEntityRemoved_debug
+            }, debugSubscriptionsOn);
             devDebug.dsb.setDebug(true);
             devDebug.dsb_setup();
         }

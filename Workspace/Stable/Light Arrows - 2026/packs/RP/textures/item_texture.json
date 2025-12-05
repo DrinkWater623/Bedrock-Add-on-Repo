@@ -1,7 +1,0 @@
-{
-   "resource_pack_name" : "dw623",
-   "texture_name" : "atlas.items",
-   "texture_data" : {
-      "copper_arrow_template" : {"textures" : "textures/items/copper_arrow_template"}
-   }
-}

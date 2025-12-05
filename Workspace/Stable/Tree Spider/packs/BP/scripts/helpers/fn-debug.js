@@ -12,9 +12,9 @@ Last Update: 20251108
 import { system } from "@minecraft/server";
 // Shared
 import { Ticks } from "../common-data/globalConstantsLib.js";
-import { EntityLib } from "../common-stable/entityClass.js";
-import { DebugScoreboards } from "../common-stable/debugSbClass.js";
-import { getWorldTime } from "../common-stable/timers.js";
+import { EntityLib } from "../common-stable/entities/entityClass.js";
+import { DebugScoreboards } from "../common-stable/debug/debugSbClass.js";
+import { getWorldTime } from "../common-stable/tools/timers.js";
 // Local
 import { alertLog, pack, watchFor } from '../settings.js';
 //==============================================================================
@@ -67,7 +67,7 @@ const markVariantLegend = new Map([
 export const devDebug = {
     // Customize this to the project
     // flags
-    debugOn: true,
+    debugOn: false,
     debugSubscriptionsOn: false,
     debugFunctionsOn: false,
     watchBlockSubscriptions: false,
@@ -77,7 +77,7 @@ export const devDebug = {
     watchEntityEating: false,
     watchEntityIssues: false,
     watchEntityPopulation: false,
-    watchEntityStalls: true,
+    watchEntityStalls: false,
     watchPlayerActions: false,
     watchTempIssues: false,
 
@@ -123,7 +123,7 @@ export const devDebug = {
     },
 
     // ✅ Always constructed (no undefined), start with debug=false; fix display string (no extra quotes)
-    dsb: new DebugScoreboards(false, pack.fullNameSpace, "§aTree Spider§6§l"),
+    dsb: new DebugScoreboards(false, pack.cmdNameSpace, "§aTree Spider§6§l"),
 
     /** Initialize scoreboards + jobs (call once after world load) */
     dsb_setup () {

@@ -17,15 +17,15 @@ import { Entity, system, Block, GameMode, Player, TicksPerDay } from "@minecraft
 import { airBlock, leafBlocks } from "../common-data/block-data.js";
 import { Ticks } from "../common-data/globalConstantsLib.js";
 // Shared Other
-import { makeRandomName } from "../common-other/randomNames.js";
-import { rndInt, chance } from "../common-other/mathLib.js";
+import { makeRandomName } from "../common-stable/tools/randomNames.js";
+import { rndInt, chance } from "../common-stable/tools/mathLib.js";
 // Shared Stable
-import { isInForest, isOutside } from "../common-stable/biomeLib.js";
-import { closestAdjacentBlockTypeId, isBlockAdjacentToTypeId } from "../common-stable/blockLib-stable.js";
-import { DynamicPropertyLib } from "../common-stable/dynamicPropertyClass.js";
-import { EntityLib, spawnEntityAtLocation } from "../common-stable/entityClass.js";
-import { getWorldTime } from "../common-stable/timers.js";
-import { Vector3Lib, } from '../common-other/vectorClass.js';
+import { isInForest, isOutside } from "../common-stable/tools/biomeLib.js";
+import { closestAdjacentBlockTypeId, isBlockAdjacentToTypeId } from "../common-stable/blocks/blockLib-stable.js";
+import { DynamicPropertyLib } from "../common-stable/tools/dynamicPropertyClass.js";
+import { EntityLib, spawnEntityAtLocation } from "../common-stable/entities/entityClass.js";
+import { getWorldTime } from "../common-stable/tools/timers.js";
+import { Vector3Lib, } from '../common-stable/tools/vectorClass.js';
 // Local
 import { targetBlockAdjacent } from "./fn-blocks.js";
 import { devDebug } from "./fn-debug.js";

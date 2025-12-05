@@ -7,7 +7,7 @@ URL: https://github.com/DrinkWater623
 Last Update: 20251026 - move stable stuff out
 ========================================================================*/
 import { Dimension, system, Block } from "@minecraft/server";
-import { blocksAround } from "../common-stable/blockLib-stable";
+import { blocksAround } from "../common-stable/blocks/blockLib-stable";
 //=============================================================================
 /** @typedef {import("@minecraft/server").Vector2} Vector2 */
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */

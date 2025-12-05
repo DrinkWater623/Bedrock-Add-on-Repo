@@ -12,7 +12,7 @@ Change Log
 ========================================================================*/
 import { Player, world } from "@minecraft/server";
 // Shared
-import { rnd, rndInt, clamp, round } from "../common-other/mathLib.js";
+import { rnd, rndInt, clamp, round } from "../common-stable/tools/mathLib.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector2} Vector2 */
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */

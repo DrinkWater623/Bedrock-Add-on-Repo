@@ -39,7 +39,7 @@ const debugFunctions = false; //for the devDebug object
 export const devDebug = {
     // Customize this to the project
     // flags
-    debugOn: true,
+    debugOn: false,
     debugSubscriptionsOn: false,
     debugFunctionsOn: false,
     debugChatCmds: false,

@@ -10,8 +10,8 @@ Change Log:
     20251107 - Refactor get players and entities and add for each dimension
 ========================================================================*/
 import { world, system, Player, Entity, Block, Dimension } from "@minecraft/server";
-import { rndInt } from "../common-other/mathLib.js";
-import { Vector3Lib as vec3 } from '../common-other/vectorClass.js';
+import { rndInt } from "../common-stable/tools/mathLib.js";
+import { Vector3Lib as vec3 } from '../common-stable/tools/vectorClass.js';
 //import { worldRun } from "./worldRunLib.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */

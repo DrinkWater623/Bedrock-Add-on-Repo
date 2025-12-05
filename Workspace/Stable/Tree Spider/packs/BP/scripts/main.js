@@ -10,9 +10,10 @@ import { subscriptionsStable } from './subscribes.js';
 import { devDebug } from "./helpers/fn-debug.js";
 //==============================================================================
 devDebug.anyOn();
-const msg=`§aInstalling Add-on ${pack.packName} - ${pack.beta ? '§6Beta' : '§bStable'}  ${devDebug.debugOn ? '§4(debug mode)' : ''}`
-alertLog.success(msg, devDebug.debugOn || pack.isLoadAlertsOn);
+const msg = `Add-on - §bStable ${devDebug.debugOn ? '§4(debug mode)' : ''}`;
+alertLog.log(`§6Installing ${msg}`, devDebug.debugOn);
 subscriptionsStable();
+alertLog.success(`Installed ${msg}`, pack.isLoadAlertsOn);
 //==============================================================================
 // End of File
 //==============================================================================

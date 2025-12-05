@@ -13,7 +13,7 @@ Last Update: 20241229 - reOrg and add License
  */
 import { Block, BlockPermutation, Direction, ItemStack, Player } from "@minecraft/server";
 import { chatLog, pack } from '../settings.js';
-import { FaceLocationGrid, Vector2Lib, Vector3Lib } from "../common-stable/vectorClass.js";
+import { FaceLocationGrid, Vector2Lib, Vector3Lib } from "../common-stable/tools/vectorClass.js";
 import { getAdjacentBlock, getBlockState, slabTypeIDHeight, slabTypeIDSansHeight } from "../fn-stable.js";
 //=============================================================================
 /** @typedef {import("@minecraft/server").Vector2} Vector2 */

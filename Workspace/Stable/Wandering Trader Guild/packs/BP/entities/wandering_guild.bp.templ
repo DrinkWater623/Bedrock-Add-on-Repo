@@ -1,0 +1,37 @@
+{  
+	"$copy": "{{getLatestBPFile('entities/wandering_trader.json')}}",  
+  "$extend":["trader_shared.bp"],
+  "$files": {
+    "array": "traders.filter(x => x.active == 1)",
+    "fileName": "wandering_{{trader}}.bp"
+  },
+	"$template": {
+    "minecraft:entity": {
+      "description": {"identifier":"dw623:wandering_{{trader}}"},
+      "component_groups": { },
+      "events": { },
+      "components": {
+        //"minecraft:color":{},
+        "minecraft:type_family": {"family": ["dw623","wandering_trader_guild","wandering_trader","wandering_{{trader}}","mob"]},
+        "minecraft:economy_trade_table": {
+          "display_name": "Wandering {{realTitle(trader)}}",
+          "table": "trading/wandering_guild/wandering_{{trader}}_trades.json",
+          "new_screen": true
+        },
+        "minecraft:spawn_entity": null,
+        
+        "$minecraft:timer": {"looping":false,"randomInterval":true,"time":[500,590],"time_down_event":{"event":"minecraft:start_despawn","target":"self"}}
+        /*,
+        "$minecraft:despawn": {
+          "remove_child_entities": false,
+          "filters": {
+            "any_of": [
+              { "test": "is_family", "subject": "self", "value": "wandering_trader_despawning" },
+              { "test": "has_trade_supply", "subject": "self", "value": false }
+            ]
+          }
+        }*/
+      }
+    }
+  }
+}

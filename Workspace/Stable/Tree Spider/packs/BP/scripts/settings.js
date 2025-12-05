@@ -5,14 +5,14 @@ Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev
 License: GPL-3.0-only
 URL: https://github.com/DrinkWater623
 ========================================================================
-Last Update: 20251024 - move dev to debug and add world dynamic vars
+Change Log: 
+    20251024 - move dev to debug and add world dynamic vars
 ========================================================================*/
 import { TicksPerDay } from "@minecraft/server";
 // Shared
 import { leafBlocks, logBlocks, tallNatureBlocks } from "./common-data/block-data";
-import { rndFloat, rndInt, round } from "./common-other/mathLib";
-import { ConsoleAlert } from "./common-other/consoleAlertClass";
-import { ChatMsg } from "./common-stable/chatMsgClass";
+import { rndFloat, rndInt, round } from "./common-stable/tools/mathLib";
+import { ConsoleAlert,ChatMsg } from "./common-stable/tools/messageLib";
 //==============================================================================
 /**
  *  Owner is to edit this file as needed - Note: debug vars in fn-debug
@@ -20,10 +20,15 @@ import { ChatMsg } from "./common-stable/chatMsgClass";
 //==============================================================================
 export const pack = {
     packName: 'Tree Spider',
+
+    about:'Friendly little tree spiders busy making webs, eating flies and fire flies in the forests',
+    devUrl:'https://github.com/DrinkWater623',
+    reportBugs:'pinkSalt623@gmail.com',
+
     beta: false,
     worldLoaded: false,
-    fullNameSpace: "dw623_tree_spider", //TODO: think of better name for this see Light Arrows... change later
-    isLoadAlertsOn: false,
+    cmdNameSpace: "dw623_tree_spider", 
+    isLoadAlertsOn: true,
     /* @type {Map<string,boolean>} */
     //validatedBlocks:new Map(),    
     /* @type {Map<string,boolean>} */
@@ -32,8 +37,9 @@ export const pack = {
     validatedEntities: new Map()
 };
 //==============================================================================
-export const alertLog = new ConsoleAlert(`§d${pack.packName}§r`);
-export const chatLog = new ChatMsg(`§b${pack.packName}§r`);
+export const packDisplayName = `§v${pack.packName}§r`
+export const alertLog = new ConsoleAlert(packDisplayName);
+export const chatLog = new ChatMsg(packDisplayName);
 //==============================================================================
 // These are used in subscribes.js and fn-entities,js
 export const entityDynamicVars = {

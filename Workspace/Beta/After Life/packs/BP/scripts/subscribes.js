@@ -11,7 +11,7 @@ import { dev, alertLog, watchFor, dynamicVars, chatLog, pack } from './settings.
 import { dimensionSuffix, playerAliveTicksCounterJob, updatePlayerStats } from './fn-stable.js';
 import * as bot from "./deathBot.js";
 import { BlockLib } from "./common-beta/blockClass.js";
-import { Vector3Lib } from "./common-stable/vectorClass.js";
+import { Vector3Lib } from "./common-stable/tools/vectorClass.js";
 import { DynamicPropertyLib } from "./common-stable/dynamicPropertyClass.js";
 //==============================================================================
 const debug = dev.debugSubscriptions;
