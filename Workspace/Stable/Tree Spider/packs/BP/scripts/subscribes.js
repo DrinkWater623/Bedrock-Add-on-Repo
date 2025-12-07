@@ -207,7 +207,6 @@ const onAfterPlayerPlaceBlock = (event) => {
     }
 };
 //==============================================================================
-//move to fn-entities later?
 /** @type {AfterScriptEventReceiveHandler} */
 const onAfterScriptEventReceive = (event) => {
     const { id, message, sourceEntity: entity } = event;
@@ -223,6 +222,7 @@ const onAfterScriptEventReceive = (event) => {
         entityEventProcess(entity, id, message);
     }, 1);
 };
+//==============================================================================
 /** @type {BeforeEntityRemovedHandler} */
 const onBeforeEntityRemoved_debug = (event) => {
     // Note: "removed" doesn't necessarily mean "died"

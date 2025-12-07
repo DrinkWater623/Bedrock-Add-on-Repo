@@ -1,4 +1,4 @@
-// chatCmds.js  Da Boss Admin Cmds
+// chatCmds.js  Wandering Trader Guild
 // @ts-check
 //==============================================================================
 // Minecraft

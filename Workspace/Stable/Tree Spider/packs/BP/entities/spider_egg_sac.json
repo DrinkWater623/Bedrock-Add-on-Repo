@@ -91,7 +91,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
       } 
     },
     "components": {         
-      "minecraft:type_family": {"family":["tree_spider_egg_sac","mob","dw623"]}
+      "minecraft:type_family": {"family":["tree_spider_egg_sac","dw623"]}
     },
     "events": {
       "dw623:entity_validation":{

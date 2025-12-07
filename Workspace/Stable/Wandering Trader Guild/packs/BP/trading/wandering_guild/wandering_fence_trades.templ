@@ -1,7 +1,7 @@
 {
   "$scope":{
     "trade_list":[      
-      {"quantity_wants":1   ,"item_wants":"minecraft:diamond",          "quantity_gives":8  ,"item_gives":"minecraft:ender_pearls"},
+      {"quantity_wants":1   ,"item_wants":"minecraft:diamond",          "quantity_gives":8  ,"item_gives":"minecraft:ender_pearl"},
       {"quantity_wants":1   ,"item_wants":"minecraft:diamond",          "quantity_gives":2  ,"item_gives":"minecraft:ender_eye"},
       {"quantity_wants":1   ,"item_wants":"minecraft:diamond",          "quantity_gives":1  ,"item_gives":"minecraft:bedrock"},
       {"quantity_wants":1   ,"item_wants":"minecraft:diamond",          "quantity_gives":16 ,"item_gives":"minecraft:obsidian"},
@@ -27,21 +27,26 @@
   "$template": {
     "tiers": [
       {
+        "total_exp_required":0,
         "groups": [    
           //banners     
           {"num_to_select":3,"trades":[{"{{#trade_list}}":{"max_uses":12,"reward_exp":true,"wants":[{"item":"{{item_wants}}","quantity":"{{=quantity_wants}}"}],"gives":[{"item":"{{item_gives}}","quantity":"{{=quantity_gives}}"}]}}]},
           {"num_to_select":1,"trades":[
             {"{{#banner_list}}":{"max_uses":12,"reward_exp":true,"wants":[{"item":"minecraft:diamond","quantity":1}],"gives":[{"item":"minecraft:{{value}}_banner_pattern","quantity":2}]}},
-            {"{{#sherds}}"     :{"wants":[{"item":"minecraft:diamond","quantity":1}],"gives":[{"item":"minecraft:{{name}}_pottery_sherd","quantity":4}],"max_uses":12,"reward_exp":true}},
+            {"{{#sherds}}":{"wants":[{"item":"minecraft:diamond","quantity":1}],"gives":[{"item":"minecraft:{{name}}_pottery_sherd","quantity":4}],"max_uses":12,"reward_exp":true}},
             //discs
-            {"{{#discs}}":{"wants":[{"item":"minecraft:diamond","quantity":2}],"gives":[{"item":"minecraft:music_disc_{{name}}","quantity":1}],"max_uses":12,"reward_exp":true}},              
-            {"wants":[{"item":"minecraft:diamond","quantity":2}],"gives":[{"item":"minecraft:disc_fragment_5","quantity":1}],"max_uses":12,"reward_exp":true}            
-            ]
-          },                       
+            {"{{#discs}}":{"wants":[{"item":"minecraft:diamond","quantity":2}],"gives":[{"item":"minecraft:music_disc_{{name}}","quantity":1}],"max_uses":12,"reward_exp":true}},
+            {
+              "wants": [{ "item": "minecraft:diamond", "quantity": 2 }],
+              "gives": [{ "item": "minecraft:disc_fragment_5", "quantity": 1 }],
+              "max_uses": 12,
+              "reward_exp": true
+            }
+          ]},                       
           {
             "num_to_select":2,
             "trades":[
-              {"{{#armor_trims}}":{"wants":[{"item":"minecraft:diamond","quantity":2}],"gives":[{"item":"minecraft:{{name}}_armor_trim_smithing_template","quantity":1}],"max_uses":12,"reward_exp":true}},
+              //{"{{#armor_trims}}":{"wants":[{"item":"minecraft:diamond","quantity":2}],"gives":[{"item":"minecraft:{{name}}_armor_trim_smithing_template","quantity":1}],"max_uses":12,"reward_exp":true}},
               //goat horn
               {"max_uses":5,"reward_exp":true,"wants":[{"item":"minecraft:emerald","quantity":3}],"gives":[{"item":"minecraft:goat_horn","quantity":1,"functions":[{"function":"random_aux_value","values":{"min":0,"max":7}}]}]},
               //skull

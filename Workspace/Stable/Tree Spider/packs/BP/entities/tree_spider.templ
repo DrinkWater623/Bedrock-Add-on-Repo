@@ -227,6 +227,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                             {
                                 "filters": {
                                     "any_of":[
+                                        {"test":"is_family","subject":"other","value":"mob"},
                                         {"test":"is_family","subject":"other","value":"parrot"},
                                         {"test":"is_family","subject":"other","value":"frog"},
                                         {"test":"is_family","subject":"other","value":"chicken"},
@@ -253,6 +254,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                                 "filters": {
                                     "any_of":[
                                         {"test":"is_family","subject":"other","value":"animal"},
+                                        {"test":"is_family","subject":"other","value":"mob"},
                                         {"test":"is_family","subject":"other","value":"armor_stand"},
                                         {"test":"is_family","subject":"other","value":"cat"},
                                         {"test":"is_family","subject":"other","value":"chicken"},
@@ -270,6 +272,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
                                         {"test":"is_family","subject":"other","value":"sheep"},
                                         {"test":"is_family","subject":"other","value":"slime"},
                                         {"test":"is_family","subject":"other","value":"villager"},
+                                        {"test":"is_family","subject":"other","value":"wandering_trader_guild"},
                                         {"test":"is_family","subject":"other","value":"wandering_trader"}
                                     ]
                                 }
@@ -872,7 +875,7 @@ Last Update: 20251026 - add Pale Oak and DW623 as family
             // entity_born and spawned add "cg:standard_tree_spider" so that summon for validation does not run behaviors
             "components": {
                 "minecraft:health": {"value":20,"max":20},
-                "minecraft:type_family": {"family":["tree_spider","dw623","mob"]},
+                "minecraft:type_family": {"family":["tree_spider","dw623"]},
                 "minecraft:variant":{"value":0}               
             },
             "events": {  

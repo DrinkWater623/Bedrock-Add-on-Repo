@@ -75,6 +75,7 @@
                   "min_wait_time": 5,
                   "max_wait_time": 15,
                   "spawn_entity": "dw623:wandering_{{trader}}",
+                  //"spawn_event":"minecraft:entity_spawned",
                   "single_use": true,
                   "num_to_spawn": 1
                 }
@@ -92,29 +93,67 @@
           }
         },
         "ev:established": {
-          "queue_command": {
-            "command": [
-              "tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§bThe Wandering Trader Guild is here for about 10 minutes!\"}]}"
-            ]
-          },
-          "add": {
-            "component_groups": [
-              "cg:established"
-            ]
-          }
+          "sequence": [
+            {"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§bThe Wandering Trader Guild is here for about 10 minutes!\"}]}"]}},
+            {
+              "randomize": [
+                //later add a sale and have a trigger sent for sale prices
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gWhat are you waiting for?\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gGet your §aEmeralds§r and §bDiamonds§r ready!\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gGet your §aEmeralds§r ready!\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gGet your §bDiamonds§r ready!\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gGet supplies while they last!\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§g100% positive reviews\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gGuaranteed to have something you need!\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gGuaranteed to have something you want!\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gNever know what valuable goodies you will find\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gHard to find items? We probably have them!\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gGreat Deals to be had!\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gEveryone sells a shulker, get yours now!\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gTraveling today, gone tomorrow – shop while we’re in town!\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gLimited stock, unlimited value!\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gWhy mine it when you can buy it?\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gYour chests look empty… we can fix that.\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gGot §aEmeralds§r? We’ve got deals.\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gGot §bDiamonds§r? We’ve got deals.\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gBest prices this side of the End!\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gYou explore, we supply. Perfect team-up.\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gBest prices this side of the Nether!\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gSafer than caving, faster than farming.\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gRare finds, no dungeon required.\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gTrading§a today§r, gone§c tomorrow§r – don’t miss out!\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gGot too much loot? We can help with that.\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gHardcore explorers shop here first.\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=16] {\"rawtext\":[{\"text\":\"*§gIf you’re reading this, you’re close enough to trade.\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gUpgrade your gear, not your to-do list.\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gSave your tools, spend your §aEmeralds§r.\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gSave your tools, spend your §bDiamonds§r.\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gFrom common blocks to curious trinkets – take a look!\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gWe wander so you don’t have to.\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gOne stop shop for the well-prepared adventurer.\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gYou bring the §aEmeralds§r, we bring the surprises.\"}]}"]}},
+                {"weight":1,"queue_command":{"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§gYou bring the §bDiamonds§r, we bring the surprises.\"}]}"]}}                              ]
+            },
+            {"add":{"component_groups":["cg:established"]}}
+          ]         
         },
         "minecraft:start_despawn": {
-          "queue_command": {
-            "command": [
-              "tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§bThe Wandering Trader's Guild has left!\"}]}"
-            ]
-          }
+          "queue_command": {"command":["tellraw @a[r=32] {\"rawtext\":[{\"text\":\"*§bThe Wandering Trader's Guild has left your area!\"}]}"]}
         }
       },
       "components": {
         "minecraft:economy_trade_table": {
           "display_name": "Wandering Trader Leader"
         },
+        "$minecraft:despawn": {
+          "remove_child_entities": false,
+          "filters": {
+            "any_of": [
+              {"test":"has_trade_supply","subject":"self","value":false},
+              {"test":"is_family","subject":"self","value":"wandering_trader_despawning"}
+            ]
+          }
+        },        
         "$minecraft:timer": {
           "looping": false,
           "randomInterval": false,

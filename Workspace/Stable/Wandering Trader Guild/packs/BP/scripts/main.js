@@ -1,4 +1,4 @@
-// main.js Da Boss Admin Cmds
+// main.js Wandering Trader Guild
 // @ts-check
 /**
  * This is called only if beta is not used, 
@@ -13,7 +13,7 @@ devDebug.anyOn();
 const msg = `Add-on - §bStable ${devDebug.debugOn ? '§4(debug mode)' : ''}`;
 alertLog.log(`§6Installing ${msg}`, devDebug.debugOn);
 subscriptionsStable();
-alertLog.success(`Installed ${msg}`, pack.isLoadAlertsOn);
+alertLog.success(`Installed ${msg}`, pack.isLoadAlertOn);
 //==============================================================================
 // End of File
 //==============================================================================

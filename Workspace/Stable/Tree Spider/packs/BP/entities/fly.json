@@ -392,7 +392,7 @@
     // then when looking for shelter/home can find block, then go inside and STAY for a bit or while need to shelter
     "components": {
       //stats
-      "minecraft:type_family": {"family":["fly","dw623","pest","mob"]},      
+      "minecraft:type_family": {"family":["fly","dw623","pest"]},      
       "minecraft:health": {"value":20,"max":20},
       "minecraft:mark_variant": {"value":1}, // == no stinger in bee entity file.. can fix later      
       "minecraft:balloonable": {"mass":0.5}

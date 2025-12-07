@@ -157,7 +157,7 @@
     },
     "components": {
       //stats
-      "minecraft:type_family": {"family":["firefly","dw623","mob"]},
+      "minecraft:type_family": {"family":["firefly","dw623"]},
       "minecraft:scale": {"value":0.10}      
     },
     "events": {

@@ -12,7 +12,7 @@ Last Update: 20251023 - Update and sep out debug-only stuff and add the stable s
 // import { MinecraftEntityTypes, MinecraftEffectTypes } from "@minecraft/vanilla-data";
 //==============================================================================
 // Minecraft
-import { Entity, system, Block, GameMode, Player, TicksPerDay } from "@minecraft/server";
+import { Entity, system, Block, GameMode, Player } from "@minecraft/server";
 // Shared Data
 import { airBlock, leafBlocks } from "../common-data/block-data.js";
 import { Ticks } from "../common-data/globalConstantsLib.js";

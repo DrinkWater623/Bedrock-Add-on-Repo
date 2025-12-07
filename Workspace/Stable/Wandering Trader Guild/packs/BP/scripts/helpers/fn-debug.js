@@ -19,6 +19,8 @@ import { alertLog } from '../settings.js';
  * @property {boolean} debugOn
  * @property {boolean} debugSubscriptionsOn
  * @property {boolean} debugFunctionsOn
+ * @property {boolean} entityNaming
+ * @property {boolean} entityTimers
  * @property {() => void} allOff
  * @property {() => void} allOn
  * @property {() => void} anyOn * 
@@ -34,6 +36,8 @@ export const devDebug = {
     debugOn: false,
     debugSubscriptionsOn: false,
     debugFunctionsOn: false,
+    entityNaming:true,
+    entityTimers:true,
 
     allOff () {
         alertLog.log("* function dev.allOff ()");

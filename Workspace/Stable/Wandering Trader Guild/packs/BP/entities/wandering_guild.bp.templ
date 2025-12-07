@@ -6,31 +6,330 @@
     "fileName": "wandering_{{trader}}.bp"
   },
 	"$template": {
+    "$format_version": "1.21.50",
     "minecraft:entity": {
       "description": {"identifier":"dw623:wandering_{{trader}}"},
-      "component_groups": { },
-      "events": { },
-      "components": {
-        //"minecraft:color":{},
-        "minecraft:type_family": {"family": ["dw623","wandering_trader_guild","wandering_trader","wandering_{{trader}}","mob"]},
-        "minecraft:economy_trade_table": {
-          "display_name": "Wandering {{realTitle(trader)}}",
-          "table": "trading/wandering_guild/wandering_{{trader}}_trades.json",
-          "new_screen": true
+      "component_groups": { 
+        "$managed":null,
+        "minecraft:scared": {
+          "minecraft:angry": {
+            "broadcast_anger": true,
+            "broadcast_range": 10,
+            "broadcastAnger": null,
+            "broadcastRange": null
+          }
         },
-        "minecraft:spawn_entity": null,
-        
-        "$minecraft:timer": {"looping":false,"randomInterval":true,"time":[500,590],"time_down_event":{"event":"minecraft:start_despawn","target":"self"}}
-        /*,
+        "cg:business_timer":{
+          // 9.5-10.5 min
+          "minecraft:timer": {
+            "looping":false,"randomInterval":true,"time":[550,650],
+            "time_down_event":{"event":"minecraft:start_despawn","target":"self"}
+          }
+        },
+        //use to stay as long as MC does not naturally despawn them
+        "cg:cancel_timer":{
+          "minecraft:timer": {"looping":false,"randomInterval":false,"time":0.5},
+          "minecraft:persistent":{},          
+          // later use this to make sale prices
+          "minecraft:interact": {
+            //reset timers
+            "interactions": [  
+              //heal                        
+              {
+                "on_interact": {                                    
+                  "filters": {
+                    "all_of": [
+                      {"test":"is_family","subject":"other","value":"player"},
+                      {"any_of": [
+                        {"test":"has_equipment","domain":"hand","subject":"other","value":"golden_carrot"},
+                        {"test":"has_equipment","domain":"hand","subject":"other","value":"golden_apple"}
+                      ]}
+                    ]
+                  }
+                }, 
+                "swing": true,
+                "health_amount":100,
+                "use_item": true, 
+                "play_sounds": "mob.villager.yes"
+              },
+              //60 min
+              {
+                "on_interact": {                                    
+                  "event":"ev:timer_60_min_set",
+                  "filters": {
+                    "all_of": [
+                      {"test":"is_family","subject":"other","value":"player"},
+                      {"any_of": [
+                        {"test":"has_equipment","domain":"hand","subject":"other","value":"golden_apple"},
+                        {"test":"has_equipment","domain":"hand","subject":"other","value":"rabbit_stew"}
+                      ]}
+                    ]
+                  }
+                }, 
+                "swing": true,
+                "health_amount":100,
+                "use_item": true, 
+                "play_sounds": "mob.villager.yes"
+              },
+              //forever
+              {
+                "on_interact": {                                    
+                  "event":"ev:persistent_set",
+                  "filters": {
+                    "all_of": [
+                      {"test":"is_family","subject":"other","value":"player"},
+                      {"any_of": [
+                        {"test":"has_equipment","domain":"hand","subject":"other","value":"enchanted_golden_apple"}
+                      ]}
+                    ]
+                  }
+                }, 
+                "swing": true,
+                "health_amount":100,
+                "use_item": true, 
+                "play_sounds": "mob.villager.yes"
+              }
+            ]
+          }        
+        },
+        //60 min
+        "cg:reset_timer_60":{
+          "minecraft:timer": {"looping":false,"randomInterval":true,"time":3600,
+          "time_down_event":{"event":"minecraft:start_despawn","target":"self"}}
+        },        
+        "cg:reset_timer_30":{
+          "minecraft:timer": {"looping":false,"randomInterval":true,"time":1800,
+          "time_down_event":{"event":"minecraft:start_despawn","target":"self"}}
+        },        
+        "cg:reset_timer_20":{
+          "minecraft:timer": {"looping":false,"randomInterval":true,"time":1200,
+          "time_down_event":{"event":"minecraft:start_despawn","target":"self"}}
+        },
+        "cg:reset_timer_10":{
+          "minecraft:timer": {"looping":false,"randomInterval":true,"time":600,
+          "time_down_event":{"event":"minecraft:start_despawn","target":"self"}}
+        }        
+      },
+      "events": {
+        //Add these
+        "ev:get_named":{
+          "sequence":[          
+              {"add":{"component_groups":["cg:business_timer"]}},
+              {"queue_command": {"command":["scriptevent wtg:name_me {{trader}}"]}}
+          ]
+        },
+        "ev:timer_10_min_set":{
+          "sequence":[          
+              {"add":{"component_groups":["cg:reset_timer_10"]}},
+              {"queue_command": {"command":[
+                "tell @a[r=8] Okay, I will stay for exactly 10 minutes more",
+                "scriptevent wtg:nameColor_d 10"
+              ]}}
+          ]
+        },         
+        "ev:timer_20_min_set":{
+          "sequence":[          
+              {"add":{"component_groups":["cg:reset_timer_20"]}},
+              {"queue_command": {"command":[
+                "tell @a[r=8] Okay, I will stay for exactly 20 minutes more",
+                "scriptevent wtg:nameColor_v 20"
+              ]}}
+          ]
+        },
+        "ev:timer_30_min_set":{
+          "sequence":[          
+              {"add":{"component_groups":["cg:reset_timer_30"]}},
+              {"queue_command": {"command":[
+                "tell @a[r=8] Okay, I will stay for exactly 30 minutes more",
+                "scriptevent wtg:nameColor_e 30"
+              ]}}
+          ]
+        },
+        "ev:timer_60_min_set":{
+          "sequence":[          
+              {"add":{"component_groups":["cg:reset_timer_60"]}},
+              {"queue_command": {"command":[
+                "tell @a[r=8] Okay, I will stay for exactly 1 hour, starting now",
+                "scriptevent wtg:nameColor_b 60"
+              ]}}
+          ]
+        },
+        "ev:persistent_set":{
+          "sequence":[          
+              {"add":{"component_groups":["cg:cancel_timer"]}},
+              {"queue_command": {"command":[
+                "tell @a[r=16] §aOkay, I will stick around as long as Bedrock does not despawn me!",
+                "scriptevent wtg:nameColor_a 0"
+                ]}
+              }
+          ]
+        },
+        //remove these 
+        "$minecraft:scheduled":null
+      },
+      "components": {
+        //remove these 
+        "$minecraft:behavior.drink_milk":null,
+        "$minecraft:nameable":null,
+        "$minecraft:behavior.drink_potion":null,
+        "$minecraft:spawn_entity": null,
+        //overwrite these        
+        "$minecraft:type_family": {"family": ["dw623","wandering_trader","wandering_trader_guild","wandering_{{trader}}"]},
+        "$minecraft:timer": {
+          "looping":false,"randomInterval":false,"time":1,
+          "time_down_event":{"event":"ev:get_named","target":"self"}
+        },
+        "$minecraft:damage_sensor": {
+          "triggers": [
+            {
+              "cause": "entity_attack",
+              "deals_damage": "no",
+              "on_damage": {
+                "event": "minecraft:become_scared"
+              }
+            },
+            {
+              "cause": "projectile",
+              "deals_damage": "no",
+              "on_damage": {
+                "event": "minecraft:become_scared"
+              }
+            },
+            {
+              "cause": "magic",
+              "deals_damage": "yes",
+              "on_damage": {
+                "event": "minecraft:become_scared"
+              }
+            }
+          ]
+        },
         "$minecraft:despawn": {
           "remove_child_entities": false,
           "filters": {
             "any_of": [
-              { "test": "is_family", "subject": "self", "value": "wandering_trader_despawning" },
-              { "test": "has_trade_supply", "subject": "self", "value": false }
+              {"test":"has_trade_supply","subject":"self","value":false},
+              {"test":"is_family","subject":"self","value":"wandering_trader_despawning"}
             ]
           }
-        }*/
+        },        
+        //change/update/append these
+        "minecraft:economy_trade_table": {
+          "display_name": "Wandering {{realTitle(trader)}}",
+          "table": "trading/wandering_guild/wandering_{{trader}}_trades.json",
+          "new_screen": true
+        },                
+        "minecraft:home": {
+          "restriction_type": "random_movement"
+        },
+        // Add these
+        "minecraft:interact": {
+          //reset timers
+          "interactions": [  
+            //10 min
+            {
+              "on_interact": {                                    
+                "event":"ev:timer_10_min_set",
+                "filters": {
+                  "all_of": [
+                    {"test":"is_family","subject":"other","value":"player"},
+                    {"any_of": [
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"cooked_cod"},
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"cooked_salmon"},
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"cooked_chicken"},
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"cooked_beef"},
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"cooked_mutton"},
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"cooked_porkchop"},
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"bread"},
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"baked_potato"}                     
+                    ]}
+                  ]
+                }
+              }, 
+              "swing": true,
+              "health_amount":100,
+              "use_item": true, 
+              "play_sounds": "mob.villager.idle"
+            },
+            //20 min
+            {
+              "on_interact": {                                    
+                "event":"ev:timer_20_min_set",
+                "filters": {
+                  "all_of": [
+                    {"test":"is_family","subject":"other","value":"player"},
+                    {"any_of": [
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"beetroot_soup"},
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"cookie"}
+                    ]}
+                  ]
+                }
+              }, 
+              "swing": true,
+              "health_amount":100,
+              "use_item": true, 
+              "play_sounds": "mob.villager.idle"
+            },
+            //30 min
+            {
+              "on_interact": {                                    
+                "event":"ev:timer_30_min_set",
+                "filters": {
+                  "all_of": [
+                    {"test":"is_family","subject":"other","value":"player"},
+                    {"any_of": [
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"golden_carrot"},
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"suspicious_stew"},
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"cake"},
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"honey_bottle"}
+                    ]}
+                  ]
+                }
+              }, 
+              "swing": true,
+              "health_amount":100,
+              "use_item": true, 
+              "play_sounds": "mob.villager.idle"
+            },
+            //60 min
+            {
+              "on_interact": {                                    
+                "event":"ev:timer_60_min_set",
+                "filters": {
+                  "all_of": [
+                    {"test":"is_family","subject":"other","value":"player"},
+                    {"any_of": [
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"golden_apple"},
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"rabbit_stew"}
+                    ]}
+                  ]
+                }
+              }, 
+              "swing": true,
+              "health_amount":100,
+              "use_item": true, 
+              "play_sounds": "mob.villager.yes"
+            },
+            //forever
+            {
+              "on_interact": {                                    
+                "event":"ev:persistent_set",
+                "filters": {
+                  "all_of": [
+                    {"test":"is_family","subject":"other","value":"player"},
+                    {"any_of": [
+                      {"test":"has_equipment","domain":"hand","subject":"other","value":"enchanted_golden_apple"}
+                    ]}
+                  ]
+                }
+              }, 
+              "swing": true,
+              "health_amount":100,
+              "use_item": true, 
+              "play_sounds": "mob.villager.yes"
+            }
+          ]
+        }
       }
     }
   }
