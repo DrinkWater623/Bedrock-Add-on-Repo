@@ -22,7 +22,7 @@ import * as subs from './subscribes.js';
 //==============================================================================
 export function main_stable () {
     const debugMsg = pack.isLoadAlertsOn || dev.debugPackLoad || dev.debugAll;
-    alertLog.success(`main_stable (): WatchFor=(${watchFor.typeId}), pack.isAlertSystemOn=${pack.isAlertSystemOn}`, dev.debugPackLoad || dev.debugAll);
+    alertLog.success(`main_stable (): WatchFor=(${watchFor.typeId}), pack.isAlertSystemOn=${pack.isWitherAlertSystemOn}`, dev.debugPackLoad || dev.debugAll);
 
     watchFor.validated = EntityTypes.getAll().map(eObj => eObj.id).includes(watchFor.typeId);
     pack.isEntityAlertSystemOn = watchFor.validated;
@@ -30,7 +30,7 @@ export function main_stable () {
     if (watchFor.validated) {
         subs.worldInitialize_before();
 
-        if (pack.isAlertSystemOn) {
+        if (pack.isWitherAlertSystemOn) {
             alertLog.success(`§aInstalling §bStable§r §aAdd-on`, debugMsg);            
             subs.worldInitialize_after();
             subs.explosion_after_sub();

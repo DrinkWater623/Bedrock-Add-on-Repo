@@ -1,4 +1,4 @@
-//subscribes.js
+//subscribes.js Tree Spider
 //@ts-check
 /* =====================================================================
 Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
@@ -394,7 +394,7 @@ export function subscriptionsStable () {
                 //afterEntitySpawn:onAfterEntitySpawn_debug,  redundant but keep code
                 beforeEntityRemoved: onBeforeEntityRemoved_debug
             }, debugSubscriptionsOn);
-            devDebug.dsb.setDebug(true);
+            devDebug.dsb.setScoreboardsOn(true);
             devDebug.dsb_setup();
         }
 

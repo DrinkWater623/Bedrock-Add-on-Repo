@@ -1,4 +1,4 @@
-// main.js
+// main.js Tree Spider
 // @ts-check
 /**
  * This is called only if beta is not used, 

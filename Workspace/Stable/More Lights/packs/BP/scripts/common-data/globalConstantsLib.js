@@ -43,6 +43,24 @@ export const colors = [
     "red",
     "black"
 ];
+export const leavingVerbs=[
+    'leaving',
+    'rolling out',
+    'heading out',
+    'heading home',
+    'bouncing',
+    'vacating the premises',
+    'outta here',
+    'disappearing',
+    'running away',
+    'despawning',
+    'traveling',
+    'teleporting',
+    'returning home',
+    'going to a party',
+    'going away',
+    'going home'
+]
 export const chatColorCode = "§";
 //using these
 //FIXME: later make make sense

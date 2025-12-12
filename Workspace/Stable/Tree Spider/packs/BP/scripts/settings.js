@@ -1,4 +1,4 @@
-// settings.js
+// settings.js  Tree Spider
 // @ts-check
 /* =====================================================================
 Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  

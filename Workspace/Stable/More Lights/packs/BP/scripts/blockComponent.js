@@ -137,7 +137,7 @@ export function lightBar_onPlace (event) {
         const faceLocationStr = Vector3Lib.toString(faceLocation, 1, true);
 
         chatLog.log(`
-\n§a****************************************
+\n§a**************************************
 §cLight Bar (BeforeOnPlayerPlace) Info§r
 §a****************************************
 §rItemStack Block: ${itemStackBlock}

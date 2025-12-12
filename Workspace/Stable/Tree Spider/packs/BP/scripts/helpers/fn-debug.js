@@ -1,4 +1,4 @@
-// fn-debug.js
+// fn-debug.js Tree Spiders
 //@ts-check
 /* =====================================================================
 Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
@@ -13,10 +13,10 @@ import { system } from "@minecraft/server";
 // Shared
 import { Ticks } from "../common-data/globalConstantsLib.js";
 import { EntityLib } from "../common-stable/entities/entityClass.js";
-import { DebugScoreboards } from "../common-stable/debug/debugSbClass.js";
 import { getWorldTime } from "../common-stable/tools/timers.js";
 // Local
 import { alertLog, pack, watchFor } from '../settings.js';
+import { Scoreboards } from "../common-stable/tools/scoreboardLib.js";
 //==============================================================================
 // JSDoc Makes the squiggly red lines go away....
 //==============================================================================
@@ -42,7 +42,7 @@ const now = () => { return `§l§gTime: ${getWorldTime().hours}:00`; };
  * @property {() => void} allOff
  * @property {() => void} allOn
  * @property {() => void} anyOn
- * @property {DebugScoreboards} dsb
+ * @property {Scoreboards} dsb
  * @property {(this: DevObject) => void} dsb_setup
  */
 //==============================================================================
@@ -93,7 +93,7 @@ export const devDebug = {
         }
         this.debugOn = false;
         // keep dsb in sync
-        this.dsb.setDebug(false);
+        this.dsb.setScoreboardsOn(false);
     },
 
     allOn () {
@@ -108,7 +108,7 @@ export const devDebug = {
         }
         this.debugOn = true;
         // keep dsb in sync
-        this.dsb.setDebug(true);
+        this.dsb.setScoreboardsOn(true);
     },
 
     anyOn () {
@@ -119,11 +119,11 @@ export const devDebug = {
         }
         this.debugOn = any;
         // keep dsb in sync
-        this.dsb.setDebug(any);
+        this.dsb.setScoreboardsOn(any);
     },
 
     // ✅ Always constructed (no undefined), start with debug=false; fix display string (no extra quotes)
-    dsb: new DebugScoreboards(false, pack.cmdNameSpace, "§aTree Spider§6§l"),
+    dsb: new Scoreboards(false, pack.cmdNameSpace, "§aTree Spider§6§l"),
 
     /** Initialize scoreboards + jobs (call once after world load) */
     dsb_setup () {
@@ -158,7 +158,7 @@ export const devDebug = {
         };
         // devDebug.dsb.increment('stats', 'loaded')
         // Sync dsb’s debug with current flag, then set up boards/entries
-        this.dsb.setDebug(this.debugOn);
+        this.dsb.setScoreboardsOn(this.debugOn);
         this.dsb.setup(cfg);
 
         // Time counter as a registered job

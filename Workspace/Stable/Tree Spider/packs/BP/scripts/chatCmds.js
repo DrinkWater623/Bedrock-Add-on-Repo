@@ -1,11 +1,11 @@
-// chatCmds.js
+// chatCmds.js  Tree SPider
 // @ts-check
 //==============================================================================
 // Minecraft
 import { system, Player, Entity, world, TimeOfDay } from "@minecraft/server";
 import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus, CustomCommandParamType, CustomCommandOrigin } from "@minecraft/server";
 // Shared
-import { ScoreboardLib } from "./common-stable/tools/scoreboardClass.js";
+import { ScoreboardLib } from "./common-stable/tools/scoreboardLib.js";
 import { Vector3Lib, VectorXZLib } from "./common-stable/tools/vectorClass.js";
 // Local
 import { alertLog, chatLog, pack, packDisplayName } from './settings.js';
