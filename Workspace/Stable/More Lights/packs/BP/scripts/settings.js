@@ -26,7 +26,9 @@ export const pack = {
     worldLoaded: false,
     namespace: "dw623",
     cmdNameSpace: "lights",
-    isLoadAlertsOn: false
+    isLoadAlertsOn: false,
+
+    debugOn:true //Not changed by code.... the MASTER SWITCH to turn off debugging only
 };
 //==============================================================================
 export const packDisplayName = `§f${pack.packName}§r`;
@@ -57,6 +59,8 @@ export const watchFor = {
         return this.materialList.map(m => pack.namespace + ':' + m + '_mini_block');
     },
 
+    onUseBlockAsItemList:[''],
+
     /**@returns{string[]} */
     onPlaceBlockList () {
         const blocks = [
@@ -64,14 +68,15 @@ export const watchFor = {
             ...this.barBlocks(),
             ...this.miniBlocks()
         ];
+
         return blocks;
     },
 
     customItemList: [
         "dw623:light_arrow_template"
     ]
-
 };
+watchFor.onUseBlockAsItemList = [...watchFor.onPlaceBlockList()];
 //==============================================================================
 // End of File
 //==============================================================================

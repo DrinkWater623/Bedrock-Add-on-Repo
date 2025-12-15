@@ -9,24 +9,20 @@ URL: https://github.com/DrinkWater623
 Last Update: 20251023 - add in stable stuff and update to api 2.0 and move debug-only stuff out
 ========================================================================*/
 import { world, system } from "@minecraft/server";
-//Enums
-import { EntityInitializationCause } from "@minecraft/server";
 //Shared
-import { Ticks } from "./common-data/globalConstantsLib.js";
 import { chance } from "./common-stable/tools/mathLib.js";
 import { Vector3Lib } from "./common-stable/tools/vectorClass.js";
 import { DynamicPropertyLib } from "./common-stable/tools/dynamicPropertyClass.js";
-import { EntityLib, spawnEntityAtLocation } from "./common-stable/entities/entityClass.js";
 import { EntitySubscriptions } from "./common-stable/subscriptions/entitySubs-stable.js";
 import { PlayerSubscriptions } from "./common-stable/subscriptions/playerSubs-stable.js";
 import { SystemSubscriptions } from "./common-stable/subscriptions/systemSubs-stable.js";
 //Local
-import { alertLog, pack, packDisplayName, toggles } from './settings.js';
+import { alertLog, pack, packDisplayName, toggles, watchFor } from './settings.js';
 import { registerCustomCommands } from "./chatCmds.js";
-import { devDebug } from "./helpers/fn-debug.js";
-import { entityEventProcess, lastTickAndLocationRegister, stalledSpiderCheckAndFix, flyPopulationCheck, spiderPopulationCheck, entityScriptEvents, } from './helpers/fn-entities.js';
-import { airBlock, stairBlocks } from "./common-data/block-data.js";
-import { getWorldTime } from "./common-stable/tools/timers.js";
+import { arrow_onPlace,bar_onPlace,miniBlock_onPlace } from "./blockComponent.js";
+import { dev } from "./debug.js";
+import { airBlock } from "./common-data/block-data.js";
+//==============================================================================
 //import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
 
 //==============================================================================
@@ -46,11 +42,8 @@ import { getWorldTime } from "./common-stable/tools/timers.js";
 /** @typedef {Parameters<typeof system.afterEvents.scriptEventReceive.subscribe>[0]} AfterScriptEventReceiveHandler */
 /** @typedef {Parameters<typeof system.beforeEvents.startup.subscribe>[0]} BeforeStartupHandler */
 //==============================================================================
-const debugOn = false || devDebug.debugOn;
-const debugFunctionsOn = false || devDebug.debugFunctionsOn;
-const debugSubscriptionsOn = devDebug.debugSubscriptionsOn;
-const watchEntitySubscriptions = devDebug.watchEntitySubscriptions;
-const watchPlayerActions = devDebug.watchPlayerActions;
+const debugOn = false || dev.debugOn;
+const blockList = watchFor.onPlaceBlockList(); //TODO : put back
 //==============================================================================
 /** @type {AfterEntityDieHandler} */
 const onAfterEntityDie = (event) => {
@@ -60,7 +53,7 @@ const onAfterEntityDie = (event) => {
     const { location } = entity;
     const whyDied = event.damageSource.cause;
     const msg = `§c${entity.typeId}§r §c Died via ${whyDied} @ ${Vector3Lib.toString(location, 0, true)} -§v afterEvents.entityDie`;
-    alertLog.warn(msg, watchEntitySubscriptions);
+    alertLog.warn(msg, dev.entities.events.afterEntityDie);
 };
 //==============================================================================
 /** @type {AfterEntityLoadHandler} */
@@ -85,135 +78,48 @@ const onAfterEntitySpawn = (event) => {
 //==============================================================================
 /** @type {AfterPlayerBreakBlockHandler} */
 const onAfterPlayerBreakBlock = (event) => {
-    if (!chance(0.15)) return; //25% chance to spawn pests
+    if (!watchFor.onBreakBlockList.includes(event.brokenBlockPermutation.type.id)) return;
 
     const { block, dimension, brokenBlockPermutation, itemStackBeforeBreak } = event;
     const blockTypeId = brokenBlockPermutation.type.id;
     const location = block.location;
-
-
-    if (watchForBlockTypes_flies.includes(blockTypeId)) {
-        spawnEntityAtLocation(watchFor.fly_typeId, dimension, location, 1, 3, 1, 10);
-        return;
-    }
-
-    if (watchForBlockTypes_spiders.includes(blockTypeId)) {
-        spawnEntityAtLocation(watchFor.spider_typeId, dimension, location, 1, 1, 1, 20);
-        return;
-    }
-    return;
 };
 //==============================================================================
 /** @type {AfterPlayerPlaceBlockHandler} */
 const onAfterPlayerPlaceBlock = (event) => {
-    if (!chance(0.50)) return;
+    if (!watchFor.onPlaceBlockList().includes(event.block.typeId)) return;
 
     const { block } = event;
     if (!block.isValid) return;
     const { typeId, dimension, location } = block;
     const locationCtr = Vector3Lib.toCenter(location);
-
-    if (typeId === watchFor.fly_home_typeId) {
-        const above = block.above();
-        if (!above || !above.isValid || above.typeId !== airBlock) return;
-        spawnEntityAtLocation(watchFor.fly_typeId, dimension, locationCtr, 3, 6, 40, 200);
-        return;
-    }
-
-    if (typeId === 'dw623:rotten_flesh_block') {
-        //TODO: needs to be block face location
-        const above = block.above();
-        if (!above || !above.isValid || above.typeId !== airBlock) return;
-        spawnEntityAtLocation(watchFor.fly_typeId, dimension, locationCtr, 1, 2, 40, 200);
-        return;
-    }
-    //========================    Less Likely
-    if (chance(0.75)) return;
-    //========================    Less Likely
-    if (typeId === watchFor.spider_home_typeId) {
-        const entityId = chance(0.5) ? watchFor.spider_typeId : watchFor.egg_typeId;
-        const max = entityId == watchFor.egg_typeId ? 1 : 2;
-        spawnEntityAtLocation(entityId, dimension, locationCtr, 1, max, 40, 100);
-        return;
-    }
-
-    if (typeId === 'minecraft:cauldron') {
-        const above = block.above();
-        if (!above || !above.isValid || above.typeId !== airBlock) return;
-        const entityId = chance(0.6) ? watchFor.spider_typeId : watchFor.fly_typeId;
-        const maxEntities = entityId === watchFor.spider_typeId ? 1 : 3;
-        spawnEntityAtLocation(entityId, dimension, locationCtr, 1, maxEntities, 40, 200);
-        return;
-    }
-
-    if (validNatureBlockForSpiders(typeId)) {
-        spawnEntityAtLocation(watchFor.spider_typeId, dimension, locationCtr, 1, 1, 40, 200);
-        return;
-    }
-};
-//==============================================================================
-/** @type {AfterScriptEventReceiveHandler} */
-const onAfterScriptEventReceive = (event) => {
-    const { id, message, sourceEntity: entity } = event;
-
-    if (!entity || !entity.isValid) {
-        return;
-    };
-    if (!watchFor.packEntityList().includes(entity.typeId)) {
-        return;
-    };
-
-    system.runTimeout(() => {
-        entityEventProcess(entity, id, message);
-    }, 1);
 };
 //==============================================================================
 /** @type {BeforeEntityRemovedHandler} */
 const onBeforeEntityRemoved = (event) => {
     // Note: "removed" doesn't necessarily mean "died"
-    if (!event.removedEntity || event.removedEntity.typeId !== watchFor.spider_typeId) return;
+    if (!event.removedEntity || !watchFor.entityList.includes(event.removedEntity.typeId)) return;
 
     const entity = event.removedEntity;
-    const { nameTag, dimension, location } = entity;
-    const isUnLoaded = DynamicPropertyLib.getBoolean(entity, 'isUnloaded');
-    const isStalled = DynamicPropertyLib.getBoolean(entity, 'isStalled');
+    const { nameTag,  location } = entity;
 
     system.runTimeout(() => {
-        devDebug.dsb.incrementMany([ 'deaths', 'stats' ], 'removed', 1, 1);
-
-        //TODO:  see if I can get my coordinates and do the math for how far away these are  --  too many removes right after spawn
-        // See if can find out WHY despawning soo much
-        const players = world.getAllPlayers();
-        let delta = '';
-        if (players) {
-            const player = players[ 0 ];
-            if (player && player.isValid) {
-                const playerLocation = players[ 0 ].location;
-                delta = `§bClosest Player x: ${Math.round(Math.abs(location.x - playerLocation.x))}, y:${Math.round(Math.abs(location.y - playerLocation.y))}, z:${Math.round(Math.abs(location.z - playerLocation.z))}`;
-            }
-        }
-
-        const msg = `§l${nameTag}§r §6Removed @ ${Vector3Lib.toString(location, 0, true)} ${delta}§r(${isUnLoaded ? '' : ' loaded'}(${isStalled ? ' stalled' : ''})- beforeEvents.entityRemove()`;
-        alertLog.log(msg, watchEntitySubscriptions);
-
+        const msg = `§l${nameTag}§r §6Removed @ ${Vector3Lib.toString(location, 0, true)} - beforeEvents.entityRemove ()`;
+        alertLog.log(msg, dev.entities.events.entityRemove.before);
     }, 1);
 };
 //==============================================================================
 /** @type {BeforePlayerInteractWithBlockHandler} */
 const onBeforePlayerInteractWithBlock = (event) => {
     event.cancel = false;
-
     if (!event.isFirstEvent) return;
-    const { block, itemStack } = event;
-    if (!itemStack || !block) return;
 
-    if (watchFor.customItemList.includes(itemStack.typeId)) {
-        rattleEntityFromBlockWithItem(block, itemStack.typeId, event.blockFace, 0.6);
-        return;
-    }
-
-    //Add Other stuff if needed
-    return;
+    DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_set(
+        event,
+        [],
+        blockList,
+        dev.blocks.events.playerInteractWithBlock.before || dev.players.events.playerInteractWithBlock.before
+    );
 };
 //==============================================================================
 /** @type {BeforeStartupHandler} */
@@ -221,29 +127,28 @@ const onBeforeStartup = (event) => {
     const ccr = event.customCommandRegistry;
     registerCustomCommands(ccr);
 
-     event.blockComponentRegistry.registerCustomComponent(
-        'dw623:on_place_arrow', { beforeOnPlayerPlace: e => { lightArrow_onPlace(e); } }
+    event.blockComponentRegistry.registerCustomComponent(
+        'dw623:on_place_arrow', { beforeOnPlayerPlace: e => { arrow_onPlace(e); } }
     );
 
     event.blockComponentRegistry.registerCustomComponent(
-        'dw623:on_place_bar', { beforeOnPlayerPlace: e => { lightBar_onPlace(e); } }
+        'dw623:on_place_bar', { beforeOnPlayerPlace: e => { bar_onPlace(e); } }
     );
 
     event.blockComponentRegistry.registerCustomComponent(
-        'dw623:on_place_mini_block', { beforeOnPlayerPlace: e => { lightMiniBlock_onPlace(e); } }
+        'dw623:on_place_mini_block', { beforeOnPlayerPlace: e => { miniBlock_onPlace(e); } }
     );
 };
 //==============================================================================
-const entitySubs = new EntitySubscriptions(packDisplayName, debugSubscriptionsOn);
-const playerSubs = new PlayerSubscriptions(packDisplayName, debugSubscriptionsOn);
-const systemSubs = new SystemSubscriptions(packDisplayName, debugSubscriptionsOn);
+const entitySubs = new EntitySubscriptions(packDisplayName, true);
+const playerSubs = new PlayerSubscriptions(packDisplayName, true);
+const systemSubs = new SystemSubscriptions(packDisplayName, true);
 //==============================================================================
 export function subscriptionsStable () {
     const _name = 'function subscriptionsStable';
-    alertLog.log(`§v* ${_name} ()`, debugFunctionsOn);
+    alertLog.log(`§v* ${_name} ()`, dev.debugFunctionsOn);
 
-    systemSubs.register({
-        afterScriptEventReceive: onAfterScriptEventReceive,
+    systemSubs.register({        
         beforeStartup: onBeforeStartup
     });
 
@@ -257,25 +162,18 @@ export function subscriptionsStable () {
 
     world.afterEvents.worldLoad.subscribe((event) => {
         pack.worldLoaded = true;
-        alertLog.success(`Subscribed to world.afterEvents.worldLoad`, debugSubscriptionsOn);
+        alertLog.success(`Subscribed to world.afterEvents.worldLoad`, dev.debugSubscriptionsOn);
 
         if (debugOn) {
             entitySubs.register({
-                afterEntityDie: onAfterEntityDie_debug,
+                afterEntityDie: onAfterEntityDie,
                 //afterEntitySpawn:onAfterEntitySpawn_debug,  redundant but keep code
-                beforeEntityRemoved: onBeforeEntityRemoved_debug
-            }, debugSubscriptionsOn);
-            devDebug.dsb.setScoreboardsOn(true);
-            devDebug.dsb_setup();
+                beforeEntityRemoved: onBeforeEntityRemoved
+            }, dev.debugSubscriptionsOn);
         }
-
-        system.runTimeout(() => {
-            validateEntityFiles(devDebug.watchEntitySubscriptions);
-        }, Ticks.perSecond * 60);
-
     });
 
-    alertLog.log(`'§8x ${_name} ()'`, debugFunctionsOn);
+    alertLog.log(`'§8x ${_name} ()'`, dev.debugFunctionsOn);
 }
 //==============================================================================
 // End of File

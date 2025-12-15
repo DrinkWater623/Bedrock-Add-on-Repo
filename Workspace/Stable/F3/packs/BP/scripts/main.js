@@ -7,12 +7,9 @@
 // Local
 import { alertLog, pack } from './settings.js';
 import { subscriptionsStable } from './subscribes.js';
-import { devDebug } from "./helpers/fn-debug.js";
 //==============================================================================
-devDebug.anyOn();
-pack.isBeta=false
-const msg = `Add-on - §bStable ${devDebug.debugOn ? '§4(debug mode)' : ''}`;
-alertLog.log(`§6Installing ${msg}`, devDebug.debugOn);
+const msg = `Add-on - §bStable ${pack.debugOn ? '§4(debug mode)' : ''}`;
+alertLog.log(`§6Installing ${msg}`, pack.debugOn);
 subscriptionsStable();
 alertLog.success(`Installed ${msg}`, pack.isLoadAlertsOn);
 

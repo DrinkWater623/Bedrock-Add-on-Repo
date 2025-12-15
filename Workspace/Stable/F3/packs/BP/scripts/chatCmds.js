@@ -8,10 +8,10 @@ import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus, Cus
 import { Vector3Lib, VectorXZLib } from "./common-stable/tools/vectorClass.js";
 // Local
 import { alertLog, chatLog, pack, packDisplayName } from './settings.js';
-import { devDebug } from "./helpers/fn-debug.js";
+import { devOld } from "./debug.js";
 //==============================================================================
 const debugFunctions = false;
-const msgPfx = devDebug.dsb.displayPfx;
+const msgPfx = devOld.dsb.displayPfx;
 //==============================================================================
 //Enum Names
 const queryOnOff = `${pack.cmdNameSpace}:enum_query_on_off`;
@@ -178,24 +178,24 @@ function register_debugEntity (registry) {
 
             let msg = '';
             if (arg === 'on') {
-                if (!(devDebug.debugOn && devDebug.watchEntityGoals && devDebug.watchEntityEvents)) {
-                    devDebug.debugOn = true;
-                    devDebug.watchEntityGoals = true;
-                    devDebug.watchEntityEvents = true;
+                if (!(devOld.debugOn && devOld.watchEntityGoals && devOld.watchEntityEvents)) {
+                    devOld.debugOn = true;
+                    devOld.watchEntityGoals = true;
+                    devOld.watchEntityEvents = true;
                     msg = `debugEntity (Activity/Alert/Load/Spawn) is now §aON`;
-                    devDebug.anyOn();
+                    devOld.anyOn();
                 }
                 else
                     msg = `debugEntity is already on §aON`;
             }
             else if (arg == 'off') {
-                if ((devDebug.watchEntityGoals || devDebug.watchEntityEvents)) {
-                    devDebug.watchEntityGoals = false;
-                    devDebug.watchEntityEvents = false;
-                    devDebug.anyOn();
+                if ((devOld.watchEntityGoals || devOld.watchEntityEvents)) {
+                    devOld.watchEntityGoals = false;
+                    devOld.watchEntityEvents = false;
+                    devOld.anyOn();
 
                     msg = `debugEntity (Activity/Alert/Load/Spawn) is now §cOFF`;
-                    devDebug.anyOn();
+                    devOld.anyOn();
                 }
                 else
                     msg = `debugEntity is already §cOFF`;
@@ -203,13 +203,13 @@ function register_debugEntity (registry) {
             else
             //Query 
             {
-                if (devDebug.debugOn)
-                    msg = `debugEntity:\nActivity${devDebug.watchEntityGoals ? '§aON' : '§cOFF'}\nAlert:${devDebug.watchEntityEvents ? '§aON' : '§cOFF'}`;
+                if (devOld.debugOn)
+                    msg = `debugEntity:\nActivity${devOld.watchEntityGoals ? '§aON' : '§cOFF'}\nAlert:${devOld.watchEntityEvents ? '§aON' : '§cOFF'}`;
                 else
                     msg = `debugging is §cOFF`;
             }
             const player = origin.sourceEntity;
-            player.sendMessage(`${devDebug.dsb.displayPfx} ${msg}`);
+            player.sendMessage(`${devOld.dsb.displayPfx} ${msg}`);
         }
         const result = { status: CustomCommandStatus.Success };
         return result;
@@ -246,20 +246,20 @@ function register_watchEntityGoals (registry) {
 
             let msg = '';
             if (arg == 'on') {
-                if (!(devDebug.debugOn && devDebug.watchEntityGoals)) {
-                    devDebug.debugOn = true;
-                    devDebug.watchEntityGoals = true;
+                if (!(devOld.debugOn && devOld.watchEntityGoals)) {
+                    devOld.debugOn = true;
+                    devOld.watchEntityGoals = true;
                     msg = `watchEntityGoals is now §aON`;
-                    devDebug.anyOn();
+                    devOld.anyOn();
                 }
                 else
                     msg = `watchEntityGoals is already §aON`;
             }
             else if (arg == 'off') {
-                if (devDebug.watchEntityGoals) {
-                    devDebug.watchEntityGoals = false;
+                if (devOld.watchEntityGoals) {
+                    devOld.watchEntityGoals = false;
                     msg = `watchEntityGoals is now §cOFF`;
-                    devDebug.anyOn();
+                    devOld.anyOn();
                 }
                 else
                     msg = `watchEntityGoals is already §cOFF`;
@@ -267,13 +267,13 @@ function register_watchEntityGoals (registry) {
             else
             //Query 
             {
-                if (devDebug.debugOn)
-                    msg = `watchEntityGoals is ${devDebug.watchEntityGoals ? '§aON' : '§cOFF'}`;
+                if (devOld.debugOn)
+                    msg = `watchEntityGoals is ${devOld.watchEntityGoals ? '§aON' : '§cOFF'}`;
                 else
                     msg = `debugging is §cOFF`;
             }
             const player = origin.sourceEntity;
-            player.sendMessage(`${devDebug.dsb.displayPfx} ${msg}`);
+            player.sendMessage(`${devOld.dsb.displayPfx} ${msg}`);
         }
         const result = { status: CustomCommandStatus.Success };
         return result;
@@ -307,20 +307,20 @@ function register_watchEntityEvents (registry) {
             if (!arg) arg = 'query';
             let msg = '';
             if (arg == 'on') {
-                if (!(devDebug.debugOn && devDebug.watchEntityEvents)) {
-                    devDebug.debugOn = true;
-                    devDebug.watchEntityEvents = true;
+                if (!(devOld.debugOn && devOld.watchEntityEvents)) {
+                    devOld.debugOn = true;
+                    devOld.watchEntityEvents = true;
                     msg = `watchEntityEvents is now §aON`;
-                    devDebug.anyOn();
+                    devOld.anyOn();
                 }
                 else
                     msg = `watchEntityEvents is already §aON`;
             }
             else if (arg == 'off') {
-                if (devDebug.watchEntityEvents) {
-                    devDebug.watchEntityEvents = false;
+                if (devOld.watchEntityEvents) {
+                    devOld.watchEntityEvents = false;
                     msg = `watchEntityEvents is now §cOFF`;
-                    devDebug.anyOn();
+                    devOld.anyOn();
                 }
                 else
                     msg = `watchEntityEvents is already §cOFF`;
@@ -328,8 +328,8 @@ function register_watchEntityEvents (registry) {
             else
             //Query 
             {
-                if (devDebug.debugOn)
-                    msg = `watchEntityEvents is ${devDebug.watchEntityEvents ? '§aON' : '§cOFF'}`;
+                if (devOld.debugOn)
+                    msg = `watchEntityEvents is ${devOld.watchEntityEvents ? '§aON' : '§cOFF'}`;
                 else
                     msg = `debugging is §cOFF`;
             }
@@ -370,24 +370,24 @@ function register_debug (registry) {
 
             let msg = '';
             if (arg == 'on') {
-                if (!(devDebug.debugOn)) {
-                    devDebug.debugOn = true;
+                if (!(devOld.debugOn)) {
+                    devOld.debugOn = true;
 
                     //TODO: since was off, turn on basic alerts too
 
                     msg = `debugging is now §aON`;
-                    devDebug.anyOn();
+                    devOld.anyOn();
                 }
                 else
                     msg = `debugging is already §aON`;
             }
             else if (arg == 'off') {
-                if (devDebug.debugOn) {
-                    devDebug.debugOn = false;
-                    devDebug.allOff();
+                if (devOld.debugOn) {
+                    devOld.debugOn = false;
+                    devOld.allOff();
 
                     msg = `debugging is now §cOFF`;
-                    devDebug.anyOn();
+                    devOld.anyOn();
                 }
                 else
                     msg = `debugging is already §cOFF`;
@@ -395,7 +395,7 @@ function register_debug (registry) {
             else
             //Query 
             {
-                msg = `debugging is ${devDebug.debugOn ? '§aON' : '§cOFF'}`;
+                msg = `debugging is ${devOld.debugOn ? '§aON' : '§cOFF'}`;
             }
             const player = origin.sourceEntity;
             player.sendMessage(`${msgPfx} ${msg}`);
@@ -481,7 +481,7 @@ function register_new_test (registry) {
             }
 
             system.runTimeout(() => {
-                devDebug.dsb.reset({ bases: [], reCreate: true });
+                devOld.dsb.reset({ bases: [], reCreate: true });
                 player.teleport({ x: xz.x, y: 150, z: xz.z });
             }, 5);
         }
@@ -518,15 +518,15 @@ function register_scoreboards (registry) {
 
             if (arg === 'hide') {
                 system.run(() => {
-                    devDebug.dsb.hide();
+                    devOld.dsb.hide();
                 });
             }
             else if (arg == 'reset') {
                 const side = ScoreboardLib.sideBar_query()?.id;
                 if (side)
                     system.run(() => {
-                        devDebug.dsb.reset({ bases: [ side ], reCreate: false });
-                        system.runTimeout(() => { devDebug.dsb.show(side); }, 1);
+                        devOld.dsb.reset({ bases: [ side ], reCreate: false });
+                        system.runTimeout(() => { devOld.dsb.show(side); }, 1);
                     });
                 else
                     chatLog.warn('There is no scoreboard showing, nothing to reset.  §lDid you mean to use reset_all?');
@@ -534,29 +534,29 @@ function register_scoreboards (registry) {
             else if (arg == 'reset_all') {
                 const side = ScoreboardLib.sideBar_query()?.id;
                 system.run(() => {
-                    devDebug.dsb.reset({ bases: [], reCreate: false });
-                    system.runTimeout(() => { if (side) devDebug.dsb.show(side); }, 1);
+                    devOld.dsb.reset({ bases: [], reCreate: false });
+                    system.runTimeout(() => { if (side) devOld.dsb.show(side); }, 1);
                 });
             }
             else if ([ 'ctrs', 'deaths', 'stats','actions' ].includes(arg)) {
                 system.run(() => {
-                    chatLog.log(`Switching to ${devDebug.dsb.getScoreboardName(arg)}`);
-                    devDebug.dsb.show(arg);
+                    chatLog.log(`Switching to ${devOld.dsb.getScoreboardName(arg)}`);
+                    devOld.dsb.show(arg);
                 });
             }
             else if (arg == 'zero') {
                 const side = ScoreboardLib.sideBar_query()?.id;
                 if (side)
                     system.run(() => {
-                        devDebug.dsb.zero([ side ]);
-                        system.runTimeout(() => { devDebug.dsb.show(side); }, 1);
+                        devOld.dsb.zero([ side ]);
+                        system.runTimeout(() => { devOld.dsb.show(side); }, 1);
                     });
                 else
                     chatLog.warn('There is no scoreboard showing, nothing to zero.  §lDid you mean to use zero_all?');
             }
             else if (arg == 'zero_all') {
                 system.run(() => {
-                    devDebug.dsb.zero([]);
+                    devOld.dsb.zero([]);
                 });
             }
 
@@ -578,7 +578,7 @@ export function registerCustomCommands (registry) {
     //Register Enums here
     register_about(registry);
     
-    if (devDebug.debugOn) {
+    if (devOld.debugOn) {
         register_delta(registry);
         register_new_test(registry);
         register_getGeoInfo(registry);

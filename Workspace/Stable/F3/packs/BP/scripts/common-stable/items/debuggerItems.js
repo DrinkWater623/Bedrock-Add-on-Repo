@@ -10,7 +10,7 @@ Change Log: 20250116 - Add Block from Ray Cast if different from View
             20251207 - Relocated and renamed
 ========================================================================*/
 import {  Player, World, ItemStack  } from '@minecraft/server';
-import { Debugger } from '../tools/debuggerClass.js';
+import { Debugger } from '../debug/debuggerClass.js';
 //=============================================================================
 // For Debugging
 /**

@@ -6,13 +6,12 @@ License: M.I.T.
 URL: https://github.com/DrinkWater623
 ========================================================================
 Change Log: 
-    20251023 - DW623 - Refactored and add in stable stuff and update to api 2.0 and move debug-only stuff out
+    20251208 - DW623 - Refactored and add in stable stuff and update to api 2.0 and move debug-only stuff out
     20251102 - DW623 - Refactored and created basic structure of the classes
     20251202 - DW623 - DRY subscribe/unsubscribe via SubscriptionEntry base
     20251207 - DW623 - Had Chatty add subscribeWithOptions
 ========================================================================*/
 import { alertLog } from "../../settings.js";  //every add-on of mine, has a settings file
-import { ConsoleAlert } from "../tools/messageLib.js";
 const masterDebugOn = false;
 //==============================================================================
 /**
@@ -27,8 +26,6 @@ class SubscriptionOwner {
     constructor(ownerName, packName, debug = false) {
         /** @type {string} */
         this._name = ownerName;
-        /** @type {ConsoleAlert} */
-        this.alertLog = alertLog;
         /** @type {boolean} */
         this.debugAll = debug || masterDebugOn;
 
@@ -59,12 +56,12 @@ class SubscriptionOwner {
  */
 class SubscriptionEntry {
     /**
-     * 
-     * @param {SubscriptionOwner} owner
-     * @param {string} keyName
-     * @param {{ subscribe(fn: HandlerFn, options?: any): Handle; unsubscribe(handle: Handle): void }} eventSignal
-     * @param {string} [label] Optional label for logging; defaults to "ownerName.keyName"
-     */
+    * 
+    * @param {SubscriptionOwner} owner
+    * @param {string} keyName
+    * @param {{ subscribe(fn: HandlerFn): Handle; unsubscribe(handle: Handle): void }} eventSignal
+    * @param {string} [label] Optional label for logging; defaults to "ownerName.keyName"
+    */
     constructor(owner, keyName, eventSignal, label) {
         /** @type {string} */
         this._name = `${owner._name}.${keyName}`;
@@ -74,13 +71,7 @@ class SubscriptionEntry {
         /** @type {SubscriptionOwner} */
         this._owner = owner;
 
-        /** @type {{ subscribe(fn: HandlerFn, options?: any): Handle; unsubscribe(handle: Handle): void }} */
         this.eventSignal = eventSignal;
-
-        /** @type {ConsoleAlert} */
-        this.alertLog = owner.alertLog;
-
-        /** @type {boolean} */
         this.debugMe = owner.debugAll;
 
         /** @type {boolean} */
@@ -93,60 +84,38 @@ class SubscriptionEntry {
     }
 
     /**
-     * Internal helper so subscribe + subscribeWithOptions share logic.
      * @param {HandlerFn} fn
-     * @param {any} options
      * @param {boolean} [debug=false]
      */
-    _doSubscribe(fn, options, debug = false) {
+    subscribe (fn, debug = false) {
         const debugMe = debug || this.debugMe;
-        this.alertLog.log(`* ${this._name}.subscribe ()`, debugMe);
+        alertLog.log(`* ${this._name}.subscribe ()`, debugMe);
 
         if (this.on) return;
         if (!fn) return;
 
-        // Bedrock subscribe accepts options for events that support them;
-        // for others, the extra arg is simply ignored.
-        this.handler = this.eventSignal.subscribe(fn, options);
+        this.handler = this.eventSignal.subscribe(fn);
         this.on = true;
-        this.alertLog.success(`§aSubscribed to ${this._subscription}`, debugMe);
-    }
-
-    /**
-     * @param {HandlerFn} fn
-     * @param {boolean} [debug=false]
-     */
-    subscribe(fn, debug = false) {
-        this._doSubscribe(fn, undefined, debug);
-    }
-
-    /**
-     * @param {HandlerFn} fn
-     * @param {any} [options={}]
-     * @param {boolean} [debug=false]
-     */
-    subscribeWithOptions(fn, options = {}, debug = false) {
-        this._doSubscribe(fn, options, debug);
+        alertLog.success(`§aSubscribed to ${this._subscription}`, debugMe);
     }
 
     /**
      * @param {boolean} [debug=false]
      */
-    unsubscribe(debug = false) {
+    unsubscribe (debug = false) {
         const debugMe = debug || this.debugMe;
-        this.alertLog.warn(`* ${this._name}.unsubscribe ()`, debugMe);
+        alertLog.warn(`* ${this._name}.unsubscribe ()`, debugMe);
 
         if (!this.on) return;
 
         if (this.handler) {
             this.eventSignal.unsubscribe(this.handler);
             this.handler = null;
-            this.alertLog.success(`§aUnsubscribed to ${this._subscription}`, debugMe);
+            alertLog.success(`§aUnsubscribed to ${this._subscription}`, debugMe);
         }
         this.on = false;
     }
 }
-
 //==============================================================================
 // Exports (if you want to use them from other files)
 //==============================================================================

@@ -33,6 +33,13 @@ export class PlayerLib {
       * @param {Player} player 
       * @returns {boolean}
       */
+    static isGameModeSpectator (player) {
+        return player?.getGameMode().toLowerCase() === 'spectator' || false;
+    };
+    /**
+      * @param {Player} player 
+      * @returns {boolean}
+      */
     static isGameModeSurvival (player) {
         return player?.getGameMode().toLowerCase() === 'survival' || false;
     };
@@ -189,6 +196,7 @@ export class PlayerLib {
                         const topBlockLocation = topBlock.location;
                         topBlockLocation.y++;
                         player.teleport(topBlockLocation);
+                        
                     }
                     else {
                         player.addEffect("minecraft:slow_falling", TicksPerSecond * 10, { amplifier: 100, showParticles: false });

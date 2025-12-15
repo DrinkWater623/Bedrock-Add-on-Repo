@@ -9,36 +9,27 @@ URL: https://github.com/DrinkWater623
 Last Update: 20251023 - add in stable stuff and update to api 2.0 and move debug-only stuff out
 ========================================================================*/
 import { world, system } from "@minecraft/server";
-//Subscriptions
-// import { PlayerBreakBlockAfterEvent, PlayerBreakBlockAfterEventSignal } from "@minecraft/server";
-// import { PlayerInteractWithBlockAfterEvent, PlayerInteractWithBlockAfterEventSignal } from "@minecraft/server";
-// import { PlayerInteractWithBlockBeforeEvent, PlayerInteractWithBlockBeforeEventSignal } from "@minecraft/server";
-//import { PlayerPlaceBlockAfterEvent, PlayerPlaceBlockAfterEventSignal } from "@minecraft/server";
 //Shared
-import { Vector2Lib, Vector3Lib } from "./common-stable/tools/vectorClass.js";
-import { FaceLocationGrid, } from "./common-stable/blocks/blockFace.js";
 import { PlayerSubscriptions } from "./common-stable/subscriptions/playerSubs-stable.js";
 import { SystemSubscriptions } from "./common-stable/subscriptions/systemSubs-stable.js";
+import { DynamicPropertyLib } from "./common-stable/tools/dynamicPropertyClass.js";
 //Local
-import { alertLog, chatLog, pack, packDisplayName, watchFor } from './settings.js';
-import { devDebug } from "./helpers/fn-debug.js";
+import { pack, packDisplayName, watchFor } from './settings.js';
+import { dev } from "./debug.js";
 import { lightArrow_onPlace, lightBar_onPlace, lightMiniBlock_onPlace } from "./blockComponent.js";
 import { registerCustomCommands } from "./chatCmds.js";
 //==============================================================================
-/** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /** The function type subscribe expects. */
 //  Blocks
 /** @typedef {Parameters<typeof world.beforeEvents.playerInteractWithBlock.subscribe>[0]} BeforePlayerInteractWithBlockHandler */
-/** @typedef {Parameters<typeof world.beforeEvents.playerPlaceBlock.subscribe>[0]} BeforePlayerPlaceBlockHandler */
+// Items
+/** @typedef {Parameters<typeof world.beforeEvents.itemUse.subscribe>[0]} BeforeItemUseHandler */
 // System
 /** @typedef {Parameters<typeof system.beforeEvents.startup.subscribe>[0]} BeforeStartupHandler */
 //==============================================================================
-const debugOn = false || devDebug.debugOn;
-const debugFunctionsOn = false || devDebug.debugFunctionsOn;
-const debugSubscriptionsOn = devDebug.debugSubscriptionsOn;
 //==============================================================================
-const playerSubs = new PlayerSubscriptions(packDisplayName, debugSubscriptionsOn);
-const systemSubs = new SystemSubscriptions(packDisplayName, debugSubscriptionsOn);
+const playerSubs = new PlayerSubscriptions(packDisplayName, dev.debugSubscriptions.debugSubscriptionsOn);
+const systemSubs = new SystemSubscriptions(packDisplayName, dev.debugSubscriptions.debugSubscriptionsOn);
 //==============================================================================
 /** @type {BeforeStartupHandler} */
 const onBeforeStartup = (event) => {
@@ -58,48 +49,41 @@ const onBeforeStartup = (event) => {
     );
 };
 //==============================================================================
-/** @type {BeforePlayerInteractWithBlockHandler} */
-const onBeforePlayerInteract = (event) => {
+/**
+ * Captures the faceLocation information for the placeBlock event to use for permutations. 
+ * Maybe one day they will add that property to the placeBlock event directly.
+ * 
+ * Alter and add your block lists in settings.js watchFor as needed
+ *  @type {BeforePlayerInteractWithBlockHandler} 
+ * */
+const onBeforePlayerInteractWithBlock = (event) => {
     event.cancel = false;
     if (!event.isFirstEvent) return;
 
-    const player = event.player;
-    if (!player || !player.isValid) return;
+    const debug = dev.debugEvents.beforePlayerInteractWithBlock
 
-    const itemStack = event.itemStack;
-    if (!itemStack) return;
-    if (!watchFor.onPlaceBlockList().includes(itemStack.typeId)) return;
-
-    const { block } = event;
-    //later verify okay block to place on - maybe
-
-    const { typeId, location } = block;
-    const itemStackBlock = itemStack.typeId;
-    const faceLocation = event.faceLocation;
-
-    //save this to player for the custom component to verify/use
-    player.setDynamicProperty('dw623:lastInteractBlockLocation', location);
-    player.setDynamicProperty('dw623:lastInteractFaceLocation', faceLocation);
-    player.setDynamicProperty('dw623:lastInteractItemStack', itemStackBlock);
-    return;   
+    DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_set(
+        event,
+        [], // block list not used here, this is the block touched.  Not cared about
+        watchFor.onUseBlockAsItemList,
+        debug
+    );
 };
 //==============================================================================
 export function subscriptionsStable () {
-    const _name = 'function subscriptionsStable';
-    alertLog.log(`§v* ${_name} ()`, debugFunctionsOn);
+    const _name = 'subscriptionsStable';
+    dev.alertFunction(_name, true);
 
     //2 ways to do it.  Use register for bulk tho
     systemSubs.register({ beforeStartup: onBeforeStartup });
-    playerSubs.beforePlayerInteractWithBlock.subscribe(onBeforePlayerInteract);
+    playerSubs.beforePlayerInteractWithBlock.subscribe(onBeforePlayerInteractWithBlock);
 
     world.afterEvents.worldLoad.subscribe((event) => {
         pack.worldLoaded = true;
-        alertLog.success(`Subscribed to world.afterEvents.worldLoad`, debugSubscriptionsOn);
-        if (debugOn) {
-        }
+        dev.alertSubscriptionSuccess(`world.afterEvents.worldLoad`);
     });
 
-    alertLog.log(`'§8x ${_name} ()'`, debugFunctionsOn);
+    dev.alertFunction(_name, false);
 }
 //==============================================================================
 // End of File

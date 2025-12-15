@@ -2,18 +2,17 @@
 // @ts-check
 //==============================================================================
 // Minecraft
-import { system, Player, world } from "@minecraft/server";
-import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus, CustomCommandParamType, CustomCommandOrigin } from "@minecraft/server";
-// Shared
+import { Player } from "@minecraft/server";
+import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus } from "@minecraft/server";
 // Local
-import { alertLog, chatLog, pack, packDisplayName } from './settings.js';
-//==============================================================================
-const debugFunctions = false;
+import { pack, packDisplayName } from './settings.js';
+import { dev } from "./debug.js";
 //==============================================================================
 /**
  * @param {CustomCommandRegistry} registry 
  */
 function register_about (registry) {
+    dev.alertFunction('register_about');
     const cmd = {
         name: `${pack.cmdNameSpace}:about_lights`,
         description: "Info/Help for DW623's Actionbar Compass add-on",
@@ -26,13 +25,12 @@ function register_about (registry) {
      */
     registry.registerCommand(cmd, (origin) => {
         if (origin.sourceEntity instanceof Player) {
-
-            origin.sourceEntity.sendMessage(`
-\n${packDisplayName}:                
+            const msg=`\n${packDisplayName}:                
 §r§a${pack.about}
 §r§b${pack.devUrl}
 §r§c${pack.reportBugs}
-`);
+`;
+            origin.sourceEntity.sendMessage(msg);
         }
 
         const result = { status: CustomCommandStatus.Success };
@@ -46,7 +44,7 @@ function register_about (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 export function registerCustomCommands (registry) {
-    alertLog.log('§v* function registerCustomCommands ()', debugFunctions);
+    dev.alertFunction('registerCustomCommands');
     register_about(registry);
 }
 //==============================================================================

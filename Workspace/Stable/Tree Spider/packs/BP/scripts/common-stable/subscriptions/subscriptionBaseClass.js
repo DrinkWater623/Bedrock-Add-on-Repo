@@ -6,12 +6,12 @@ License: M.I.T.
 URL: https://github.com/DrinkWater623
 ========================================================================
 Change Log: 
-    20251023 - DW623 - Refactored and add in stable stuff and update to api 2.0 and move debug-only stuff out
+    20251208 - DW623 - Refactored and add in stable stuff and update to api 2.0 and move debug-only stuff out
     20251102 - DW623 - Refactored and created basic structure of the classes
     20251202 - DW623 - DRY subscribe/unsubscribe via SubscriptionEntry base
+    20251207 - DW623 - Had Chatty add subscribeWithOptions
 ========================================================================*/
 import { alertLog } from "../../settings.js";  //every add-on of mine, has a settings file
-//==============================================================================
 const masterDebugOn = false;
 //==============================================================================
 /**

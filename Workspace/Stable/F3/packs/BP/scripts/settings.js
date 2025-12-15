@@ -1,8 +1,6 @@
 //@ts-check
 import { world } from "@minecraft/server";
 import { ConsoleAlert, ChatMsg } from "./common-stable/tools/messageLib";
-import { DebuggerBlocks } from "./common-stable/blocks/debuggerBlocks";
-import { DebuggerItems } from "./common-stable/items/debuggerItems";
 //==============================================================================
 /**
  *  Owner is to edit this file as needed
@@ -10,6 +8,7 @@ import { DebuggerItems } from "./common-stable/items/debuggerItems";
 //==============================================================================
 export const pack = {
     packName: 'F3 Testing',
+    debugOn: true,
 
     about: 'Testing for Subscription Events and Custom Components',
     devUrl: 'https://github.com/DrinkWater623',
@@ -24,8 +23,6 @@ export const pack = {
 export const packDisplayName = `§6${pack.packName}§r`;
 export const alertLog = new ConsoleAlert(`§d${pack.packName}§r`);
 export const chatLog = new ChatMsg(`§b${pack.packName}§r`);
-export const debuggerBlocks = new DebuggerBlocks(packDisplayName, true, world);
-export const debuggerItems = new DebuggerItems(packDisplayName, true, world);
 //==============================================================================
 export const watchFor = {
     //--------------
@@ -45,8 +42,28 @@ export const watchFor = {
     miniBlocks: [
         'dw623:bedrock_mini_block'
     ],
+    onUseBlockAsItemList: [ '' ],
+    /**@returns{string[]} */
+    onPlaceBlockList () {
+        const blocks = [
+            ...this.arrowBlocks,
+            ...this.barBlocks,
+            ...this.miniBlocks
+        ];
+        return blocks;
+    },
+    /**@returns{string[]} */
+    onBreakBlockList: [ '' ],
+    /**@returns{string[]} */
+    customItemList: [
+        "dw623:light_arrow_template"
+    ],
+    entityList: [
+        "dw623:light_arrow_template"
+    ]
     //--------------
 };
+watchFor.onUseBlockAsItemList = [...watchFor.onPlaceBlockList()];
 //==============================================================================
 export const toggles = {
     //entities

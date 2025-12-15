@@ -1,11 +1,11 @@
 //@ts-check
 import { BlockComponentPlayerPlaceBeforeEvent, system, Direction } from "@minecraft/server";
 //==============================================================================
-import { alertLog, chatLog, watchFor, debuggerBlocks, dev } from "./settings.js";
+import { alertLog, chatLog, watchFor } from "./settings.js";
 import { Vector2Lib, Vector3Lib } from "./common-stable/tools/vectorClass.js";
 import { FaceLocationGrid, } from "./common-stable/blocks/blockFace.js";
 import { DynamicPropertyLib } from "./common-stable/tools/dynamicPropertyClass.js";
-import { devDebug } from "./helpers/fn-debug.js";
+import { dev } from "./debug.js";
 //==============================================================================
 /**
  * @typedef {'north' | 'south' | 'east' | 'west'} BlockSides  
@@ -22,51 +22,99 @@ const watchMiniBlocks = watchFor.watchMiniBlocks;
  * @param {BlockComponentPlayerPlaceBeforeEvent} event 
  */
 export function arrow_onPlace (event) {
-    const debug = false;
+    const debug = dev.debugOn && dev.blocks.customComponents.onPlace;
     const player = event.player;
     if (!player || !player.isValid) return;
 
     const { block: inAirBlock, face: onBlockFace } = event;
     if (!inAirBlock.isValid) return;
 
-    const lastItemStack = DynamicPropertyLib.getString(player, 'dw623:lastInteractItemStack');
-    const faceLocation = DynamicPropertyLib.getVector(player, 'dw623:lastInteractFaceLocation');
-    const interactBlockLocation = DynamicPropertyLib.getVector(player, 'dw623:lastInteractBlockLocation');
-    debuggerBlocks.consoleLog(`Last Interact DVs (arrow_onPlace)
+    const { typeId, location, dimension } = inAirBlock;
+    const itemStackBlock = event.permutationToPlace.type.id;
+    if (!watchFor.arrowBlocks.includes(itemStackBlock)) return;    
+
+    const lastInteractInfo = DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_get(player);
+    if (lastInteractInfo.tick === 0) {
+        dev.alertLog.error(`No lastInteractInfo found`, debug);
+        return;
+    }
+
+    const currentTick = system.currentTick;
+    //1st check for staleness
+    if (currentTick - lastInteractInfo.tick > 5) {
+        dev.alertLog.error(`lastInteractInfo is stale. currentTick:${currentTick} - lastTick:${lastInteractInfo.tick}>5`, debug);
+        return;
+    }
+    //2nd check for item type match    
+    if (itemStackBlock !== lastInteractInfo.itemTypeId) {
+        dev.alertLog.error(`itemStackBlock (${itemStackBlock}) !== lastItemStack (${lastInteractInfo.itemTypeId})`, debug);
+        return;
+    }
+    //3rd check for adjacency
+    if (!lastInteractInfo.blockLocation) {
+        dev.alertLog.error(`lastInteractInfo.blockLocation is missing`, debug);
+        return;
+    }
+    else if (!Vector3Lib.isAdjacent(location, lastInteractInfo.blockLocation)) {
+        dev.alertLog.error(`location (${Vector3Lib.toString(location, 1, true)}) is not adjacent to lastBlockLocation (${Vector3Lib.toString(lastInteractInfo.blockLocation, 1, true)})`, debug);
+        return;
+    }
+    //That is all that matters to accept the LastInteract info as related to this place event
+
+    const interactBlock = inAirBlock.dimension.getBlock(lastInteractInfo.blockLocation);
+    if (!interactBlock) {
+        dev.alertLog.warn(`interactBlock disappeared`, debug);
+        return;
+    }
+
+    const faceLocation = lastInteractInfo.faceLocation;
+    if (!faceLocation) {
+        dev.alertLog.warn(`faceLocation  is missing`, debug);
+        return;
+    }
+    
+    const interactBlockLocationStr = Vector3Lib.toString(interactBlock.location, 1, true);
+    const faceLocationStr = Vector3Lib.toString(faceLocation, 1, true);
+
+    const grid = new FaceLocationGrid(faceLocation, onBlockFace, player, true, debug);
+    const grid3 = grid.grid(3);
+    const touched = grid.getEdgeName(3);
+
+
+    const lastItemStack = lastInteractInfo.itemTypeId
+    
+    const interactBlockLocation = lastInteractInfo.blockLocation
+    dev.blocks.alertLog(`Last Interact DVs (arrow_onPlace)
     lastItemStack: ${lastItemStack}
     faceLocation: ${faceLocation ? Vector3Lib.toString(faceLocation, 1, true) : '§cMissing'}
     interactBlockLocation: ${interactBlockLocation ? Vector3Lib.toString(interactBlockLocation, 1, true) : '§cMissing'}
     `, watchFor.watchArrows);
 
-    debuggerBlocks.blockPermutationInfo(event.permutationToPlace, player, `Event permutationToPlace (arrow_onPlace)`, watchFor.watchArrows);
-    const itemStackBlock = event.permutationToPlace.type.id;
+    dev.blocks.blockPermutationInfo(event.permutationToPlace,  `Event permutationToPlace (arrow_onPlace)`, watchFor.watchArrows);
     if (itemStackBlock !== lastItemStack) {
-        debuggerBlocks.consoleWarn(`itemStackBlock (${itemStackBlock}) !== lastItemStack (${lastItemStack})`);
+        dev.alertLog.error(`itemStackBlock (${itemStackBlock}) !== lastItemStack (${lastItemStack})`);
     }
 
-    debuggerBlocks.blockInfo(inAirBlock, player, `Event Block (arrow_onPlace)`, watchFor.watchArrows);
+    dev.blocks.blockInfo(inAirBlock, `Event Block (arrow_onPlace)`,debug);
 
     //Get real block based on blockFace ??
     if (interactBlockLocation) {
         if (!Vector3Lib.isAdjacent(inAirBlock.location, interactBlockLocation)) {
-            debuggerBlocks.consoleWarn(`location (${Vector3Lib.toString(inAirBlock.location, 1, true)}) is not adjacent to lastBlockLocation (${Vector3Lib.toString(interactBlockLocation, 1, true)})`);
+            dev.alertLog.error(`location (${Vector3Lib.toString(inAirBlock.location, 1, true)}) is not adjacent to lastBlockLocation (${Vector3Lib.toString(interactBlockLocation, 1, true)})`);
         }
     }
     else return;
-    
+
     if (faceLocation) {
-        debuggerBlocks.blockFaceLocationInfo(onBlockFace, faceLocation, player, [ 3, 4, 6, 7, 8 ], watchFor.watchArrows);
+        dev.blocks.blockFaceLocationInfo(onBlockFace, faceLocation, player, [ 3, 4, 6, 7, 8 ], watchFor.watchArrows);
     }
-    else return
+    else return;
     const touchedBlock = inAirBlock.dimension.getBlock(interactBlockLocation);
     if (touchedBlock)
-        debuggerBlocks.blockInfo(touchedBlock, player, `Touched Block (arrow_onPlace)`, watchFor.watchArrows);
-    
+        dev.blocks.blockInfo(touchedBlock,  `Touched Block (arrow_onPlace)`, debug);
+
     if ([ 'Up', "Down" ].includes(onBlockFace)) return;
 
-    const grid = new FaceLocationGrid(faceLocation, onBlockFace, player, true,dev.debugBlockFunctions);
-    const grid3 = grid.grid(3);
-    const touched = grid.getEdgeName(3);
 
     if (grid3.y !== 1) return; //middle row
     if (grid3.x == 1) return; //middle column up/down
@@ -74,7 +122,7 @@ export function arrow_onPlace (event) {
 
     //reset position    
     const states = event.permutationToPlace.getAllStates();
-    let newPermutation = event.permutationToPlace.withState('minecraft:cardinal_direction', touched);    
+    let newPermutation = event.permutationToPlace.withState('minecraft:cardinal_direction', touched);
     event.cancel = true;
     system.run(() => {
         inAirBlock.dimension.setBlockPermutation(inAirBlock.location, newPermutation);
@@ -99,30 +147,30 @@ export function bar_onPlace (event) {
 
     const lastItemStack = DynamicPropertyLib.getString(player, 'dw623:lastInteractItemStack');
     if (itemStackBlock !== lastItemStack) {
-        debuggerBlocks.consoleWarn(`itemStackBlock (${itemStackBlock}) !== lastItemStack (${lastItemStack})`);
+        dev.alertLog.error(`itemStackBlock (${itemStackBlock}) !== lastItemStack (${lastItemStack})`,);
         return;
     }
 
     const interactBlockLocation = DynamicPropertyLib.getVector(player, 'dw623:lastInteractBlockLocation');
     if (!interactBlockLocation) {
-        debuggerBlocks.consoleWarn(`lastInteractBlockLocation is missing`);
+        dev.alertLog.error(`lastInteractBlockLocation is missing`);
         return;
     }
     else if (!Vector3Lib.isAdjacent(location, interactBlockLocation)) {
-        debuggerBlocks.consoleWarn(`location (${Vector3Lib.toString(location, 1, true)}) is not adjacent to lastBlockLocation (${Vector3Lib.toString(interactBlockLocation, 1, true)})`);
+        dev.alertLog.error(`location (${Vector3Lib.toString(location, 1, true)}) is not adjacent to lastBlockLocation (${Vector3Lib.toString(interactBlockLocation, 1, true)})`);
         return;
     }
 
     const interactBlock = inBlock.dimension.getBlock(interactBlockLocation);
     if (!interactBlock) {
-        debuggerBlocks.consoleWarn(`interactBlock disappeared`);
+        dev.alertLog.error(`interactBlock disappeared`);
         return;
     }
     const interactBlockLocationStr = Vector3Lib.toString(interactBlock.location, 1, true);
 
     const faceLocation = DynamicPropertyLib.getVector(player, 'dw623:lastInteractFaceLocation');
     if (!faceLocation) {
-        debuggerBlocks.consoleWarn(`faceLocation  is missing`);
+        dev.alertLog.error(`faceLocation  is missing`);
         return;
     }
     const grid = new FaceLocationGrid(faceLocation, onBlockFace, player, false, watchBars);
@@ -268,30 +316,30 @@ export function miniBlock_onPlace (event) {
 
     const lastItemStack = DynamicPropertyLib.getString(player, 'dw623:lastInteractItemStack');
     if (itemStackBlock !== lastItemStack) {
-        debuggerBlocks.consoleWarn(`itemStackBlock (${itemStackBlock}) !== lastItemStack (${lastItemStack})`, watchMiniBlocks);
+        dev.alertLog.error(`itemStackBlock (${itemStackBlock}) !== lastItemStack (${lastItemStack})`, watchMiniBlocks);
         return;
     }
 
     const interactBlockLocation = DynamicPropertyLib.getVector(player, 'dw623:lastInteractBlockLocation');
     if (!interactBlockLocation) {
-        debuggerBlocks.consoleWarn(`lastInteractBlockLocation is missing`, watchMiniBlocks);
+        dev.alertLog.error(`lastInteractBlockLocation is missing`, watchMiniBlocks);
         return;
     }
     else if (!Vector3Lib.isAdjacent(location, interactBlockLocation)) {
-        debuggerBlocks.consoleWarn(`location (${Vector3Lib.toString(location, 1, true)}) is not adjacent to lastBlockLocation (${Vector3Lib.toString(interactBlockLocation, 1, true)})`, watchMiniBlocks);
+        dev.alertLog.error(`location (${Vector3Lib.toString(location, 1, true)}) is not adjacent to lastBlockLocation (${Vector3Lib.toString(interactBlockLocation, 1, true)})`, watchMiniBlocks);
         return;
     }
 
     const interactBlock = inBlock.dimension.getBlock(interactBlockLocation);
     if (!interactBlock) {
-        debuggerBlocks.consoleWarn(`interactBlock disappeared`, watchMiniBlocks);
+        dev.alertLog.error(`interactBlock disappeared`, watchMiniBlocks);
         return;
     }
     const interactBlockLocationStr = Vector3Lib.toString(interactBlock.location, 1, true);
 
     const faceLocation = DynamicPropertyLib.getVector(player, 'dw623:lastInteractFaceLocation');
     if (!faceLocation) {
-        debuggerBlocks.consoleWarn(`faceLocation  is missing`, watchMiniBlocks);
+        dev.alertLog.error(`faceLocation  is missing`, watchMiniBlocks);
         return;
     }
     const grid = new FaceLocationGrid(faceLocation, onBlockFace, player, false, watchMiniBlocks);
