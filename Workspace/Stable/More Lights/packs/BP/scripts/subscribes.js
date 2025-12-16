@@ -10,8 +10,8 @@ Last Update: 20251023 - add in stable stuff and update to api 2.0 and move debug
 ========================================================================*/
 import { world, system } from "@minecraft/server";
 //Shared
-import { PlayerSubscriptions } from "./common-stable/subscriptions/playerSubs-stable.js";
-import { SystemSubscriptions } from "./common-stable/subscriptions/systemSubs-stable.js";
+import { PlayerSubscriptions } from "./common-stable/subscriptions/playerSubs.js";
+import { SystemSubscriptions } from "./common-stable/subscriptions/systemSubs.js";
 import { DynamicPropertyLib } from "./common-stable/tools/dynamicPropertyClass.js";
 //Local
 import { pack, packDisplayName, watchFor } from './settings.js';

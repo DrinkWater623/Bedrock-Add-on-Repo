@@ -1,4 +1,4 @@
-// systemSubs-stable.js
+// systemSubs.js
 // @ts-check
 /* =====================================================================
 Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
@@ -10,11 +10,14 @@ Change Log:
     20251102 - DW623 - Refactored and created basic structure of the classes
     20251202 - DW623 - DRY subscribe/unsubscribe via SubscriptionEntry base
                         isolate system subs to own file
+    20251216 - DW623 - Added Event Options and renamed
 ========================================================================*/
 // Minecraft
 import {  system } from "@minecraft/server";
 // Shared
 import { SubscriptionEntry, SubscriptionOwner } from "./subscriptionBaseClass.js";
+//==============================================================================
+/** @typedef {import("@minecraft/server").ScriptEventMessageFilterOptions} ScriptEventMessageFilterOptions */
 //==============================================================================
 // Typedefs for handlers (function type subscribe expects).
 // System
@@ -37,7 +40,7 @@ export class SystemSubscriptions extends SubscriptionOwner {
 
         /**
          * Script event receive
-         * @type {SubscriptionEntry<AfterScriptEventReceiveHandler, AfterScriptEventReceiveHandle>}
+         * @type {SubscriptionEntry<AfterScriptEventReceiveHandler, AfterScriptEventReceiveHandle,ScriptEventMessageFilterOptions>}
          */
         this.afterScriptEventReceive = new SubscriptionEntry(
             this,

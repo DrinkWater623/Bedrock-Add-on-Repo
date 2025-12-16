@@ -25,33 +25,30 @@ import { Debugger } from './debuggerClass.js';
 /** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
 //=============================================================================
 /*
-world.afterEvents.playerEmote.subscribe((ev) => { });
-world.afterEvents.playerHotbarSelectedSlotChange.subscribe((ev) => { });
-world.afterEvents.playerInputModeChange.subscribe((ev) => { });
-world.afterEvents.playerInputPermissionCategoryChange.subscribe((ev) => { });
-world.afterEvents.playerInventoryItemChange.subscribe((ev) => { });
-world.afterEvents.playerJoin.subscribe((ev) => { });
-world.afterEvents.playerSpawn.subscribe((ev) => { });
-world.afterEvents.playerSwingStart.subscribe((ev) => { });
+    world.afterEvents.playerBreakBlock.subscribe((ev) => { });
+    world.afterEvents.playerEmote.subscribe((ev) => { });
+    world.afterEvents.playerGameModeChange.subscribe((ev) => { });
+    world.afterEvents.playerHotbarSelectedSlotChange.subscribe((ev) => { });
+    world.afterEvents.playerInputModeChange.subscribe((ev) => { });
+    world.afterEvents.playerInputPermissionCategoryChange.subscribe((ev) => { });
+    world.afterEvents.playerInteractWithBlock.subscribe((ev) => { }); 
+    world.afterEvents.playerInteractWithEntity.subscribe((ev) => { });
+    world.afterEvents.playerInventoryItemChange.subscribe((ev) => { });
+    world.afterEvents.playerJoin.subscribe((ev) => { }); 
+    world.afterEvents.playerLeave.subscribe((ev) => { });
+    world.afterEvents.playerPlaceBlock.subscribe((ev) => { });
+    world.afterEvents.playerSpawn.subscribe((ev) => { }); 
+BETAworld.afterEvents.playerSwingStart.subscribe((ev) => { });
+BETAworld.afterEvents.playerUseNameTag.subscribe((ev) => { });
 
-world.afterEvents.playerBreakBlock.subscribe((ev) => { });
-world.beforeEvents.playerBreakBlock.subscribe((ev) => { });
+    world.beforeEvents.playerBreakBlock.subscribe((ev) => { });
+    world.beforeEvents.playerGameModeChange.subscribe((ev) => { });
+    world.beforeEvents.playerInteractWithBlock.subscribe((ev) => { });
+    world.beforeEvents.playerInteractWithEntity.subscribe((ev) => { });
+    world.beforeEvents.playerLeave.subscribe((ev) => { });
+BETAworld.beforeEvents.playerPlaceBlock.subscribe((ev) => { });
 
-world.afterEvents.playerGameModeChange.subscribe((ev) => { });
-world.beforeEvents.playerGameModeChange.subscribe((ev) => { });
-
-world.afterEvents.playerInteractWithBlock.subscribe((ev) => { });
-world.beforeEvents.playerInteractWithBlock.subscribe((ev) => { });
-
-world.afterEvents.playerInteractWithEntity.subscribe((ev) => { });
-world.beforeEvents.playerInteractWithEntity.subscribe((ev) => { });
-
-world.afterEvents.playerLeave.subscribe((ev) => { });
-world.beforeEvents.playerLeave.subscribe((ev) => { });
-
-world.afterEvents.playerPlaceBlock.subscribe((ev) => { });
-world.beforeEvents.playerPlaceBlock.subscribe((ev) => { });
-//Player as Entity
+//Player as Entity (Test)
 world.afterEvents.entityDie.subscribe((ev) => { });
 world.afterEvents.entityHealthChanged.subscribe((ev) => { });
 world.afterEvents.entityHitBlock.subscribe((ev) => { });

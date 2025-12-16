@@ -20,23 +20,6 @@ import { Debugger } from './debuggerClass.js';
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
 //=============================================================================
-/*
-world.afterEvents.entityDie.subscribe( (ev) => {});
-world.afterEvents.entityHealthChanged.subscribe( (ev) => {});
-world.afterEvents.entityHitBlock.subscribe( (ev) => {});
-world.afterEvents.entityHitEntity.subscribe( (ev) => {});
-world.afterEvents.entityHurt.subscribe( (ev) => {});    
-world.afterEvents.entityLoad.subscribe( (ev) => {});
-world.afterEvents.entitySpawn.subscribe( (ev) => {});
-
-world.afterEvents.entityRemove.subscribe( (ev) => {});
-world.beforeEvents.entityRemove.subscribe( (ev) => {}); 
-
-world.afterEvents.playerInteractWithEntity.subscribe( (ev) => {});
-world.beforeEvents.playerInteractWithEntity.subscribe( (ev) => {});
-*/
-
-//=============================================================================
 // For Debugging
 /**
  * Creates a new Debug object

@@ -13,6 +13,7 @@ import { TicksPerSecond } from "@minecraft/server";
 //import { MinecraftBlockTypes, MinecraftItemTypes } from "./vanilla-data.js";
 //========================================================================
 export const mcNameSpace = 'minecraft:';
+export const PLAYER_TYPE_ID = 'minecraft:player'
 //========================================================================
 export class Ticks {
     static perSecond = TicksPerSecond;

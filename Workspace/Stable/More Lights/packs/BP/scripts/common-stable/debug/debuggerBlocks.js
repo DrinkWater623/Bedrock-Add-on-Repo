@@ -24,20 +24,6 @@ import { FaceLocationGrid, } from "../blocks/blockFace.js";
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
 //=============================================================================
-/*
-world.afterEvents.blockExplode.subscribe( (ev) => {});
-world.afterEvents.buttonPush.subscribe( (ev) => {});
-world.afterEvents.leverAction.subscribe( (ev) => {});
-world.afterEvents.pistonActivate.subscribe( (ev) => {});
-world.afterEvents.playerBreakBlock.subscribe( (ev) => {});
-world.afterEvents.playerInteractWithBlock.subscribe( (ev) => {});
-world.afterEvents.playerPlaceBlock.subscribe( (ev) => {});
-world.afterEvents.pressurePlatePop.subscribe( (ev) =>{});
-world.afterEvents.pressurePlatePush.subscribe( (ev) =>{});
-world.afterEvents.targetBlockHit.subscribe( (ev) =>{});
-world.afterEvents.tripWireTrip.subscribe( (ev) =>{});
-*/
-//=============================================================================
 // For Debugging
 /**
  * Creates a new Debug object
@@ -55,6 +41,7 @@ export class DebuggerBlocks extends Debugger {
         Object.assign(this.events, {
             afterBlockExplode: false,
             afterButtonPush: false,
+            afterEntityHitBlock: false,
             afterLeverAction: false,
             afterPistonActivate: false,
             playerBreakBlock: { before: false, after: false },
@@ -66,7 +53,6 @@ export class DebuggerBlocks extends Debugger {
             tripWireTripAfter: false,
         });
         Object.assign(this.customComponents, {
-            customComponentsOn: false,
             onBlockBreak: false,
             onEntityFallOn: false,
             onPlace: false,

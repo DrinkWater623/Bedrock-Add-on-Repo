@@ -64,10 +64,10 @@ export class Dev {
     allOff () {
         if (this.anyOn()) {
             this.alertFunction(`dev.allOff`);            
-            this.blocks.off();
-            this.items.off();
-            this.players.off();
-            this.entities.off();
+            this.blocks.allOff();
+            this.items.allOff();
+            this.players.allOff();
+            this.entities.allOff();
             this.allThisOff(this)
             return !this.anyOn()
         }
@@ -91,7 +91,7 @@ export class Dev {
             }
         }
     }
-    //Maybe take out, should probably not be used
+    //Maybe take out, should probably not be used EVER -- too much, too many
     allOn () {
         console.warn(`${this.pack_name}: §a* function dev.allOn ()`);
         let noChange = this.debugOn;
@@ -110,6 +110,9 @@ export class Dev {
     }
     anyOn () {
         this.debugOn = false;
+
+        //Leave as this instead of call to anyThisOn, no recursion should be needed
+        //If ever, then can change it, but try not to assign deep level boolean in base
         let any = false;
         for (const [ , v ] of Object.entries(this)) {
             if (typeof v === "boolean") {
@@ -120,6 +123,7 @@ export class Dev {
         //needs to  do so that internal master flag is set
         any = this.anyFunctionsOn() || any;
         any = this.anySubscriptionsOn() || any;
+        any = this.anyFunctionsOn() || any
         any = this.anyEventsOn() || any;
 
         //user can set any of these flags to use in project - but no master flags

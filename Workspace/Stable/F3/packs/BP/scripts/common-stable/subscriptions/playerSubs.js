@@ -1,4 +1,4 @@
-// playerSubs-stable.js
+// playerSubs.js
 // @ts-check
 /* =====================================================================
 Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
@@ -11,6 +11,7 @@ Change Log:
     20251202 - DW623 - DRY subscribe/unsubscribe via SubscriptionEntry base
                         Players isolated to own file
     20251214 - DW623 - Add more subs
+    20251216 - DW623 - Added Event Options and renamed
 ========================================================================*/
 // Minecraft
 import { world   } from "@minecraft/server";

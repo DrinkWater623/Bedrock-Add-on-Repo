@@ -15,21 +15,6 @@ Change Log:
 ========================================================================*/
 import { Player, World, ItemStack, world } from '@minecraft/server';
 import { Debugger } from './debuggerClass.js';
-//==============================================================================
-/** @typedef {import("@minecraft/server").Vector2} Vector2 */
-/** @typedef {import("@minecraft/server").Vector3} Vector3 */
-/** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
-//=============================================================================
-/*
-world.afterEvents.itemCompleteUse.subscribe( (ev) => {  } );
-world.afterEvents.itemReleaseUse.subscribe( (ev) => {  } );
-world.afterEvents.itemStartUse.subscribe( (ev) => {  } );
-world.afterEvents.itemStartUseOn.subscribe( (ev) => {  } );
-world.afterEvents.itemStopUse.subscribe( (ev) => {  } );
-world.afterEvents.itemStopUseOn.subscribe( (ev) => {  } );
-world.afterEvents.itemUse.subscribe( (ev) => {  } );
-world.beforeEvents.itemUse.subscribe( (ev) => {  } );
-*/
 //=============================================================================
 // For Debugging
 /**
