@@ -1,21 +1,71 @@
-// debug.js
+// debug.js - More Lights Bedrock Add-on
 // @ts-check
 /* =====================================================================
 Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
 License: M.I.T. (https://www.gnu.org/licenses/gpl-3.0.html)
 URL: https://github.com/DrinkWater623
 ========================================================================
+    TODO:
+    Note: all of this will be moved to the F3 Info Add-on after I have the arrow showing what I want
+    I can test objects there better and program for all events in order to deep dive test order of events
+    and given event information, so I can finagle what I want when they do not provide it.
+    Can't keep a coder with the best ChatGPT down....
+
+    Notes to self: 
+        the objects in the child class are really meant for watching the event for a particular object type
+        and being able to turn on and off easily without looking through the scripts
+        as long as I am consistent about usage and do not do band-aid adhoc alerts here and there
+========================================================================
 Last Update: 20251129 
 ========================================================================*/
-// Minecraft
-
-// Shared
-
-// Local
 import { pack, packDisplayName } from './settings.js';
 import { DevBlocks } from './common-stable/debug/devLib.js';
+//import { objectEntries_set_booleans, objectEntries_set_booleans_opts, objectEntries_toggle_booleans, objectEntries_toggle_booleans_opts, objectKeysWhereBoolean } from './common-stable/tools/objects.js';
 //==============================================================================
 // JSDoc Makes the squiggly red lines go away....
+//==============================================================================
+/*  Hey YOU... update the 2 "const objects" below and keep your grubby hand out of the Class (if you can)
+    Start everything or most everything as false and toggle on via command registry while in game play
+    It will be overwhelming if everything is on and you've programmed the debug info for it.
+*/
+/** @type {Record<string, boolean>} */
+const WATCHING_OBJECT_TYPES = {
+    //Can be block, item or entity - be mindful of the naming convention so that everything flows
+    arrow: true,
+    bar: false,
+    miniBlock: false
+};
+/** @type {Record<string, boolean>} */
+const WATCHING_EVENTS = {
+    //keep to the naming convention
+    //subscription events
+    afterStartUse: false,
+    afterStartUseOn: false,
+    beforeItemUse: false,
+    beforePlayerInteractWithBlock: true,
+    //custom component events
+    onPlace: true,
+};
+//Auto build the combination of the above 2 objects i.e. beforeItemUse_arrow
+//const WATCHING_OBJECT_EVENTS = buildWatchingObjectEvents(WATCHING_EVENTS, WATCHING_OBJECT_TYPES);
+/*
+Use Subscriptions and Functions for a generic/general non particular object event watching
+Turn off and on manually as needed and alter your scripts to use it as needed
+May have support functions later - but I do not see any need, unless I want to turn off all entity or all block/item events
+(as long as the word is in the name, else I have add them all)
+Better yet, use the debuggerBlocks object in the class, it has them ALL
+*/
+/** @type {Record<string, boolean>} */
+const WATCHING_SUBSCRIPTIONS = {};
+/** @type {Record<string, boolean>} */
+const WATCHING_FUNCTIONS = {
+    faceLocationGrid: false,
+};
+// Optional: make your “defaults” truly non-mutable
+// Object.freeze(WATCHING_OBJECT_TYPES);
+// Object.freeze(WATCHING_EVENTS);
+// Object.freeze(WATCHING_OBJECT_EVENTS);
+
 //==============================================================================
 class DevMoreLights extends DevBlocks {
     /**
@@ -25,68 +75,68 @@ class DevMoreLights extends DevBlocks {
     constructor(pack_name) {
         super(pack_name, pack.debugOn);
 
-        Object.assign(this.debugFunctions, {
-            faceLocationGrid: true,
-        });
-
-        Object.assign(this.debugEvents, this.debugEvents, {
-
-            // Block Component Events
-            onPlace_arrow: true,
-            onPlace_bar: true,
-            onPlace_miniBlock: true,
-
-            //Minecraft Events
-            beforePlayerInteractWithBlock_arrow: true,
-            beforePlayerInteractWithBlock_bar: true,
-            beforePlayerInteractWithBlock_miniBlock: true,
-
-            afterStartUse_arrow: true,
-            afterStartUse_bar: true,
-            afterStartUse_miniBlock: true,
-
-            beforeUse_arrow: true,
-            beforeUse_bar: true,
-            beforeUse_miniBlock: true,
-
-            // Summary flags - Auto set
-            afterStartUse: false,
-            beforePlayerInteractWithBlock: false,
-            beforeUse: false,
-        });
-
-        Object.assign(this.debugSubscriptions, {
-            none: false,
-        });
+        //user alter this in above CONSTS
+        Object.assign(this.debugObjectTypes, WATCHING_OBJECT_TYPES);
+        Object.assign(this.debugEventsWatching, WATCHING_EVENTS);
+        //Object.assign(this.debugEvents, WATCHING_OBJECT_EVENTS);
+        Object.assign(this.debugFunctions, WATCHING_FUNCTIONS);
+        Object.assign(this.debugSubscriptions, WATCHING_SUBSCRIPTIONS);
         /*
         Master override - if pack setting does not have debugOn, then turn it all off
-        That way can have a master switch
+        That way we can have a master switch
         */
-        if (pack.debugOn) this.setupAlerts();
-        else this.allOff();
+        if (!pack.debugOn)
+            this.allOff();
+        else
+            this.global_update();
     }
-    setupAlerts () {
-        this.anyOn();
-        this.alertFunction(`setupAlerts`);
-
-        //Check any... for objects expanded above
-        this.debugEvents.beforePlayerInteractWithBlock = this.debugEvents.beforePlayerInteractWithBlock_arrow ||
-            this.debugEvents.beforePlayerInteractWithBlock_bar ||
-            this.debugEvents.beforePlayerInteractWithBlock_miniBlock;
-
-        this.debugEvents.afterStartUse = this.debugEvents.afterStartUse_arrow ||
-            this.debugEvents.afterStartUse_bar ||
-            this.debugEvents.afterStartUse_miniBlock;
-
-        this.debugEvents.beforeUse = this.debugEvents.beforeUse_arrow ||
-            this.debugEvents.beforeUse_bar ||
-            this.debugEvents.beforeUse_miniBlock;
-
-        this.debugOn = this.anyOn();
-    }
+    // /**
+    //  * @param {"arrow" | "bar" | "miniBlock"} toggleKey
+    //  * @param {boolean} [toggle=this.debugObjectTypes[toggleKey]]
+    //  * @param {boolean} [alert=false]
+    //  * @returns {void}
+    //  */
+    // watch_objectType_set (toggleKey, toggle = this.debugObjectTypes[ toggleKey ], alert = false) {
+    //     this.set_event_by_suffix(toggleKey, toggle, { alert, toggleKey });
+    // }
+    // /**
+    //  * @param {"arrow" | "bar" | "miniBlock"} toggleKey
+    //  * @param {boolean} [alert=false]
+    //  * @returns {void}
+    //  */
+    // objectType_toggle(toggleKey, alert = false){
+    //     this.set_event_by_suffix(toggleKey, !this.debugObjectTypes[ toggleKey ], { alert, toggleKey });
+    // }      
 }
+
 //==============================================================================
 export const dev = new DevMoreLights(packDisplayName);
 //==============================================================================
 // End of File
-//====================================================================
+//==============================================================================
+/** @type {Record<string, boolean>} */
+/*
+const ogWATCHING_OBJECT_EVENTS = {
+    // Block Component Events
+    onPlace_arrow: false,
+    onPlace_bar: false,
+    onPlace_miniBlock: false,
+
+    //Minecraft Events
+    beforePlayerInteractWithBlock_arrow: false,
+    beforePlayerInteractWithBlock_bar: false,
+    beforePlayerInteractWithBlock_miniBlock: false,
+
+    afterStartUse_arrow: false,
+    afterStartUse_bar: false,
+    afterStartUse_miniBlock: false,
+
+    afterStartUseOn_arrow: false,
+    afterStartUseOn_bar: false,
+    afterStartUseOn_miniBlock: false,
+
+    beforeItemUse_arrow: false,
+    beforeItemUse_bar: false,
+    beforeItemUse_miniBlock: false,
+};
+*/

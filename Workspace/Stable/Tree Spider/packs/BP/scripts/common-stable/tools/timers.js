@@ -15,9 +15,8 @@ Change Log:
     20251118 - Fixed return jobs for intervals
 ========================================================================*/
 import { world, system, ScoreboardObjective, TicksPerSecond } from '@minecraft/server';
-import { ScoreboardLib } from './scoreboardClass.js';
+import { ScoreboardLib } from './scoreboardLib.js';
 import { Ticks } from '../../common-data/globalConstantsLib.js';
-import { alertLog } from '../../settings.js';
 //===================================================================
 export class ScoreboardTimers {
     //===================================================================
@@ -97,7 +96,7 @@ export class ScoreboardTimers {
 }
 //====================================================================
 export function getWorldTime () {
-    const daytime = world.getTimeOfDay() + 6000;    
+    const daytime = world.getTimeOfDay() + 6000;
     const datetime = new Date(daytime * 3.6 * 1000);
     return { hours: datetime.getHours(), minutes: datetime.getMinutes() };
 }

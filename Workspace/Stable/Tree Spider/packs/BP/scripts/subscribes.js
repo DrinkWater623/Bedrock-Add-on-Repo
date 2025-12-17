@@ -17,9 +17,9 @@ import { chance } from "./common-stable/tools/mathLib.js";
 import { Vector3Lib } from "./common-stable/tools/vectorClass.js";
 import { DynamicPropertyLib } from "./common-stable/tools/dynamicPropertyClass.js";
 import { EntityLib, spawnEntityAtLocation } from "./common-stable/entities/entityClass.js";
-import { EntitySubscriptions } from "./common-stable/subscriptions/entitySubs-stable.js";
-import { PlayerSubscriptions } from "./common-stable/subscriptions/playerSubs-stable.js";
-import { SystemSubscriptions } from "./common-stable/subscriptions/systemSubs-stable.js";
+import { EntitySubscriptions } from "./common-stable/subscriptions/entitySubs.js";
+import { PlayerSubscriptions } from "./common-stable/subscriptions/playerSubs.js";
+import { SystemSubscriptions } from "./common-stable/subscriptions/systemSubs.js";
 //Local
 import { alertLog, pack, watchFor, entityDynamicVars, packDisplayName } from './settings.js';
 import { registerCustomCommands } from "./chatCmds.js";

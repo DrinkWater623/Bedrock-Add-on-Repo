@@ -11,21 +11,21 @@ Change Log:
     20251203 - Relocated
 ========================================================================
 Legend:
-  c = random consonant
-  v = random vowel (a e i o u y)
-  k = repeat last consonant token (but do NOT double multi-letter phonemes like 'sh')
-  w = repeat last vowel token
+    c = random consonant
+    v = random vowel (a e i o u y)
+    k = repeat last consonant token (but do NOT double multi-letter phonemes like 'sh')
+    w = repeat last vowel token
 Literals (single tokens): y, a, ie (extensible)
 
 Constraints:
-  - No cc or vv adjacent in formulas
-  - 'k' requires a prior 'c', 'w' requires a prior 'v'
-  - Formulas violating these rules are auto-filtered
+    - No cc or vv adjacent in formulas
+    - 'k' requires a prior 'c', 'w' requires a prior 'v'
+    - Formulas violating these rules are auto-filtered
 
 Extras:
-  - Optional 'pronounceable' soft filter with bounded retries
+    - Optional 'pronounceable' soft filter with bounded retries
 Output:
-  - Returns a capitalized name string
+    - Returns a capitalized name string
 */
 
 export function makeRandomName (custom = {}) {

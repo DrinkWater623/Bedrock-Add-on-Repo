@@ -23,6 +23,8 @@ import { registerCustomCommands } from "./chatCmds.js";
 //  Blocks
 /** @typedef {Parameters<typeof world.beforeEvents.playerInteractWithBlock.subscribe>[0]} BeforePlayerInteractWithBlockHandler */
 // Items
+/** @typedef {Parameters<typeof world.afterEvents.itemStartUse.subscribe>[0]} AfterItemStartUseHandler */
+/** @typedef {Parameters<typeof world.afterEvents.itemStartUseOn.subscribe>[0]} AfterItemStartUseOnHandler */
 /** @typedef {Parameters<typeof world.beforeEvents.itemUse.subscribe>[0]} BeforeItemUseHandler */
 // System
 /** @typedef {Parameters<typeof system.beforeEvents.startup.subscribe>[0]} BeforeStartupHandler */
@@ -30,6 +32,10 @@ import { registerCustomCommands } from "./chatCmds.js";
 //==============================================================================
 const playerSubs = new PlayerSubscriptions(packDisplayName, dev.debugSubscriptions.debugSubscriptionsOn);
 const systemSubs = new SystemSubscriptions(packDisplayName, dev.debugSubscriptions.debugSubscriptionsOn);
+const myItemStackWatch = watchFor.onPlaceBlockList();
+const myArrows = watchFor.arrowBlocks();
+const myMiniBlocks = watchFor.miniBlocks();
+const myBars = watchFor.barBlocks();
 //==============================================================================
 /** @type {BeforeStartupHandler} */
 const onBeforeStartup = (event) => {
@@ -59,13 +65,18 @@ const onBeforeStartup = (event) => {
 const onBeforePlayerInteractWithBlock = (event) => {
     event.cancel = false;
     if (!event.isFirstEvent) return;
+    if (!event.itemStack) return;
+    if (!myItemStackWatch.includes(event.itemStack.typeId)) return;
 
-    const debug = dev.debugEvents.beforePlayerInteractWithBlock
+    const debug =
+        (dev.debugEvents.beforePlayerInteractWithBlock_arrow && myArrows.includes(event.itemStack.typeId)) ||
+        (dev.debugEvents.beforePlayerInteractWithBlock_bar && myBars.includes(event.itemStack.typeId)) ||
+        (dev.debugEvents.beforePlayerInteractWithBlock_miniBlock && myMiniBlocks.includes(event.itemStack.typeId));
 
     DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_set(
         event,
         [], // block list not used here, this is the block touched.  Not cared about
-        watchFor.onUseBlockAsItemList,
+        myItemStackWatch,
         debug
     );
 };

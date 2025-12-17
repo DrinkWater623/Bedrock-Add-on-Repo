@@ -5,13 +5,28 @@ Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev
 License: GPL-3.0-only
 URL: https://github.com/DrinkWater623
 ========================================================================
+ Notes to self: 
+    I may get rid of Subscriptions object because the below objects in the parent class 
+    have ALL of the subscriptions as entries (OCD one night) and the user (me) can use them the same way
+    this.blocks = new DebuggerBlocks(pack_name, on && focus.includes('blocks'));
+    this.items = new DebuggerItems(pack_name, on && focus.includes('items'));
+    this.players = new DebuggerPlayers(pack_name, on && focus.includes('players'));
+    this.entities = new DebuggerEntities(pack_name, on && focus.includes('entities'));
+
+    the objects in the child class are really meant for watching the event for a particular object type
+    and being able to turn on and off easily without looking through the scripts
+    as long as I am consistent about usage and do not do band-aid adhoc alerts here and there
+========================================================================
 Change Log: 
     20251213 - Created
     20251214 - Added better tracking of on/off states
-    20251214b- Chatty help me fix red squiggles from JSDoc
+    20251214b- Chatty helped me fix red squiggles from JSDoc
     20251214c- Fixed allOff and anyOn
+    20251216 - Chatty helped me with toggle_events
+    20251216 - Added buildWatchingObjectEvents
 ========================================================================*/
 import { ChatMsg, ConsoleAlert } from '../tools/messageLib.js';
+import { objectEntries_any_booleans_opts, objectEntries_set_booleans_opts, objectKeysWhereBooleanOpts, booleanKeyExist, readBooleanKey } from "../tools/objects.js";
 import { DebuggerBlocks } from './debuggerBlocks.js';
 import { DebuggerEntities } from './debuggerEntities.js';
 import { DebuggerItems } from './debuggerItems.js';
@@ -21,6 +36,7 @@ import { DebuggerPlayers } from './debuggerPlayers.js';
  * @typedef {DebugFlagMap & { debugFunctionsOn: boolean }} DebugFunctionsFlags
  * @typedef {DebugFlagMap & { debugSubscriptionsOn: boolean }} DebugSubscriptionsFlags
  * @typedef {DebugFlagMap & { debugEventsOn: boolean }} DebugEventsFlags
+ * @typedef {DebugFlagMap} DebugEventsWatchingFlags
  */
 //=============================================================================
 // For Debugging
@@ -49,6 +65,12 @@ export class Dev {
         /** @type {DebugSubscriptionsFlags} */
         this.debugSubscriptions = { debugSubscriptionsOn: false };
 
+        /** @type {Record<string, boolean>} */
+        this.debugObjectTypes = {};
+
+        /** @type {DebugEventsWatchingFlags} */
+        this.debugEventsWatching = {};
+
         /** @type {DebugEventsFlags} */
         this.debugEvents = { debugEventsOn: false };
 
@@ -57,21 +79,22 @@ export class Dev {
         this.items = new DebuggerItems(pack_name, on && focus.includes('items'));
         this.players = new DebuggerPlayers(pack_name, on && focus.includes('players'));
         this.entities = new DebuggerEntities(pack_name, on && focus.includes('entities'));
+        //this.blocks.events.
 
         this.alertLog = new ConsoleAlert(pack_name);
         this.chatLog = new ChatMsg(pack_name);
     }
     allOff () {
         if (this.anyOn()) {
-            this.alertFunction(`dev.allOff`);            
+            this.alertFunction(`dev.allOff`);
             this.blocks.allOff();
             this.items.allOff();
             this.players.allOff();
             this.entities.allOff();
-            this.allThisOff(this)
-            return !this.anyOn()
+            this.allThisOff(this);
+            return !this.anyOn();
         }
-        else return true
+        else return true;
     }
     /**
     * 
@@ -79,17 +102,11 @@ export class Dev {
     * @returns 
     */
     allThisOff (objectToTurnOff) {
-        if (this.anyOn()) {
-            this.alertFunction(`dev.allThisOff`);
-            for (const [ k, v ] of Object.entries(this)) {
-                if (typeof v === "boolean") {
-                    // @ts-expect-error index write on object literal
-                    if (v) this[ k ] = /** @type {unknown} */ (false);
-                } else if (typeof v === "object") {
-                    this.allThisOff(v);
-                }
-            }
-        }
+        objectEntries_set_booleans_opts(
+            /** @type {Record<string, unknown>} */(objectToTurnOff),
+            false,
+            { dive: true }
+        );
     }
     //Maybe take out, should probably not be used EVER -- too much, too many
     allOn () {
@@ -123,7 +140,6 @@ export class Dev {
         //needs to  do so that internal master flag is set
         any = this.anyFunctionsOn() || any;
         any = this.anySubscriptionsOn() || any;
-        any = this.anyFunctionsOn() || any
         any = this.anyEventsOn() || any;
 
         //user can set any of these flags to use in project - but no master flags
@@ -136,23 +152,16 @@ export class Dev {
         this.debugOn = any;
         return any;
     }
-    /**
+    /**common-stable/debug/devLib.js
      * 
      * @param {object} objectToCheck 
      * @returns {boolean}
      */
     anyThisOn (objectToCheck) {
-        let any = false;
-        for (const v of Object.values(objectToCheck)) {
-            if (typeof v === "boolean") {
-                any = any || v;
-            } 
-            else if (typeof v === "object") {
-                any=any || this.anyThisOn(v)                
-            }
-            if (any) break;
-        }
-        return any;
+        return objectEntries_any_booleans_opts(
+                /** @type {Record<string, unknown>} */(objectToCheck),
+            { dive: true }
+        );
     }
     anyEventsOn () {
         this.debugEvents.debugEventsOn = false;
@@ -189,6 +198,145 @@ export class Dev {
      */
     alertSubscriptionSuccess (subName) {
         this.alertLog.success(`Subscribed to ${subName}`, this.debugSubscriptions.debugSubscriptionsOn);
+    }
+    global_update () {
+        const derived = this.buildWatchingObjectEvents(this.debugEventsWatching, this.debugObjectTypes);
+
+        const eventNames = objectKeysWhereBooleanOpts(this.debugEvents);
+
+        // Optional: strict mode — detect removed keys / drift
+        for (const k of eventNames) {
+            if (k === "debugEventsOn") continue;
+            if (!(k in derived)) {
+                throw new Error(`Dev/global_update: derived key missing: ${k}`);
+            }
+        }
+
+        Object.assign(this.debugEvents, derived);
+        this.anyOn();
+    }
+    /**
+    *
+    * @param {Record<string,unknown>} map 
+    * @param {"event" | "objectType"} matchBy
+    * @param {string} key
+    * @param {boolean} alert 
+    * @returns {void}
+    */
+    keySuggestion (map, matchBy, key, alert) {
+        const suggestions = objectKeysWhereBooleanOpts(map, { filterStartsWith: key });
+        this.alertLog.log(`§cUnknown ${matchBy}: ${key}§r` +
+            (suggestions.length ? ` §7Did you mean: ${suggestions.join(", ")}§r` : ""),
+            alert
+        );
+    }
+    /**
+     * Toggle either an event watcher (affects `${event}_*`)
+     * or an object type (affects `*_${objectType}`),
+     * while keeping naming convention `${event}_${objectType}`.
+     *
+     * @param {"event" | "objectType"} matchBy
+     * @param {string} key
+     * @param {boolean} toggle
+     * @param {boolean} [alert=false]
+     * @returns {void}
+     */
+    set_EventWatch (matchBy, key, toggle, alert = false) {
+        if (typeof toggle !== "boolean") return;
+        const map = matchBy === "event" ? this.debugEventsWatching : this.debugObjectTypes;
+
+        if (readBooleanKey(map, key) === undefined) {
+            this.keySuggestion(map, matchBy, key, alert);
+            return;
+        }
+
+        map[ key ] = toggle;
+        this.global_update();
+
+        this.alertLog.log(
+            `§6${matchBy} ${key} is now ${toggle ? "§aOn" : "§cOff"}§r`,
+            alert
+        );
+    }
+    /**
+     * @param {"event" | "objectType"} matchBy
+     * @param {string} key
+     * @param {boolean} [alert=false]
+     * @returns {void}
+     */
+    toggle_EventWatch (matchBy, key, alert = false) {
+        const map = matchBy === "event" ? this.debugEventsWatching : this.debugObjectTypes;
+
+        const cur = readBooleanKey(map, key);
+        if (cur === undefined) {
+            this.keySuggestion(map, matchBy, key, alert);
+            return;
+        }
+
+        this.set_EventWatch(matchBy, key, !cur, alert);
+    }
+    /**
+     * @param {string} toggleKey
+     * @param {boolean} [toggle]
+     * @param {boolean} [alert=false]
+     * @returns {void}
+     */
+    objectType_set (toggleKey, toggle = this.debugObjectTypes?.[ toggleKey ], alert = false) {
+        this.set_EventWatch("objectType", toggleKey, toggle, alert);
+    }
+    /**
+     * Toggle a debugObjectTypes entry and sync derived `${event}_${objectType}` flags.
+     *
+     * @param {string} toggleKey
+     * @param {boolean} [alert=false]
+     * @returns {void}
+     */
+    objectType_toggle (toggleKey, alert = false) {
+        this.toggle_EventWatch("objectType", toggleKey, alert);
+    }
+    /**
+     * @param {string} toggleKey
+     * @param {boolean} [toggle]
+     * @param {boolean} [alert=false]
+     * @returns {void}
+     */
+    eventType_set (toggleKey, toggle = this.debugEventsWatching?.[ toggleKey ], alert = false) {
+        this.set_EventWatch("event", toggleKey, toggle, alert);
+    }
+    /**
+     * Toggle a debugObjectTypes entry and sync derived `${event}_${suffix}` flags.
+     *
+     * @param {string} toggleKey
+     * @param {boolean} [alert=false]
+     * @returns {void}
+     */
+    eventType_toggle (toggleKey, alert = false) {
+        this.toggle_EventWatch("event", toggleKey, alert);
+    }
+
+    //==============================================================================
+    /**
+     * Builds `${event}_${suffix}` flags from the AND of the two source maps.
+     *
+     * @param {Record<string, boolean>} watchingEvents
+     * @param {Record<string, boolean>} watchingObjectTypes
+     * @returns {Record<string, boolean>}
+     */
+    buildWatchingObjectEvents (watchingEvents, watchingObjectTypes) {
+        /** @type {Record<string, boolean>} */
+        const out = {};
+
+        const eventNames = objectKeysWhereBooleanOpts(watchingEvents);
+        const typeNames = objectKeysWhereBooleanOpts(watchingObjectTypes);
+
+        for (const eventName of eventNames) {
+            for (const suffix of typeNames) {
+                out[ `${eventName}_${suffix}` ] =
+                    watchingEvents[ eventName ] && watchingObjectTypes[ suffix ];
+            }
+        }
+
+        return out;
     }
 };
 export class DevBlocks extends Dev {
@@ -240,8 +388,7 @@ export class DevEntities extends Dev {
     constructor(pack_name, on = true) {
         super(pack_name, on, [ 'entities' ]);
     }
-}
-export class DevAll extends Dev {
+} export class DevAll extends Dev {
     /**
     * @constructor
     * @param {string} pack_name 

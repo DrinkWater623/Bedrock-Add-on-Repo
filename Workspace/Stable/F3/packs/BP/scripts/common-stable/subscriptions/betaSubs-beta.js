@@ -17,7 +17,11 @@ import { SubscriptionEntry, SubscriptionOwner } from "./subscriptionBaseClass.js
 //==============================================================================
 // Typedefs for handlers (function type subscribe expects).
 /** @typedef {Parameters<typeof world.beforeEvents.playerPlaceBlock.subscribe>[0]} BeforePlayerPlaceBlockHandler */
-//TODO: add the rest
+/*
+TODO: add the rest
+BETAworld.afterEvents.playerSwingStart.subscribe((ev) => { });
+BETAworld.afterEvents.playerUseNameTag.subscribe((ev) => { });
+*/
 //==============================================================================
 // Typedefs for stored handles (Bedrock returns the function reference).
 /** @typedef {ReturnType<typeof world.beforeEvents.playerPlaceBlock.subscribe>} BeforePlayerPlaceBlockHandle */

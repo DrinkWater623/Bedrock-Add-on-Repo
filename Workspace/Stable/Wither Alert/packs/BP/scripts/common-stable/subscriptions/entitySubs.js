@@ -57,7 +57,7 @@ export class EntitySubscriptions extends SubscriptionOwner {
      * @param {boolean} [debug=false]
      */
     constructor(packName, debug = false) {
-        super("entitySubscriptions", packName, debug);
+        super("EntitySubscriptions", packName, debug);
 
         /**
          * @type {SubscriptionEntry<AfterEntityDieHandler, AfterEntityDieHandle,EntityEventOptions>}

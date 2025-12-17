@@ -9,6 +9,7 @@ Change Log:
     20251213 - Created
     20251213b- Convert to console messages only
     20251214 - Better AllOff and AnyOns
+    20251216 - More work
 ========================================================================*/
 import { Entity } from '@minecraft/server';
 // shared
@@ -19,6 +20,20 @@ import { Debugger } from './debuggerClass.js';
 /** @typedef {import("@minecraft/server").Vector2} Vector2 */
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
+const ENTITY_EVENTS = {
+    afterEntityDie: false,
+    afterEntityHealthChanged: false,
+    afterEntityHitBlock: false,
+    afterEntityHitEntity: false,
+    afterEntityHurt: false,
+    afterEntityLoad: false,
+    afterEntitySpawn: false,
+    entityRemove: { before: false, after: false },
+    playerInteractWithEntity: { before: false, after: false },
+};
+const ENTITY_COMPONENT_EVENTS = {
+    none: false
+};
 //=============================================================================
 // For Debugging
 /**
@@ -33,23 +48,11 @@ export class DebuggerEntities extends Debugger {
         */
     constructor(pack_name, on = false) {
         super(pack_name, on);
-
-        Object.assign(this.events, {
-            afterEntityDie: false,
-            afterEntityHealthChanged: false,
-            afterEntityHitBlock: false,
-            afterEntityHitEntity: false,
-            afterEntityHurt: false,
-            afterEntityLoad: false,
-            afterEntitySpawn: false,
-            entityRemove: { before: false, after: false },
-            playerInteractWithEntity: { before: false, after: false },
-        });
-        Object.assign(this.customComponents, {
-            none: false
-        });
-    };   
+        Object.assign(this.events, ENTITY_EVENTS);
+        Object.assign(this.customComponents, ENTITY_COMPONENT_EVENTS);
+    }
     //--------------------------------------------------------------------------
+    //TODO:  not written yet
     /**
      * 
      * @param {Entity} entity

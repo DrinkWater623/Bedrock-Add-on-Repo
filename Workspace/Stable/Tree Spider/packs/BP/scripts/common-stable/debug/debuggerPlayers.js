@@ -55,6 +55,40 @@ world.afterEvents.entityHitBlock.subscribe((ev) => { });
 world.afterEvents.entityHitEntity.subscribe((ev) => { });
 world.afterEvents.entityHurt.subscribe((ev) => { });
 */
+const PLAYER_EVENTS = {
+    /*  Player as the Entity - these are also in the entities version
+        The Subs has these as a faked Player version with the EntityEventOptions defined for player
+        i.e. : 
+            if (handlers.afterPlayerDie) {
+                this.afterPlayerDie.subscribeWithOptions(
+                    handlers.afterPlayerDie,
+                    PLAYER_ENTITY_EVENT_OPTION,
+                    debug
+                );
+            }
+    */
+    afterEntityDie: false,
+    afterEntityHealthChanged: false,
+    afterEntityHitBlock: false,
+    afterEntityHitEntity: false,
+    afterEntityHurt: false,
+    // Real Player Only Events
+    afterPlayerEmote: false,
+    afterPlayerHotbarSelectedSlotChange: false,
+    afterPlayerInputModeChange: false,
+    afterPlayerInputPermissionCategoryChange: false,
+    afterPlayerInventoryItemChange: false,
+    afterPlayerJoin: false,
+    afterPlayerSpawn: false,
+    afterPlayerSwingStart: false,
+    afterPlayerUseNameTag: false,
+    playerBreakBlock: { before: false, after: false },
+    playerGameModeChange: { before: false, after: false },
+    playerInteractWithBlock: { before: false, after: false },
+    playerInteractWithEntity: { before: false, after: false },
+    playerLeave: { before: false, after: false },
+    playerPlaceBlock: { before: false, after: false },
+};
 //=============================================================================
 // For Debugging
 /**
@@ -70,32 +104,11 @@ export class DebuggerPlayers extends Debugger {
     constructor(pack_name, on = false) {
         super(pack_name, on);
 
-        Object.assign(this.events, {
-            afterEntityDie: false,
-            afterEntityHealthChanged: false,
-            afterEntityHitBlock: false,
-            afterEntityHitEntity: false,
-            afterEntityHurt: false,
-            afterPlayerEmote: false,
-            afterPlayerHotbarSelectedSlotChange: false,
-            afterPlayerInputModeChange: false,
-            afterPlayerInputPermissionCategoryChange: false,
-            afterPlayerInventoryItemChange: false,
-            afterPlayerJoin: false,
-            afterPlayerSpawn: false,
-            afterPlayerSwingStart: false,
-            afterPlayerUseNameTag: false,
-            playerBreakBlock: { before: false, after: false },
-            playerGameModeChange: { before: false, after: false },
-            playerInteractWithBlock: { before: false, after: false },
-            playerInteractWithEntity: { before: false, after: false },
-            playerLeave: { before: false, after: false },
-            playerPlaceBlock: { before: false, after: false },
-        });
+        Object.assign(this.events, PLAYER_EVENTS);
         Object.assign(this.customComponents, {
             none: false
         });
-    };    
+    }
     //--------------------------------------------------------------------------
     /**
      * 
