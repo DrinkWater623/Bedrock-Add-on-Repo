@@ -1,22 +1,19 @@
-// settings.js
+// settings.js  More Lights Minecraft Bedrock Add-on
 // @ts-check
 /* =====================================================================
 Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
-License: GPL-3.0-only
+License: M.I.T.
 URL: https://github.com/DrinkWater623
 ========================================================================
 Change Log: 
     20251024 - move dev to debug and add world dynamic vars
     20251202 - fix ref to alertLog and chatLog
+========================================================================
+    World Owner is to edit this file as needed 
+    Note: debug vars and capabilities are in debug.js
 ========================================================================*/
-import { ConsoleAlert,ChatMsg } from "./common-stable/tools/messageLib";
-//==============================================================================
-/**
- *  Owner is to edit this file as needed - Note: debug vars in fn-debug
- */
-//==============================================================================
 export const pack = {
-    packName: 'Light Arrows',
+    packName: 'More Lights',
 
     about: 'Convenient and craft-able light arrows, bars, mini-blocks and other shapes from Vanilla light blocks',
     devUrl: 'https://github.com/DrinkWater623',
@@ -28,18 +25,18 @@ export const pack = {
     cmdNameSpace: "lights",
     isLoadAlertsOn: false,
 
-    debugOn:true //Not changed by code.... the MASTER SWITCH to turn off debugging only
+    debugOn: true //Do Not change by code... the MASTER SWITCH to start world with/without debugging enabled
 };
 //==============================================================================
 export const packDisplayName = `§f${pack.packName}§r`;
-export const alertLog = new ConsoleAlert(packDisplayName);
-export const chatLog = new ChatMsg(packDisplayName);
+//export const alertLog = new ConsoleAlert(packDisplayName);
+//export const chatLog = new ChatMsg(packDisplayName);
 //==============================================================================
 // Pack detail data used in the scripts
 //==============================================================================
 export const watchFor = {
 
-    //s/b same as jsonte data
+    //s/b same as jsonte data - add new versions here and in regolith/jsonte data for vanilla materials
     materialList: [
         "glowstone",
         "sea_lantern",
@@ -59,24 +56,28 @@ export const watchFor = {
         return this.materialList.map(m => pack.namespace + ':' + m + '_mini_block');
     },
 
-    onUseBlockAsItemList:[''],
+     /** @returns {Array<[string, string[]]>} */
+    blockGroups () {
+        return [
+            [ "arrow", this.arrowBlocks() ],
+            [ "bar", this.barBlocks() ],
+            [ "mini_block", this.miniBlocks() ]
+        ];
+    },
 
     /**@returns{string[]} */
     onPlaceBlockList () {
-        const blocks = [
+        return [
             ...this.arrowBlocks(),
             ...this.barBlocks(),
             ...this.miniBlocks()
         ];
-
-        return blocks;
     },
 
     customItemList: [
         "dw623:light_arrow_template"
     ]
 };
-watchFor.onUseBlockAsItemList = [...watchFor.onPlaceBlockList()];
 //==============================================================================
 // End of File
 //==============================================================================

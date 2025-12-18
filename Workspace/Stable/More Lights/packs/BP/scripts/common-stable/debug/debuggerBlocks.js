@@ -17,7 +17,7 @@ import { BlockPermutation, Player, World, Block, Direction, world } from '@minec
 // shared
 import { Vector2Lib, Vector3Lib } from '../tools/vectorClass.js';
 import { Debugger } from './debuggerClass.js';
-import { FaceLocationGrid, } from "../blocks/blockFace.js";
+import { FaceLocationGrid, } from "../gameObjects/blockFace.js";
 import { cloneMixedBooleanAfterBeforeFlagMap } from "../tools/objects.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector2} Vector2 */
@@ -81,13 +81,12 @@ export class DebuggerBlocks extends Debugger {
     }
     //--------------------------------------------------------------------------
     /**
-     * 
      * @param {BlockPermutation} permutation 
      * @param {string} title 
-     * @param {boolean} override
+     * @param {boolean} alert
      */
-    listBlockStates (permutation, title = "Block States:", override = false) {
-        if (!(override || this.debugOn)) return;
+    listBlockStates (permutation, title = "Block States:", alert = false) {
+        if (!(alert || this.debugOn)) return;
 
         const states = permutation?.getAllStates();
         if (!states) {
@@ -98,13 +97,12 @@ export class DebuggerBlocks extends Debugger {
         this.listObjectInnards(states, title, true);
     }
     /**
-     * 
      * @param {Block} block      
      * @param {string} title 
-     * @param {boolean} override
+     * @param {boolean} alert
      */
-    blockInfo (block, title = "§eBlock Info:", override = false) {
-        if (!(override || this.debugOn)) return;
+    blockInfo (block, title = "§eBlock Info:", alert = false) {
+        if (!(alert || this.debugOn)) return;
 
         if (title) this.log(title, true);
         this.log(`==> §aBlock typeId:§r ${block.typeId}`, true); //TODO: get display name from vanilla data
@@ -117,14 +115,14 @@ export class DebuggerBlocks extends Debugger {
         //if (item) this.itemInfo(item,chatSend,`${title} - ItemStack`,true)
     }
     /**
-     * 
      * @param {Direction} blockFace 
      * @param {Vector3} faceLocation
      * @param {Player} player
      * @param {number[]} [grids=[3]]  
+     * @param {boolean} [alert=false] 
      */
-    blockFaceLocationInfo (blockFace, faceLocation, player, grids = [ 3 ], override = false) {
-        if (!(override || this.debugOn)) return;
+    blockFaceLocationInfo (blockFace, faceLocation, player, grids = [ 3 ], alert = false) {
+        if (!(alert || this.debugOn)) return;
 
         const grid = new FaceLocationGrid(faceLocation, blockFace, player, false);
 
@@ -138,13 +136,12 @@ export class DebuggerBlocks extends Debugger {
         }
     }
     /**
-     * 
      * @param {BlockPermutation} permutation       
      * @param {string} title 
-     * @param {boolean} override
+     * @param {boolean} alert
      */
-    blockPermutationInfo (permutation, title = "§eBlock Permutation Info:", override = false) {
-        if (!(override || this.debugOn)) return;
+    blockPermutationInfo (permutation, title = "§eBlock Permutation Info:", alert = false) {
+        if (!(alert || this.debugOn)) return;
 
         const tags = permutation.getTags();
         const states = permutation.getAllStates();

@@ -1,12 +1,23 @@
-//@ts-check
-import { BlockComponentPlayerPlaceBeforeEvent, system, Direction, Block } from "@minecraft/server";
+// blockComponents.js  More Lights Minecraft Bedrock Add-on
+// @ts-check
+/* =====================================================================
+Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
+License: M.I.T. (https://www.gnu.org/licenses/gpl-3.0.html)
+URL: https://github.com/DrinkWater623
+========================================================================
+TODO: 
+confirm newBlock is one of these canPlaceInBlocks - may not be needed, just because of how placing works, like grass can be replaced
+// ========================================================================
+Change Log:
+    20251217 - Updated debug alerts 
+========================================================================*/
+import { BlockComponentPlayerPlaceBeforeEvent, system, Block } from "@minecraft/server";
 //==============================================================================
 import { watchFor } from "./settings.js";
 import { dev } from "./debug.js";
-import { FaceLocationGrid } from "./common-stable/blocks/blockFace.js";
-import { Vector2Lib, Vector3Lib } from "./common-stable/tools/vectorClass.js";
-import { DynamicPropertyLib } from "./common-stable/tools/dynamicPropertyClass.js";
-import { airBlock,waterBlocks } from "./common-data/block-data.js";
+import { FaceLocationGrid } from "./common-stable/gameObjects/index.js";
+import { Vector2Lib, Vector3Lib,DynamicPropertyLib } from "./common-stable/tools/index.js";
+import { airBlock, waterBlocks } from "./common-data/index.js";
 //==============================================================================
 /**
  * @typedef {'north' | 'south' | 'east' | 'west'} BlockSides  
@@ -14,7 +25,12 @@ import { airBlock,waterBlocks } from "./common-data/block-data.js";
  * @typedef {'Up'|'Down'|'North'|'South'|'East'|'West'} BlockFacesTitle
  **/
 //==============================================================================
-const canPlaceInBlocks = [...airBlock,...waterBlocks]
+//TODO:
+//There are others of these types (replaceable block), see block info?  
+//Maybe get the itemStack of a block and see permutations to get info
+const canPlaceInBlocks = [ ...airBlock, ...waterBlocks ];
+//also need to not allow some blocks - may have something developed already 
+//or it is in the block json ???
 //==============================================================================
 /**
  * 
@@ -25,188 +41,138 @@ const canPlaceInBlocks = [...airBlock,...waterBlocks]
  * @returns 
  */
 function verifyLastInteractInfoRelated (lastInteractInfo, itemTypeId, newBlock, debug) {
-    const { typeId, location, dimension } = newBlock;
-    const currentTick = system.currentTick;
+    dev.alertLog.log(`§dVerifying lastInteractInfo`, debug);
 
-    if (lastInteractInfo.tick === 0) {
-        dev.alertLog.error(`No lastInteractInfo found`, debug);
-        return false;
-    }
-     //1st check for staleness
+    if (lastInteractInfo.tick === 0) { dev.alertLog.error(`Missing lastInteractInfo`, debug); return false; }
+
+    //1st check for staleness
+    const currentTick = system.currentTick;
     if (currentTick - lastInteractInfo.tick > 5) {
         dev.alertLog.error(`lastInteractInfo is stale. currentTick:${currentTick} - lastTick:${lastInteractInfo.tick}>5`, debug);
         return false;
     }
 
-    const touchedBlockFaceLocation = lastInteractInfo.faceLocation 
-    if(!touchedBlockFaceLocation) return false;
-    const touchedBlockLocation = lastInteractInfo.blockLocation
-    if(!touchedBlockLocation) return false
-    if(! dimension.isChunkLoaded(touchedBlockLocation)) return false
-    const touchedBlock = dimension.getBlock(touchedBlockLocation);
-    if(!touchedBlock) return false
+    //2nd check for missing info
+    if (!lastInteractInfo.faceLocation) { dev.alertLog.error('Missing faceLocation'); return false; }
+    if (!lastInteractInfo.blockLocation) { dev.alertLog.error('Missing blockLocation'); return false; }
+    if (!newBlock.dimension.isChunkLoaded(lastInteractInfo.blockLocation)) { dev.alertLog.error('Chunk is not loaded'); return false; }
+    if (!newBlock.dimension.getBlock(lastInteractInfo.blockLocation)) { dev.alertLog.error('Cannot get block'); return false; }
 
-    
-    //2nd check for item type match    
+    //3nd check for item type match    
     if (itemTypeId !== lastInteractInfo.itemTypeId) {
         dev.alertLog.error(`itemStackBlock (${itemTypeId}) !== lastItemStack (${lastInteractInfo.itemTypeId})`, debug);
         return false;
     }
+
     //3rd check for adjacency
-    if (!lastInteractInfo.blockLocation) {
-        dev.alertLog.error(`lastInteractInfo.blockLocation is missing`, debug);
+    if (!Vector3Lib.isAdjacent(newBlock.location, lastInteractInfo.blockLocation)) {
+        dev.alertLog.error(`location (${Vector3Lib.toString(newBlock.location, 1, true)}) is not adjacent to lastBlockLocation (${Vector3Lib.toString(lastInteractInfo.blockLocation, 1, true)})`, debug);
         return false;
     }
-    else if (!Vector3Lib.isAdjacent(location, lastInteractInfo.blockLocation)) {
-        dev.alertLog.error(`location (${Vector3Lib.toString(location, 1, true)}) is not adjacent to lastBlockLocation (${Vector3Lib.toString(lastInteractInfo.blockLocation, 1, true)})`, debug);
-        return false;
-    }
-    //That is all that matters to accept the LastInteract info as related to this place event
-
-    const interactBlock = dimension.getBlock(lastInteractInfo.blockLocation);
-    if (!interactBlock) {
-        dev.alertLog.warn(`interactBlock disappeared`, debug);
-        return false;
-    }
-    
-    if (!lastInteractInfo.faceLocation) {
-        dev.alertLog.warn(`faceLocation  is missing`, debug);
-        return false;
-    }
-
+    //That is all that matters to accept the LastInteract info as related to this place event   
     return true;
 }
 //==============================================================================
 /**
- * 
+ * event.permutationToPlace.type.id; is assured because this is a custom component
  * @param {BlockComponentPlayerPlaceBeforeEvent} event 
  */
 export function lightArrow_onPlace (event) {
-    const debug = dev.debugEvents.onPlace_arrow;
     const player = event.player;
     if (!player || !player.isValid) return;
+    if (!watchFor.arrowBlocks().includes(event.permutationToPlace.type.id)) return;
+    if (!event.block.isValid) return;
+
+    const eventType = 'onPlace';
+    const objectType = 'arrow';
+    const alert = dev.isDebugEventObject(eventType, objectType);
+    const msg = `§b${eventType}-${objectType}:§r on ${event.block.typeId} face=${event.face} in ${event.dimension.id}}`;
+    dev.alertLog.log(msg, alert);
 
     const { block: newBlock, face: touchedBlockFace } = event;
-    if (!newBlock.isValid) return;
-    //TODO: confirm newBlock is one of these canPlaceInBlocks - may not be needed, just because of how placing works, like grass can be replaced
-
     const itemTypeId = event.permutationToPlace.type.id;
-    if (!watchFor.arrowBlocks().includes(itemTypeId)) return;
-    
-    const lastInteractInfo = DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_get(player,dev.debugEvents.beforePlayerInteractWithBlock_arrow);
-    const verify = verifyLastInteractInfoRelated(lastInteractInfo, itemTypeId, newBlock, debug);
-    if (!verify) return;
+
+    const lastInteractInfo = DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_get(player, dev.debugEvents.beforePlayerInteractWithBlock_arrow);
+    if (!verifyLastInteractInfoRelated(lastInteractInfo, itemTypeId, newBlock, alert)) { dev.alertLog.error('verifyLastInteractInfoRelated failed', alert); return; }
 
     //---------------------------------------------------------------------------------
     // these are verified above, but for the JSDoc, need to show in here
-    const touchedBlockFaceLocation = lastInteractInfo.faceLocation 
-    if(!touchedBlockFaceLocation) return
-    const touchedBlockLocation = lastInteractInfo.blockLocation
-    if(!touchedBlockLocation) return
+    const touchedBlockFaceLocation = lastInteractInfo.faceLocation;
+    if (!touchedBlockFaceLocation) return;
+    const touchedBlockLocation = lastInteractInfo.blockLocation;
+    if (!touchedBlockLocation) return;
     const touchedBlock = newBlock.dimension.getBlock(touchedBlockLocation);
-    if(!touchedBlock) return
+    if (!touchedBlock) return;
     //---------------------------------------------------------------------------------
+    dev.blocks.blockFaceLocationInfo(touchedBlockFace, touchedBlockFaceLocation, player, [ 3, 4, 5, 6 ], alert);
+    dev.blocks.blockPermutationInfo(event.permutationToPlace, 'onPlace-permutation', alert);
 
-    //const interactBlockLocationStr = Vector3Lib.toString(touchedBlockLocation, 1, true);
-    //const faceLocationStr = Vector3Lib.toString(touchedBlockFaceLocation, 1, true);
-
-    const grid = new FaceLocationGrid(touchedBlockFaceLocation, touchedBlockFace, player, true, dev.debugFunctions.FaceLocationGrid);
+    const grid = new FaceLocationGrid(touchedBlockFaceLocation, touchedBlockFace, player, true, alert && dev.debugFunctions.FaceLocationGrid);
     const grid3 = grid.grid(3);
-    const touched = grid.getEdgeName(3);
+    const touchedEdgeName = grid.getEdgeName(3);
 
-    dev.blocks.blockFaceLocationInfo(touchedBlockFace,touchedBlockFaceLocation,player,[3,4,5,6],debug)
-    dev.blocks.blockPermutationInfo(event.permutationToPlace,'onPlace-permutation',debug)
-    // dev.alertLog.log(`
-    //     \n§cBeforeOnPlayerPlace (cc) Info§r
-    //     \nItemStack Block: ${itemTypeId}
-    //     \nFace: ${event.face}
-    //     \nFace Location (from Interact): ${faceLocationStr}
-    //     \nFace Grid3: ${Vector2Lib.toString(grid3, 0, true)} = ${touched}                   
-    // `);
     if ([ 'Up', "Down" ].includes(event.face)) return;
     if (grid3.y !== 1) return; //middle row
     if (grid3.x == 1) return; //middle column up/down
-    if (![ 'north', 'south', 'east', 'west' ].includes(touched)) return;    
-    dev.alertLog.log('§aNew Permutation Configured')
-    //reset position    
-    let newPermutation = event.permutationToPlace.withState('minecraft:cardinal_direction', touched);
+    if (![ 'north', 'south', 'east', 'west' ].includes(touchedEdgeName)) return;
+
+    //reset permutation position    
+    const blockStateName = 'minecraft:cardinal_direction';
+    let newPermutation = event.permutationToPlace.withState(blockStateName, touchedEdgeName);
     event.cancel = true;
     system.run(() => {
+        dev.alertLog.success(`Setting block state = ${blockStateName} to ${touchedEdgeName} on face=${event.face}`);
         newBlock.dimension.setBlockPermutation(newBlock.location, newPermutation);
     });
 }
-
 //==============================================================================
-/**
- * 
+/** 
  * @param {BlockComponentPlayerPlaceBeforeEvent} event 
  */
 export function lightBar_onPlace (event) {
-    const debug = dev.debugEvents.onPlace_bar;
     const player = event.player;
     if (!player || !player.isValid) return;
+    if (!watchFor.arrowBlocks().includes(event.permutationToPlace.type.id)) return;
+    if (!event.block.isValid) return;
 
-    const { block: inBlock, face: onBlockFace } = event;
-    if (!inBlock.isValid) return;
+    const eventType = 'onPlace';
+    const objectType = 'bar';
+    const alert = dev.isDebugEventObject(eventType, objectType);
+    const msg = `§b${eventType}-${objectType}:§r on ${event.block.typeId} face=${event.face} in ${event.dimension.id}}`;
+    dev.alertLog.log(msg, alert);
 
-    const { typeId, location, dimension } = inBlock;
-    const itemStackBlock = event.permutationToPlace.type.id;
-    if (!watchFor.barBlocks().includes(itemStackBlock)) return;
+    const { block: newBlock, face: touchedBlockFace } = event;
+    const itemTypeId = event.permutationToPlace.type.id;
 
-    const lastItemStack = DynamicPropertyLib.getString(player, 'dw623:lastInteractItemStack');
-    if (itemStackBlock !== lastItemStack) {
-        dev.alertLog.warn(`itemStackBlock (${itemStackBlock}) !== lastItemStack (${lastItemStack})`, debug);
-        return;
-    }
+    const lastInteractInfo = DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_get(player, dev.debugEvents.beforePlayerInteractWithBlock_arrow);
+    if (!verifyLastInteractInfoRelated(lastInteractInfo, itemTypeId, newBlock, alert)) { dev.alertLog.error('verifyLastInteractInfoRelated failed', alert); return; }
 
-    const interactBlockLocation = DynamicPropertyLib.getVector(player, 'dw623:lastInteractBlockLocation');
-    if (!interactBlockLocation) {
-        dev.alertLog.warn(`lastInteractBlockLocation is missing`, debug);
-        return;
-    }
-    else if (!Vector3Lib.isAdjacent(location, interactBlockLocation)) {
-        dev.alertLog.warn(`location (${Vector3Lib.toString(location, 1, true)}) is not adjacent to lastBlockLocation (${Vector3Lib.toString(interactBlockLocation, 1, true)})`, debug);
-        return;
-    }
+    //---------------------------------------------------------------------------------
+    // these are verified above, but for the JSDoc, need to show in here
+    const touchedBlockFaceLocation = lastInteractInfo.faceLocation;
+    if (!touchedBlockFaceLocation) return;
+    const touchedBlockLocation = lastInteractInfo.blockLocation;
+    if (!touchedBlockLocation) return;
+    const touchedBlock = newBlock.dimension.getBlock(touchedBlockLocation);
+    if (!touchedBlock) return;
+    //---------------------------------------------------------------------------------
+    dev.blocks.blockFaceLocationInfo(touchedBlockFace, touchedBlockFaceLocation, player, [ 2, 3, 4, 5, 6, 7, 8 ], alert);
+    dev.blocks.blockPermutationInfo(event.permutationToPlace, 'onPlace-permutation', alert);
 
-    const interactBlock = inBlock.dimension.getBlock(interactBlockLocation);
-    if (!interactBlock) {
-        dev.alertLog.warn(`interactBlock disappeared`, debug);
-        return;
-    }
-    const interactBlockLocationStr = Vector3Lib.toString(interactBlock.location, 1, true);
-
-    const faceLocation = DynamicPropertyLib.getVector(player, 'dw623:lastInteractFaceLocation');
-    if (!faceLocation) {
-        dev.alertLog.warn(`faceLocation  is missing`, debug);
-        return;
-    }
-    const grid = new FaceLocationGrid(faceLocation, onBlockFace, player, false, debug);
-
-    if (debug) {
-        const faceLocationStr = Vector3Lib.toString(faceLocation, 1, true);
-
-        dev.alertLog.log(`
-\n§a**************************************
-§cLight Bar (BeforeOnPlayerPlace) Info§r
-§a****************************************
-§rItemStack Block: ${itemStackBlock}
-§rInteract Block: §1${interactBlock.typeId}§r @ ${interactBlockLocationStr}  §dFace Loc: ${faceLocationStr}
-§rPlayer:  Geo ${Vector3Lib.toString(grid.playerLocation, 0, true)} - Facing: §b${grid.playerCardinalDirection}
-§rBlock Face: ${onBlockFace} - §6as ${grid.blockFace}
-        `);
-        const states = event.permutationToPlace.getAllStates();
-        for (const key in states) { dev.alertLog.log(`§eState: ${key}: §b${states[ key ]}`); }
-    }
-
+    const grid = new FaceLocationGrid(touchedBlockFaceLocation, touchedBlockFace, player, true, alert && dev.debugFunctions.FaceLocationGrid);
     let permutationPtr = bestTouchedPoint_bar(grid);
-    dev.alertLog.log(`\nPermutation Ptr: §a${permutationPtr}`, debug);
+
+    const blockStateName = 'dw623:position_ptr';
+    //@ts-ignore
+    const currentPositionPtr=event.permutationToPlace.getState(blockStateName)
+    if (permutationPtr === currentPositionPtr) return; 
 
     //@ts-ignore
-    let newPermutation = event.permutationToPlace.withState('dw623:position_ptr', permutationPtr.toString());
+    let newPermutation = event.permutationToPlace.withState(blockStateName, permutationPtr.toString());
     event.cancel = true;
     system.run(() => {
-        dimension.setBlockPermutation(location, newPermutation);
+        dev.alertLog.success(`Setting block state = ${blockStateName} to ${permutationPtr}`);
+        newBlock.dimension.setBlockPermutation(newBlock.location, newPermutation);
     });
 }
 /**
@@ -311,74 +277,52 @@ function inverse (n, max) {
  * @param {BlockComponentPlayerPlaceBeforeEvent} event 
  */
 export function lightMiniBlock_onPlace (event) {
-    const debug = dev.debugEvents.onPlace_miniBlock;
     const player = event.player;
     if (!player || !player.isValid) return;
+    if (!watchFor.arrowBlocks().includes(event.permutationToPlace.type.id)) return;
+    if (!event.block.isValid) return;
 
-    const { block: inBlock, face: onBlockFace } = event;
-    if (!inBlock.isValid) return;
+    const eventType = 'onPlace';
+    const objectType = 'mini_block';
+    const alert = dev.isDebugEventObject(eventType, objectType);
+    const msg = `§b${eventType}-${objectType}:§r on ${event.block.typeId} face=${event.face} in ${event.dimension.id}}`;
+    dev.alertLog.log(msg, alert);
 
-    const { typeId, location, dimension } = inBlock;
-    const itemStackBlock = event.permutationToPlace.type.id;
-    if (!watchFor.miniBlocks().includes(itemStackBlock)) return;
+    const { block: newBlock, face: touchedBlockFace } = event;
+    const itemTypeId = event.permutationToPlace.type.id;
 
-    const lastItemStack = DynamicPropertyLib.getString(player, 'dw623:lastInteractItemStack');
-    if (itemStackBlock !== lastItemStack) {
-        dev.alertLog.warn(`itemStackBlock (${itemStackBlock}) !== lastItemStack (${lastItemStack})`, debug);
-        return;
-    }
+    const lastInteractInfo = DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_get(player, dev.debugEvents.beforePlayerInteractWithBlock_arrow);
+    if (!verifyLastInteractInfoRelated(lastInteractInfo, itemTypeId, newBlock, alert)) { dev.alertLog.error('verifyLastInteractInfoRelated failed', alert); return; }
 
-    const interactBlockLocation = DynamicPropertyLib.getVector(player, 'dw623:lastInteractBlockLocation');
-    if (!interactBlockLocation) {
-        dev.alertLog.warn(`lastInteractBlockLocation is missing`, debug);
-        return;
-    }
-    else if (!Vector3Lib.isAdjacent(location, interactBlockLocation)) {
-        dev.alertLog.warn(`location (${Vector3Lib.toString(location, 1, true)}) is not adjacent to lastBlockLocation (${Vector3Lib.toString(interactBlockLocation, 1, true)})`, debug);
-        return;
-    }
+    //---------------------------------------------------------------------------------
+    // these are verified above, but for the JSDoc, need to show in here
+    const touchedBlockFaceLocation = lastInteractInfo.faceLocation;
+    if (!touchedBlockFaceLocation) return;
+    const touchedBlockLocation = lastInteractInfo.blockLocation;
+    if (!touchedBlockLocation) return;
+    const touchedBlock = newBlock.dimension.getBlock(touchedBlockLocation);
+    if (!touchedBlock) return;
+    //---------------------------------------------------------------------------------
+    dev.blocks.blockFaceLocationInfo(touchedBlockFace, touchedBlockFaceLocation, player, [ 3 ], alert);
+    dev.blocks.blockPermutationInfo(event.permutationToPlace, 'onPlace-permutation', alert);
 
-    const interactBlock = inBlock.dimension.getBlock(interactBlockLocation);
-    if (!interactBlock) {
-        dev.alertLog.warn(`interactBlock disappeared`, debug);
-        return;
-    }
-    const interactBlockLocationStr = Vector3Lib.toString(interactBlock.location, 1, true);
-
-    const faceLocation = DynamicPropertyLib.getVector(player, 'dw623:lastInteractFaceLocation');
-    if (!faceLocation) {
-        dev.alertLog.warn(`faceLocation  is missing`, debug);
-        return;
-    }
-    const grid = new FaceLocationGrid(faceLocation, onBlockFace, player, false, debug);
-    const faceLocationStr = Vector3Lib.toString(faceLocation, 2, true);
+    const grid = new FaceLocationGrid(touchedBlockFaceLocation, touchedBlockFace, player, true, alert && dev.debugFunctions.FaceLocationGrid);
     const grid3 = grid.grid(3);
-    const touched = grid3.x + (3 * grid3.y);
-
-    if (debug) {
-        const edge = grid.getEdgeName(3);
-
-        dev.alertLog.log(`
-\n§b****************************************
-§aMini Block (BeforeOnPlayerPlace) Info§r
-§b****************************************
-§rItemStack Block: ${itemStackBlock}
-§rInteract Block: §1${interactBlock.typeId}§r @ ${interactBlockLocationStr}  §dFace Loc: ${faceLocationStr}
-§rPlayer:  Geo ${Vector3Lib.toString(grid.playerLocation, 0, true)} - Facing: §b${grid.playerCardinalDirection}
-§rBlock Face: ${onBlockFace} - §6as ${grid.blockFace}
-§rFace Grid3: ${Vector2Lib.toString(grid3, 0, true)} 
-§rGrid #: §d${touched}§r - §d${edge} - §rNew deltas: x=${grid.xDelta}, y=${grid.yDelta}
-    `);
-        const states = event.permutationToPlace.getAllStates();
-        for (const key in states) { dev.alertLog.log(`§eState: ${key}: §b${states[ key ]}`); }
-    }
-
-    if (touched === 4) return; // defined center per permutations - and first in state list
+    const touchedGridPtr = grid3.x + (3 * grid3.y);
+    
+    // confirm not already correct state
+    const blockStateName = 'dw623:mini_block_position_ptr';
     //@ts-ignore
-    let newPermutation = event.permutationToPlace.withState('dw623:mini_block_position_ptr', touched);
+    const currentPositionPtr=event.permutationToPlace.getState(blockStateName)
+    if (touchedGridPtr === currentPositionPtr) return; 
+    
+    //Update permutation
+    //@ts-ignore
+    let newPermutation = event.permutationToPlace.withState(blockStateName, touchedGridPtr);
     event.cancel = true;
     system.run(() => {
-        dimension.setBlockPermutation(location, newPermutation);
+        dev.alertLog.success(`Setting block state = ${blockStateName} to ${touchedGridPtr}`,alert);
+        newBlock.dimension.setBlockPermutation(newBlock.location, newPermutation);
         //FIXME: sound
     });
 }

@@ -19,7 +19,7 @@ URL: https://github.com/DrinkWater623
 Last Update: 20251129 
 ========================================================================*/
 import { pack, packDisplayName } from './settings.js';
-import { DevBlocks } from './common-stable/debug/devLib.js';
+import { DevBlocks } from './common-stable/debug/index.js';
 //import { objectEntries_set_booleans, objectEntries_set_booleans_opts, objectEntries_toggle_booleans, objectEntries_toggle_booleans_opts, objectKeysWhereBoolean } from './common-stable/tools/objects.js';
 //==============================================================================
 // JSDoc Makes the squiggly red lines go away....
@@ -33,15 +33,19 @@ const WATCHING_OBJECT_TYPES = {
     //Can be block, item or entity - be mindful of the naming convention so that everything flows
     arrow: true,
     bar: false,
-    miniBlock: false
+    mini_block: false
 };
 /** @type {Record<string, boolean>} */
-const WATCHING_EVENTS = {
+const WATCHING_EVENT_TYPES = {
     //keep to the naming convention
     //subscription events
-    afterStartUse: false,
-    afterStartUseOn: false,
-    beforeItemUse: false,
+    afterItemCompleteUse: true,
+    afterItemReleaseUse: true,
+    afterItemStartUse: false,
+    afterItemStartUseOn: true,
+    afterItemStopUse: false,
+    afterItemStopUseOn: true,
+    beforeItemUse: true,
     beforePlayerInteractWithBlock: true,
     //custom component events
     onPlace: true,
@@ -77,7 +81,7 @@ class DevMoreLights extends DevBlocks {
 
         //user alter this in above CONSTS
         Object.assign(this.debugObjectTypes, WATCHING_OBJECT_TYPES);
-        Object.assign(this.debugEventsWatching, WATCHING_EVENTS);
+        Object.assign(this.debugEventTypes, WATCHING_EVENT_TYPES);
         //Object.assign(this.debugEvents, WATCHING_OBJECT_EVENTS);
         Object.assign(this.debugFunctions, WATCHING_FUNCTIONS);
         Object.assign(this.debugSubscriptions, WATCHING_SUBSCRIPTIONS);
@@ -90,53 +94,9 @@ class DevMoreLights extends DevBlocks {
         else
             this.global_update();
     }
-    // /**
-    //  * @param {"arrow" | "bar" | "miniBlock"} toggleKey
-    //  * @param {boolean} [toggle=this.debugObjectTypes[toggleKey]]
-    //  * @param {boolean} [alert=false]
-    //  * @returns {void}
-    //  */
-    // watch_objectType_set (toggleKey, toggle = this.debugObjectTypes[ toggleKey ], alert = false) {
-    //     this.set_event_by_suffix(toggleKey, toggle, { alert, toggleKey });
-    // }
-    // /**
-    //  * @param {"arrow" | "bar" | "miniBlock"} toggleKey
-    //  * @param {boolean} [alert=false]
-    //  * @returns {void}
-    //  */
-    // objectType_toggle(toggleKey, alert = false){
-    //     this.set_event_by_suffix(toggleKey, !this.debugObjectTypes[ toggleKey ], { alert, toggleKey });
-    // }      
 }
-
 //==============================================================================
 export const dev = new DevMoreLights(packDisplayName);
 //==============================================================================
 // End of File
 //==============================================================================
-/** @type {Record<string, boolean>} */
-/*
-const ogWATCHING_OBJECT_EVENTS = {
-    // Block Component Events
-    onPlace_arrow: false,
-    onPlace_bar: false,
-    onPlace_miniBlock: false,
-
-    //Minecraft Events
-    beforePlayerInteractWithBlock_arrow: false,
-    beforePlayerInteractWithBlock_bar: false,
-    beforePlayerInteractWithBlock_miniBlock: false,
-
-    afterStartUse_arrow: false,
-    afterStartUse_bar: false,
-    afterStartUse_miniBlock: false,
-
-    afterStartUseOn_arrow: false,
-    afterStartUseOn_bar: false,
-    afterStartUseOn_miniBlock: false,
-
-    beforeItemUse_arrow: false,
-    beforeItemUse_bar: false,
-    beforeItemUse_miniBlock: false,
-};
-*/

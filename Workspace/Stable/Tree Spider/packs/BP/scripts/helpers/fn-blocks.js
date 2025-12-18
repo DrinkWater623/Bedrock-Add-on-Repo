@@ -14,7 +14,7 @@ import { airBlock } from "../common-data/block-data.js";
 import * as vanillaBlocks from "../common-data/block-data.js";
 import { spawnEntityAfterRandomTicks, spawnEntityAtLocation } from "../common-stable/entities/entityClass.js";
 import { chance } from "../common-stable/tools/mathLib.js";
-import { GetBlock, isValidBlock } from "../common-stable/blocks/blockLib-stable.js";
+import { Blocks } from "../common-stable/blocks/blockLib.js";
 //Local
 import { watchFor, alertLog } from '../settings.js';
 import { devDebug } from "./fn-debug.js";
@@ -172,7 +172,7 @@ export function rattleEntityFromBlockWithItem (blockHit, itemUsed, blockFaceHit,
     //======
     if (itemUsed == "dw623:bottle_of_flies") {
         system.runTimeout(() => {
-            const adjacentBlock = GetBlock.adjacent(blockHit, blockFaceHit);
+            const adjacentBlock = Blocks.adjacentBlock_get(blockHit, blockFaceHit);
             if (!adjacentBlock || !adjacentBlock.isAir) return;
 
             adjacentBlock.dimension.playSound("random.glass", adjacentBlock.location);

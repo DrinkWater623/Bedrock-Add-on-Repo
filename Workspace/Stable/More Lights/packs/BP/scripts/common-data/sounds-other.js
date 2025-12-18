@@ -1,4 +1,4 @@
-export const sound_definitions = {
+export const sound_definitions_other = {
     "block_sounds": {
         "amethyst_block": {
             "events": {

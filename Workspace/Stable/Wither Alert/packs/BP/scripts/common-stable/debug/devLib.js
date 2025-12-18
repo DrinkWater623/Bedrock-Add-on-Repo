@@ -24,6 +24,7 @@ Change Log:
     20251214c- Fixed allOff and anyOn
     20251216 - Chatty helped me with toggle_events
     20251216 - Added buildWatchingObjectEvents
+    20251217 - Added isDebugEventObject
 ========================================================================*/
 import { ChatMsg, ConsoleAlert } from '../tools/messageLib.js';
 import { objectEntries_any_booleans_opts, objectEntries_set_booleans_opts, objectKeysWhereBooleanOpts, booleanKeyExist, readBooleanKey } from "../tools/objects.js";
@@ -69,7 +70,7 @@ export class Dev {
         this.debugObjectTypes = {};
 
         /** @type {DebugEventsWatchingFlags} */
-        this.debugEventsWatching = {};
+        this.debugEventTypes = {};
 
         /** @type {DebugEventsFlags} */
         this.debugEvents = { debugEventsOn: false };
@@ -199,8 +200,24 @@ export class Dev {
     alertSubscriptionSuccess (subName) {
         this.alertLog.success(`Subscribed to ${subName}`, this.debugSubscriptions.debugSubscriptionsOn);
     }
+    /**
+     * 
+     * @param {string} eventType 
+     * @param {string} objectType 
+     * @returns {boolean}
+     */
+    isDebugEventObject (eventType, objectType) {
+
+        const et = readBooleanKey(this.debugEventTypes, eventType);
+        if (et === undefined) return false;
+
+        const ot = readBooleanKey(this.debugObjectTypes, objectType);
+        if (ot === undefined) return false;       
+
+        return et && ot
+    }
     global_update () {
-        const derived = this.buildWatchingObjectEvents(this.debugEventsWatching, this.debugObjectTypes);
+        const derived = this.buildWatchingObjectEvents(this.debugEventTypes, this.debugObjectTypes);
 
         const eventNames = objectKeysWhereBooleanOpts(this.debugEvents);
 
@@ -218,7 +235,7 @@ export class Dev {
     /**
     *
     * @param {Record<string,unknown>} map 
-    * @param {"event" | "objectType"} matchBy
+    * @param {"eventType" | "objectType"} matchBy
     * @param {string} key
     * @param {boolean} alert 
     * @returns {void}
@@ -235,7 +252,7 @@ export class Dev {
      * or an object type (affects `*_${objectType}`),
      * while keeping naming convention `${event}_${objectType}`.
      *
-     * @param {"event" | "objectType"} matchBy
+     * @param {"eventType" | "objectType"} matchBy
      * @param {string} key
      * @param {boolean} toggle
      * @param {boolean} [alert=false]
@@ -243,7 +260,7 @@ export class Dev {
      */
     set_EventWatch (matchBy, key, toggle, alert = false) {
         if (typeof toggle !== "boolean") return;
-        const map = matchBy === "event" ? this.debugEventsWatching : this.debugObjectTypes;
+        const map = matchBy === "eventType" ? this.debugEventTypes : this.debugObjectTypes;
 
         if (readBooleanKey(map, key) === undefined) {
             this.keySuggestion(map, matchBy, key, alert);
@@ -259,13 +276,13 @@ export class Dev {
         );
     }
     /**
-     * @param {"event" | "objectType"} matchBy
+     * @param {"eventType" | "objectType"} matchBy
      * @param {string} key
      * @param {boolean} [alert=false]
      * @returns {void}
      */
     toggle_EventWatch (matchBy, key, alert = false) {
-        const map = matchBy === "event" ? this.debugEventsWatching : this.debugObjectTypes;
+        const map = matchBy === "eventType" ? this.debugEventTypes : this.debugObjectTypes;
 
         const cur = readBooleanKey(map, key);
         if (cur === undefined) {
@@ -300,8 +317,8 @@ export class Dev {
      * @param {boolean} [alert=false]
      * @returns {void}
      */
-    eventType_set (toggleKey, toggle = this.debugEventsWatching?.[ toggleKey ], alert = false) {
-        this.set_EventWatch("event", toggleKey, toggle, alert);
+    eventType_set (toggleKey, toggle = this.debugEventTypes?.[ toggleKey ], alert = false) {
+        this.set_EventWatch("eventType", toggleKey, toggle, alert);
     }
     /**
      * Toggle a debugObjectTypes entry and sync derived `${event}_${suffix}` flags.
@@ -311,7 +328,7 @@ export class Dev {
      * @returns {void}
      */
     eventType_toggle (toggleKey, alert = false) {
-        this.toggle_EventWatch("event", toggleKey, alert);
+        this.toggle_EventWatch("eventType", toggleKey, alert);
     }
 
     //==============================================================================

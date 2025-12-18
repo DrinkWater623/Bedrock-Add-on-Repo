@@ -114,11 +114,11 @@ export class DebuggerPlayers extends Debugger {
      * 
      * @param {Player} player
      * @param {string} title
-     * @param {boolean} override
+     * @param {boolean} alert
      * @param {string} details 
      */
-    playerInfo (player, title = "§ePlayer Info:", override = false, details = '') {
-        if (!(override || this.debugOn)) return;
+    playerInfo (player, title = "§ePlayer Info:", alert = false, details = '') {
+        if (!(alert || this.debugOn)) return;
         if (!player.isValid) return;
 
         const fTitle = (s = '') => { return `§b${s}§r`; };

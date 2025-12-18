@@ -281,8 +281,6 @@ export function objectEntries_any_booleans_opts (targetObject = {}, opts = {}) {
 export function objectEntries_any_true (targetObject = {}, filter = "") {
     return objectEntries_any_booleans_opts(targetObject, { filter, value: true });
 }
-
-
 //==============================================================================
 /**
  * @typedef {{
@@ -482,7 +480,6 @@ export function listObjectInnards (value, opts = {}, seen = new WeakSet(), depth
 export function emitObjectInnards (emit, object, opts = {}) {
     for (const line of listObjectInnards(object, opts)) emit(line);
 }
-
 /**
  * @param {(line: string) => void} emit
  * @param {unknown[]} array

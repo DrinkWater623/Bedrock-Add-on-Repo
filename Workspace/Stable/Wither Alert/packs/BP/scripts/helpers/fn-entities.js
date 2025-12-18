@@ -21,10 +21,10 @@ import { makeRandomName } from "../common-stable/tools/randomNames.js";
 import { rndInt, chance } from "../common-stable/tools/mathLib.js";
 // Shared Stable
 import { DynamicPropertyLib } from "../common-stable/tools/dynamicPropertyClass.js";
-import { EntityLib, spawnEntityAtLocation } from "../common-stable/entities/entityClass.js";
+import { EntityLib, spawnEntityAtLocation } from "../common-stable/gameObjects/entityClass.js";
 import { Vector3Lib, } from '../common-stable/tools/vectorClass.js';
 // Local
-import { devDebug } from "./fn-debug.js";
+import { devDebug } from "../debug.js";
 import { alertLog, pack, watchFor, entityDynamicVars } from '../settings.js';
 //==============================================================================
 const debugFunctions = false || devDebug.debugFunctionsOn;

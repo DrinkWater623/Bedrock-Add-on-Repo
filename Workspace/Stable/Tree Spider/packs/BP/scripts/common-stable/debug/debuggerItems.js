@@ -56,10 +56,10 @@ export class DebuggerItems extends Debugger {
      * 
      * @param {ItemStack} item      
      * @param {string} title 
-     * @param {boolean} override
+     * @param {boolean} alert
      */
-    itemInfo (item, title = "§eItem Info:", override = false) {
-        if (!(override || this.debugOn)) return;
+    itemInfo (item, title = "§eItem Info:", alert = false) {
+        if (!(alert || this.debugOn)) return;
 
         if (title) this.log(title, true);
         this.log(`==> §aItem typeId:§r ${item.typeId}`);
