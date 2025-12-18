@@ -7,7 +7,7 @@
 // Local
 import { alertLog, pack } from './settings.js';
 import { subscriptionsStable } from './subscribes.js';
-import { devDebug } from "./helpers/fn-debug.js";
+import { devDebug } from "./debug.js";
 //==============================================================================
 devDebug.anyOn();
 const msg = `Add-on - §bStable ${devDebug.debugOn ? '§4(debug mode)' : ''}`;

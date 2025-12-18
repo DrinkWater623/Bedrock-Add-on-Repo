@@ -13,23 +13,14 @@ Last Update: 20251023 - Update and sep out debug-only stuff and add the stable s
 //==============================================================================
 // Minecraft
 import { Entity, system, Block, GameMode, Player } from "@minecraft/server";
-// Shared Data
-import { airBlock, leafBlocks } from "../common-data/block-data.js";
-import { Ticks } from "../common-data/globalConstantsLib.js";
-// Shared Other
-import { makeRandomName } from "../common-stable/tools/randomNames.js";
-import { rndInt, chance } from "../common-stable/tools/mathLib.js";
 // Shared Stable
-import { isInForest, isOutside } from "../common-stable/tools/biomeLib.js";
-import { closestAdjacentBlockTypeId, isBlockAdjacentToTypeId } from "../common-stable/blocks/blockLib-stable.js";
-import { DynamicPropertyLib } from "../common-stable/tools/dynamicPropertyClass.js";
-import { EntityLib, spawnEntityAtLocation } from "../common-stable/entities/entityClass.js";
-import { getWorldTime } from "../common-stable/tools/timers.js";
-import { Vector3Lib, } from '../common-stable/tools/vectorClass.js';
+import { airBlock, leafBlocks, Ticks } from "../common-data/index.js";
+import { closestAdjacentBlockTypeId, isBlockAdjacentToTypeId, EntityLib, spawnEntityAtLocation } from "../common-stable/gameObjects/index.js";
+import { makeRandomName, rndInt, chance, Vector3Lib, isInForest, isOutside, getWorldTime, DynamicPropertyLib } from "../common-stable/tools/index.js";
 // Local
 import { targetBlockAdjacent } from "./fn-blocks.js";
-import { devDebug } from "./fn-debug.js";
 import { alertLog, pack, watchFor, entityDynamicVars } from '../settings.js';
+import { devDebug } from "../debug.js";
 //==============================================================================
 const debugFunctions = false || devDebug.debugFunctionsOn;
 const debugOn = devDebug.debugOn;
@@ -510,7 +501,7 @@ function setHungerChance (entity, hungerChance = 0.5, debug = false) {
     if (entity.typeId !== watchFor.spider_typeId) return;
     const { location, nameTag } = entity;
 
-    alertLog.log(`* setHungerChance (${nameTag}, ${hungerChance})`,debugFunctions);
+    alertLog.log(`* setHungerChance (${nameTag}, ${hungerChance})`, debugFunctions);
     if (!chance(hungerChance)) return;
     if (entity.hasTag('satiated')) return;
     if (entity.hasTag('hungry')) return;

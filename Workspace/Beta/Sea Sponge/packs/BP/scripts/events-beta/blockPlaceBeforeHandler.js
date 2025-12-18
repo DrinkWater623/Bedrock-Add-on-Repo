@@ -1,14 +1,10 @@
 //@ts-check
 //==============================================================================
 
-import { Block, BlockPermutation, Player, PlayerPlaceBlockBeforeEvent, world } from "@minecraft/server";
+import { PlayerPlaceBlockBeforeEvent } from "@minecraft/server";
 import { watchFor } from "../settings";
-import { GetBlockState, GetBlockStates, PlaceBlock } from "../common-stable/blockLib-stable";
-import { spawnLoot } from "../common-stable/itemLib-stable";
-import { waterBlock } from "../common-data/block-data";
-import { FaceLocationGrid, Vector2Lib } from "../common-stable/tools/vectorClass";
-import { PlayerLib } from "../common-stable/playerClass";
-
+import {  PlaceBlock,spawnLoot,PlayerLib, Permutations } from "../common-stable/gameObjects/index.js";
+import { waterBlock } from "../common-data/index";
 //==============================================================================
 /**
  * 
@@ -16,8 +12,8 @@ import { PlayerLib } from "../common-stable/playerClass";
  */
 export function block_placeBeforeHandler (event) {
     // reasons to skip
-    if (!event.player || !event.block || !event.permutationBeingPlaced) return;
-    if (event.permutationBeingPlaced.type.id == watchFor.sea_sponge_stump_loot) {
+    if (!event.player || !event.block || !event.permutationToPlace) return;
+    if (event.permutationToPlace.type.id == watchFor.sea_sponge_stump_loot) {
         placeStumps(event);
         return;
     }
@@ -64,11 +60,11 @@ function placeStumps (event) {
 
         //make sure full sea sponge is below
         if (blockVersionToPlace == 0) {
-            const isStem = GetBlockState.boolean(blockBelow, stateName);
+            const isStem = Permutations.getBooleanState(blockBelow, stateName);
             if (!isStem) return;
         }
         else {
-            const stemLevel = GetBlockState.number(blockBelow, stateName);
+            const stemLevel = Permutations.getNumberState(blockBelow, stateName);
             if (stemLevel != 3) return;
         }
 

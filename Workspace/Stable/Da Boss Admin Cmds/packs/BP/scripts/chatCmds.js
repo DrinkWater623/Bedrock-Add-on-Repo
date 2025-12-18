@@ -2,13 +2,13 @@
 // @ts-check
 //==============================================================================
 // Minecraft
-import { system, Player, world, TimeOfDay, Dimension, DimensionType, DimensionTypes, EffectType, EffectTypes, TicksPerSecond } from "@minecraft/server";
+import { system, Player, world, TimeOfDay } from "@minecraft/server";
 import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus, CustomCommandParamType, CustomCommandOrigin } from "@minecraft/server";
 // Shared
-import { Vector3Lib, VectorXZLib } from "./common-stable/tools/vectorClass.js";
+import { PlayerLib } from "./common-stable/gameObjects/index.js";
+import { Vector3Lib } from "./common-stable/tools/vectorClass.js";
 // Local
-import { alertLog, chatLog, pack, packDisplayName } from './settings.js';
-import { PlayerLib } from "./common-stable/entities/playerClass.js";
+import { alertLog, pack, packDisplayName } from './settings.js';
 //==============================================================================
 const debugFunctions = false;
 //==============================================================================

@@ -10,11 +10,11 @@ Change Log:
 ========================================================================*/
 import { world, system } from "@minecraft/server";
 //Shared
-import { SystemSubscriptions } from "./common-stable/subscriptions/systemSubs-stable.js";
+import { SystemSubscriptions } from "./common-stable/subscriptions/index.js";
 //Local
 import { alertLog, pack, packDisplayName } from './settings.js';
 import { registerCustomCommands } from "./chatCmds.js";
-import { devDebug } from "./helpers/fn-debug.js";
+import { devDebug } from "./debug.js";
 
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */

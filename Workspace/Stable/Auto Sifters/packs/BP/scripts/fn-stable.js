@@ -10,7 +10,7 @@ import { Block, BlockPermutation } from "@minecraft/server";
 import { chatLog} from "./settings.js";
 import { blocksDotJson } from "./common-data/blocks.json.js";
 import { fallThruBlocks } from "./common-data/globalConstantsLib.js";
-import { endsWithNumber, getLastWord, minusLastWord } from "./common-other/stringLib.js";
+import { endsWithNumber, getLastWord, minusLastWord } from "./common-stable/tools/stringLib.js";
 import { GetBlockState, PlaceBlock } from "./common-stable/blockLib-stable.js";
 //==============================================================================
 /**

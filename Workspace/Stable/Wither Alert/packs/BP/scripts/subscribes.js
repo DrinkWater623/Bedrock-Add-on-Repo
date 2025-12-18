@@ -14,17 +14,16 @@ import { EntityInitializationCause } from "@minecraft/server";
 //Shared
 import { Vector3Lib } from "./common-stable/tools/vectorClass.js";
 import { DynamicPropertyLib } from "./common-stable/tools/dynamicPropertyClass.js";
-import { EntityLib } from "./common-stable/entities/entityClass.js";
-import { EntitySubscriptions } from "./common-stable/subscriptions/entitySubs-stable.js";
-import { PlayerSubscriptions } from "./common-stable/subscriptions/playerSubs-stable.js";
-import { SystemSubscriptions } from "./common-stable/subscriptions/systemSubs-stable.js";
+import { PlayerLib, EntityLib } from "./common-stable/gameObjects/index.js";
+import { EntitySubscriptions } from "./common-stable/subscriptions/index.js";
+import { PlayerSubscriptions } from "./common-stable/subscriptions/index.js";
+import { SystemSubscriptions } from "./common-stable/subscriptions/index.js";
 //Local
 import { alertLog, pack, watchFor, dynamicVars, packDisplayName, chatLog } from './settings.js';
 import { registerCustomCommands } from "./chatCmds.js";
-import { devDebug } from "./helpers/fn-debug.js";
-import { PlayerLib } from "./common-stable/entities/playerClass.js";
 import { watchLoop, startWatchLoop } from "./watchLoop.js";
 import { ScoreboardLib } from "./common-stable/tools/scoreboardLib.js";
+import { devDebug } from "./debug.js";
 //import { entityEventProcess, entityScriptEvents, } from './helpers/fn-entities.js';
 //import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
 
@@ -173,7 +172,7 @@ const onBeforeEntityRemoved = (event) => {
     world.setDynamicProperty("deadEntityDimensionId", dimension.id.replace("minecraft:", ""));
     world.setDynamicProperty("deadEntityLocation", location);
     world.setDynamicProperty("deadEntityName", nameTag);
-    world.setDynamicProperty("deadEntityId", entity.id);    
+    world.setDynamicProperty("deadEntityId", entity.id);
 
     system.runTimeout(() => {
         const msg = `§l${nameTag}§r §6Removed @ ${Vector3Lib.toString(location, 0, true)}`;

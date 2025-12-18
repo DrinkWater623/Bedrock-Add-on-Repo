@@ -9,7 +9,7 @@ Last Update: 20250109 - ReDone
 ========================================================================
 */
 import { TicksPerSecond } from "@minecraft/server";
-import { ConsoleAlert, ChatMsg } from "./common-stable/tools/messageLib";
+import { ConsoleAlert, ChatMsg } from "./common-stable/tools/index";
 //==============================================================================
 /**
  *  World Owner is to edit this file as needed

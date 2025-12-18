@@ -10,9 +10,8 @@ Change Log:
 ========================================================================*/
 import { TicksPerDay } from "@minecraft/server";
 // Shared
-import { leafBlocks, logBlocks, tallNatureBlocks } from "./common-data/block-data";
-import { rndFloat, rndInt, round } from "./common-stable/tools/mathLib";
-import { ConsoleAlert,ChatMsg } from "./common-stable/tools/messageLib";
+import { leafBlocks, logBlocks, tallNatureBlocks } from "./common-data/index.js";
+import { rndFloat, rndInt, round ,ConsoleAlert,ChatMsg } from "./common-stable/tools/index.js";
 //==============================================================================
 /**
  *  Owner is to edit this file as needed - Note: debug vars in fn-debug

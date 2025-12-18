@@ -1,12 +1,11 @@
 //@ts-check
 //==============================================================================
 
-import { Block, BlockPermutation, Player, PlayerBreakBlockBeforeEvent, world } from "@minecraft/server";
+import { Block, PlayerBreakBlockBeforeEvent, world } from "@minecraft/server";
 import { watchFor } from "../settings";
-import { GetBlockState, GetBlockStates, PlaceBlock } from "../common-stable/blockLib-stable";
-import { spawnLoot } from "../common-stable/itemLib-stable";
-import { waterBlock } from "../common-data/block-data";
-import { FaceLocationGrid, Vector2Lib } from "../common-stable/tools/vectorClass";
+import { GetBlockState, GetBlockStates, PlaceBlock,spawnLoot,FaceLocationGrid, Blocks, Permutations } from "../common-stable/gameObjects/index";
+import { waterBlock } from "../common-data/index";
+import {  Vector2Lib } from "../common-stable/tools/index";
 
 //==============================================================================
 /**
@@ -64,7 +63,7 @@ function harvestOneLevel (block) {
     //v1
     if (block.typeId == watchFor.sea_sponge_blocks[ 0 ]) {
         const blockStateName = watchFor.sea_sponge_states[ 0 ];
-        const stems = GetBlockState.boolean(block, blockStateName, true);
+        const stems =Permutations.getBooleanState(block, blockStateName, true);
 
         if (stems) {
             newPermutation = block.permutation.withState(blockStateName, false);
@@ -112,14 +111,14 @@ export function harvestAll (block, giveStumps = false) {
     //v1
     if (block.typeId == watchFor.sea_sponge_blocks[ 0 ]) {
         const blockStateName = watchFor.sea_sponge_states[ 0 ];
-        const isStems = GetBlockState.boolean(block, blockStateName, true);
+        const isStems = Permutations.getBooleanState(block, blockStateName, true);
         stemItem = watchFor.sea_sponge_stem_loot[ 0 ];
         if (isStems) stemCount = 3;
     }
     //v2
     else if (block.typeId == watchFor.sea_sponge_blocks[ 1 ]) {
         const blockStateName = watchFor.sea_sponge_states[ 1 ];
-        let stemLevel = GetBlockState.number(block, blockStateName, true);
+        let stemLevel = Permutations.getNumberState(block, blockStateName, 0);
         stemItem = watchFor.sea_sponge_stem_loot[ 1 ];
         stemCount = stemLevel * 3;
     }

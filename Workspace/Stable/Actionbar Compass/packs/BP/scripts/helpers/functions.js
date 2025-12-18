@@ -11,8 +11,7 @@ Change Log:
 ========================================================================
 */
 import { Player, system, world } from "@minecraft/server";
-import { Vector3Lib } from "../common-stable/tools/vectorClass";
-import { AngleMath, Compass } from "../common-stable/tools/rotationLib";
+import { Vector3Lib ,AngleMath, Compass} from "../common-stable/tools/index";
 import { chatLog, pack } from "../settings";
 //=========================================================
 const compass = new Compass();

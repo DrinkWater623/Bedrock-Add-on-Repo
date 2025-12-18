@@ -12,6 +12,7 @@ import { harvestAll } from "./blockBreakBeforeHandler.js";
 import { fallThruBlocks, waterBlocks } from "../common-data/block-data.js";
 import { PlayerLib } from "../common-stable/playerClass.js";
 import { ChatMsg } from "../common-stable/consoleClass.js";
+import { Permutations } from "../common-stable/gameObjects/blockLib.js";
 //==============================================================================
 const growthChance = dev.debugGrowth ? globals.randomTickChanceDebug : globals.randomTickChance;
 const debugMsg = new ChatMsg('Sea Sponges - Custom Components')
@@ -77,7 +78,7 @@ function grow_v1 (block) {
 
     //Get Block State
     const blockStateName = watchFor.sea_sponge_states[ 0 ];
-    const blockState = GetBlockState.boolean(block, blockStateName, true);
+    const blockState = Permutations.getBooleanState(block, blockStateName, true);
 
     //isStump, reset state to true
     if (blockState == false) {

@@ -12,24 +12,16 @@ import { world, system } from "@minecraft/server";
 //Enums
 import { EntityInitializationCause } from "@minecraft/server";
 //Shared
-import { Ticks } from "./common-data/globalConstantsLib.js";
-import { chance } from "./common-stable/tools/mathLib.js";
-import { Vector3Lib } from "./common-stable/tools/vectorClass.js";
-import { DynamicPropertyLib } from "./common-stable/tools/dynamicPropertyClass.js";
-import { EntityLib, spawnEntityAtLocation } from "./common-stable/entities/entityClass.js";
-import { EntitySubscriptions } from "./common-stable/subscriptions/entitySubs.js";
-import { PlayerSubscriptions } from "./common-stable/subscriptions/playerSubs.js";
-import { SystemSubscriptions } from "./common-stable/subscriptions/systemSubs.js";
+import { Ticks, airBlock, stairBlocks } from "./common-data/index.js";
+import { EntityLib, spawnEntityAtLocation } from "./common-stable/gameObjects/index.js";
+import { EntitySubscriptions, PlayerSubscriptions, SystemSubscriptions } from "./common-stable/subscriptions/index.js";
+import { getWorldTime, chance, Vector3Lib, DynamicPropertyLib } from "./common-stable/tools/index.js";
 //Local
 import { alertLog, pack, watchFor, entityDynamicVars, packDisplayName } from './settings.js';
 import { registerCustomCommands } from "./chatCmds.js";
 import { rattleEntityFromBlockWithItem, validNatureBlockForSpiders } from './helpers/fn-blocks.js';
-import { devDebug } from "./helpers/fn-debug.js";
 import { entityEventProcess, lastTickAndLocationRegister, stalledSpiderCheckAndFix, flyPopulationCheck, spiderPopulationCheck, entityScriptEvents, } from './helpers/fn-entities.js';
-import { airBlock, stairBlocks } from "./common-data/block-data.js";
-import { getWorldTime } from "./common-stable/tools/timers.js";
-//import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
-
+import { devDebug } from "./debug.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /** The function type subscribe expects. */
@@ -377,7 +369,7 @@ export function subscriptionsStable () {
     });
 
     entitySubs.afterEntityLoad.subscribe(onAfterEntityLoad);
-    
+
     playerSubs.register({
         afterPlayerBreakBlock: onAfterPlayerBreakBlock,
         afterPlayerPlaceBlock: onAfterPlayerPlaceBlock,

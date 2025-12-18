@@ -10,14 +10,12 @@ Last Update: 20251023 - add in stable stuff and update to api 2.0 and move debug
 ========================================================================*/
 import { system, Block, Dimension } from "@minecraft/server";
 //Shared
-import { airBlock } from "../common-data/block-data.js";
-import * as vanillaBlocks from "../common-data/block-data.js";
-import { spawnEntityAfterRandomTicks, spawnEntityAtLocation } from "../common-stable/entities/entityClass.js";
-import { chance } from "../common-stable/tools/mathLib.js";
-import { Blocks } from "../common-stable/blocks/blockLib.js";
+import { airBlock,leafBlocks,saplingBlocks,tallNatureBlocks } from "../common-data/index.js";
+import { Blocks, spawnEntityAfterRandomTicks, spawnEntityAtLocation } from "../common-stable/gameObjects/index.js";
+import { chance } from "../common-stable/tools/index.js";
 //Local
 import { watchFor, alertLog } from '../settings.js';
-import { devDebug } from "./fn-debug.js";
+import { devDebug } from "../debug.js";
 
 //===================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
@@ -36,9 +34,9 @@ const HOME_ID = watchFor.spider_home_typeId;
 /** @type {(id: string) => boolean} */
 const isValidNeighborBlockTypeIdForPlacingWebs = (id) => id === HOME_ID || LEAVES.has(id) || LOGS.has(id);
 //===================================================================
-const leaves = [ ...vanillaBlocks.leafBlocks ];
-const saplings = [ ...vanillaBlocks.saplingBlocks ];
-const tallPlants = [ ...vanillaBlocks.tallNatureBlocks ];
+const leaves = [ ...leafBlocks ];
+const saplings = [ ...saplingBlocks ];
+const tallPlants = [ ...tallNatureBlocks ];
 //===================================================================
 const allowedSpiderHangoutNatureBlocks = [
     watchFor.spider_home_typeId,

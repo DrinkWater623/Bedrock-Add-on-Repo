@@ -1,4 +1,4 @@
-//@ts-check
+ //@ts-check
 /* =====================================================================
 Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
 License: GPL-3.0-only

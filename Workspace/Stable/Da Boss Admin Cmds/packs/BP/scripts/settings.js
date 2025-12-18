@@ -9,7 +9,7 @@ Change Log:
     20251203 - Created
 ========================================================================*/
 // Shared
-import { ConsoleAlert,ChatMsg } from "./common-stable/tools/messageLib";
+import { ConsoleAlert,ChatMsg } from "./common-stable/tools/index";
 //==============================================================================
 /**
  *  Owner is to edit this file as needed - Note: debug vars in fn-debug

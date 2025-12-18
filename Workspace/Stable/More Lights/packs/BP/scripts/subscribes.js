@@ -15,10 +15,10 @@ import { world, system, Player } from "@minecraft/server";
 import { BlockSubscriptions,ItemSubscriptions,PlayerSubscriptions,SystemSubscriptions } from "./common-stable/subscriptions/index.js";
 import { DynamicPropertyLib } from "./common-stable/tools/index.js";
 //Local
-import { pack, packDisplayName, watchFor } from './settings.js';
-import { dev } from "./debug.js";
 import { lightArrow_onPlace, lightBar_onPlace, lightMiniBlock_onPlace } from "./blockComponent.js";
+import { pack, packDisplayName, watchFor } from './settings.js';
 import { registerCustomCommands } from "./chatCmds.js";
+import { dev } from "./debug.js";
 //==============================================================================
 /** The function type subscribe expects. */
 //  Blocks

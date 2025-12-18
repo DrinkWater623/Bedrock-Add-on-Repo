@@ -9,13 +9,13 @@ URL: https://github.com/DrinkWater623
 Last Update: 20251130 - Refactor to new way of doing things
 ========================================================================*/
 import { world, system } from "@minecraft/server";
+import { PlayerSubscriptions,SystemSubscriptions } from "./common-stable/subscriptions/index.js";
 //Local
 import { alertLog, pack, packDisplayName } from './settings.js';
 import { registerCustomCommands } from "./chatCmds.js";
-import { devDebug } from "./helpers/fn-debug.js";
 import { tagToggle,runABC } from "./helpers/functions.js";
-import { SystemSubscriptions } from "./common-stable/subscriptions/systemSubs-stable.js";
-import { PlayerSubscriptions } from "./common-stable/subscriptions/playerSubs-stable.js";
+import { devDebug } from "./debug.js";
+
 //==============================================================================
 /** The function type subscribe expects. */
 // System

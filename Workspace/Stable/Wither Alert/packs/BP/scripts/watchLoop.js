@@ -8,8 +8,9 @@ Last Update: 20241229 - reOrg and add License
 ========================================================================*/
 import { world, system, TicksPerSecond } from "@minecraft/server";
 import { callBacks_activate, callBacks_deactivate } from './callbackEvents.js';
-import { Entities } from './common-stable/entityClass.js';
-import { dev, chatLog } from './settings.js';
+import { EntityLib } from './common-stable/gameObjects/index.js';
+import {  chatLog } from './settings.js';
+import { dev,  } from './debug.js';
 //==============================================================================
 import { watchFor } from './settings.js';
 //==============================================================================
@@ -32,7 +33,7 @@ export function watchLoop (source = "") {
     chatLog.log(`§9watchLoop (${source})`, debugMsg);
 
     //check for the watch Entity    
-    const entities = Entities.getAllEntities({ type: watchFor.family });
+    const entities = EntityLib.getAllEntities({ type: watchFor.family });
 
     if (entities.length === 0) {
         chatLog.success(`§9No ${watchFor.display}s Found`, debugMsg);
@@ -58,7 +59,7 @@ export function watchLoop (source = "") {
 
     if (entities.length > 0) {
         const title = `§d${entities.length} ${watchFor.display}${entities.length === 1 ? '' : 's'} §6`;
-        Entities.listEntities(title, entities, world);
+        EntityLib.listEntities(title, entities, world);
     }
     chatLog.log("§9Waiting to Loop Again", debugMsg);
     system.runTimeout(() => { watchLoop(source); }, watchFor.intervalTimer);

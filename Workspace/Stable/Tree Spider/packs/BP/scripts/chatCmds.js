@@ -2,15 +2,13 @@
 // @ts-check
 //==============================================================================
 // Minecraft
-import { system, Player, Entity, world, TimeOfDay } from "@minecraft/server";
+import { system, Player, Entity } from "@minecraft/server";
 import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus, CustomCommandParamType, CustomCommandOrigin } from "@minecraft/server";
 // Shared
-import { ScoreboardLib } from "./common-stable/tools/scoreboardLib.js";
-import { Vector3Lib, VectorXZLib } from "./common-stable/tools/vectorClass.js";
+import { getWorldTime , ScoreboardLib, Vector3Lib, VectorXZLib } from "./common-stable/tools/index.js";
 // Local
 import { alertLog, chatLog, pack, packDisplayName } from './settings.js';
-import { devDebug } from "./helpers/fn-debug.js";
-import { getWorldTime } from "./common-stable/tools/timers.js";
+import { devDebug } from "./debug.js";
 //==============================================================================
 const debugFunctions = false;
 const msgPfx = devDebug.dsb.displayPfx;
@@ -540,7 +538,7 @@ function register_scoreboards (registry) {
                     system.runTimeout(() => { if (side) devDebug.dsb.show(side); }, 1);
                 });
             }
-            else if ([ 'ctrs', 'deaths', 'stats','actions' ].includes(arg)) {
+            else if ([ 'ctrs', 'deaths', 'stats', 'actions' ].includes(arg)) {
                 system.run(() => {
                     chatLog.log(`Switching to ${devDebug.dsb.getScoreboardName(arg)}`);
                     devDebug.dsb.show(arg);
@@ -579,12 +577,12 @@ export function registerCustomCommands (registry) {
 
     //Register Enums here
     register_about(registry);
-    
+
     if (devDebug.debugOn) {
         register_delta(registry);
         register_new_test(registry);
         register_getGeoInfo(registry);
- 
+
         alertLog.log(`Registering Debug enum: ${queryOnOff}`, debugFunctions);
         registry.registerEnum(queryOnOff, [ "query", "on", "off" ]);
 
@@ -594,10 +592,10 @@ export function registerCustomCommands (registry) {
         register_watchEntityEvents(registry);
 
         alertLog.log(`Registering Debug enum: ${scoreboard_options}`, debugFunctions);
-        registry.registerEnum(scoreboard_options, [ "hide", "reset", "reset_all", "stats", "ctrs", "actions","deaths", "zero", "zero_all" ]);
+        registry.registerEnum(scoreboard_options, [ "hide", "reset", "reset_all", "stats", "ctrs", "actions", "deaths", "zero", "zero_all" ]);
 
         register_scoreboards(registry);
-    }   
+    }
 }
 //==============================================================================
 // End of File

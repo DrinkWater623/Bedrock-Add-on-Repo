@@ -1,7 +1,0 @@
-{
-   "resource_pack_name" : "dw623",
-   "texture_name" : "atlas.items",
-   "texture_data" : { 
-      "slime_glue_bottle":{"textures": "textures/items/lime_bottle"}
-   }
-}

@@ -14,8 +14,8 @@ Last Update: 20241229 - reOrg and add License
 import { BlockPermutation, PlayerInteractWithBlockBeforeEvent, PlayerPlaceBlockBeforeEvent } from "@minecraft/server";
 import { chatLog } from '../settings.js';
 import {  slabTypeIDHeight, slabTypeIDSansHeight } from "../fn-stable.js";
-import { FaceLocationGrid, Vector2Lib, Vector3Lib } from "../common-stable/tools/vectorClass.js";
-import { getAdjacentBlock ,getBlockState} from "../common-stable/blockLib-stable.js";
+import { FaceLocationGrid, Vector2Lib, Vector3Lib } from "../common-stable/tools/index.js";
+import { getAdjacentBlock ,getBlockState} from "../common-stable/gameObjects/index.js";
 //=============================================================================
 /*
     Written By:     "https://github.com/DrinkWater623"

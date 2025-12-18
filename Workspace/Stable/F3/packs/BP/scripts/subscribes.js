@@ -10,18 +10,17 @@ Last Update: 20251023 - add in stable stuff and update to api 2.0 and move debug
 ========================================================================*/
 import { world, system } from "@minecraft/server";
 //Shared
-import { chance } from "./common-stable/tools/mathLib.js";
-import { Vector3Lib } from "./common-stable/tools/vectorClass.js";
-import { DynamicPropertyLib } from "./common-stable/tools/dynamicPropertyClass.js";
-import { EntitySubscriptions } from "./common-stable/subscriptions/entitySubs-stable.js";
-import { PlayerSubscriptions } from "./common-stable/subscriptions/playerSubs-stable.js";
-import { SystemSubscriptions } from "./common-stable/subscriptions/systemSubs-stable.js";
+import { airBlock } from "./common-data/index.js";
+import { DynamicPropertyLib } from "./common-stable/tools/index.js";
+import { EntitySubscriptions } from "./common-stable/subscriptions/index.js";
+import { PlayerSubscriptions } from "./common-stable/subscriptions/index.js";
+import { SystemSubscriptions } from "./common-stable/subscriptions/index.js";
+import { Vector3Lib } from "./common-stable/tools/index.js";
 //Local
 import { alertLog, pack, packDisplayName, toggles, watchFor } from './settings.js';
 import { registerCustomCommands } from "./chatCmds.js";
 import { arrow_onPlace,bar_onPlace,miniBlock_onPlace } from "./blockComponent.js";
 import { dev } from "./debug.js";
-import { airBlock } from "./common-data/block-data.js";
 //==============================================================================
 //import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
 
