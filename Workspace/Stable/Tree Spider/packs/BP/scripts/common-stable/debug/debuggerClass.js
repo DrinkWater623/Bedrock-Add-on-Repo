@@ -154,13 +154,13 @@ export class Debugger {
     }
     /**
      * 
-     * @param {unknown} object 
+     * @param {unknown} input 
      * @param {string} title 
      * @param {boolean} override
      */
-    listObjectInnards (object, title = "Key-Value List:", override = false) {
-        if (!(override || this.debugOn)) return;
-        for (const line of listObjectInnards(object, { title })) this.log(line, override);
+    listObjectInnards (input, title = "Key-Value List:", override = false) {
+        if (!(override || this.debugOn || typeof input !== 'object')) return;
+        listObjectInnards(input, { title });       
     }
     /**
      * 
@@ -170,7 +170,7 @@ export class Debugger {
      */
     listArray (array, title = "Array List:", override = false) {
         if (!(override || this.debugOn)) return;
-        for (const line of listArray(array, { title })) this.log(line, override);
+        listArray(array, { title });
     }
 }
 //==============================================================================

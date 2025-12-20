@@ -7,7 +7,7 @@ URL: https://github.com/DrinkWater623
 Last Update: 20241229 - reOrg and add License
 ========================================================================*/
 import { world } from "@minecraft/server";
-import { ConsoleAlert, ChatMsg } from "./common-stable/consoleClass";
+import { ConsoleAlert, ChatMsg } from "./common-stable/tools/consoleClass";
 //==============================================================================
 /**
  *  Owner is to edit this file as needed

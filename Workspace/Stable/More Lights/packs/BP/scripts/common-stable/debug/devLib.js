@@ -61,10 +61,19 @@ export class Dev {
         //User Defined when creating Expanded Dev class
         //so can turn on/off groups of debug info
         /** @type {DebugFunctionsFlags} */
-        this.debugFunctions = { debugFunctionsOn: false };
+        this.debugFunctions = {
+            debugFunctionsOn: false,
+            registerCommand: false
+        };
 
         /** @type {DebugSubscriptionsFlags} */
-        this.debugSubscriptions = { debugSubscriptionsOn: false };
+        this.debugSubscriptions = {
+            debugSubscriptionsOn: false,
+            alertBlockSubs:false,
+            alertEntitySubs:false,
+            alertItemSubs:false,
+            alertPlayerSubs:false,
+        };
 
         /** @type {Record<string, boolean>} */
         this.debugObjectTypes = {};
@@ -189,16 +198,18 @@ export class Dev {
     * Logs the start of a function if debugFunctionsOn is true.
     * @param {string} funcName - The name of the function.
     * @param {boolean} [start=true] 
+    * @param {boolean} [alert=this.debugFunctions.debugFunctionsOn] 
     */
-    alertFunction (funcName, start = true) {
-        this.alertLog.log(`§6${start ? '**' : 'xx'} function ${funcName}()`, this.debugFunctions.debugFunctionsOn);
+    alertFunction (funcName, start = true, alert = this.debugFunctions.debugFunctionsOn) {
+        this.alertLog.log(`§6${start ? '**' : 'xx'} function ${funcName}()`, alert);
     }
     /**
      * Alerts when a subscription is successfully made.
      * @param {string} subName - The name of the subscription.
+     * @param {boolean} [alert=this.debugSubscriptions.debugSubscriptionsOn] 
      */
-    alertSubscriptionSuccess (subName) {
-        this.alertLog.success(`Subscribed to ${subName}`, this.debugSubscriptions.debugSubscriptionsOn);
+    alertSubscriptionSuccess (subName, alert = this.debugSubscriptions.debugSubscriptionsOn) {
+        this.alertLog.success(`Subscribed to ${subName}`, alert);
     }
     /**
      * 
@@ -212,9 +223,9 @@ export class Dev {
         if (et === undefined) return false;
 
         const ot = readBooleanKey(this.debugObjectTypes, objectType);
-        if (ot === undefined) return false;       
+        if (ot === undefined) return false;
 
-        return et && ot
+        return et && ot;
     }
     global_update () {
         const derived = this.buildWatchingObjectEvents(this.debugEventTypes, this.debugObjectTypes);

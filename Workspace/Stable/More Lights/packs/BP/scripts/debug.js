@@ -32,20 +32,20 @@ import { DevBlocks } from './common-stable/debug/index.js';
 const WATCHING_OBJECT_TYPES = {
     //Can be block, item or entity - be mindful of the naming convention so that everything flows
     arrow: true,
-    bar: false,
-    mini_block: false
+    bar: true,
+    mini_block: true
 };
 /** @type {Record<string, boolean>} */
 const WATCHING_EVENT_TYPES = {
     //keep to the naming convention
     //subscription events
-    afterItemCompleteUse: true,
-    afterItemReleaseUse: true,
+    afterItemCompleteUse: false,
+    afterItemReleaseUse: false,
     afterItemStartUse: false,
-    afterItemStartUseOn: true,
+    afterItemStartUseOn: false,
     afterItemStopUse: false,
-    afterItemStopUseOn: true,
-    beforeItemUse: true,
+    afterItemStopUseOn: false,
+    beforeItemUse: false,
     beforePlayerInteractWithBlock: true,
     //custom component events
     onPlace: true,
@@ -60,9 +60,19 @@ May have support functions later - but I do not see any need, unless I want to t
 Better yet, use the debuggerBlocks object in the class, it has them ALL
 */
 /** @type {Record<string, boolean>} */
-const WATCHING_SUBSCRIPTIONS = {};
+const WATCHING_SUBSCRIPTIONS = {
+    beforeStartup: false,
+    beforePlayerInteractWithBlock: true,
+    alertBlockSubs: true,
+    alertEntitySubs: false,
+    alertItemSubs: false,
+    alertPlayerSubs: true,
+    alertSystemSubs:true,
+};
 /** @type {Record<string, boolean>} */
 const WATCHING_FUNCTIONS = {
+    subscriptionsStable: false,
+    registerCommand: false,
     faceLocationGrid: false,
 };
 // Optional: make your “defaults” truly non-mutable

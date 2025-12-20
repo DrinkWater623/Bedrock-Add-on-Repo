@@ -8,7 +8,7 @@ Last Update: 20241229 - reOrg and add License
 ========================================================================*/
 import { world, system, Dimension, EntityInventoryComponent,Player} from "@minecraft/server";
 import { chatLog, dev } from "./settings";
-import { sendPlayerMessageLater } from "./fn-stable";
+import { sendPlayerMessageLater } from "./helpers/fn-stable";
 //=============================================================================
 /** @typedef {import("@minecraft/server").Vector2} Vector2 */
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */

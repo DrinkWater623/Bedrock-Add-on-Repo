@@ -2,6 +2,7 @@ import { world, system, Player, ChatSendBeforeEvent, TicksPerSecond, EffectTypes
 import { dev, pack} from './settings.js';
 import { dimensionSuffix,clearPlayerChatWindow,clearWorldChatWindow } from './fn-stable.js';
 import { Vector3Lib } from "./common-stable/tools/vectorClass.js";
+import { PlayerLib } from "./common-stable/gameObjects/playerClass.js";
 //==============================================================================
 const TicksPerMinute = TicksPerSecond * 60;
 export const chatCmds = new PlayerChatCommands(pack.commandPrefix);
@@ -47,7 +48,7 @@ class PlayerChatCommands {
             case "cls": clearPlayerChatWindow(player, 40, 10); return true;
         }
 
-        if (player.isOP() && dev.debug) {
+        if ( PlayerLib.isOp(player) && dev.debug) {
             switch (command) {
                 case "cleardv": player.clearDynamicProperties();; return true;
                 case "cleardvw": world.clearDynamicProperties();; return true;
@@ -59,7 +60,7 @@ class PlayerChatCommands {
             }
         }
 
-        if (player.isOp()) {
+        if ( PlayerLib.isOp(player)) {
             let subCommand = "tpplayer";
 
             if (command.startsWith(subCommand)) {
@@ -155,7 +156,7 @@ class PlayerChatCommands {
     * @param { import("@minecraft/server").Player } player
     */
     #tpMe (player) {
-        if (player.isValid() && player.getDynamicProperty(dynamicVars.deathDimension)) {
+        if (player.isValid && player.getDynamicProperty(dynamicVars.deathDimension)) {
             system.runTimeout(() => {
                 const dimension = world.getDimension(player.getDynamicProperty(dynamicVars.deathDimension));
                 const location = player.getDynamicProperty(dynamicVars.deathCoordinates);

@@ -12,7 +12,7 @@ Change Log:
 ========================================================================*/
 import { world, system, Player } from "@minecraft/server";
 //Shared
-import { BlockSubscriptions,ItemSubscriptions,PlayerSubscriptions,SystemSubscriptions } from "./common-stable/subscriptions/index.js";
+import { BlockSubscriptions, ItemSubscriptions, PlayerSubscriptions, SystemSubscriptions } from "./common-stable/subscriptions/index.js";
 import { DynamicPropertyLib } from "./common-stable/tools/index.js";
 //Local
 import { lightArrow_onPlace, lightBar_onPlace, lightMiniBlock_onPlace } from "./blockComponent.js";
@@ -79,7 +79,7 @@ const onBeforePlayerInteractWithBlock = (event) => {
     const eventType = 'beforePlayerInteractWithBlock';
     const itemStack = event.itemStack;
     const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
-
+    const x = event.blockFace
     DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_set(
         event,
         [], // block list not used here, this is the block touched.  Not cared about
@@ -96,7 +96,7 @@ const onAfterItemCompleteUse = (event) => {
     const eventType = 'afterItemCompleteUse';
     const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
 
-    const msg = `§b${eventType}:§r typeId=${itemStack.typeId}  useDuration=${event.useDuration}`;
+    const msg = `§6§l${eventType}:§r typeId=${itemStack.typeId}  useDuration=${event.useDuration}`;
     dev.alertLog.log(msg, alert);
 };
 
@@ -110,7 +110,7 @@ const onAfterItemReleaseUse = (event) => {
     const eventType = 'afterItemReleaseUse';
     const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
 
-    const msg = `§b${eventType}:§r typeId=${itemStack.typeId}  useDuration=${event.useDuration}`;
+    const msg = `§6§l${eventType}§r typeId=${itemStack.typeId}  useDuration=${event.useDuration}`;
     dev.alertLog.log(msg, alert);
 };
 /**@type {AfterItemStartUseHandler} */
@@ -122,7 +122,7 @@ const onAfterItemStartUse = (event) => {
     const eventType = 'afterItemStartUse';
     const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
 
-    const msg = `§b${eventType}:§r typeId=${event.itemStack.typeId}`;
+    const msg = `§6§l${eventType}§r typeId=${event.itemStack.typeId}`;
     dev.alertLog.log(msg, alert);
 };
 /**@type {AfterItemStartUseOnHandler} */
@@ -135,7 +135,7 @@ const onAfterItemStartUseOn = (event) => {
     const itemStack = event.itemStack;
     const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
 
-    const msg = `§b${eventType}:§r typeId=${event.itemStack.typeId}  blockFace=${event.blockFace} on  block=${event.block.typeId}`;
+    const msg = `§6§l${eventType}:§r typeId=${event.itemStack.typeId}  blockFace=${event.blockFace} on  block=${event.block.typeId}`;
     dev.alertLog.log(msg, alert);
 };
 /**@type {AfterItemStopUseHandler} */
@@ -148,9 +148,9 @@ const onAfterItemStopUse = (event) => {
     const itemStack = event.itemStack;
     const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
 
-    const msg = `§b${eventType}:§r typeId=${event.itemStack.typeId}  useDuration=${event.useDuration}`;
+    const msg = `§6§l${eventType}§r typeId=${event.itemStack.typeId}  useDuration=${event.useDuration}`;
     dev.alertLog.log(msg, alert);
-};alert
+};
 /**@type {AfterItemStopUseOnHandler} */
 const onAfterItemStopUseOn = (event) => {
     if (!(event.source instanceof Player)) return;
@@ -161,7 +161,7 @@ const onAfterItemStopUseOn = (event) => {
     const eventType = 'afterItemStopUseOn';
     const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
 
-    const msg = `§b${eventType}:§r typeId=${event.itemStack.typeId} on block=${event.block.typeId}`;
+    const msg = `§6§l${eventType}§r typeId=${event.itemStack.typeId} on block=${event.block.typeId}`;
     dev.alertLog.log(msg, alert);
 };
 /**@type {BeforeItemUseHandler} */
@@ -173,17 +173,20 @@ const onBeforeItemUse = (event) => {
     const eventType = 'beforeItemUse';
     const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
 
-    const msg = `§b${eventType}:§r typeId=${event.itemStack.typeId}`;
+    const msg = `§6§l${eventType}§r typeId=${event.itemStack.typeId}`;
     dev.alertLog.log(msg, alert);
 };
 //==============================================================================
 export function subscriptionsStable () {
     const _name = 'subscriptionsStable';
-    dev.alertFunction(_name, true);
+    const alert=dev.debugFunctions.subscriptionsStable
+    dev.alertFunction(_name, true,alert);
 
     //2 ways to do it.  Use register for bulk tho
-    //blockSubs.register({})
-    systemSubs.register({ beforeStartup: onBeforeStartup });
+
+    systemSubs.beforeStartup.subscribe(onBeforeStartup,!!dev.debugSubscriptions.alertSystemSubs);
+    playerSubs.beforePlayerInteractWithBlock.subscribe(onBeforePlayerInteractWithBlock,!!dev.debugSubscriptions.alertPlayerSubs);
+
     itemSubs.register({
         afterItemCompleteUse: onAfterItemCompleteUse,
         afterItemReleaseUse: onAfterItemReleaseUse,
@@ -192,17 +195,13 @@ export function subscriptionsStable () {
         afterItemStartUse: onAfterItemStartUse,
         afterItemStartUseOn: onAfterItemStartUseOn,
         beforeItemUse: onBeforeItemUse,
-    });
-    playerSubs.beforePlayerInteractWithBlock.subscribe(onBeforePlayerInteractWithBlock);
-
+    },!!dev.debugSubscriptions.alertItemSubs);
 
 
     world.afterEvents.worldLoad.subscribe((event) => {
         pack.worldLoaded = true;
-        dev.alertSubscriptionSuccess(`world.afterEvents.worldLoad`);
-    });
-
-    dev.alertFunction(_name, false);
+        dev.alertSubscriptionSuccess(`world.afterEvents.worldLoad`,!!dev.debugSubscriptions.alertSystemSubs);
+    });    
 }
 //==============================================================================
 // End of File

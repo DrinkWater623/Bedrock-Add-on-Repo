@@ -7,12 +7,14 @@ URL: https://github.com/DrinkWater623
 Last Update: 20241229 - reOrg and add License
 ========================================================================*/
 import { world, system, Player, TicksPerSecond } from "@minecraft/server";
+//shared
+import { BlockLib } from "./common-stable/gameObjects/blockClass.js";
+import { DynamicPropertyLib,Vector3Lib } from "./common-stable/tools/index.js";
+//local
+import { dimensionSuffix, playerAliveTicksCounterJob, updatePlayerStats } from './helpers/fn-stable.js';
 import { dev, alertLog, watchFor, dynamicVars, chatLog, pack } from './settings.js';
-import { dimensionSuffix, playerAliveTicksCounterJob, updatePlayerStats } from './fn-stable.js';
 import * as bot from "./deathBot.js";
-import { BlockLib } from "./common-beta/blockClass.js";
-import { Vector3Lib } from "./common-stable/tools/vectorClass.js";
-import { DynamicPropertyLib } from "./common-stable/dynamicPropertyClass.js";
+import { PlayerLib } from "./common-stable/gameObjects/playerClass.js";
 //==============================================================================
 const debug = dev.debugSubscriptions;
 //==============================================================================
@@ -23,9 +25,9 @@ export function afterEvents_playerSpawn () {
     world.afterEvents.playerSpawn.subscribe((event) => {
         const player = event.player;
 
-        DynamicPropertyLib.add(player, dynamicVars.firstTick, 0);
+        DynamicPropertyLib.addNumber(player, dynamicVars.firstTick, 0);
 
-        if (dev.debugPlayer && player.isOp()) {
+        if (dev.debugPlayer && PlayerLib.isOp(player)) {
             chatLog.player(player, "`* §dafterEvents.playerSpawn: ${player.nameTag}`");
             chatLog.player(player, `==> event.initialSpawn: ${event.initialSpawn}`);
         }
@@ -38,7 +40,7 @@ export function afterEvents_playerSpawn () {
             //TODO: add message to player on what to do
         }
         else {
-            chatLog.player(player, `==> deathMsgWaiting: ${!!player.getDynamicProperty(dynamicVars.deathMsgWaiting)}`, dev.debugPlayer && player.isOp());
+            chatLog.player(player, `==> deathMsgWaiting: ${!!player.getDynamicProperty(dynamicVars.deathMsgWaiting)}`, dev.debugPlayer &&  PlayerLib.isOp(player));
 
             if (player.getDynamicProperty(dynamicVars.deathMsgWaiting)) {
 
@@ -92,7 +94,7 @@ export function afterEvents_entityDie () {
         // this is not done right now, must be in  queue because if you hard exit game instead
         // it does not save the vars, if you select exit game, it does
 
-        DynamicPropertyLib.add(player, dynamicVars.deathCounter, 1);
+        DynamicPropertyLib.increment(player, dynamicVars.deathCounter);
         player.setDynamicProperty(dynamicVars.deathMsgWaiting, true);
         player.setDynamicProperty(dynamicVars.deathDimension, dimension.id);
         player.setDynamicProperty(dynamicVars.deathCoordinates, location);

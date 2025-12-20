@@ -1,4 +1,4 @@
-// blockFace.js
+// BlockFace.js
 // @ts-check
 /* =====================================================================
 Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
@@ -9,13 +9,16 @@ Change Log:
     20251125 - Created File 
     20251129 - Fixed xDelta and yDelta per Non Absolute and player location - because it was wrong before
     20251204 - Added debug to message   
+    20251219 - Fix Face Grid once and for all....
+
 ========================================================================*/
 //=============================================================================
 import { Direction, Player, world } from "@minecraft/server";
 // shared
-import { AngleMath, Compass } from "../tools/rotationLib";
+import { AngleMath, Compass, toDirection } from "../tools/rotationLib";
 import { round } from "../tools/mathLib";
-import { rotationToCardinalDirection, Vector2Lib, Vector3Lib } from "../tools/vectorClass";
+import { Vector2Lib, Vector3Lib } from "../tools/vectorClass";
+import { Blocks } from "./blockLib";
 //=============================================================================
 /** @typedef {import("@minecraft/server").Vector2} Vector2 */
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
@@ -76,8 +79,14 @@ export function getHitEdgeName (face, x, y, xyMax = 2) {
     if (y === 0) parts.push('down');
     else if (y === xyMax) parts.push('up');
 
-    if (x === 0) parts.push(map.right);
-    else if (x === xyMax) parts.push(map.left);
+    // if ([ 'north', 'west' ].includes(face)) {
+    //     if (x === 0) parts.push(map.right);
+    //     else if (x === xyMax) parts.push(map.left);
+    // }
+    // else {
+        if (x === 0) parts.push(map.left);
+        else if (x === xyMax) parts.push(map.right);
+    // }
 
     if (parts.length === 0) return 'center';
 
@@ -98,12 +107,11 @@ export class FaceLocationGrid {
     /**
      * 
      * @param {Vector3} faceLocation 
-     * @param {BlockFaces | BlockFacesTitle} blockFace
-     * @param {Player} player 
-     * @param {boolean} [absolute=false] default false - use true to turn off relativity     
+     * @param {BlockFaces | BlockFacesTitle | Direction} blockFace
+     * @param {Vector3} blockLocation 
      * @param {boolean} [debug=false] 
      */
-    constructor(faceLocation, blockFace, player, absolute = false, debug = false) {
+    constructor(faceLocation, blockFace, blockLocation, debug = false) {
 
         this.faceLocation =
             Vector3Lib.new(
@@ -112,93 +120,69 @@ export class FaceLocationGrid {
                 round(decimalPart(faceLocation.z), 2)
             );
         this.blockFace = blockFace.toLowerCase();
-
-        this.playerLocation = Vector3Lib.floor(player.location);
-        this.playerRotation = AngleMath.negativeAngleConvert(Math.floor(player.getRotation().y));
-        this.playerCardinalDirection = compass.degrees[ this.playerRotation ].direction.cardinal.toLowerCase();
-        //world.sendMessage(`${this.playerRotation} - ${this.playerCardinalDirection}`)
-
+        this.xCoordPos = !!(blockLocation.x >= 0);
+        this.zCoordPos = !!(blockLocation.z >= 0);
+        this.blockLocation = blockLocation;
         //up/down is static   NW corner is zero always
         this.isWall = ![ 'up', 'down' ].includes(this.blockFace);
         if (!this.isWall) { //works for grid now
+            this.horizontalDelta = this.faceLocation.x;
+            this.verticalDelta = this.faceLocation.z;
 
-            if (this.blockFace == 'up') {
-                this.xDelta = this.faceLocation.x;
-                this.yDelta = this.faceLocation.z;
+            if (this.blockFace == 'down') {
+                this.horizontalDelta = 1 - this.horizontalDelta;
+                this.verticalDelta = this.verticalDelta;
             }
-            else {
-                this.xDelta = 1 - this.faceLocation.x;
-                this.yDelta = this.faceLocation.z;
+
+            if (!this.xCoordPos && this.zCoordPos) {
+                this.horizontalDelta = 1 - this.horizontalDelta;
             }
+            else if (this.xCoordPos && !this.zCoordPos) {
+                this.verticalDelta = 1 - this.verticalDelta;
+            }
+            else if (!this.xCoordPos && !this.zCoordPos) {
+                this.horizontalDelta = 1 - this.horizontalDelta;
+                this.verticalDelta = 1 - this.verticalDelta;
+            }
+            // }
+            // else {
+            //     this.horizontalDelta = 1 - this.faceLocation.x;
+            //     this.verticalDelta = this.faceLocation.z;
+            //}
         }
         else {
-            this.yDelta = this.faceLocation.y;
-            this.xDelta = ([ 'north', 'south' ].includes(this.blockFace)) ? this.faceLocation.x : this.faceLocation.z;
-        }
+            this.verticalDelta = this.faceLocation.y;
+            if (blockLocation.y < 0) this.verticalDelta = 1 - this.verticalDelta;
 
+            this.horizontalDelta = ([ 'north', 'south' ].includes(this.blockFace))
+                ? this.faceLocation.x
+                : this.faceLocation.z;
+
+            if (this.xCoordPos && this.zCoordPos && [ 'south', 'west' ].includes(this.blockFace)) this.horizontalDelta = 1 - this.horizontalDelta;
+            else if (this.xCoordPos && !this.zCoordPos && [ 'south', 'east' ].includes(this.blockFace)) this.horizontalDelta = 1 - this.horizontalDelta;
+            else if (!this.xCoordPos && this.zCoordPos && [ 'north', 'west' ].includes(this.blockFace)) this.horizontalDelta = 1 - this.horizontalDelta;
+            else if (!this.xCoordPos && !this.zCoordPos && [ 'north', 'east' ].includes(this.blockFace)) this.horizontalDelta = 1 - this.horizontalDelta;
+        }
+        console.warn(`§l§6zOG => horizontalDelta: ${this.horizontalDelta}  upDownDelta: ${this.verticalDelta}`);
         this.faceMap = faceHorizontalMap[ this.blockFace ];
 
-        //because depending on + or - coordinates, grid will be off in diff ways
-        if (this.isWall && !absolute && this.playerLocation) {
-
-            /**@type {CardinalBlockFace} */
-            let bFace = this.faceMap.face;
-            let changed = false;
-            // if ([ 'up', 'down' ].includes(this.blockFace)) {
-            //     bFace = rotationToCardinalDirection(this.playerLocation.y);
-            //     bFace = this.faceMap.opposite;
-            //     world.sendMessage(`§l§eAs Face ${bFace}`);
-            // }
-
-            if (this.playerLocation.x < 0 && this.playerLocation.z < 0) {
-                if (bFace == 'east' || bFace == 'north') {
-                    this.xDelta = 1 - this.xDelta;
-                    changed = true;
-                }
-            }
-            else if (this.playerLocation.x < 0 && this.playerLocation.z > 0) {
-                if (bFace == 'north' || bFace == 'west') {
-                    this.xDelta = 1 - this.xDelta;
-                    changed = true;
-                }
-            }
-            else if (this.playerLocation.x > 0 && this.playerLocation.z > 0) {
-                if (bFace == 'south' || bFace == 'west') {
-                    this.xDelta = 1 - this.xDelta;
-                    changed = true;
-                }
-            }
-            else if (this.playerLocation.x > 0 && this.playerLocation.z < 0) {
-                if (bFace == 'south' || bFace == 'east') {
-                    this.xDelta = 1 - this.xDelta;
-                    changed = true;
-                }
-            }
-            if (changed && debug) world.sendMessage(`§l§aNew§r => og xDelta: ${this.xDelta}     og yDelta: ${this.yDelta}
-            `);
-        }
-
-        this.xyDelta = Vector2Lib.new(this.xDelta, this.yDelta);
+        this.hvDelta = Vector2Lib.new(this.horizontalDelta, this.verticalDelta);
         const grid2 = this.grid(2);
         this.verticalHalf = grid2.y;
         this.horizontalHalf = grid2.x;
 
-        this.#og_xDelta = this.xDelta;
-        this.#og_yDelta = this.yDelta;
-
-        //auto done, but you can do later
-        // if ([ 'up', 'down' ].includes(this.blockFace) && player && player.isValid) {
-        //     this.adjustUpDownToPlayerRotation(player);
-        // }
+        if (debug) this.blockFaceLocationInfo_show([ 2, 3, 4, 5, 6, 7, 8 ]);
     }
     /**
      * 
      * @param {number} base 
+     * @param {boolean} [inverseX=false] 
      * @returns {Vector2}
      */
-    grid (base = 1) {
+    grid (base = 1, inverseX = false) {
         if (base == 0) base = 1;
-        return Vector2Lib.new(Math.floor(this.xDelta * base), Math.floor(this.yDelta * base));
+        const returnVal= Vector2Lib.new(Math.floor(this.horizontalDelta * base), Math.floor(this.verticalDelta * base));        
+        return returnVal
     }
 
     //for up/down can alter to be relative to player rotation
@@ -221,7 +205,7 @@ export class FaceLocationGrid {
         if (![ 'up', 'down' ].includes(this.blockFace))
             return;
 
-        const direction = rotationToCardinalDirection(rotationY);
+        const direction = compass.degrees[ rotationY ].direction.cardinal.toLowerCase();
         //world.sendMessage(`rotationY=${Math.round(rotationY,1} - -angle = Dir=${direction}`)
         this.adjustUpDownToPlayerDirection(direction);
     }
@@ -237,13 +221,13 @@ export class FaceLocationGrid {
         //TODO: figure out later, not needed yet
         //world.sendMessage(`altering for ${direction}`);
         switch (direction) {
-            case 'north': [ this.xDelta, this.yDelta ] = [ this.#og_xDelta, this.#og_yDelta ];
+            case 'north': [ this.horizontalDelta, this.verticalDelta ] = [ this.#og_xDelta, this.#og_yDelta ];
                 break;
-            case 'south': [ this.xDelta, this.yDelta ] = [ 1 - this.#og_xDelta, 1 - this.#og_yDelta ];
+            case 'south': [ this.horizontalDelta, this.verticalDelta ] = [ 1 - this.#og_xDelta, 1 - this.#og_yDelta ];
                 break;
-            case 'west': [ this.xDelta, this.yDelta ] = [ 1 - this.#og_yDelta, this.#og_xDelta ];
+            case 'west': [ this.horizontalDelta, this.verticalDelta ] = [ 1 - this.#og_yDelta, this.#og_xDelta ];
                 break;
-            case 'east': [ this.xDelta, this.yDelta ] = [ this.#og_yDelta, 1 - this.#og_xDelta ];
+            case 'east': [ this.horizontalDelta, this.verticalDelta ] = [ this.#og_yDelta, 1 - this.#og_xDelta ];
                 break;
             default:
                 return;
@@ -251,12 +235,12 @@ export class FaceLocationGrid {
 
         if (this.blockFace == 'down') {
             //reverse for when looking up.  Imagine looking at paper
-            this.xDelta = 1 - this.xDelta;
-            this.yDelta = 1 - this.yDelta;
+            this.horizontalDelta = 1 - this.horizontalDelta;
+            this.verticalDelta = 1 - this.verticalDelta;
         }
 
         // reset these vars
-        this.xyDelta = Vector2Lib.new(this.xDelta, this.yDelta);
+        this.hvDelta = Vector2Lib.new(this.horizontalDelta, this.verticalDelta);
         const grid2 = this.grid(2);
         this.verticalHalf = grid2.y;
         this.horizontalHalf = grid2.x;
@@ -286,6 +270,28 @@ export class FaceLocationGrid {
             g.y,
             xyMax
         );
+    }
+    /**
+    * @param {number[]} [grids=[3]]  
+    * @param {boolean} [returnOnly=false] 
+    * @returns {string|void}
+    */
+    blockFaceLocationInfo_show (grids = [ 3 ], returnOnly = false) {
+
+        //const grid = new FaceLocationGrid(faceLocation, blockFace, player, false);
+        let msg = '\n§dFaceLocationGrid:';
+
+        msg += `\n==> §bFaceLocation:§r ${Vector3Lib.toString(this.faceLocation, 1, true)} - §bx-Pos:§r${this.xCoordPos} §bz-Pos:§r${this.zCoordPos}`;
+        for (let i = 2; i <= 16; i++) {
+            if (grids.includes(i)) {
+                const subGrid = this.grid(i);
+                const touched = subGrid.x + (i * subGrid.y);
+                msg += `\n==> §bGrid-${i}:§r ${Vector2Lib.toString(subGrid, 0, true)} / §bTouch ptr:§r ${touched} / §bEdge:§r ${this.getEdgeName(i)}`;
+            }
+        }
+
+        if (returnOnly) return msg;
+        console.warn(msg);
     }
 }
 //=============================================================================

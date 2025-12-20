@@ -193,7 +193,7 @@ class Web {
                 //Log
                 system.runTimeout(() => {
                     if (entity.isValid && Web.insideWebBlock(entity)) {
-                        DynamicPropertyLib.add(entity, entityDynamicVars.websEntered, 1);
+                        DynamicPropertyLib.increment(entity, entityDynamicVars.websEntered);
                         if (devDebug.watchEntityGoals) devDebug.dsb.increment('stats', 'enterWeb');
                     }
                     else {
@@ -239,7 +239,7 @@ class Web {
             if (Web.insideWebBlock(entity)) {
                 entity.nameTag;
                 alertLog.success(`${entity.nameTag || entity.id} Expanded Web @ ${Vector3Lib.toString(newWeb.location, 0, true)}`, devDebug.watchEntityEvents);
-                DynamicPropertyLib.add(entity, entityDynamicVars.websExpanded, 1);
+                DynamicPropertyLib.increment(entity, entityDynamicVars.websExpanded);
                 if (debugOn) {
                     devDebug.dsb.increment('ctrs', 'webs');
                     if (devDebug.watchEntityGoals)
@@ -291,7 +291,7 @@ class Web {
         system.runTimeout(() => {
             if (Web.insideWebBlock(entity)) {
                 alertLog.log(`§l${entity.nameTag || entity.id}§r §5Placed New Web @ ${Vector3Lib.toString(inBlock.location, 0, true)}`, devDebug.watchEntityEvents);
-                DynamicPropertyLib.add(entity, entityDynamicVars.websCreated, 1);
+                DynamicPropertyLib.increment(entity, entityDynamicVars.websCreated);
                 if (debugOn) {
                     devDebug.dsb.increment('ctrs', 'webs');
                     devDebug.dsb.increment('stats', 'newWeb');
@@ -315,7 +315,7 @@ class Web {
         system.runTimeout(() => {
 
             entity.dimension.setBlockType(location, HOME_ID);
-            DynamicPropertyLib.add(entity, entityDynamicVars.websCreated, 1);
+            DynamicPropertyLib.increment(entity, entityDynamicVars.websCreated);
             Web.activityRegister(entity);
 
             system.runTimeout(() => {
@@ -335,8 +335,8 @@ function welcomeBack (entity) {
 
     //entity.nameTag || entity
     Web.activityRegister(entity);
-    DynamicPropertyLib.add(entity, entityDynamicVars.websCreated, 0);  //initializes if undefined
-    DynamicPropertyLib.add(entity, entityDynamicVars.eggsLaid, 0);
+    DynamicPropertyLib.addNumber(entity, entityDynamicVars.websCreated, 0);  //initializes if undefined
+    DynamicPropertyLib.addNumber(entity, entityDynamicVars.eggsLaid, 0);
 }
 //===================================================================
 /**
@@ -645,7 +645,7 @@ function entityStallCheck_lastTick (entity) {
 
     let lastActiveTick = DynamicPropertyLib.getNumber(entity, entityDynamicVars.lastActiveTick);
     const deltaTicks = system.currentTick - lastActiveTick;
-    DynamicPropertyLib.add(entity, entityDynamicVars.aliveTicks, deltaTicks);
+    DynamicPropertyLib.addNumber(entity, entityDynamicVars.aliveTicks, deltaTicks);
 
     if (!lastActiveTick) {
         lastTickAndLocationRegister(entity);
@@ -826,7 +826,7 @@ export function entityEventProcess (entity, id, message) {
         if (id === `mainEvent:expandWeb`) { Web.expandWeb(entity); return; }
         if (id === `mainEvent:placeWeb`) { Web.placeWeb(entity); return; }
         if (id === `mainEvent:newEgg`) { newEgg(entity); return; }
-        if (id === `mainEvent:layEgg`) { DynamicPropertyLib.add(entity, entityDynamicVars.eggsLaid, 1); return; }
+        if (id === `mainEvent:layEgg`) { DynamicPropertyLib.addNumber(entity, entityDynamicVars.eggsLaid, 1); return; }
         if (id === `mainEvent:eatFireflies`) {
             alertLog.log(`§l${nameTag}§r §aFound a Firefly Bush§r @ ${locationStr}`, devDebug.watchEntityEating);
             fireFlyFood(entity);
@@ -884,14 +884,14 @@ export function entityEventProcess (entity, id, message) {
     if (id.startsWith('debugLogEvent')) {
         if (id === 'debugLogEvent:NewEntity') {
             if (message == 'born') {
-                DynamicPropertyLib.add(entity, entityDynamicVars.entityBorn, 1);
+                DynamicPropertyLib.increment(entity, entityDynamicVars.entityBorn);
                 devDebug.dsb.increment('stats', 'born');
                 alertLog.log(`§bNew Baby Born§r in Biome ${dimension.getBiome(location).id}: §l${nameTag}§r§6  @ ${locationStr}`, devDebug.watchEntityEvents || devDebug.watchEntityGoals);
                 return;
             }
 
             if (message == 'spawned') {
-                DynamicPropertyLib.add(entity, entityDynamicVars.entitySpawns, 1);
+                DynamicPropertyLib.increment(entity, entityDynamicVars.entitySpawns);
                 devDebug.dsb.increment('stats', 'spawned');
                 alertLog.log(`§aNew Adult Spawned§r in Biome ${dimension.getBiome(location).id}: §l${nameTag}§r§6  @ ${locationStr} - scriptEventReceive ()`, devDebug.watchEntityEvents || devDebug.watchEntityGoals);
                 return;

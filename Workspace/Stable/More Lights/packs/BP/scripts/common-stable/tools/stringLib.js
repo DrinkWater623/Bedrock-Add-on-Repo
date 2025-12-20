@@ -79,5 +79,14 @@ export function toTitleCase (str) {
         .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 //=============================================================================
+/**
+ * @param {string} s
+ * @returns {string}
+ */
+export function trimSeparators (s) {
+    // trims common separators from start/end: _ : - . space
+    return s.replace(/^[\s:_\-.]+/, "").replace(/[\s:_\-.]+$/, "");
+}
+//=============================================================================
 // End of File
 //=============================================================================

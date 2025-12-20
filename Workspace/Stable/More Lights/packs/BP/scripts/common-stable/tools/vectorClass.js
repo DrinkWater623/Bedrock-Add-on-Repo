@@ -13,6 +13,7 @@ Change Log
 ========================================================================*/
 // Shared
 import { rnd, rndInt, clamp, round } from "./mathLib.js";
+import { AngleMath } from "./rotationLib.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector2} Vector2 */
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
@@ -20,19 +21,6 @@ import { rnd, rndInt, clamp, round } from "./mathLib.js";
 //==============================================================================
 /** @typedef {{ center?: { x: number, z: number }, minRadius?: number, avoidZero?: boolean }} XZOpts */
 //==============================================================================
-/**
- * 
- * @param {number} rotation 
- * @returns { 'south' | 'west' | 'north' | 'east'}
- */
-export function rotationToCardinalDirection (rotation) {
-    let dirs = [ "south", "west", "north", "east", "south" ];
-    let dir = Math.round((rotation % 360) / 90);
-    if (dir < 0) dir += 4;
-
-    //@ts-ignore    
-    return dirs[ dir ];
-}
 //==============================================================================
 //==============================================================================
 export class Vector3Lib {

@@ -1,4 +1,4 @@
- //@ts-check
+//@ts-check
 /* =====================================================================
 Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
 License: GPL-3.0-only
@@ -8,6 +8,37 @@ Last Update: 20250110c - Using round with mod instead of floor
 ========================================================================*/
 import { Direction } from "@minecraft/server";
 //============================================================================
+/** @type {Map<string, Direction>} */
+const stringToDirection = new Map([
+    [ "North", Direction.North ], [ "north", Direction.North ], [ "n", Direction.North ],
+    [ "South", Direction.South ], [ "south", Direction.South ], [ "s", Direction.South ],
+    [ "East", Direction.East ], [ "east", Direction.East ], [ "e", Direction.East ],
+    [ "West", Direction.West ], [ "west", Direction.West ], [ "w", Direction.West ],
+]);
+
+/**
+ * @param {unknown} input
+ * @returns {Direction | undefined}
+ */
+export function toDirection (input) {
+    if (typeof input !== "string") return undefined;
+    const key = input.trim();
+    return stringToDirection.get(key) ?? stringToDirection.get(key.toLowerCase());
+}
+/**
+ * 
+ * @param {number} rotation 
+ * @returns { 'south' | 'west' | 'north' | 'east'}
+ */
+export function rotationToCardinalDirection (rotation) {
+    const posRotation=AngleMath.negativeAngleConvert(Math.floor(rotation));
+    let dirs = [ "south", "west", "north", "west", "south" ];
+    let dir = Math.round((posRotation % 360) / 90);
+    if (dir < 0) dir += 4;
+
+    //@ts-ignore    
+    return dirs[ dir ];
+}
 export class CardinalDirections {
     static North = "North";
     static South = "South";
@@ -55,6 +86,7 @@ export class DirectionNames {
         .map(v => v.replace(" ", "-"));
 
     static cardinal = this.intermediate.filter(f => !f.includes('-'));
+
 }
 //=============================================================================
 export class AngleMath {
@@ -172,7 +204,7 @@ export class AngleMath {
             }
         }
         else {
-            
+
             if (isIntermediate)
                 return DirectionNames.intermediate[ this.intermediateAngleId_get(angleOrAngleId) ];
             else return DirectionNames.cardinal[ this.cardinalAngleId_get(angleOrAngleId,) ];

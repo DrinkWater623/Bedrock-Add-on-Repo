@@ -12,6 +12,9 @@ Change Log:
     20251216 - Created and chatty helped me fill it up with what I needed
 */
 //==============================================================================
+
+import { Block } from "@minecraft/server";
+
 /**
  * @param {Record<string, unknown>} obj
  * @param {string} [filter='']
@@ -281,21 +284,6 @@ export function objectEntries_any_booleans_opts (targetObject = {}, opts = {}) {
 export function objectEntries_any_true (targetObject = {}, filter = "") {
     return objectEntries_any_booleans_opts(targetObject, { filter, value: true });
 }
-
-
-//==============================================================================
-/**
- * @typedef {{
- *   title?: string,
- *   maxDepth?: number,
- *   maxEntries?: number,
- *   maxArrayItems?: number,
- *   indent?: string,
- *   showTypes?: boolean,
- *   sortKeys?: boolean
- * }} ListOpts
- */
-
 /**
  * @param {unknown} v
  * @returns {v is Record<string, unknown>}
@@ -335,8 +323,25 @@ function formatValue (v, showTypes) {
 
     return showTypes ? `[${t}]` : `[${t}]`;
 }
+//==============================================================================
 /**
- * List an array (recursively), returning printable lines.
+ * @typedef {{
+ *   title?: string,
+ *   maxDepth?: number,
+ *   maxEntries?: number,
+ *   maxArrayItems?: number,
+ *   indent?: string,
+ *   showTypes?: boolean,
+ *   sortKeys?: boolean
+ *   keyColor?: string,    // default §b
+ *   valueColor?: string,  // default §r
+ *   titleColor?: string,  // optional, default §e
+ *   resetColor?: string   // default §r
+ * }} ListOpts
+ */
+//==============================================================================
+/**
+ * Internal building blocks - Return an array (recursively), returning printable lines.
  *
  * @param {unknown[]} array
  * @param {ListOpts} [opts]
@@ -345,13 +350,18 @@ function formatValue (v, showTypes) {
  * @param {string} [path]
  * @returns {string[]}
  */
-export function listArray (array, opts = {}, seen = new WeakSet(), depth = 0, path = "array") {
+function _getEmitLines_array (array, opts = {}, seen = new WeakSet(), depth = 0, path = "array") {
     const {
         title = "Array List:",
         maxDepth = 6,
         maxArrayItems = 100,
         indent = "  ",
         showTypes = false,
+
+        keyColor = "§b",
+        valueColor = "§r",
+        titleColor = "§e",
+        resetColor = "§r",
     } = opts;
 
     /** @type {string[]} */
@@ -362,32 +372,32 @@ export function listArray (array, opts = {}, seen = new WeakSet(), depth = 0, pa
         lines.push(`${title} (maxDepth ${maxDepth} reached at ${path})`);
         return lines;
     }
+    // right after the depth guard
+    if (seen.has(array)) {
+        lines.push(`${title} (cycle detected at ${path})`);
+        return lines;
+    }
+    seen.add(array);
 
-    lines.push(`${title} (${array.length})`);
+    lines.push(`${titleColor}${title}${resetColor} (${array.length})`);
 
     const limit = Math.min(array.length, maxArrayItems);
     for (let i = 0; i < limit; i++) {
         const v = array[ i ];
-        const prefix = `${indent.repeat(depth + 1)}[${i}]`;
+        const prefix = `${indent.repeat(depth + 1)}${keyColor}[${i}]${resetColor}`;
+
+
+        lines.push(`${prefix}: ${valueColor}${formatValue(v, showTypes)}${resetColor}`);
 
         if (Array.isArray(v)) {
-            lines.push(`${prefix}: ${formatValue(v, showTypes)}`);
-            if (seen.has(v)) {
-                lines.push(`${indent.repeat(depth + 2)}↳ (cycle detected)`);
-            } else {
-                seen.add(v);
-                lines.push(...listArray(v, { ...opts, title: `${path}[${i}]` }, seen, depth + 1, `${path}[${i}]`));
-            }
+            lines.push(..._getEmitLines_array(v, { ...opts, title: `${path}[${i}]` }, seen, depth + 1, `${path}[${i}]`));
         } else if (isPlainObject(v)) {
-            lines.push(`${prefix}: ${formatValue(v, showTypes)}`);
             if (seen.has(/** @type {object} */(v))) {
-                lines.push(`${indent.repeat(depth + 2)}↳ (cycle detected)`);
+                lines.push(`${indent.repeat(depth + 2)}↳ §6(cycle detected)`);
             } else {
                 seen.add(/** @type {object} */(v));
-                lines.push(...listObjectInnards(v, { ...opts, title: `${path}[${i}]` }, seen, depth + 1, `${path}[${i}]`));
+                lines.push(..._getEmitLines_object(v, { ...opts, title: `${path}[${i}]` }, seen, depth + 1, `${path}[${i}]`));
             }
-        } else {
-            lines.push(`${prefix}: ${formatValue(v, showTypes)}`);
         }
     }
 
@@ -397,18 +407,17 @@ export function listArray (array, opts = {}, seen = new WeakSet(), depth = 0, pa
 
     return lines;
 }
-
 /**
- * List an object's key/value innards (recursively), including arrays found inside.
+ * Internal building blocks - Return an object's key/value innards (recursively), including arrays found inside.
  *
- * @param {unknown} value
+ * @param {unknown} input
  * @param {ListOpts} [opts]
- * @param {WeakSet<object>} [seen]
- * @param {number} [depth]
- * @param {string} [path]
+ * @param {WeakSet<object>} [seen] @internal
+ * @param {number} [depth] @internal
+ * @param {string} [path] @internal
  * @returns {string[]}
  */
-export function listObjectInnards (value, opts = {}, seen = new WeakSet(), depth = 0, path = "object") {
+function _getEmitLines_object (input, opts = {}, seen = new WeakSet(), depth = 0, path = "object") {
     const {
         title = "Key-Value List:",
         maxDepth = 6,
@@ -416,6 +425,11 @@ export function listObjectInnards (value, opts = {}, seen = new WeakSet(), depth
         indent = "  ",
         showTypes = false,
         sortKeys = false,
+
+        keyColor = "§b",
+        valueColor = "§r",
+        titleColor = "§e",
+        resetColor = "§r",
     } = opts;
 
     /** @type {string[]} */
@@ -427,62 +441,111 @@ export function listObjectInnards (value, opts = {}, seen = new WeakSet(), depth
     }
 
     // If it's an array, delegate
-    if (Array.isArray(value)) {
-        return listArray(value, { ...opts, title }, seen, depth, path);
+    if (Array.isArray(input)) {
+        return _getEmitLines_array(input, { ...opts, title }, seen, depth, path);
     }
 
     // Primitives / null
-    if (value == null || typeof value !== "object") {
-        lines.push(`${title}: ${formatValue(value, showTypes)}`);
+    if (input == null || typeof input !== "object") {
+        lines.push(`${title}: ${formatValue(input, showTypes)}`);
         return lines;
     }
 
     // Cycle guard
-    if (seen.has(value)) {
+    if (seen.has(input)) {
         lines.push(`${title} (cycle detected at ${path})`);
         return lines;
     }
-    seen.add(value);
+    seen.add(input);
 
-    const obj = /** @type {any} */ (value);
+    const obj = /** @type {any} */ (input);
     let keys = Object.keys(obj);
     if (sortKeys) keys = keys.sort();
 
-    lines.push(`${title} (${keys.length})`);
+    lines.push(`${titleColor}${title}${resetColor} (${keys.length})`);
 
     const limit = Math.min(keys.length, maxEntries);
     for (let i = 0; i < limit; i++) {
         const k = keys[ i ];
         const v = obj[ k ];
-        const prefix = `${indent.repeat(depth + 1)}${k}`;
+        const prefix = `${indent.repeat(depth + 1)}${keyColor}[${k}]${resetColor}`;
+
+        lines.push(`${prefix}: ${valueColor}${formatValue(v, showTypes)}${resetColor}`);
 
         if (Array.isArray(v)) {
-            lines.push(`${prefix}: ${formatValue(v, showTypes)}`);
-            lines.push(...listArray(v, { ...opts, title: k }, seen, depth + 1, `${path}.${k}`));
-        } else if (v != null && typeof v === "object") {
-            lines.push(`${prefix}: ${formatValue(v, showTypes)}`);
-            lines.push(...listObjectInnards(v, { ...opts, title: k }, seen, depth + 1, `${path}.${k}`));
-        } else {
-            lines.push(`${prefix}: ${formatValue(v, showTypes)}`);
+            lines.push(..._getEmitLines_array(v, { ...opts, title: k }, seen, depth + 1, `${path}.${k}`));
+        } else if (isPlainObject(v)) {
+            lines.push(..._getEmitLines_object(v, { ...opts, title: k }, seen, depth + 1, `${path}.${k}`));
         }
     }
 
-    if (keys.length > limit) lines.push(`${indent.repeat(depth + 1)}… (${keys.length - limit} more entries)`);
+    if (keys.length > limit) lines.push(`${indent.repeat(depth + 1)}… (${keys.length - limit}§c more entries)`);
     return lines;
+}
+/**
+ * List an array (recursively), returning printable lines.
+ * Prints to console.warn (legacy behavior) - Use emitArray for control of output
+ *
+ * @param {unknown[]} array
+ * @param {ListOpts} [opts]
+ * @returns {void}
+ */
+export function listArray (array, opts = {}) {
+    emitArray(console.warn, array, opts);
+}
+/**
+ * List an object's key/value innards (recursively), including arrays found inside.
+ * Prints to console.warn (legacy behavior) - Use emitObjectInnards for control of output
+ *
+ * @param {unknown} input
+ * @param {ListOpts} [opts]
+ * @returns {void}
+ */
+export function listObjectInnards (input, opts = {}) {
+    emitObjectInnards(console.warn, input, opts);
 }
 //------------------------------------------------------------------------------
 // Optional emit-style wrappers (handy for Debugger.log)
 //------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+// Optional emit-style wrappers (handy for Debugger.log)
+//------------------------------------------------------------------------------
 /**
- * @param {(line: string) => void} emit
- * @param {Record<string, unknown>} object
- * @param {ListOpts} [opts]
+ * Emit an object's innards as ONE message (tight line spacing).
+ *
+ * @param {(msg: string) => void} emit
+ * @param {unknown} input
+ * @param {ListOpts & { leadingNewline?: boolean, newline?: "\n" | "\r\n" }} [opts]
  * @returns {void}
  */
-export function emitObjectInnards (emit, object, opts = {}) {
-    for (const line of listObjectInnards(object, opts)) emit(line);
-}
+function _emitInnards (emit, input, opts = {}) {
+    const {
+        leadingNewline = true,
+        newline = "\n",
+        ...listOpts
+    } = opts;
 
+    const lines = Array.isArray(input)
+        ? _getEmitLines_array(input, listOpts)
+        : _getEmitLines_object(input, listOpts);
+        
+    if (!lines.length) return;
+
+    // One leading blank line (your request), then join with exactly one newline between lines.
+    const msg = (leadingNewline ? newline : "") + lines.join(newline);
+    emit(msg);
+}
+/**
+ * Emit an object's innards as ONE message (tight line spacing).
+ *
+ * @param {(msg: string) => void} emit
+ * @param {unknown} input
+ * @param {ListOpts & { leadingNewline?: boolean, newline?: "\n" | "\r\n" }} [opts]
+ * @returns {void}
+ */
+export function emitObjectInnards (emit, input, opts = {}) {
+    return _emitInnards(emit, input, opts);
+}
 /**
  * @param {(line: string) => void} emit
  * @param {unknown[]} array
@@ -490,10 +553,10 @@ export function emitObjectInnards (emit, object, opts = {}) {
  * @returns {void}
  */
 export function emitArray (emit, array, opts = {}) {
-    for (const line of listArray(array, opts)) emit(line);
+    return _emitInnards(emit, array, opts);
 }
 /**
- * @param {Record<string, unknown>} map
+ * @param {Record<string|number, unknown>} map
  * @param {string} key
  * @returns {boolean}
  */

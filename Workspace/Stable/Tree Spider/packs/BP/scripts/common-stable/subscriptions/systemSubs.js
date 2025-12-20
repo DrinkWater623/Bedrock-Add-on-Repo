@@ -69,6 +69,7 @@ export class SystemSubscriptions extends SubscriptionOwner {
      * @param {boolean} [debug=false]
      */
     register(handlers, debug = false) {
+        
         if (handlers.afterScriptEventReceive) {
             this.afterScriptEventReceive.subscribe(
                 handlers.afterScriptEventReceive,

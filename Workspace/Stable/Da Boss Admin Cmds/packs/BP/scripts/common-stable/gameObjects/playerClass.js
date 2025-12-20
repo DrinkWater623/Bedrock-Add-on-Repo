@@ -19,6 +19,13 @@ export class PlayerLib {
      * @param {Player} player 
      * @returns {boolean}
      */
+    static isOp (player) {
+        return player?.commandPermissionLevel>1;
+    };
+    /**
+     * @param {Player} player 
+     * @returns {boolean}
+     */
     static isGameModeAdventure (player) {
         return player?.getGameMode().toLowerCase() === 'adventure' || false;
     };

@@ -17,12 +17,20 @@ import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus } fr
 // Local
 import { pack, packDisplayName } from './settings.js';
 import { dev } from "./debug.js";
+const alert = dev.debugFunctions.registerCommand ?? false;
+/**
+ * 
+ * @param {string} func 
+ */
+function alertFunction (func) {
+    dev.alertFunction(func, true, alert);
+}
 //==============================================================================
 /**
  * @param {CustomCommandRegistry} registry 
  */
 function register_about (registry) {
-    dev.alertFunction('register_about');
+    alertFunction('register_about');
     const cmd = {
         name: `${pack.cmdNameSpace}:about_lights`,
         description: "Info/Help for DW623's Actionbar Compass add-on",
@@ -54,7 +62,7 @@ function register_about (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_toggle_arrow (registry) {
-    dev.alertFunction('register_about');
+    alertFunction('register_about');
     const cmd = {
         name: `${pack.cmdNameSpace}:toggle_arrow`,
         description: "Toggle on/off watching Arrow Events",
@@ -73,7 +81,7 @@ function register_toggle_arrow (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_toggle_bar (registry) {
-    dev.alertFunction('register_about');
+    alertFunction('register_about');
     const cmd = {
         name: `${pack.cmdNameSpace}:toggle_bar`,
         description: "Toggle on/off watching Light Bar Events",
@@ -92,7 +100,7 @@ function register_toggle_bar (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_toggle_mini_block (registry) {
-    dev.alertFunction('register_toggle_miniBlock');
+    alertFunction('register_toggle_miniBlock');
     const cmd = {
         name: `${pack.cmdNameSpace}:toggle_mini_block`,
         description: "Toggle on/off watching Mini Block Events",
@@ -111,9 +119,9 @@ function register_toggle_mini_block (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_event_beforeItemUse (registry) {
-    dev.alertFunction('register_event_beforeItemUse');
+    alertFunction('register_event_beforeItemUse');
     const cmd = {
-        name: `${pack.cmdNameSpace}:toggle_event_beforeItemUse`,
+        name: `${pack.cmdNameSpace}:toggle_event_beforeItemUse`.toLowerCase(),
         description: "Toggle on/off watching Item Use Before-Events",
         permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
@@ -131,9 +139,9 @@ function register_event_beforeItemUse (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_event_afterItemCompleteUse (registry) {
-    dev.alertFunction('register_event_afterItemCompleteUse');
+    alertFunction('register_event_afterItemCompleteUse');
     const cmd = {
-        name: `${pack.cmdNameSpace}:toggle_event_afterItemCompleteUse`,
+        name: `${pack.cmdNameSpace}:toggle_event_afterItemCompleteUse`.toLowerCase(),
         description: "Toggle on/off watching Item-Complete-Use-On After-Events",
         permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
@@ -150,9 +158,9 @@ function register_event_afterItemCompleteUse (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_event_afterItemReleaseUse (registry) {
-    dev.alertFunction('register_event_afterItemReleaseUse');
+    alertFunction('register_event_afterItemReleaseUse');
     const cmd = {
-        name: `${pack.cmdNameSpace}:toggle_event_afterItemReleaseUse`,
+        name: `${pack.cmdNameSpace}:toggle_event_afterItemReleaseUse`.toLowerCase(),
         description: "Toggle on/off watching Item-Release-Use After-Events",
         permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
@@ -170,9 +178,9 @@ function register_event_afterItemReleaseUse (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_event_afterItemStartUseOn (registry) {
-    dev.alertFunction('register_event_afterItemStartUseOn');
+    alertFunction('register_event_afterItemStartUseOn');
     const cmd = {
-        name: `${pack.cmdNameSpace}:toggle_event_afterItemStartUseOn`,
+        name: `${pack.cmdNameSpace}:toggle_event_afterItemStartUseOn`.toLowerCase(),
         description: "Toggle on/off watching Item-Start-Use-On After-Events",
         permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
@@ -189,9 +197,9 @@ function register_event_afterItemStartUseOn (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_event_afterItemStartUse (registry) {
-    dev.alertFunction('register_event_afterItemStartUse');
+    alertFunction('register_event_afterItemStartUse');
     const cmd = {
-        name: `${pack.cmdNameSpace}:toggle_event_afterItemStartUse`,
+        name: `${pack.cmdNameSpace}:toggle_event_afterItemStartUse`.toLowerCase(),
         description: "Toggle on/off watching Item-Start-Use After-Events",
         permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
@@ -209,9 +217,9 @@ function register_event_afterItemStartUse (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_event_afterItemStopUseOn (registry) {
-    dev.alertFunction('register_event_afterItemStopUseOn');
+    alertFunction('register_event_afterItemStopUseOn');
     const cmd = {
-        name: `${pack.cmdNameSpace}:toggle_event_afterItemStopUseOn`,
+        name: `${pack.cmdNameSpace}:toggle_event_afterItemStopUseOn`.toLowerCase(),
         description: "Toggle on/off watching Item-Stop-Use-On After-Events",
         permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
@@ -228,9 +236,9 @@ function register_event_afterItemStopUseOn (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_event_afterItemStopUse (registry) {
-    dev.alertFunction('register_event_afterItemStopUse');
+    alertFunction('register_event_afterItemStopUse');
     const cmd = {
-        name: `${pack.cmdNameSpace}:toggle_event_afterItemStopUse`,
+        name: `${pack.cmdNameSpace}:toggle_event_afterItemStopUse`.toLowerCase(),
         description: "Toggle on/off watching Item-Stop-Use After-Events",
         permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
@@ -248,7 +256,7 @@ function register_event_afterItemStopUse (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_event_on_Place (registry) {
-    dev.alertFunction('register_event_on_Place');
+    alertFunction('register_event_on_Place');
     const cmd = {
         name: `${pack.cmdNameSpace}:toggle_event_on_place`,
         description: "Toggle on/off watching On-Place Events",
@@ -267,9 +275,9 @@ function register_event_on_Place (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_event_beforePlayerInteractWithBlock (registry) {
-    dev.alertFunction('register_event_beforePlayerInteractWithBlock');
+    alertFunction('register_event_beforePlayerInteractWithBlock');
     const cmd = {
-        name: `${pack.cmdNameSpace}:toggle_event_before_player_interactWithBlock`,
+        name: `${pack.cmdNameSpace}:toggle_event_before_player_interactWithBlock`.toLowerCase(),
         description: "Toggle on/off watching Player-Interact_with_Block Before-Events",
         permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
@@ -288,7 +296,7 @@ function register_event_beforePlayerInteractWithBlock (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 export function registerCustomCommands (registry) {
-    dev.alertFunction('registerCustomCommands');
+    alertFunction('registerCustomCommands');
     register_about(registry);
 
     if (pack.debugOn) {

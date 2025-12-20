@@ -1,33 +1,15 @@
 //@ts-check
-/* =====================================================================
-Copyright (C) 2024 DrinkWater623/PinkSalt623/Update Block Dev  
-License: GPL-3.0-only
-URL: https://github.com/DrinkWater623
-========================================================================
-Last Update: 20251024 - Add get boolean value and propertyExists()
-========================================================================*/
-import { Entity, World } from "@minecraft/server";
+/**
+ * Created by: https://github.com/DrinkWater623
+ */
 //==============================================================================
+import { Entity, World } from "@minecraft/server";
+//=============================================================================
 /** @typedef {import("@minecraft/server").Vector2} Vector2 */
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
 //==============================================================================
 export class DynamicPropertyLib {
-
-    //====================================== Query
-    /**
-    * 
-    * @param {Entity | World} entity
-    * @param {string} propertyName
-    * @returns {boolean} 
-    */
-    static propertyExists (entity, propertyName) {
-        if (entity instanceof World || entity.isValid) {
-            const currentValue = entity.getDynamicProperty(propertyName);
-            return (typeof currentValue !== 'undefined');
-        }
-        else return false;
-    }
 
     //======================================  Numbers
     /**
@@ -37,7 +19,7 @@ export class DynamicPropertyLib {
      * @param {number} [qty=0] 
      */
     static add (entity, propertyName, qty = 0) {
-        if (entity instanceof World || entity.isValid) {
+        if (entity instanceof World || entity.isValid()) {
             const currentQty = DynamicPropertyLib.getNumber(entity, propertyName);
             entity.setDynamicProperty(propertyName, currentQty + qty);
         }
@@ -53,8 +35,8 @@ export class DynamicPropertyLib {
         if (!propertyName) return 0;
 
         let sum = 0;
-        entities.filter(e => e.isValid).forEach(e => {
-            if (e.isValid) sum += DynamicPropertyLib.getNumber(e, propertyName);
+        entities.filter(e => e.isValid()).forEach(e => {
+            if (e.isValid()) sum += DynamicPropertyLib.getNumber(e, propertyName);
         });
 
         return sum;
@@ -67,7 +49,7 @@ export class DynamicPropertyLib {
      * @returns {number} 
      */
     static getNumber (entity, propertyName) {
-        if (entity instanceof World || entity.isValid) {
+        if (entity instanceof World || entity.isValid()) {
             const currentQty = entity.getDynamicProperty(propertyName);
             if (!currentQty || typeof currentQty != 'number') {
                 entity.setDynamicProperty(propertyName, 0);
@@ -86,7 +68,7 @@ export class DynamicPropertyLib {
      * @param {Vector3} location
      */
     static setVector (entity, propertyName, location) {
-        if (entity.isValid) {
+        if (entity.isValid()) {
             entity.setDynamicProperty(propertyName, location);
         }
     }
@@ -98,7 +80,7 @@ export class DynamicPropertyLib {
      * @returns {Vector3 | undefined} 
      */
     static getVector (entity, propertyName) {
-        if (entity.isValid) {
+        if (entity.isValid()) {
             const location = entity.getDynamicProperty(propertyName);
             if (!location || typeof location != 'object') return undefined;
             return location;
@@ -115,7 +97,7 @@ export class DynamicPropertyLib {
     * @returns {string} 
     */
     static getString (entity, propertyName) {
-        if (entity instanceof World || entity.isValid) {
+        if (entity instanceof World || entity.isValid()) {
             const currentValue = entity.getDynamicProperty(propertyName);
             if (!currentValue || typeof currentValue != 'string') {
                 entity.setDynamicProperty(propertyName, '');
@@ -124,24 +106,5 @@ export class DynamicPropertyLib {
             return currentValue;
         }
         else return '';
-    }
-
-    //====================================== Bools
-    /**
-    * 
-    * @param {Entity | World} entity
-    * @param {string} propertyName
-    * @returns {boolean} 
-    */
-    static getBoolean (entity, propertyName) {
-        if (entity instanceof World || entity.isValid) {
-            const currentValue = entity.getDynamicProperty(propertyName);
-            if (typeof currentValue != 'boolean') {
-                entity.setDynamicProperty(propertyName, false);
-                return false;
-            }
-            return currentValue;
-        }
-        else return false;
     }
 }

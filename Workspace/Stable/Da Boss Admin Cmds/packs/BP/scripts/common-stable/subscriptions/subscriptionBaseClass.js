@@ -97,45 +97,47 @@ class SubscriptionEntry {
      * Internal helper so subscribe + subscribeWithOptions share logic.
      * @param {HandlerFn} fn
      * @param {Options | undefined} options
-     * @param {boolean} [debug=false]
+     * @param {boolean} [alert=false]
      */
-    _doSubscribe(fn, options, debug = false) {
-        const debugMe = debug || this.debugMe;
-        this.alertLog.log(`* ${this._name}.subscribe ()`, debugMe);
+    _doSubscribe(fn, options, alert = false) {
+        const debugMe = alert || this.debugMe;
+        //this.alertLog.log(`* ${this._name}.subscribe ()`, debugMe);
 
         if (this.on) return;
         if (!fn) return;
+                
+        if(options)
+            this.handler = this.eventSignal.subscribe(fn, options);
+        else
+            this.handler = this.eventSignal.subscribe(fn);
 
-        // Options is optional; passing undefined is fine.
-        this.handler = this.eventSignal.subscribe(fn, options);
         this.on = true;
-        this.alertLog.success(`§aSubscribed to ${this._subscription}`, debugMe);
+        this.alertLog.success(`§6Subscribed to §a${this._subscription}${options ? '§d with Options':''}`, debugMe);
     }
 
     /**
      * Subscribe without options (normal case).
      * @param {HandlerFn} fn
-     * @param {boolean} [debug=false]
+     * @param {boolean} [alert=false]
      */
-    subscribe(fn, debug = false) {
-        this._doSubscribe(fn, /** @type {Options | undefined} */ (undefined), debug);
+    subscribe(fn, alert = false) {
+        this._doSubscribe(fn, /** @type {Options | undefined} */ (undefined), alert);
     }
-
     /**
      * Subscribe with options for events that support them.
      * @param {HandlerFn} fn
      * @param {Options} options
-     * @param {boolean} [debug=false]
+     * @param {boolean} [alert=false]
      */
-    subscribeWithOptions(fn, options, debug = false) {
-        this._doSubscribe(fn, options, debug);
+    subscribeWithOptions(fn, options, alert = false) {
+        this._doSubscribe(fn, options, alert);
     }
 
     /**
-     * @param {boolean} [debug=false]
+     * @param {boolean} [alert=false]
      */
-    unsubscribe(debug = false) {
-        const debugMe = debug || this.debugMe;
+    unsubscribe(alert = false) {
+        const debugMe = alert || this.debugMe;
         this.alertLog.warn(`* ${this._name}.unsubscribe ()`, debugMe);
 
         if (!this.on) return;

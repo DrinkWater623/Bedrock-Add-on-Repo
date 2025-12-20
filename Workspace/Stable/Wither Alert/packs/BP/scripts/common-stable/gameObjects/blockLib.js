@@ -10,13 +10,14 @@ Change Log:
     20251108 - added isValidBlock and isInValidBlock
     20251202 - fix chatMsg import ref
 ========================================================================*/
-import { Block, BlockPermutation, BlockVolume, Dimension, Direction, system } from "@minecraft/server";
-import { ChatMsg } from "../tools/messageLib";
-import { Vector3Lib } from "../tools/vectorClass";
+import { Block, BlockComponentPlayerPlaceBeforeEvent, BlockPermutation, BlockVolume, Dimension, Direction, Player, system } from "@minecraft/server";
 import { blocksDotJson } from "../../common-data/blocks.json";
-import { sound_definitions } from "../../common-data/sound_definitions";
 import { woodBlocks } from "../../common-data/block-data";
-import { emitObjectInnards, listObjectInnards } from "../tools/objects";
+import { sound_definitions } from "../../common-data/sound_definitions";
+import { Vector2Lib, Vector3Lib } from "../tools/vectorClass";
+import { DynamicPropertyLib } from "../tools/dynamicPropertyClass.js";
+import { emitObjectInnards, listArray, listObjectInnards } from "../tools/objects";
+import { FaceLocationGrid } from "./blockFace";
 //=============================================================================
 /** @typedef {import("@minecraft/server").Vector2} Vector2 */
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
@@ -392,6 +393,225 @@ export class Permutations {
         return perm;
     }
 }
+export class Block_Events {
+    /**
+ * 
+ * @param {*} lastInteractInfo 
+ * @param {string} itemTypeId 
+ * @param {Block} newBlock 
+ * @returns {string}
+ */
+    static verifyLastInteractInfoRelated (lastInteractInfo, itemTypeId, newBlock) {
+        let msg = '\n§dVerifying Last Player Block Interact Dynamic Properties';
+
+        if (lastInteractInfo.tick === 0) {
+            msg += `\n§c==> Missing lastInteractInfo`;
+            return msg;
+        }
+
+        //1st check for staleness
+        const currentTick = system.currentTick;
+        if (currentTick - lastInteractInfo.tick > 2) {
+            msg += `\n§c==> lastInteractInfo is stale. currentTick:${currentTick} - lastTick:${lastInteractInfo.tick}>5`;
+            return msg;
+        }
+
+        //2nd check for missing info
+        if (!lastInteractInfo.faceLocation) {
+            msg += '\n§c==> Missing faceLocation';
+            return msg;
+        }
+        if (!lastInteractInfo.blockLocation) {
+            msg += '\n§c==> Missing blockLocation';
+            return msg;
+        }
+        if (!newBlock.dimension.isChunkLoaded(lastInteractInfo.blockLocation)) {
+            msg += '\n§c==> Chunk is not loaded';
+            return msg;
+        }
+        if (!newBlock.dimension.getBlock(lastInteractInfo.blockLocation)) {
+            msg += '\n§c==> Cannot get block';
+            return msg;
+        }
+
+        //3nd check for item type match    
+        if (itemTypeId !== lastInteractInfo.itemTypeId) {
+            msg += `\n§c==> itemStackBlock (${itemTypeId}) !== lastItemStack (${lastInteractInfo.itemTypeId})`;
+            return msg;
+        }
+
+        //3rd check for adjacency
+        if (!Vector3Lib.isAdjacent(newBlock.location, lastInteractInfo.blockLocation)) {
+            msg += `\n§c==> location (${Vector3Lib.toString(newBlock.location, 1, true)}) is not adjacent to lastBlockLocation (${Vector3Lib.toString(lastInteractInfo.blockLocation, 1, true)})`;
+            return msg;
+        }
+        //That is all that matters to accept the LastInteract info as related to this place event   
+        return msg += '\n§aVerified';
+    }
+    //==============================================================================
+    //  onPlace by block style
+    //==============================================================================
+    /**
+    Built for a blocks that will change rotation via Regolith jsonte filter definition:
+    data: {
+    "rotations_view_1":[
+        {"id":0 ,"type":"floor"   ,"blockFace":"up"   ,"playerFace":"north" ,"position":"up"    ,"rotation":[0,0,0] },
+        {"id":0 ,"type":"floor"   ,"blockFace":"up"   ,"playerFace":"west"  ,"position":"up"    ,"rotation":[0,90,0]},
+        {"id":0 ,"type":"floor"   ,"blockFace":"up"   ,"playerFace":"south" ,"position":"up"    ,"rotation":[0,180,0]},
+        {"id":0 ,"type":"floor"   ,"blockFace":"up"   ,"playerFace":"east"  ,"position":"up"    ,"rotation":[0,-90,0]},
+
+        {"id":1 ,"type":"ceiling"     ,"blockFace":"down"   ,"playerFace":"north" ,"position":"up"  ,"rotation":[0,0,180]},
+        {"id":1 ,"type":"ceiling"     ,"blockFace":"down"   ,"playerFace":"west"  ,"position":"up"  ,"rotation":[0,-90,180]},
+        {"id":1 ,"type":"ceiling"     ,"blockFace":"down"   ,"playerFace":"south" ,"position":"up"  ,"rotation":[180,0,0]},
+        {"id":1 ,"type":"ceiling"     ,"blockFace":"down"   ,"playerFace":"east"  ,"position":"up"  ,"rotation":[0,90,180]},
+
+        //in 2D  where blockFace=PlayerFacing - down 
+        {"id":3 ,"type":"side"  ,"blockFace":"south"    ,"playerFace":"north"   ,"position":"up"    ,"rotation":[90,0,0]}, //90,0 0
+        {"id":3 ,"type":"side"  ,"blockFace":"south"    ,"playerFace":"west"    ,"position":"left"  ,"rotation":[90,0,90]}, //yes
+        {"id":3 ,"type":"side"  ,"blockFace":"south"    ,"playerFace":"east"    ,"position":"right" ,"rotation":[90,0,270]}, //yes 90,0,270
+        {"id":3 ,"type":"side"  ,"blockFace":"south"    ,"playerFace":"south"   ,"position":"down"  ,"rotation":[90,0,180]}, //90,0,180
+
+        {"id":2 ,"type":"side"  ,"blockFace":"north"    ,"playerFace":"south"   ,"position":"up"    ,"rotation":[90,180,0]},   // & 270,0,90
+        {"id":2 ,"type":"side"  ,"blockFace":"north"    ,"playerFace":"east"    ,"position":"left"  ,"rotation":[90,180,270]},  // & 270, 0 ,180
+        {"id":2 ,"type":"side"  ,"blockFace":"north"    ,"playerFace":"west"    ,"position":"right" ,"rotation":[90,180,90]},   // & 270,0,90
+        {"id":2 ,"type":"side"  ,"blockFace":"north"    ,"playerFace":"north"   ,"position":"down"  ,"rotation":[90,180,180]},   // & 270,0,0
+
+        {"id":4 ,"type":"side"  ,"blockFace":"west"     ,"playerFace":"east"   ,"position":"up"    ,"rotation":[0,270,90]},
+        {"id":4 ,"type":"side"  ,"blockFace":"west"     ,"playerFace":"north"  ,"position":"left"  ,"rotation":[0,0,90]},
+        {"id":4 ,"type":"side"  ,"blockFace":"west"     ,"playerFace":"south"  ,"position":"right" ,"rotation":[0,180,90]},
+        {"id":4 ,"type":"side"  ,"blockFace":"west"     ,"playerFace":"west"   ,"position":"down"  ,"rotation":[0,90,90]},
+
+        {"id":5 ,"type":"side"  ,"blockFace":"east"     ,"playerFace":"west"   ,"position":"up"    ,"rotation":[0,90,-90]}, //yes
+        {"id":5 ,"type":"side"  ,"blockFace":"east"     ,"playerFace":"south"  ,"position":"left"  ,"rotation":[0,180,270]}, //0,180,270
+        {"id":5 ,"type":"side"  ,"blockFace":"east"     ,"playerFace":"north"  ,"position":"right" ,"rotation":[0,0,-90]},  //yes
+        {"id":5 ,"type":"side"  ,"blockFace":"east"     ,"playerFace":"east"   ,"position":"down"  ,"rotation":[0,-90,-90] } //correct
+        
+    ],
+    "rotations_view_2":[
+        //n,s,e,w keys are which way is the top of the picture - block face is side of other block
+        {"id":0 ,"type":"floor"  ,"blockFace":"up"   ,"north":[0,0,0]   ,"south":[0,180,0]  ,"west":[0,90,0]    ,"east":[0,-90,0]},
+        {"id":1 ,"type":"ceiling","blockFace":"down" ,"north":[0,0,180] ,"south":[180,0,0]  ,"west":[0,-90,180] ,"east":[0,90,180]},
+
+        //in 2D  up=north, down=south, left-west, right=east -- opposite is player facing facing that blockFace
+        {"id":2 ,"type":"side"  ,"blockFace":"north"    ,"opposite":"south" ,"up":[90,180,0]    ,"left":[90,180,270]    ,"right":[90,180,90]   ,"down":[90,180,180]  },
+        {"id":3 ,"type":"side"  ,"blockFace":"south"    ,"opposite":"north" ,"up":[90,0,0]      ,"left":[90,0,90]       ,"right":[90,0,270]    ,"down":[90,0,180]   },
+        {"id":4 ,"type":"side"  ,"blockFace":"west"     ,"opposite":"east"  ,"up":[0,-90,90]    ,"left":[0,0,90]        ,"right":[0,180,90]    ,"down":[0,90,90]   },
+        {"id":5 ,"type":"side"  ,"blockFace":"east"     ,"opposite":"west"  ,"up":[0,90,-90]    ,"left":[0,180,270]     ,"right":[0,0,-90]     ,"down":[0,-90,-90] }        
+    ],
+    }
+    "$scope":{
+		"ceiling_floor": "{{rotations_view_1.filter(x => x.id <= 1)}}",
+        "vertical_half": "{{rotations_view_2.filter(x => x.type =='side')}}",  // initial placement     
+        "vertical_side": "{{rotations_view_1.filter(x => x.type =='side' && (x.position == 'left' || x.position == 'right'))}}"
+    },
+    {
+        "{{#ceiling_floor}}":{
+            "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' && q.block_state('minecraft:cardinal_direction') == '{{playerFace}}'",
+            "components": {"minecraft:transformation":{"rotation": "{{rotation}}"      }}
+        }                    
+    },
+    //wall - point up and down
+    {
+        "{{#vertical_half}}":[
+            {
+                "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' && q.block_state('minecraft:cardinal_direction') == '{{opposite}}' && q.block_state('minecraft:vertical_half') == 'top'",
+                "components": {"minecraft:transformation":{"rotation": "{{up}}"  }}
+            },
+            {
+                "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' && q.block_state('minecraft:cardinal_direction') == '{{opposite}}' && q.block_state('minecraft:vertical_half') == 'bottom'",
+                "components": {"minecraft:transformation":{"rotation": "{{down}}" }}
+            }
+        ]
+    },
+    //wall - point sideways
+    {
+        "{{#vertical_side}}":{
+            "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' && q.block_state('minecraft:cardinal_direction') == '{{playerFace}}'",
+            "components": {"minecraft:transformation":{"rotation": "{{rotation}}"      }}
+        }                    
+    }                    
+     */
+    /**
+     * 
+     * Changes cardinal rotation when player touches left/right edge center of block so that above rotation works in block file
+     * 
+     * @param {BlockComponentPlayerPlaceBeforeEvent} event 
+     * @param {string} packName 
+     * @param {boolean} [alert=false] 
+     * @returns {boolean}
+     */
+    static onPlace_blockTemplate_arrow (event, packName, alert = false) {
+        const player = event.player;
+        if (!player || !player.isValid) return false;
+        if (!event.block.isValid) return false;
+
+        const { block: newBlock, face: touchedBlockFace, permutationToPlace: old_permutation } = event;
+        const itemTypeId = old_permutation.type.id;
+        const lastInteractInfo = DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_get(player, false);
+        let msg = `§6§lonPlace-${itemTypeId}:§r in ${lastInteractInfo.blockTypeId} face=${touchedBlockFace} in ${event.dimension.id} §d(Tick:${system.currentTick})`;
+
+        const verifiedMsg = this.verifyLastInteractInfoRelated(lastInteractInfo, itemTypeId, newBlock);
+        if (!verifiedMsg.endsWith('Verified')) {
+            msg += '\n§cxx> verifyLastInteractInfoRelated failed';
+            if (alert) console.error(`${packName}:${msg}`);
+            return false;
+        }
+        //---------------------------------------------------------------------------------
+        // these are verified above, but for the JSDoc, need to show in here
+        const touchedBlockFaceLocation = lastInteractInfo.faceLocation;
+        if (!touchedBlockFaceLocation) return false;
+        const touchedBlockLocation = lastInteractInfo.blockLocation;
+        if (!touchedBlockLocation) return false;
+        const touchedBlock = newBlock.dimension.getBlock(touchedBlockLocation);
+        if (!touchedBlock) return false;
+        //---------------------------------------------------------------------------------
+        if (alert) {
+            msg += Blocks.blockPermutationInfo_show(old_permutation, '§6onPlace-permutation§r', true) ?? msg;
+        }
+        const grid = new FaceLocationGrid(touchedBlockFaceLocation, touchedBlockFace, touchedBlockLocation, false);
+        const grid3 = grid.grid(3);
+        const touchedGridPtr = grid3.x + (3 * grid3.y);
+        const touchedEdgeName = grid.getEdgeName(3);
+
+        if (alert) {
+            msg += grid.blockFaceLocationInfo_show([ 2, 3, 4 ], true);
+        }
+
+        //if no rotation needed
+        if (
+            [ 'Up', "Down" ].includes(touchedBlockFace) ||
+            grid3.y !== 1 ||
+            grid3.x == 1 ||
+            ![ 'north', 'south', 'east', 'west' ].includes(touchedEdgeName)
+        ) {
+            if (alert) {
+                msg += `\n\n§6No new permutation needed`;
+                msg += `\n§bUp/Down:§r ${[ 'Up', "Down" ].includes(touchedBlockFace)}`;
+                msg += `\n§bx == 1:§r ${grid3.x == 1}`;
+                msg += `\n§by != 1:§r ${grid3.y !== 1}`;
+                msg += `\n§b![ 'north', 'south', 'east', 'west' ].includes(${touchedEdgeName}):§r ${![ 'north', 'south', 'east', 'west' ].includes(touchedEdgeName)}`;
+                console.warn(`${packName}:${msg}`);
+            }
+            return true;
+        }
+
+        //reset permutation position    
+        const blockStateName = 'minecraft:cardinal_direction';
+        let newPermutation = old_permutation.withState(blockStateName, touchedEdgeName);
+        event.cancel = true;
+        system.run(() => {
+            msg += `\n§aSetting block state = ${blockStateName} to ${touchedEdgeName} on face=${event.face}`;
+            newBlock.dimension.setBlockPermutation(newBlock.location, newPermutation);
+            if (alert) {
+                system.runTimeout(() => {
+                    msg += Blocks.blockPermutationInfo_show(newPermutation, '\n§aNew Block-permutation§r', true);
+                    console.warn(`${packName}:${msg}`);
+                }, 1);
+            }
+        });
+        return true;
+    }
+}
 export class Blocks {
     /**
      * 
@@ -480,7 +700,7 @@ export class Blocks {
      * @param {boolean} [debug=false] 
      * @returns {string}
      */
-    static sound_get (typeId, soundsLike = '', debug = false) {        
+    static sound_get (typeId, soundsLike = '', debug = false) {
         let findSoundForId;
 
         if (soundsLike && soundsLike.startsWith('minecraft:'))
@@ -493,28 +713,29 @@ export class Blocks {
             if (foundBlock && foundBlock.sound) {
 
                 let placeSound = 'place.' + foundBlock.sound;
-                if (sound_definitions[ placeSound ]) {                    
+                if (sound_definitions[ placeSound ]) {
                     return placeSound;
                 }
 
                 placeSound = 'block.' + foundBlock.sound + '.place';
-                if (sound_definitions[ placeSound ]) {                    
+                if (sound_definitions[ placeSound ]) {
                     return placeSound;
                 }
 
                 //test one to change
                 placeSound = 'dig.' + foundBlock.sound;
-                if (sound_definitions[ placeSound ]) {                    
+                if (sound_definitions[ placeSound ]) {
                     return placeSound;
                 }
 
                 placeSound = 'block.' + foundBlock.sound + '.dig';
-                if (sound_definitions[ placeSound ]) {                   
+                if (sound_definitions[ placeSound ]) {
                     return placeSound;
                 }
 
                 placeSound = 'hit.' + foundBlock.sound;
-                if (sound_definitions[ placeSound ]) {;
+                if (sound_definitions[ placeSound ]) {
+                    ;
                     return placeSound;
                 }
 
@@ -609,5 +830,54 @@ export class Blocks {
         }
 
         return 'hit.stone';
+    }
+    /**
+    * @param {Block} block      
+    * @param {string} title 
+    * @param {boolean} [returnOnly=false] 
+    * @returns {string|void}    */
+    static blockInfo_show (block, title = "§dBlock Info:", returnOnly = false) {
+        if (!block.isValid) return;
+
+        let msg = '';
+        if (title) msg = title;
+        msg += `\n==> §aBlock typeId:§r ${block.typeId}`; //TODO: get display name from vanilla data
+        msg += `\n==> §bBlock Location.:§r ${Vector3Lib.toString(block.location, 0, true, ',')}`;
+        msg += `\n==> §bBlock Center :§r ${Vector3Lib.toString(block.center(), 1, true, ',')}`;
+
+        msg += this.blockPermutationInfo_show(block.permutation, `${title} - Permutation`, true);
+
+        //FIXME:  is this needed...  test later to see the info in there
+        //const item = block.getItemStack()
+        //if (item) this.itemInfo(item,chatSend,`${title} - ItemStack`,true)
+        if (returnOnly) return msg;
+        console.warn(msg);
+    }
+    /**
+     * @param {Block | BlockPermutation} input       
+     * @param {string} title 
+    * @param {boolean} [returnOnly=false] 
+    * @returns {string|void}
+     */
+    static blockPermutationInfo_show (input, title = "§eBlock Permutation Info:", returnOnly = false) {
+
+        const permutation = input instanceof Block ? input.permutation : input;
+        const tags = permutation.getTags();
+        const states = permutation.getAllStates();
+        let msg = '';
+
+        if (!(tags.length || states.length)) return;
+
+        if (title) msg += title;
+        msg += `\n${title ? '==> ' : ''}§bBlock Permutation type.id:§r ${input.type.id}`;
+
+        if (tags.length)
+            tags.forEach((v, i) => { msg += `\n==> §bTag[${i}]:§r ${v}`; });
+
+        if (states.length)
+            Object.entries(states).forEach(([ k, v ]) => { msg += `\n==> §bState:§r ${k} = ${v}`; });
+
+        if (returnOnly) return msg;
+        console.warn(msg);
     }
 }

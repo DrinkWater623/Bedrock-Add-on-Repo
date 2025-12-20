@@ -7,8 +7,9 @@ URL: https://github.com/DrinkWater623
 Last Update: 20241229 - reOrg and add License
 ========================================================================*/
 import { Entity, system, world, Player, World, TicksPerSecond } from "@minecraft/server";
-import { dev, chatLog, dynamicVars } from './settings.js';
-import { DynamicPropertyLib } from "./common-stable/dynamicPropertyClass.js";
+import { dev, chatLog, dynamicVars } from '../settings.js';
+import { DynamicPropertyLib } from "../common-stable/tools/dynamicPropertyClass.js";
+import { PlayerLib } from "../common-stable/gameObjects/playerClass.js";
 //=============================================================================
 //=============================================================================
 /** @typedef {import("@minecraft/server").Vector2} Vector2 */
@@ -31,9 +32,9 @@ export function updatePlayerStats (player) {
         player.setDynamicProperty(dynamicVars.firstTick, nowTick);
         player.setDynamicProperty(dynamicVars.longestTicksAlive, 1);
         player.setDynamicProperty(dynamicVars.deathMsgWaiting, false);
-        DynamicPropertyLib.add(player, dynamicVars.lastDeathTick, nowTick);
+        DynamicPropertyLib.addNumber(player, dynamicVars.lastDeathTick, nowTick);
 
-        chatLog.player(player, `==> dynamic vars initialized`, dev.debugPlayer && player.isOp());
+        chatLog.player(player, `==> dynamic vars initialized`, dev.debugPlayer &&  PlayerLib.isOp(player));
         return;
     }
 
@@ -50,8 +51,8 @@ export function updatePlayerStats (player) {
  */
 export function playerAliveTicksCounterJob (player) {
     const thisJob = system.runInterval(() => {
-        if (player.isValid())
-            DynamicPropertyLib.add(player, dynamicVars.aliveTicks, TicksPerSecond);
+        if (player.isValid)
+            DynamicPropertyLib.addNumber(player, dynamicVars.aliveTicks, TicksPerSecond);
         else {
             //cancel this job
             system.clearRun(thisJob);
@@ -106,7 +107,7 @@ export function clearWorldChatWindow (numberOfLines = 40, tickDelay = 1) {
 * @param {boolean} [onlyIfIsValid=false]
 */
 export function defaultChatSendToWho (toWho, onlyIfIsValid = false) {
-    if (toWho instanceof Player && (toWho.isValid() || !onlyIfIsValid)) return toWho;
+    if (toWho instanceof Player && (toWho.isValid || !onlyIfIsValid)) return toWho;
     if (toWho instanceof World) return toWho;
     if (onlyIfIsValid) return false;
     return world;

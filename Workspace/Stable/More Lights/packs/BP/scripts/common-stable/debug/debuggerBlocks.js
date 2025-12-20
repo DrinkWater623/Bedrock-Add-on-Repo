@@ -125,15 +125,17 @@ export class DebuggerBlocks extends Debugger {
         if (!(alert || this.debugOn)) return;
 
         const grid = new FaceLocationGrid(faceLocation, blockFace, player, false);
+        let msg = '§dFaceLocationGrid:';
 
-        this.log(`==> faceLocation: ${Vector3Lib.toString(faceLocation, 0, true)}`, true);
+        msg += `\n==> faceLocation: ${Vector3Lib.toString(faceLocation, 1, true)}`;
         for (let i = 2; i <= 16; i++) {
             if (grids.includes(i)) {
                 const subGrid = grid.grid(i);
                 const touched = subGrid.x + (i * subGrid.y);
-                this.log(`==> grid-${i}: ${Vector2Lib.toString(subGrid)} / touched: ${touched}`, true);
+                msg += `\n==> §bGrid-${i}:§r ${Vector2Lib.toString(subGrid, 0, true)} / §bTouch ptr:§r ${touched}`;
             }
         }
+        this.log(msg);
     }
     /**
      * @param {BlockPermutation} permutation       
@@ -145,12 +147,15 @@ export class DebuggerBlocks extends Debugger {
 
         const tags = permutation.getTags();
         const states = permutation.getAllStates();
+        let msg = '';
 
-        if (tags.length || states.length) {
-            if (title) this.log(title, true);
-            this.log(`==> §bBlock Permutation type.id:§r ${permutation.type.id}`, true);
-            if (tags.length) this.listArray(tags, "§e==* permutation.getTags():", true);
-            if (states.length) this.listObjectInnards(states, "§e==* permutation.getAllStates():", true);
-        }
+        if (!(tags.length || states.length)) return;
+
+        if (title) msg += title;
+        msg += `\n${title ? '==> ':''}§bBlock Permutation type.id:§r ${permutation.type.id}`;
+        if (tags.length) this.listArray(tags, "§b==> permutation.getTags():", true);
+        if (states.length) this.listObjectInnards(states, "§b==> permutation.getAllStates():", true);
+
+        this.log(msg);
     }
 }

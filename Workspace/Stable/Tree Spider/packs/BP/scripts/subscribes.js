@@ -92,7 +92,7 @@ const onAfterEntityLoad = (event) => {
         system.runTimeout(() => {
             lastTickAndLocationRegister(entity); //This is the most needed part...
             if (watchEntitySubscriptions) {
-                DynamicPropertyLib.add(entity, entityDynamicVars.entityLoads, 1);
+                DynamicPropertyLib.increment(entity, entityDynamicVars.entityLoads);
                 devDebug.dsb.increment('stats', 'loaded');
                 const msg = `§l${nameTag}§r §eLoaded in Biome ${dimension.getBiome(location).id} @ ${Vector3Lib.toString(location, 0, true)} §r()`;
                 alertLog.log(msg, watchEntitySubscriptions);
@@ -117,15 +117,15 @@ const onAfterEntitySpawn_debug = (event) => {
 
         if (event.cause === EntityInitializationCause.Born) {
             devDebug.dsb.increment('stats', 'born', 1, 1);
-            DynamicPropertyLib.add(entity, entityDynamicVars.entityBorn, 1);
+            DynamicPropertyLib.increment(entity, entityDynamicVars.entityBorn);
         }
         else if (event.cause === EntityInitializationCause.Loaded) {
             devDebug.dsb.increment('stats', 'loaded', 1, 1);
-            DynamicPropertyLib.add(entity, entityDynamicVars.entityLoads, 1);
+            DynamicPropertyLib.increment(entity, entityDynamicVars.entityLoads);
         }
         else if (event.cause === EntityInitializationCause.Spawned) {
             devDebug.dsb.increment('stats', 'spawned');
-            DynamicPropertyLib.add(entity, entityDynamicVars.entitySpawns, 1);
+            DynamicPropertyLib.increment(entity, entityDynamicVars.entitySpawns);
         }
     }, 1);
 };

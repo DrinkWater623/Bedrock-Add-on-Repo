@@ -24,7 +24,7 @@ export function playerF3Initialize (player) {
  * @param { object } mapObject 
  */
 export function playerF3Add (player, mapKey, mapObject, show = false) {
-    if (player.isValid()) {
+    if (player.isValid) {
 
         playerF3Initialize(player);
 
@@ -43,7 +43,7 @@ export function playerF3Add (player, mapKey, mapObject, show = false) {
  * @returns {object} F3 map Object
  */
 export function playerF3Get (player, mapKey) {
-    if (player.isValid()) {
+    if (player.isValid) {
         playerF3Initialize(player);
         //@ts-ignore
         if (player.f3.has(mapKey)) return player.f3.get(mapKey, mapObject);
