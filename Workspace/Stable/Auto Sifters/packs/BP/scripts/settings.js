@@ -16,18 +16,25 @@ import { mcNameSpace } from "./common-data/globalConstantsLib";
 //==============================================================================
 export const pack = {
     packName: 'Auto Sifters',
-    packNameSpace: 'dw623:',
+
+    about: 'Sifts sand/gravel/concrete powder find hidden goodies',
+    devUrl: 'https://github.com/DrinkWater623',
+    reportBugs: 'pinkSalt623@gmail.com',
+
+    isBeta: false,
+    worldLoaded: false,
+    namespace: "dw623",
+    cmdNameSpace: "sift",
     isLoadAlertsOn: true,
-    hasChatCmd: -1,
-    isStable: 1,
-    alert: "https://github.com/DrinkWater623",
-    VanillaOnlySlabPlacement: false
+    VanillaOnlySlabPlacement: false,
+
+    debugOn: false //Do Not change by code... the MASTER SWITCH to start world with/without debugging enabled
 };
 //==============================================================================
 export const alertLog = new ConsoleAlert(`§d${pack.packName}§r`);
 export const chatLog = new ChatMsg(`§b${pack.packName}§r`);
 //==============================================================================
-export const globals = {          
+export const globals = {
     keyBlockWords: [ "gravel", "powder", "mud", "sand", "snow" ] //save time
 };
 //==============================================================================
@@ -40,7 +47,7 @@ export const dev = {
     debugSifterOnTickEvents: false,
     allDebug () {
         for (const key in dev) {
-            if (key.startsWith('debug') && key.length>'debug'.length)
+            if (key.startsWith('debug') && key.length > 'debug'.length)
                 dev[ key ] = this.debug;
         }
     },
@@ -57,7 +64,7 @@ export const dev = {
         }
     },
     anyOn () {
-        this.debug=false;
+        this.debug = false;
         for (const key in dev) {
             if (key.startsWith('debug'))
                 this.debug = this.debug || dev[ key ];
@@ -111,11 +118,14 @@ export const watchFor = {
         "minecraft:water",
         "minecraft:flowing_water"
     ],
+    sifterGrateMaterials:[
+        "copper","iron","diamond","netherite"
+    ],
     sifterBlocks: [
-        pack.packNameSpace + "copper_sifter",
-        pack.packNameSpace + "iron_sifter",
-        pack.packNameSpace + "diamond_sifter",
-        pack.packNameSpace + "netherite_sifter"
+        pack.namespace + ":copper_sifter",
+        pack.namespace + ":iron_sifter",
+        pack.namespace + ":diamond_sifter",
+        pack.namespace + ":netherite_sifter"
     ],
     vanillaSifterBlocks: [ "" ],
     customSiftableBlocks: [ "" ],
@@ -320,7 +330,7 @@ colors.forEach(color => {
         full: false,
         gravity: true,
         name: concretePowderBase,
-        custom: `${pack.packNameSpace}${concretePowderBase}`,
+        custom: `${pack.namespace}${concretePowderBase}`,
         minecraft: `${mcNameSpace}${concretePowderBase}`,
         height: 16,
         sound: "dig.sand"
@@ -357,11 +367,11 @@ watchFor.autoSiftBlockInfo.forEach(b => {
     for (let i = 1; i <= 16; i++) {
         const addB = {
             base: slabBaseName,
-            typeIdBase: `${pack.packNameSpace}${slabBaseName}`,
+            typeIdBase: `${pack.namespace}${slabBaseName}`,
             minecraft: `minecraft:${b.name}`,
             height: i,
             name: `${slabBaseName}_${i}`,
-            typeId: `${pack.packNameSpace}${slabBaseName}_${i}`,
+            typeId: `${pack.namespace}${slabBaseName}_${i}`,
             sound: b.sound
         };
         watchFor.customSiftableBlockInfo.push(addB);

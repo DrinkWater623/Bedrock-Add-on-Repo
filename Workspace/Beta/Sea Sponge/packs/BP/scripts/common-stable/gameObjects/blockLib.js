@@ -395,13 +395,21 @@ export class Permutations {
 }
 export class Block_Events {
     /**
- * 
- * @param {*} lastInteractInfo 
- * @param {string} itemTypeId 
- * @param {Block} newBlock 
- * @returns {string}
- */
-    static verifyLastInteractInfoRelated (lastInteractInfo, itemTypeId, newBlock) {
+   * @param {{ alertLog: Function, alertWarn?: Function, alertSuccess?: Function, alertError: Function }} emitters
+   */
+    constructor(emitters) {
+        this.dev =emitters;
+    }
+
+    /**
+     * 
+     * @param {*} lastInteractInfo 
+     * @param {string} itemTypeId 
+     * @param {Block} newBlock 
+     * @returns {string}
+     */
+    verifyLastInteractInfoRelated (lastInteractInfo, itemTypeId, newBlock) {
+        //todo: add opts {emit and debug} return boolean  or return obj {valid and msg}
         let msg = '\n§dVerifying Last Player Block Interact Dynamic Properties';
 
         if (lastInteractInfo.tick === 0) {
@@ -411,7 +419,7 @@ export class Block_Events {
 
         //1st check for staleness
         const currentTick = system.currentTick;
-        if (currentTick - lastInteractInfo.tick > 2) {
+        if (currentTick - lastInteractInfo.tick > 1) {
             msg += `\n§c==> lastInteractInfo is stale. currentTick:${currentTick} - lastTick:${lastInteractInfo.tick}>5`;
             return msg;
         }
@@ -500,7 +508,7 @@ export class Block_Events {
     ],
     }
     "$scope":{
-		"ceiling_floor": "{{rotations_view_1.filter(x => x.id <= 1)}}",
+        "ceiling_floor": "{{rotations_view_1.filter(x => x.id <= 1)}}",
         "vertical_half": "{{rotations_view_2.filter(x => x.type =='side')}}",  // initial placement     
         "vertical_side": "{{rotations_view_1.filter(x => x.type =='side' && (x.position == 'left' || x.position == 'right'))}}"
     },
@@ -536,15 +544,14 @@ export class Block_Events {
      * Changes cardinal rotation when player touches left/right edge center of block so that above rotation works in block file
      * 
      * @param {BlockComponentPlayerPlaceBeforeEvent} event 
-     * @param {string} packName 
-     * @param {boolean} [alert=false] 
+     * @param {boolean} [debugOn=false] 
      * @returns {boolean}
      */
-    static onPlace_blockTemplate_arrow (event, packName, alert = false) {
+    onPlace_block_rotation_arrow (event, debugOn=false) {
         const player = event.player;
         if (!player || !player.isValid) return false;
-        if (!event.block.isValid) return false;
-
+        if (!event.block.isValid) return false;        
+        
         const { block: newBlock, face: touchedBlockFace, permutationToPlace: old_permutation } = event;
         const itemTypeId = old_permutation.type.id;
         const lastInteractInfo = DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_get(player, false);
@@ -552,12 +559,12 @@ export class Block_Events {
 
         const verifiedMsg = this.verifyLastInteractInfoRelated(lastInteractInfo, itemTypeId, newBlock);
         if (!verifiedMsg.endsWith('Verified')) {
-            msg += '\n§cxx> verifyLastInteractInfoRelated failed';
-            if (alert) console.error(`${packName}:${msg}`);
+            msg += `\n§cxx> verifyLastInteractInfoRelated failed: ${verifiedMsg}`;
+            this.dev.alertError(msg);
             return false;
         }
         //---------------------------------------------------------------------------------
-        // these are verified above, but for the JSDoc, need to show in here
+        /* these are verified above, but for the JSDoc, need to show in here */
         const touchedBlockFaceLocation = lastInteractInfo.faceLocation;
         if (!touchedBlockFaceLocation) return false;
         const touchedBlockLocation = lastInteractInfo.blockLocation;
@@ -565,17 +572,12 @@ export class Block_Events {
         const touchedBlock = newBlock.dimension.getBlock(touchedBlockLocation);
         if (!touchedBlock) return false;
         //---------------------------------------------------------------------------------
-        if (alert) {
-            msg += Blocks.blockPermutationInfo_show(old_permutation, '§6onPlace-permutation§r', true) ?? msg;
-        }
+        if (debugOn) { msg += Blocks.blockPermutationInfo_show(old_permutation, '§6onPlace-permutation§r', true) ?? ''; }
         const grid = new FaceLocationGrid(touchedBlockFaceLocation, touchedBlockFace, touchedBlockLocation, false);
         const grid3 = grid.grid(3);
-        const touchedGridPtr = grid3.x + (3 * grid3.y);
+        // const touchedGridPtr = grid3.x + (3 * grid3.y);
         const touchedEdgeName = grid.getEdgeName(3);
-
-        if (alert) {
-            msg += grid.blockFaceLocationInfo_show([ 2, 3, 4 ], true);
-        }
+        if (debugOn) { msg += grid.blockFaceLocationInfo_show([ 2, 3, 4 ], true) ?? ''; }
 
         //if no rotation needed
         if (
@@ -584,13 +586,13 @@ export class Block_Events {
             grid3.x == 1 ||
             ![ 'north', 'south', 'east', 'west' ].includes(touchedEdgeName)
         ) {
-            if (alert) {
+            if (debugOn) {
                 msg += `\n\n§6No new permutation needed`;
                 msg += `\n§bUp/Down:§r ${[ 'Up', "Down" ].includes(touchedBlockFace)}`;
                 msg += `\n§bx == 1:§r ${grid3.x == 1}`;
                 msg += `\n§by != 1:§r ${grid3.y !== 1}`;
                 msg += `\n§b![ 'north', 'south', 'east', 'west' ].includes(${touchedEdgeName}):§r ${![ 'north', 'south', 'east', 'west' ].includes(touchedEdgeName)}`;
-                console.warn(`${packName}:${msg}`);
+                this.dev.alertLog(msg,debugOn);
             }
             return true;
         }
@@ -602,10 +604,10 @@ export class Block_Events {
         system.run(() => {
             msg += `\n§aSetting block state = ${blockStateName} to ${touchedEdgeName} on face=${event.face}`;
             newBlock.dimension.setBlockPermutation(newBlock.location, newPermutation);
-            if (alert) {
+            if (debugOn) {
                 system.runTimeout(() => {
                     msg += Blocks.blockPermutationInfo_show(newPermutation, '\n§aNew Block-permutation§r', true);
-                    console.warn(`${packName}:${msg}`);
+                    this.dev.alertLog(msg,debugOn);
                 }, 1);
             }
         });

@@ -163,7 +163,7 @@ export class FaceLocationGrid {
             else if (!this.xCoordPos && this.zCoordPos && [ 'north', 'west' ].includes(this.blockFace)) this.horizontalDelta = 1 - this.horizontalDelta;
             else if (!this.xCoordPos && !this.zCoordPos && [ 'north', 'east' ].includes(this.blockFace)) this.horizontalDelta = 1 - this.horizontalDelta;
         }
-        console.warn(`§l§6zOG => horizontalDelta: ${this.horizontalDelta}  upDownDelta: ${this.verticalDelta}`);
+        
         this.faceMap = faceHorizontalMap[ this.blockFace ];
 
         this.hvDelta = Vector2Lib.new(this.horizontalDelta, this.verticalDelta);

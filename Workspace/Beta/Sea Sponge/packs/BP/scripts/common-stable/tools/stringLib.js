@@ -78,6 +78,16 @@ export function toTitleCase (str) {
         .toLowerCase()
         .replace(/\b\w/g, (char) => char.toUpperCase());
 }
+/**
+ * 
+ * @param {string} str 
+ * @returns {string}
+ */
+export const toPascalCase = (str) => {
+    return (str.match(/[a-zA-Z0-9]+/g) || [])
+        .map(word => `${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()}`)
+        .join('');
+};
 //=============================================================================
 /**
  * @param {string} s

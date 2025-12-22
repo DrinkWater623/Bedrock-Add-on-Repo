@@ -1,18 +1,17 @@
-// main.js Tree Spider
+// main.js F3
 // @ts-check
 /**
  * This is called only if beta is not used, 
  */
 //==============================================================================
 // Local
-import { alertLog, pack } from './settings.js';
+import { dev } from './debug.js';
+import { pack,alertLog } from './settings.js';
 import { subscriptionsStable } from './subscribes.js';
-import { devDebug } from "./helpers/fn-debug.js";
+import { subscriptionsBeta } from './subscribes-beta.js';
 //==============================================================================
-devDebug.anyOn();
-pack.isBeta=true
-const msg = `Add-on - §6Beta ${devDebug.debugOn ? '§4(debug mode)' : ''}`;
-alertLog.log(`§6Installing ${msg}`, devDebug.debugOn);
+const msg = `Add-on - §bBeta ${dev.debugOn ? '§4(debug mode)' : ''}`;
+dev.alertLog(`§6Installing ${msg}`, dev.debugOn);
 subscriptionsStable();
 subscriptionsBeta();
 alertLog.success(`Installed ${msg}`, pack.isLoadAlertsOn);

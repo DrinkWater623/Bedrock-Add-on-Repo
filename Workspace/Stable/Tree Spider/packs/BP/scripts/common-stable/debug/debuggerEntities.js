@@ -20,17 +20,7 @@ import { Debugger } from './debuggerClass.js';
 /** @typedef {import("@minecraft/server").Vector2} Vector2 */
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /** @typedef {import("@minecraft/server").VectorXZ} VectorXZ */
-const ENTITY_EVENTS = {
-    afterEntityDie: false,
-    afterEntityHealthChanged: false,
-    afterEntityHitBlock: false,
-    afterEntityHitEntity: false,
-    afterEntityHurt: false,
-    afterEntityLoad: false,
-    afterEntitySpawn: false,
-    entityRemove: { before: false, after: false },
-    playerInteractWithEntity: { before: false, after: false },
-};
+
 const ENTITY_COMPONENT_EVENTS = {
     none: false
 };
@@ -48,7 +38,17 @@ export class DebuggerEntities extends Debugger {
         */
     constructor(pack_name, on = false) {
         super(pack_name, on);
-        Object.assign(this.events, ENTITY_EVENTS);
+        Object.assign(this.events, {
+            afterEntityDie: false,
+            afterEntityHealthChanged: false,
+            afterEntityHitBlock: false,
+            afterEntityHitEntity: false,
+            afterEntityHurt: false,
+            afterEntityLoad: false,
+            afterEntitySpawn: false,
+            entityRemove: { before: false, after: false },
+            playerInteractWithEntity: { before: false, after: false },
+        });
         Object.assign(this.customComponents, ENTITY_COMPONENT_EVENTS);
     }
     //--------------------------------------------------------------------------

@@ -6,13 +6,13 @@
 //==============================================================================
 // Local
 import { dev } from './debug.js';
-import { pack } from './settings.js';
+import { pack,alertLog } from './settings.js';
 import { subscriptionsStable } from './subscribes.js';
 //==============================================================================
 const msg = `Add-on - §bStable ${dev.debugOn ? '§4(debug mode)' : ''}`;
-dev.alertLog.log(`§6Installing ${msg}`, pack.debugOn);
+dev._controlLog(`§6Installing ${msg}`, pack.debugOn);
 subscriptionsStable();
-dev.alertLog.success(`Installed ${msg}`, pack.isLoadAlertsOn);
+alertLog.success(`Installed ${msg}`, pack.isLoadAlertsOn);
 //==============================================================================
 // End of File
 //==============================================================================

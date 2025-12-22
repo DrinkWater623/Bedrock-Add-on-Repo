@@ -1,6 +1,6 @@
 // AUTO-GENERATED — do not edit by hand
 // Folder: ../../Bedrock Add-on Repo/Workspace/Stable/Tree Spider/packs/BP/scripts/common-data
-// Generated: 2025-12-20 02:45:57Z
+// Generated: 2025-12-22 12:13:39Z
 // @ts-check
 
 export { airBlock, fallThruBlocks, gravityBlocks, lavaBlock, lavaBlocks, leafBlocks, logBlocks, plankBlocks, saplingBlocks, stairBlocks, tallNatureBlocks, vanillaBlocks, waterBlock, waterBlocks, woodBlocks, woodTypes } from "./block-data.js";

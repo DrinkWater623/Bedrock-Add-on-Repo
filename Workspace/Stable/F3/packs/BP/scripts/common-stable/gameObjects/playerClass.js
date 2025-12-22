@@ -9,18 +9,68 @@ Change Log:
     20250105b - add MainHandItemCount, mainHandRemoveSome
     20251203 - Relocated
     20251204 - Fixed RTP (dimension.id was minecraft:...)
+    20251221 - Added isPlayer and changed filename
 ========================================================================*/
 import { Player, Block, EquipmentSlot, ItemStack, system, TicksPerSecond } from '@minecraft/server';
 import { Vector3Lib, VectorXZLib } from "../tools/vectorClass.js";
 //=============================================================================
-export class PlayerLib {
+export class Players {
     //=============================================================================
+    /**
+     * True only for a *real, currently-valid* Player reference (no ghosts).
+     *
+     * @param {any} value
+     * @returns {boolean}
+     */
+    static isValid (value) {
+        if (value == null) return false;
+
+        const t = typeof value;
+        if (t !== "object" && t !== "function") return false;
+
+        try {
+            /** @type {any} */
+            const v = value;
+
+            // Kill ghost refs first
+            if (typeof v.isValid !== "boolean" || v.isValid !== true) return false;
+
+            // Must be player
+            if (v.typeId !== "minecraft:player") return false;
+
+            // Sanity checks: avoid plain-object imposters
+            if (typeof v.sendMessage !== "function") return false;
+            if (typeof v.getComponent !== "function") return false;
+
+            return true;
+        } catch {
+            return false;
+        }
+    }
+    /**
+    * True only for a *real, currently-valid* Player reference (no ghosts).
+    *
+    * @param {any} value
+    * @returns {boolean}
+    */
+    static isInvalid (value) {
+        return !this.isValid(value);
+    }
+    /**
+     * Convenience: returns a valid Player or undefined (never throws).
+     *
+     * @param {any} value
+     * @returns {import("@minecraft/server").Player | undefined}
+     */
+    static asValidPlayer (value) {
+        return this.isValid(value) ? value : undefined;
+    }
     /**
      * @param {Player} player 
      * @returns {boolean}
      */
     static isOp (player) {
-        return player?.commandPermissionLevel>1;
+        return player?.commandPermissionLevel > 1;
     };
     /**
      * @param {Player} player 
@@ -189,7 +239,7 @@ export class PlayerLib {
 
         system.run(() => {
             player.teleport({ x: xz.x, y: 250, z: xz.z });
-            if (PlayerLib.isGameModeCreative(player)) return;
+            if (Players.isGameModeCreative(player)) return;
 
             player.addEffect("minecraft:levitation", TicksPerSecond * 2, { amplifier: 100, showParticles: true });
 
@@ -203,7 +253,7 @@ export class PlayerLib {
                         const topBlockLocation = topBlock.location;
                         topBlockLocation.y++;
                         player.teleport(topBlockLocation);
-                        
+
                     }
                     else {
                         player.addEffect("minecraft:slow_falling", TicksPerSecond * 10, { amplifier: 100, showParticles: false });
@@ -216,3 +266,15 @@ export class PlayerLib {
 
     }
 }
+//Common Convenience
+/**
+* @param {any} input
+* @returns {boolean}
+*/
+export function isPlayer (input) { return Players.isValid(input); }
+/**
+* @param {any} input
+* @returns {boolean}
+*/
+export function isNotPlayer (input) { return !Players.isValid(input); }
+

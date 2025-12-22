@@ -1,5 +1,8 @@
 // settings.js  More Lights Minecraft Bedrock Add-on
 // @ts-check
+
+import { ChatMsg, ConsoleAlert } from "./common-stable/tools/messageLib";
+
 /* =====================================================================
 Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
 License: M.I.T.
@@ -23,14 +26,14 @@ export const pack = {
     worldLoaded: false,
     namespace: "dw623",
     cmdNameSpace: "lights",
-    isLoadAlertsOn: false,
+    isLoadAlertsOn: true,
 
-    debugOn: true //Do Not change by code... the MASTER SWITCH to start world with/without debugging enabled
+    debugOn: false //Do Not change by code... the MASTER SWITCH to start world with/without debugging enabled
 };
 //==============================================================================
 export const packDisplayName = `§f${pack.packName}§r`;
-//export const alertLog = new ConsoleAlert(packDisplayName);
-//export const chatLog = new ChatMsg(packDisplayName);
+export const alertLog = new ConsoleAlert(packDisplayName);
+export const chatLog = new ChatMsg(packDisplayName);
 //==============================================================================
 // Pack detail data used in the scripts
 //==============================================================================

@@ -19,69 +19,82 @@ URL: https://github.com/DrinkWater623
 Last Update: 20251129 
 ========================================================================*/
 import { pack, packDisplayName } from './settings.js';
-import { DevBlocks } from './common-stable/debug/index.js';
+import { Dev } from './common-stable/debug/index.js';
 //import { objectEntries_set_booleans, objectEntries_set_booleans_opts, objectEntries_toggle_booleans, objectEntries_toggle_booleans_opts, objectKeysWhereBoolean } from './common-stable/tools/objects.js';
 //==============================================================================
 // JSDoc Makes the squiggly red lines go away....
+//==============================================================================
+/**
+ * @typedef {Record<string, boolean>} BooleanMap
+ * @typedef {Record<string, BooleanMap>} Boolean2DeepMap
+ */
+
 //==============================================================================
 /*  Hey YOU... update the 2 "const objects" below and keep your grubby hand out of the Class (if you can)
     Start everything or most everything as false and toggle on via command registry while in game play
     It will be overwhelming if everything is on and you've programmed the debug info for it.
 */
-/** @type {Record<string, boolean>} */
-const WATCHING_OBJECT_TYPES = {
+/** @type {Boolean2DeepMap} */
+const WATCHING_GAME_OBJECTS = {
     //Can be block, item or entity - be mindful of the naming convention so that everything flows
-    arrow: true,
-    bar: true,
-    mini_block: true
+    block: {
+        arrow: true,
+        bar: true,
+        mini_block: true
+    },
+    item: {
+        arrow_template: true,
+        //item in hand
+        arrow: true,
+        bar: true,
+        mini_block: true
+    }
 };
-/** @type {Record<string, boolean>} */
-const WATCHING_EVENT_TYPES = {
-    //keep to the naming convention
-    //subscription events
-    afterItemCompleteUse: false,
-    afterItemReleaseUse: false,
-    afterItemStartUse: false,
-    afterItemStartUseOn: false,
-    afterItemStopUse: false,
-    afterItemStopUseOn: false,
-    beforeItemUse: false,
-    beforePlayerInteractWithBlock: true,
-    //custom component events
-    onPlace: true,
+/** @type {Boolean2DeepMap} */
+const WATCHING_EVENTS = {
+    item: {
+        afterItemCompleteUse: false,
+        afterItemReleaseUse: false,
+        afterItemStartUse: false,
+        afterItemStartUseOn: false,
+        afterItemStopUse: false,
+        afterItemStopUseOn: false,
+        beforeItemUse: false,
+    },
+    block: {
+        beforePlayerInteractWithBlock: true,
+        onPlace: true,
+    },
+    system: {
+        afterWorldLoad: true,
+        beforeStartup: false,
+    }
 };
-//Auto build the combination of the above 2 objects i.e. beforeItemUse_arrow
-//const WATCHING_OBJECT_EVENTS = buildWatchingObjectEvents(WATCHING_EVENTS, WATCHING_OBJECT_TYPES);
-/*
-Use Subscriptions and Functions for a generic/general non particular object event watching
-Turn off and on manually as needed and alter your scripts to use it as needed
-May have support functions later - but I do not see any need, unless I want to turn off all entity or all block/item events
-(as long as the word is in the name, else I have add them all)
-Better yet, use the debuggerBlocks object in the class, it has them ALL
-*/
-/** @type {Record<string, boolean>} */
-const WATCHING_SUBSCRIPTIONS = {
-    beforeStartup: false,
-    beforePlayerInteractWithBlock: true,
-    alertBlockSubs: true,
-    alertEntitySubs: false,
-    alertItemSubs: false,
-    alertPlayerSubs: true,
-    alertSystemSubs:true,
-};
-/** @type {Record<string, boolean>} */
+/** @type {BooleanMap} */
 const WATCHING_FUNCTIONS = {
-    subscriptionsStable: false,
-    registerCommand: false,
-    faceLocationGrid: false,
-};
-// Optional: make your “defaults” truly non-mutable
-// Object.freeze(WATCHING_OBJECT_TYPES);
-// Object.freeze(WATCHING_EVENTS);
-// Object.freeze(WATCHING_OBJECT_EVENTS);
+    // world/system
+    registerCustomCommands: true,
+    registerDebugCommands: true,
+    registerBetaCommands: true,
 
+    // Subscription
+    subscriptions: false,
+    subscriptionsBeta: true,
+    onBeforeStartup: true,
+    alertItemSubs: false,
+    alertPlayerSubs: false,
+    alertSystemSubs: false,
+
+    //Block stuff
+    faceLocationGrid: false,
+    verifyLastInteractInfoRelated: false,
+};
 //==============================================================================
-class DevMoreLights extends DevBlocks {
+/*
+Master override - if pack setting does not have debugOn, then turn it all off
+That way we can have a master switch
+*/
+class DevMoreLights extends Dev {
     /**
    * @constructor
    * @param {string} pack_name 
@@ -89,24 +102,46 @@ class DevMoreLights extends DevBlocks {
     constructor(pack_name) {
         super(pack_name, pack.debugOn);
 
-        //user alter this in above CONSTS
-        Object.assign(this.debugObjectTypes, WATCHING_OBJECT_TYPES);
-        Object.assign(this.debugEventTypes, WATCHING_EVENT_TYPES);
-        //Object.assign(this.debugEvents, WATCHING_OBJECT_EVENTS);
-        Object.assign(this.debugFunctions, WATCHING_FUNCTIONS);
-        Object.assign(this.debugSubscriptions, WATCHING_SUBSCRIPTIONS);
-        /*
-        Master override - if pack setting does not have debugOn, then turn it all off
-        That way we can have a master switch
-        */
-        if (!pack.debugOn)
-            this.allOff();
-        else
-            this.global_update();
+        if (pack.debugOn) {
+            //These Overwrite the samples in the Dev Class
+            this.configure(
+                {
+                    functions: WATCHING_FUNCTIONS,
+                    gameObjects: WATCHING_GAME_OBJECTS
+                },
+                { style: "overwrite" });
+
+            //All events are defined in the Dev class, this just updates flags 
+            // and you can add new ones as needed if the parent is not updated  
+            this.configure(
+                { events: WATCHING_EVENTS },
+                { style: "apply", addIfNew: false });
+
+        }
     }
 }
 //==============================================================================
 export const dev = new DevMoreLights(packDisplayName);
+export const emitters = {
+    // Console / alert channel (persistent in your console log)
+    alertLog: dev.alertLog.bind(dev),
+    alertWarn: dev.alertWarn.bind(dev),
+    alertSuccess: dev.alertSuccess.bind(dev),
+    alertError: dev.alertError.bind(dev),
+
+    // Chat channel (ephemeral)
+    chatLog: dev.chatLog.bind(dev),
+    chatWarn: dev.chatWarn.bind(dev),
+    chatSuccess: dev.chatSuccess.bind(dev),
+    chatError: dev.chatError.bind(dev),
+
+    // Neutral "emit" aliases (currently mapped to alerts)
+    emit: dev.alertLog.bind(dev),
+    emitWarn: dev.alertWarn.bind(dev),
+    emitSuccess: dev.alertSuccess.bind(dev),
+    emitError: dev.alertError.bind(dev),
+};
+
 //==============================================================================
 // End of File
 //==============================================================================

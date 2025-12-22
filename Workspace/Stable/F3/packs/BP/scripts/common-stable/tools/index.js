@@ -1,6 +1,6 @@
 // AUTO-GENERATED — do not edit by hand
 // Folder: ../../Bedrock Add-on Repo/Workspace/Stable/F3/packs/BP/scripts/common-stable/tools
-// Generated: 2025-12-20 02:45:56Z
+// Generated: 2025-12-22 12:13:39Z
 // @ts-check
 
 export { isInForest, isOutside } from "./biomeLib.js";

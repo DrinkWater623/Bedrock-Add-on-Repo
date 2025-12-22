@@ -8,7 +8,7 @@ import { ConsoleAlert, ChatMsg } from "./common-stable/tools/messageLib";
 //==============================================================================
 export const pack = {
     packName: 'F3 Testing',
-    debugOn: true,
+    debugOn: true, //important - do not release Add-ons with this true, except for F3, as it was meant for debugging only
 
     about: 'Testing for Subscription Events and Custom Components',
     devUrl: 'https://github.com/DrinkWater623',
@@ -21,8 +21,9 @@ export const pack = {
 };
 //==============================================================================
 export const packDisplayName = `§6${pack.packName}§r`;
-export const alertLog = new ConsoleAlert(`§d${pack.packName}§r`);
-export const chatLog = new ChatMsg(`§b${pack.packName}§r`);
+//Non Dev version
+export const alertLog = new ConsoleAlert(packDisplayName);
+export const chatLog = new ChatMsg(packDisplayName);
 //==============================================================================
 export const watchFor = {
     //--------------
@@ -83,12 +84,4 @@ export const toggles = {
     piwe_b4: false,
 
     blockView: false
-};
-export const dev = {
-    debug: false,
-    debugChatCmds: false,
-    debugPackLoad: false,
-    debugSubscriptions: false,
-    debugPlayerLoadSpawn: false,
-    debugBlockFunctions: false,
 };

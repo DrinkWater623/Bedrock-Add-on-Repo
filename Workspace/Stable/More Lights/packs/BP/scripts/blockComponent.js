@@ -6,17 +6,18 @@ License: M.I.T. (https://www.gnu.org/licenses/gpl-3.0.html)
 URL: https://github.com/DrinkWater623
 ========================================================================
 TODO: 
-confirm newBlock is one of these canPlaceInBlocks - may not be needed, just because of how placing works, like grass can be replaced
+    confirm newBlock is one of these canPlaceInBlocks - may not be needed, just because of how placing works, like grass can be replaced
+    move the other 2 template code to Block_Events
 // ========================================================================
 Change Log:
     20251217 - Updated debug alerts 
 ========================================================================*/
-import { BlockComponentPlayerPlaceBeforeEvent, system, Block } from "@minecraft/server";
+import { BlockComponentPlayerPlaceBeforeEvent, system, Block, world } from "@minecraft/server";
 //==============================================================================
 import { pack, packDisplayName, watchFor } from "./settings.js";
-import { dev } from "./debug.js";
-import { Block_Events, Blocks, FaceLocationGrid } from "./common-stable/gameObjects/index.js";
-import { Vector2Lib, Vector3Lib, DynamicPropertyLib, rotationToCardinalDirection } from "./common-stable/tools/index.js";
+import { dev, emitters } from "./debug.js";
+import { Block_Events, Blocks, FaceLocationGrid, Players } from "./common-stable/gameObjects/index.js";
+import { Vector3Lib, DynamicPropertyLib } from "./common-stable/tools/index.js";
 import { airBlock, waterBlocks } from "./common-data/index.js";
 //==============================================================================
 /**
@@ -29,44 +30,49 @@ import { airBlock, waterBlocks } from "./common-data/index.js";
 //There are others of these types (replaceable block), see block info?  
 //Maybe get the itemStack of a block and see permutations to get info
 const canPlaceInBlocks = [ ...airBlock, ...waterBlocks ];
+const blockEvents = new Block_Events(emitters);
 //also need to not allow some blocks - may have something developed already 
 //or it is in the block json ???
 //==============================================================================
 /**
- * 
+ * Has its only Function Alert in dev
  * @param {*} lastInteractInfo 
  * @param {string} itemTypeId 
  * @param {Block} newBlock 
- * @param {boolean} alert 
  * @returns 
  */
-function verifyLastInteractInfoRelated (lastInteractInfo, itemTypeId, newBlock, alert) {
-    //dev.alertLog.log(`§dVerifying lastInteractInfo`, alert);
+function verifyLastInteractInfoRelated (lastInteractInfo, itemTypeId, newBlock) {
+    const _name = 'verifyLastInteractInfoRelated';
+    dev.alertFunctionKey(_name, true);
+    const alert = dev.isDebugFunction(_name);
 
-    if (lastInteractInfo.tick === 0) { dev.alertLog.error(`Missing lastInteractInfo`, alert); return false; }
+    function errMsg (msg = '') {
+        dev.alertError(`${alert ? '' : _name + ': '}xx> ${msg}`, pack.debugOn);
+    }
+    if (lastInteractInfo.tick === 0) { errMsg(`Missing lastInteractInfo`); return false; }
 
     //1st check for staleness
     const currentTick = system.currentTick;
     if (currentTick - lastInteractInfo.tick > 5) {
-        dev.alertLog.error(`lastInteractInfo is stale. currentTick:${currentTick} - lastTick:${lastInteractInfo.tick}>5`, alert);
+        errMsg(`xx> lastInteractInfo is stale. currentTick:${currentTick} - lastTick:${lastInteractInfo.tick}>5`);
         return false;
     }
 
     //2nd check for missing info
-    if (!lastInteractInfo.faceLocation) { dev.alertLog.error('Missing faceLocation'); return false; }
-    if (!lastInteractInfo.blockLocation) { dev.alertLog.error('Missing blockLocation'); return false; }
-    if (!newBlock.dimension.isChunkLoaded(lastInteractInfo.blockLocation)) { dev.alertLog.error('Chunk is not loaded'); return false; }
-    if (!newBlock.dimension.getBlock(lastInteractInfo.blockLocation)) { dev.alertLog.error('Cannot get block'); return false; }
+    if (!lastInteractInfo.faceLocation) { errMsg('Missing faceLocation'); return false; }
+    if (!lastInteractInfo.blockLocation) { errMsg('Missing blockLocation'); return false; }
+    if (!newBlock.dimension.isChunkLoaded(lastInteractInfo.blockLocation)) { dev.alertError('xx> Chunk is not loaded'); return false; }
+    if (!newBlock.dimension.getBlock(lastInteractInfo.blockLocation)) { dev.alertError('xx> Cannot get block'); return false; }
 
     //3nd check for item type match    
     if (itemTypeId !== lastInteractInfo.itemTypeId) {
-        dev.alertLog.error(`itemStackBlock (${itemTypeId}) !== lastItemStack (${lastInteractInfo.itemTypeId})`, alert);
+        errMsg(`itemStackBlock (${itemTypeId}) !== lastItemStack (${lastInteractInfo.itemTypeId})`);
         return false;
     }
 
     //3rd check for adjacency
     if (!Vector3Lib.isAdjacent(newBlock.location, lastInteractInfo.blockLocation)) {
-        dev.alertLog.error(`location (${Vector3Lib.toString(newBlock.location, 1, true)}) is not adjacent to lastBlockLocation (${Vector3Lib.toString(lastInteractInfo.blockLocation, 1, true)})`, alert);
+        errMsg(`location (${Vector3Lib.toString(newBlock.location, 1, true)}) is not adjacent to lastBlockLocation (${Vector3Lib.toString(lastInteractInfo.blockLocation, 1, true)})`);
         return false;
     }
     //That is all that matters to accept the LastInteract info as related to this place event   
@@ -79,79 +85,15 @@ function verifyLastInteractInfoRelated (lastInteractInfo, itemTypeId, newBlock, 
  */
 export function lightArrow_onPlace (event) {
     const player = event.player;
-    if (!player || !player.isValid) return;
-    if (!event.block.isValid) return;
+    if (Players.isInvalid(player)) return;
+    if (Blocks.isInValid(event.block)) return;
     if (!watchFor.arrowBlocks().includes(event.permutationToPlace.type.id)) return;
 
     const eventType = 'onPlace';
     const objectType = 'arrow';
-    const alert = dev.isDebugEventObject(eventType, objectType);
-    Block_Events.onPlace_blockTemplate_arrow(event, packDisplayName, alert);
+    const alert = dev.isDebugBlockObjectEvent(objectType, eventType);
+    blockEvents.onPlace_block_rotation_arrow(event, alert);
     return;
-
-    /*
-    //moved to template above - since can be used my multiple with same style
-    let msg = `§6§l${eventType}-${objectType}:§r on ${event.block.typeId} face=${event.face} in ${event.dimension.id} §d(Tick:${system.currentTick} )`;
-    dev.alertLog.log(msg, alert);
-
-    const { block: newBlock, face: touchedBlockFace, permutationToPlace: old_permutation } = event;
-    const itemTypeId = old_permutation.type.id;
-
-    const lastInteractInfo = DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_get(player, alert && !dev.debugEvents.beforePlayerInteractWithBlock_arrow);
-    if (!verifyLastInteractInfoRelated(lastInteractInfo, itemTypeId, newBlock, alert)) { dev.alertLog.error('verifyLastInteractInfoRelated failed', alert); return; }
-
-    //---------------------------------------------------------------------------------
-    // these are verified above, but for the JSDoc, need to show in here
-    const touchedBlockFaceLocation = lastInteractInfo.faceLocation;
-    if (!touchedBlockFaceLocation) return;
-    const touchedBlockLocation = lastInteractInfo.blockLocation;
-    if (!touchedBlockLocation) return;
-    const touchedBlock = newBlock.dimension.getBlock(touchedBlockLocation);
-    if (!touchedBlock) return;
-    //---------------------------------------------------------------------------------
-    msg = '';
-    if (alert) {
-        msg = Blocks.blockPermutationInfo_show(old_permutation, '§6onPlace-permutation§r', true) ?? msg;
-    }
-    const grid = new FaceLocationGrid(touchedBlockFaceLocation, touchedBlockFace, player, true, false);
-    const grid3 = grid.grid(3);
-    const touchedEdgeName = grid.getEdgeName(3);
-    msg+=grid.blockFaceLocationInfo_show([2,3,4],true)
-    msg+=`\n==> §bPlayer facing:§r ${grid.playerCardinalDirection} §b@§r ${grid.playerRotation} degrees`
-    
-
-    if (
-        [ 'Up', "Down" ].includes(touchedBlockFace) ||
-        grid3.y !== 1 ||
-        grid3.x == 1 ||
-        ![ 'north', 'south', 'east', 'west' ].includes(touchedEdgeName)
-    ) {
-        if (alert) {
-            msg += `\n\n§cNo new permutation needed`;
-            msg += `\n§bUp/Down:§r ${[ 'Up', "Down" ].includes(touchedBlockFace)}`;
-            msg += `\n§bx == 1:§r ${grid3.x == 1}`;
-            msg += `\n§by != 1:§r ${grid3.y !== 1}`;
-            msg += `\n§b![ 'north', 'south', 'east', 'west' ].includes(${touchedEdgeName}):§r ${ ![ 'north', 'south', 'east', 'west' ].includes(touchedEdgeName)}`;
-            dev.alertLog.log(msg,true)
-        }
-        return;
-    }
-
-    //reset permutation position    
-    const blockStateName = 'minecraft:cardinal_direction';
-    let newPermutation = old_permutation.withState(blockStateName, touchedEdgeName);
-    event.cancel = true;
-    system.run(() => {
-        msg+=`\n§aSetting block state = ${blockStateName} to ${touchedEdgeName} on face=${event.face}`
-        newBlock.dimension.setBlockPermutation(newBlock.location, newPermutation);
-        if (alert) {
-            system.runTimeout(() => {
-                msg+=Blocks.blockPermutationInfo_show(newPermutation, '\n§aNew Block-permutation§r',true);
-                dev.alertLog.log(msg,true)
-            }, 1);
-        }
-    });
-    */
 }
 //==============================================================================
 /** 
@@ -159,22 +101,22 @@ export function lightArrow_onPlace (event) {
  */
 export function lightBar_onPlace (event) {
     const player = event.player;
-    if (!player || !player.isValid) return;
+    if (!player || Players.isInvalid(player)) return;
     if (!watchFor.barBlocks().includes(event.permutationToPlace.type.id)) return;
     if (!event.block.isValid) return;
 
     const eventType = 'onPlace';
     const objectType = 'bar';
-    const alert = dev.isDebugEventObject(eventType, objectType);
+    const alert = dev.isDebugBlockObjectEvent(objectType, eventType);
     const packName = packDisplayName;
 
     const { block: newBlock, face: touchedBlockFace, permutationToPlace: old_permutation } = event;
     const itemTypeId = event.permutationToPlace.type.id;
-    const lastInteractInfo = DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_get(player, dev.debugEvents.beforePlayerInteractWithBlock_arrow);
+    const lastInteractInfo = DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_get(player, false);
     let msg = `§b${eventType}-${itemTypeId}:§r on ${event.block.typeId} face=${event.face} in ${event.dimension.id}}`;
 
-    if (!verifyLastInteractInfoRelated(lastInteractInfo, itemTypeId, newBlock, alert)) { dev.alertLog.error('verifyLastInteractInfoRelated failed', alert); return; }
-    const verifiedMsg = Block_Events.verifyLastInteractInfoRelated(lastInteractInfo, itemTypeId, newBlock);
+    if (!verifyLastInteractInfoRelated(lastInteractInfo, itemTypeId, newBlock)) { dev.alertError('verifyLastInteractInfoRelated failed', alert); return; }
+    const verifiedMsg = blockEvents.verifyLastInteractInfoRelated(lastInteractInfo, itemTypeId, newBlock);
     if (!verifiedMsg.endsWith('Verified')) {
         msg += '\n§cxx> verifyLastInteractInfoRelated failed';
         if (alert) console.error(`${packName}:${msg}`);
@@ -199,7 +141,7 @@ export function lightBar_onPlace (event) {
     //above is perfect for walls.... off for up.down
     //needs a 180 adjustment, luckily numbered so that is easy to do
     //not needed, adjusted updown to use south, which is 180 deg
-    // if ([ 'uxp', 'dxown' ].includes(touchedBlockFace)) {
+    // if ([ 'up', 'down' ].includes(touchedBlockFace)) {
     //     if ([ 0, 1, 2, 3 ].includes(permutationPtr)) {
     //         permutationPtr = (permutationPtr + 2) % 4;
     //     }
@@ -309,22 +251,22 @@ function inverse (n, max) {
  */
 export function lightMiniBlock_onPlace (event) {
     const player = event.player;
-    if (!player || !player.isValid) return;
+    if (!player || Players.isInvalid(player)) return;
     if (!watchFor.miniBlocks().includes(event.permutationToPlace.type.id)) return;
     if (!event.block.isValid) return;
 
     const eventType = 'onPlace';
     const objectType = 'mini_block';
-    const alert = dev.isDebugEventObject(eventType, objectType);
+    const alert = dev.isDebugBlockObjectEvent(objectType, eventType);
     const packName = packDisplayName;
 
     const { block: newBlock, face: touchedBlockFace, permutationToPlace: old_permutation } = event;
     const itemTypeId = event.permutationToPlace.type.id;
-    const lastInteractInfo = DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_get(player, dev.debugEvents.beforePlayerInteractWithBlock_arrow);
+    const lastInteractInfo = DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_get(player, false);
     let msg = `§b${eventType}-${itemTypeId}:§r on ${event.block.typeId} face=${event.face} in ${event.dimension.id}}`;
 
-    if (!verifyLastInteractInfoRelated(lastInteractInfo, itemTypeId, newBlock, alert)) { dev.alertLog.error('verifyLastInteractInfoRelated failed', alert); return; }
-    const verifiedMsg = Block_Events.verifyLastInteractInfoRelated(lastInteractInfo, itemTypeId, newBlock);
+    if (!verifyLastInteractInfoRelated(lastInteractInfo, itemTypeId, newBlock)) { dev.alertError('verifyLastInteractInfoRelated failed', alert); return; }
+    const verifiedMsg = blockEvents.verifyLastInteractInfoRelated(lastInteractInfo, itemTypeId, newBlock);
     if (!verifiedMsg.endsWith('Verified')) {
         msg += '\n§cxx> verifyLastInteractInfoRelated failed';
         if (alert) console.error(`${packName}:${msg}`);

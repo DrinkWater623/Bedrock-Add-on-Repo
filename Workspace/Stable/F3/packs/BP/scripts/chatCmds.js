@@ -1,32 +1,39 @@
-// chatCmds.js  Tree SPider
+// chatCmds.js  F3 Testing Minecraft Bedrock Add-on
 // @ts-check
-//==============================================================================
+/* =====================================================================
+Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
+License: M.I.T. (https://www.gnu.org/licenses/gpl-3.0.html)
+URL: https://github.com/DrinkWater623
+========================================================================
+TODO: 
+confirm newBlock is one of these canPlaceInBlocks - may not be needed, just because of how placing works, like grass can be replaced
+// ========================================================================
+Change Log:
+    20251219 - Created/Copied
+========================================================================*/
 // Minecraft
-import { system, Player, Entity, world, TimeOfDay } from "@minecraft/server";
-import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus, CustomCommandParamType, CustomCommandOrigin } from "@minecraft/server";
-// Shared
-import { Vector3Lib, VectorXZLib } from "./common-stable/tools/vectorClass.js";
+import { Player } from "@minecraft/server";
+import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus } from "@minecraft/server";
 // Local
-import { alertLog, chatLog, pack, packDisplayName } from './settings.js';
-import { devOld } from "./debug.js";
-//==============================================================================
-const debugFunctions = false;
-const msgPfx = devOld.dsb.displayPfx;
-//==============================================================================
-//Enum Names
-const queryOnOff = `${pack.cmdNameSpace}:enum_query_on_off`;
-const scoreboard_options = `${pack.cmdNameSpace}:scoreboard_options`;
-//==============================================================================
-const SUCCESS = { status: CustomCommandStatus.Success };
-const FAILURE = { status: CustomCommandStatus.Failure };
+import { pack, packDisplayName } from './settings.js';
+import { dev } from "./debug.js";
+const alert = dev.debugFunctions.registerCommand ?? false;
+/**
+ * 
+ * @param {string} func 
+ */
+function alertFunction (func) {
+    dev.alertFunction(func, true, alert);
+}
 //==============================================================================
 /**
  * @param {CustomCommandRegistry} registry 
  */
 function register_about (registry) {
+    alertFunction('register_about');
     const cmd = {
-        name: `${pack.cmdNameSpace}:about_tree_spiders`,
-        description: "Tree Spider Add-on Information",
+        name: `${pack.cmdNameSpace}:about_f3`,
+        description: "Info/Help for DW623's 'F3 Testing add-on",
         permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
 
@@ -36,536 +43,252 @@ function register_about (registry) {
      */
     registry.registerCommand(cmd, (origin) => {
         if (origin.sourceEntity instanceof Player) {
-            origin.sourceEntity.sendMessage(`
-\n${packDisplayName}:                
+            const msg = `\n${packDisplayName}:                
 §r§a${pack.about}
 §r§b${pack.devUrl}
 §r§c${pack.reportBugs}
-`);
+`;
+            origin.sourceEntity.sendMessage(msg);
         }
 
         const result = { status: CustomCommandStatus.Success };
         return result;
     });
 }
-//==============================================================================
+//=====================================================================================
+//          LATER  all this will be moved to F3 addon where I can test this stuff
+//=====================================================================================
 /**
  * @param {CustomCommandRegistry} registry 
  */
-function register_getGeoInfo (registry) {
+function register_toggle_arrow (registry) {
+    alertFunction('register_about');
     const cmd = {
-        name: `${pack.cmdNameSpace}:geo`,
-        description: "Show Current Location Information",
-        permissionLevel: CommandPermissionLevel.Admin,
+        name: `${pack.cmdNameSpace}:toggle_arrow`,
+        description: "Toggle on/off watching Arrow Events",
+        permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
-
     };
     /**
      * @returns {import("@minecraft/server").CustomCommandResult}
      */
     registry.registerCommand(cmd, (origin) => {
-        if (origin.sourceEntity instanceof Player) {
-            const player = origin.sourceEntity;
-            player.sendMessage(`§l§gTime: ${getWorldTime().hours}:00`);
-            const { dimension, location, name } = player;
-
-            const inBiome = dimension.getBiome(location);
-            if (!inBiome) return FAILURE;
-            player.sendMessage(`§aYou (${name}) are in the ${inBiome.id} biome`);
-
-            const inBlock = dimension?.getBlock(location);
-            if (!inBlock) return FAILURE;
-            const onBlock = inBlock.below();
-            if (!onBlock) return FAILURE;
-            const headLevelBlock = inBlock.above();
-            if (!headLevelBlock) return FAILURE;
-
-            system.runTimeout(() => {
-
-                player.sendMessage(`§gStanding on ${onBlock.typeId} @ ${Vector3Lib.toString(onBlock.location, 0, true)}`);
-                player.sendMessage(`§e         in ${inBlock.typeId}  @ ${Vector3Lib.toString(inBlock.location, 0, true)}`);
-                player.sendMessage(`§f         with a skylight level of ${onBlock.getSkyLightLevel()}`);
-
-                const locationCenter = headLevelBlock.center();
-
-                const topMostBlock = dimension.getTopmostBlock(locationCenter);
-                if (topMostBlock) {
-                    player.sendMessage(`\n§bTop most block from ${Vector3Lib.toString(locationCenter, 0, true)} is ${topMostBlock.typeId} @ ${Vector3Lib.toString(topMostBlock.location, 0, true)}`);
-                }
-
-                const direction = { x: 0, y: 1, z: 0 };
-                const rayCastUpBlock = dimension.getBlockFromRay(locationCenter, direction);
-                if (rayCastUpBlock) {
-                    player.sendMessage(`§vFirst Block above your head is ${rayCastUpBlock.block.typeId}`);
-                }
-
-                //Light level grid 3x3
-                /**@type number[] */
-                const lightGrid = [];
-                //north
-                for (let i = 0; i < 3; i++) {
-                    let block = i === 0 ? onBlock.north() : i === 1 ? onBlock : onBlock.south();
-                    if (block) {
-                        const west = block.west();
-                        const east = block.east();
-
-                        if (west) {
-                            const sky = west.getSkyLightLevel();
-                            lightGrid.push(typeof sky === 'number' ? sky : -2);
-                        }
-                        else lightGrid.push(-1);
-
-                        if (block) {
-                            const sky = block.getSkyLightLevel();
-                            lightGrid.push(typeof sky === 'number' ? sky : -2);
-                        }
-                        else lightGrid.push(-1);
-
-                        if (east) {
-                            const sky = east.getSkyLightLevel();
-                            lightGrid.push(typeof sky === 'number' ? sky : -2);
-                        }
-                        else lightGrid.push(-1);
-                    }
-                    else {
-                        lightGrid.push(-1);
-                        lightGrid.push(-1);
-                        lightGrid.push(-1);
-                    }
-                }
-                let msg = `\n§dLight Levels Around §aYou§r`;
-                for (let i = 0; i < 3; i++) {
-                    msg += `\n`;
-                    for (let j = 0; j < 3; j++) {
-                        const k = j + (i * 3);
-                        msg += `   §${k == 4 ? 'a' : 'r'}${lightGrid[ k ] >= 0 && lightGrid[ k ] < 10 ? '0' : ''}${lightGrid[ k ]}`;
-                    }
-                }
-                player.sendMessage(msg);
-            }, 1);
-            //later add entity counts around me
-        }
-
-        const result = { status: CustomCommandStatus.Success };
-        return result;
+        dev.objectType_toggle('arrow', true);
+        return { status: CustomCommandStatus.Success };
     });
 }
-//==============================================================================
 /**
  * @param {CustomCommandRegistry} registry 
  */
-function register_debugEntity (registry) {
-    alertLog.log('§v* function register_debugEntity ()', debugFunctions);
-
+function register_toggle_bar (registry) {
+    alertFunction('register_about');
     const cmd = {
-        name: `${pack.cmdNameSpace}:debug_entity`,
-        description: "Turn on/off/query Entity Activity/Alert/Load Messages and Scoreboards Debugging",
-        permissionLevel: CommandPermissionLevel.Admin,
-        cheatsRequired: false,
-        mandatoryParameters: [
-            {
-                name: queryOnOff,
-                type: CustomCommandParamType.Enum,
-            }
-        ]
-    };
-
-    /** @type {(origin: CustomCommandOrigin, args: string) => import("@minecraft/server").CustomCommandResult} */
-    const handler = (origin, arg) => {
-        if (origin.sourceEntity instanceof Player) {
-
-            if (!arg) arg = 'query';
-
-            let msg = '';
-            if (arg === 'on') {
-                if (!(devOld.debugOn && devOld.watchEntityGoals && devOld.watchEntityEvents)) {
-                    devOld.debugOn = true;
-                    devOld.watchEntityGoals = true;
-                    devOld.watchEntityEvents = true;
-                    msg = `debugEntity (Activity/Alert/Load/Spawn) is now §aON`;
-                    devOld.anyOn();
-                }
-                else
-                    msg = `debugEntity is already on §aON`;
-            }
-            else if (arg == 'off') {
-                if ((devOld.watchEntityGoals || devOld.watchEntityEvents)) {
-                    devOld.watchEntityGoals = false;
-                    devOld.watchEntityEvents = false;
-                    devOld.anyOn();
-
-                    msg = `debugEntity (Activity/Alert/Load/Spawn) is now §cOFF`;
-                    devOld.anyOn();
-                }
-                else
-                    msg = `debugEntity is already §cOFF`;
-            }
-            else
-            //Query 
-            {
-                if (devOld.debugOn)
-                    msg = `debugEntity:\nActivity${devOld.watchEntityGoals ? '§aON' : '§cOFF'}\nAlert:${devOld.watchEntityEvents ? '§aON' : '§cOFF'}`;
-                else
-                    msg = `debugging is §cOFF`;
-            }
-            const player = origin.sourceEntity;
-            player.sendMessage(`${devOld.dsb.displayPfx} ${msg}`);
-        }
-        const result = { status: CustomCommandStatus.Success };
-        return result;
-    };
-
-    registry.registerCommand(cmd, handler);
-}
-//==============================================================================
-/**
- * 
- * @param {CustomCommandRegistry} registry 
- */
-function register_watchEntityGoals (registry) {
-    alertLog.log('§v* function register_watchEntityGoals ()', debugFunctions);
-
-    const cmd = {
-        name: `${pack.cmdNameSpace}:watch_entity_goals`,
-        description: "Turn on/off/query Watching Entity Goals",
-        permissionLevel: CommandPermissionLevel.Admin,
-        cheatsRequired: false,
-        mandatoryParameters: [
-            {
-                name: queryOnOff,
-                type: CustomCommandParamType.Enum,
-            }
-        ]
-    };
-
-    /** @type {(origin: CustomCommandOrigin, args: string) => import("@minecraft/server").CustomCommandResult} */
-    const handler = (origin, arg) => {
-        if (origin.sourceEntity instanceof Player) {
-
-            if (!arg) arg = 'query';
-
-            let msg = '';
-            if (arg == 'on') {
-                if (!(devOld.debugOn && devOld.watchEntityGoals)) {
-                    devOld.debugOn = true;
-                    devOld.watchEntityGoals = true;
-                    msg = `watchEntityGoals is now §aON`;
-                    devOld.anyOn();
-                }
-                else
-                    msg = `watchEntityGoals is already §aON`;
-            }
-            else if (arg == 'off') {
-                if (devOld.watchEntityGoals) {
-                    devOld.watchEntityGoals = false;
-                    msg = `watchEntityGoals is now §cOFF`;
-                    devOld.anyOn();
-                }
-                else
-                    msg = `watchEntityGoals is already §cOFF`;
-            }
-            else
-            //Query 
-            {
-                if (devOld.debugOn)
-                    msg = `watchEntityGoals is ${devOld.watchEntityGoals ? '§aON' : '§cOFF'}`;
-                else
-                    msg = `debugging is §cOFF`;
-            }
-            const player = origin.sourceEntity;
-            player.sendMessage(`${devOld.dsb.displayPfx} ${msg}`);
-        }
-        const result = { status: CustomCommandStatus.Success };
-        return result;
-    };
-
-    registry.registerCommand(cmd, handler);
-}
-//==============================================================================
-/**
- * @param {CustomCommandRegistry} registry 
- */
-function register_watchEntityEvents (registry) {
-    alertLog.log('§v* function register_watchEntityEvents ()', debugFunctions);
-
-    const cmd = {
-        name: `${pack.cmdNameSpace}:watch_entity_events`,
-        description: "Turn on/off/query Watching Entity Events",
-        permissionLevel: CommandPermissionLevel.Admin,
-        cheatsRequired: false,
-        mandatoryParameters: [
-            {
-                name: queryOnOff,
-                type: CustomCommandParamType.Enum,
-            }
-        ]
-    };
-
-    /** @type {(origin: CustomCommandOrigin, arg: string) => import("@minecraft/server").CustomCommandResult} */
-    const handler = (origin, arg) => {
-        if (origin.sourceEntity instanceof Player) {
-            if (!arg) arg = 'query';
-            let msg = '';
-            if (arg == 'on') {
-                if (!(devOld.debugOn && devOld.watchEntityEvents)) {
-                    devOld.debugOn = true;
-                    devOld.watchEntityEvents = true;
-                    msg = `watchEntityEvents is now §aON`;
-                    devOld.anyOn();
-                }
-                else
-                    msg = `watchEntityEvents is already §aON`;
-            }
-            else if (arg == 'off') {
-                if (devOld.watchEntityEvents) {
-                    devOld.watchEntityEvents = false;
-                    msg = `watchEntityEvents is now §cOFF`;
-                    devOld.anyOn();
-                }
-                else
-                    msg = `watchEntityEvents is already §cOFF`;
-            }
-            else
-            //Query 
-            {
-                if (devOld.debugOn)
-                    msg = `watchEntityEvents is ${devOld.watchEntityEvents ? '§aON' : '§cOFF'}`;
-                else
-                    msg = `debugging is §cOFF`;
-            }
-            const player = origin.sourceEntity;
-            player.sendMessage(`${msgPfx} ${msg}`);
-        }
-
-        const result = { status: CustomCommandStatus.Success };
-        return result;
-    };
-
-    registry.registerCommand(cmd, handler);
-}
-//==============================================================================
-/** 
- * @param {CustomCommandRegistry} registry 
- */
-function register_debug (registry) {
-    alertLog.log('§v* function register_debug ()', debugFunctions);
-
-    const cmd = {
-        name: `${pack.cmdNameSpace}:debug`,
-        description: "Turn on/off/query Debugging",
-        permissionLevel: CommandPermissionLevel.Admin,
-        cheatsRequired: false,
-        mandatoryParameters: [
-            {
-                name: queryOnOff,
-                type: CustomCommandParamType.Enum,
-            }
-        ]
-    };
-
-    /** @type {(origin: CustomCommandOrigin, arg: string) => import("@minecraft/server").CustomCommandResult} */
-    const handler = (origin, arg) => {
-        if (origin.sourceEntity instanceof Player) {
-            if (!arg) arg = 'query';
-
-            let msg = '';
-            if (arg == 'on') {
-                if (!(devOld.debugOn)) {
-                    devOld.debugOn = true;
-
-                    //TODO: since was off, turn on basic alerts too
-
-                    msg = `debugging is now §aON`;
-                    devOld.anyOn();
-                }
-                else
-                    msg = `debugging is already §aON`;
-            }
-            else if (arg == 'off') {
-                if (devOld.debugOn) {
-                    devOld.debugOn = false;
-                    devOld.allOff();
-
-                    msg = `debugging is now §cOFF`;
-                    devOld.anyOn();
-                }
-                else
-                    msg = `debugging is already §cOFF`;
-            }
-            else
-            //Query 
-            {
-                msg = `debugging is ${devOld.debugOn ? '§aON' : '§cOFF'}`;
-            }
-            const player = origin.sourceEntity;
-            player.sendMessage(`${msgPfx} ${msg}`);
-        }
-
-        const result = { status: CustomCommandStatus.Success };
-        return result;
-    };
-
-    registry.registerCommand(cmd, handler);
-}
-//==============================================================================
-/**
- * @param {CustomCommandRegistry} registry 
- */
-function register_delta (registry) {
-
-    const cmd = {
-        name: `${pack.cmdNameSpace}:delta`,
-        description: "Display Delta Distance From You",
-        permissionLevel: CommandPermissionLevel.Admin,
-        cheatsRequired: false,
-        mandatoryParameters: [
-            {
-                name: "delta_test",
-                type: CustomCommandParamType.EntitySelector,
-            }
-        ]
-    };
-
-    /** @type {(origin: CustomCommandOrigin, args: Entity[]) => import("@minecraft/server").CustomCommandResult} */
-    const handler = (origin, entities) => {
-        if (!(origin.sourceEntity instanceof Player)) return FAILURE;
-        if (!entities) return FAILURE;
-
-        const player = origin.sourceEntity;
-        const playerLocation = player.location;
-
-        system.run(() => {
-            for (const entity of entities) {
-                if (entity.isValid) {
-                    const { location, nameTag } = entity;
-                    const delta = `§bClosest Player x: ${Math.round(Math.abs(location.x - playerLocation.x))}, y:${Math.round(Math.abs(location.y - playerLocation.y))}, z:${Math.round(Math.abs(location.z - playerLocation.z))}`;
-                    if (nameTag) {
-                        const msg = `query: §l${nameTag}§r §6@ ${Vector3Lib.toString(location, 0, true)} ${delta}`;
-                        chatLog.log(msg);
-                    }
-                }
-                //entity.applyImpulse({ x: 0, y: 1, z: 0 });
-                //entity.dimension.spawnParticle("minecraft:ominous_spawning_particle", entity.location);
-            }
-        });
-
-        return SUCCESS;
-    };
-
-    registry.registerCommand(cmd, handler);
-}
-//==============================================================================
-/**
- * @param {CustomCommandRegistry} registry 
- */
-function register_new_test (registry) {
-    const cmd = {
-        name: `${pack.cmdNameSpace}:new_test`,
-        description: "Kill Entities, New RTP and Reset Scoreboards",
-        permissionLevel: CommandPermissionLevel.Admin,
+        name: `${pack.cmdNameSpace}:toggle_bar`,
+        description: "Toggle on/off watching Light Bar Events",
+        permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
     };
-
     /**
      * @returns {import("@minecraft/server").CustomCommandResult}
      */
     registry.registerCommand(cmd, (origin) => {
-        if (origin.sourceEntity instanceof Player) {
-            const player = origin.sourceEntity;
-            const currentLocation = origin.sourceEntity.location;
-            const xz = VectorXZLib.randomXZ(5000, { center: currentLocation, minRadius: 1000, avoidZero: true });
-            const entities = player.dimension.getEntities({ families: [ 'dw623' ] });
-
-            for (const entity of entities) {
-                system.runTimeout(() => { if (entity.isValid) entity.kill(); }, 1);
-            }
-
-            system.runTimeout(() => {
-                devOld.dsb.reset({ bases: [], reCreate: true });
-                player.teleport({ x: xz.x, y: 150, z: xz.z });
-            }, 5);
-        }
-
-        const result = { status: CustomCommandStatus.Success };
-        return result;
+        dev.objectType_toggle('bar', true);
+        return { status: CustomCommandStatus.Success };
+    });
+}
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_toggle_mini_block (registry) {
+    alertFunction('register_toggle_miniBlock');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:toggle_mini_block`,
+        description: "Toggle on/off watching Mini Block Events",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        dev.objectType_toggle('miniBlock', true);
+        return { status: CustomCommandStatus.Success };
+    });
+}
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_event_beforeItemUse (registry) {
+    alertFunction('register_event_beforeItemUse');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:toggle_event_beforeItemUse`.toLowerCase(),
+        description: "Toggle on/off watching Item Use Before-Events",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        dev.eventType_toggle('beforeItemUse', true);
+        return { status: CustomCommandStatus.Success };
     });
 }
 //==============================================================================
 /**
  * @param {CustomCommandRegistry} registry 
  */
-function register_scoreboards (registry) {
-    alertLog.log('§v* function register_scoreboards ()', debugFunctions);
+function register_event_afterItemCompleteUse (registry) {
+    alertFunction('register_event_afterItemCompleteUse');
     const cmd = {
-        name: `${pack.cmdNameSpace}:sb`,
-        description: "Scoreboards",
-        permissionLevel: CommandPermissionLevel.Admin,
-        cheatsRequired: false,
-        mandatoryParameters: [
-            {
-                name: scoreboard_options,
-                type: CustomCommandParamType.Enum,
-            }
-        ]
+        name: `${pack.cmdNameSpace}:toggle_event_afterItemCompleteUse`.toLowerCase(),
+        description: "Toggle on/off watching Item-Complete-Use-On After-Events",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
     };
-    //"Clear","reset", "show", "reverse", "Zero"
-    /** @type {(origin: CustomCommandOrigin, args: string) => import("@minecraft/server").CustomCommandResult} */
-    const handler = (origin, arg) => {
-        if (origin.sourceEntity instanceof Player) {
-            if (!arg) arg = 'show';
-
-            const player = origin.sourceEntity;
-
-            if (arg === 'hide') {
-                system.run(() => {
-                    devOld.dsb.hide();
-                });
-            }
-            else if (arg == 'reset') {
-                const side = ScoreboardLib.sideBar_query()?.id;
-                if (side)
-                    system.run(() => {
-                        devOld.dsb.reset({ bases: [ side ], reCreate: false });
-                        system.runTimeout(() => { devOld.dsb.show(side); }, 1);
-                    });
-                else
-                    chatLog.warn('There is no scoreboard showing, nothing to reset.  §lDid you mean to use reset_all?');
-            }
-            else if (arg == 'reset_all') {
-                const side = ScoreboardLib.sideBar_query()?.id;
-                system.run(() => {
-                    devOld.dsb.reset({ bases: [], reCreate: false });
-                    system.runTimeout(() => { if (side) devOld.dsb.show(side); }, 1);
-                });
-            }
-            else if ([ 'ctrs', 'deaths', 'stats','actions' ].includes(arg)) {
-                system.run(() => {
-                    chatLog.log(`Switching to ${devOld.dsb.getScoreboardName(arg)}`);
-                    devOld.dsb.show(arg);
-                });
-            }
-            else if (arg == 'zero') {
-                const side = ScoreboardLib.sideBar_query()?.id;
-                if (side)
-                    system.run(() => {
-                        devOld.dsb.zero([ side ]);
-                        system.runTimeout(() => { devOld.dsb.show(side); }, 1);
-                    });
-                else
-                    chatLog.warn('There is no scoreboard showing, nothing to zero.  §lDid you mean to use zero_all?');
-            }
-            else if (arg == 'zero_all') {
-                system.run(() => {
-                    devOld.dsb.zero([]);
-                });
-            }
-
-        }
-        const result = { status: CustomCommandStatus.Success };
-        return result;
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        dev.eventType_toggle('afterItemCompleteUse', true);
+        return { status: CustomCommandStatus.Success };
+    });
+}
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_event_afterItemReleaseUse (registry) {
+    alertFunction('register_event_afterItemReleaseUse');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:toggle_event_afterItemReleaseUse`.toLowerCase(),
+        description: "Toggle on/off watching Item-Release-Use After-Events",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
     };
-
-    registry.registerCommand(cmd, handler);
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        dev.eventType_toggle('afterItemReleaseUseOn', true);
+        return { status: CustomCommandStatus.Success };
+    });
+}
+//==============================================================================
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_event_afterItemStartUseOn (registry) {
+    alertFunction('register_event_afterItemStartUseOn');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:toggle_event_afterItemStartUseOn`.toLowerCase(),
+        description: "Toggle on/off watching Item-Start-Use-On After-Events",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        dev.eventType_toggle('afterItemStartUseOn', true);
+        return { status: CustomCommandStatus.Success };
+    });
+}
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_event_afterItemStartUse (registry) {
+    alertFunction('register_event_afterItemStartUse');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:toggle_event_afterItemStartUse`.toLowerCase(),
+        description: "Toggle on/off watching Item-Start-Use After-Events",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        dev.eventType_toggle('afterItemStartUseOn', true);
+        return { status: CustomCommandStatus.Success };
+    });
+}
+//==============================================================================
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_event_afterItemStopUseOn (registry) {
+    alertFunction('register_event_afterItemStopUseOn');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:toggle_event_afterItemStopUseOn`.toLowerCase(),
+        description: "Toggle on/off watching Item-Stop-Use-On After-Events",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        dev.eventType_toggle('afterItemStopUseOn', true);
+        return { status: CustomCommandStatus.Success };
+    });
+}
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_event_afterItemStopUse (registry) {
+    alertFunction('register_event_afterItemStopUse');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:toggle_event_afterItemStopUse`.toLowerCase(),
+        description: "Toggle on/off watching Item-Stop-Use After-Events",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        dev.eventType_toggle('afterItemStopUseOn', true);
+        return { status: CustomCommandStatus.Success };
+    });
+}
+//==============================================================================
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_event_on_Place (registry) {
+    alertFunction('register_event_on_Place');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:toggle_event_on_place`,
+        description: "Toggle on/off watching On-Place Events",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        dev.eventType_toggle('onPlace', true);
+        return { status: CustomCommandStatus.Success };
+    });
+}
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_event_beforePlayerInteractWithBlock (registry) {
+    alertFunction('register_event_beforePlayerInteractWithBlock');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:toggle_event_before_player_interactWithBlock`.toLowerCase(),
+        description: "Toggle on/off watching Player-Interact_with_Block Before-Events",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        dev.eventType_toggle('beforePlayerInteractWithBlock', true);
+        return { status: CustomCommandStatus.Success };
+    });
 }
 //==============================================================================
 //==============================================================================
@@ -573,29 +296,28 @@ function register_scoreboards (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 export function registerCustomCommands (registry) {
-    alertLog.log('§v* function registerCustomCommands ()', debugFunctions);
-
-    //Register Enums here
+    alertFunction('registerCustomCommands');
     register_about(registry);
-    
-    if (devOld.debugOn) {
-        register_delta(registry);
-        register_new_test(registry);
-        register_getGeoInfo(registry);
- 
-        alertLog.log(`Registering Debug enum: ${queryOnOff}`, debugFunctions);
-        registry.registerEnum(queryOnOff, [ "query", "on", "off" ]);
 
-        register_debug(registry);
-        register_debugEntity(registry);
-        register_watchEntityGoals(registry);
-        register_watchEntityEvents(registry);
+    if (pack.debugOn) {
+        register_event_afterItemCompleteUse(registry);
+        register_event_afterItemReleaseUse(registry);
+        register_event_afterItemStartUse(registry);
+        register_event_afterItemStartUseOn(registry);
+        register_event_afterItemStopUse(registry);
+        register_event_afterItemStopUseOn(registry);
+        register_event_beforeItemUse(registry);
+        register_event_on_Place(registry);
+        register_event_beforePlayerInteractWithBlock(registry);
+        register_toggle_arrow(registry);
+        register_toggle_bar(registry);
+        register_toggle_mini_block(registry);
 
-        alertLog.log(`Registering Debug enum: ${scoreboard_options}`, debugFunctions);
-        registry.registerEnum(scoreboard_options, [ "hide", "reset", "reset_all", "stats", "ctrs", "actions","deaths", "zero", "zero_all" ]);
-
-        register_scoreboards(registry);
-    }   
+        /**
+         * 
+    beforePlayerInteractWithBlock: true,
+         */
+    }
 }
 //==============================================================================
 // End of File

@@ -35,10 +35,11 @@ import { dev } from "./debug.js";
 /** @typedef {Parameters<typeof system.beforeEvents.startup.subscribe>[0]} BeforeStartupHandler */
 //==============================================================================
 //==============================================================================
-const blockSubs = new BlockSubscriptions(packDisplayName, dev.debugSubscriptions.debugSubscriptionsOn);
-const itemSubs = new ItemSubscriptions(packDisplayName, dev.debugSubscriptions.debugSubscriptionsOn);
-const playerSubs = new PlayerSubscriptions(packDisplayName, dev.debugSubscriptions.debugSubscriptionsOn);
-const systemSubs = new SystemSubscriptions(packDisplayName, dev.debugSubscriptions.debugSubscriptionsOn);
+const debugSubscriptions=dev.isDebugFunction('subscriptions')
+const blockSubs = new BlockSubscriptions(packDisplayName, debugSubscriptions);
+const itemSubs = new ItemSubscriptions(packDisplayName, debugSubscriptions);
+const playerSubs = new PlayerSubscriptions(packDisplayName, debugSubscriptions);
+const systemSubs = new SystemSubscriptions(packDisplayName, debugSubscriptions);
 const myItemStackWatch = watchFor.onPlaceBlockList();
 //const myArrows = watchFor.arrowBlocks();
 //const myMiniBlocks = watchFor.miniBlocks();
@@ -48,6 +49,7 @@ const myBlockGroups = watchFor.blockGroups();
 /** @type {BeforeStartupHandler} */
 const onBeforeStartup = (event) => {
     const ccr = event.customCommandRegistry;
+    dev.alertFunctionKey('onBeforeStartup',true)
     registerCustomCommands(ccr);
 
     event.blockComponentRegistry.registerCustomComponent(
@@ -78,7 +80,7 @@ const onBeforePlayerInteractWithBlock = (event) => {
 
     const eventType = 'beforePlayerInteractWithBlock';
     const itemStack = event.itemStack;
-    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
+    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugBlockObjectEvent(objType,eventType) && list.includes(itemStack.typeId));
     const x = event.blockFace
     DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_set(
         event,
@@ -94,10 +96,10 @@ const onAfterItemCompleteUse = (event) => {
 
     const itemStack = event.itemStack;
     const eventType = 'afterItemCompleteUse';
-    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
+    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugItemObjectEvent(objType,eventType) && list.includes(itemStack.typeId));
 
     const msg = `§6§l${eventType}:§r typeId=${itemStack.typeId}  useDuration=${event.useDuration}`;
-    dev.alertLog.log(msg, alert);
+    dev.alertLog(msg, alert);
 };
 
 /**@type {AfterItemReleaseUseHandler} */
@@ -108,10 +110,10 @@ const onAfterItemReleaseUse = (event) => {
 
     const itemStack = event.itemStack;
     const eventType = 'afterItemReleaseUse';
-    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
+    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugItemObjectEvent(objType,eventType) && list.includes(itemStack.typeId));
 
     const msg = `§6§l${eventType}§r typeId=${itemStack.typeId}  useDuration=${event.useDuration}`;
-    dev.alertLog.log(msg, alert);
+    dev.alertLog(msg, alert);
 };
 /**@type {AfterItemStartUseHandler} */
 const onAfterItemStartUse = (event) => {
@@ -120,10 +122,10 @@ const onAfterItemStartUse = (event) => {
 
     const itemStack = event.itemStack;
     const eventType = 'afterItemStartUse';
-    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
+    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugItemObjectEvent(objType,eventType) && list.includes(itemStack.typeId));
 
     const msg = `§6§l${eventType}§r typeId=${event.itemStack.typeId}`;
-    dev.alertLog.log(msg, alert);
+    dev.alertLog(msg, alert);
 };
 /**@type {AfterItemStartUseOnHandler} */
 const onAfterItemStartUseOn = (event) => {
@@ -133,10 +135,10 @@ const onAfterItemStartUseOn = (event) => {
 
     const eventType = 'afterItemStartUseOn';
     const itemStack = event.itemStack;
-    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
+    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugItemObjectEvent(objType,eventType) && list.includes(itemStack.typeId));
 
     const msg = `§6§l${eventType}:§r typeId=${event.itemStack.typeId}  blockFace=${event.blockFace} on  block=${event.block.typeId}`;
-    dev.alertLog.log(msg, alert);
+    dev.alertLog(msg, alert);
 };
 /**@type {AfterItemStopUseHandler} */
 const onAfterItemStopUse = (event) => {
@@ -146,10 +148,10 @@ const onAfterItemStopUse = (event) => {
 
     const eventType = 'afterItemStopUse';
     const itemStack = event.itemStack;
-    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
+    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugItemObjectEvent(objType,eventType) && list.includes(itemStack.typeId));
 
     const msg = `§6§l${eventType}§r typeId=${event.itemStack.typeId}  useDuration=${event.useDuration}`;
-    dev.alertLog.log(msg, alert);
+    dev.alertLog(msg, alert);
 };
 /**@type {AfterItemStopUseOnHandler} */
 const onAfterItemStopUseOn = (event) => {
@@ -159,10 +161,10 @@ const onAfterItemStopUseOn = (event) => {
 
     const itemStack = event.itemStack;
     const eventType = 'afterItemStopUseOn';
-    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
+    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugItemObjectEvent(objType,eventType) && list.includes(itemStack.typeId));
 
     const msg = `§6§l${eventType}§r typeId=${event.itemStack.typeId} on block=${event.block.typeId}`;
-    dev.alertLog.log(msg, alert);
+    dev.alertLog(msg, alert);
 };
 /**@type {BeforeItemUseHandler} */
 const onBeforeItemUse = (event) => {
@@ -171,21 +173,19 @@ const onBeforeItemUse = (event) => {
 
     const itemStack = event.itemStack;
     const eventType = 'beforeItemUse';
-    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
+    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugItemObjectEvent(objType,eventType) && list.includes(itemStack.typeId));
 
     const msg = `§6§l${eventType}§r typeId=${event.itemStack.typeId}`;
-    dev.alertLog.log(msg, alert);
+    dev.alertLog(msg, alert);
 };
 //==============================================================================
 export function subscriptionsStable () {
-    const _name = 'subscriptionsStable';
-    const alert=dev.debugFunctions.subscriptionsStable
-    dev.alertFunction(_name, true,alert);
+    const _name='subscriptionsStable'
+    const tickStart=system.currentTick
+    dev.alertFunction(_name,true,dev.isDebugFunction(_name))    
 
-    //2 ways to do it.  Use register for bulk tho
-
-    systemSubs.beforeStartup.subscribe(onBeforeStartup,!!dev.debugSubscriptions.alertSystemSubs);
-    playerSubs.beforePlayerInteractWithBlock.subscribe(onBeforePlayerInteractWithBlock,!!dev.debugSubscriptions.alertPlayerSubs);
+    systemSubs.beforeStartup.subscribe(onBeforeStartup,dev.isDebugFunction('alertSystemSubs'));
+    playerSubs.beforePlayerInteractWithBlock.subscribe(onBeforePlayerInteractWithBlock,dev.isDebugFunction('alertPlayerSubs'));
 
     itemSubs.register({
         afterItemCompleteUse: onAfterItemCompleteUse,
@@ -195,12 +195,11 @@ export function subscriptionsStable () {
         afterItemStartUse: onAfterItemStartUse,
         afterItemStartUseOn: onAfterItemStartUseOn,
         beforeItemUse: onBeforeItemUse,
-    },!!dev.debugSubscriptions.alertItemSubs);
-
+    },dev.isDebugFunction('alertItemSubs'));    
 
     world.afterEvents.worldLoad.subscribe((event) => {
         pack.worldLoaded = true;
-        dev.alertSubscriptionSuccess(`world.afterEvents.worldLoad`,!!dev.debugSubscriptions.alertSystemSubs);
+        dev.alertSystemEventLog('afterWorldLoad',`§c§lThe world is loaded§r @ §bDelta Ticks:§r ${system.currentTick-tickStart}`);
     });    
 }
 //==============================================================================

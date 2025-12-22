@@ -16,24 +16,6 @@ Change Log:
 import { Player, World, ItemStack, world } from '@minecraft/server';
 import { Debugger } from './debuggerClass.js';
 //=============================================================================
-const ITEM_EVENTS = {
-    afterCompleteUse: false,
-    afterReleaseUse: false,
-    afterStartUse: false,
-    afterStartUseOn: false,
-    afterStopUse: false,
-    afterStopUseOnt: false,
-    afterUseOn: false,
-    use: { before: false, after: false },
-};
-const ITEM_CUSTOM_COMPONENTS = {
-    onBeforeDurabilityDamage: false,
-    onConsume: false,
-    onHitEntity: false,
-    onMineBlock: false,
-    onUse: false,
-    onUseOn: false
-};
 //=============================================================================
 // For Debugging
 /**
@@ -48,8 +30,24 @@ export class DebuggerItems extends Debugger {
        */
     constructor(pack_name, on = false) {
         super(pack_name, on);
-        Object.assign(this.events, ITEM_EVENTS);
-        Object.assign(this.customComponents, ITEM_CUSTOM_COMPONENTS);       
+        Object.assign(this.events, {
+            afterCompleteUse: false,
+            afterReleaseUse: false,
+            afterStartUse: false,
+            afterStartUseOn: false,
+            afterStopUse: false,
+            afterStopUseOnt: false,
+            afterUseOn: false,
+            use: { before: false, after: false },
+        });
+        Object.assign(this.customComponents, {
+            onBeforeDurabilityDamage: false,
+            onConsume: false,
+            onHitEntity: false,
+            onMineBlock: false,
+            onUse: false,
+            onUseOn: false
+        });
     }
     //--------------------------------------------------------------------------    
     /**

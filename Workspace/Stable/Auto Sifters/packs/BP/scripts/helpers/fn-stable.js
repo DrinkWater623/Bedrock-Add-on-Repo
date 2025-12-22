@@ -7,10 +7,10 @@ URL: https://github.com/DrinkWater623
 Last Update: 20241229 - reOrg and add License
 ========================================================================*/
 import { Block, BlockPermutation } from "@minecraft/server";
-import { chatLog} from "./settings.js";
-import { blocksDotJson } from "./common-data/blocks.json.js";
-import { fallThruBlocks } from "./common-data/globalConstantsLib.js";
-import { endsWithNumber, getLastWord, minusLastWord } from "./common-stable/tools/stringLib.js";
+import { chatLog} from "../settings.js";
+import { blocksDotJson } from "../common-data/blocks.json.js";
+import { fallThruBlocks } from "../common-data/globalConstantsLib.js";
+import { endsWithNumber, getLastWord, minusLastWord } from "../common-stable/tools/stringLib.js";
 import { GetBlockState, PlaceBlock } from "./common-stable/blockLib-stable.js";
 //==============================================================================
 /**

@@ -5,13 +5,13 @@
     },
     "$files": {
         "array": "materials",
-        "fileName": "{{name}}_x_sign.bp"
+        "fileName": "{{name}}_panel.bp"
     },
     "$template":{
         "format_version": "1.21.70",
         "minecraft:block": {
             "description": {
-                "identifier": "dw623:{{name}}_x_sign",
+                "identifier": "dw623:{{name}}_panel_13",
                 "menu_category": {"category":"items","group":"minecraft:itemGroup.name.lanterns"},
                 "traits": {
                     "minecraft:placement_position": {"enabled_states":["minecraft:block_face"]},
@@ -20,8 +20,8 @@
             },
             "components": {                
                 "tag:minecraft:is_item_tier_destructible":{},
-                "minecraft:display_name":"{{Title(Replace(name, '_', ' '))}} X Sign",
-                "minecraft:light_emission":12,
+                "minecraft:display_name":"{{Title(Replace(name, '_', ' '))}} Panel",
+                "minecraft:light_emission":10,
                 "minecraft:flammable": {
                     "destroy_chance_modifier": 20,
                     "catch_chance_modifier": 5
@@ -34,18 +34,9 @@
                         "ambient_occlusion": false
                     }
                 },                
-                "minecraft:geometry": {"identifier":"geometry.mini_blocks_x_sign"},  
-                // "minecraft:item_visual": {
-                //     "geometry":{"identifier": "geometry.mini_blocks_x_sign"},
-                //     "material_instances": {
-                //         "*":{
-                //             "texture":"{{texture}}",
-                //             "render_method": "alpha_test"
-                //         }
-                //     }
-                // },              
-                "minecraft:collision_box": {"origin": [-8,0,-8],"size": [16,5,16]},
-                "minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,5,16]}
+                "minecraft:geometry": {"identifier":"geometry.mini_panel_13"},                           
+                "minecraft:collision_box": {"origin": [-6.5, 0, -6.5],"size": [13,1,13]},
+                "minecraft:selection_box": {"origin": [-6.5, 0, -6.5],"size": [13,1,13]}
             },    
             "permutations": [
                 //========================================================================================================= 
@@ -55,7 +46,7 @@
                 {
                     "{{#horizontal}}":{
                         "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' ",
-                        "components": {"minecraft:transformation":{"rotation": "{{north}}"      }}
+                        "components": {"minecraft:transformation":{"rotation": "{{south}}"      }}
                     }                    
                 },
                 //walls

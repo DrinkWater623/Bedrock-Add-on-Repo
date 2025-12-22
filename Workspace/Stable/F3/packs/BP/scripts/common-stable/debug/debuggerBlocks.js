@@ -76,86 +76,33 @@ export class DebuggerBlocks extends Debugger {
     constructor(pack_name, on = false) {
         super(pack_name, on);
 
-        Object.assign(this.events, cloneMixedBooleanAfterBeforeFlagMap(BLOCK_EVENTS));
-        Object.assign(this.customComponents, BLOCK_COMPONENT_EVENTS);
-    }
-    //--------------------------------------------------------------------------
-    /**
-     * @param {BlockPermutation} permutation 
-     * @param {string} title 
-     * @param {boolean} alert
-     */
-    listBlockStates (permutation, title = "Block States:", alert = false) {
-        if (!(alert || this.debugOn)) return;
-
-        const states = permutation?.getAllStates();
-        if (!states) {
-            this.log("Zero Block States", true);
-            return;
-        }
-
-        this.listObjectInnards(states, title, true);
-    }
-    /**
-     * @param {Block} block      
-     * @param {string} title 
-     * @param {boolean} alert
-     */
-    blockInfo (block, title = "§eBlock Info:", alert = false) {
-        if (!(alert || this.debugOn)) return;
-
-        if (title) this.log(title, true);
-        this.log(`==> §aBlock typeId:§r ${block.typeId}`, true); //TODO: get display name from vanilla data
-        this.log(`==> §bBlock Location.:§r ${Vector3Lib.toString(block.location, 0, true, ',')}`, true);
-        this.log(`==> §bBlock Center :§r ${Vector3Lib.toString(block.center(), 1, true, ',')}`, true);
-        this.blockPermutationInfo(block.permutation, `${title} - Permutation`, true);
-
-        //FIXME:  is this needed...  test later to see the info in there
-        //const item = block.getItemStack()
-        //if (item) this.itemInfo(item,chatSend,`${title} - ItemStack`,true)
-    }
-    /**
-     * @param {Direction} blockFace 
-     * @param {Vector3} faceLocation
-     * @param {Player} player
-     * @param {number[]} [grids=[3]]  
-     * @param {boolean} [alert=false] 
-     */
-    blockFaceLocationInfo (blockFace, faceLocation, player, grids = [ 3 ], alert = false) {
-        if (!(alert || this.debugOn)) return;
-
-        const grid = new FaceLocationGrid(faceLocation, blockFace, player, false);
-        let msg = '§dFaceLocationGrid:';
-
-        msg += `\n==> faceLocation: ${Vector3Lib.toString(faceLocation, 1, true)}`;
-        for (let i = 2; i <= 16; i++) {
-            if (grids.includes(i)) {
-                const subGrid = grid.grid(i);
-                const touched = subGrid.x + (i * subGrid.y);
-                msg += `\n==> §bGrid-${i}:§r ${Vector2Lib.toString(subGrid, 0, true)} / §bTouch ptr:§r ${touched}`;
-            }
-        }
-        this.log(msg);
-    }
-    /**
-     * @param {BlockPermutation} permutation       
-     * @param {string} title 
-     * @param {boolean} alert
-     */
-    blockPermutationInfo (permutation, title = "§eBlock Permutation Info:", alert = false) {
-        if (!(alert || this.debugOn)) return;
-
-        const tags = permutation.getTags();
-        const states = permutation.getAllStates();
-        let msg = '';
-
-        if (!(tags.length || states.length)) return;
-
-        if (title) msg += title;
-        msg += `\n${title ? '==> ':''}§bBlock Permutation type.id:§r ${permutation.type.id}`;
-        if (tags.length) this.listArray(tags, "§b==> permutation.getTags():", true);
-        if (states.length) this.listObjectInnards(states, "§b==> permutation.getAllStates():", true);
-
-        this.log(msg);
-    }
+        Object.assign(this.events, {
+            afterBlockExplode: false,
+            afterButtonPush: false,
+            afterEntityHitBlock: false,
+            afterLeverAction: false,
+            afterPistonActivate: false,
+            playerBreakBlock: { before: false, after: false },
+            playerInteractWithBlock: { before: false, after: false },
+            playerPlaceBlock: { before: false, after: false },
+            afterPressurePlatePop: false,
+            afterPressurePlatePush: false,
+            afterTargetBlockHit: false,
+            afterTripWireTrip: false,
+        });
+        Object.assign(this.customComponents, {
+            onBlockBreak: false,
+            onEntityFallOn: false,
+            onPlace: false,
+            onPlayerBreak: false,
+            onPlayerInteract: false,
+            onPlayerPlaceBefore: false,
+            onRedstoneUpdate_beta: false,
+            onRandomTick: false,
+            onStepOff: false,
+            onStepOn: false,
+            onTick: false
+        });
+    }   
 }
+
