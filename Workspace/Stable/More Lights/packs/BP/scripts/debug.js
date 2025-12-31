@@ -51,7 +51,9 @@ const WATCHING_GAME_OBJECTS = {
         arrow: false,
         bar: false,
         mini_block: false,
-        mini_puck: false
+        mini_dot: false,
+        mini_puck: false,
+        panel_13: false
     }
 };
 /** @type {Boolean2DeepMap} */
@@ -93,6 +95,7 @@ const WATCHING_FUNCTIONS = {
     //Block stuff
     faceLocationGrid: false,
     verifyLastInteractInfoRelated: false,
+    bar_onPlace:true
 };
 //==============================================================================
 /*

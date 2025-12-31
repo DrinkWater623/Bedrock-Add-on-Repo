@@ -1,6 +1,0 @@
-{
-    "sqr": "(x) => x * x",
-    "grid": "(x,y) => max(1, floor(x / y))",
-    "gridSq": "(x,y) => sqr(grid(x,y))",
-    "numFacePositions": "(x,y) => gridSq(x,y)"
-}

@@ -1,6 +1,6 @@
 // AUTO-GENERATED — do not edit by hand
 // Folder: ../../Bedrock Add-on Repo/Workspace/Stable/F3/packs/BP/scripts/common-stable/gameObjects
-// Generated: 2025-12-31 08:15:04Z
+// Generated: 2025-12-31 19:38:08Z
 // @ts-check
 
 export { FaceLocationGrid, getHitEdgeName } from "./blockFace.js";

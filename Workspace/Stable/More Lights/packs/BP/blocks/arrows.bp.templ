@@ -18,7 +18,7 @@
         "fileName": "{{material_name}}_arrow.bp"
     },
     "$template":{
-        "format_version": "1.21.70",
+        "format_version": "{{block_format_version}}",
         "minecraft:block": {
             "description": {
                 "identifier": "dw623:{{material_name}}_arrow",
@@ -66,7 +66,7 @@
                 {
                     "{{#ceiling_floor}}":{
                         "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' && q.block_state('minecraft:cardinal_direction') == '{{playerFace}}'",
-                        "components": {"minecraft:transformation":{"rotation": "{{rotation}}"      }}
+                        "components": {"minecraft:transformation":{"rotation": "{{rotation}}","scale": [ 0.75, 1, 0.75 ]}}
                     }                    
                 },
                 //wall - point up and down
@@ -74,11 +74,11 @@
                     "{{#vertical_half}}":[
                         {
                             "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' && q.block_state('minecraft:cardinal_direction') == '{{opposite}}' && q.block_state('minecraft:vertical_half') == 'top'",
-                            "components": {"minecraft:transformation":{"rotation": "{{up}}"  }}
+                            "components": {"minecraft:transformation":{"rotation": "{{up}}","scale": [ 0.75, 1, 0.75 ]}}
                         },
                         {
                             "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' && q.block_state('minecraft:cardinal_direction') == '{{opposite}}' && q.block_state('minecraft:vertical_half') == 'bottom'",
-                            "components": {"minecraft:transformation":{"rotation": "{{down}}" }}
+                            "components": {"minecraft:transformation":{"rotation": "{{down}}","scale": [ 0.75, 1, 0.75 ]}}
                         }
                     ]
                 },
@@ -86,7 +86,7 @@
                 {
                     "{{#vertical_side}}":{
                         "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' && q.block_state('minecraft:cardinal_direction') == '{{playerFace}}'",
-                        "components": {"minecraft:transformation":{"rotation": "{{rotation}}"      }}
+                        "components": {"minecraft:transformation":{"rotation": "{{rotation}}","scale": [ 0.75, 1, 0.75 ]}}
                     }                    
                 }
             ]

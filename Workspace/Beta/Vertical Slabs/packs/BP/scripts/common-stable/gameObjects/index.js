@@ -1,6 +1,6 @@
 // AUTO-GENERATED — do not edit by hand
 // Folder: ../../Bedrock Add-on Repo/Workspace/Beta/Vertical Slabs/packs/BP/scripts/common-stable/gameObjects
-// Generated: 2025-12-31 08:15:04Z
+// Generated: 2025-12-31 19:38:08Z
 // @ts-check
 
 export { Blocks, blocksAround, blocksAround_locations, blocksAround_object, blocksAround_typeIds, closestAdjacentBlockTypeId, isBlockAdjacentToTypeId, isSameBlock, Permutations, PlaceBlock } from "./blockLib.js";

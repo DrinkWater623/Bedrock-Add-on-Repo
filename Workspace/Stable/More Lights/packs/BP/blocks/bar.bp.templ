@@ -1,78 +1,169 @@
-{    
-    "$scope":{
-		"up_down": "{{rotations_view_2.filter(x => x.id <= 1)}}",
-        "walls": "{{rotations_view_2.filter(x => x.type =='side')}}"
-    },
-    "$files": {
-        "array": "materials",
-        "fileName": "{{material_name}}_bar.bp"
-    },
-    "$template":{
-        "format_version": "1.21.70",
-        "minecraft:block": {
-            "description": {
-                "identifier": "dw623:{{material_name}}_bar",
-                "menu_category": {"category":"items","group":"minecraft:itemGroup.name.lanterns"},
-                "traits": {"minecraft:placement_position":{"enabled_states":["minecraft:block_face"]}},
-                "states": {"dw623:position_ptr":[5,0,1,2,3,4] }
+{
+  "$files": {
+    "array": "materials.map(m =>  {...custom_blocks.bar, texture:m.texture,material_name:m.material_name})", 
+      "fileName": "{{material_name}}_bar.bp"
+  },
+  "$template":{
+    "format_version": "{{block_format_version}}",
+    "minecraft:block": {
+      "description": {
+        "identifier": "dw623:{{material_name}}_bar",
+        "menu_category": { "category": "items", "group": "minecraft:itemGroup.name.lanterns" },        
+                "traits":{"minecraft:placement_position":{"enabled_states":["minecraft:block_face"]}},
+                "states": { "{{stateName}}": "{{ptrValues}}" }
+      },
+      "components": {
+        "minecraft:custom_components": ["{{customComponentName}}"],          
+        "tag:minecraft:is_item_tier_destructible":{},
+        "minecraft:display_name":"{{Title(Replace(material_name, '_', ' '))}} Bar",
+        "minecraft:light_emission": 10,
+        "minecraft:destructible_by_mining": {
+          "seconds_to_destroy": 3.75,
+          "item_specific_speeds": [
+            {
+              "item": {
+                "tags": "q.all_tags('minecraft:is_pickaxe', 'minecraft:wooden_tier')"
+              },
+              "destroy_speed": 0.57
             },
+            {
+              "item": {
+                "tags": "q.all_tags('minecraft:is_pickaxe', 'minecraft:stone_tier')"
+              },
+              "destroy_speed": 0.3
+            },
+            {
+              "item": {
+                "tags": "q.all_tags('minecraft:is_pickaxe', 'minecraft:iron_tier')"
+              },
+              "destroy_speed": 0.2
+            },
+            {
+              "item": {
+                "tags": "q.all_tags('minecraft:is_pickaxe', 'minecraft:golden_tier')"
+              },
+              "destroy_speed": 0.1
+            },
+            {
+              "item": {
+                "tags": "q.all_tags('minecraft:is_pickaxe', 'minecraft:diamond_tier')"
+              },
+              "destroy_speed": 0.15
+            },
+            {
+              "item": {
+                "tags": "q.all_tags('minecraft:is_pickaxe', 'minecraft:netherite_tier')"
+              },
+              "destroy_speed": 0.13
+            }
+          ]
+        },
+        "minecraft:destructible_by_explosion": {"explosion_resistance":0},                                           
+        "minecraft:material_instances": {
+            "*":{
+                "texture":"{{texture}}",
+                "render_method": "alpha_test",
+                "face_dimming": false,
+                "ambient_occlusion": false
+            }
+        }, 
+        // trying minecraft's built-in scaling + translation - had to make a 16x16x16 full block geo for this
+        "minecraft:geometry": {"identifier":"geometry.full_block"},                            
+        "minecraft:collision_box": true,
+        "minecraft:selection_box": true
+      },
+      "permutations": [
+        //===========================================================
+        // POSITION + FACE (single transformation block; not mergeable)
+        //===========================================================
+        { "{{#light_bar_positions}}":[
+          {
+            "condition": "query.block_state('minecraft:block_face') == 'down' && query.block_state('{{stateName}}') == {{grid}}",
             "components": {
-                "minecraft:custom_components": ["dw623:on_place_bar"],
-                "tag:minecraft:is_item_tier_destructible":{},
-                "minecraft:display_name":"{{Title(Replace(material_name, '_', ' '))}} Bar",
-                "minecraft:light_emission":7,
-                "minecraft:flammable": {
-                    "destroy_chance_modifier": 20,
-                    "catch_chance_modifier": 5
-                },                                            
-                "minecraft:material_instances": {
-                    "*":{
-                        "texture":"{{texture}}",
-                        "render_method": "alpha_test",
-                        "face_dimming": false,
-                        "ambient_occlusion": false
-                    }
-                },                
-                "minecraft:geometry": {"identifier":"geometry.mini_bar_center_ew"},  
-                // "minecraft:item_visual": {
-                //     "geometry":{"identifier": "geometry.mini_bar_center_ns"},
-                //     "material_instances": {
-                //         "*":{
-                //             "texture":"{{texture}}",
-                //             "render_method": "alpha_test"
-                //         }
-                //     }
-                // },              
-                "minecraft:collision_box": {"origin": [-8,0,-8],"size": [16,5,16]},
-                "minecraft:selection_box": {"origin": [-8,0,-8],"size": [16,5,16]}
-            },    
-            "permutations": [
-                //========================================================================================================= 
-                // Rotations AND Geo
-                //=========================================================================================================                          
-                {
-                    "{{#light_bar_positions}}":{
-                        "condition": "query.block_state('dw623:position_ptr') == {{grid}} ",
-                        "components": {
-                            "minecraft:geometry":{"identifier":"geometry.mini_bar_{{geo_sfx}}"},
-                            "minecraft:collision_box": {"origin": "{{origin}}","size": "{{size}}"},
-                            "minecraft:selection_box": {"origin": "{{origin}}","size": "{{size}}"}
-                        }                          
-                    }
-                },
-                {                    
-                    "{{#up_down}}":{
-                        "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}' ",
-                        "components": {"minecraft:transformation":{"rotation":"{{south}}" }}                                 
-                    }
-                },
-                {
-                    "{{#walls}}":{
-                        "condition": "query.block_state('minecraft:block_face') == '{{blockFace}}'",
-                        "components": {"minecraft:transformation":{"rotation": "{{up}}" }}                                 
-                    }                  
-                }                
-            ]
-        }
+              "minecraft:transformation": {
+                "rotation": "{{block_rotations.down}}",
+                "scale": [ "{{scaleX}}", "{{scaleY}}", "{{scaleZ}}" ],
+                "translation": [
+                  "{{=uPx / safeDiv}}",
+                  "{{=flushOffset}}",
+                  "{{=vPx / safeDiv}}"
+                ]
+              }//,              "minecraft:collision_box": { "origin": "{{origin}}", "size": "{{size}}" },              "minecraft:selection_box": { "origin": "{{origin}}", "size": "{{size}}" }
+            }
+          },       
+          {
+            "condition": "query.block_state('minecraft:block_face') == 'up' && query.block_state('{{stateName}}') == {{grid}}",
+            "components": {
+              "minecraft:transformation": {
+                "rotation": "{{block_rotations.up}}",
+                "scale": [ "{{scaleX}}", "{{scaleY}}", "{{scaleZ}}" ],
+                "translation": [
+                  "{{=-(uPx / safeDiv)}}",
+                  "{{=-(flushOffset)}}",
+                  "{{=vPx / safeDiv}}"
+                ]
+              }//,              "minecraft:collision_box": { "origin": "{{origin}}", "size": "{{size}}" },              "minecraft:selection_box": { "origin": "{{origin}}", "size": "{{size}}" }
+            }
+          },
+          {
+            "condition": "query.block_state('minecraft:block_face') == 'south' && query.block_state('{{stateName}}') == {{grid}}",
+            "components": {
+              "minecraft:transformation": {
+                "rotation": "{{block_rotations.south}}",
+                "scale": [ "{{scaleX}}", "{{scaleY}}", "{{scaleZ}}" ],
+                "translation": [
+                  "{{=uPx / safeDiv}}",
+                  "{{=vPx / safeDiv}}",
+                  "{{=-(flushOffset)}}"
+                ]
+              }//,              "minecraft:collision_box": { "origin": "{{origin}}", "size": "{{size}}" },              "minecraft:selection_box": { "origin": "{{origin}}", "size": "{{size}}" }
+            }
+          },
+          {
+            "condition": "query.block_state('minecraft:block_face') == 'north' && query.block_state('{{stateName}}') == {{grid}}",
+            "components": {
+              "minecraft:transformation": {
+                "rotation": "{{block_rotations.north}}",
+                "scale": [ "{{scaleX}}", "{{scaleY}}", "{{scaleZ}}" ],
+                "translation": [
+                  "{{=-(uPx / safeDiv)}}",
+                  "{{=vPx / safeDiv}}",
+                  "{{=flushOffset}}"
+                ]
+              } //,              "minecraft:collision_box": { "origin": "{{origin}}", "size": "{{size}}" },              "minecraft:selection_box": { "origin": "{{origin}}", "size": "{{size}}" }
+            }
+          },
+          {
+            "condition": "query.block_state('minecraft:block_face') == 'west' && query.block_state('{{stateName}}') == {{grid}}",
+            "components": {
+              "minecraft:transformation": {
+                "rotation": "{{block_rotations.west}}",
+                "scale": [ "{{scaleX}}", "{{scaleY}}", "{{scaleZ}}" ],
+                "translation": [
+                  "{{=flushOffset}}",
+                  "{{=vPx / safeDiv}}",
+                  "{{=uPx / safeDiv}}"
+                ]
+              } //,              "minecraft:collision_box": { "origin": "{{origin}}", "size": "{{size}}" },              "minecraft:selection_box": { "origin": "{{origin}}", "size": "{{size}}" }
+            }
+          },
+          {
+            "condition": "query.block_state('minecraft:block_face') == 'east' && query.block_state('{{stateName}}') == {{grid}}",
+            "components": {
+              "minecraft:transformation": {
+                "rotation": "{{block_rotations.east}}",
+                "scale": [ "{{scaleX}}", "{{scaleY}}", "{{scaleZ}}" ],
+                "translation": [
+                  "{{=-(flushOffset)}}",
+                  "{{=vPx / safeDiv}}",
+                  "{{=-(uPx / safeDiv)}}"
+                ]
+              } //,              "minecraft:collision_box": { "origin": "{{origin}}", "size": "{{size}}" },              "minecraft:selection_box": { "origin": "{{origin}}", "size": "{{size}}" }
+            }
+          }
+        ]}
+      ]
     }
+  }
 }
+

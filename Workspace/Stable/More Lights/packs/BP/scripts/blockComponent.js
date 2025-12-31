@@ -39,7 +39,7 @@ export function arrow_onPlace (event) {
 
     const eventType = 'onPlace';
     const objectType = 'arrow';
-    const blockStateName='dw623:position_ptr'
+    const blockStateName='minecraft:cardinal_direction'
     const soundId = watchFor.soundProfiles.get(event.block.typeId) ?? defaultSoundId;
     const debugOn = dev.isDebugBlockObjectEvent(objectType, eventType);
 
@@ -58,7 +58,7 @@ export function bar_onPlace (event) {
 
     const eventType = 'onPlace';
     const objectType = 'bar';
-    const blockStateName='minecraft:cardinal_direction'
+    const blockStateName='dw623:position_ptr'
     const soundId = watchFor.soundProfiles.get(event.block.typeId) ?? defaultSoundId;
     const debugOn = dev.isDebugBlockObjectEvent(objectType, eventType);
 

@@ -1,4 +1,5 @@
 {
+	"block_format_version":"1.21.70",
 	"materials": [
 		{"texture":"sea_lantern"				,"material_name":"sea_lantern"				,"sound":"glass"		,"isotropic":true 	},
 		{"texture":"verdant_froglight_side"		,"material_name":"verdant_froglight"		,"sound":"froglight"	,"isotropic":true 	},

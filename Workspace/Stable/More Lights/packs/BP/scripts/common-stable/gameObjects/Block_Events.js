@@ -290,21 +290,46 @@ export class Block_Events {
         const grid = new FaceLocationGrid(touchedBlockFaceLocation, touchedBlockFace, touchedBlockLocation, false);
 
         //where it is different - starts here
-        if (debugOn) { debugMsg += grid.blockFaceLocationInfo_show([ 3, 4, 5, 6, 7, 8 ], true); }
-        //const grid3 = grid.grid(3);
+        if (debugOn) { debugMsg += grid.blockFaceLocationInfo_show([ 2, 3, 4 ], true) ?? ''; }
 
-        const newBlockState = this.bar_gridPositionPtr_get(grid);
-        //@ts-ignore
-        const currentBlockStateValue = event.permutationToPlace.getState(blockStateName);
-        if (!currentBlockStateValue) return false;
-
-        //if no rotation needed
-        if (newBlockState === currentBlockStateValue) {
-            debugMsg += `\n\n§6No new permutation needed:§b Grid Ptr = §r${newBlockState} `;
+        //if no rotation needed 1
+        if ([ 'Up', "Down" ].includes(touchedBlockFace)) {
+            debugMsg += `\n\n§6No new permutation needed based on`;
+            debugMsg += `\n§bUp/Down:§r ${[ 'Up', "Down" ].includes(touchedBlockFace)}`;
             this.dev.alertLog(debugMsg, debugOn);
             return false;
         }
 
+        //@ts-ignore
+        const currentBlockStateValue = event.permutationToPlace.getState(blockStateName);
+        if (!currentBlockStateValue) return false;
+
+        const newBlockState = grid.getEdgeName(3);
+
+        //if no rotation needed 2
+        if (newBlockState === currentBlockStateValue) {
+            debugMsg += `\n\n§6No new permutation needed - Same as default permutation `;
+            this.dev.alertLog(debugMsg, debugOn);
+            return false;
+        }
+        //if no rotation needed 3
+        if (![ 'north', 'south', 'east', 'west' ].includes(newBlockState)) {
+            debugMsg += `\n\n§6No new permutation needed based on`;
+            debugMsg += `\n§bUp/Down:§r ${[ 'Up', "Down" ].includes(touchedBlockFace)}`;
+            debugMsg += `\n§b![ 'north', 'south', 'east', 'west' ].includes(${newBlockState}):§r ${![ 'north', 'south', 'east', 'west' ].includes(newBlockState)}`;
+            this.dev.alertLog(debugMsg, debugOn);
+            return false;
+        }
+
+        //if no rotation needed 4
+        const grid3 = grid.grid(3);
+        if (grid3.x == 1 || grid3.y !== 1) {
+            debugMsg += `\n\n§6No new permutation needed based on: §bx == 1:§r ${grid3.x == 1} and/or §by != 1:§r ${grid3.y !== 1}`;
+            this.dev.alertLog(debugMsg, debugOn);
+            return false;
+        }
+
+        //update permutation 
         this.newBlockPermutation_setBlock(newBlock, old_permutation, blockStateName, newBlockState, { soundId, debugOn, debugMsg });
         return true;
     }
@@ -348,48 +373,24 @@ export class Block_Events {
         const grid = new FaceLocationGrid(touchedBlockFaceLocation, touchedBlockFace, touchedBlockLocation, false);
 
         //where it is different - starts here
-        if (debugOn) { debugMsg += grid.blockFaceLocationInfo_show([ 2, 3, 4 ], true) ?? ''; }
+        if (debugOn) { debugMsg += grid.blockFaceLocationInfo_show([ 3, 4, 5, 6, 7, 8 ], true); }
+        //const grid3 = grid.grid(3);
 
+        const newBlockState = this.bar_gridPositionPtr_get(grid);
         //@ts-ignore
         const currentBlockStateValue = event.permutationToPlace.getState(blockStateName);
         if (!currentBlockStateValue) return false;
 
-        //if no rotation needed 1
-        if ([ 'Up', "Down" ].includes(touchedBlockFace)) {
-            debugMsg += `\n\n§6No new permutation needed based on`;
-            debugMsg += `\n§bUp/Down:§r ${[ 'Up', "Down" ].includes(touchedBlockFace)}`;
-            this.dev.alertLog(debugMsg, debugOn);
-            return false;
-        }
-
-        const newBlockState = grid.getEdgeName(3);
-        //if no rotation needed 2
+        //if no rotation needed
         if (newBlockState === currentBlockStateValue) {
-            debugMsg += `\n\n§6No new permutation needed - Same as default permutation `;
-            this.dev.alertLog(debugMsg, debugOn);
-            return false;
-        }
-        //if no rotation needed 3
-        if (![ 'north', 'south', 'east', 'west' ].includes(newBlockState)) {
-            debugMsg += `\n\n§6No new permutation needed based on`;
-            debugMsg += `\n§bUp/Down:§r ${[ 'Up', "Down" ].includes(touchedBlockFace)}`;
-            debugMsg += `\n§b![ 'north', 'south', 'east', 'west' ].includes(${newBlockState}):§r ${![ 'north', 'south', 'east', 'west' ].includes(newBlockState)}`;
+            debugMsg += `\n\n§6No new permutation needed:§b Grid Ptr = §r${newBlockState} `;
             this.dev.alertLog(debugMsg, debugOn);
             return false;
         }
 
-        //if no rotation needed 4
-        const grid3 = grid.grid(3);
-        if (grid3.x == 1 || grid3.y !== 1) {
-            debugMsg += `\n\n§6No new permutation needed based on: §bx == 1:§r ${grid3.x == 1} and/or §by != 1:§r ${grid3.y !== 1}`;
-            this.dev.alertLog(debugMsg, debugOn);
-            return false;
-        }
-
-        //update permutation 
         this.newBlockPermutation_setBlock(newBlock, old_permutation, blockStateName, newBlockState, { soundId, debugOn, debugMsg });
         return true;
-    }
+    }    
     /**
     * a Mini Block is a 1/27th piece of a block.  all 9 geo positions must be used in your block file
     * Changes cardinal rotation when player touches left/right edge center of block so that above rotation works in block file

@@ -1,6 +1,6 @@
 // AUTO-GENERATED — do not edit by hand
 // Folder: ../../Bedrock Add-on Repo/Workspace/Stable/More Lights/packs/BP/scripts/common-data
-// Generated: 2025-12-31 08:15:04Z
+// Generated: 2025-12-31 19:38:08Z
 // @ts-check
 
 export { airBlock, fallThruBlocks, gravityBlocks, lavaBlock, lavaBlocks, leafBlocks, logBlocks, plankBlocks, saplingBlocks, stairBlocks, tallNatureBlocks, vanillaBlocks, waterBlock, waterBlocks, woodBlocks, woodTypes } from "./block-data.js";

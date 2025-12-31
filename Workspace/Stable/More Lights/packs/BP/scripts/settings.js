@@ -25,7 +25,7 @@ export const pack = {
     isBeta: false,
     worldLoaded: false,
     namespace: "dw623",
-    cmdNameSpace: "lights",
+    cmdNameSpace: "more_lights",
     isLoadAlertsOn: true,
 
     debugOn: false //Do Not change by code... the MASTER SWITCH to start world with/without debugging enabled
@@ -56,16 +56,7 @@ export const watchFor = {
     typeIdStrip (typeId) {
         return;
     },
-    //For onPlace custom components.  Some blocks do not need this, so not listed
-   /* arrowBlocks () {
-        return this.aBlockList('arrow');
-    },
-    barBlocks () {
-        return this.aBlockList('bar');
-    },
-    mini_blocks () {
-        return this.aBlockList('mini_block');
-    },*/
+    //For onPlace custom components.  Some blocks do not need this, so not listed   
     blocksTypeList(){return ['arrow','bar','mini_block','mini_dot','mini_puck'];},
     
     /**@param {string} name */
