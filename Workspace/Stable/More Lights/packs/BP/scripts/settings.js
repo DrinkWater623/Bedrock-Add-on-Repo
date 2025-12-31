@@ -28,7 +28,7 @@ export const pack = {
     cmdNameSpace: "lights",
     isLoadAlertsOn: true,
 
-    debugOn: true //Do Not change by code... the MASTER SWITCH to start world with/without debugging enabled
+    debugOn: false //Do Not change by code... the MASTER SWITCH to start world with/without debugging enabled
 };
 //==============================================================================
 export const packDisplayName = `§f${pack.packName}§r`;

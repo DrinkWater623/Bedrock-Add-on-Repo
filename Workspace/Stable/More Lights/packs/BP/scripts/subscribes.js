@@ -66,10 +66,10 @@ const onBeforeStartup = (event) => {
     event.blockComponentRegistry.registerCustomComponent(
         'dw623:on_place_mini_block', { beforeOnPlayerPlace: e => { mini_block_onPlace(e); } }
     );
-//
-//    event.blockComponentRegistry.registerCustomComponent(
-//        'dw623:on_place_mini_dot', { beforeOnPlayerPlace: e => { mini_dot_onPlace(e); } }
-//    );
+
+    event.blockComponentRegistry.registerCustomComponent(
+        'dw623:on_place_mini_dot', { beforeOnPlayerPlace: e => { mini_dot_onPlace(e); } }
+    );
 };
 //==============================================================================
 /**

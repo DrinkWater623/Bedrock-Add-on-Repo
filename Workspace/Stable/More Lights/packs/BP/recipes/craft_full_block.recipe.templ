@@ -1,0 +1,33 @@
+{
+    "$files": {
+        "array": "materials",
+        "fileName": "craft_{{material_name}}_from_bar"
+    },
+    "$template": {
+        "format_version": "1.20.10",
+        "minecraft:recipe_shaped": {
+            "description": {
+                "identifier": "dw623:craft_{{material_name}}_from_bar"
+            },
+            "tags":["crafting_table"],
+            "pattern": [
+                "###",
+                "###",
+                "###"
+            ],
+            "key": {"#":{"item":"dw623:{{material_name}}_bar"}},
+            "priority": 0,
+            "result": {
+                "count": 1,
+                "data": 0,
+                "item": "minecraft:{{material_name}}"
+            },
+            "unlock": [
+                {
+                    "data": 0,
+                    "item": "dw623:{{material_name}}_bar"
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "$files": {
+        "array": "materials",
+        "fileName": "cut_{{material_name}}_mini_dot.recipe"
+    },
+    "$template":{
+        "format_version": "1.20.10",
+        "minecraft:recipe_shapeless": {
+            "description": {
+                "identifier": "dw623:cut_{{material_name}}_mini_dot"
+            },
+            "tags": ["stonecutter"],
+            "ingredients": [
+                {"data":0,"item":"dw623:{{material_name}}_panel_13"}
+            ],
+            "priority": 0,
+            "result": {
+                "count": 18,
+                "data": 0,
+                "item": "dw623:{{material_name}}_mini_dot"
+            },
+            "unlock": [
+                {"data":0,"item":"dw623:{{material_name}}_panel_13"}
+            ]
+        }
+    }
+}

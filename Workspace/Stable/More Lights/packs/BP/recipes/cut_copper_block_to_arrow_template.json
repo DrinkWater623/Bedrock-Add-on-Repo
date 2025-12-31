@@ -1,0 +1,20 @@
+{
+    "format_version": "1.20.10",
+    "minecraft:recipe_shapeless": {
+        "description": {
+            "identifier": "dw623:cut_copper_block_to_arrow_template"
+        },
+        "tags": ["stonecutter"],
+        "ingredients": [
+            {"data":0,"item":"minecraft:copper_block"},
+            {"data":0,"item":"minecraft:arrow"}
+        ],
+        "priority": 9,
+        "result": {
+            "count": 16,
+            "data": 0,
+            "item": "dw623:light_arrow_template"
+        },
+        "unlock": [{"data":0,"item":"minecraft:copper_block"}]
+    }
+}

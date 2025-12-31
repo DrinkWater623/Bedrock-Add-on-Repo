@@ -7,29 +7,5 @@
 		{"grid":3 ,"geo_sfx":"north_ew" 	,"origin": [-8, 0, -8],		"size": [16, 5, 5]},
 		{"grid":4 ,"geo_sfx":"center_ew" 	,"origin": [-8, 0, -2.5],	"size": [16, 5, 5]},
 		{"grid":5 ,"geo_sfx":"center_ns"  	,"origin": [-2.5, 0, -8],	"size": [5, 5, 16]}
-	],
-	// up face is static, so this matches their 0-8 configuration
-	"mini_block_position_center":[
-		{"grid":4 ,"geo_sfx":"center" 	,"origin": [-2.5, 0, -2.5]	}
-	],
-	"mini_block_positions_Up_down":[
-		{"grid":0 ,"geo_sfx":"nw"  		,"origin": [3, 0, -8]		},
-		{"grid":1 ,"geo_sfx":"n" 		,"origin": [-2.5, 0, -8]	},
-		{"grid":2 ,"geo_sfx":"ne" 		,"origin": [-8, 0, -8]		},
-		{"grid":3 ,"geo_sfx":"w"   		,"origin": [3, 0, -2.5]		},		
-		{"grid":5 ,"geo_sfx":"e"   		,"origin": [-8, 0, -2.5]	},
-		{"grid":6 ,"geo_sfx":"sw"   	,"origin": [3, 0, 3]		},
-		{"grid":7 ,"geo_sfx":"s"  	 	,"origin": [-2.5, 0, 3]		},
-		{"grid":8 ,"geo_sfx":"se"  		,"origin": [-8, 0, 3]		}
-	],
-	"mini_block_positions_walls":[
-		{"grid":8 ,"geo_sfx":"nw"  		,"origin": [3, 0, -8]		},
-		{"grid":7 ,"geo_sfx":"n" 		,"origin": [-2.5, 0, -8]	},
-		{"grid":6 ,"geo_sfx":"ne" 		,"origin": [-8, 0, -8]		},
-		{"grid":5 ,"geo_sfx":"w"   		,"origin": [3, 0, -2.5]		},		
-		{"grid":3 ,"geo_sfx":"e"   		,"origin": [-8, 0, -2.5]	},
-		{"grid":2 ,"geo_sfx":"sw"   	,"origin": [3, 0, 3]		},
-		{"grid":1 ,"geo_sfx":"s"  	 	,"origin": [-2.5, 0, 3]		},
-		{"grid":0 ,"geo_sfx":"se"  		,"origin": [-8, 0, 3]		}
 	]	
 }

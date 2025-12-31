@@ -107,7 +107,7 @@ export function mini_puck_onPlace (event) {
  * @param {BlockComponentPlayerPlaceBeforeEvent} event 
  */
 export function mini_dot_onPlace (event) {
-    mini_square_onPlace(event,'mini_dot',8);
+    mini_square_onPlace(event,'mini_dot',4);
 }   
 //==============================================================================
 // End of File

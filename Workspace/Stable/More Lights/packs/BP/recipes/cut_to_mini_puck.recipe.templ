@@ -1,0 +1,23 @@
+{
+    "$files": {
+        "array": "materials",
+        "fileName": "cut_{{material_name}}_mini_puck.recipe"
+    },
+    "$template":{
+        "format_version": "1.20.10",
+        "minecraft:recipe_shapeless": {
+            "description": {
+                "identifier": "dw623:cut_{{material_name}}_mini_puck"
+            },
+            "tags": ["stonecutter"],
+            "ingredients": [{"data":0,"item":"minecraft:{{material_name}}"}],
+            "priority": 0,
+            "result": {
+                "count": 32,
+                "data": 0,
+                "item": "dw623:{{material_name}}_mini_puck"
+            },
+            "unlock":  [{"data":0,"item":"minecraft:{{material_name}}"}]
+        }
+    }
+}
