@@ -1,41 +1,41 @@
 {
    "$scope": {
-      "sounds": "{{materials}}"
+      "sounds": "{{materials}}",
+      //"blocks": "{{blocksTypeList.filter(bt=> bt=='mini_block' )}}"
+      "blocks": "{{blocksTypeList.filter(bt=> bt!='arrow' )}}"
    },
    "$template": {
       "format_version": "1.21.40",
       "{{#sounds}}": {
-         "dw623:{{name}}_arrow": {
+         "dw623:{{material_name}}_arrow": {
             "sound": "{{sound}}",
             "isotropic": {
                "down": true,
                "up": true
             }
          },
-         "dw623:{{name}}_bar": {
-            "sound": "{{sound}}",
-            "isotropic": true
-         },
-         // "dw623:{{name}}_corners": {
-         //    "sound": "{{sound}}",
-         //    "isotropic": true
-         // },
-         // "dw623:{{name}}_cross": {
-         //    "sound": "{{sound}}",
-         //    "isotropic": true
-         // },
-         // "dw623:{{name}}_donut": {
-         //    "sound": "{{sound}}",
-         //    "isotropic": true
-         // },
-         "dw623:{{name}}_mini_block": {
-            "sound": "{{sound}}",
-            "isotropic": true
-         },
-         "dw623:{{name}}_panel_13": {
-            "sound": "{{sound}}",
-            "isotropic": true
+         "{{#blocks}}": {
+            "dw623:{{material_name}}_{{value}}": {
+               "sound": "{{sound}}",
+               "isotropic": true
+            }
          }
+         // "dw623:{{material_name}}_mini_puck": {
+         //    "sound": "{{sound}}",
+         //    "isotropic": true
+         // },
+         // "dw623:{{material_name}}_mini_dot": {
+         //    "sound": "{{sound}}",
+         //    "isotropic": true
+         // },
+         // "dw623:{{material_name}}_mini_block": {
+         //    "sound": "{{sound}}",
+         //    "isotropic": true
+         // },
+         // "dw623:{{material_name}}_panel_13": {
+         //    "sound": "{{sound}}",
+         //    "isotropic": true
+         // }
       }
    }
 }

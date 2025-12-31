@@ -1,0 +1,26 @@
+{
+	"materials": [
+		//{"texture":"sea_lantern"				,"material_name":"sea_lantern"				,"sound":"glass"		,"isotropic":true 	},
+		//{"texture":"verdant_froglight_side"		,"material_name":"verdant_froglight"		,"sound":"froglight"	,"isotropic":true 	},
+		//{"texture":"ochre_froglight_side"		,"material_name":"ochre_froglight"			,"sound":"froglight"	,"isotropic":true 	},
+		//{"texture":"pearlescent_froglight_side"	,"material_name":"pearlescent_froglight"	,"sound":"froglight"	,"isotropic":true 	},
+		//{"texture":"shroomlight"				,"material_name":"shroomlight"				,"sound":"shroomlight"	,"isotropic":true 	},
+		{"texture":"glowstone"					,"material_name":"glowstone"				,"sound":"glass"		,"isotropic":true 	}
+	],
+	"blocksTypeList": [
+		"bar",
+		"mini_block",
+		//"mini_dot",
+		"mini_puck",
+		"panel_13",
+		"arrow"
+	]
+	,"block_rotations": {
+		"down": [0, 0, 180],
+		"up": [0, 0, 0],
+		"south": [90, 0, 0],
+		"north": [90, 180, 0],
+		"west": [0, -90, 90],
+		"east": [0, 90, -90]
+	}
+}

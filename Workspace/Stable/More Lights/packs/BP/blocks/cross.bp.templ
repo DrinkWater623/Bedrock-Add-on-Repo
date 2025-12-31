@@ -5,13 +5,13 @@
     },
     "$files": {
         "array": "materials",
-        "fileName": "{{name}}_cross.bp"
+        "fileName": "{{material_name}}_cross.bp"
     },
     "$template":{
         "format_version": "1.21.70",
         "minecraft:block": {
             "description": {
-                "identifier": "dw623:{{name}}_cross",
+                "identifier": "dw623:{{material_name}}_cross",
                 "menu_category": {"category":"items","group":"minecraft:itemGroup.name.lanterns"},
                 "traits": {
                     "minecraft:placement_position": {"enabled_states":["minecraft:block_face"]},
@@ -20,7 +20,7 @@
             },
             "components": {                
                 "tag:minecraft:is_item_tier_destructible":{},
-                "minecraft:display_name":"{{Title(Replace(name, '_', ' '))}} Cross",
+                "minecraft:display_name":"{{Title(Replace(material_name, '_', ' '))}} Cross",
                 "minecraft:light_emission":12,
                 "minecraft:flammable": {
                     "destroy_chance_modifier": 20,

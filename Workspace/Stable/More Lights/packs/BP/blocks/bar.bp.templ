@@ -5,13 +5,13 @@
     },
     "$files": {
         "array": "materials",
-        "fileName": "{{name}}_bar.bp"
+        "fileName": "{{material_name}}_bar.bp"
     },
     "$template":{
         "format_version": "1.21.70",
         "minecraft:block": {
             "description": {
-                "identifier": "dw623:{{name}}_bar",
+                "identifier": "dw623:{{material_name}}_bar",
                 "menu_category": {"category":"items","group":"minecraft:itemGroup.name.lanterns"},
                 "traits": {"minecraft:placement_position":{"enabled_states":["minecraft:block_face"]}},
                 "states": {"dw623:position_ptr":[5,0,1,2,3,4] }
@@ -19,7 +19,7 @@
             "components": {
                 "minecraft:custom_components": ["dw623:on_place_bar"],
                 "tag:minecraft:is_item_tier_destructible":{},
-                "minecraft:display_name":"{{Title(Replace(name, '_', ' '))}} Bar",
+                "minecraft:display_name":"{{Title(Replace(material_name, '_', ' '))}} Bar",
                 "minecraft:light_emission":7,
                 "minecraft:flammable": {
                     "destroy_chance_modifier": 20,

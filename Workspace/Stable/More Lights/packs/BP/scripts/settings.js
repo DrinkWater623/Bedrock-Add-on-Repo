@@ -28,7 +28,7 @@ export const pack = {
     cmdNameSpace: "lights",
     isLoadAlertsOn: true,
 
-    debugOn: false //Do Not change by code... the MASTER SWITCH to start world with/without debugging enabled
+    debugOn: true //Do Not change by code... the MASTER SWITCH to start world with/without debugging enabled
 };
 //==============================================================================
 export const packDisplayName = `§f${pack.packName}§r`;
@@ -48,39 +48,52 @@ export const watchFor = {
         "pearlescent_froglight",
         "shroomlight"
     ],
-
-    arrowBlocks () {
-        return this.materialList.map(m => pack.namespace + ':' + m + '_arrow');
+    soundProfiles: new Map(),
+    /**
+     * 
+     * @param {string} typeId 
+     */
+    typeIdStrip (typeId) {
+        return;
+    },
+    //For onPlace custom components.  Some blocks do not need this, so not listed
+   /* arrowBlocks () {
+        return this.aBlockList('arrow');
     },
     barBlocks () {
-        return this.materialList.map(m => pack.namespace + ':' + m + '_bar');
+        return this.aBlockList('bar');
     },
-    miniBlocks () {
-        return this.materialList.map(m => pack.namespace + ':' + m + '_mini_block');
+    mini_blocks () {
+        return this.aBlockList('mini_block');
+    },*/
+    blocksTypeList(){return ['arrow','bar','mini_block','mini_dot','mini_puck'];},
+    
+    /**@param {string} name */
+    aBlockList (name) {
+        return this.materialList.map(m => pack.namespace + ':' + m + `_${name}`);
     },
-
-     /** @returns {Array<[string, string[]]>} */
-    blockGroups () {
-        return [
-            [ "arrow", this.arrowBlocks() ],
-            [ "bar", this.barBlocks() ],
-            [ "mini_block", this.miniBlocks() ]
-        ];
+    
+    /** @returns {Array<[string, string[]]>} */
+    onPlaceBlockGroups () {
+        return this.blocksTypeList().map(blockType => [blockType, this.aBlockList(blockType)]);
     },
 
     /**@returns{string[]} */
-    onPlaceBlockList () {
-        return [
-            ...this.arrowBlocks(),
-            ...this.barBlocks(),
-            ...this.miniBlocks()
-        ];
+    _onPlaceBlockList () {
+        return this.blocksTypeList().flatMap(blockType => this.aBlockList(blockType));
     },
+    /**@type {string[]} */
+    onPlaceBlockList:[],
 
     customItemList: [
         "dw623:light_arrow_template"
     ]
 };
+watchFor.onPlaceBlockList=[...watchFor._onPlaceBlockList()]
+watchFor.onPlaceBlockList.filter(v => v.includes('glowstone')).forEach((v) => { watchFor.soundProfiles.set(v, 'dig,stone'); });
+watchFor.onPlaceBlockList.filter(v => v.includes('sea_lantern')).forEach((v) => { watchFor.soundProfiles.set(v, 'dig,stone'); });
+watchFor.onPlaceBlockList.filter(v => v.includes('shroomlight')).forEach((v) => { watchFor.soundProfiles.set(v, 'dig,shroomlight'); });
+watchFor.onPlaceBlockList.filter(v => v.includes('_froglight')).forEach((v) => { watchFor.soundProfiles.set(v, 'break.froglight'); });
 //==============================================================================
 // End of File
 //==============================================================================

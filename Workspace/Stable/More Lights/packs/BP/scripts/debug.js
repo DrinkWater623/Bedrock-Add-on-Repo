@@ -38,16 +38,20 @@ import { Dev } from './common-stable/debug/index.js';
 const WATCHING_GAME_OBJECTS = {
     //Can be block, item or entity - be mindful of the naming convention so that everything flows
     block: {
-        arrow: true,
-        bar: true,
-        mini_block: true
+        arrow: false,
+        bar: false,
+        mini_block: false,
+        mini_dot: false,
+        mini_puck: false,
+        panel_13: false
     },
     item: {
-        arrow_template: true,
+        arrow_template: false,
         //item in hand
-        arrow: true,
-        bar: true,
-        mini_block: true
+        arrow: false,
+        bar: false,
+        mini_block: false,
+        mini_puck: false
     }
 };
 /** @type {Boolean2DeepMap} */
@@ -62,25 +66,26 @@ const WATCHING_EVENTS = {
         beforeItemUse: false,
     },
     block: {
-        beforePlayerInteractWithBlock: true,
+        beforePlayerInteractWithBlock: false,
         onPlace: true,
     },
     system: {
-        afterWorldLoad: true,
+        afterWorldLoad: false,
         beforeStartup: false,
     }
 };
 /** @type {BooleanMap} */
 const WATCHING_FUNCTIONS = {
     // world/system
-    registerCustomCommands: true,
-    registerDebugCommands: true,
-    registerBetaCommands: true,
+    registerCustomCommands: false,
+    registerDebugCommands: false,
+    registerBetaCommands: false,
 
     // Subscription
     subscriptions: false,
-    subscriptionsBeta: true,
-    onBeforeStartup: true,
+    subscriptionsBeta: false,
+    subscriptionsStable: false,
+    onBeforeStartup: false,
     alertItemSubs: false,
     alertPlayerSubs: false,
     alertSystemSubs: false,

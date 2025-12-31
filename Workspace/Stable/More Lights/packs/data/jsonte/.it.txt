@@ -1,0 +1,51 @@
+custom_blocks.flatMap(
+    b => materials.map(
+        m => {
+            data: b.data,
+            material: {
+                material_name: m.material_name,
+                texture: m.texture
+            },
+            calc: {
+                safeDiv: b.data.unitPx + b.data.epsPx,
+                gridN: max(1, floor(b.data.unitPx / b.data.spanPx)),
+                numFacePositions: gridN * gridN,
+                maxFacePtr: numFacePositions - 1,
+                arrayFacePtrValues: asArray(0..maxFacePtr),
+                ptrValues: (maxFacePtr < 0) ? [ 0 ] : arrayFacePtrValues,
+                stepPx: (gridN < 1) ? 0 : (b.data.unitPx - b.data.spanPx) / (gridN - 1),
+                step: stepPx / safeDiv,
+                flushPx: (b.data.unitPx - b.data.depthPx) / 2,
+                flush: flushPx / safeDiv,
+                scaleSpan: b.data.spanPx / safeDiv,
+                scaleDepth: b.data.depthPx / safeDiv,
+                middleIndex: floor(numFacePositions / 2),
+                stateValues: arrayFacePtrValues.filter(x => x!=middleIndex).prePend(middleIndex)
+            }
+        }
+    )
+);   
+
+custom_blocks.flatMap(
+    b => materials.map(
+        m => (
+            {
+                data: b.data, 
+                material: {material_name: m.material_name, texture: m.texture}, 
+                calc: {
+                    safeDiv: b.data.unitPx + b.data.epsPx, 
+                    gridN: max(1, floor(b.data.unitPx / b.data.spanPx)), 
+                    numFacePositions: gridN * gridN, 
+                    maxFacePtr: numFacePositions - 1,
+                    ptrValues: asArray(0..maxFacePtr), 
+                    stepPx: (gridN < 1) ? 0 : (b.data.unitPx - b.data.spanPx) / (gridN - 1), 
+                    step: stepPx / safeDiv, flushPx: (b.data.unitPx - b.data.depthPx) / 2, 
+                    flush: flushPx / safeDiv, 
+                    scaleSpan: b.data.spanPx / safeDiv, scaleDepth: b.data.depthPx / safeDiv, 
+                    middleIndex: floor(numFacePositions / 2), 
+                    stateValues: ptrValues.filter(x => x!=middleIndex).prePend(middleIndex)}
+            }
+        )
+    )
+)
+custom_blocks.flatMap(b => materials.map(m => ({data: b.data, material: {material_name: m.material_name, texture: m.texture}, calc: {safeDiv: b.data.unitPx + b.data.epsPx,gridN: gridN(b.data.unitPx,b.data.spanPx)}})))

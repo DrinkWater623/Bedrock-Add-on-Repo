@@ -1,0 +1,193 @@
+{
+    "custom_blocks": {
+        "mini_block": {
+            /* Block size specific values */
+            "unitPx": 16,
+            "spanPx": 5,
+            "depthPx": 5,
+            
+            /* Script API Interface */
+            "stateName": "dw623:faceLocationGrid_ptr",
+            "customComponentName": "dw623:on_place_mini_block",
+
+            //* calculations */
+
+            // scaleXZ = spanPx/unitPx 
+            "scaleXZ": 0.3125,
+
+            // scaleY = depthPx/unitPx
+            "scaleY": 0.3125,
+                        //safeDiv = unitPx + 0.001
+            "safeDiv": 16.001,
+
+            //gridN = floor(unitPx / spanPx)
+            "gridN": 3,
+
+            /* CALCULATIONS PAST HERE ARE A PROBLEM - CAN'T ACCESS PREVIOUS VALUES */
+
+            //gridHalf = (gridN - 1)/2
+            "gridHalf": 1,
+
+            //gridStepPx = (unitPx - spanPx) / (gridN - 1)}}"
+            "gridStepPx": 5.5, 
+
+            //"flushPx": "(unitPx - spanPx) / 2",
+            "flushPx": 5.5,
+
+            //numFacePositions = gridN * gridN
+            "numFacePositions": 9,
+
+            //maxFacePtr = numFacePositions -1
+            "maxFacePtr": 8,
+
+            //middleIndex = floor(numFacePositions / 2)
+            "middleIndex": 4,
+
+            //ptrValues = (0..maxFacePtr).filter(n => n != middleIndex).prePend(middleIndex)
+            "ptrValues":[4,0,1,2,3,5,6,7,8],
+
+            //"flushOffset": "flushPx / safeDiv"
+            "flushOffset": 0.3437285169676895 //0.34375
+        },
+        "mini_puck": {
+            /* Block size specific values */
+            "unitPx": 16,
+            "spanPx": 4,
+            "depthPx": 2,
+            
+            /* Script API Interface */
+            "stateName": "dw623:faceLocationGrid_ptr",
+            "customComponentName": "dw623:on_place_mini_puck",
+
+            //* calculations */
+
+            // scaleXZ = spanPx/unitPx 
+            "scaleXZ": 0.25,
+
+            // scaleY = depthPx/unitPx
+            "scaleY": 0.125,
+                        //safeDiv = unitPx + 0.001
+            "safeDiv": 16.001,
+
+            //gridN = floor(unitPx / spanPx)
+            "gridN": 4,
+
+            /* CALCULATIONS PAST HERE ARE A PROBLEM - CAN'T ACCESS PREVIOUS VALUES */
+
+            //gridHalf = (gridN - 1)/2
+            "gridHalf": 1.5,
+            
+            //gridStepPx = (unitPx - spanPx) / (gridN - 1)}}"
+            "gridStepPx": 4, 
+
+            //numFacePositions = gridN * gridN
+            "numFacePositions": 16,
+
+            //maxFacePtr = numFacePositions -1
+            "maxFacePtr": 15,
+
+            //middleIndex = floor(numFacePositions / 2)
+            "middleIndex": 9,
+
+            //ptrValues = (0..maxFacePtr).filter(n => n != middleIndex).prePend(middleIndex)
+            "ptrValues":[9,0,1,2,3,4,5,6,7,8,10,11,12,13,14,15],
+
+            /*
+            "flushPx": "(unitPx - depthPx) / 2",
+            "flushOffset": "flushPx / safeDiv"*/
+            "flushOffset": 0.43746171992375
+        },
+        "mini_dot": {
+            /* Block size specific values */
+            "unitPx": 16,
+            "spanPx": 2,
+            "depthPx": 1,
+            
+            /* Script API Interface */
+            "stateName": "dw623:faceLocationGrid_ptr",
+            "customComponentName": "dw623:on_place_mini_dot",
+
+            //* calculations */
+
+            // scaleXZ = spanPx/unitPx 
+            "scaleXZ": 0.125,
+
+            // scaleY = depthPx/unitPx
+            "scaleY": 0.0625,
+                        //safeDiv = unitPx + 0.001
+            "safeDiv": 16.001,
+
+            //gridN = floor(unitPx / spanPx)
+            "gridN": 8,
+
+            /* CALCULATIONS PAST HERE ARE A PROBLEM - CAN'T ACCESS PREVIOUS VALUES */
+
+            //gridStepPx = (unitPx - spanPx) / (gridN - 1)}}"
+            "gridStepPx": 2, 
+
+            //numFacePositions = gridN * gridN
+            "numFacePositions": 64,
+
+            //maxFacePtr = numFacePositions -1
+            "maxFacePtr": 63,
+
+            //middleIndex = floor(numFacePositions / 2)
+            "middleIndex": 32,
+
+            //ptrValues = (0..maxFacePtr).filter(n => n != middleIndex).prePend(middleIndex)
+            "ptrValues":[32,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63],
+
+            /*
+            "flushPx": "(unitPx - depthPx) / 2",
+            "flushOffset": "flushPx / safeDiv"*/
+            "flushOffset": 0.46871632104243
+        },
+        //Grid feature not used when only one position is possible
+        "panel_13": {
+            /* Block size specific values */
+            "unitPx": 16,
+            "spanPx": 13,
+            "depthPx": 1,
+            
+            /* Script API Interface */
+            //"stateName": "dw623:faceLocationGrid_ptr",
+            //"customComponentName": "dw623:on_place_panel",
+
+            //* calculations */
+
+            // scaleXZ = spanPx/unitPx 
+            "scaleXZ": 0.8125,
+
+            // scaleY = depthPx/unitPx
+            "scaleY": 0.0625,
+                        //safeDiv = unitPx + 0.001
+            "safeDiv": 16.001,
+
+            //gridN = floor(unitPx / spanPx)
+            "gridN": 1,
+
+            /* CALCULATIONS PAST HERE ARE A PROBLEM - CAN'T ACCESS PREVIOUS VALUES */
+
+            //gridStepPx = (unitPx - spanPx) / (gridN - 1)}}"
+            "gridStepPx": 0, 
+            "gridHalf": 0,
+
+            //numFacePositions = gridN * gridN
+            "numFacePositions": 1,
+
+            //maxFacePtr = numFacePositions -1
+            "maxFacePtr": 0,
+
+            //middleIndex = floor(numFacePositions / 2)
+            "middleIndex": 0,
+
+            //ptrValues = (0..maxFacePtr).filter(n => n != middleIndex).prePend(middleIndex)
+            "ptrValues":[0],
+
+            /*
+            "flushPx": "(unitPx - depthPx) / 2",
+            "flushOffset": "flushPx / safeDiv"*/
+            "flushOffset": 0.46871632104243
+        }
+    }    
+}

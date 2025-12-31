@@ -1,6 +1,6 @@
 // AUTO-GENERATED — do not edit by hand
 // Folder: ../../Bedrock Add-on Repo/Workspace/Beta/Vertical Slabs/packs/BP/scripts/common-stable/tools
-// Generated: 2025-12-22 12:13:39Z
+// Generated: 2025-12-31 08:15:04Z
 // @ts-check
 
 export { brightChatColors, chatColorCode, chatColors, colors, darkChatColors, leavingVerbs, mcNameSpace, PLAYER_TYPE_ID, Ticks } from "./globalConstantsLib.js";

@@ -1,0 +1,211 @@
+{
+  "$files": {
+    //"array": "materials",
+    "array": "materials.map(m =>  {...custom_blocks.mini_puck, texture:m.texture,material_name:m.material_name})", 
+    "fileName": "{{material_name}}_mini_puck.bp"
+  },
+  "$scope": {  
+  },
+  "$template": {
+    "format_version": "1.21.70",
+    "minecraft:block": {
+      "description": {
+        "identifier": "dw623:{{material_name}}_mini_puck",
+        "menu_category": { "category": "items", "group": "minecraft:itemGroup.name.lanterns" },        
+                "traits":{"minecraft:placement_position":{"enabled_states":["minecraft:block_face"]}},
+                "states": { "{{stateName}}": "{{ptrValues}}" }
+      },
+      "components": {
+        "minecraft:custom_components": ["{{customComponentName}}"],          
+        "tag:minecraft:is_item_tier_destructible":{},
+        "minecraft:display_name":"{{Title(Replace(material_name, '_', ' '))}} Mini Puck",
+        "minecraft:light_emission": "{{spanPx}}",
+        "minecraft:destructible_by_mining": {
+          "seconds_to_destroy": 3.75,
+          "item_specific_speeds": [
+            {
+              "item": {
+                "tags": "q.all_tags('minecraft:is_pickaxe', 'minecraft:wooden_tier')"
+              },
+              "destroy_speed": 0.57
+            },
+            {
+              "item": {
+                "tags": "q.all_tags('minecraft:is_pickaxe', 'minecraft:stone_tier')"
+              },
+              "destroy_speed": 0.3
+            },
+            {
+              "item": {
+                "tags": "q.all_tags('minecraft:is_pickaxe', 'minecraft:iron_tier')"
+              },
+              "destroy_speed": 0.2
+            },
+            {
+              "item": {
+                "tags": "q.all_tags('minecraft:is_pickaxe', 'minecraft:golden_tier')"
+              },
+              "destroy_speed": 0.1
+            },
+            {
+              "item": {
+                "tags": "q.all_tags('minecraft:is_pickaxe', 'minecraft:diamond_tier')"
+              },
+              "destroy_speed": 0.15
+            },
+            {
+              "item": {
+                "tags": "q.all_tags('minecraft:is_pickaxe', 'minecraft:netherite_tier')"
+              },
+              "destroy_speed": 0.13
+            }
+          ]
+        },
+        "minecraft:destructible_by_explosion": {"explosion_resistance":0},                                           
+        "minecraft:material_instances": {
+            "*":{
+                "texture":"{{texture}}",
+                "render_method": "alpha_test",
+                "face_dimming": false,
+                "ambient_occlusion": false
+            }
+        }, 
+
+        // trying minecraft's built-in scaling + translation - had to make a 16x16x16 full block geo for this
+        "minecraft:geometry": {"identifier":"geometry.full_block"},                            
+        "minecraft:collision_box": true,
+        "minecraft:selection_box": true
+      },
+      "permutations": [
+
+        // ============================================================
+        // DOWN  (plane = X/Z)   ✅ perfect in your test
+        // rotation: [0,0,180]
+        // translation: [ u, 0, v ]
+        // ============================================================
+        {
+          "{{#ptrValues}}": {
+            "condition": "query.block_state('minecraft:block_face') == 'down' && query.block_state('{{stateName}}') == {{value}}",
+            "components": {
+              "minecraft:transformation": {
+                "rotation": "{{block_rotations.down}}",
+                "scale": [ "{{=scaleXZ}}", "{{=scaleY}}", "{{=scaleXZ}}" ],
+                "translation": [
+                  "{{=((gridHalf - mod(value, gridN)) * gridStepPx) / safeDiv}}",
+                  "{{=flushOffset}}",
+                  "{{=((floor(value / gridN) - gridHalf) * gridStepPx) / safeDiv}}"
+                ]
+              }
+            }
+          }
+        },
+
+        // ============================================================
+        // UP  (plane = X/Z)   ✅ opposite on face-plane x-axis -> flip u
+        // rotation: [0,0,0]
+        // translation: [ -u, 0, v ]
+        // ============================================================
+        {
+          "{{#ptrValues}}": {
+            "condition": "query.block_state('minecraft:block_face') == 'up' && query.block_state('{{stateName}}') == {{value}}",
+            "components": {
+              "minecraft:transformation": {
+                "rotation": "{{block_rotations.up}}",
+                "scale": [ "{{=scaleXZ}}", "{{=scaleY}}", "{{=scaleXZ}}" ],
+                "translation": [
+                  "{{=-((gridHalf - mod(value, gridN)) * gridStepPx) / safeDiv}}",
+                  "{{=-flushOffset}}",
+                  "{{=((floor(value / gridN) - gridHalf) * gridStepPx) / safeDiv}}"
+                ]
+              }
+            }
+          }
+        },
+        // ============================================================
+        // SOUTH (plane = X/Y)  ✅ perfect in your test
+        // rotation: [90,0,0]
+        // translation: [ u, v, 0 ]
+        // ============================================================
+        {
+          "{{#ptrValues}}": {
+            "condition": "query.block_state('minecraft:block_face') == 'south' && query.block_state('{{stateName}}') == {{value}}",
+            "components": {
+              "minecraft:transformation": {
+                "rotation": "{{block_rotations.south}}",
+                "scale": [ "{{=scaleXZ}}", "{{=scaleY}}", "{{=scaleXZ}}" ],
+                "translation": [
+                  "{{=((gridHalf - mod(value, gridN)) * gridStepPx) / safeDiv}}",
+                  "{{=((floor(value / gridN) - gridHalf) * gridStepPx) / safeDiv}}",
+                  "{{=-flushOffset}}"
+                ]
+              }
+            }
+          }
+        },
+        // ============================================================
+        // NORTH (plane = X/Y)  ✅ opposite on face-plane x-axis -> flip u
+        // rotation: [90,180,0]
+        // translation: [ -u, v, 0 ]
+        // ============================================================
+        {
+          "{{#ptrValues}}": {
+            "condition": "query.block_state('minecraft:block_face') == 'north' && query.block_state('{{stateName}}') == {{value}}",
+            "components": {
+              "minecraft:transformation": {
+                "rotation": "{{block_rotations.north}}",
+                "scale": [ "{{=scaleXZ}}", "{{=scaleY}}", "{{=scaleXZ}}" ],
+                "translation": [
+                  "{{=-((gridHalf - mod(value, gridN)) * gridStepPx) / safeDiv}}",
+                  "{{=((floor(value / gridN) - gridHalf) * gridStepPx) / safeDiv}}",
+                  "{{=flushOffset}}"
+                ]
+              }
+            }
+          }
+        },
+        // ============================================================
+        // WEST  (plane = Z/Y)  ✅ perfect on x-axis; west rotation must match your working file
+        // WEST rotation: [0,-90,90]
+        // translation: [ 0, v, u ]
+        // ============================================================
+        {
+          "{{#ptrValues}}": {
+            "condition": "query.block_state('minecraft:block_face') == 'west' && query.block_state('{{stateName}}') == {{value}}",
+            "components": {
+              "minecraft:transformation": {
+                "rotation": "{{block_rotations.west}}",
+                "scale": [ "{{=scaleXZ}}", "{{=scaleY}}", "{{=scaleXZ}}" ],
+                "translation": [
+                  "{{=flushOffset}}",
+                  "{{=((floor(value / gridN) - gridHalf) * gridStepPx) / safeDiv}}",
+                  "{{=((gridHalf - mod(value, gridN)) * gridStepPx) / safeDiv}}"
+                ]
+              }
+            }
+          }
+        },
+        // ============================================================
+        // EAST  (plane = Z/Y)  ✅ opposite on x-axis -> flip u; east rotation must match your working file
+        // EAST rotation: [0,90,-90]
+        // translation: [ 0, v, -u ]
+        // ============================================================
+        {
+          "{{#ptrValues}}": {
+            "condition": "query.block_state('minecraft:block_face') == 'east' && query.block_state('{{stateName}}') == {{value}}",
+            "components": {
+              "minecraft:transformation": {
+                "rotation": "{{block_rotations.east}}",
+                "scale": [ "{{=scaleXZ}}", "{{=scaleY}}", "{{=scaleXZ}}" ],
+                "translation": [
+                  "{{=-flushOffset}}",
+                  "{{=((floor(value / gridN) - gridHalf) * gridStepPx) / safeDiv}}",
+                  "{{=-((gridHalf - mod(value, gridN)) * gridStepPx) / safeDiv}}"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,9 +1,7 @@
 {
     "settings": {
         "ns": "dw623",
-        "addon": "new",
-        "main_bot":"x_bot",
-		"main_bot_display":"X Bot",
+        "addon": "new",       
         "block_format_version":"1.21.70",
         "item_format_version":"1.21.60"
 		// {{Title(replace(settings.main_bot,'_',' '))}}

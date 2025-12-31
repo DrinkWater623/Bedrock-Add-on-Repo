@@ -1,0 +1,14 @@
+{	
+	"block_face":[
+		{"dir":"south"  	,"opposite":"north"	},
+		{"dir":"west" 		,"opposite":"east"	},
+		{"dir":"north" 		,"opposite":"south"	},
+		{"dir":"east"   	,"opposite":"west"	}
+	],
+	"directions":[
+		{"id":0 ,"dir":"south"  	},
+		{"id":1 ,"dir":"west" 		},
+		{"id":2 ,"dir":"north" 		},
+		{"id":3 ,"dir":"east"   	}
+	]	
+}

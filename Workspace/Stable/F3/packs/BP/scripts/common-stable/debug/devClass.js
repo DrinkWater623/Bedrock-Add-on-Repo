@@ -597,24 +597,24 @@ export class Dev {
     //===============================
     /**
         * @param {string} msg
-        * @param {boolean} [send=false] does not matter - remove later
+        * @param {boolean} [send=true] does not matter - remove later
         */
-    alertError (msg, send = false) { if (this._masterPackDebugOn) if (this.debugOn && msg) this._msgs.alertLog.error(`${msg}`, true); }
+    alertError (msg, send = true) { if (this._masterPackDebugOn) if (this.debugOn && msg) this._msgs.alertLog.error(`${msg}`, true); }
     /**
      * @param {string} msg
      *  @param {boolean} [send=false]
      */
-    alertLog (msg, send = false) { if (this._masterPackDebugOn) if (this.debugOn && msg) this._msgs.alertLog.log(msg, true); }
+    alertLog (msg, send = false) { if (this._masterPackDebugOn) if (this.debugOn && msg) this._msgs.alertLog.log(msg, send); }
     /**
      * @param {string} msg
      *  @param {boolean} [send=false]
      */
-    alertSuccess (msg, send = false) { if (this._masterPackDebugOn) if (this.debugOn && msg) this._msgs.alertLog.success(msg, true); }
+    alertSuccess (msg, send = false) { if (this._masterPackDebugOn) if (this.debugOn && msg) this._msgs.alertLog.success(msg, send); }
     /**
      * @param {string} msg
-     * @param {boolean} [send=false] does not matter - remove later
+     * @param {boolean} [send=true] does not matter - remove later
      */
-    alertWarn (msg, send = false) { if (this._masterPackDebugOn) if (this.debugOn && msg) this._msgs.alertLog.warn(msg, true); }
+    alertWarn (msg, send = true) { if (this._masterPackDebugOn) if (this.debugOn && msg) this._msgs.alertLog.warn(msg, true); }
     /**
     * 
     * @param {string} FunctionName - The name of the function.

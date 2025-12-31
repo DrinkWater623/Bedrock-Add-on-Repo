@@ -17,7 +17,7 @@ import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus } fr
 // Local
 import { pack, packDisplayName } from './settings.js';
 import { dev } from "./debug.js";
-const alert = dev.isDebugFunction('registerCommand');
+//const alert = dev.isDebugFunction('registerCommand');
 //==============================================================================
 /**
  * @param {CustomCommandRegistry} registry 

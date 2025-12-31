@@ -1,6 +1,6 @@
 // AUTO-GENERATED — do not edit by hand
 // Folder: ../../Bedrock Add-on Repo/Workspace/Beta/After Life/packs/BP/scripts/common-other
-// Generated: 2025-12-22 12:13:39Z
+// Generated: 2025-12-31 08:15:04Z
 // @ts-check
 
 export { DirectionInfo } from "./direction_info.js";

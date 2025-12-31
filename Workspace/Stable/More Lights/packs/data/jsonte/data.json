@@ -1,32 +1,5 @@
 {
-	"materials": [
-		{"texture":"glowstone"					,"name":"glowstone"					,"sound":"glass"		,"isotropic":true 	},		
-		{"texture":"sea_lantern"				,"name":"sea_lantern"				,"sound":"glass"		,"isotropic":true 	},
-		{"texture":"verdant_froglight_side"		,"name":"verdant_froglight"			,"sound":"froglight"	,"isotropic":true 	},
-		{"texture":"ochre_froglight_side"		,"name":"ochre_froglight"			,"sound":"froglight"	,"isotropic":true 	},
-		{"texture":"pearlescent_froglight_side"	,"name":"pearlescent_froglight"		,"sound":"froglight"	,"isotropic":true 	},
-		{"texture":"shroomlight"				,"name":"shroomlight"				,"sound":"shroomlight"	,"isotropic":true 	}
-	],
-	"block_face":[
-		{"dir":"south"  	,"opposite":"north"	},
-		{"dir":"west" 		,"opposite":"east"	},
-		{"dir":"north" 		,"opposite":"south"	},
-		{"dir":"east"   	,"opposite":"west"	}
-	],
-	"directions":[
-		{"id":0 ,"dir":"south"  	},
-		{"id":1 ,"dir":"west" 		},
-		{"id":2 ,"dir":"north" 		},
-		{"id":3 ,"dir":"east"   	}
-	],
-	// "colors": [
-	// 	//{"color":"light_blue","display":"Light Blue","color_id":3,"weight":3},
-	// 	// {"color":"white","display":"White","color_id":0,"weight":40},
-	// 	// {"color":"orange","display":"Orange","color_id":1,"weight":3},
-	// 	// {"color":"yellow","display":"Yellow","color_id":4,"weight":3},
-	// 	// {"color":"lime","display":"Lime","color_id":5,"weight":3},
-	// 	{"color":"pink","display":"Pink","color_id":6,"weight":3}
-	// ],
+	
 	"light_bar_positions":[
 		{"grid":0 ,"geo_sfx":"east_ns" 		,"origin": [-8, 0, -8],		"size": [5, 5, 16]},
 		{"grid":1 ,"geo_sfx":"south_ew"   	,"origin": [-8, 0, 3],		"size": [16, 5, 5]},

@@ -15,6 +15,8 @@ import { TicksPerSecond } from "@minecraft/server";
 export const mcNameSpace = 'minecraft:';
 export const PLAYER_TYPE_ID = 'minecraft:player'
 //========================================================================
+/* Sounds */
+export const defaultSoundId='hit.stone'
 export class Ticks {
     static perSecond = TicksPerSecond;
     static perMinute = TicksPerSecond * 60;

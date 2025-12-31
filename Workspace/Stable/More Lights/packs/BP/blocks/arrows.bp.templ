@@ -15,13 +15,13 @@
     },
     "$files": {
         "array": "materials",
-        "fileName": "{{name}}_arrow.bp"
+        "fileName": "{{material_name}}_arrow.bp"
     },
     "$template":{
         "format_version": "1.21.70",
         "minecraft:block": {
             "description": {
-                "identifier": "dw623:{{name}}_arrow",
+                "identifier": "dw623:{{material_name}}_arrow",
                 "menu_category": {"category":"items"},
                 "traits": {
                     "minecraft:placement_position": {"enabled_states":["minecraft:block_face","minecraft:vertical_half"]},
@@ -31,7 +31,7 @@
             "components": {
                 "minecraft:custom_components": ["dw623:on_place_arrow"],
                 "tag:minecraft:is_item_tier_destructible":{},
-                "minecraft:display_name":"{{Title(Replace(name, '_', ' '))}} Arrow",
+                "minecraft:display_name":"{{Title(Replace(material_name, '_', ' '))}} Arrow",
                 "minecraft:light_emission":8,
                 "minecraft:flammable": {
                     "destroy_chance_modifier": 20,

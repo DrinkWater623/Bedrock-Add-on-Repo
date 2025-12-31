@@ -15,7 +15,7 @@ import { world, system, Player } from "@minecraft/server";
 import { BlockSubscriptions, ItemSubscriptions, PlayerSubscriptions, SystemSubscriptions } from "./common-stable/subscriptions/index.js";
 import { DynamicPropertyLib } from "./common-stable/tools/index.js";
 //Local
-import { lightArrow_onPlace, lightBar_onPlace, lightMiniBlock_onPlace } from "./blockComponent.js";
+import { arrow_onPlace as arrow_onPlace, bar_onPlace as bar_onPlace, mini_block_onPlace as mini_block_onPlace, mini_dot_onPlace, mini_puck_onPlace } from "./blockComponent.js";
 import { pack, packDisplayName, watchFor } from './settings.js';
 import { registerCustomCommands } from "./chatCmds.js";
 import { dev } from "./debug.js";
@@ -40,29 +40,36 @@ const blockSubs = new BlockSubscriptions(packDisplayName, debugSubscriptions);
 const itemSubs = new ItemSubscriptions(packDisplayName, debugSubscriptions);
 const playerSubs = new PlayerSubscriptions(packDisplayName, debugSubscriptions);
 const systemSubs = new SystemSubscriptions(packDisplayName, debugSubscriptions);
-const myItemStackWatch = watchFor.onPlaceBlockList();
-//const myArrows = watchFor.arrowBlocks();
+const myItemStackWatch = watchFor.onPlaceBlockList;
 //const myMiniBlocks = watchFor.miniBlocks();
 //const myBars = watchFor.barBlocks();
-const myBlockGroups = watchFor.blockGroups();
+const myBlockGroups = watchFor.onPlaceBlockGroups();
 //==============================================================================
 /** @type {BeforeStartupHandler} */
 const onBeforeStartup = (event) => {
     const ccr = event.customCommandRegistry;
-    dev.alertFunctionKey('onBeforeStartup',true)
+    dev.alertFunctionKey('onBeforeStartup')
     registerCustomCommands(ccr);
 
     event.blockComponentRegistry.registerCustomComponent(
-        'dw623:on_place_arrow', { beforeOnPlayerPlace: e => { lightArrow_onPlace(e); } }
+        'dw623:on_place_arrow', { beforeOnPlayerPlace: e => { arrow_onPlace(e); } }
     );
 
     event.blockComponentRegistry.registerCustomComponent(
-        'dw623:on_place_bar', { beforeOnPlayerPlace: e => { lightBar_onPlace(e); } }
+        'dw623:on_place_bar', { beforeOnPlayerPlace: e => { bar_onPlace(e); } }
     );
 
     event.blockComponentRegistry.registerCustomComponent(
-        'dw623:on_place_mini_block', { beforeOnPlayerPlace: e => { lightMiniBlock_onPlace(e); } }
+        'dw623:on_place_mini_puck', { beforeOnPlayerPlace: e => { mini_puck_onPlace(e); } }
     );
+
+    event.blockComponentRegistry.registerCustomComponent(
+        'dw623:on_place_mini_block', { beforeOnPlayerPlace: e => { mini_block_onPlace(e); } }
+    );
+//
+//    event.blockComponentRegistry.registerCustomComponent(
+//        'dw623:on_place_mini_dot', { beforeOnPlayerPlace: e => { mini_dot_onPlace(e); } }
+//    );
 };
 //==============================================================================
 /**
@@ -182,7 +189,7 @@ const onBeforeItemUse = (event) => {
 export function subscriptionsStable () {
     const _name='subscriptionsStable'
     const tickStart=system.currentTick
-    dev.alertFunction(_name,true,dev.isDebugFunction(_name))    
+    dev.alertFunctionKey(_name,true)    
 
     systemSubs.beforeStartup.subscribe(onBeforeStartup,dev.isDebugFunction('alertSystemSubs'));
     playerSubs.beforePlayerInteractWithBlock.subscribe(onBeforePlayerInteractWithBlock,dev.isDebugFunction('alertPlayerSubs'));
