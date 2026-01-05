@@ -69,6 +69,13 @@ export class Dev {
         this.debugOn = false;
         this._masterPackDebugOn = on;  //before you add to the debugs below check this, else it may fail, cause I freeze if OFF
         this._isDead = false;
+        //actual namespace:typeIds
+        /** @type {string[]} */
+        this.entityWatchList=[]
+        /** @type {string[]} */
+        this.blockWatchList=[]
+        /** @type {string[]} */
+        this.itemWatchList=[]
         //=================================================================================================================
         /* This is how this Dev object sends alerts meant for analyzing and debugging - Custom methods for use available */
         //=================================================================================================================

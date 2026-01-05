@@ -1,54 +1,245 @@
-// players.js F3
-//@ts-check
+// players.js  F3 Testing Bedrock Add-on
+// @ts-check
 /* =====================================================================
 Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
 License: GPL-3.0-only (https://www.gnu.org/licenses/gpl-3.0.html)
 CliffNotes: Using my files within Minecraft Bedrock MarketPlace is prohibited without written permission.  All code must remain freely visible and license passed along.
 URL: https://github.com/DrinkWater623
 ========================================================================
-Change Log:
-    20251219 - Created
+Change Log: 
 ========================================================================*/
-import { world, system } from "@minecraft/server";
+import { EntityComponentTypes, EntityHealthComponent, Player, system, world } from "@minecraft/server";
 //Shared
-import { airBlock } from "../common-data/index.js";
-import { DynamicPropertyLib } from "../common-stable/tools/index.js";
+import { Entities } from "../common-stable/gameObjects/index.js";
 import { PlayerSubscriptions } from "../common-stable/subscriptions/index.js";
-import { Vector3Lib } from "../common-stable/tools/index.js";
+import { DynamicPropertyLib, round, Vector3Lib } from "../common-stable/tools/index.js";
 //Local
-import { alertLog, pack, packDisplayName, toggles, watchFor } from '../settings.js';
+import { packDisplayName, watchFor } from '../settings.js';
 import { dev } from "../debug.js";
 //==============================================================================
-//import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
+/** The function type subscribe expects. */
+//  Players
+/** @typedef {Parameters<typeof world.afterEvents.playerBreakBlock.subscribe>[0]} AfterPlayerBreakBlockHandler */
+/** @typedef {Parameters<typeof world.afterEvents.playerEmote.subscribe>[0]} AfterPlayerEmoteHandler */
+/** @typedef {Parameters<typeof world.afterEvents.playerGameModeChange.subscribe>[0]} AfterPlayerGameModeChangeHandler */
+/** @typedef {Parameters<typeof world.afterEvents.playerHotbarSelectedSlotChange.subscribe>[0]} AfterPlayerHotbarSelectedSlotChangeHandler */
+/** @typedef {Parameters<typeof world.afterEvents.playerInputModeChange.subscribe>[0]} AfterPlayerInputModeChangeHandler */
+/** @typedef {Parameters<typeof world.afterEvents.playerInputPermissionCategoryChange.subscribe>[0]} AfterPlayerInputPermissionCategoryChangeHandler */
+/** @typedef {Parameters<typeof world.afterEvents.playerInteractWithBlock.subscribe>[0]} AfterPlayerInteractWithBlockHandler */
+/** @typedef {Parameters<typeof world.afterEvents.playerInteractWithEntity.subscribe>[0]} AfterPlayerInteractWithEntityHandler */
+/** @typedef {Parameters<typeof world.afterEvents.playerInventoryItemChange.subscribe>[0]} AfterPlayerInventoryItemChangeHandler */
+/** @typedef {Parameters<typeof world.afterEvents.playerJoin.subscribe>[0]} AfterPlayerJoinHandler */
+/** @typedef {Parameters<typeof world.afterEvents.playerLeave.subscribe>[0]} AfterPlayerLeaveHandler */
+/** @typedef {Parameters<typeof world.afterEvents.playerPlaceBlock.subscribe>[0]} AfterPlayerPlaceBlockHandler */
+/** @typedef {Parameters<typeof world.afterEvents.playerSpawn.subscribe>[0]} AfterPlayerSpawnHandler */
+
+/** @typedef {Parameters<typeof world.beforeEvents.playerBreakBlock.subscribe>[0]} BeforePlayerBreakBlockHandler */
+/** @typedef {Parameters<typeof world.beforeEvents.playerGameModeChange.subscribe>[0]} BeforePlayerGameModeChangeHandler */
+/** @typedef {Parameters<typeof world.beforeEvents.playerInteractWithBlock.subscribe>[0]} BeforePlayerInteractWithBlockHandler */
+/** @typedef {Parameters<typeof world.beforeEvents.playerInteractWithEntity.subscribe>[0]} BeforePlayerInteractWithEntityHandler */
+/** @typedef {Parameters<typeof world.beforeEvents.playerLeave.subscribe>[0]} BeforePlayerLeaveHandler */
+
+/** @typedef {Parameters<typeof world.afterEvents.entityDie.subscribe>[0]} AfterPlayerDieHandler */
+/** @typedef {Parameters<typeof world.afterEvents.entityHealthChanged.subscribe>[0]} AfterPlayerHealthChangedHandler */
+/** @typedef {Parameters<typeof world.afterEvents.entityHitBlock.subscribe>[0]} AfterPlayerHitBlockHandler */
+/** @typedef {Parameters<typeof world.afterEvents.entityHitEntity.subscribe>[0]} AfterPlayerHitEntityHandler */
+/** @typedef {Parameters<typeof world.afterEvents.entityHurt.subscribe>[0]} AfterPlayerHurtHandler */
 
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
-/** The function type subscribe expects. */
-//  Blocks
-/** @typedef {Parameters<typeof world.beforeEvents.playerInteractWithBlock.subscribe>[0]} BeforePlayerInteractWithBlockHandler */
-/** @typedef {Parameters<typeof world.afterEvents.playerBreakBlock.subscribe>[0]} AfterPlayerBreakBlockHandler */
-/** @typedef {Parameters<typeof world.afterEvents.playerPlaceBlock.subscribe>[0]} AfterPlayerPlaceBlockHandler */
 //==============================================================================
-const debugOn = false || dev.debugOn;
-const myBlockGroups = watchFor.onPlaceBlockList(); //TODO : put back
+const debugSubscriptions = dev.isDebugFunction('subscriptions');
+const myBlockWatch = watchFor.blockWatchList;
+const myBlockGroups = watchFor.onPlaceBlockGroups();
+//==============================================================================
+/**
+ * @param {string} eventName 
+ * @returns {string}
+ */
+const alertLabel = (eventName) => { return `§a§l${eventName}§r (§eTick:§r ${system.currentTick}) ==> `; };
+/**
+ * @param {string} text 
+ * @returns {string}
+ */
+const fieldLabel = (text) => { return `§b${text}:§r`; };
+/**
+ * 
+ * @param {Vector3} xyz 
+ * @returns {string}
+ */
+const locStr = (xyz) => { return Vector3Lib.toString(xyz, 0, true); };
 //==============================================================================
 /** @type {AfterPlayerBreakBlockHandler} */
 const onAfterPlayerBreakBlock = (event) => {
-    if (!watchFor.onBreakBlockList.includes(event.brokenBlockPermutation.type.id)) return;
+    if (!dev.blockWatchList.includes((event.brokenBlockPermutation.type.id))) return;
 
-    const { block, dimension, brokenBlockPermutation, itemStackBeforeBreak } = event;
-    const blockTypeId = brokenBlockPermutation.type.id;
-    const location = block.location;
+    const eventName = 'afterPlayerBreakBlock';
+    const alert = dev.isDebugBlockEvent(eventName) || dev.isDebugPlayerEvent(eventName);
+    if (alert) {
+        const { block, brokenBlockPermutation } = event;
+        const blockTypeId = brokenBlockPermutation.type.id;
+        const location = block.location;
+        const msg = `${alertLabel(eventName)} ${event.player.name}  | ${fieldLabel('Block')}${blockTypeId} @ ${locStr(location)}`;
+        dev.alertLog(msg, true);
+    }
+
+};
+//==============================================================================
+/** @type {AfterPlayerDieHandler} */
+const onAfterPlayerDie = (event) => {
+    const eventName = 'afterPlayerDie';
+    let msg = `${alertLabel(eventName)} ${event.deadEntity.nameTag ? event.deadEntity.nameTag : event.deadEntity.typeId}`;
+    msg += `  |  ${fieldLabel('Cause')} ${event.damageSource.cause} ${event.damageSource.damagingEntity ? `  |  ${fieldLabel('By')} ` + (event.damageSource.damagingEntity && event.damageSource.damagingEntity.isValid && event.damageSource.damagingEntity.nameTag ? event.damageSource.damagingEntity.nameTag : event.damageSource.damagingEntity.typeId) : ''}`;
+    dev.alertPlayerEventLog(eventName, msg);
+};
+//==============================================================================
+/** @type {AfterPlayerHealthChangedHandler} */
+const onAfterPlayerHealthChanged = (event) => {
+    const eventName = 'afterPlayerHealthChanged';
+    let msg = `${alertLabel(eventName)} ${event.entity.nameTag} ${fieldLabel('From')} ${round(event.oldValue, 2)} ${fieldLabel('To')} ${round(event.newValue, 2)}`;
+    dev.alertPlayerEventLog(eventName, msg);
+};
+//==============================================================================
+/** @type {AfterPlayerHitEntityHandler} */
+const onAfterPlayerHitEntity = (event) => {
+    const eventName = 'afterPlayerHitEntity';
+    let msg = `${alertLabel(eventName)} ${event.damagingEntity.nameTag ?? event.damagingEntity.typeId} ${fieldLabel('Hit')} ${event.hitEntity.nameTag ? event.hitEntity.nameTag : event.hitEntity.typeId}`;
+    dev.alertPlayerEventLog(eventName, msg);
+};
+//==============================================================================
+// Idea - damage counter
+/** @type {AfterPlayerHurtHandler} */
+const onAfterPlayerHurt = (event) => {
+    // Fake event with entity option default to Player
+    const eventName = 'afterPlayerHurt';
+    const player = event.hurtEntity;
+    const damagingEntity = event.damageSource.damagingEntity;
+    let msg = `${alertLabel(eventName)} ${player.nameTag} | ${fieldLabel('Damage')} ${round(event.damage, 2)}`;
+    msg += `  | ${fieldLabel('Cause')} ${event.damageSource.cause} ${fieldLabel('By')} ${Entities.name_get(damagingEntity ?? null) ?? 'Unknown'}`;
+    dev.alertPlayerEventLog(eventName, msg);
+
+    if (!damagingEntity || !player.isValid) return;
+    if (!dev.isDebugFunction('alertElementAddOn')) return;
+
+    const damagingEntityTypeId = damagingEntity.typeId;
+    const element = DynamicPropertyLib.getString(player, 'element');
+    if (element == 'air') {
+        const list = [
+            'minecraft:ghast',
+            'minecraft:phantom',
+            'minecraft:skeleton',
+            'minecraft:stray',
+            'minecraft:wither_skeleton',
+            'minecraft:wither'
+        ];
+
+        if (event.damageSource.cause != 'projectile' && !list.includes(damagingEntityTypeId)) return;
+    }
+    else if (element == 'earth') {
+        const list = [
+            'minecraft:zombie',
+            'minecraft:skeleton',
+            'minecraft:stray',
+            'minecraft:husk'
+        ];
+
+        if (!list.includes(damagingEntityTypeId)) return;
+    }
+    else if (element == 'fire') {
+        const list = [
+            //testing to see
+            'minecraft:creeper',
+            'minecraft:ghast',
+            'minecraft:wither',
+            //normal
+            'minecraft:blaze',
+            'minecraft:magma'
+        ];
+
+        if (!list.includes(damagingEntityTypeId)) return;
+    }
+    else if (element == 'water') {
+        const list = [
+            'minecraft:drowned',
+            'minecraft:pufferfish',
+            'minecraft:guardian'
+        ];
+
+        if (!list.includes(damagingEntityTypeId)) return;
+    }
+    else {
+        return;
+    }
+
+    //Fix Damage Given
+    system.run(() => {
+        const health = player.getComponent(EntityComponentTypes.Health);
+        if (!health) return;
+        const oldValue = health.currentValue;
+        const newValue = Math.min(oldValue + event.damage + 0.5, health.effectiveMax);
+        health.setCurrentValue(newValue);
+        console.warn(`§dElement:§r §l${element}§r  |  §cDamaged Health:§r ${oldValue}  |  §aNew Health:§r ${newValue}`);
+        //health steal - like thorns
+        if (damagingEntity.isValid) {
+            const damagingEntityHealth = damagingEntity.getComponent(EntityComponentTypes.Health);
+            if (damagingEntityHealth) {
+                const oldValue = damagingEntityHealth.currentValue;
+                const newValue = oldValue - event.damage - 0.5;
+                damagingEntityHealth?.setCurrentValue(newValue);
+            }
+        }
+        const hunger = player.getComponent(EntityComponentTypes.Hunger);
+        if (hunger) console.warn(`hunger is ${hunger.currentValue}  max = ${hunger.effectiveMax} `);
+
+        //const breath = player.getComponent(EntityComponentTypes.Breathable);
+        //if (breath) console.warn(`airSupply is ${breath.airSupply}  max = ${breath.totalSupply}`);
+
+        const underWater = player.getComponent(EntityComponentTypes.UnderwaterMovement);
+        if (underWater) console.warn(`under water movement is ${round(underWater.currentValue,2)}  max = ${round(underWater.effectiveMax,2)} `);
+
+    });
+
+};
+//==============================================================================
+/** @type {AfterPlayerJoinHandler} */
+const onAfterPlayerJoin = (event) => {
+    const eventName = 'afterPlayerJoin';
+    const msg = `${alertLabel(eventName)} ${event.playerName} | ${fieldLabel('Player Id')} ${event.playerId}`;
+    dev.alertPlayerEventLog(eventName, msg);
+};
+//==============================================================================
+/** @type {AfterPlayerLeaveHandler} */
+const onAfterPlayerLeave = (event) => {
+    const eventName = 'afterPlayerLeave';
+    const msg = `${alertLabel(eventName)} ${event.playerName} | ${fieldLabel('Player Id')} ${event.playerId}`;
+    dev.alertPlayerEventLog(eventName, msg);
+};
+//==============================================================================
+/** @type {BeforePlayerLeaveHandler} */
+const onBeforePlayerLeave = (event) => {
+    const eventName = 'afterPlayerLeave';
+    const msg = `${alertLabel(eventName)} ${event.player.name})`;
+    dev.alertPlayerEventLog(eventName, msg);
+};
+//==============================================================================
+/** @type {AfterPlayerSpawnHandler} */
+const onAfterPlayerSpawn = (event) => {
+    const eventName = 'afterPlayerSpawn';
+    const msg = `${alertLabel(eventName)} ${event.player.name} ${event.initialSpawn ? '(§aFirst Time§r)' : ''} @  ${locStr(event.player.location)}`;
+    dev.alertPlayerEventLog(eventName, msg);
 };
 //==============================================================================
 /** @type {AfterPlayerPlaceBlockHandler} */
 const onAfterPlayerPlaceBlock = (event) => {
-    if (!watchFor.onPlaceBlockList().includes(event.block.typeId)) return;
+    if (!event.block.isValid) return;
+    if (!dev.blockWatchList.includes((event.block.typeId))) return;
 
-    const { block } = event;
-    if (!block.isValid) return;
-    const { typeId, dimension, location } = block;
-    const locationCtr = Vector3Lib.toCenter(location);
+    const eventName = 'afterPlayerPlaceBlock';
+    const alert = dev.isDebugBlockEvent(eventName) || dev.isDebugPlayerEvent(eventName);
+    //TODO: add permutation
+    const { typeId, location } = event.block;
+    const msg = `${alertLabel(eventName)} ${event.player.name} | ${fieldLabel('Block')} ${typeId} @ ${locStr(location)}`;
+    dev.alertPlayerEventLog(eventName, msg);
 };
 //==============================================================================
 /**
@@ -59,34 +250,42 @@ const onAfterPlayerPlaceBlock = (event) => {
  *  @type {BeforePlayerInteractWithBlockHandler} 
  * */
 const onBeforePlayerInteractWithBlock = (event) => {
+    //This feeds block component onPlace since it has no face location
     event.cancel = false;
     if (!event.isFirstEvent) return;
     if (!event.itemStack) return;
-    if (!watchFor.onPlaceBlockList().includes(event.itemStack.typeId)) return;
+    if (!watchFor.blockWatchList.includes(event.itemStack.typeId)) return;
 
     const eventType = 'beforePlayerInteractWithBlock';
-    const itemStack = event.itemStack;
-    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
-    const x = event.blockFace
+    //const itemStack = event.itemStack;
+    const alert = dev.isDebugBlockEvent(eventType) || dev.isDebugPlayerEvent(eventType);
     DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_set(
         event,
         [], // block list not used here, this is the block touched.  Not cared about
-        watchFor.onPlaceBlockList(),
+        watchFor.blockWatchList,
         alert
     );
 };
 //==============================================================================
-export const playerSubs = new PlayerSubscriptions(packDisplayName, true);
-//==============================================================================
+const playerSubs = new PlayerSubscriptions(packDisplayName, dev.isDebugFunction('subscriptionsPlayers'));
 export function subscriptionsPlayers () {
-    const _name = 'function subscriptionsPlayers';
-    alertLog.log(`§v* ${_name} ()`, dev.debugFunctions.debugFunctionsOnOn);
+    const _name = 'subscriptionsPlayers';
+    dev.alertFunctionKey(_name, true);
 
     playerSubs.register({
         afterPlayerBreakBlock: onAfterPlayerBreakBlock,
+        afterPlayerDie: onAfterPlayerDie,
+        afterPlayerHealthChanged: onAfterPlayerHealthChanged,
+        afterPlayerHitEntity: onAfterPlayerHitEntity,
+        afterPlayerHurt: onAfterPlayerHurt,
+        afterPlayerJoin: onAfterPlayerJoin,
+        afterPlayerLeave: onAfterPlayerLeave,
         afterPlayerPlaceBlock: onAfterPlayerPlaceBlock,
-        beforePlayerInteractWithBlock: onBeforePlayerInteractWithBlock
-    });   
+        afterPlayerSpawn: onAfterPlayerSpawn,
+        beforePlayerInteractWithBlock: onBeforePlayerInteractWithBlock,
+        beforePlayerLeave: onBeforePlayerLeave
+    });
+
 }
 //==============================================================================
 // End of File

@@ -1,0 +1,23 @@
+{
+	"block_format_version":"1.21.70",
+	"materials": [
+		{"texture":"bedrock"	,"material_name":"bedrock"	,"sound":"stone"	,"isotropic":true 	}
+	],
+	"blocksTypeList": [
+		"bar",
+		"mini_block",
+		"mini_dot",
+		"mini_puck",
+		"panel_13",
+		"arrow"
+	]
+	//block_face touching based
+	,"block_rotations": {
+		"down": [0, 0, 180],
+		"up": [0, 0, 0],
+		"south": [90, 0, 0],
+		"north": [90, 180, 0],
+		"west": [0, -90, 90],
+		"east": [0, 90, -90]
+	}
+}

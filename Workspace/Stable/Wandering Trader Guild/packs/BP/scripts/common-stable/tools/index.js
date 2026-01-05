@@ -1,9 +1,9 @@
 // AUTO-GENERATED — do not edit by hand
 // Folder: ../../Bedrock Add-on Repo/Workspace/Stable/Wandering Trader Guild/packs/BP/scripts/common-stable/tools
-// Generated: 2025-12-31 19:38:08Z
+// Generated: 2026-01-05 07:43:07Z
 // @ts-check
 
-export { isInForest, isOutside } from "./biomeLib.js";
+export { isForest, isInForest, isOnlyAirBetweenY, isOutside } from "./biomeLib.js";
 export { DynamicPropertyLib } from "./dynamicPropertyClass.js";
 export { bitArrayAdd, chance, clamp, rnd, rndFloat, rndInt, round } from "./mathLib.js";
 export { ChatMsg, ConsoleAlert } from "./messageLib.js";

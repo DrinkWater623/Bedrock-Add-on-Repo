@@ -33,22 +33,32 @@
 			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}			
 		},
 		"profiles": {
-			"template": {
-				"export": {"readOnly":false,"target":"local"},				
-				"filters": [											
-					{"filter":"dot_ignore"},								
-					{"filter":"empty_ignore"} ,
-					{"filter":"jsonte"}
-				]
-			},					
-			"build-beta": {
+			"template-beta": {
 				"export": {"readOnly":false,"target":"local","rpName": "'void_rp_'+project.name"},				
-				"filters": [{"profile":"template"},	{"filter":"mani_fest","settings":{"beta":true,"preview":false,"BP":{"js":"main-beta.js"}}}]
+				"filters": [{"filter":"dot_ignore"},{"filter":"jsonte"}]
+			},
+			"template-stable": {
+				"export": {"readOnly":false,"target":"local","rpName": "'void_rp_'+project.name"},				
+				"filters": [
+					/*{"filter":"beta_js_ignore"},*/
+					{"profile":"template-beta"}]
+			},
+			"build": {				
+				"export": {"readOnly":false,"target":"local","bpName":"project.name+'_Stable_bp'","rpName": "project.name+'_Stable_rp'"},
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"beta":false,"preview":false}}]
+			},
+			"build-beta": {
+				"export": {"readOnly":false,"target":"local","bpName":"project.name+'_Beta_bp'","rpName": "project.name+'_Beta_rp'"},
+				"filters": [{"profile":"template-beta"},{"filter":"mani_fest","settings":{"beta":true,"preview":false,"BP":{"js":"main-beta.js"}}}]
 			},	
+			"stable": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"beta":false}}]
+			},
 			"beta": {
-				"export": {"readOnly":false,"target":"development","rpName": "'void_rp_'+project.name"},
-				"filters": [{"profile":"template"},{"filter":"mani_fest","settings":{"beta":true,"BP":{"js":"main-beta.js"}}}]
-			},			
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [{"profile":"template-beta"},{"filter":"mani_fest","settings":{"beta":true,"BP":{"js":"main-beta.js"}}}]
+			},
 			"preview-beta": {
 				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "'void_rp_'+project.name"},
 				"filters": [

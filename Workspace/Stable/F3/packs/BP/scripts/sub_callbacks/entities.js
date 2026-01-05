@@ -11,64 +11,108 @@ Last Update: 20251023 - add in stable stuff and update to api 2.0 and move debug
 import { world, system } from "@minecraft/server";
 //Shared
 import { EntitySubscriptions } from "../common-stable/subscriptions/index.js";
-import { Vector3Lib } from "../common-stable/tools/index.js";
+import { Entities } from "../common-stable/gameObjects/index.js";
+import { round, Vector3Lib } from "../common-stable/tools/index.js";
 //Local
-import { alertLog, pack, packDisplayName, toggles, watchFor } from '../settings.js';
+import { packDisplayName,  } from '../settings.js';
 import { dev } from "../debug.js";
 //==============================================================================
 //import { ScoreboardLib } from "./common-stable/scoreboardClass.js";
 
 //==============================================================================
-/** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /** The function type subscribe expects. */
 //  Entities
 /** @typedef {Parameters<typeof world.afterEvents.entityDie.subscribe>[0]} AfterEntityDieHandler */
+/** @typedef {Parameters<typeof world.afterEvents.entityHitEntity.subscribe>[0]} AfterEntityHitEntityHandler */
 /** @typedef {Parameters<typeof world.afterEvents.entityLoad.subscribe>[0]} AfterEntityLoadHandler */
 /** @typedef {Parameters<typeof world.afterEvents.entityRemove.subscribe>[0]} AfterEntityRemovedHandler */
 /** @typedef {Parameters<typeof world.afterEvents.entitySpawn.subscribe>[0]} AfterEntitySpawnHandler */
+/** @typedef {Parameters<typeof world.afterEvents.entityHurt.subscribe>[0]} AfterEntityHurtHandler */
 /** @typedef {Parameters<typeof world.beforeEvents.entityRemove.subscribe>[0]} BeforeEntityRemovedHandler */
 //==============================================================================
-const debugOn = false || dev.debugOn;
-const myBlockGroups = watchFor.onPlaceBlockList(); //TODO : put back
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
+//==============================================================================
+/**
+ * @param {string} key 
+ * @returns {string}
+ */
+const alertLabel = (key) => { return `§a§l${key}§r (§eTick:§r ${system.currentTick}) ==> `; };
+/**
+ * @param {string} text 
+ * @returns {string}
+ */
+const fieldLabel = (text) => { return `§b${text}:§r`; };
+/**
+ * 
+ * @param {Vector3} xyz 
+ * @returns {string}
+ */
+const locStr = (xyz) => { return Vector3Lib.toString(xyz, 0, true); };
 //==============================================================================
 /** @type {AfterEntityDieHandler} */
 const onAfterEntityDie = (event) => {
-    if (!toggles.ed_aft) return;
-
-    const entity = event.deadEntity;
-    const { location } = entity;
-    const whyDied = event.damageSource.cause;
-    const msg = `§c${entity.typeId}§r §c Died via ${whyDied} @ ${Vector3Lib.toString(location, 0, true)} -§v afterEvents.entityDie`;
-    alertLog.warn(msg, dev.debugSubscriptions.afterEntityDie);
+    //Can subscribe with Options
+    const eventName = 'afterEntityDie';
+    const msg = `${alertLabel(eventName)} §c${ event.deadEntity.typeId}§r via ${event.damageSource.cause}}`;
+    dev.alertEntityEventLog(eventName, msg);
+};
+//==============================================================================
+/** @type {AfterEntityHitEntityHandler} */
+const onAfterEntityHitEntity = (event) => {
+    //Can subscribe with Options
+   // if (dev.entityWatchList.includes(event.damagingEntity.typeId) || dev.entityWatchList.includes(event.hitEntity.typeId)) {
+        const eventName = 'afterEntityHitEntity';
+        const damagingEntityName = Entities.name_get(event.damagingEntity) ?? 'Unknown'
+        const hitEntityName = Entities.name_get(event.hitEntity) ?? 'Unknown'
+        let msg = `${alertLabel(eventName)} ${damagingEntityName} ${fieldLabel('Hit')} ${hitEntityName} @ ${locStr(event.damagingEntity.location)}`;
+        dev.alertEntityEventLog(eventName, msg);
+    //}
+};
+//==============================================================================
+/** @type {AfterEntityHurtHandler} */
+const onAfterEntityHurt = (event) => {
+    //Can subscribe with Options
+    if (dev.entityWatchList.includes(event.hurtEntity.typeId) || (event.damageSource.damagingEntity && dev.entityWatchList.includes(event.damageSource.damagingEntity.typeId))) {
+        const eventName = 'afterEntityHurt';
+        const hurtEntityName = Entities.name_get(event.hurtEntity) ?? 'Unknown'
+        const damagingEntityName = Entities.name_get(event.damageSource.damagingEntity ?? null) ?? 'Unknown'
+        let msg = `${alertLabel(eventName)} ${hurtEntityName} | ${fieldLabel('Damage')} ${round(event.damage)}`;
+        msg += `  |  ${fieldLabel('Cause')} ${event.damageSource.cause} ${fieldLabel('By')} ${damagingEntityName} `
+        dev.alertEntityEventLog(eventName, msg);
+    }
 };
 //==============================================================================
 /** @type {AfterEntityLoadHandler} */
 const onAfterEntityLoad = (event) => {
-    if (!toggles.el_aft) return;
-
-    const entity = event.entity;
-    if (!entity || !entity.isValid) return;
-    const msg = `§a${entity.typeId}§r loaded @ ${Vector3Lib.toString(entity.location, 0, true)} -§v afterEvents.entityDie`;
-    alertLog.log(msg);
+    if (!event.entity.isValid || !dev.entityWatchList.includes(event.entity.typeId)) return;
+    
+    const eventName = 'afterEntityLoad';
+    const msg = `${alertLabel(eventName)} ${event.entity.typeId} @ ${locStr(event.entity.location)}`;
+    dev.alertEntityEventLog(eventName, msg);
 };
 //==============================================================================
 /** @type {AfterEntitySpawnHandler} */
 const onAfterEntitySpawn = (event) => {
-    if (!toggles.es_aft) return;
+    if (!event.entity.isValid || !dev.entityWatchList.includes(event.entity.typeId)) return;
 
-    const entity = event.entity;
-    if (!entity || !entity.isValid) return;
-    const msg = `§a${entity.typeId}§r ${event.cause} @ ${Vector3Lib.toString(entity.location, 0, true)} -§v afterEvents.entityDie`;
-    alertLog.log(msg);
+    const eventName = 'afterEntitySpawn';
+    const msg = `${alertLabel(eventName)} ${event.entity.typeId} (§d${event.cause}§r) @ ${locStr(event.entity.location)}`;
+    dev.alertEntityEventLog(eventName, msg);
 };
 //==============================================================================
-const entitySubs = new EntitySubscriptions(packDisplayName, true);
+const entitySubs = new EntitySubscriptions(packDisplayName, dev.isDebugFunction('subscriptionsEntities'));
 //==============================================================================
 export function subscriptionsEntities () {
-    const _name = 'function subscriptionsStable';
-    alertLog.log(`§v* ${_name} ()`, dev.debugFunctions.debugFunctionsOnOn);
+    const _name = 'subscriptionsEntities';
+    dev.alertFunctionKey(_name, true);
 
-    entitySubs.afterEntityLoad.subscribe(onAfterEntityLoad);  
+    entitySubs.register({
+        afterEntityDie: onAfterEntityDie,
+        afterEntityHitEntity: onAfterEntityHitEntity,
+        afterEntityHurt: onAfterEntityHurt,
+        afterEntityLoad: onAfterEntityLoad,
+        afterEntitySpawn: onAfterEntitySpawn,
+    });
 }
 //==============================================================================
 // End of File

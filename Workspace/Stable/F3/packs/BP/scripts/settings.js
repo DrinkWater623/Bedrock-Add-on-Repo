@@ -1,3 +1,4 @@
+// settings.js  F3
 //@ts-check
 import { world } from "@minecraft/server";
 import { ConsoleAlert, ChatMsg } from "./common-stable/tools/messageLib";
@@ -8,7 +9,6 @@ import { ConsoleAlert, ChatMsg } from "./common-stable/tools/messageLib";
 //==============================================================================
 export const pack = {
     packName: 'F3 Testing',
-    debugOn: true, //important - do not release Add-ons with this true, except for F3, as it was meant for debugging only
 
     about: 'Testing for Subscription Events and Custom Components',
     devUrl: 'https://github.com/DrinkWater623',
@@ -16,8 +16,11 @@ export const pack = {
 
     isBeta: false,
     worldLoaded: false,
+    namespace: "dw623",
+    cmdNameSpace: "f3",
     isLoadAlertsOn: true,
-    cmdNameSpace: "f3"
+
+    debugOn: true //important - do not release Add-ons with this true, except for F3, as it was meant for debugging only
 };
 //==============================================================================
 export const packDisplayName = `§6${pack.packName}§r`;
@@ -26,45 +29,66 @@ export const alertLog = new ConsoleAlert(packDisplayName);
 export const chatLog = new ChatMsg(packDisplayName);
 //==============================================================================
 export const watchFor = {
-    //--------------
-    //TODO: add slab, tiles, etc.. each type of block
-    //--------------
-    watchArrows: false,
-    arrowBlocks: [
-        'dw623:bedrock_arrow'
+
+    //s/b same as jsonte data - add new versions here and in regolith/jsonte data for vanilla materials
+    materialList: [
+        "bedrock"
     ],
-    //--------------
-    watchBars: false,
-    barBlocks: [
-        'dw623:bedrock_bar'
-    ],
-    //--------------
-    watchMiniBlocks: true,
-    miniBlocks: [
-        'dw623:bedrock_mini_block'
-    ],
-    onUseBlockAsItemList: [ '' ],
-    /**@returns{string[]} */
-    onPlaceBlockList () {
-        const blocks = [
-            ...this.arrowBlocks,
-            ...this.barBlocks,
-            ...this.miniBlocks
-        ];
-        return blocks;
+    soundProfiles: new Map(),
+
+    //For onPlace custom components.  Some blocks do not need this, so not listed   
+    blocksTypeList () { return [ 'arrow', 'bar', 'mini_block', 'mini_dot', 'mini_puck' ]; },
+
+    /**@param {string} name */
+    aBlockList (name) {
+        return this.materialList.map(m => pack.namespace + ':' + m + `_${name}`);
     },
+
+    /** @returns {Array<[string, string[]]>} */
+    onPlaceBlockGroups () {
+        return this.blocksTypeList().map(blockType => [ blockType, this.aBlockList(blockType) ]);
+    },
+
     /**@returns{string[]} */
-    onBreakBlockList: [ '' ],
-    /**@returns{string[]} */
+    _onPlaceBlockList () {
+        return this.blocksTypeList().flatMap(blockType => this.aBlockList(blockType));
+    },
+    /**@type {string[]} */
+    blockWatchList: [],
+
+    entityWatchList: [
+        'minecraft:player',
+
+        //Air
+        'minecraft:arrow', //projectile
+        'minecraft:phantom',
+        'minecraft:ghast',
+        'minecraft:wither',
+
+        //Fire
+        'minecraft:blaze',
+        'minecraft:magma',
+        //'minecraft:creeper',
+        
+        //Water
+        'minecraft:drowned',
+        'minecraft:guardian',
+        'minecraft:pufferfish',
+
+        //Earth (undead)
+        'minecraft:skeleton',
+        'minecraft:husk',
+        'minecraft:zombie',
+        'minecraft:zombie_villager'
+    ],
+
     customItemList: [
         "dw623:light_arrow_template"
-    ],
-    entityList: [
-        "dw623:light_arrow_template"
     ]
-    //--------------
 };
-watchFor.onUseBlockAsItemList = [...watchFor.onPlaceBlockList()];
+watchFor.blockWatchList = [ ...watchFor._onPlaceBlockList() ];
+watchFor.blockWatchList.filter(v => v.includes('bedrock')).forEach((v) => { watchFor.soundProfiles.set(v, 'dig,stone'); });
+//watchFor.onUseBlockAsItemList = [...watchFor.onPlaceBlockList()];
 //==============================================================================
 export const toggles = {
     //entities

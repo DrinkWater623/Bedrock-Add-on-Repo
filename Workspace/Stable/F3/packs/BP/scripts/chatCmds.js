@@ -12,31 +12,29 @@ Change Log:
     20251219 - Created/Copied
 ========================================================================*/
 // Minecraft
-import { Player } from "@minecraft/server";
+import {  Player } from "@minecraft/server";
 import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus } from "@minecraft/server";
+// Shared
+import { PlayerDebug } from "./common-stable/gameObjects/index.js";
 // Local
 import { pack, packDisplayName } from './settings.js';
 import { dev } from "./debug.js";
-const alert = dev.debugFunctions.registerCommand ?? false;
-/**
- * 
- * @param {string} func 
- */
-function alertFunction (func) {
-    dev.alertFunction(func, true, alert);
-}
+import { shelter } from "./helpers/shelters.js";
+//==============================================================================
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
+//==============================================================================
+const playerDebug = new PlayerDebug(dev);
 //==============================================================================
 /**
  * @param {CustomCommandRegistry} registry 
  */
 function register_about (registry) {
-    alertFunction('register_about');
+    dev.alertFunctionKey('register_about');
     const cmd = {
         name: `${pack.cmdNameSpace}:about_f3`,
         description: "Info/Help for DW623's 'F3 Testing add-on",
         permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
-
     };
     /**
      * @returns {import("@minecraft/server").CustomCommandResult}
@@ -55,14 +53,11 @@ function register_about (registry) {
         return result;
     });
 }
-//=====================================================================================
-//          LATER  all this will be moved to F3 addon where I can test this stuff
-//=====================================================================================
 /**
  * @param {CustomCommandRegistry} registry 
  */
 function register_toggle_arrow (registry) {
-    alertFunction('register_about');
+    dev.alertFunctionKey('register_toggle_arrow');
     const cmd = {
         name: `${pack.cmdNameSpace}:toggle_arrow`,
         description: "Toggle on/off watching Arrow Events",
@@ -73,7 +68,7 @@ function register_toggle_arrow (registry) {
      * @returns {import("@minecraft/server").CustomCommandResult}
      */
     registry.registerCommand(cmd, (origin) => {
-        dev.objectType_toggle('arrow', true);
+        dev.toggle_blockGameObject('arrow', true);
         return { status: CustomCommandStatus.Success };
     });
 }
@@ -81,7 +76,7 @@ function register_toggle_arrow (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_toggle_bar (registry) {
-    alertFunction('register_about');
+    dev.alertFunctionKey('register_toggle_bar');
     const cmd = {
         name: `${pack.cmdNameSpace}:toggle_bar`,
         description: "Toggle on/off watching Light Bar Events",
@@ -92,7 +87,7 @@ function register_toggle_bar (registry) {
      * @returns {import("@minecraft/server").CustomCommandResult}
      */
     registry.registerCommand(cmd, (origin) => {
-        dev.objectType_toggle('bar', true);
+        dev.toggle_blockGameObject('bar', true);
         return { status: CustomCommandStatus.Success };
     });
 }
@@ -100,7 +95,7 @@ function register_toggle_bar (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_toggle_mini_block (registry) {
-    alertFunction('register_toggle_miniBlock');
+    dev.alertFunctionKey('register_toggle_mini_block');
     const cmd = {
         name: `${pack.cmdNameSpace}:toggle_mini_block`,
         description: "Toggle on/off watching Mini Block Events",
@@ -111,18 +106,18 @@ function register_toggle_mini_block (registry) {
      * @returns {import("@minecraft/server").CustomCommandResult}
      */
     registry.registerCommand(cmd, (origin) => {
-        dev.objectType_toggle('miniBlock', true);
+        dev.toggle_blockGameObject('mini_block', true);
         return { status: CustomCommandStatus.Success };
     });
 }
 /**
  * @param {CustomCommandRegistry} registry 
  */
-function register_event_beforeItemUse (registry) {
-    alertFunction('register_event_beforeItemUse');
+function register_toggle_mini_dot (registry) {
+    dev.alertFunctionKey('register_toggle_mini_dot');
     const cmd = {
-        name: `${pack.cmdNameSpace}:toggle_event_beforeItemUse`.toLowerCase(),
-        description: "Toggle on/off watching Item Use Before-Events",
+        name: `${pack.cmdNameSpace}:toggle_mini_dot`,
+        description: "Toggle on/off watching Mini Dot Events",
         permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
     };
@@ -130,7 +125,26 @@ function register_event_beforeItemUse (registry) {
      * @returns {import("@minecraft/server").CustomCommandResult}
      */
     registry.registerCommand(cmd, (origin) => {
-        dev.eventType_toggle('beforeItemUse', true);
+        dev.toggle_blockGameObject('mini_dot', true);
+        return { status: CustomCommandStatus.Success };
+    });
+}
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_toggle_mini_puck (registry) {
+    dev.alertFunctionKey('register_toggle_mini_puck');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:toggle_mini_puck`,
+        description: "Toggle on/off watching Mini Puck Events",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        dev.toggle_blockGameObject('mini_puck', true);
         return { status: CustomCommandStatus.Success };
     });
 }
@@ -139,7 +153,7 @@ function register_event_beforeItemUse (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_event_afterItemCompleteUse (registry) {
-    alertFunction('register_event_afterItemCompleteUse');
+    dev.alertFunctionKey('register_event_afterItemCompleteUse');
     const cmd = {
         name: `${pack.cmdNameSpace}:toggle_event_afterItemCompleteUse`.toLowerCase(),
         description: "Toggle on/off watching Item-Complete-Use-On After-Events",
@@ -150,7 +164,7 @@ function register_event_afterItemCompleteUse (registry) {
      * @returns {import("@minecraft/server").CustomCommandResult}
      */
     registry.registerCommand(cmd, (origin) => {
-        dev.eventType_toggle('afterItemCompleteUse', true);
+        dev.toggle_itemEvent('afterItemCompleteUse', true);
         return { status: CustomCommandStatus.Success };
     });
 }
@@ -158,7 +172,7 @@ function register_event_afterItemCompleteUse (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_event_afterItemReleaseUse (registry) {
-    alertFunction('register_event_afterItemReleaseUse');
+    dev.alertFunctionKey('register_event_afterItemReleaseUse');
     const cmd = {
         name: `${pack.cmdNameSpace}:toggle_event_afterItemReleaseUse`.toLowerCase(),
         description: "Toggle on/off watching Item-Release-Use After-Events",
@@ -169,7 +183,7 @@ function register_event_afterItemReleaseUse (registry) {
      * @returns {import("@minecraft/server").CustomCommandResult}
      */
     registry.registerCommand(cmd, (origin) => {
-        dev.eventType_toggle('afterItemReleaseUseOn', true);
+        dev.toggle_itemEvent('afterItemReleaseUseOn', true);
         return { status: CustomCommandStatus.Success };
     });
 }
@@ -178,7 +192,7 @@ function register_event_afterItemReleaseUse (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_event_afterItemStartUseOn (registry) {
-    alertFunction('register_event_afterItemStartUseOn');
+    dev.alertFunctionKey('register_event_afterItemStartUseOn');
     const cmd = {
         name: `${pack.cmdNameSpace}:toggle_event_afterItemStartUseOn`.toLowerCase(),
         description: "Toggle on/off watching Item-Start-Use-On After-Events",
@@ -189,7 +203,7 @@ function register_event_afterItemStartUseOn (registry) {
      * @returns {import("@minecraft/server").CustomCommandResult}
      */
     registry.registerCommand(cmd, (origin) => {
-        dev.eventType_toggle('afterItemStartUseOn', true);
+        dev.toggle_itemEvent('afterItemStartUseOn', true);
         return { status: CustomCommandStatus.Success };
     });
 }
@@ -197,7 +211,7 @@ function register_event_afterItemStartUseOn (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_event_afterItemStartUse (registry) {
-    alertFunction('register_event_afterItemStartUse');
+    dev.alertFunctionKey('register_event_afterItemStartUse');
     const cmd = {
         name: `${pack.cmdNameSpace}:toggle_event_afterItemStartUse`.toLowerCase(),
         description: "Toggle on/off watching Item-Start-Use After-Events",
@@ -208,7 +222,7 @@ function register_event_afterItemStartUse (registry) {
      * @returns {import("@minecraft/server").CustomCommandResult}
      */
     registry.registerCommand(cmd, (origin) => {
-        dev.eventType_toggle('afterItemStartUseOn', true);
+        dev.toggle_itemEvent('afterItemStartUseOn', true);
         return { status: CustomCommandStatus.Success };
     });
 }
@@ -217,7 +231,7 @@ function register_event_afterItemStartUse (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_event_afterItemStopUseOn (registry) {
-    alertFunction('register_event_afterItemStopUseOn');
+    dev.alertFunctionKey('register_event_afterItemStopUseOn');
     const cmd = {
         name: `${pack.cmdNameSpace}:toggle_event_afterItemStopUseOn`.toLowerCase(),
         description: "Toggle on/off watching Item-Stop-Use-On After-Events",
@@ -228,7 +242,7 @@ function register_event_afterItemStopUseOn (registry) {
      * @returns {import("@minecraft/server").CustomCommandResult}
      */
     registry.registerCommand(cmd, (origin) => {
-        dev.eventType_toggle('afterItemStopUseOn', true);
+        dev.toggle_itemEvent('afterItemStopUseOn', true);
         return { status: CustomCommandStatus.Success };
     });
 }
@@ -236,7 +250,7 @@ function register_event_afterItemStopUseOn (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_event_afterItemStopUse (registry) {
-    alertFunction('register_event_afterItemStopUse');
+    dev.alertFunctionKey('register_event_afterItemStopUse');
     const cmd = {
         name: `${pack.cmdNameSpace}:toggle_event_afterItemStopUse`.toLowerCase(),
         description: "Toggle on/off watching Item-Stop-Use After-Events",
@@ -247,7 +261,27 @@ function register_event_afterItemStopUse (registry) {
      * @returns {import("@minecraft/server").CustomCommandResult}
      */
     registry.registerCommand(cmd, (origin) => {
-        dev.eventType_toggle('afterItemStopUseOn', true);
+        dev.toggle_itemEvent('afterItemStopUseOn', true);
+        return { status: CustomCommandStatus.Success };
+    });
+}
+//==============================================================================
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_event_beforeItemUse (registry) {
+    dev.alertFunctionKey('register_event_beforeItemUse');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:toggle_event_beforeItemUse`.toLowerCase(),
+        description: "Toggle on/off watching Item Use Before-Events",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        dev.toggle_itemEvent('beforeItemUse', true);
         return { status: CustomCommandStatus.Success };
     });
 }
@@ -256,7 +290,7 @@ function register_event_afterItemStopUse (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_event_on_Place (registry) {
-    alertFunction('register_event_on_Place');
+    dev.alertFunctionKey('register_event_on_Place');
     const cmd = {
         name: `${pack.cmdNameSpace}:toggle_event_on_place`,
         description: "Toggle on/off watching On-Place Events",
@@ -267,7 +301,7 @@ function register_event_on_Place (registry) {
      * @returns {import("@minecraft/server").CustomCommandResult}
      */
     registry.registerCommand(cmd, (origin) => {
-        dev.eventType_toggle('onPlace', true);
+        dev.toggle_blockEvent('onPlace', true);
         return { status: CustomCommandStatus.Success };
     });
 }
@@ -275,7 +309,7 @@ function register_event_on_Place (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_event_beforePlayerInteractWithBlock (registry) {
-    alertFunction('register_event_beforePlayerInteractWithBlock');
+    dev.alertFunctionKey('register_event_beforePlayerInteractWithBlock');
     const cmd = {
         name: `${pack.cmdNameSpace}:toggle_event_before_player_interactWithBlock`.toLowerCase(),
         description: "Toggle on/off watching Player-Interact_with_Block Before-Events",
@@ -286,7 +320,228 @@ function register_event_beforePlayerInteractWithBlock (registry) {
      * @returns {import("@minecraft/server").CustomCommandResult}
      */
     registry.registerCommand(cmd, (origin) => {
-        dev.eventType_toggle('beforePlayerInteractWithBlock', true);
+        const event = 'beforePlayerInteractWithBlock';
+        dev.toggle_blockEvent(event, true);
+        dev.toggle_playerEvent(event, true);
+        return { status: CustomCommandStatus.Success };
+    });
+}
+//==============================================================================
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_event_player_info (registry) {
+    dev.alertFunctionKey('register_event_player_info');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:show_player_info`,
+        description: "Show Your Info",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        if (origin.sourceEntity instanceof Player) {
+            playerDebug.playerInfo(origin.sourceEntity);
+        }
+        return { status: CustomCommandStatus.Success };
+    });
+}
+//===============================
+/* Testing for Elemental Addon */
+//===============================
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_un_join (registry) {
+    dev.alertFunctionKey('register_event_player_info');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:un_join`,
+        description: "Un Join any Element",
+        permissionLevel: CommandPermissionLevel.Admin,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        if (origin.sourceEntity instanceof Player) {
+            origin.sourceEntity.setDynamicProperty('element', 'none');
+        }
+        return { status: CustomCommandStatus.Success };
+    });
+}
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_join_air (registry) {
+    dev.alertFunctionKey('register_event_player_info');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:join_air`,
+        description: "Join the Air Element",
+        permissionLevel: CommandPermissionLevel.Admin,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        if (origin.sourceEntity instanceof Player) {
+            origin.sourceEntity.setDynamicProperty('element', 'air');
+        }
+        return { status: CustomCommandStatus.Success };
+    });
+}
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_join_earth (registry) {
+    dev.alertFunctionKey('register_event_player_info');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:join_earth`,
+        description: "Join the Earth Element",
+        permissionLevel: CommandPermissionLevel.Admin,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        if (origin.sourceEntity instanceof Player) {
+            origin.sourceEntity.setDynamicProperty('element', 'earth');
+        }
+        return { status: CustomCommandStatus.Success };
+    });
+}
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_join_fire (registry) {
+    dev.alertFunctionKey('register_event_player_info');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:join_fire`,
+        description: "Join the Fire Element",
+        permissionLevel: CommandPermissionLevel.Admin,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        if (origin.sourceEntity instanceof Player) {
+            origin.sourceEntity.setDynamicProperty('element', 'fire');
+        }
+        return { status: CustomCommandStatus.Success };
+    });
+}
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_join_water (registry) {
+    dev.alertFunctionKey('register_event_player_info');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:join_water`,
+        description: "Join the Water Element",
+        permissionLevel: CommandPermissionLevel.Admin,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        if (origin.sourceEntity instanceof Player) {
+            origin.sourceEntity.setDynamicProperty('element', 'water');
+        }
+        return { status: CustomCommandStatus.Success };
+    });
+}
+//==================================================================================
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_house (registry) {
+    // dev.alertFunctionKey('register_event_player_info');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:house`,
+        description: "Make a House",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        if (origin.sourceEntity instanceof Player) {
+            const player = origin.sourceEntity;
+            shelter(player,'house')           
+        }
+        return { status: CustomCommandStatus.Success };
+    });
+}
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_shack (registry) {
+    // dev.alertFunctionKey('register_event_player_info');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:shack`,
+        description: "Make a Shack",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        if (origin.sourceEntity instanceof Player) {
+            const player = origin.sourceEntity;
+            shelter(player,'shack')           
+        }
+        return { status: CustomCommandStatus.Success };
+    });
+}
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_starter_house (registry) {
+    // dev.alertFunctionKey('register_event_player_info');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:starter_house`,
+        description: "Make a Starter House",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        if (origin.sourceEntity instanceof Player) {
+            const player = origin.sourceEntity;
+            shelter(player,'starter')           
+        }
+        return { status: CustomCommandStatus.Success };
+    });
+}
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_building (registry) {
+    // dev.alertFunctionKey('register_event_player_info');
+    const cmd = {
+        name: `${pack.cmdNameSpace}:building`,
+        description: "Make a Building",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        if (origin.sourceEntity instanceof Player) {
+            const player = origin.sourceEntity;
+            shelter(player,'building')           
+        }
         return { status: CustomCommandStatus.Success };
     });
 }
@@ -296,10 +551,24 @@ function register_event_beforePlayerInteractWithBlock (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 export function registerCustomCommands (registry) {
-    alertFunction('registerCustomCommands');
+    dev.alertFunctionKey('registerCustomCommands');
     register_about(registry);
 
-    if (pack.debugOn) {
+    if (!pack.debugOn) return;
+
+    if (dev.isDebugFunction('alertElementAddOn')) {
+        register_join_air(registry);
+        register_join_earth(registry);
+        register_join_fire(registry);
+        register_join_water(registry);
+        register_un_join(registry)
+        register_house(registry);
+        register_shack(registry);
+        register_building(registry);
+        register_starter_house(registry);
+    }
+
+    if (dev.isDebugFunction('alertItemSubs')) {
         register_event_afterItemCompleteUse(registry);
         register_event_afterItemReleaseUse(registry);
         register_event_afterItemStartUse(registry);
@@ -307,17 +576,24 @@ export function registerCustomCommands (registry) {
         register_event_afterItemStopUse(registry);
         register_event_afterItemStopUseOn(registry);
         register_event_beforeItemUse(registry);
-        register_event_on_Place(registry);
+    }
+
+    if (dev.isDebugFunction('alertBlockSubs')) {
         register_event_beforePlayerInteractWithBlock(registry);
+    }
+
+    if (dev.isDebugFunction('alertBlockRotations')) {
+        register_event_on_Place(registry);
         register_toggle_arrow(registry);
         register_toggle_bar(registry);
         register_toggle_mini_block(registry);
-
-        /**
-         * 
-    beforePlayerInteractWithBlock: true,
-         */
+        register_toggle_mini_dot(registry);
+        register_toggle_mini_puck(registry);
     }
+
+    register_event_player_info(registry);
+
+    dev.alertFunctionKey('registerCustomCommands', false);
 }
 //==============================================================================
 // End of File

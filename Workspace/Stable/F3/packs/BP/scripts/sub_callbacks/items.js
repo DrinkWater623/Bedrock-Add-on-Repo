@@ -1,4 +1,4 @@
-// subscribes.js  F3 Testing Minecraft Bedrock Add-on
+// subscribes.js  F3 Testing Bedrock Add-on
 // @ts-check
 /* =====================================================================
 Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
@@ -13,13 +13,12 @@ Change Log:
 import { world, system, Player } from "@minecraft/server";
 //Shared
 import { ItemSubscriptions } from "../common-stable/subscriptions/index.js";
+import { Vector3Lib } from "../common-stable/tools/index.js";
 //Local
-import {  packDisplayName, watchFor } from '../settings.js';
+import { packDisplayName, watchFor } from '../settings.js';
 import { dev } from "../debug.js";
 //==============================================================================
 /** The function type subscribe expects. */
-//  Blocks
-/** @typedef {Parameters<typeof world.beforeEvents.playerInteractWithBlock.subscribe>[0]} BeforePlayerInteractWithBlockHandler */
 // Items
 /** @typedef {Parameters<typeof world.afterEvents.itemCompleteUse.subscribe>[0]} AfterItemCompleteUseHandler */
 /** @typedef {Parameters<typeof world.afterEvents.itemReleaseUse.subscribe>[0]} AfterItemReleaseUseHandler */
@@ -28,110 +27,102 @@ import { dev } from "../debug.js";
 /** @typedef {Parameters<typeof world.afterEvents.itemStopUse.subscribe>[0]} AfterItemStopUseHandler */
 /** @typedef {Parameters<typeof world.afterEvents.itemStopUseOn.subscribe>[0]} AfterItemStopUseOnHandler */
 /** @typedef {Parameters<typeof world.beforeEvents.itemUse.subscribe>[0]} BeforeItemUseHandler */
-// System
-/** @typedef {Parameters<typeof system.beforeEvents.startup.subscribe>[0]} BeforeStartupHandler */
 //==============================================================================
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
 //==============================================================================
-export const itemSubs = new ItemSubscriptions(packDisplayName, dev.debugSubscriptions.debugSubscriptionsOn);
-const myItemStackWatch = watchFor.onPlaceBlockList();
-const myBlocks = watchFor.onPlaceBlockList;
+/**
+ * @param {string} key 
+ * @returns {string}
+ */
+const alertLabel = (key) => { return `§a§l${key}§r (§eTick:§r ${system.currentTick}) ==> `; };
+/**
+ * @param {string} text 
+ * @returns {string}
+ */
+const fieldLabel = (text) => { return `§b${text}:§r`; };
+/**
+ * 
+ * @param {Vector3} xyz 
+ * @returns {string}
+ */
+const locStr = (xyz) => { return Vector3Lib.toString(xyz, 0, true); };
+//==============================================================================
+const myItemStackWatchList = [...dev.blockWatchList,...dev.itemWatchList]
+//const myBars = watchFor.barBlocks();
+//const myBlockGroups = watchFor.onPlaceBlockGroups();
 //==============================================================================
 /**@type {AfterItemCompleteUseHandler} */
 const onAfterItemCompleteUse = (event) => {
     if (!(event.source instanceof Player)) return;
-    if (!myItemStackWatch.includes(event.itemStack.typeId)) return;
+    if (!myItemStackWatchList.includes(event.itemStack.typeId)) return;
 
-    const itemStack = event.itemStack;
-    const eventType = 'afterItemCompleteUse';
-    const alert = myBlocks.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
-
-    const msg = `§6§l${eventType}:§r typeId=${itemStack.typeId}  useDuration=${event.useDuration}`;
-    dev.alertLog(msg, alert);
+    const eventName = 'afterItemCompleteUse';
+    const msg = `${alertLabel(eventName)} ${event.source.name}  ${fieldLabel('Item')} ${event.itemStack.typeId}  ${fieldLabel('Use Duration')} ${event.useDuration}`;
+    dev.alertItemEventLog(eventName,msg);
 };
-
 /**@type {AfterItemReleaseUseHandler} */
 const onAfterItemReleaseUse = (event) => {
     if (!(event.source instanceof Player)) return;
     if (!event.itemStack) return;
-    if (!myItemStackWatch.includes(event.itemStack.typeId)) return;
+    if (!myItemStackWatchList.includes(event.itemStack.typeId)) return;
 
-    const itemStack = event.itemStack;
-    const eventType = 'afterItemReleaseUse';
-    const alert = myBlocks.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
-
-    const msg = `§6§l${eventType}§r typeId=${itemStack.typeId}  useDuration=${event.useDuration}`;
-    dev.alertLog(msg, alert);
+    const eventName = 'afterItemReleaseUse';
+    const msg = `${alertLabel(eventName)} ${event.source.name}  ${fieldLabel('Item')} ${event.itemStack.typeId}  ${fieldLabel('Use Duration')} ${event.useDuration}`;
+    dev.alertItemEventLog(eventName,msg);
 };
 /**@type {AfterItemStartUseHandler} */
 const onAfterItemStartUse = (event) => {
     if (!(event.source instanceof Player)) return;
-    if (!myItemStackWatch.includes(event.itemStack.typeId)) return;
+    if (!myItemStackWatchList.includes(event.itemStack.typeId)) return;
 
-    const itemStack = event.itemStack;
-    const eventType = 'afterItemStartUse';
-    const alert = myBlocks.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
-
-    const msg = `§6§l${eventType}§r typeId=${event.itemStack.typeId}`;
-    dev.alertLog(msg, alert);
+    const eventName = 'afterItemStartUse';
+    const msg = `${alertLabel(eventName)} ${event.source.name}  ${fieldLabel('Item')} ${event.itemStack.typeId}`;
+    dev.alertItemEventLog(eventName,msg);
 };
 /**@type {AfterItemStartUseOnHandler} */
 const onAfterItemStartUseOn = (event) => {
     if (!(event.source instanceof Player)) return;
     if (!event.itemStack) return;
-    if (!myItemStackWatch.includes(event.itemStack.typeId)) return;
+    if (!myItemStackWatchList.includes(event.itemStack.typeId)) return;
 
-    const eventType = 'afterItemStartUseOn';
-    const itemStack = event.itemStack;
-    const alert = myBlocks.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
-
-    const msg = `§6§l${eventType}:§r typeId=${event.itemStack.typeId}  blockFace=${event.blockFace} on  block=${event.block.typeId}`;
-    dev.alertLog(msg, alert);
+    const eventName = 'afterItemStartUseOn';
+    const msg = `${alertLabel(eventName)} ${event.source.name} ${fieldLabel('Item')} ${event.itemStack.typeId} on ${fieldLabel('Block')} ${event.block.typeId} (${event.blockFace})`;
+    dev.alertItemEventLog(eventName,msg);
 };
 /**@type {AfterItemStopUseHandler} */
 const onAfterItemStopUse = (event) => {
     if (!(event.source instanceof Player)) return;
     if (!event.itemStack) return;
-    if (!myItemStackWatch.includes(event.itemStack.typeId)) return;
+    if (!myItemStackWatchList.includes(event.itemStack.typeId)) return;
 
-    const eventType = 'afterItemStopUse';
-    const itemStack = event.itemStack;
-    const alert = myBlocks.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
-
-    const msg = `§6§l${eventType}§r typeId=${event.itemStack.typeId}  useDuration=${event.useDuration}`;
-    dev.alertLog(msg, alert);
+    const eventName = 'afterItemStopUse';
+    const msg = `${alertLabel(eventName)} ${event.source.name}  ${fieldLabel('Item')} ${event.itemStack.typeId}  ${fieldLabel('Use Duration')} ${event.useDuration}`;
+    dev.alertItemEventLog(eventName,msg);
 };
 /**@type {AfterItemStopUseOnHandler} */
 const onAfterItemStopUseOn = (event) => {
     if (!(event.source instanceof Player)) return;
     if (!event.itemStack) return;
-    if (!myItemStackWatch.includes(event.itemStack.typeId)) return;
+    if (!myItemStackWatchList.includes(event.itemStack.typeId)) return;
 
-    const itemStack = event.itemStack;
-    const eventType = 'afterItemStopUseOn';
-    const alert = myBlocks.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
-
-    const msg = `§6§l${eventType}§r typeId=${event.itemStack.typeId} on block=${event.block.typeId}`;
-    dev.alertLog(msg, alert);
+    const eventName = 'afterItemStopUseOn';
+    const msg = `${alertLabel(eventName)}${event.source.name}  ${fieldLabel('Item')} ${event.itemStack.typeId} on ${fieldLabel('Block')} ${event.block.typeId}`;
+    dev.alertItemEventLog(eventName,msg);
 };
 /**@type {BeforeItemUseHandler} */
 const onBeforeItemUse = (event) => {
     if (!(event.source instanceof Player)) return;
-    if (!myItemStackWatch.includes(event.itemStack.typeId)) return;
+    if (!myItemStackWatchList.includes(event.itemStack.typeId)) return;
 
-    const itemStack = event.itemStack;
-    const eventType = 'beforeItemUse';
-    const alert = myBlocks.some(([ objType, list ]) => dev.isDebugEventObject(eventType, objType) && list.includes(itemStack.typeId));
-
-    const msg = `§6§l${eventType}§r typeId=${event.itemStack.typeId}`;
-    dev.alertLog(msg, alert);
+    const eventName = 'beforeItemUse';
+    const msg = `${alertLabel(eventName)}${event.source.name}  ${fieldLabel('Item')} ${event.itemStack.typeId}`;
+    dev.alertItemEventLog(eventName,msg);
 };
 //==============================================================================
+const itemSubs = new ItemSubscriptions(packDisplayName, dev.isDebugFunction(('subscriptionsItems')));
 export function subscriptionsItems () {
     const _name = 'subscriptionsItems';
-    const alert=dev.debugFunctions.subscriptionsItems
-    dev.alertFunction(_name, true,alert);
-
-    //2 ways to do it.  Use register for bulk tho
+    dev.alertFunctionKey(_name, true);
 
     itemSubs.register({
         afterItemCompleteUse: onAfterItemCompleteUse,
@@ -141,8 +132,14 @@ export function subscriptionsItems () {
         afterItemStartUse: onAfterItemStartUse,
         afterItemStartUseOn: onAfterItemStartUseOn,
         beforeItemUse: onBeforeItemUse,
-    },!!dev.debugSubscriptions.alertItemSubs);
+    }, dev.isDebugFunction('alertItemSubs'));
 }
 //==============================================================================
 // End of File
 //==============================================================================
+/* Save just in case
+    const debug =
+        (dev.isDebugEventObject(eventName, 'arrow') && myArrows.includes(event.itemStack.typeId)) ||
+        (dev.isDebugEventObject(eventName, 'bar') && myBars.includes(event.itemStack.typeId)) ||
+        (dev.isDebugEventObject(eventName, 'mini_block') && myMiniBlocks.includes(event.itemStack.typeId));
+ */

@@ -11,10 +11,10 @@ import { subscriptionsStable } from './subscribes.js';
 import { subscriptionsBeta } from './subscribes-beta.js';
 //==============================================================================
 const msg = `Add-on - §bBeta ${dev.debugOn ? '§4(debug mode)' : ''}`;
-dev.alertLog(`§6Installing ${msg}`, dev.debugOn);
+dev._controlLog(`§6Installing ${msg}`, pack.debugOn);
 subscriptionsStable();
 subscriptionsBeta();
-alertLog.success(`Installed ${msg}`, pack.isLoadAlertsOn);
+alertLog.success(`Installed ${msg}`, pack.isLoadAlertsOn && !pack.debugOn);
 //==============================================================================
 // End of File
 //==============================================================================

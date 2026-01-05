@@ -1,0 +1,306 @@
+{
+    "custom_blocks": {
+        "bar": {
+            "unitPx": 16,
+            "depthPx": 5,
+            "safeDiv": 16.001,
+            "flushOffset": 0.34372851696768947,
+            "ptrValues":[4,0,1,2,3,5],
+            "stateName": "dw623:position_ptr",
+            "customComponentName": "dw623:on_place_bar"
+        },
+        "mini_block": {
+            /* Block size specific values */
+            "unitPx": 16,
+            "spanPx": 5,
+            "depthPx": 5,
+            
+            /* Script API Interface */
+            "stateName": "dw623:faceLocationGrid_ptr",
+            "customComponentName": "dw623:on_place_mini_block",
+
+            //* calculations */
+
+            // scaleXZ = spanPx/unitPx 
+            "scaleXZ": 0.3125,
+
+            // scaleY = depthPx/unitPx
+            "scaleY": 0.3125,
+                        //safeDiv = unitPx + 0.001
+            "safeDiv": 16.001,
+
+            //gridN = floor(unitPx / spanPx)
+            "gridN": 3,
+
+            /* CALCULATIONS PAST HERE ARE A PROBLEM - CAN'T ACCESS PREVIOUS VALUES */
+
+            //gridHalf = (gridN - 1)/2
+            "gridHalf": 1,
+
+            //gridStepPx = (unitPx - spanPx) / (gridN - 1)}}"
+            "gridStepPx": 5.5, 
+
+            //"flushPx": "(unitPx - spanPx) / 2",
+            "flushPx": 5.5,
+
+            //numFacePositions = gridN * gridN
+            "numFacePositions": 9,
+
+            //maxFacePtr = numFacePositions -1
+            "maxFacePtr": 8,
+
+            //middleIndex = floor(numFacePositions / 2)
+            "middleIndex": 4,
+
+            //ptrValues = (0..maxFacePtr).filter(n => n != middleIndex).prePend(middleIndex)
+            "ptrValues":[4,0,1,2,3,5,6,7,8],
+
+            //"flushOffset": "flushPx / safeDiv"
+            "flushOffset": 0.3437285169676895 //0.34375
+        },
+        "mini_puck": {
+            /* Block size specific values */
+            "unitPx": 16,
+            "spanPx": 4,
+            "depthPx": 2,
+            
+            /* Script API Interface */
+            "stateName": "dw623:faceLocationGrid_ptr",
+            "customComponentName": "dw623:on_place_mini_puck",
+
+            //* calculations */
+
+            // scaleXZ = spanPx/unitPx 
+            "scaleXZ": 0.25,
+
+            // scaleY = depthPx/unitPx
+            "scaleY": 0.125,
+                        //safeDiv = unitPx + 0.001
+            "safeDiv": 16.001,
+
+            //gridN = floor(unitPx / spanPx)
+            "gridN": 4,
+
+            /* CALCULATIONS PAST HERE ARE A PROBLEM - CAN'T ACCESS PREVIOUS VALUES */
+
+            //gridHalf = (gridN - 1)/2
+            "gridHalf": 1.5,
+            
+            //gridStepPx = (unitPx - spanPx) / (gridN - 1)}}"
+            "gridStepPx": 4, 
+
+            //numFacePositions = gridN * gridN
+            "numFacePositions": 16,
+
+            //maxFacePtr = numFacePositions -1
+            "maxFacePtr": 15,
+
+            //middleIndex = floor(numFacePositions / 2)
+            "middleIndex": 9,
+
+            //ptrValues = (0..maxFacePtr).filter(n => n != middleIndex).prePend(middleIndex)
+            "ptrValues":[9,0,1,2,3,4,5,6,7,8,10,11,12,13,14,15],
+
+            /*
+            "flushPx": "(unitPx - depthPx) / 2",
+            "flushOffset": "flushPx / safeDiv"*/
+            "flushOffset": 0.43746171992375
+        },
+        "mini_dot": {
+            // uses mini_puck data because of the enum limitation, which works for spacing dot in that grid
+            "unitPx": 16,
+            "spanPx": 2,
+            "depthPx": 1,
+
+            "stateName": "dw623:faceLocationGrid_ptr",
+            "customComponentName": "dw623:on_place_mini_dot",
+
+            "scaleXZ": 0.125,
+            "scaleY": 0.0625,
+
+            "safeDiv": 16.001,
+
+            // IMPORTANT: dot uses the PUCK grid (4x4), not floor(unitPx/spanPx)
+            "gridN": 4,
+
+            // gridHalf = (gridN - 1) / 2
+            "gridHalf": 1.5,
+
+            // PUCK grid spacing (centers at +/-6, +/-2)
+            // gridStepPx = (unitPx - puckSpanPx) / (gridN - 1) = (16 - 4)/3 = 4
+            "gridStepPx": 4,
+
+            "numFacePositions": 16,
+            "maxFacePtr": 15,
+
+            "middleIndex": 9,
+            "ptrValues": [9,0,1,2,3,4,5,6,7,8,10,11,12,13,14,15],
+
+            // flushPx = (16 - 1)/2 = 7.5 ; flushOffset = 7.5/16.001
+            "flushOffset": 0.468720703125
+        },
+        //Grid feature not used when only one position is possible
+        "panel_13": {
+            /* Block size specific values */
+            "unitPx": 16,
+            "spanPx": 13,
+            "depthPx": 1,
+            
+            /* Script API Interface */
+            //"stateName": "dw623:faceLocationGrid_ptr",
+            //"customComponentName": "dw623:on_place_panel",
+
+            //* calculations */
+
+            // scaleXZ = spanPx/unitPx 
+            "scaleXZ": 0.8125,
+
+            // scaleY = depthPx/unitPx
+            "scaleY": 0.0625,
+                        //safeDiv = unitPx + 0.001
+            "safeDiv": 16.001,
+
+            //gridN = floor(unitPx / spanPx)
+            "gridN": 1,
+
+            /* CALCULATIONS PAST HERE ARE A PROBLEM - CAN'T ACCESS PREVIOUS VALUES */
+
+            //gridStepPx = (unitPx - spanPx) / (gridN - 1)}}"
+            "gridStepPx": 0, 
+            "gridHalf": 0,
+
+            //numFacePositions = gridN * gridN
+            "numFacePositions": 1,
+
+            //maxFacePtr = numFacePositions -1
+            "maxFacePtr": 0,
+
+            //middleIndex = floor(numFacePositions / 2)
+            "middleIndex": 0,
+
+            //ptrValues = (0..maxFacePtr).filter(n => n != middleIndex).prePend(middleIndex)
+            "ptrValues":[0],
+
+            /*
+            "flushPx": "(unitPx - depthPx) / 2",
+            "flushOffset": "flushPx / safeDiv"*/
+            "flushOffset": 0.46871632104243
+        }
+    },    
+    "light_bar_positions": [
+        {
+        "grid": 0,
+        "geo_sfx": "east_ns",
+        "origin": [
+            -8,
+            0,
+            -8
+        ],
+        "size": [
+            5,
+            5,
+            16
+        ],
+        "uPx": 5.5,
+        "vPx": 0.0,
+        "scaleX": 0.3125,
+        "scaleY": 0.3125,
+        "scaleZ": 1.0
+        },
+        {
+        "grid": 1,
+        "geo_sfx": "south_ew",
+        "origin": [
+            -8,
+            0,
+            3
+        ],
+        "size": [
+            16,
+            5,
+            5
+        ],
+        "uPx": 0.0,
+        "vPx": -5.5,
+        "scaleX": 1.0,
+        "scaleY": 0.3125,
+        "scaleZ": 0.3125
+        },
+        {
+        "grid": 2,
+        "geo_sfx": "west_ns",
+        "origin": [
+            3,
+            0,
+            -8
+        ],
+        "size": [
+            5,
+            5,
+            16
+        ],
+        "uPx": -5.5,
+        "vPx": 0.0,
+        "scaleX": 0.3125,
+        "scaleY": 0.3125,
+        "scaleZ": 1.0
+        },
+        {
+        "grid": 3,
+        "geo_sfx": "north_ew",
+        "origin": [
+            -8,
+            0,
+            -8
+        ],
+        "size": [
+            16,
+            5,
+            5
+        ],
+        "uPx": 0.0,
+        "vPx": 5.5,
+        "scaleX": 1.0,
+        "scaleY": 0.3125,
+        "scaleZ": 0.3125
+        },
+        {
+        "grid": 4,
+        "geo_sfx": "center_ew",
+        "origin": [
+            -8,
+            0,
+            -2.5
+        ],
+        "size": [
+            16,
+            5,
+            5
+        ],
+        "uPx": 0.0,
+        "vPx": 0.0,
+        "scaleX": 1.0,
+        "scaleY": 0.3125,
+        "scaleZ": 0.3125
+        },
+        {
+        "grid": 5,
+        "geo_sfx": "center_ns",
+        "origin": [
+            -2.5,
+            0,
+            -8
+        ],
+        "size": [
+            5,
+            5,
+            16
+        ],
+        "uPx": 0.0,
+        "vPx": 0.0,
+        "scaleX": 0.3125,
+        "scaleY": 0.3125,
+        "scaleZ": 1.0
+        }
+    ]    
+}

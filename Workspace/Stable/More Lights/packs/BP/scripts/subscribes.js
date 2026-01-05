@@ -35,7 +35,7 @@ import { dev } from "./debug.js";
 /** @typedef {Parameters<typeof system.beforeEvents.startup.subscribe>[0]} BeforeStartupHandler */
 //==============================================================================
 //==============================================================================
-const debugSubscriptions=dev.isDebugFunction('subscriptions')
+const debugSubscriptions = dev.isDebugFunction('subscriptions');
 const blockSubs = new BlockSubscriptions(packDisplayName, debugSubscriptions);
 const itemSubs = new ItemSubscriptions(packDisplayName, debugSubscriptions);
 const playerSubs = new PlayerSubscriptions(packDisplayName, debugSubscriptions);
@@ -48,7 +48,7 @@ const myBlockGroups = watchFor.onPlaceBlockGroups();
 /** @type {BeforeStartupHandler} */
 const onBeforeStartup = (event) => {
     const ccr = event.customCommandRegistry;
-    dev.alertFunctionKey('onBeforeStartup')
+    dev.alertFunctionKey('onBeforeStartup');
     registerCustomCommands(ccr);
 
     event.blockComponentRegistry.registerCustomComponent(
@@ -87,8 +87,8 @@ const onBeforePlayerInteractWithBlock = (event) => {
 
     const eventType = 'beforePlayerInteractWithBlock';
     const itemStack = event.itemStack;
-    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugBlockObjectEvent(objType,eventType) && list.includes(itemStack.typeId));
-    const x = event.blockFace
+    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugBlockObjectEvent(objType, eventType) && list.includes(itemStack.typeId));
+    const x = event.blockFace;
     DynamicPropertyLib.onPlayerInteractWithBlockBeforeEventInfo_set(
         event,
         [], // block list not used here, this is the block touched.  Not cared about
@@ -96,118 +96,19 @@ const onBeforePlayerInteractWithBlock = (event) => {
         alert
     );
 };
-/**@type {AfterItemCompleteUseHandler} */
-const onAfterItemCompleteUse = (event) => {
-    if (!(event.source instanceof Player)) return;
-    if (!myItemStackWatch.includes(event.itemStack.typeId)) return;
-
-    const itemStack = event.itemStack;
-    const eventType = 'afterItemCompleteUse';
-    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugItemObjectEvent(objType,eventType) && list.includes(itemStack.typeId));
-
-    const msg = `§6§l${eventType}:§r typeId=${itemStack.typeId}  useDuration=${event.useDuration}`;
-    dev.alertLog(msg, alert);
-};
-
-/**@type {AfterItemReleaseUseHandler} */
-const onAfterItemReleaseUse = (event) => {
-    if (!(event.source instanceof Player)) return;
-    if (!event.itemStack) return;
-    if (!myItemStackWatch.includes(event.itemStack.typeId)) return;
-
-    const itemStack = event.itemStack;
-    const eventType = 'afterItemReleaseUse';
-    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugItemObjectEvent(objType,eventType) && list.includes(itemStack.typeId));
-
-    const msg = `§6§l${eventType}§r typeId=${itemStack.typeId}  useDuration=${event.useDuration}`;
-    dev.alertLog(msg, alert);
-};
-/**@type {AfterItemStartUseHandler} */
-const onAfterItemStartUse = (event) => {
-    if (!(event.source instanceof Player)) return;
-    if (!myItemStackWatch.includes(event.itemStack.typeId)) return;
-
-    const itemStack = event.itemStack;
-    const eventType = 'afterItemStartUse';
-    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugItemObjectEvent(objType,eventType) && list.includes(itemStack.typeId));
-
-    const msg = `§6§l${eventType}§r typeId=${event.itemStack.typeId}`;
-    dev.alertLog(msg, alert);
-};
-/**@type {AfterItemStartUseOnHandler} */
-const onAfterItemStartUseOn = (event) => {
-    if (!(event.source instanceof Player)) return;
-    if (!event.itemStack) return;
-    if (!myItemStackWatch.includes(event.itemStack.typeId)) return;
-
-    const eventType = 'afterItemStartUseOn';
-    const itemStack = event.itemStack;
-    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugItemObjectEvent(objType,eventType) && list.includes(itemStack.typeId));
-
-    const msg = `§6§l${eventType}:§r typeId=${event.itemStack.typeId}  blockFace=${event.blockFace} on  block=${event.block.typeId}`;
-    dev.alertLog(msg, alert);
-};
-/**@type {AfterItemStopUseHandler} */
-const onAfterItemStopUse = (event) => {
-    if (!(event.source instanceof Player)) return;
-    if (!event.itemStack) return;
-    if (!myItemStackWatch.includes(event.itemStack.typeId)) return;
-
-    const eventType = 'afterItemStopUse';
-    const itemStack = event.itemStack;
-    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugItemObjectEvent(objType,eventType) && list.includes(itemStack.typeId));
-
-    const msg = `§6§l${eventType}§r typeId=${event.itemStack.typeId}  useDuration=${event.useDuration}`;
-    dev.alertLog(msg, alert);
-};
-/**@type {AfterItemStopUseOnHandler} */
-const onAfterItemStopUseOn = (event) => {
-    if (!(event.source instanceof Player)) return;
-    if (!event.itemStack) return;
-    if (!myItemStackWatch.includes(event.itemStack.typeId)) return;
-
-    const itemStack = event.itemStack;
-    const eventType = 'afterItemStopUseOn';
-    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugItemObjectEvent(objType,eventType) && list.includes(itemStack.typeId));
-
-    const msg = `§6§l${eventType}§r typeId=${event.itemStack.typeId} on block=${event.block.typeId}`;
-    dev.alertLog(msg, alert);
-};
-/**@type {BeforeItemUseHandler} */
-const onBeforeItemUse = (event) => {
-    if (!(event.source instanceof Player)) return;
-    if (!myItemStackWatch.includes(event.itemStack.typeId)) return;
-
-    const itemStack = event.itemStack;
-    const eventType = 'beforeItemUse';
-    const alert = myBlockGroups.some(([ objType, list ]) => dev.isDebugItemObjectEvent(objType,eventType) && list.includes(itemStack.typeId));
-
-    const msg = `§6§l${eventType}§r typeId=${event.itemStack.typeId}`;
-    dev.alertLog(msg, alert);
-};
 //==============================================================================
 export function subscriptionsStable () {
-    const _name='subscriptionsStable'
-    const tickStart=system.currentTick
-    dev.alertFunctionKey(_name,true)    
+    const _name = 'subscriptionsStable';
+    const tickStart = system.currentTick;
+    dev.alertFunctionKey(_name, true);
 
-    systemSubs.beforeStartup.subscribe(onBeforeStartup,dev.isDebugFunction('alertSystemSubs'));
-    playerSubs.beforePlayerInteractWithBlock.subscribe(onBeforePlayerInteractWithBlock,dev.isDebugFunction('alertPlayerSubs'));
-
-    itemSubs.register({
-        afterItemCompleteUse: onAfterItemCompleteUse,
-        afterItemReleaseUse: onAfterItemReleaseUse,
-        afterItemStopUse: onAfterItemStopUse,
-        afterItemStopUseOn: onAfterItemStopUseOn,
-        afterItemStartUse: onAfterItemStartUse,
-        afterItemStartUseOn: onAfterItemStartUseOn,
-        beforeItemUse: onBeforeItemUse,
-    },dev.isDebugFunction('alertItemSubs'));    
-
+    systemSubs.beforeStartup.subscribe(onBeforeStartup, dev.isDebugFunction('alertSystemSubs'));
+    playerSubs.beforePlayerInteractWithBlock.subscribe(onBeforePlayerInteractWithBlock, dev.isDebugFunction('alertPlayerSubs'));
+    
     world.afterEvents.worldLoad.subscribe((event) => {
         pack.worldLoaded = true;
-        dev.alertSystemEventLog('afterWorldLoad',`§c§lThe world is loaded§r @ §bDelta Ticks:§r ${system.currentTick-tickStart}`);
-    });    
+        dev.alertSystemEventLog('afterWorldLoad', `§c§lThe world is loaded§r @ §bDelta Ticks:§r ${system.currentTick - tickStart}`);
+    });
 }
 //==============================================================================
 // End of File

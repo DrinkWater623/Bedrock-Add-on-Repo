@@ -8,16 +8,62 @@ URL: https://github.com/DrinkWater623
 Change Log: 
     20251024 - Add event trigger
     20251107 - Refactor get players and entities and add for each dimension
+    20251203 - Relocated
 ========================================================================*/
 import { world, system, Player, Entity, Block, Dimension } from "@minecraft/server";
-import { rndInt } from "../common-stable/tools/mathLib.js";
-import { Vector3Lib as vec3 } from '../common-stable/tools/vectorClass.js';
-//import { worldRun } from "./worldRunLib.js";
+import { rndInt } from "../tools/mathLib.js";
+import { Vector3Lib as vec3 } from '../tools/vectorClass.js';
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /** @typedef {import("@minecraft/server").EntityQueryOptions} EntityQueryOptions */
 //==============================================================================
-export class EntityLib {
+export class Entities {
+    //==============================================================================
+    /**
+     * True only for a *real, currently-valid* Player reference (no ghosts).
+     *
+     * @param {any} value
+     * @returns {boolean}
+     */
+    static isValid (value) {
+        if (value == null) return false;
+
+        const t = typeof value;
+        if (t !== "object" && t !== "function") return false;
+
+        try {
+            /** @type {any} */
+            const v = value;
+
+            // Kill ghost refs first
+            if (typeof v.isValid !== "boolean") return false;
+            
+            // Sanity checks: avoid plain-object imposters
+            // entity??if (typeof v.getComponent !== "function") return false;
+
+            return v.isValid;
+        } catch {
+            return false;
+        }
+    }
+    //==============================================================================
+    /**
+     * True only for a *real, currently-valid* Player reference (no ghosts).
+     *
+     * @param {Player | Entity | null} entity
+     * @returns {string|null}
+     */
+    static name_get (entity) {
+        if (!entity) return null;       
+        
+        try {
+            /** @type {any} */
+            if (entity.isValid && entity.nameTag) return entity.nameTag
+            return entity.typeId
+        } catch {
+            return null;
+        }
+    }
     //==============================================================================
     /**
      * 

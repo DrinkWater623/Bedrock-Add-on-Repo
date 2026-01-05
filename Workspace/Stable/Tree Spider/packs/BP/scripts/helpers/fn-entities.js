@@ -15,7 +15,7 @@ Last Update: 20251023 - Update and sep out debug-only stuff and add the stable s
 import { Entity, system, Block, GameMode, Player } from "@minecraft/server";
 // Shared Stable
 import { airBlock, leafBlocks, Ticks } from "../common-data/index.js";
-import { closestAdjacentBlockTypeId, isBlockAdjacentToTypeId, EntityLib, spawnEntityAtLocation } from "../common-stable/gameObjects/index.js";
+import {  Entities, spawnEntityAtLocation, Blocks } from "../common-stable/gameObjects/index.js";
 import { makeRandomName, rndInt, chance, Vector3Lib, isInForest, isOutside, getWorldTime, DynamicPropertyLib } from "../common-stable/tools/index.js";
 // Local
 import { targetBlockAdjacent } from "./fn-blocks.js";
@@ -80,7 +80,7 @@ class Web {
      */
     static closestAdjacentWeb (block, numberOfBlocksAboveMax = 8) {
 
-        const try1 = closestAdjacentBlockTypeId(block, HOME_ID);
+        const try1 = Blocks.closestAdjacentBlockTypeId(block, HOME_ID);
         if (try1) return try1;
 
         //try 2
@@ -156,7 +156,7 @@ class Web {
      * @returns {boolean}  
      */
     static isAdjacent (block) {
-        return isBlockAdjacentToTypeId(block, HOME_ID);
+        return Blocks.isBlockAdjacentToTypeId(block, HOME_ID);
     }
     //===================================================================
     /**
@@ -185,7 +185,7 @@ class Web {
         const alertMsg = inBlock.typeId == HOME_ID ? `§l${entity.nameTag || entity.id}§r §bAlready in Web @ ${locationStr} - enterWeb()` : `§l${entity.nameTag || entity.id}§r§b Entering Web @ ${Vector3Lib.toString(webBlock.location, 0, true)}`;
         alertLog.log(alertMsg, devDebug.watchEntityEvents);
 
-        EntityLib.teleportAndCenter(entity, webBlock); //1 tick out
+        Entities.teleportAndCenter(entity, webBlock); //1 tick out
         system.runTimeout(() => {
             system.runTimeout(() => {
                 if (entity.isValid)
@@ -319,7 +319,7 @@ class Web {
             Web.activityRegister(entity);
 
             system.runTimeout(() => {
-                EntityLib.teleportAndCenter(entity, location, 0);
+                Entities.teleportAndCenter(entity, location, 0);
                 system.runTimeout(() => {
                     if (entity.isValid) entity.triggerEvent(entityScriptEvents.stayInWebEventName);
                 }, 1);
@@ -418,7 +418,7 @@ function newEgg (entity) {
     if (!inBlock || !inBlock.isValid) return;
 
     devDebug.dsb.increment('stats', 'layEgg');
-    system.runTimeout(() => { EntityLib.centerAlign(entity); }, 1);
+    system.runTimeout(() => { Entities.centerAlign(entity); }, 1);
 }
 //===================================================================
 /**
@@ -525,7 +525,7 @@ function setHungerChance (entity, hungerChance = 0.5, debug = false) {
 export function flyPopulationCheck () {
     let fliesKilled = false;
 
-    const flies = EntityLib.getAllEntities({ families: [ "dw623" ], type: watchFor.fly_typeId });
+    const flies = Entities.getAllEntities({ families: [ "dw623" ], type: watchFor.fly_typeId });
     if (flies.length > 0) {
         flies.forEach(e => {
             if (e.isValid) {
@@ -549,7 +549,7 @@ export function flyPopulationCheck () {
 
     system.runTimeout(() => {
         // via Spiders
-        const spiders = EntityLib.getAllEntities({ families: [ "dw623" ], type: watchFor.spider_typeId });
+        const spiders = Entities.getAllEntities({ families: [ "dw623" ], type: watchFor.spider_typeId });
         // .filter(e => { e.isValid; })
         // .filter(e => { e.dimension.isChunkLoaded(e.location); });
 
@@ -607,7 +607,7 @@ function spawnSpidersAroundPlayerIfNeeded (player) {
 //===================================================================
 export function spiderPopulationCheck () {
 
-    const players = EntityLib.getOverworldPlayers();
+    const players = Entities.getOverworldPlayers();
 
     players.forEach(p => {
         system.runTimeout(() => {
@@ -697,7 +697,7 @@ function entityStallCheck_lastTick (entity) {
 //===================================================================
 export function stalledSpiderCheckAndFix () {
 
-    const entities = EntityLib.getAllEntities({ type: watchFor.spider_typeId });
+    const entities = Entities.getAllEntities({ type: watchFor.spider_typeId });
     if (entities.length === 0) {
         spiderPopulationCheck();
         return;

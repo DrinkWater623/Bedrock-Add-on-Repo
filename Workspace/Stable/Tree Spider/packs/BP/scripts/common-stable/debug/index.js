@@ -1,6 +1,6 @@
 // AUTO-GENERATED — do not edit by hand
 // Folder: ../../Bedrock Add-on Repo/Workspace/Stable/Tree Spider/packs/BP/scripts/common-stable/debug
-// Generated: 2025-12-31 19:38:08Z
+// Generated: 2026-01-05 07:43:07Z
 // @ts-check
 
 export { DebuggerBlocks } from "./debuggerBlocks.js";

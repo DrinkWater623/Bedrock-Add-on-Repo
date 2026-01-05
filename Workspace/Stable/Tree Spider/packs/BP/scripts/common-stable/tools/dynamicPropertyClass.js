@@ -330,7 +330,7 @@ export class DynamicPropertyLib {
         if (!player || !player.isValid) return;
         this.show_all(
             player,
-            '\n§6PlayerInteractWithBlockBeforeEvent Info:',
+            '\n§6§lPlayerInteractWithBlockBeforeEvent Info:§r',
             {
                 startsWith: 'dw623:lastInteractWithBlockBefore',
                 abbreviate: true,

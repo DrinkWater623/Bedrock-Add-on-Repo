@@ -8,7 +8,8 @@ URL: https://github.com/DrinkWater623
 Change Log: 
     20251109 - created
 ========================================================================*/
-import {Player,  Block, Dimension } from "@minecraft/server";
+import { Player, Block, Dimension } from "@minecraft/server";
+import { Vector3Lib } from "./vectorClass";
 // Shared
 
 // Local
@@ -17,7 +18,7 @@ import {Player,  Block, Dimension } from "@minecraft/server";
  * 
  * @param {string} biomeId 
  */
-function isForest (biomeId) {
+export function isForest (biomeId) {
 
     if (biomeId.includes('cave')) return false;
     if (biomeId.includes('underground')) return false;
@@ -41,7 +42,7 @@ function isForest (biomeId) {
  * @param {Player|Block} obj 
  */
 export function isInForest (obj) {
-    if(!obj.isValid) return false
+    if (!obj.isValid) return false;
     return isForest(obj.dimension.getBiome(obj.location).id);
 }
 //========================================================================
@@ -75,6 +76,55 @@ export function isOutside (p) {
     //FIXME:  should check a 3x3 area, in case outside, but under something
     if (dimension.id === 'overworld') return false;
 
+
+    return true;
+}
+//========================================================================
+/**
+ * Returns true if every block in the vertical segment is "air-like".
+ *
+ * @param {import("@minecraft/server").Dimension} dim
+ * @param {number} x
+ * @param {number} z
+ * @param {number} y1
+ * @param {number} y2
+ * @param {{
+ *   inclusive?: boolean,
+ *   airTypeIds?: string[],
+ *   allowUnloaded?: boolean
+ * }} [opts]
+ * @returns {boolean}
+ */
+export function isOnlyAirBetweenY (dim, x, z, y1, y2, opts = {}) {
+    const inclusive = opts.inclusive ?? true;
+    const allowUnloaded = opts.allowUnloaded ?? false;
+
+    // Bedrock mostly uses minecraft:air, but you can extend this list if you want.
+    const airSet = new Set(opts.airTypeIds ?? [ "minecraft:air" ]);
+    //TODO: make sure has namespace
+    let minY = Math.min(y1, y2);
+    let maxY = Math.max(y1, y2);
+
+    // "between" usually means excluding endpoints; flip with inclusive=true.
+    if (!inclusive) {
+        minY += 1;
+        maxY -= 1;
+    }
+
+    // If there is nothing to check (adjacent or same), treat as "clear".
+    if (minY > maxY) return true;
+
+    for (let y = minY; y <= maxY; y++) {
+        const block = dim.getBlock(Vector3Lib.new(x, y, z));
+
+        // If the chunk isn't loaded (or block can't be fetched), decide what you want:
+        if (!block) {
+            if (allowUnloaded) continue;
+            return false;
+        }
+
+       // if (!airSet.has(block.typeId)) {console.warn(`found in space ${block.typeId}`);return false;}
+    }
 
     return true;
 }

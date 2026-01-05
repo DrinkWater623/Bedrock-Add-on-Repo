@@ -1,0 +1,156 @@
+{
+    //so that its back (with texture on up side) is on the direction face 
+    "rotate_block_face":[
+        {"block_face":"up"   ,"id":0  ,"x":0    ,"y":0    ,"z":0  },
+        {"block_face":"down" ,"id":1  ,"x":0	,"y":180    ,"z":180},
+        {"block_face":"north","id":2  ,"x":90   ,"y":180    ,"z":0  },
+        {"block_face":"west" ,"id":4  ,"x":0	,"y":270    ,"z":90 },
+        {"block_face":"south","id":3  ,"x":90   ,"y":0      ,"z":0  },
+        {"block_face":"east" ,"id":5  ,"x":0	,"y":90     ,"z":270}
+    ],
+    "rotate_facing_player":[
+        {"direction":"north" ,"id":2  ,"x":0	    ,"y":0      ,"z":0},
+        {"direction":"west"  ,"id":4  ,"x":0	    ,"y":90     ,"z":0},
+        {"direction":"south" ,"id":3  ,"x":0	    ,"y":180    ,"z":0},
+        {"direction":"east"  ,"id":5  ,"x":0	    ,"y":270    ,"z":0}
+    ],
+/* for if block is a tile with duplex printing on long edge
+
+
+blockFace=north "up":[90,0,0]       "left":[90,0,90,]   ,"right":[90,0,-90]     ,"down":[90,0,-90]  
+blockFace=south "up":[-90,0,180]    "left":[-90,0,90]   ,"right":[-90,0,-90]    ,"down":[-90,0,0]     
+blockFace=west  "up":[0,-90,90]     "left":[0,0,90]     ,"right":[180,0,-90]    ,"down":[0,90,90]   
+blockFace=east  "up":[0,90,-90]     "left":[180,0,90]   ,"right":[0,0,-90]      ,"down":[0,-90,-90] 
+*/
+//Remember these rotations are for block-face placed on and top of picture, which can consider player facing
+    "rotations_view_1":[
+        {"id":0 ,"type":"floor"   ,"blockFace":"up"   ,"playerFace":"north" ,"position":"up"    ,"rotation":[0,0,0] },
+        {"id":0 ,"type":"floor"   ,"blockFace":"up"   ,"playerFace":"west"  ,"position":"up"    ,"rotation":[0,90,0]},
+        {"id":0 ,"type":"floor"   ,"blockFace":"up"   ,"playerFace":"south" ,"position":"up"    ,"rotation":[0,180,0]},
+        {"id":0 ,"type":"floor"   ,"blockFace":"up"   ,"playerFace":"east"  ,"position":"up"    ,"rotation":[0,-90,0]},
+
+        {"id":1 ,"type":"ceiling"     ,"blockFace":"down"   ,"playerFace":"north" ,"position":"up"  ,"rotation":[0,0,180]},
+        {"id":1 ,"type":"ceiling"     ,"blockFace":"down"   ,"playerFace":"west"  ,"position":"up"  ,"rotation":[0,-90,180]},
+        {"id":1 ,"type":"ceiling"     ,"blockFace":"down"   ,"playerFace":"south" ,"position":"up"  ,"rotation":[180,0,0]},
+        {"id":1 ,"type":"ceiling"     ,"blockFace":"down"   ,"playerFace":"east"  ,"position":"up"  ,"rotation":[0,90,180]},
+
+        //in 2D  where blockFace=PlayerFacing - down 
+        {"id":3 ,"type":"side"  ,"blockFace":"south"    ,"playerFace":"north"   ,"position":"up"    ,"rotation":[90,0,0]}, //90,0 0
+        {"id":3 ,"type":"side"  ,"blockFace":"south"    ,"playerFace":"west"    ,"position":"left"  ,"rotation":[90,0,90]}, //yes
+        {"id":3 ,"type":"side"  ,"blockFace":"south"    ,"playerFace":"east"    ,"position":"right" ,"rotation":[90,0,270]}, //yes 90,0,270
+        {"id":3 ,"type":"side"  ,"blockFace":"south"    ,"playerFace":"south"   ,"position":"down"  ,"rotation":[90,0,180]}, //90,0,180
+
+        {"id":2 ,"type":"side"  ,"blockFace":"north"    ,"playerFace":"south"   ,"position":"up"    ,"rotation":[90,180,0]},   // & 270,0,90
+        {"id":2 ,"type":"side"  ,"blockFace":"north"    ,"playerFace":"east"    ,"position":"left"  ,"rotation":[90,180,270]},  // & 270, 0 ,180
+        {"id":2 ,"type":"side"  ,"blockFace":"north"    ,"playerFace":"west"    ,"position":"right" ,"rotation":[90,180,90]},   // & 270,0,90
+        {"id":2 ,"type":"side"  ,"blockFace":"north"    ,"playerFace":"north"   ,"position":"down"  ,"rotation":[90,180,180]},   // & 270,0,0
+
+        {"id":4 ,"type":"side"  ,"blockFace":"west"     ,"playerFace":"east"   ,"position":"up"    ,"rotation":[0,270,90]},
+        {"id":4 ,"type":"side"  ,"blockFace":"west"     ,"playerFace":"north"  ,"position":"left"  ,"rotation":[0,0,90]},
+        {"id":4 ,"type":"side"  ,"blockFace":"west"     ,"playerFace":"south"  ,"position":"right" ,"rotation":[0,180,90]},
+        {"id":4 ,"type":"side"  ,"blockFace":"west"     ,"playerFace":"west"   ,"position":"down"  ,"rotation":[0,90,90]},
+
+        {"id":5 ,"type":"side"  ,"blockFace":"east"     ,"playerFace":"west"   ,"position":"up"    ,"rotation":[0,90,-90]}, //yes
+        {"id":5 ,"type":"side"  ,"blockFace":"east"     ,"playerFace":"south"  ,"position":"left"  ,"rotation":[0,180,270]}, //0,180,270
+        {"id":5 ,"type":"side"  ,"blockFace":"east"     ,"playerFace":"north"  ,"position":"right" ,"rotation":[0,0,-90]},  //yes
+        {"id":5 ,"type":"side"  ,"blockFace":"east"     ,"playerFace":"east"   ,"position":"down"  ,"rotation":[0,-90,-90] } //correct
+        
+    ],
+    "rotations_view_2":[
+        //n,s,e,w keys are which way is the top of the picture - block face is side of other block
+        {"id":0 ,"type":"floor"  ,"blockFace":"up"   ,"north":[0,0,0]   ,"south":[0,180,0]  ,"west":[0,90,0]    ,"east":[0,-90,0]},
+        {"id":1 ,"type":"ceiling","blockFace":"down" ,"north":[0,0,180] ,"south":[180,0,0]  ,"west":[0,-90,180] ,"east":[0,90,180]},
+
+        //in 2D  up=north, down=south, left-west, right=east -- opposite is player facing facing that blockFace
+        {"id":2 ,"type":"side"  ,"blockFace":"north"    ,"opposite":"south" ,"up":[90,180,0]    ,"left":[90,180,270]    ,"right":[90,180,90]   ,"down":[90,180,180]  },
+        {"id":3 ,"type":"side"  ,"blockFace":"south"    ,"opposite":"north" ,"up":[90,0,0]      ,"left":[90,0,90]       ,"right":[90,0,270]    ,"down":[90,0,180]   },
+        {"id":4 ,"type":"side"  ,"blockFace":"west"     ,"opposite":"east"  ,"up":[0,-90,90]    ,"left":[0,0,90]        ,"right":[0,180,90]    ,"down":[0,90,90]   },
+        {"id":5 ,"type":"side"  ,"blockFace":"east"     ,"opposite":"west"  ,"up":[0,90,-90]    ,"left":[0,180,270]     ,"right":[0,0,-90]     ,"down":[0,-90,-90] }
+        
+    ],
+    "rotations_view_3":[
+        {"id":0 ,"type":"floor"   ,"blockFace":"up"   ,"pictureTop":"north" ,"rotation":[0,0,0]},
+        {"id":0 ,"type":"floor"   ,"blockFace":"up"   ,"pictureTop":"west" ,"rotation":[0,90,0]},
+        {"id":0 ,"type":"floor"   ,"blockFace":"up"   ,"pictureTop":"south" ,"rotation":[0,180,0]},
+        {"id":0 ,"type":"floor"   ,"blockFace":"up"   ,"pictureTop":"east" ,"rotation":[0,-90,0]},
+
+        {"id":1 ,"type":"ceiling"     ,"blockFace":"down"   ,"pictureTop":"north" ,"rotation":[0,0,180]},
+        {"id":1 ,"type":"ceiling"     ,"blockFace":"down"   ,"pictureTop":"west" ,"rotation":[0,-90,180]},
+        {"id":1 ,"type":"ceiling"     ,"blockFace":"down"   ,"pictureTop":"south" ,"rotation":[180,0,0]},
+        {"id":1 ,"type":"ceiling"     ,"blockFace":"down"   ,"pictureTop":"east" ,"rotation":[0,90,180]},
+
+        //in 2D  up=north, down=south, left-west, right=east
+        {"id":2 ,"type":"side"  ,"blockFace":"north"    ,"up":[90,0,0]       ,"left":[90,0,90]   ,"right":[90,0,-90]     ,"down":[90,0,-90]  },
+        {"id":3 ,"type":"side"  ,"blockFace":"south"    ,"up":[-90,0,180]    ,"left":[-90,0,90]   ,"right":[-90,0,-90]    ,"down":[-90,0,0]   },
+        {"id":4 ,"type":"side"  ,"blockFace":"west"     ,"up":[0,-90,90]     ,"left":[0,0,90]     ,"right":[180,0,-90]    ,"down":[0,90,90]   },
+        {"id":5 ,"type":"side"  ,"blockFace":"east"     ,"up":[0,90,-90]     ,"left":[180,0,90]   ,"right":[0,0,-90]      ,"down":[0,-90,-90] }
+        
+    ],
+    "degrees":[
+        {"oid":1		,"x":0	    ,"y":0	    ,"z":0	},
+        {"oid":2		,"x":0	    ,"y":0	    ,"z":90	},
+        {"oid":3		,"x":0	    ,"y":0	    ,"z":180	},
+        {"oid":4		,"x":0	    ,"y":0	    ,"z":270	},
+        {"oid":5		,"x":0	    ,"y":90	    ,"z":0	},
+        {"oid":6		,"x":0	    ,"y":90	    ,"z":90	},
+        {"oid":7		,"x":0	    ,"y":90	    ,"z":180	},
+        {"oid":8		,"x":0	    ,"y":90	    ,"z":270	},
+        {"oid":9		,"x":0	    ,"y":180    ,"z":0	},
+        {"oid":10		,"x":0	    ,"y":180    ,"z":90	},
+        {"oid":11		,"x":0	    ,"y":180    ,"z":180	},
+        {"oid":12		,"x":0	    ,"y":180    ,"z":270	},
+        {"oid":13		,"x":0	    ,"y":270    ,"z":0	},
+        {"oid":14		,"x":0	    ,"y":270    ,"z":90	},
+        {"oid":15		,"x":0	    ,"y":270    ,"z":180	},
+        {"oid":16		,"x":0	    ,"y":270    ,"z":270	},
+        {"oid":17		,"x":90	    ,"y":0	    ,"z":0	},
+        {"oid":18		,"x":90	    ,"y":0	    ,"z":90	},
+        {"oid":19		,"x":90	    ,"y":0	    ,"z":180	},
+        {"oid":20		,"x":90	    ,"y":0	    ,"z":270	},
+        {"oid":21		,"x":90	    ,"y":90	    ,"z":0	},
+        {"oid":22		,"x":90	    ,"y":90	    ,"z":90	},
+        {"oid":23		,"x":90	    ,"y":90	    ,"z":180	},
+        {"oid":24		,"x":90	    ,"y":90	    ,"z":270	},
+        {"oid":25		,"x":90	    ,"y":180    ,"z":0	},
+        {"oid":26		,"x":90	    ,"y":180    ,"z":90	},
+        {"oid":27		,"x":90	    ,"y":180    ,"z":180	},
+        {"oid":28		,"x":90	    ,"y":180    ,"z":270	},
+        {"oid":29		,"x":90	    ,"y":270    ,"z":0	},
+        {"oid":30		,"x":90	    ,"y":270    ,"z":90	},
+        {"oid":31		,"x":90	    ,"y":270    ,"z":180	},
+        {"oid":32		,"x":90	    ,"y":270    ,"z":270	},
+        {"oid":33		,"x":180	,"y":0	    ,"z":0	},
+        {"oid":34		,"x":180	,"y":0	    ,"z":90	},
+        {"oid":35		,"x":180	,"y":0	    ,"z":180	},
+        {"oid":36		,"x":180	,"y":0	    ,"z":270	},
+        {"oid":37		,"x":180	,"y":90	    ,"z":0	},
+        {"oid":38		,"x":180	,"y":90	    ,"z":90	},
+        {"oid":39		,"x":180	,"y":90	    ,"z":180	},
+        {"oid":40		,"x":180	,"y":90	    ,"z":270	},
+        {"oid":41		,"x":180	,"y":180	,"z":0	},
+        {"oid":42		,"x":180	,"y":180	,"z":90	},
+        {"oid":43		,"x":180	,"y":180	,"z":180	},
+        {"oid":44		,"x":180	,"y":180	,"z":270	},
+        {"oid":45		,"x":180	,"y":270	,"z":0	},
+        {"oid":46		,"x":180	,"y":270	,"z":90	},
+        {"oid":47		,"x":180	,"y":270	,"z":180	},
+        {"oid":48		,"x":180	,"y":270	,"z":270	},
+        {"oid":49		,"x":270	,"y":0	    ,"z":0	},
+        {"oid":50		,"x":270	,"y":0	    ,"z":90	},
+        {"oid":51		,"x":270	,"y":0	    ,"z":180	},
+        {"oid":52		,"x":270	,"y":0	    ,"z":270	},
+        {"oid":53		,"x":270	,"y":90	    ,"z":0	},
+        {"oid":54		,"x":270	,"y":90	    ,"z":90	},
+        {"oid":55		,"x":270	,"y":90	    ,"z":180	},
+        {"oid":56		,"x":270	,"y":90	    ,"z":270	},
+        {"oid":57		,"x":270	,"y":180	,"z":0	},
+        {"oid":58		,"x":270	,"y":180	,"z":90	},
+        {"oid":59		,"x":270	,"y":180	,"z":180	},
+        {"oid":60		,"x":270	,"y":180	,"z":270	},
+        {"oid":61		,"x":270	,"y":270	,"z":0	},
+        {"oid":62		,"x":270	,"y":270	,"z":90	},
+        {"oid":63		,"x":270	,"y":270	,"z":180	},
+        {"oid":64		,"x":270	,"y":270	,"z":270	}
+    ]
+
+}

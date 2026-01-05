@@ -11,7 +11,7 @@ import { chatLog } from "./settings.js";
 import { blocksDotJson } from "./common-data/blocks.json.js";
 import { MinecraftBlockTypes, MinecraftItemTypes } from "./common-data/vanilla-data.js";
 import { sound_definitions } from "./common-data/sound_definitions.js";
-import { fallThruBlocks, woodBlocks } from "./common-data/block-data.js";
+import { fallThruBlocks, woodenBlocks } from "./common-data/block-data.js";
 //==============================================================================
 //==============================================================================
 /**
@@ -80,7 +80,7 @@ function getLikelyPlaceBlockSound (typeId, soundLike = '') {
         else chatLog.warn('No MC block given',debug);
     }
 
-    if (woodBlocks.includes(typeId)) {
+    if (woodenBlocks.includes(typeId)) {
         chatLog.warn('In woodBlocks',debug);
 
         if (typeId.includes('crimson') || typeId.includes('warped'))

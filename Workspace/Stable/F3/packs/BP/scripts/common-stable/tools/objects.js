@@ -14,6 +14,51 @@ Change Log:
 //==============================================================================
 
 import { Block } from "@minecraft/server";
+/**
+ * Return a random item from an array (or undefined if empty).
+ * @template T
+ * @param {readonly T[]} arr
+ * @returns {T | undefined}
+ */
+export function randomArrayItem (arr) {
+    if (!arr || arr.length === 0) return undefined;
+    const i = Math.floor(Math.random() * arr.length);
+    return arr[ i ];
+}
+/**
+ * Random item from an array, excluding certain values.
+ * Returns undefined if nothing is eligible.
+ *
+ * @param {(string|number)[]} arr
+ * @param {(string|number)[]} [exclude=[]]
+ * @returns {string|number|undefined}
+ */
+export function randomArrayItemExcept (arr, exclude = []) {
+    if (!arr?.length) return undefined;
+
+    const excludeSet = new Set(exclude);
+    const candidates = arr.filter(v => !excludeSet.has(v));
+
+    if (candidates.length === 0) return undefined;
+    return candidates[ Math.floor(Math.random() * candidates.length) ];
+}
+/**
+ * Random item from an array, excluding certain values.
+ * Returns undefined if nothing is eligible.
+ *
+ * @param {(string)[]} arr
+ * @param {(string)[]} [exclude=[]]
+ * @returns {string|undefined}
+ */
+export function randomArrayStringExcept (arr, exclude = []) {
+    if (!arr?.length) return undefined;
+
+    const excludeSet = new Set(exclude);
+    const candidates = arr.filter(v => !excludeSet.has(v));
+
+    if (candidates.length === 0) return undefined;
+    return candidates[ Math.floor(Math.random() * candidates.length) ];
+}
 
 /**
  * @param {Record<string, unknown>} obj
@@ -528,7 +573,7 @@ function _emitInnards (emit, input, opts = {}) {
     const lines = Array.isArray(input)
         ? _getEmitLines_array(input, listOpts)
         : _getEmitLines_object(input, listOpts);
-        
+
     if (!lines.length) return;
 
     // One leading blank line (your request), then join with exactly one newline between lines.
@@ -571,4 +616,77 @@ export function booleanKeyExist (map, key) {
 export function readBooleanKey (map, key) {
     const v = map[ key ];
     return typeof v === "boolean" ? v : undefined;
+}
+/**
+  * De-dupe array in-place (keeps first occurrence order).
+  * @template T
+  * @param {T[]} a
+  * @param {(v: T) => string} [keyFn]
+  * @returns {T[]} same array instance
+  */
+export function dedupeArrayInPlace (a, keyFn = (v) => String(v)) {
+    const seen = new Set();
+    let w = 0;
+
+    for (let r = 0; r < a.length; r++) {
+        const v = a[ r ];
+        const k = keyFn(v);
+        if (seen.has(k)) continue;
+        seen.add(k);
+        a[ w++ ] = v;
+    }
+    a.length = w;
+    return a;
+}
+// @ts-check
+
+/**
+ * Add "minecraft:" namespace if missing.
+ * Leaves already-namespaced ids alone.
+ *
+ * @param {string} id
+ * @param {string} [defaultNs="minecraft"]
+ * @returns {string}
+ */
+export function addNameSpace (id, defaultNs = "minecraft") {
+    const s = (id ?? "").trim();
+    if (!s) return "";
+    if (s.includes(":")) return s;
+    return `${defaultNs}:${s}`;
+}
+
+/**
+ * Add namespace to every entry in-place.
+ *
+ * @param {string[]} a
+ * @param {{
+ *   defaultNs?: string,
+ *   trim?: boolean,
+ *   removeEmpty?: boolean
+ * }} [opts]
+ * @returns {string[]} same array instance
+ */
+export function addNameSpaceInPlace (a, opts = {}) {
+    const defaultNs = opts.defaultNs ?? "minecraft";
+    const trim = opts.trim ?? true;
+    const removeEmpty = opts.removeEmpty ?? true;
+
+    // First pass: normalize strings
+    for (let i = 0; i < a.length; i++) {
+        let s = a[ i ] ?? "";
+        if (trim) s = s.trim();
+        a[ i ] = addNameSpace(s, defaultNs);
+    }
+
+    // Optional: remove empty results in-place
+    if (removeEmpty) {
+        let w = 0;
+        for (let r = 0; r < a.length; r++) {
+            const v = a[ r ];
+            if (v) a[ w++ ] = v;
+        }
+        a.length = w;
+    }
+
+    return a;
 }

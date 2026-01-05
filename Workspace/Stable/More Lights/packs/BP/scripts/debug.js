@@ -59,13 +59,7 @@ const WATCHING_GAME_OBJECTS = {
 /** @type {Boolean2DeepMap} */
 const WATCHING_EVENTS = {
     item: {
-        afterItemCompleteUse: false,
-        afterItemReleaseUse: false,
-        afterItemStartUse: false,
-        afterItemStartUseOn: false,
-        afterItemStopUse: false,
-        afterItemStopUseOn: false,
-        beforeItemUse: false,
+        
     },
     block: {
         beforePlayerInteractWithBlock: false,
