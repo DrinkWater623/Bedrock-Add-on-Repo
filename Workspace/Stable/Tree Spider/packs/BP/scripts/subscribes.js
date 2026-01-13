@@ -12,8 +12,8 @@ import { world, system } from "@minecraft/server";
 //Enums
 import { EntityInitializationCause } from "@minecraft/server";
 //Shared
-import { Ticks, airBlock, stairBlocks } from "./common-data/index.js";
-import { EntityLib, spawnEntityAtLocation } from "./common-stable/gameObjects/index.js";
+import { Ticks, airBlock } from "./common-data/index.js";
+import { Entities, spawnEntityAtLocation,BlockTypeIds } from "./common-stable/gameObjects/index.js";
 import { EntitySubscriptions, PlayerSubscriptions, SystemSubscriptions } from "./common-stable/subscriptions/index.js";
 import { getWorldTime, chance, Vector3Lib, DynamicPropertyLib } from "./common-stable/tools/index.js";
 //Local
@@ -54,7 +54,7 @@ const watchForBlockTypes_spiders = [
     "minecraft:cauldron",
     ...watchFor.target_leaves,
     ...watchFor.target_nature,
-    ...stairBlocks,
+    ...BlockTypeIds.getStairBlockTypeIds(),
 ];
 /** @type {string[]} */
 const watchForBlockTypes_flies = [
@@ -344,7 +344,7 @@ function validateEntityFiles (debugMe = false) {
             system.runInterval(() => {
                 const hourOfDay = getWorldTime().hours;
                 if (hourOfDay > 7 && hourOfDay < 15) {
-                    const fireflies = EntityLib.getAllEntities({ type: watchFor.firefly_typeId });
+                    const fireflies = Entities.getAllEntities({ type: watchFor.firefly_typeId });
                     if (fireflies.length) { fireflies.forEach(e => { if (e.isValid) e.remove(); }); }
                 }
             }, Ticks.minecraftHour * 1);

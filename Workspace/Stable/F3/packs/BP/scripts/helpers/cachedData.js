@@ -47,7 +47,8 @@ export class ElementBlocks {
                 ...BlockTypeIds.getLeafBlockTypeIds(),
             ];
 
-            Blocks.addSlabVariantsInPlace(a, { verify: true, pluralHack: true });
+           // BlockTypeIds.addSlabVariantsInPlace(a, { verify: true, pluralHack: true });
+            BlockTypeIds.addWallVariantsInPlace(a, { verify: true, pluralHack: true });
 
             // De-dupe + keep stable order
             this.#airElementShelterBlockTypeIds = Array.from(new Set(a));
@@ -71,14 +72,15 @@ export class ElementBlocks {
             /** @type {string[]} */
             const a = [
                 "bone_block", "clay", "clay_block", "dripstone_block", "gravel",
-                ...BlockTypeIds.getDirtyBlockTypeIds(),
+                ...BlockTypeIds.getNaturalOverworldDirtyBlockTypeIds(),
                 ...BlockTypeIds.getNaturalOverworldStoneBlockTypeIds(),
                 ...BlockTypeIds.getLeafBlockTypeIds(),
                 ...BlockTypeIds.getOverworldLogBlockTypeIds(),
                 ...BlockTypeIds.getTerracottaBlockTypeIds(),
             ];
 
-            Blocks.addSlabVariantsInPlace(a, { verify: true, pluralHack: true });
+            //BlockTypeIds.addSlabVariantsInPlace(a, { verify: true, pluralHack: true });
+            BlockTypeIds.addWallVariantsInPlace(a, { verify: true, pluralHack: true });
 
             this.#earthElementShelterBlockTypeIds = Array.from(new Set(a));
             this.#earthElementShelterBlockTypeIdSet = new Set(this.#earthElementShelterBlockTypeIds);
@@ -108,7 +110,8 @@ export class ElementBlocks {
                 ...BlockTypeIds.getCookedBuildingBlockTypeIds(),
             ];
 
-            Blocks.addSlabVariantsInPlace(a, { verify: true, pluralHack: true });
+            //BlockTypeIds.addSlabVariantsInPlace(a, { verify: true, pluralHack: true });
+            BlockTypeIds.addWallVariantsInPlace(a, { verify: true, pluralHack: true });
 
             this.#fireElementShelterBlockTypeIds = Array.from(new Set(a));
             this.#fireElementShelterBlockTypeIdSet = new Set(this.#fireElementShelterBlockTypeIds);
@@ -143,7 +146,8 @@ export class ElementBlocks {
                 if (s === "minecraft:ice" || s === "ice") a.splice(i, 1);
             }
 
-            Blocks.addSlabVariantsInPlace(a, { verify: true, pluralHack: true });
+            //BlockTypeIds.addSlabVariantsInPlace(a, { verify: true, pluralHack: true });
+            BlockTypeIds.addWallVariantsInPlace(a, { verify: true, pluralHack: true });
 
             // Safety: make sure ice didn’t sneak back via normalization or aliases (paranoia is a virtue)
             const deduped = Array.from(new Set(a)).filter(b => b !== "minecraft:ice");

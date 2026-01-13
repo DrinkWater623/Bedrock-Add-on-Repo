@@ -10,9 +10,10 @@ Change Log:
 ========================================================================*/
 import { Block, BlockPermutation, system } from "@minecraft/server";
 import { BlockComponentPlayerPlaceBeforeEvent } from "@minecraft/server";
-import { Vector3Lib } from "../tools/vectorClass";
+// Shared
 import { DynamicPropertyLib } from "../tools/dynamicPropertyClass.js";
-import { FaceLocationGrid } from "./blockFace";
+import { Vector3Lib } from "../tools/vectorClass.js";
+import { FaceLocationGrid } from "./blockFace.js";
 import { Blocks } from "./blockLib.js";
 //=============================================================================
 /** @typedef {boolean | number | string} BlockStateValueType */

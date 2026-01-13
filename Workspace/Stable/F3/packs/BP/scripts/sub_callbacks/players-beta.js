@@ -11,10 +11,9 @@ Change Log:
 ========================================================================*/
 import { world } from "@minecraft/server";
 //Shared
-import { BetaSubscriptions, PlayerSubscriptions } from "../common-stable/subscriptions/index.js";
-import { DynamicPropertyLib } from "../common-stable/tools/index.js";
+import { BetaSubscriptions } from "../common-stable/subscriptions/index.js";
 //Local
-import { packDisplayName, watchFor } from '../settings.js';
+import { packDisplayName } from '../settings.js';
 import { dev } from "../debug.js";
 //==============================================================================
 /** The function type subscribe expects. */

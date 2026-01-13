@@ -13,12 +13,8 @@ Change Log:
     20251214 - Better AllOff and AnyOns
     20251216 - More work with Chatty
 ========================================================================*/
-import { BlockPermutation, Player, World, Block, Direction, world } from '@minecraft/server';
 // shared
-import { Vector2Lib, Vector3Lib } from '../tools/vectorClass.js';
 import { Debugger } from './debuggerClass.js';
-import { FaceLocationGrid, } from "../gameObjects/blockFace.js";
-import { cloneMixedBooleanAfterBeforeFlagMap } from "../tools/objects.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector2} Vector2 */
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */

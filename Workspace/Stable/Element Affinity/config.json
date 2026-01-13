@@ -1,0 +1,56 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
+	"author": "DrinkWater623, Update Block Dev",
+	"name": "Element_Affinity",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"mani_fest":{
+		"Debug":false,
+		"preview":false,
+		"beta":false,
+		"name": "Element Affinity",
+		"description": "Air, Earth, Fire and Water Affinity Perks",
+		"license":"GPL-3.0-only",
+		"url": "https://github.com/DrinkWater623",	
+		"min_engine_version": [1,21,50],														
+		"BP":{
+			"header_uuid": "e62f8d7c-e5a8-486c-a189-8e2254198cc8",
+			"module_uuid": "c7b1505e-d7dc-4fa6-b5f3-0b249fd0f69d"							
+		},
+		"RP": {
+			"header_uuid":"ea7a56d8-c135-4ebe-87fd-c070bd1be3e0",
+			"module_uuid":"84394e07-c31a-480e-9956-e146a8aa8273"
+		}
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {		
+			"jsonte": {"url":"github.com/MCDevKit/regolith-library","version":"2.14.0"},	
+			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
+			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
+			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}			
+		},
+		"profiles": {
+			"template-beta": {
+				"export": {"readOnly":false,"target":"local","rpName": "'void_rp_'+project.name"},				
+				"filters": [{"filter":"dot_ignore"},{"filter":"jsonte"}]
+			},
+			"template-stable": {
+				"export": {"readOnly":false,"target":"local","rpName": "'void_rp_'+project.name"},				
+				"filters": [
+					/*{"filter":"beta_js_ignore"},*/
+					{"profile":"template-beta"}]
+			},
+			"build": {				
+				"export": {"readOnly":false,"target":"local","bpName":"project.name+'_Stable_bp'","rpName": "project.name+'_Stable_rp'"},
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"beta":false,"preview":false}}]
+			},
+			"stable": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"beta":false}}]
+			}
+		}
+	}
+}

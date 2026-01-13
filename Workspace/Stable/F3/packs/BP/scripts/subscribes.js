@@ -10,18 +10,18 @@ Change Log:
     20251023 - add in stable stuff and update to api 2.0 and move debug-only stuff out
     20251217 - too much to mention - added all the temp subs for tracing events
 ========================================================================*/
-import { world, system, Player } from "@minecraft/server";
+import { world, system } from "@minecraft/server";
 //Shared
-import { BlockSubscriptions, ItemSubscriptions, PlayerSubscriptions, SystemSubscriptions } from "./common-stable/subscriptions/index.js";
-import { DynamicPropertyLib } from "./common-stable/tools/index.js";
+import { SystemSubscriptions } from "./common-stable/subscriptions/index.js";
 //Local
 import { arrow_onPlace, bar_onPlace, mini_block_onPlace, mini_dot_onPlace, mini_puck_onPlace } from "./blockComponent.js";
-import { pack, packDisplayName, watchFor } from './settings.js';
+import { pack, packDisplayName } from './settings.js';
 import { registerCustomCommands } from "./chatCmds.js";
 import { dev } from "./debug.js";
 import { subscriptionsItems } from "./sub_callbacks/items.js";
 import { subscriptionsPlayers } from "./sub_callbacks/players.js";
 import { subscriptionsEntities } from "./sub_callbacks/entities.js";
+
 //==============================================================================
 /** The function type subscribe expects. */
 //  Blocks
@@ -76,6 +76,7 @@ export function subscriptionsStable () {
     world.afterEvents.worldLoad.subscribe((event) => {
         pack.worldLoaded = true;
         dev.alertSystemEventLog('afterWorldLoad', `§c§lThe world is loaded§r @ §bDelta Ticks:§r ${system.currentTick - tickStart}`);
+        // MAKE CHAT COMMAND FOR THESE CUSTOM ONES and blocks too ItemTypeIds.listCustomNonBlocks()
     });
 }
 //==============================================================================

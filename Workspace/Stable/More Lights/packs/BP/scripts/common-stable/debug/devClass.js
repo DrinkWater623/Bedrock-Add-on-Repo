@@ -16,9 +16,13 @@ URL: https://github.com/DrinkWater623
 Change Log: 
     20251220 - Major Refactor
 ========================================================================*/
+import { system } from '@minecraft/server';
 import { ChatMsg, ConsoleAlert } from '../tools/messageLib.js';
 import { objectEntries_any_booleans_opts, objectEntries_set_booleans_opts, objectKeysWhereBooleanOpts, booleanKeyExist, readBooleanKey, listObjectInnards, listArray } from "../tools/objects.js";
 import { toTitleCase } from '../tools/stringLib.js';
+import { Vector3Lib } from '../tools/vectorClass.js';
+//==============================================================================
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
 //============================================================================================
 //  To keep me honest
 /**
@@ -71,11 +75,11 @@ export class Dev {
         this._isDead = false;
         //actual namespace:typeIds
         /** @type {string[]} */
-        this.entityWatchList=[]
+        this.entityWatchList = [];
         /** @type {string[]} */
-        this.blockWatchList=[]
+        this.blockWatchList = [];
         /** @type {string[]} */
-        this.itemWatchList=[]
+        this.itemWatchList = [];
         //=================================================================================================================
         /* This is how this Dev object sends alerts meant for analyzing and debugging - Custom methods for use available */
         //=================================================================================================================
@@ -293,8 +297,8 @@ export class Dev {
         this.allThisOff(this.debugEvents);
         this.allThisOff(this.debugFunctions);
         this.debugOn = false;
-        this._msgs.alertLog.on=false
-        this._msgs.chatLog.on=false
+        this._msgs.alertLog.on = false;
+        this._msgs.chatLog.on = false;
     }
     /**
     * 
@@ -319,8 +323,8 @@ export class Dev {
             this._anyThisOn(this.debugEvents) ||
             this._anyThisOn(this.debugFunctions);
 
-        this._msgs.alertLog.on=this.debugOn
-        this._msgs.chatLog.on=this.debugOn
+        this._msgs.alertLog.on = this.debugOn;
+        this._msgs.chatLog.on = this.debugOn;
 
         return this.debugOn;
     }
@@ -637,7 +641,7 @@ export class Dev {
     * @param {boolean} [start = true] 
     */
     alertFunctionKey (functionKey, start = true) {
-        this.alertFunction(functionKey,start, this.isDebugFunction(functionKey));
+        this.alertFunction(functionKey, start, this.isDebugFunction(functionKey));
     }
     /**
         * @param {string} msg
@@ -744,7 +748,7 @@ export class Dev {
      * @param {string} eventKey 
      * @param {string} msg
      */
-    alertSystemObjectEventError (objectKey, eventKey, msg) {  { this.alertError(msg,  this.isDebugSystemObjectEvent(objectKey, eventKey)); } }
+    alertSystemObjectEventError (objectKey, eventKey, msg) { { this.alertError(msg, this.isDebugSystemObjectEvent(objectKey, eventKey)); } }
     //===============================================
     /* Log Alerts if GameObject and/or Event is on */
     //===============================================
@@ -831,7 +835,7 @@ export class Dev {
      * @param {string} eventKey 
      * @param {string} msg
      */
-    alertSystemObjectEventLog (objectKey, eventKey, msg) {  { this.alertLog(msg,  this.isDebugSystemObjectEvent(objectKey, eventKey)); } }
+    alertSystemObjectEventLog (objectKey, eventKey, msg) { { this.alertLog(msg, this.isDebugSystemObjectEvent(objectKey, eventKey)); } }
     //===================================================
     /* Success Alerts if GameObject and/or Event is on */
     //===================================================
@@ -916,7 +920,7 @@ export class Dev {
      * @param {string} eventKey 
      * @param {string} msg
      */
-    alertSystemObjectEventSuccess (objectKey, eventKey, msg) {  { this.alertSuccess(msg,  this.isDebugSystemObjectEvent(objectKey, eventKey)); } }
+    alertSystemObjectEventSuccess (objectKey, eventKey, msg) { { this.alertSuccess(msg, this.isDebugSystemObjectEvent(objectKey, eventKey)); } }
     //================================================
     /* Warn Alerts if GameObject and/or Event is on */
     //================================================
@@ -1001,8 +1005,8 @@ export class Dev {
      * @param {string} eventKey 
      * @param {string} msg
      */
-    alertSystemObjectEventWarn (objectKey, eventKey, msg) {  { this.alertWarn(msg,  this.isDebugSystemObjectEvent(objectKey, eventKey)); } }
-    
+    alertSystemObjectEventWarn (objectKey, eventKey, msg) { { this.alertWarn(msg, this.isDebugSystemObjectEvent(objectKey, eventKey)); } }
+
     //==============
     /* Utilities  */
     //=============
@@ -1861,4 +1865,22 @@ export class Dev {
             }
         }
     }
+    /**
+     * 
+     * @param {string} eventName 
+     * @returns {string}
+     */
+    alertLabel (eventName) { return `§a§l${eventName}§r (§eTick:§r ${system.currentTick}) ==> `; };
+    /**
+     * @param {string} text 
+     * @returns {string}
+     */
+    fieldLabel (text) { return `§b${text}:§r`; };
+    /**
+     * 
+     * @param {Vector3} location
+     * @param {number} [decimals=0]  
+     * @returns {string}
+     */
+    vectorStr (location, decimals = 0) { return Vector3Lib.toString(location, decimals, true); };
 };

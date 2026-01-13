@@ -32,28 +32,11 @@ import { dev } from "../debug.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 //==============================================================================
-/**
- * @param {string} key 
- * @returns {string}
- */
-const alertLabel = (key) => { return `§a§l${key}§r (§eTick:§r ${system.currentTick}) ==> `; };
-/**
- * @param {string} text 
- * @returns {string}
- */
-const fieldLabel = (text) => { return `§b${text}:§r`; };
-/**
- * 
- * @param {Vector3} xyz 
- * @returns {string}
- */
-const locStr = (xyz) => { return Vector3Lib.toString(xyz, 0, true); };
-//==============================================================================
 /** @type {AfterEntityDieHandler} */
 const onAfterEntityDie = (event) => {
     //Can subscribe with Options
     const eventName = 'afterEntityDie';
-    const msg = `${alertLabel(eventName)} §c${ event.deadEntity.typeId}§r via ${event.damageSource.cause}}`;
+    const msg = `${dev.alertLabel(eventName)} §c${ event.deadEntity.typeId}§r via ${event.damageSource.cause}}`;
     dev.alertEntityEventLog(eventName, msg);
 };
 //==============================================================================
@@ -64,7 +47,7 @@ const onAfterEntityHitEntity = (event) => {
         const eventName = 'afterEntityHitEntity';
         const damagingEntityName = Entities.name_get(event.damagingEntity) ?? 'Unknown'
         const hitEntityName = Entities.name_get(event.hitEntity) ?? 'Unknown'
-        let msg = `${alertLabel(eventName)} ${damagingEntityName} ${fieldLabel('Hit')} ${hitEntityName} @ ${locStr(event.damagingEntity.location)}`;
+        let msg = `${dev.alertLabel(eventName)} ${damagingEntityName} ${dev.fieldLabel('Hit')} ${hitEntityName} @ ${dev.vectorStr(event.damagingEntity.location)}`;
         dev.alertEntityEventLog(eventName, msg);
     //}
 };
@@ -76,8 +59,8 @@ const onAfterEntityHurt = (event) => {
         const eventName = 'afterEntityHurt';
         const hurtEntityName = Entities.name_get(event.hurtEntity) ?? 'Unknown'
         const damagingEntityName = Entities.name_get(event.damageSource.damagingEntity ?? null) ?? 'Unknown'
-        let msg = `${alertLabel(eventName)} ${hurtEntityName} | ${fieldLabel('Damage')} ${round(event.damage)}`;
-        msg += `  |  ${fieldLabel('Cause')} ${event.damageSource.cause} ${fieldLabel('By')} ${damagingEntityName} `
+        let msg = `${dev.alertLabel(eventName)} ${hurtEntityName} | ${dev.fieldLabel('Damage')} ${round(event.damage)}`;
+        msg += `  |  ${dev.fieldLabel('Cause')} ${event.damageSource.cause} ${dev.fieldLabel('By')} ${damagingEntityName} `
         dev.alertEntityEventLog(eventName, msg);
     }
 };
@@ -87,7 +70,7 @@ const onAfterEntityLoad = (event) => {
     if (!event.entity.isValid || !dev.entityWatchList.includes(event.entity.typeId)) return;
     
     const eventName = 'afterEntityLoad';
-    const msg = `${alertLabel(eventName)} ${event.entity.typeId} @ ${locStr(event.entity.location)}`;
+    const msg = `${dev.alertLabel(eventName)} ${event.entity.typeId} @ ${dev.vectorStr(event.entity.location)}`;
     dev.alertEntityEventLog(eventName, msg);
 };
 //==============================================================================
@@ -96,7 +79,7 @@ const onAfterEntitySpawn = (event) => {
     if (!event.entity.isValid || !dev.entityWatchList.includes(event.entity.typeId)) return;
 
     const eventName = 'afterEntitySpawn';
-    const msg = `${alertLabel(eventName)} ${event.entity.typeId} (§d${event.cause}§r) @ ${locStr(event.entity.location)}`;
+    const msg = `${dev.alertLabel(eventName)} ${event.entity.typeId} (§d${event.cause}§r) @ ${dev.vectorStr(event.entity.location)}`;
     dev.alertEntityEventLog(eventName, msg);
 };
 //==============================================================================

@@ -15,10 +15,9 @@ Change Log:
 //=============================================================================
 import { Direction, Player, world } from "@minecraft/server";
 // shared
-import { AngleMath, Compass, toDirection } from "../tools/rotationLib";
+import { Compass } from "../tools/rotationLib";
 import { round } from "../tools/mathLib";
 import { Vector2Lib, Vector3Lib } from "../tools/vectorClass";
-import { Blocks } from "./blockLib";
 //=============================================================================
 /** @typedef {import("@minecraft/server").Vector2} Vector2 */
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
@@ -217,7 +216,7 @@ export class FaceLocationGrid {
     adjustUpDownToPlayerDirection (direction) {
         if (![ 'up', 'down' ].includes(this.blockFace))
             return;
-        world.sendMessage('in here');
+        //world.sendMessage('in here');
         //TODO: figure out later, not needed yet
         //world.sendMessage(`altering for ${direction}`);
         switch (direction) {

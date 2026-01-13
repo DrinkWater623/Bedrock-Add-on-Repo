@@ -31,8 +31,8 @@ const playerDebug = new PlayerDebug(dev);
 function register_about (registry) {
     dev.alertFunctionKey('register_about');
     const cmd = {
-        name: `${pack.cmdNameSpace}:about_f3`,
-        description: "Info/Help for DW623's 'F3 Testing add-on",
+        name: `${pack.cmdNameSpace}:about_element_affinity`,
+        description: `Info/Help for DW623's ${packDisplayName} add-on`,
         permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
     };

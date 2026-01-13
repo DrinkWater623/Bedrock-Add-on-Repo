@@ -5,7 +5,7 @@
 import { system, Player, world, TimeOfDay } from "@minecraft/server";
 import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus, CustomCommandParamType, CustomCommandOrigin } from "@minecraft/server";
 // Shared
-import { PlayerLib } from "./common-stable/gameObjects/index.js";
+import { Players } from "./common-stable/gameObjects/index.js";
 import { Vector3Lib } from "./common-stable/tools/vectorClass.js";
 // Local
 import { alertLog, pack, packDisplayName } from './settings.js';
@@ -247,7 +247,7 @@ function register_getGeoInfo (registry) {
  * @param {CustomCommandRegistry} registry 
  */
 function register_random_tp (registry) {
-    //TODO: add diff radius choices
+    //TODO: add diff radius choices and must be admin or have special tag or Dynamic Var to use
     const cmd = {
         name: `${pack.cmdNameSpace}:rtp`,
         description: "Random TP",
@@ -263,7 +263,7 @@ function register_random_tp (registry) {
             const player = origin.sourceEntity;
             if (player && player.isValid)
                 system.run(() => {
-                    PlayerLib.randomTP(player, 2500);
+                    Players.randomTP(player, 2500);
                 });
         }
 

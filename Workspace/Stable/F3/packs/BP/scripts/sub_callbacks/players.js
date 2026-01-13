@@ -52,23 +52,6 @@ const debugSubscriptions = dev.isDebugFunction('subscriptions');
 const myBlockWatch = watchFor.blockWatchList;
 const myBlockGroups = watchFor.onPlaceBlockGroups();
 //==============================================================================
-/**
- * @param {string} eventName 
- * @returns {string}
- */
-const alertLabel = (eventName) => { return `§a§l${eventName}§r (§eTick:§r ${system.currentTick}) ==> `; };
-/**
- * @param {string} text 
- * @returns {string}
- */
-const fieldLabel = (text) => { return `§b${text}:§r`; };
-/**
- * 
- * @param {Vector3} xyz 
- * @returns {string}
- */
-const locStr = (xyz) => { return Vector3Lib.toString(xyz, 0, true); };
-//==============================================================================
 /** @type {AfterPlayerBreakBlockHandler} */
 const onAfterPlayerBreakBlock = (event) => {
     if (!dev.blockWatchList.includes((event.brokenBlockPermutation.type.id))) return;
@@ -79,31 +62,31 @@ const onAfterPlayerBreakBlock = (event) => {
         const { block, brokenBlockPermutation } = event;
         const blockTypeId = brokenBlockPermutation.type.id;
         const location = block.location;
-        const msg = `${alertLabel(eventName)} ${event.player.name}  | ${fieldLabel('Block')}${blockTypeId} @ ${locStr(location)}`;
+        const msg = `${dev.alertLabel(eventName)} ${event.player.name}  | ${dev.fieldLabel('Block')}${blockTypeId} @ ${dev.vectorStr(location)}`;
         dev.alertLog(msg, true);
     }
-
 };
 //==============================================================================
 /** @type {AfterPlayerDieHandler} */
 const onAfterPlayerDie = (event) => {
     const eventName = 'afterPlayerDie';
-    let msg = `${alertLabel(eventName)} ${event.deadEntity.nameTag ? event.deadEntity.nameTag : event.deadEntity.typeId}`;
-    msg += `  |  ${fieldLabel('Cause')} ${event.damageSource.cause} ${event.damageSource.damagingEntity ? `  |  ${fieldLabel('By')} ` + (event.damageSource.damagingEntity && event.damageSource.damagingEntity.isValid && event.damageSource.damagingEntity.nameTag ? event.damageSource.damagingEntity.nameTag : event.damageSource.damagingEntity.typeId) : ''}`;
+    let msg = `${dev.alertLabel(eventName)} ${event.deadEntity.nameTag ? event.deadEntity.nameTag : event.deadEntity.typeId}`;
+    msg += ` (§l${event.deadEntity.isValid ? '§aValid' : '§cInvalid'}§r)`;
+    msg += `  |  ${dev.fieldLabel('Cause')} ${event.damageSource.cause} ${event.damageSource.damagingEntity ? `  |  ${dev.fieldLabel('By')} ` + (event.damageSource.damagingEntity && event.damageSource.damagingEntity.isValid && event.damageSource.damagingEntity.nameTag ? event.damageSource.damagingEntity.nameTag : event.damageSource.damagingEntity.typeId) : ''}`;
     dev.alertPlayerEventLog(eventName, msg);
 };
 //==============================================================================
 /** @type {AfterPlayerHealthChangedHandler} */
 const onAfterPlayerHealthChanged = (event) => {
     const eventName = 'afterPlayerHealthChanged';
-    let msg = `${alertLabel(eventName)} ${event.entity.nameTag} ${fieldLabel('From')} ${round(event.oldValue, 2)} ${fieldLabel('To')} ${round(event.newValue, 2)}`;
+    let msg = `${dev.alertLabel(eventName)} ${event.entity.nameTag} ${dev.fieldLabel('From')} ${round(event.oldValue, 2)} ${dev.fieldLabel('To')} ${round(event.newValue, 2)}`;
     dev.alertPlayerEventLog(eventName, msg);
 };
 //==============================================================================
 /** @type {AfterPlayerHitEntityHandler} */
 const onAfterPlayerHitEntity = (event) => {
     const eventName = 'afterPlayerHitEntity';
-    let msg = `${alertLabel(eventName)} ${event.damagingEntity.nameTag ?? event.damagingEntity.typeId} ${fieldLabel('Hit')} ${event.hitEntity.nameTag ? event.hitEntity.nameTag : event.hitEntity.typeId}`;
+    let msg = `${dev.alertLabel(eventName)} ${event.damagingEntity.nameTag ?? event.damagingEntity.typeId} ${dev.fieldLabel('Hit')} ${event.hitEntity.nameTag ? event.hitEntity.nameTag : event.hitEntity.typeId}`;
     dev.alertPlayerEventLog(eventName, msg);
 };
 //==============================================================================
@@ -114,8 +97,8 @@ const onAfterPlayerHurt = (event) => {
     const eventName = 'afterPlayerHurt';
     const player = event.hurtEntity;
     const damagingEntity = event.damageSource.damagingEntity;
-    let msg = `${alertLabel(eventName)} ${player.nameTag} | ${fieldLabel('Damage')} ${round(event.damage, 2)}`;
-    msg += `  | ${fieldLabel('Cause')} ${event.damageSource.cause} ${fieldLabel('By')} ${Entities.name_get(damagingEntity ?? null) ?? 'Unknown'}`;
+    let msg = `${dev.alertLabel(eventName)} ${player.nameTag} | ${dev.fieldLabel('Damage')} ${round(event.damage, 2)}`;
+    msg += `  | ${dev.fieldLabel('Cause')} ${event.damageSource.cause} ${dev.fieldLabel('By')} ${Entities.name_get(damagingEntity ?? null) ?? 'Unknown'}`;
     dev.alertPlayerEventLog(eventName, msg);
 
     if (!damagingEntity || !player.isValid) return;
@@ -195,7 +178,7 @@ const onAfterPlayerHurt = (event) => {
         //if (breath) console.warn(`airSupply is ${breath.airSupply}  max = ${breath.totalSupply}`);
 
         const underWater = player.getComponent(EntityComponentTypes.UnderwaterMovement);
-        if (underWater) console.warn(`under water movement is ${round(underWater.currentValue,2)}  max = ${round(underWater.effectiveMax,2)} `);
+        if (underWater) console.warn(`under water movement is ${round(underWater.currentValue, 2)}  max = ${round(underWater.effectiveMax, 2)} `);
 
     });
 
@@ -204,28 +187,28 @@ const onAfterPlayerHurt = (event) => {
 /** @type {AfterPlayerJoinHandler} */
 const onAfterPlayerJoin = (event) => {
     const eventName = 'afterPlayerJoin';
-    const msg = `${alertLabel(eventName)} ${event.playerName} | ${fieldLabel('Player Id')} ${event.playerId}`;
+    const msg = `${dev.alertLabel(eventName)} ${event.playerName} | ${dev.fieldLabel('Player Id')} ${event.playerId}`;
     dev.alertPlayerEventLog(eventName, msg);
 };
 //==============================================================================
 /** @type {AfterPlayerLeaveHandler} */
 const onAfterPlayerLeave = (event) => {
     const eventName = 'afterPlayerLeave';
-    const msg = `${alertLabel(eventName)} ${event.playerName} | ${fieldLabel('Player Id')} ${event.playerId}`;
+    const msg = `${dev.alertLabel(eventName)} ${event.playerName} | ${dev.fieldLabel('Player Id')} ${event.playerId}`;
     dev.alertPlayerEventLog(eventName, msg);
 };
 //==============================================================================
 /** @type {BeforePlayerLeaveHandler} */
 const onBeforePlayerLeave = (event) => {
     const eventName = 'afterPlayerLeave';
-    const msg = `${alertLabel(eventName)} ${event.player.name})`;
+    const msg = `${dev.alertLabel(eventName)} ${event.player.name})`;
     dev.alertPlayerEventLog(eventName, msg);
 };
 //==============================================================================
 /** @type {AfterPlayerSpawnHandler} */
 const onAfterPlayerSpawn = (event) => {
     const eventName = 'afterPlayerSpawn';
-    const msg = `${alertLabel(eventName)} ${event.player.name} ${event.initialSpawn ? '(§aFirst Time§r)' : ''} @  ${locStr(event.player.location)}`;
+    const msg = `${dev.alertLabel(eventName)} ${event.player.name} ${event.initialSpawn ? '(§aFirst Time§r)' : ''} @  ${dev.vectorStr(event.player.location)}`;
     dev.alertPlayerEventLog(eventName, msg);
 };
 //==============================================================================
@@ -238,7 +221,7 @@ const onAfterPlayerPlaceBlock = (event) => {
     const alert = dev.isDebugBlockEvent(eventName) || dev.isDebugPlayerEvent(eventName);
     //TODO: add permutation
     const { typeId, location } = event.block;
-    const msg = `${alertLabel(eventName)} ${event.player.name} | ${fieldLabel('Block')} ${typeId} @ ${locStr(location)}`;
+    const msg = `${dev.alertLabel(eventName)} ${event.player.name} | ${dev.fieldLabel('Block')} ${typeId} @ ${dev.vectorStr(location)}`;
     dev.alertPlayerEventLog(eventName, msg);
 };
 //==============================================================================

@@ -47,6 +47,19 @@ export function randomArrayItemExcept (arr, exclude = []) {
  * Returns undefined if nothing is eligible.
  *
  * @param {(string)[]} arr
+ * @returns {string|undefined}
+ */
+export function randomArrayString (arr) {
+    if (!arr?.length) return undefined;
+    const candidates = arr
+    if (candidates.length === 0) return undefined;
+    return candidates[ Math.floor(Math.random() * candidates.length) ];
+}
+/**
+ * Random item from an array, excluding certain values.
+ * Returns undefined if nothing is eligible.
+ *
+ * @param {(string)[]} arr
  * @param {(string)[]} [exclude=[]]
  * @returns {string|undefined}
  */

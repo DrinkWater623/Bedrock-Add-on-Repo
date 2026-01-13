@@ -15,11 +15,12 @@ Change Log:
 import { Dimension, Player } from "@minecraft/server";
 // Shared.
 import { DynamicPropertyLib, randomArrayItem, } from "../common-stable/tools/index.js";
+import { Blocks } from "../common-stable/gameObjects/index.js";
+import { shelterBuild } from "../common-stable/structures/index.js";
 // Local
 import { dev } from "../debug.js";
-import { Blocks,BlockTypeIds } from "../common-stable/gameObjects/index.js";
-import { shelterBuild } from "../common-stable/builders/index.js";
 import { ElementBlocks } from "./cachedData.js";
+import { BlockTypeIds } from "../common-data/BlockTypeIds.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /**
@@ -27,6 +28,21 @@ import { ElementBlocks } from "./cachedData.js";
  * @typedef {{ NW: BlockData, NE: BlockData, SW: BlockData, SE: BlockData }} DirTable
  * @typedef {{ get(d?: string): string }} DirHelper
  */
+/** 
+ * @typedef {{
+ *      floors?:number,
+ *      roomHeight?:number,
+ *      depthWidth?:number,
+ *      basement?:boolean,
+ *      pyramidRoof?:boolean,
+ *      materialPool?:string[]
+ *      climbingMaterialPool?:string[]
+ *      floorLight?:string,
+ *      ceilingLight?:string,
+ *      roofLight?:string
+ * }} ShelterBuildOptions
+ */
+
 //=========================================================================================
 //  This point and below is just a USER of the above and will later not be in the same file
 //  The above will turn into a class or something
@@ -48,66 +64,66 @@ export function shelter (player, type = 'shack') {
 }
 /**
  * @param {string} dimensionId 
- * @param {{ blocks: string[]; ladder: string; light: string; }} [opts={blocks:[''],ladder:'',light:''}] 
+ * @param {ShelterBuildOptions} [opts] 
  */
-function elementNoneMaterials (dimensionId, opts = { blocks: [ '' ], ladder: '', light: '' }) {
+function elementNoneMaterials (dimensionId, opts={}) {
     if (dimensionId == 'nether') {
-        opts.blocks = [ 'gravel', 'netherrack', 'blackstone', 'magma', 'basalt' ];
-        opts.ladder = 'minecraft:twisting_vine';
-        opts.light = 'shroomlight';
+        opts.materialPool = [ 'gravel', 'netherrack', 'blackstone', 'magma', 'basalt' ];
+        opts.climbingMaterialPool = ['minecraft:twisting_vine'];
+        opts.ceilingLight = 'shroomlight';
     }
     else if (dimensionId == 'the_end') {
-        opts.blocks = [ 'end_stone', 'purpur_block', 'end_bricks' ];
-        opts.ladder = 'minecraft:scaffolding';
-        opts.light = 'end-rod';
+        opts.materialPool = [ 'end_stone', 'purpur_block', 'end_bricks' ];
+        opts.climbingMaterialPool = ['minecraft:scaffolding'];
+        opts.ceilingLight = 'end-rod';
     }
     else {
-        opts.blocks = [ ...BlockTypeIds.getDirtyBlockTypeIds(), 'gravel', 'cobblestone', 'clay_block', ...BlockTypeIds.getLeafBlockTypeIds() ];
-        opts.ladder = 'minecraft:ladder';
-        opts.light = 'lit_pumpkin';
+        opts.materialPool = [ ...BlockTypeIds.getDirtyBlockTypeIds(), 'gravel', 'cobblestone', 'clay_block', ...BlockTypeIds.getLeafBlockTypeIds() ];
+        opts.climbingMaterialPool = ['minecraft:ladder'];
+        opts.ceilingLight = 'lit_pumpkin';
     }
-    Blocks.addSlabVariantsInPlace(opts.blocks, { verify: true });
+    BlockTypeIds.addSlabVariantsInPlace(opts.materialPool, { verify: true });
 }
 /**
  * 
  * @param {string} element 
  * @param {Dimension} dimension
  * @param {Vector3} locationCenter 
- * @param {number} [stories=2] 
+ * @param {number} [floors=2] 
  * @param {number} [roomHeight=4] 
- * @param {number} [roomLength=9] 
+ * @param {number} [depthWidth=9] 
  * @param {boolean} [basement=false] 
  *  
  */
-export function house (element, dimension, locationCenter, stories = 2, roomHeight = 4, roomLength = 9, basement = false) {
+export function house (element, dimension, locationCenter, floors = 2, roomHeight = 4, depthWidth = 9, basement = false) {
     //other ides - outpost with equipment (buy those)
 
-    const opts = { height: roomHeight * stories + 1, length: roomLength, blocks: [ '' ], ladder: '', light: '' };
+    /** @type {ShelterBuildOptions} */
+    const opts = { floors,roomHeight,depthWidth,basement,pyramidRoof:true,roofLight:'minecraft:campfire'};
 
     if (element == 'air') {
-        opts.blocks = [ ...ElementBlocks.getElementShelterBlockTypeIds('air') ];
-        opts.ladder = 'any';
-        opts.light = 'end_rod';
+        opts.materialPool = [ ...ElementBlocks.getElementShelterBlockTypeIds('air') ];        
+        opts.ceilingLight = 'minecraft:end_rod';
     }
     else if (element == 'earth') {
-        opts.blocks = [ ...ElementBlocks.getElementShelterBlockTypeIds('earth') ];
-        opts.ladder = randomArrayItem([ 'minecraft:scaffolding', 'minecraft:vine', 'minecraft:ladder' ]) ?? 'minecraft:vine';
-        opts.light = 'lit_pumpkin';
+        opts.materialPool = [ ...ElementBlocks.getElementShelterBlockTypeIds('earth') ];
+        opts.climbingMaterialPool = [ 'minecraft:scaffolding', 'minecraft:vine', 'minecraft:ladder' ]
+        opts.ceilingLight = 'minecraft:lit_pumpkin';
     }
     else if (element == 'fire') {
-        opts.blocks = [ ...ElementBlocks.getElementShelterBlockTypeIds('fire') ];
-        opts.ladder = randomArrayItem([ 'twisting_vine', 'weeping_vine' ]) ?? 'twisting_vine';
-        opts.light = randomArrayItem([ 'shroomlight', 'glowstone' ]) ?? 'shroomlight';
+        opts.materialPool = [ ...ElementBlocks.getElementShelterBlockTypeIds('fire') ];
+        opts.climbingMaterialPool = [ 'twisting_vine', 'weeping_vine' ]
+        opts.ceilingLight = randomArrayItem([ 'shroomlight', 'glowstone' ]) ?? 'shroomlight';
     }
     else if (element == 'water') {
-        opts.blocks = [ ...ElementBlocks.getElementShelterBlockTypeIds('water') ];
-        opts.ladder = 'minecraft:flowing_water';
-        opts.light = 'sea_lantern';
+        opts.materialPool = [ ...ElementBlocks.getElementShelterBlockTypeIds('water') ];
+        opts.climbingMaterialPool = ['minecraft:flowing_water']
+        opts.ceilingLight = 'minecraft:sea_lantern';
     }
     else {
         elementNoneMaterials(dimension.id, opts);
     }
-    shelterBuild(opts.blocks, opts.ladder, opts.light, dimension, locationCenter, opts.height, opts.length);
+    shelterBuild(dimension, locationCenter, opts);
 }
 //==============================================================================
 /**
@@ -118,32 +134,32 @@ export function house (element, dimension, locationCenter, stories = 2, roomHeig
  */
 export function shack (element, dimension, locationCenter) {
 
-    const opts = { height: 5, length: 7, blocks: [ '' ], ladder: '', light: '' };
+    /** @type {ShelterBuildOptions} */
+    const opts = { roomHeight: 4, depthWidth: 7 };
 
     if (element == 'air') {
-        opts.blocks = [ 'minecraft:glass', ...BlockTypeIds.getLeafBlockTypeIds() ];
-        opts.ladder = 'any';
-        opts.light = 'end_rod';
+        opts.materialPool = [ 'minecraft:glass', ...BlockTypeIds.getLeafBlockTypeIds() ];
+        opts.ceilingLight = 'end_rod';
     }
     else if (element == 'earth') {
-        opts.blocks = [ 'clay', 'clay_block', 'gravel', ...BlockTypeIds.getDirtyBlockTypeIds(), ...BlockTypeIds.getNaturalOverworldStoneBlockTypeIds(), ...BlockTypeIds.getLeafBlockTypeIds(), ...BlockTypeIds.getOverworldLogBlockTypeIds() ];
-        opts.ladder = 'minecraft:vine';
-        opts.light = 'lit_pumpkin';
+        opts.materialPool = [ 'clay', 'clay_block', 'gravel', ...BlockTypeIds.getDirtyBlockTypeIds(), ...BlockTypeIds.getNaturalOverworldStoneBlockTypeIds(), ...BlockTypeIds.getLeafBlockTypeIds(), ...BlockTypeIds.getOverworldLogBlockTypeIds() ];
+        opts.climbingMaterialPool = ['minecraft:vine'];
+        opts.ceilingLight = 'lit_pumpkin';
     }
     else if (element == 'fire') {
-        opts.blocks = [ ...BlockTypeIds.getNetherLogBlockTypeIds() ];
-        opts.ladder = 'twisting_vine';
-        opts.light = 'shroomlight';
+        opts.materialPool = [ ...BlockTypeIds.getNetherLogBlockTypeIds() ];
+        opts.climbingMaterialPool = ['twisting_vine'];
+        opts.ceilingLight = 'shroomlight';
     }
     else if (element == 'water') {
-        opts.blocks = [ ...BlockTypeIds.getDeadCoralBlockTypeIds() ];
-        opts.ladder = 'minecraft:flowing_water';
-        opts.light = 'sea_lantern';
+        opts.materialPool = [ ...BlockTypeIds.getDeadCoralBlockTypeIds() ];
+        opts.climbingMaterialPool = ['minecraft:flowing_water'];
+        opts.ceilingLight = 'sea_lantern';
     }
     else {
         elementNoneMaterials(dimension.id, opts);
     }
 
-    shelterBuild(opts.blocks, opts.ladder, opts.light, dimension, locationCenter, opts.height, opts.length);
+    shelterBuild(dimension, locationCenter,opts);
 }
 //==============================================================================

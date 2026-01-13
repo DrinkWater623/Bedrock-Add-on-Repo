@@ -13,7 +13,7 @@ Change Log:
     20251214 - Better AllOff and AnyOns
     20251216 - More work
 ========================================================================*/
-import { Player, World, ItemStack, world } from '@minecraft/server';
+import { ItemStack } from '@minecraft/server';
 import { Debugger } from './debuggerClass.js';
 //=============================================================================
 //=============================================================================
