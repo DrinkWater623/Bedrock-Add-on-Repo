@@ -21,6 +21,7 @@ import { ChatMsg, ConsoleAlert } from '../tools/messageLib.js';
 import { objectEntries_any_booleans_opts, objectEntries_set_booleans_opts, objectKeysWhereBooleanOpts, booleanKeyExist, readBooleanKey, listObjectInnards, listArray } from "../tools/objects.js";
 import { toTitleCase } from '../tools/stringLib.js';
 import { Vector3Lib } from '../tools/vectorClass.js';
+import { Scoreboards } from '../tools/scoreboardLib.js';
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 //============================================================================================
@@ -73,6 +74,8 @@ export class Dev {
         this.debugOn = false;
         this._masterPackDebugOn = on;  //before you add to the debugs below check this, else it may fail, cause I freeze if OFF
         this._isDead = false;
+        //placeholder - user fixes it
+        /** @type {any} */ this.dsb = new Scoreboards(false, 'None', "§c§lNot Set Up Yet§r"); // reserve the slot
         //actual namespace:typeIds
         /** @type {string[]} */
         this.entityWatchList = [];

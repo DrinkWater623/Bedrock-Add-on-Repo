@@ -1,0 +1,20 @@
+{
+  // 3 fence_gates is 6 planks = 12 sticks, so one fence_gate is 4 sticks
+  "$files": {
+    "array": "woods",
+    "fileName": "./sticks/from_fence_{{value}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {"identifier":"cut:sticks_from_{{value}}_fence"},
+      "tags": ["stonecutter"],
+      "priority": 0,
+      "ingredients":[{"item":"minecraft:{{value}}_fence"}],
+      "result": {
+        "item": "minecraft:stick",
+        "count": 4
+      }
+    }
+  }
+}

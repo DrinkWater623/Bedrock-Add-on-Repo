@@ -34,7 +34,8 @@
 		"crimson",
 		"cherry",
 		"mangrove",
-		"warped"
+		"warped",
+		"pale_oak"
 	],
 	//"woods":[
 	//	{"type":"oak"		},
@@ -60,7 +61,8 @@
 		{"id":0 ,"use_data_id":0,"type":"crimson"	,"log":"stem"	,"planks":""	,"slab":""	,"button":""		,"door":""				,"trapdoor":""			,"pressure_plate":""		,"fence_gate":""			,"has_boat":0,"has_raft":0	},
 		{"id":0 ,"use_data_id":0,"type":"cherry"	,"log":"log"	,"planks":""	,"slab":""	,"button":""		,"door":""				,"trapdoor":""			,"pressure_plate":""		,"fence_gate":""			,"has_boat":1,"has_raft":0	},
 		{"id":0 ,"use_data_id":0,"type":"mangrove"	,"log":"log"	,"planks":""	,"slab":""	,"button":""		,"door":""				,"trapdoor":""			,"pressure_plate":""		,"fence_gate":""			,"has_boat":1,"has_raft":0	},
-		{"id":0 ,"use_data_id":0,"type":"warped"	,"log":"stem"	,"planks":""	,"slab":""	,"button":""		,"door":""				,"trapdoor":""			,"pressure_plate":""		,"fence_gate":""			,"has_boat":0,"has_raft":0	}
+		{"id":0 ,"use_data_id":0,"type":"warped"	,"log":"stem"	,"planks":""	,"slab":""	,"button":""		,"door":""				,"trapdoor":""			,"pressure_plate":""		,"fence_gate":""			,"has_boat":0,"has_raft":0	},
+		{"id":0 ,"use_data_id":0,"type":"pale_oak"	,"log":"log"	,"planks":""	,"slab":""	,"button":""		,"door":""				,"trapdoor":""			,"pressure_plate":""		,"fence_gate":""			,"has_boat":1,"has_raft":0	}
 	],
 	"log_list":[
 		{"type":"acacia"	,"log":"log"		},		

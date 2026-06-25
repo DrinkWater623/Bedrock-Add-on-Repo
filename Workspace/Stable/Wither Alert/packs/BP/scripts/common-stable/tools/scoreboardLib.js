@@ -196,7 +196,7 @@ function unDisplayAtDisplayLotId (typeId, tickDelay = 0) {
      * @returns {ScoreboardObjective | undefined}
      */
 function queryDisplayLotId (typeId) {
-    return world.scoreboard.getObjectiveAtDisplaySlot(typeId)?.objective
+    return world.scoreboard.getObjectiveAtDisplaySlot(typeId)?.objective;
 }
 //===================================================================
 export class ScoreboardLib {
@@ -1118,3 +1118,68 @@ export class Scoreboards {
 }
 //===================================================================
 //End of File
+ /**
+ * A safe wrapper that looks like Scoreboards to your code,
+ * but doesn't touch Minecraft's scoreboard API until you attach a real instance.
+ */
+// class LazyScoreboards {
+//     /** @type {Scoreboards | null} */
+//     _real = null;
+
+//     /** @type {Array<(r: Scoreboards) => void>} */
+//     _queue = [];
+
+//     /** @type {boolean} */
+//     _warned = false;
+
+//     /**
+//      * @param {(msg: string, on?: boolean) => void} emitWarn
+//      */
+//     constructor(emitWarn) {
+//         this._emitWarn = emitWarn;
+//     }
+
+//     /**
+//      * Attach the real Scoreboards AFTER world load.
+//      * @param {Scoreboards} real
+//      */
+//     attach (real) {
+//         this._real = real;
+//         for (const fn of this._queue) fn(real);
+//         this._queue.length = 0;
+//     }
+
+//     /** @param {string} method */
+//     _warnOnce (method) {
+//         if (this._warned) return;
+//         this._warned = true;
+//         this._emitWarn?.(`[dsb] "${method}" called before dsb_setup() — ignored/queued`, true);
+//     }
+
+//     /** @param {string} method @param {(r: any) => void} fn */
+//     _call (method, fn) {
+//         if (this._real) return fn(this._real);
+//         this._warnOnce(method);
+//         this._queue.push(fn);
+//     }
+
+//     // ---- Methods your code already uses ----
+//     setScoreboardsOn (on) { this._call("setScoreboardsOn", r => r.setScoreboardsOn(on)); }
+//     setup (cfg) { this._call("setup", r => r.setup(cfg)); }
+//     enableTimeCounter (on) { this._call("enableTimeCounter", r => r.enableTimeCounter(on)); }
+//     registerIntervalJob (name, job, interval, bases) {
+//         this._call("registerIntervalJob", r => r.registerIntervalJob(name, job, interval, bases));
+//     }
+//     countersOn () { this._call("countersOn", r => r.countersOn()); }
+//     show (name) { this._call("show", r => r.show(name)); }
+
+//     set (base, entry, value, weight) {
+//         this._call("set", r => r.set(base, entry, value, weight));
+//     }
+//     increment (base, entry) {
+//         this._call("increment", r => r.increment(base, entry));
+//     }
+//     zero (bases) {
+//         this._call("zero", r => r.zero(bases));
+//     }
+// }

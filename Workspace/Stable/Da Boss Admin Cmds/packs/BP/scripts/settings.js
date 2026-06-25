@@ -17,13 +17,17 @@ import { ConsoleAlert,ChatMsg } from "./common-stable/tools/index";
 //==============================================================================
 export const pack = {
     packName: 'Da Boss - Admin Cmds',
+
     about:'Some cmds for convenience',
     devUrl:'https://github.com/DrinkWater623',
     reportBugs:'pinkSalt623@gmail.com',
-    beta: false,
+
+    isBeta: false,
     worldLoaded: false,
     cmdNameSpace: "da_boss", 
-    isLoadAlertsOn: true
+    isLoadAlertsOn: true,
+
+    debugOn: false //Do Not change by code... the MASTER SWITCH to start world with/without debugging enabled
 };
 //==============================================================================
 export const packDisplayName = `§6${pack.packName}§r`

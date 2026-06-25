@@ -1,0 +1,30 @@
+{
+    "$scope":{
+        "vanilla_shapeless_craft": [
+            {"input":"quartz_block"     ,"output":"quartz"  		,"out_count":4},           
+            {"input":"chest"            ,"output":"barrel"  		,"out_count":1},           
+            {"input":"barrel"            ,"output":"chest"  		,"out_count":1},           
+            {"input":"nether_wart_block","output":"nether_wart"		,"out_count":9},           
+            {"input":"amethyst_block"	,"output":"amethyst_shard"	,"out_count":4},           
+            {"input":"white_wool"       ,"output":"string"		    ,"out_count":9},           
+            {"input":"web"				,"output":"string"			,"out_count":3}
+        ]
+    },
+    "$files": {
+        "array": "vanilla_shapeless_craft",
+        "fileName": "./misc/{{output}}_from_{{input}}"
+    },
+    "$template":
+    {
+        "format_version": "1.12.0",
+        "minecraft:recipe_shapeless": {
+            "description": {"identifier":"craft:{{output}}_from_{{input}}"},
+            "tags": ["crafting_table"],
+            "ingredients": [{"item":"minecraft:{{input}}"}],
+            "result": {
+                "item": "minecraft:{{output}}",
+                "count": "{{=out_count}}"
+            }
+        }
+    }
+}

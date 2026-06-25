@@ -10,40 +10,24 @@ Last Update: 20251023 - add in stable stuff and update to api 2.0 and move debug
 ========================================================================*/
 import { system, Block, Dimension } from "@minecraft/server";
 //Shared
-import { airBlock,leafBlocks,saplingBlocks,tallNatureBlocks } from "../common-data/index.js";
+import { airBlock, BlockTypeIds } from "../common-data/index.js";
 import { Blocks, spawnEntityAfterRandomTicks, spawnEntityAtLocation } from "../common-stable/gameObjects/index.js";
 import { chance } from "../common-stable/tools/index.js";
 //Local
-import { watchFor, alertLog } from '../settings.js';
-import { devDebug } from "../debug.js";
+import { watchFor, alertLog, initializeEntityBlocks } from '../settings.js';
+import { dev } from "../debug.js";
 
 //===================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /** @typedef {Block | undefined} PossibleBlock*/
 /** The function type subscribe expects. */
 //===================================================================
-const debugFunctionsOn = false;
-const watchPlayerActions = devDebug.watchPlayerActions;
-//===================================================================
-const AIR_BLOCK = airBlock;
 const HOME_ID = watchFor.spider_home_typeId;
-
 //===================================================================
-/** @type {ReadonlySet<string>} */ const LEAVES = new Set(watchFor.target_leaves);
-/** @type {ReadonlySet<string>} */ const LOGS = new Set(watchFor.target_logs);
 /** @type {(id: string) => boolean} */
-const isValidNeighborBlockTypeIdForPlacingWebs = (id) => id === HOME_ID || LEAVES.has(id) || LOGS.has(id);
+const isValidNeighborBlockTypeIdForPlacingWebs = (id) => id === HOME_ID || BlockTypeIds.getLeafBlockTypeIdSet().has(id) || BlockTypeIds.getLogBlockTypeIdSet().has(id);
 //===================================================================
-const leaves = [ ...leafBlocks ];
-const saplings = [ ...saplingBlocks ];
-const tallPlants = [ ...tallNatureBlocks ];
 //===================================================================
-const allowedSpiderHangoutNatureBlocks = [
-    watchFor.spider_home_typeId,
-    watchFor.spider_foodBlock_typeId, //firefly bush
-    'minecraft:deadbush',
-    'minecraft:mangrove_roots',
-].concat(leaves).concat(saplings).concat(tallPlants);
 //===================================================================
 const allowedFlyHangoutNatureBlocks = [
     'minecraft:web',
@@ -80,7 +64,9 @@ export function validNatureBlockForSpiders (blockTypeId) {
 
     if (!blockTypeId) return false;
 
-    if (allowedSpiderHangoutNatureBlocks.includes(blockTypeId)) return true;
+    initializeEntityBlocks();
+
+    if (watchFor.hangoutBlockTypes_spiders.includes(blockTypeId)) return true;
 
     //if any custom
     const suffixList = [
@@ -148,9 +134,8 @@ export function targetBlockAdjacent (block) {
  */
 export function rattleEntityFromBlockWithItem (blockHit, itemUsed, blockFaceHit, initialChance = 1) {
     if (!blockHit || !blockHit.isValid) return;
-
     const _name = 'rattleEntityFromBlockWithItem';
-    const debugMe = watchPlayerActions;
+    const debugMe = dev.isDebugFunction(_name);
 
     const blockHitTypeID = blockHit.typeId;
     alertLog.log(`>> ${_name} (${blockHitTypeID}, ${itemUsed}, blockFaceHit = ${blockFaceHit}, initialChance = ${initialChance})`, debugMe);
@@ -193,7 +178,7 @@ export function rattleEntityFromBlockWithItem (blockHit, itemUsed, blockFaceHit,
             alertLog.warn(`xx ${_name} - Top of block is not AIR`, debugMe);
             return;
         };
-        
+
         blockFaceHit = 'up';
     }
 

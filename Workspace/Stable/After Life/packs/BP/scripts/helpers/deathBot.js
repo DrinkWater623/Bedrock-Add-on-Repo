@@ -76,10 +76,13 @@ function launchDeathBot (dimension, location, playerNameTag, botNumber = 0) {
     bot.setDynamicProperty("ownerNameTag", playerNameTag);
     bot.setDynamicProperty("ownerDimension", dimension.id);
     bot.setDynamicProperty("ownerLocation", location);
+    //system.runTimeout(() => {
+    //    if(bot.isValid) bot.triggerEvent('ev:despawn_when_empty');
+    //}, 60);
     //TODO: Player combo lock
 
     //Progressive TP of stuff, so closest stuff is first, then venture out by 5 blocks
-    let tickPtr=2
+    let tickPtr = 2;
     for (let i = tickPtr; i <= 5; i++) {
         console.warn(`§bTick:§r ${system.currentTick} §6==> for i = ${i}`);
         system.runTimeout(() => {
@@ -90,7 +93,7 @@ function launchDeathBot (dimension, location, playerNameTag, botNumber = 0) {
     }
 
     //more items - which should be close now... call next one if so?
-    tickPtr=61
+    tickPtr = 61;
     system.runTimeout(() => {
         const itemCount = EntityFloatingItems.floatingItemCount(dimension, location, 10, 3);
         if (itemCount > 0) {

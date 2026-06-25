@@ -114,7 +114,7 @@ export class DynamicPropertyLib {
      */
     static getNumber (owner, key, defaultValue = 0) {
         const v = this._safeGet(owner, key);
-        return typeof v === "number" ? v : defaultValue;
+        return (typeof v === "number" && Number.isFinite(v)) ? v : defaultValue;
     }
 
     /**

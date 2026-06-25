@@ -23,10 +23,10 @@ export const pack = {
     reportBugs: 'pinkSalt623@gmail.com',
 
     isBeta: false,
+    worldLoaded: false,
     isLoadAlertsOn: true,
     gameRuleShowCoordinates: false, //turn to true to override    
-    cmdNameSpace: "abc",
-    worldLoaded: 0,
+    cmdNameSpace: "abc",    
     loadDelay: TicksPerSecond * 5,
     tickDelay: 16,
     dynamicProperty: 'isInstalled',
@@ -49,7 +49,10 @@ export const pack = {
             xyz: true,
             velocity: false
         }
-    }
+    },
+
+    debugOn: false //Do Not change by code... the MASTER SWITCH to start world with/without debugging enabled
+
 };
 //==============================================================================
 export const packDisplayName = `§d${pack.packName}§r`;

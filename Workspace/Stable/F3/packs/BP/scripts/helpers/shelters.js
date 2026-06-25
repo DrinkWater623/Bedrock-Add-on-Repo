@@ -137,6 +137,9 @@ export function shack (element, dimension, locationCenter) {
     /** @type {ShelterBuildOptions} */
     const opts = { roomHeight: 4, depthWidth: 7 };
 
+    const biome = dimension.getBiome(locationCenter).id
+    dev.alertLog(`Biome = ${biome}`,true)
+
     if (element == 'air') {
         opts.materialPool = [ 'minecraft:glass', ...BlockTypeIds.getLeafBlockTypeIds() ];
         opts.ceilingLight = 'end_rod';

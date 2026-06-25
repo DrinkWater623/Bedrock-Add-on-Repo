@@ -157,16 +157,23 @@ export function shelterBuild (dimension, locationCenter, opts = {}) {
         SW_negX_posZ: { x: xWall1, y: yFloor, z: zWall2 },
         SE_posXZ: { x: xWall2, y: yFloor, z: zWall2 }
     };
-    const replaceAllowList = [
-        ...BlockTypeIds.getNaturalOverworldAboveZeroStoneBlockTypeIds(),
+    const tempReplaceAllowList = [
         ...fallThruBlocks,
         ...BlockTypeIds.getDirtyBlockTypeIds(),
-        ...BlockTypeIds.getShortPlantBlockTypeIdSet(),
-        ...BlockTypeIds.getTallPlantBlockTypeIds(),
-        'sand', 'gravel', 'red_sand','netherrack',
-        'minecraft:snow_block', 'minecraft:snow', 'minecraft:ice', 'minecraft:powder_snow' //  leave blue and packed ice, these are valuable
+        ...BlockTypeIds.getNaturalColdBlockTypeIds(),
+        ...BlockTypeIds.getNaturalGravityBlockTypeIds(),
+        ...BlockTypeIds.getNaturalOceanBlockTypeIds(),
+        ...BlockTypeIds.getNaturalStoneBlockTypeIds(),
+        ...BlockTypeIds.getPlantBlockTypeIds(),
+        'netherrack'
     ];
-    BlockTypeIds.normalizeBlockIdsInPlace(replaceAllowList, { verify: true, removeEmpty: true, addNamespace: true });
+    BlockTypeIds.normalizeBlockIdsInPlace(tempReplaceAllowList, { verify: true, removeEmpty: true, addNamespace: true });
+    //It does not seem to add water and stuff like that.. add do after normalization
+    const replaceAllowList = [
+        ...tempReplaceAllowList,
+        ...waterBlocks,
+        ...lavaBlocks
+    ];
     //----------
     // Materials
     //----------
@@ -213,8 +220,8 @@ export function shelterBuild (dimension, locationCenter, opts = {}) {
     const isFloorSlabAndTwistingVine = climbingMaterial.endsWith('twisting_vines') && floorMaterial.endsWith('_slab');
     const isWall = floorMaterial.endsWith('_wall');
 
-    console.warn(`BlockTypeIds.getPartialBlockTypeIdSet().has(wallMaterial) (${BlockTypeIds.getPartialBlockTypeIdSet().has(wallMaterial)}) && (input_climbingMaterial.endsWith(':vine') || input_climbingMaterial.endsWith(':ladder')) ${wallMaterial}/${input_climbingMaterial} = ${BlockTypeIds.getPartialBlockTypeIdSet().has(wallMaterial) && (input_climbingMaterial.endsWith(':vine') || input_climbingMaterial.endsWith(':ladder'))}`);
-    console.warn(`climbingMaterial.endsWith('weeping_vines') || climbingMaterial.endsWith('glow_berries') (${climbingMaterial}) = ${climbingMaterial.endsWith('weeping_vines') || climbingMaterial.endsWith('glow_berries')}`);
+    //console.warn(`BlockTypeIds.getPartialBlockTypeIdSet().has(wallMaterial) (${BlockTypeIds.getPartialBlockTypeIdSet().has(wallMaterial)}) && (input_climbingMaterial.endsWith(':vine') || input_climbingMaterial.endsWith(':ladder')) ${wallMaterial}/${input_climbingMaterial} = ${BlockTypeIds.getPartialBlockTypeIdSet().has(wallMaterial) && (input_climbingMaterial.endsWith(':vine') || input_climbingMaterial.endsWith(':ladder'))}`);
+    //console.warn(`climbingMaterial.endsWith('weeping_vines') || climbingMaterial.endsWith('glow_berries') (${climbingMaterial}) = ${climbingMaterial.endsWith('weeping_vines') || climbingMaterial.endsWith('glow_berries')}`);
     //----------------------------------------------------------------------------------------------------
     //First Fill -  with keeping what is still there like chests and stuff
     command = `fill ${xWall1} ${yFloor} ${zWall1}  ${xWall2} ${yCeiling} ${zWall2} ${tempMaterial} keep`;
@@ -228,19 +235,29 @@ export function shelterBuild (dimension, locationCenter, opts = {}) {
     worldRun(command, dimension, tick, locationCenter);
     //----------------------------------------------------------------------------------------------------
     /* Clear natural blocks (non-crafted) - avoids messing up unintended blocks like chests / shulkers */
+    let ctr = 0;
+    const ct = replaceAllowList.length;
+    //console.warn(`About to clear ${ct} possible blocks`);
+    command = `fill ${xWall1} ${yFloor} ${zWall1}  ${xWall2} ${yCeiling + 1} ${zWall2} ${tempMaterial} replace air`;
+    worldRun(command, dimension, tick);
+
     replaceAllowList.forEach((block) => {
         //Within the structure - clean up natural blocks
+        //console.warn(`Block ${++ctr} of ${ct}: ${block}`);
         command = `fill ${xWall1} ${yFloor} ${zWall1}  ${xWall2} ${yCeiling} ${zWall2} ${tempMaterial} replace ${block}`;
-        worldRun(command, dimension, tick, locationCenter);
+        worldRun(command, dimension, tick);
+    });
+    tick++;
 
+    replaceAllowList.filter(b => { return !b.endsWith('water'); }).forEach((block) => {
         //clear some of the outside area
-        const space = 4;
-        command = `fill ${xWall1 - space} ${yFloor + 1} ${zWall1 - space}  ${xWall2 + space} ${yCeiling + space} ${zWall2 + space} air replace ${block}`;
+        const space = 1;
+        command = `fill ${xWall1 - space} ${yFloor+1} ${zWall1 - space}  ${xWall2 + space} ${yCeiling + space + 2} ${zWall2 + space} air replace ${block}`;
         worldRun(command, dimension, tick, locationCenter);
     });
     tick++;
 
-    //space for water to fall in
+    //space for water to fall in TODO, check for if underwater.... have to use nothing.. outside, just inside
     if (isWaterElevator) {
         //space for water to fall INSIDE the shelter
         command = `fill ${corners.NW_negXZ.x + 1} ${yFloor} ${corners.NW_negXZ.z + 1}  ${corners.NW_negXZ.x + 1} ${yFloor} ${corners.NW_negXZ.z + 1} air replace ${tempMaterial}`;
@@ -301,7 +318,7 @@ export function shelterBuild (dimension, locationCenter, opts = {}) {
         tick++;
     }
     if (isWall) {
-        console.warn('yep wall - fix floor');
+        //console.warn('yep wall - fix floor');
         //Floor 1  has to be all floorMaterial
         command = `fill ${xWall1} ${yFloor} ${zWall1}  ${xWall2} ${yFloor} ${zWall2} ${floorMaterial} ${floorData} replace ${tempMaterial}`;
         worldRun(command, dimension, tick, locationCenter);
@@ -371,7 +388,7 @@ export function shelterBuild (dimension, locationCenter, opts = {}) {
         }
         //Overhead holder of hanging blocks, 3 above ceiling block, newCeilCheck is already 2 above 
         else if (isHangingElevator) {
-            console.warn('yep hanging elevator');
+           // console.warn('yep hanging elevator');
             //Inside roof elevator area
             command = `setblock ${corners.NW_negXZ.x + 1}     ${newCeilCheck + 1} ${corners.NW_negXZ.z + 1}      ${floorMaterial} ${floorData} keep`;
             worldRun(command, dimension, tick, locationCenter);
@@ -534,12 +551,8 @@ export function shelterBuild (dimension, locationCenter, opts = {}) {
     worldRun(command, dimension, tick, locationCenter);
     tick++;
 
-    // system.runTimeout(() => {
-    //     const pos = corners.negXZ;
-    //     pos.x++;
-    //     pos.z++;
-    //     const flr = dimension.getBlock(pos);
-    //     if (flr && flr.typeId != floorMaterial) console.warn(`floor block is ${flr.typeId}`);
-    // }, ++tick);
+    // Last left - clear it
+    command = `fill ${xWall1-2} ${yFloor-2} ${zWall1-2}  ${xWall2+2} ${yCeiling+2} ${zWall2+2} air replace ${tempMaterial}`;
+    worldRun(command, dimension, tick+10, locationCenter);
 }
 //==============================================================================

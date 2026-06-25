@@ -8,7 +8,7 @@ URL: https://github.com/DrinkWater623
 ========================================================================
 Last Update: 20251023 - add in stable stuff and update to api 2.0 and move debug-only stuff out
 ========================================================================*/
-import { ItemStack } from "@minecraft/server";
+
 //Shared
 import * as vanillaItems from "../common-data/item-data.js";
 //===================================================================

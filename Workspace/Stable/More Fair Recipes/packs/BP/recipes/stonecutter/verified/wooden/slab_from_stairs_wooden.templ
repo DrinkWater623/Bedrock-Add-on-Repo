@@ -1,0 +1,19 @@
+{
+  "$files": {
+    "array": "woods",
+    "fileName": "./slabs/from_plank_{{value}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {"identifier":"cut:slabs_from_stairs_{{value}}"},
+      "tags": ["stonecutter"],
+      "priority": 0,
+      "ingredients": [{"item":"minecraft:{{value}}_stairs"}],
+      "result": {
+        "item": "minecraft:{{value}}_slab",
+        "count": 1
+      }
+    }
+  }
+}

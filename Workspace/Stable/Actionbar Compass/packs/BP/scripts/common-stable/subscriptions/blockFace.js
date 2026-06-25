@@ -11,11 +11,11 @@ Change Log:
     20251204 - Added debug to message   
 ========================================================================*/
 //=============================================================================
-import { Direction, Player, world } from "@minecraft/server";
+import { Player, world } from "@minecraft/server";
 // shared
-import { AngleMath, Compass } from "../tools/rotationLib";
-import { round } from "../tools/mathLib";
-import { rotationToCardinalDirection, Vector2Lib, Vector3Lib } from "../tools/vectorClass";
+import { AngleMath, Compass,rotationToCardinalDirection } from "../tools/rotationLib";
+import { round } from "../tools/mathLib.js";
+import { Vector2Lib, Vector3Lib } from "../tools/vectorClass.js";
 //=============================================================================
 /** @typedef {import("@minecraft/server").Vector2} Vector2 */
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */

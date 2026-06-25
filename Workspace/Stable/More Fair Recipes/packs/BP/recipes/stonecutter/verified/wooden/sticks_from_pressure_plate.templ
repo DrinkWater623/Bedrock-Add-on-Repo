@@ -1,0 +1,20 @@
+{
+  // 3 pressure_plate_gates is 6 pressure_plate = 12 sticks, so one pressure_plate_gate is 4 sticks
+  "$files": {
+    "array": "woods",
+    "fileName": "./sticks/from_pressure_plate_{{value}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {"identifier":"cut:sticks_from_{{value}}_pressure_plate"},
+      "tags": ["stonecutter"],
+      "priority": 0,
+      "ingredients":[{"item":"minecraft:{{value}}_pressure_plate"}],
+      "result": {
+        "item": "minecraft:stick",
+        "count": 8
+      }
+    }
+  }
+}

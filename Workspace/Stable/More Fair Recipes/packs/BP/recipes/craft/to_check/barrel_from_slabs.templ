@@ -1,0 +1,28 @@
+{
+  "$files": {
+    "array": "woods",
+    "fileName": "./barrels/from_slabs_{{value}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shaped": {
+      "description": {
+        "identifier": "craft:barrel_from_{{value}}_slabs"
+      },
+      "tags": [
+        "crafting_table"
+      ],
+      "priority": 0,
+      "pattern": [
+        "###",
+        "# #",
+        "###"
+      ],
+      "key": {"#":{"item":"minecraft:{{value}}_slab"}},
+      "result": {
+        "item": "minecraft:barrel",
+        "count": 1
+      }
+    }
+  }
+}

@@ -12,9 +12,9 @@ import { world, system } from "@minecraft/server";
 import { PlayerSubscriptions,SystemSubscriptions } from "./common-stable/subscriptions/index.js";
 //Local
 import { alertLog, pack, packDisplayName } from './settings.js';
-import { registerCustomCommands } from "./chatCmds.js";
+import { registerCustomCommands } from "./chatCmds_abc.js";
 import { tagToggle,runABC } from "./helpers/functions.js";
-import { devDebug } from "./debug.js";
+import { dev } from "./debug.js";
 
 //==============================================================================
 /** The function type subscribe expects. */
@@ -22,9 +22,9 @@ import { devDebug } from "./debug.js";
 /** @typedef {Parameters<typeof system.beforeEvents.startup.subscribe>[0]} BeforeStartupHandler */
 /** @typedef {Parameters<typeof world.afterEvents.playerSpawn.subscribe>[0]} AfterPlayerSpawnHandler */
 //==============================================================================
-const debugOn = false || devDebug.debugOn;
-const debugFunctionsOn = false || devDebug.debugFunctionsOn;
-const debugSubscriptionsOn = devDebug.debugSubscriptionsOn;
+const debugOn = false || dev.debugOn;
+const debugFunctionsOn = false
+const debugSubscriptionsOn = false
 //============================================================================
 const systemSubs = new SystemSubscriptions(packDisplayName, debugSubscriptionsOn);
 const playerSubs = new PlayerSubscriptions(packDisplayName, debugSubscriptionsOn);
@@ -39,9 +39,9 @@ const onBeforeStartup = (event) => {
 const onPlayerSpawn = (event) => {
 
     //once
-    if (pack.worldLoaded = 1) {
+    if (pack.worldLoaded = false) {
         if (!pack.gameRuleShowCoordinates && world.gameRules.showCoordinates) {
-            pack.worldLoaded = 2;
+            pack.worldLoaded = true;
             system.run(() => { world.gameRules.showCoordinates = false; });
         }
     }
@@ -87,8 +87,8 @@ export function subscriptionsStable () {
     playerSubs.afterPlayerSpawn.subscribe(onPlayerSpawn);
 
     world.afterEvents.worldLoad.subscribe((event) => {
-        pack.worldLoaded = 1;
-
+        pack.worldLoaded = true;
+        
         system.runTimeout(() => {
             runABC();
         }, pack.loadDelay);

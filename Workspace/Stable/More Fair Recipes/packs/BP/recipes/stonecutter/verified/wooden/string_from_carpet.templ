@@ -1,0 +1,18 @@
+{
+  "$files": {
+      "array": "colors.filter(v => v =='white')",
+      "fileName": "./string/from_{{color}}_carpet"
+  },
+  "$template":{
+    "format_version": "1.17.0",
+    "minecraft:recipe_shapeless": {
+      "description": {"identifier":"cut:string_from_{{color}}_carpet"},
+      "tags": ["stonecutter"],
+      "ingredients": [{"item":"minecraft:{{color}}_carpet"}],
+      "result": {
+        "item": "minecraft:string",
+        "count": 16
+      }
+    }
+  }
+}

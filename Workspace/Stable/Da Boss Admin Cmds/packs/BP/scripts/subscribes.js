@@ -14,7 +14,7 @@ import { SystemSubscriptions } from "./common-stable/subscriptions/index.js";
 //Local
 import { alertLog, pack, packDisplayName } from './settings.js';
 import { registerCustomCommands } from "./chatCmds.js";
-import { devDebug } from "./debug.js";
+import { dev } from "./debug.js";
 
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
@@ -23,9 +23,9 @@ import { devDebug } from "./debug.js";
 /** @typedef {Parameters<typeof system.beforeEvents.startup.subscribe>[0]} BeforeStartupHandler */
 
 //==============================================================================
-const debugOn = false || devDebug.debugOn;
-const debugFunctionsOn = false || devDebug.debugFunctionsOn;
-const debugSubscriptionsOn = devDebug.debugSubscriptionsOn;
+const debugOn = false || dev.debugOn;
+const debugFunctionsOn = false 
+const debugSubscriptionsOn = false
 //==============================================================================
 /** @type {BeforeStartupHandler} */
 const onBeforeStartup = (event) => {

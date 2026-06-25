@@ -27,7 +27,7 @@ function getWorldTime () {
 function register_about (registry) {
     const cmd = {
         name: `${pack.cmdNameSpace}:about_da_boss_admin_cmds`,
-        description: "Just some commands to make my dev testing life easier",
+        description: `${packDisplayName} Add-on Information`,
         permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
     };

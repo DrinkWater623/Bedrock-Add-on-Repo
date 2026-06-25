@@ -8,20 +8,20 @@ URL: https://github.com/DrinkWater623
 ========================================================================
 Last Update: 20251023 - add in stable stuff and update to api 2.0 and move debug-only stuff out
 ========================================================================*/
-import { world, system } from "@minecraft/server";
+import { world, system, EntityTypes } from "@minecraft/server";
 //Enums
 import { EntityInitializationCause } from "@minecraft/server";
 //Shared
 import { Ticks, airBlock } from "./common-data/index.js";
-import { Entities, spawnEntityAtLocation,BlockTypeIds } from "./common-stable/gameObjects/index.js";
+import { Entities, spawnEntityAtLocation } from "./common-stable/gameObjects/index.js";
 import { EntitySubscriptions, PlayerSubscriptions, SystemSubscriptions } from "./common-stable/subscriptions/index.js";
 import { getWorldTime, chance, Vector3Lib, DynamicPropertyLib } from "./common-stable/tools/index.js";
 //Local
-import { alertLog, pack, watchFor, entityDynamicVars, packDisplayName } from './settings.js';
 import { registerCustomCommands } from "./chatCmds.js";
+import { alertLog, pack, watchFor, entityDynamicVars, packDisplayName, initializeEntityBlocks } from './settings.js';
 import { rattleEntityFromBlockWithItem, validNatureBlockForSpiders } from './helpers/fn-blocks.js';
 import { entityEventProcess, lastTickAndLocationRegister, stalledSpiderCheckAndFix, flyPopulationCheck, spiderPopulationCheck, entityScriptEvents, } from './helpers/fn-entities.js';
-import { devDebug } from "./debug.js";
+import { dev } from "./debug.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /** The function type subscribe expects. */
@@ -40,29 +40,15 @@ import { devDebug } from "./debug.js";
 /** @typedef {Parameters<typeof system.beforeEvents.startup.subscribe>[0]} BeforeStartupHandler */
 
 //==============================================================================
-const debugOn = false || devDebug.debugOn;
-const debugFunctionsOn = false || devDebug.debugFunctionsOn;
-const debugSubscriptionsOn = devDebug.debugSubscriptionsOn;
-const watchEntitySubscriptions = devDebug.watchEntitySubscriptions;
-const watchPlayerActions = devDebug.watchPlayerActions;
+const debugOn = false || dev.debugOn;
+const debugFunctionsOn = false;
+const debugSubscriptionsOn = dev.isDebugFunction('subscriptionsStable');
+const watchEntitySubscriptions = dev.isDebugFunction('subscriptionsEntities');
+const watchPlayerActions = dev.isDebugFunction('subscriptionsPlayers');
 //==============================================================================
 //TODO: move to watchFor object in settings
 /** @type {string[]} */
-const watchForBlockTypes_spiders = [
-    watchFor.spider_home_typeId,
-    watchFor.spider_foodBlock_typeId,
-    "minecraft:cauldron",
-    ...watchFor.target_leaves,
-    ...watchFor.target_nature,
-    ...BlockTypeIds.getStairBlockTypeIds(),
-];
-/** @type {string[]} */
-const watchForBlockTypes_flies = [
-    watchFor.fly_home_typeId,
-    ...watchFor.fly_food_blocks
-];
-const watchForBlockTypes = [ ...watchForBlockTypes_spiders ]
-    .concat(watchForBlockTypes_flies);
+
 //==============================================================================
 /** @type {AfterEntityDieHandler} */
 const onAfterEntityDie_debug = (event) => {
@@ -73,8 +59,8 @@ const onAfterEntityDie_debug = (event) => {
     alertLog.warn(msg, watchEntitySubscriptions);
     system.runTimeout(() => {
         const x = `die: §c${whyDied}`;
-        devDebug.dsb.increment('deaths', x);
-        devDebug.dsb.increment('stats', x);
+        dev.dsb.increment('deaths', x);
+        dev.dsb.increment('stats', x);
     }, 1);
 };
 //==============================================================================
@@ -93,7 +79,7 @@ const onAfterEntityLoad = (event) => {
             lastTickAndLocationRegister(entity); //This is the most needed part...
             if (watchEntitySubscriptions) {
                 DynamicPropertyLib.increment(entity, entityDynamicVars.entityLoads);
-                devDebug.dsb.increment('stats', 'loaded');
+                dev.dsb.increment('stats', 'loaded');
                 const msg = `§l${nameTag}§r §eLoaded in Biome ${dimension.getBiome(location).id} @ ${Vector3Lib.toString(location, 0, true)} §r()`;
                 alertLog.log(msg, watchEntitySubscriptions);
             }
@@ -116,15 +102,15 @@ const onAfterEntitySpawn_debug = (event) => {
         alertLog.log(msg, watchEntitySubscriptions);
 
         if (event.cause === EntityInitializationCause.Born) {
-            devDebug.dsb.increment('stats', 'born', 1, 1);
+            dev.dsb.increment('stats', 'born', 1, 1);
             DynamicPropertyLib.increment(entity, entityDynamicVars.entityBorn);
         }
         else if (event.cause === EntityInitializationCause.Loaded) {
-            devDebug.dsb.increment('stats', 'loaded', 1, 1);
+            dev.dsb.increment('stats', 'loaded', 1, 1);
             DynamicPropertyLib.increment(entity, entityDynamicVars.entityLoads);
         }
         else if (event.cause === EntityInitializationCause.Spawned) {
-            devDebug.dsb.increment('stats', 'spawned');
+            dev.dsb.increment('stats', 'spawned');
             DynamicPropertyLib.increment(entity, entityDynamicVars.entitySpawns);
         }
     }, 1);
@@ -138,16 +124,19 @@ const onAfterPlayerBreakBlock = (event) => {
     const blockTypeId = brokenBlockPermutation.type.id;
     const location = block.location;
 
+    initializeEntityBlocks();
 
-    if (watchForBlockTypes_flies.includes(blockTypeId)) {
+
+    if (watchFor.hangoutBlockTypes_flies.includes(blockTypeId)) {
         spawnEntityAtLocation(watchFor.fly_typeId, dimension, location, 1, 3, 1, 10);
         return;
     }
 
-    if (watchForBlockTypes_spiders.includes(blockTypeId)) {
+    if (watchFor.hangoutBlockTypes_spiders.includes(blockTypeId)) {
         spawnEntityAtLocation(watchFor.spider_typeId, dimension, location, 1, 1, 1, 20);
         return;
     }
+
     return;
 };
 //==============================================================================
@@ -160,20 +149,15 @@ const onAfterPlayerPlaceBlock = (event) => {
     const { typeId, dimension, location } = block;
     const locationCtr = Vector3Lib.toCenter(location);
 
-    if (typeId === watchFor.fly_home_typeId) {
+    initializeEntityBlocks();
+
+    if (watchFor.hangoutBlockTypes_flies.includes(typeId)) {
         const above = block.above();
         if (!above || !above.isValid || above.typeId !== airBlock) return;
         spawnEntityAtLocation(watchFor.fly_typeId, dimension, locationCtr, 3, 6, 40, 200);
         return;
     }
 
-    if (typeId === 'dw623:rotten_flesh_block') {
-        //TODO: needs to be block face location
-        const above = block.above();
-        if (!above || !above.isValid || above.typeId !== airBlock) return;
-        spawnEntityAtLocation(watchFor.fly_typeId, dimension, locationCtr, 1, 2, 40, 200);
-        return;
-    }
     //========================    Less Likely
     if (chance(0.75)) return;
     //========================    Less Likely
@@ -226,7 +210,7 @@ const onBeforeEntityRemoved_debug = (event) => {
     const isStalled = DynamicPropertyLib.getBoolean(entity, 'isStalled');
 
     system.runTimeout(() => {
-        devDebug.dsb.incrementMany([ 'deaths', 'stats' ], 'removed', 1, 1);
+        dev.dsb.incrementMany([ 'deaths', 'stats' ], 'removed', 1, 1);
 
         //TODO:  see if I can get my coordinates and do the math for how far away these are  --  too many removes right after spawn
         // See if can find out WHY despawning soo much
@@ -268,48 +252,32 @@ const onBeforeStartup = (event) => {
     const ccr = event.customCommandRegistry;
     registerCustomCommands(ccr);
 };
-//==============================================================================
-//move to fn-entities later?
-function validateEntityFiles (debugMe = false) {
-    const _name = 'function validateEntityFiles';
+function validateEntitiesExist (debugMe = false) {
+    const _name = 'function validateEntitiesExist';
     alertLog.log(`§v* ${_name} ()`, debugFunctionsOn);
 
-    //find any player and get a location at head    
-    const players = world.getAllPlayers();
-    const anyPlayer = players.length ? players[ 0 ] : null;
+    const entities = EntityTypes.getAll()
+        .filter(e => { return e.id.startsWith(pack.namespace); })
+        .map(e => e.id);
 
-    const dimension = anyPlayer ? anyPlayer.dimension : world.getDimension("overworld");
-    const location = anyPlayer ? anyPlayer.location : world.getDefaultSpawnLocation();
-    location.y += 24;
+    if (entities.length === 0) {
+        missingEntities();
+        return;
+    }
 
     watchFor.validated = true;
     watchFor.packEntityList().forEach(typeId => {
-        pack.validatedEntities.set(typeId, false);
-
-        //@ts-expect-error
-        const entity = dimension.spawnEntity(typeId, location, { initialPersistence: true, spawnEvent: entityScriptEvents.entity_validatedEventName });
-        if (entity) {
-            alertLog.success(`Entity spawn validated for typeId: ${typeId} - isValid: ${entity.isValid}`, debugMe);
-            pack.validatedEntities.set(typeId, true);
-            system.runTimeout(() => {
-                if (entity.isValid) {
-                    //entity.applyImpulse({x:0,y:10,z:0})
-                    entity.remove();
-                }
-            }, 10);
-        }
-        else {
+        const exists = entities.includes(typeId)
+        pack.validatedEntities.set(typeId, exists);
+        watchFor.validated = watchFor.validated && exists       
+        if (!exists){
             watchFor.validated = false;
-            alertLog.error(`Entity spawn failed for typeId: ${typeId}`, debugOn);
+            alertLog.error(`Entity missing in pack: ${typeId}`, debugOn);
         }
     });
 
     if (!watchFor.validated) {
-        alertLog.error(`A ${pack.packName} §lAdd-on entity file is broken or missing. Please fix the issue before using this pack.`);
-        entitySubs.unsubscribeAll(debugSubscriptionsOn || watchEntitySubscriptions);
-        playerSubs.unsubscribeAll(debugSubscriptionsOn || watchPlayerActions);
-        systemSubs.unsubscribeAll(debugSubscriptionsOn);
-        devDebug.allOff();
+        missingEntities();
         return;
     }
 
@@ -354,6 +322,97 @@ function validateEntityFiles (debugMe = false) {
     }, 5);
 }
 //==============================================================================
+//move to fn-entities later?
+function validateEntityFiles (debugMe = false) {
+    const _name = 'function validateEntityFiles';
+    alertLog.log(`§v* ${_name} ()`, debugFunctionsOn);
+
+    //find any player and get a location at head    
+    const players = world.getAllPlayers();
+    const anyPlayer = players.length ? players[ 0 ] : null;
+
+    const dimension = anyPlayer ? anyPlayer.dimension : world.getDimension("overworld");
+    const location = anyPlayer ? anyPlayer.location : world.getDefaultSpawnLocation();
+    location.y += 24;
+
+    watchFor.validated = true;
+    watchFor.packEntityList().forEach(typeId => {
+        pack.validatedEntities.set(typeId, false);
+
+        //@ts-expect-error
+        const entity = dimension.spawnEntity(typeId, location, { initialPersistence: true, spawnEvent: entityScriptEvents.entity_validatedEventName });
+        if (entity) {
+            alertLog.success(`Entity spawn validated for typeId: ${typeId} - isValid: ${entity.isValid}`, debugMe);
+            pack.validatedEntities.set(typeId, true);
+            system.runTimeout(() => {
+                if (entity.isValid) {
+                    //entity.applyImpulse({x:0,y:10,z:0})
+                    entity.remove();
+                }
+            }, 10);
+        }
+        else {
+            watchFor.validated = false;
+            alertLog.error(`Entity spawn failed for typeId: ${typeId}`, debugOn);
+        }
+    });
+
+    if (!watchFor.validated) {
+        missingEntities();
+        return;
+    }
+
+    //OKAY to install interval Jobs now
+    system.runTimeout(() => {
+        if (watchFor.stalledCheckRunInterval) {
+            alertLog.log(`Starting stalled spider check every ${watchFor.stalledCheckRunInterval} minutes`, debugMe);
+            system.runInterval(() => {
+                stalledSpiderCheckAndFix();
+            }, Ticks.perMinute * Math.abs(watchFor.stalledCheckRunInterval));
+        }
+        else alertLog.warn(`Stalled spider check interval is set to 0 - not running check`, debugMe);
+
+        if (watchFor.flyPopulationCheckRunInterval) {
+            alertLog.log(`Starting fly population check every ${watchFor.flyPopulationCheckRunInterval} minutes`, debugMe);
+            system.runInterval(() => {
+                flyPopulationCheck();
+            }, Ticks.perMinute * Math.abs(watchFor.flyPopulationCheckRunInterval));
+        }
+        else alertLog.warn(`Fly population check interval is set to 0 - not running check`, debugMe);
+
+        if (watchFor.spiderPopulationCheckRunInterval) {
+            alertLog.log(`Starting spider population check every ${watchFor.spiderPopulationCheckRunInterval} minutes`, debugMe);
+            system.runInterval(() => {
+                spiderPopulationCheck();
+            }, Ticks.perMinute * Math.abs(watchFor.spiderPopulationCheckRunInterval));
+        }
+        else alertLog.warn(`Spider population check interval is set to 0 - not running check`, debugMe);
+
+        if (watchFor.eatFireFliesOnlyAtNight) {
+            alertLog.log(`Starting daytime removal of Fire Flies minecraft hour`, debugMe);
+            system.runInterval(() => {
+                const hourOfDay = getWorldTime().hours;
+                if (hourOfDay > 7 && hourOfDay < 15) {
+                    const fireflies = Entities.getAllEntities({ type: watchFor.firefly_typeId });
+                    if (fireflies.length) { fireflies.forEach(e => { if (e.isValid) e.remove(); }); }
+                }
+            }, Ticks.minecraftHour * 1);
+        }
+        else alertLog.log(`Fireflies allowed in daytime`, debugMe);
+
+    }, 5);
+}
+function missingEntities () {
+    if (!watchFor.validated) {
+        alertLog.error(`A ${pack.packName} §lAdd-on entity file is broken or missing. Please fix the issue before using this pack.`);
+        entitySubs.unsubscribeAll(debugSubscriptionsOn || watchEntitySubscriptions);
+        playerSubs.unsubscribeAll(debugSubscriptionsOn || watchPlayerActions);
+        systemSubs.unsubscribeAll(debugSubscriptionsOn);
+        dev.allOff();
+        return;
+    }
+}
+//==============================================================================
 const entitySubs = new EntitySubscriptions(packDisplayName, debugSubscriptionsOn);
 const playerSubs = new PlayerSubscriptions(packDisplayName, debugSubscriptionsOn);
 const systemSubs = new SystemSubscriptions(packDisplayName, debugSubscriptionsOn);
@@ -386,12 +445,13 @@ export function subscriptionsStable () {
                 //afterEntitySpawn:onAfterEntitySpawn_debug,  redundant but keep code
                 beforeEntityRemoved: onBeforeEntityRemoved_debug
             }, debugSubscriptionsOn);
-            devDebug.dsb.setScoreboardsOn(true);
-            devDebug.dsb_setup();
+            dev.dsb.setScoreboardsOn(true);
+            dev.dsb_setup();
         }
 
         system.runTimeout(() => {
-            validateEntityFiles(devDebug.watchEntitySubscriptions);
+            validateEntitiesExist(watchEntitySubscriptions)
+            //validateEntityFiles(devDebug.watchEntitySubscriptions);
         }, Ticks.perSecond * 60);
 
     });

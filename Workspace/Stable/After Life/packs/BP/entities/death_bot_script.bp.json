@@ -9,10 +9,9 @@
     },
     "component_groups": {
       "cg:despawn":{"minecraft:instant_despawn":{}},
-      "cg:despawn_when_empty":{
-        "minecraft:despawn":{"filters":{"test":"all_slots_empty","subject":"self","operator":"equals","value":"inventory"}}
-        //,"minecraft:timer": {"looping":true,"time":5,"time_down_event":{"event":"ev:protection"}}
-      }
+      "cg:despawn_when_empty":{"minecraft:despawn":{"filters":{"test":"all_slots_empty","subject":"self","operator":"equals","value":"inventory"}}},
+      //each MC day - maybe change to every 10 min, will only do it if anyone close to it and owner is online
+      "cg:notify_owner":{"minecraft:timer": {"looping":true,"time":600,"time_down_event":{"event":"ev:notify_owner"}}}
     },
     "components": {
       "minecraft:breathable": {
@@ -27,7 +26,7 @@
       //------------------------------------      
       "minecraft:fire_immune":{},
       "minecraft:inventory": {
-        "can_be_siphoned_from": true,
+        "can_be_siphoned_from": false,
         "container_type": "inventory",
         "inventory_size": 27,
         "private": false,
@@ -40,14 +39,14 @@
         "allow_name_tag_renaming": true,
         "always_show": true
       },
-      "minecraft:physics": {"has_collision":true,"has_gravity":false},
+      "minecraft:physics": {"has_collision":true,"has_gravity":true},
+      "minecraft:floats_in_liquid":{},
       "minecraft:push_through": {"value":0},
       "minecraft:pushable":{"is_pushable":false},
       "minecraft:scale": {"value":0.75},
       "minecraft:tick_world": {},  
       //100 ticks before it knows to disappear from beginning.     
-      "minecraft:timer": {"looping":false,"time":30,"time_down_event":{"event":"ev:despawn_when_empty"}}, 
-      //"minecraft:timer": {"looping":false,"time":15,"time_down_event":{"event":"ev:despawn_when_empty"}}, 
+      "minecraft:timer": {"looping":false,"time":60,"time_down_event":{"event":"ev:final_settings"}}, 
       "minecraft:type_family": {"family":["dw623","bot","dw623_death_bot"]},
       "minecraft:behavior.rise_to_liquid_level": {
           "priority": 0,
@@ -55,11 +54,19 @@
           "rise_delta": 0.01,
           "sink_delta": 0.01
         },
-      "minecraft:environment_sensor": {
-        "triggers":[{"event":"ev:in_lava","target":"self","filters":{"test":"in_lava","subject":"self","operator":"==","value":true}}]}
+      "minecraft:environment_sensor": {"triggers":[{"event":"ev:in_lava","target":"self","filters":{"test":"in_lava","subject":"self","operator":"==","value":true}}]}
     },
     "events": {
       "ev:despawn_when_empty": {"add":{"component_groups":["cg:despawn_when_empty"]}},
+      "ev:final_settings": {
+        "add":{"component_groups":[
+          "cg:despawn_when_empty",
+          "cg:notify_owner"
+        ]}
+      },
+      "ev:notify_owner": {
+        "queue_command": {"command":["scriptevent dw623:death_bot_notify"]}
+      },
       "ev:in_lava": {
         "queue_command": {"command":["scriptevent dw623:death_bot_debug Death-Bot Senses Lava"]},
         "trigger": "ev:lava_protect"
@@ -70,6 +77,13 @@
             "filters": {"test": "in_lava"},
             "queue_command": {"command":["scriptevent dw623:death_bot_debug Death-Bot Spawned in Lava"]},
             "trigger": "ev:lava_protect"
+          }, 
+          {
+            "queue_command": {"command":[
+              "fill ~-1 ~-1 ~-1 ~1 ~-1 ~1 glass replace air",
+              "fill ~-1 ~-1 ~-1 ~1 ~-1 ~1 water replace lava",
+              "fill ~-1 ~-1 ~-1 ~1 ~-1 ~1 water replace flowing_lava"
+              ]}
           }, 
           {"trigger":"ev:grab_stuff"}
         ]

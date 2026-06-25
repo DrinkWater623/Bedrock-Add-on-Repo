@@ -10,8 +10,8 @@ Change Log:
 ========================================================================*/
 import { TicksPerDay } from "@minecraft/server";
 // Shared
-import { leafBlocks, logBlocks, tallNatureBlocks } from "./common-data/index.js";
-import { rndFloat, rndInt, round ,ConsoleAlert,ChatMsg } from "./common-stable/tools/index.js";
+import { BlockTypeIds } from "./common-data/index.js";
+import { rndFloat, rndInt, round, ConsoleAlert, ChatMsg } from "./common-stable/tools/index.js";
 //==============================================================================
 /**
  *  Owner is to edit this file as needed - Note: debug vars in fn-debug
@@ -20,23 +20,26 @@ import { rndFloat, rndInt, round ,ConsoleAlert,ChatMsg } from "./common-stable/t
 export const pack = {
     packName: 'Tree Spider',
 
-    about:'Friendly little tree spiders busy making webs, eating flies and fire flies in the forests',
-    devUrl:'https://github.com/DrinkWater623',
-    reportBugs:'pinkSalt623@gmail.com',
+    about: 'Friendly little tree spiders busy making webs, eating flies and fire flies in the forests',
+    devUrl: 'https://github.com/DrinkWater623',
+    reportBugs: 'pinkSalt623@gmail.com',
 
     beta: false,
     worldLoaded: false,
-    cmdNameSpace: "dw623_tree_spider", 
+    namespace: "dw623",
+    cmdNameSpace: "dw623_tree_spider",
     isLoadAlertsOn: true,
     /* @type {Map<string,boolean>} */
     //validatedBlocks:new Map(),    
     /* @type {Map<string,boolean>} */
     //validatedItems:new Map(),
     /* @type {Map<string,boolean>} */
-    validatedEntities: new Map()
+    validatedEntities: new Map(),
+
+    debugOn: false //important - do not release Add-ons with this true, as it was meant for debugging only
 };
 //==============================================================================
-export const packDisplayName = `§v${pack.packName}§r`
+export const packDisplayName = `§v${pack.packName}§r`;
 export const alertLog = new ConsoleAlert(packDisplayName);
 export const chatLog = new ChatMsg(packDisplayName);
 //==============================================================================
@@ -81,10 +84,6 @@ export const watchFor = {
     // Flies
     fly_typeId: "dw623:fly",
     fly_home_typeId: "minecraft:composter",
-    fly_food_blocks: [
-        "dw623:rotten_flesh_block",
-        "minecraft:sweet_berry_bush",
-        "minecraft:cave_vines_body_with_berries" ],
     flyPopulationCheckRunInterval: rndInt(4, 10),
     flyLifeCycleTicks: () => { return TicksPerDay * rndInt(1, 5); }, //Life Cycle - 3 wks per Alexa.    
 
@@ -101,22 +100,18 @@ export const watchFor = {
             this.firefly_typeId
         ];
     },
-
-    target_logs: [ "minecraft:mangrove_roots", "minecraft:mushroom_stem", ...logBlocks ],
-
-    target_leaves: [ ...leafBlocks ],
-
-    target_nature: [
-        "minecraft:sweet_berry_bush", "minecraft:spore_blossom",
-        "minecraft:brown_mushroom_block", "minecraft:red_mushroom_block",
-        "minecraft:big_dripleaf", ...tallNatureBlocks ],
-
     //FIXME: make sure this stuff works - custom components?
     customItemList: [
         "dw623:bottle_of_flies",        //this gets moved to interact with entity Spider
         "dw623:dead_fly_ball_stick",
         "dw623:rotten_flesh_kabob"
-    ]
+    ],
+
+    isCacheInitialized: false,
+    /** @type {string[]} */
+    hangoutBlockTypes_flies: [],
+    /** @type {string[]} */
+    hangoutBlockTypes_spiders: []
 
 };
 /*
@@ -130,3 +125,39 @@ export const thisPackEntities = [
 //==============================================================================
 // End of File
 //==============================================================================
+export function initializeEntityBlocks () {
+    if (watchFor.isCacheInitialized) return;
+
+    if (watchFor.hangoutBlockTypes_spiders.length == 0) {
+        const x = [
+            watchFor.spider_home_typeId,
+            watchFor.spider_foodBlock_typeId,
+            "minecraft:cauldron",
+            'minecraft:mangrove_roots',
+            //cached data - cannot be ran at startup
+            ...BlockTypeIds.getLeafBlockTypeIds(),
+            ...BlockTypeIds.getTallPlantBlockTypeIds(),
+            ...BlockTypeIds.getStairBlockTypeIds(),
+        ];
+        x.forEach((v) => watchFor.hangoutBlockTypes_spiders.push(v));
+    }
+
+    if (watchFor.hangoutBlockTypes_flies.length == 0) {
+        const x = [
+            watchFor.fly_home_typeId,
+            //cached data - cannot be ran at startup
+            //So can take advantage of custom food blocks
+            ...BlockTypeIds.getValidBlockTypeIds().filter(b => {
+                return b.includes('rotten') ||
+                    b.endsWith('pie') ||
+                    b.endsWith('cake') ||
+                    b.endsWith('berries') ||
+                    b.endsWith('berry_bush') ||
+                    b.endsWith('fruit');
+            })
+        ];
+        x.forEach((v) => watchFor.hangoutBlockTypes_flies.push(v));
+    }
+
+    watchFor.isCacheInitialized = true;
+}

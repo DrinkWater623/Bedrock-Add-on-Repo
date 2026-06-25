@@ -154,7 +154,7 @@ const onAfterPlayerDie = (event) => {
     void ?? not in normal game, but test in the end if fall... TODO:
     */
 
-    let radius = 3;
+    let radius = 2;
     // Protective bubble - for player to TP into when command is used to get back to last location
     const bubbleCenter = Vector3Lib.truncate({ x: location.x, y: location.y + 2, z: location.z });
     switch (event.damageSource.cause) {
@@ -271,10 +271,31 @@ const onAfterScriptEventReceive = (event) => {
     const { id, message } = event;
     if (!id.startsWith('dw623:death_bot')) return;
 
-    if (id === 'dw623:death_bot_debug') {
-        let msg = `currentTick: ${system.currentTick}`;
+    if (pack.debugOn && id === 'dw623:death_bot_debug') {
+        let msg ='';
         if (message && ![ 'null', 'none', 'noMsg' ].includes(message)) msg += `: ${message}`;
         dev.alertLog(`§bTick:§r ${system.currentTick} §6(scriptEvent) ==>§r ${msg}`,dev.isDebugEntityObject('death_bot'));
+        return
+    }
+
+    if (id == 'dw623:death_bot_notify'){
+        const bot = event.sourceEntity
+        if (!bot || !bot.isValid) return
+
+        const owner= DynamicPropertyLib.getString(bot,'ownerNameTag')
+        if (!owner) return
+        
+        //is owner logged in
+        const players = world.getAllPlayers().filter(p => p.name == owner)
+        if(players.length != 1) return
+        const player = players[0]
+        const dimension = bot.dimension.id
+        const location = Vector3Lib.toString(bot.location,0,true)
+
+        const msg = `§aA §6(chunk-loaded)§c Death-Bot§a holding§6 your§a stuff is waiting §r@ ${location} (${dimension})`
+        player.sendMessage(msg)
+
+        return
     }
 };
 /** @type {BeforeStartupHandler} */

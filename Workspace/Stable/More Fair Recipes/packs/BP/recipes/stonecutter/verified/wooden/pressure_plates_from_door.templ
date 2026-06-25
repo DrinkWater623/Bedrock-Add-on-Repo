@@ -1,0 +1,21 @@
+{
+  "$files": {
+    "array": "woods",
+    "fileName": "./pressure_plates/from_door_{{value}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {
+        "identifier": "cut:{{value}}_pressure_plates_from_door"
+      },
+      "tags": ["stonecutter"],
+      "priority": 0,
+      "ingredients": [{"item":"minecraft:{{value}}_door"}],
+      "result": {
+        "item": "minecraft:{{value}}_pressure_plate",
+        "count": 8
+      }
+    }
+  }
+}

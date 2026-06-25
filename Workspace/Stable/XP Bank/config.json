@@ -1,0 +1,60 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
+	"author": "DrinkWater623,Update Block Dev",
+	"name": "XP_Bank",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"mani_fest":{
+		"Debug":false,
+		"preview":false,
+		"beta":true,
+		"name": "XP Bank",
+		"description": "Save/Auto Save/Restore XP",
+		"license":"M.I.T.",
+		"url": "https://github.com/DrinkWater623",
+		"version": [1,0,1],													
+		"min_engine_version": [1,21,50],							
+		"BP":{
+			"header_uuid": "6bffdd21-f20e-41e2-84ba-6239a4bb4db4",
+			"module_uuid": "367cda1c-853f-4878-b8ee-7f6dc6e2ca75",
+			"dependencies":{"module_name":"@minecraft/server","version":"get"}								
+		},
+		"RP": {
+			"header_uuid": "a17c3f24-dcf0-4cbb-b745-2febb2f52329",
+			"module_uuid": "9d9555e2-8dab-4473-a2c3-98ff83e2502d"
+		}
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {			
+			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
+			"beta_js_ignore": {"runWith":"python","script":"./filters/beta_js_ignore.py"},
+			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
+			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}			
+		},
+		"profiles": {
+			"template-beta": {
+				"export": {"readOnly":false,"target":"local","rpName": "'void_rp_'+project.name"},				
+				"filters": [{"filter":"dot_ignore"}]
+			},
+			"template-stable": {
+				"export": {"readOnly":false,"target":"local","rpName": "'void_rp_'+project.name"},				
+				"filters": [{"filter":"beta_js_ignore"},{"profile":"template-beta"}]
+			},
+			"build": {				
+				"export": {"readOnly":false,"target":"local","bpName":"project.name+'_Stable_bp'","rpName": "project.name+'_Stable_rp'"},
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"beta":false,"preview":false}}]
+			},			
+			"stable": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"beta":false}}]
+			},
+			"preview": {
+				"export": {"readOnly":false,"target":"preview","bpName":"project.name+'_Preview_bp'","rpName": "project.name+'_Preview_rp'"},
+				"filters": [{"profile":"template-stable"},{"filter":"mani_fest","settings":{"preview":true}}]
+			}			
+		}
+	}
+}

@@ -10,9 +10,23 @@ Change Log:
 */
 //==============================================================================
 import { BlockTypes, ItemTypes } from "@minecraft/server";
-import { ItemTypeIds } from "../common-stable/gameObjects/itemLib";
-import { addNameSpace, dedupeArrayInPlace } from "../common-stable/tools/objects";
-import { mcNameSpace } from "./globalConstantsLib";
+import { dedupeArrayInPlace } from "../common-stable/tools/objects";
+//==============================================================================
+const mcNameSpace = 'minecraft:';
+/**
+ * Add "minecraft:" namespace if missing.
+ * Leaves already-namespaced ids alone.
+ *
+ * @param {string} id
+ * @param {string} [defaultNs="minecraft"]
+ * @returns {string}
+ */
+const addNameSpace= (id, defaultNs = "minecraft") => {
+    const s = (id ?? "").trim();
+    if (!s) return "";
+    if (s.includes(":")) return s;
+    return `${defaultNs}:${s}`;
+}
 //==============================================================================
 export class BlockTypeIds {
     //========================================
@@ -68,9 +82,10 @@ export class BlockTypeIds {
 
     static #shortPlantBlockTypeIdSet = /** @type {Set<string> | null} */ (null);
     static #shortPlantBlockTypeIds = /** @type {string[] | null} */ (null);
-
     static #tallPlantBlockTypeIdSet = /** @type {Set<string> | null} */ (null);
     static #tallPlantBlockTypeIds = /** @type {string[] | null} */ (null);
+    static #plantBlockTypeIdSet = /** @type {Set<string> | null} */ (null);
+    static #plantBlockTypeIds = /** @type {string[] | null} */ (null);
 
     static #coralBlockTypeIdSet = /** @type {Set<string> | null} */ (null);
     static #coralBlockTypeIds = /** @type {string[] | null} */ (null);
@@ -153,6 +168,9 @@ export class BlockTypeIds {
 
     static #naturalColdBlockTypeIdSet = /** @type {Set<string> | null} */ (null);
     static #naturalColdBlockTypeIds = /** @type {string[] | null} */ (null);
+    //no diff yet
+    static #coldBlockTypeIdSet = /** @type {Set<string> | null} */ (null);
+    static #coldBlockTypeIds = /** @type {string[] | null} */ (null);
 
     static #naturalOceanFloorBlockTypeIdSet = /** @type {Set<string> | null} */ (null);
     static #naturalOceanFloorBlockTypeIds = /** @type {string[] | null} */ (null);
@@ -201,10 +219,10 @@ export class BlockTypeIds {
      */
     static getValidBlockTypeIdSet () {
         if (!this.#validBlockTypeIdSet) {
-            const itemsFilter = ItemTypeIds.getValidItemTypeIdSet();
+            const itemIdSet = new Set(ItemTypes.getAll().map(it => it.id));            
             this.#validBlockTypeIdSet = new Set(
                 BlockTypes.getAll().map(bt => bt.id)
-                    .filter(b => itemsFilter.has(b)));
+                    .filter(b => itemIdSet.has(b)));
         }
         return this.#validBlockTypeIdSet;
     }
@@ -267,7 +285,10 @@ export class BlockTypeIds {
      */
     static getValidSlabTypeIdSet () {
         if (!this.#validSlabTypeIdSet) {
-            this.#validSlabTypeIdSet = new Set(Array.from(this.getValidBlockTypeIdSet()).filter(b => b.endsWith('_slab')));
+            const ValidIds = this.getValidBlockTypeIds();
+            const a = ValidIds.filter(b => b.endsWith('_slab'));
+            this.#validSlabTypeIds = a;
+            this.#validSlabTypeIdSet = new Set(a);
         }
         return this.#validSlabTypeIdSet;
     }
@@ -289,7 +310,13 @@ export class BlockTypeIds {
      */
     static getValidVanillaSlabTypeIdSet () {
         if (!this.#validVanillaSlabTypeIdSet) {
-            this.#validVanillaSlabTypeIdSet = new Set(Array.from(this.getValidSlabTypeIdSet()).filter(b => b.startsWith(mcNameSpace)));
+            const vanillaSet = this.getValidVanillaBlockTypeIdSet();
+            const a = [
+                ...this.getValidSlabTypeIds()
+            ].filter(b => vanillaSet.has(b));
+
+            this.#validVanillaSlabTypeIds = a;
+            this.#validVanillaSlabTypeIdSet = new Set(a);
         }
         return this.#validVanillaSlabTypeIdSet;
     }
@@ -334,7 +361,13 @@ export class BlockTypeIds {
      */
     static getValidVanillaWallTypeIdSet () {
         if (!this.#validVanillaWallTypeIdSet) {
-            this.#validVanillaWallTypeIdSet = new Set(Array.from(this.getValidWallTypeIdSet()).filter(b => b.startsWith(mcNameSpace)));
+            const vanillaSet = this.getValidVanillaBlockTypeIdSet();
+            const a = [
+                ...this.getValidWallTypeIds()
+            ].filter(b => vanillaSet.has(b));
+
+            this.#validVanillaWallTypeIds = a;
+            this.#validVanillaWallTypeIdSet = new Set(a);
         }
         return this.#validVanillaWallTypeIdSet;
     }
@@ -358,18 +391,11 @@ export class BlockTypeIds {
      */
     static getClimbableBlockTypeIdSet () {
         if (!this.#climbableBlockTypeIdSet) {
-            const vanillaSet = this.getValidVanillaBlockTypeIdSet();
-            const a = [
-                'minecraft:flowing_water',
-                'minecraft:water',
-                'minecraft:ladder',
-                'minecraft:scaffolding',
-                'minecraft:weeping_vines',
-                'minecraft:twisting_vines',
-                'minecraft:glow_berries',
-                'minecraft:vine'
-            ].filter(b => vanillaSet.has(b));
 
+            const a = [
+                ...this.getOverworldClimbableBlockTypeIds(),
+                ...this.getNetherClimbableBlockTypeIds()
+            ];
             this.#climbableBlockTypeIds = a;
             this.#climbableBlockTypeIdSet = new Set(a);
         }
@@ -389,7 +415,8 @@ export class BlockTypeIds {
      */
     static getOverworldClimbableBlockTypeIdSet () {
         if (!this.#overworldClimbableBlockTypeIdSet) {
-            const base = this.getClimbableBlockTypeIdSet();
+            const vanillaSet = this.getValidVanillaBlockTypeIdSet();
+
             const a = [
                 'minecraft:flowing_water',
                 'minecraft:water',
@@ -397,7 +424,7 @@ export class BlockTypeIds {
                 'minecraft:scaffolding',
                 'minecraft:glow_berries',
                 'minecraft:vine'
-            ].filter(b => base.has(b));
+            ].filter(b => vanillaSet.has(b));
 
             this.#overworldClimbableBlockTypeIds = a;
             this.#overworldClimbableBlockTypeIdSet = new Set(a);
@@ -418,12 +445,11 @@ export class BlockTypeIds {
      */
     static getNetherClimbableBlockTypeIdSet () {
         if (!this.#netherClimbableBlockTypeIdSet) {
-            const base = this.getClimbableBlockTypeIdSet();
+            const vanillaSet = this.getValidVanillaBlockTypeIdSet();
             const a = [
                 'minecraft:weeping_vines',
                 'minecraft:twisting_vines',
-            ].filter(b => base.has(b));
-
+            ].filter(b => vanillaSet.has(b));
             this.#netherClimbableBlockTypeIds = a;
             this.#netherClimbableBlockTypeIdSet = new Set(a);
         }
@@ -491,7 +517,6 @@ export class BlockTypeIds {
         if (!this.#overworldWoodTypes) this.#overworldWoodTypes = Array.from(this.getOverworldWoodTypeSet());
         return this.#overworldWoodTypes;
     }
-
     /**
      * @returns {Set<string>}
      */
@@ -517,7 +542,6 @@ export class BlockTypeIds {
         if (!this.#netherWoodTypes) this.#netherWoodTypes = Array.from(this.getNetherWoodTypeSet());
         return this.#netherWoodTypes;
     }
-
     /**
      * @returns {Set<string>}
      */
@@ -550,7 +574,7 @@ export class BlockTypeIds {
                 .filter(blockName => {
                     return woodTypes.some(
                         woodType => {
-                            blockName.startsWith('minecraft:' + woodType + '_') ||
+                            return blockName.startsWith('minecraft:' + woodType + '_') ||
                                 blockName.startsWith('minecraft:' + 'stripped' + woodType + '_');
                         });
                 });
@@ -567,7 +591,6 @@ export class BlockTypeIds {
         if (!this.#woodenBlockTypeIds) this.#woodenBlockTypeIds = Array.from(this.getWoodenBlockTypeIdSet());
         return this.#woodenBlockTypeIds;
     }
-
     /**
      * @returns {Set<string>}
      */
@@ -580,7 +603,7 @@ export class BlockTypeIds {
                 .filter(blockName => {
                     return overworldWoodTypes.some(
                         woodType => {
-                            blockName.startsWith('minecraft:' + woodType + '_') ||
+                            return blockName.startsWith('minecraft:' + woodType + '_') ||
                                 blockName.startsWith('minecraft:' + 'stripped' + woodType + '_');
                         });
                 });
@@ -597,7 +620,6 @@ export class BlockTypeIds {
         if (!this.#overworldWoodenBlockTypeIds) this.#overworldWoodenBlockTypeIds = Array.from(this.getOverworldWoodenBlockTypeIdSet());
         return this.#overworldWoodenBlockTypeIds;
     }
-
     /**
      * @returns {Set<string>}
      */
@@ -610,7 +632,7 @@ export class BlockTypeIds {
                 .filter(blockName => {
                     return netherWoodTypes.some(
                         woodType => {
-                            blockName.startsWith('minecraft:' + woodType + '_') ||
+                            return blockName.startsWith('minecraft:' + woodType + '_') ||
                                 blockName.startsWith('minecraft:' + 'stripped' + woodType + '_');
                         });
                 });
@@ -627,7 +649,6 @@ export class BlockTypeIds {
         if (!this.#netherWoodenBlockTypeIds) this.#netherWoodenBlockTypeIds = Array.from(this.getNetherWoodenBlockTypeIdSet());
         return this.#netherWoodenBlockTypeIds;
     }
-
     //=============================================================================
     // Gravity Blocks - they fall on you
     //=============================================================================
@@ -637,12 +658,13 @@ export class BlockTypeIds {
     static getNaturalGravityBlockTypeIdSet () {
         if (!this.#naturalGravityBlockTypeIdSet) {
             const vanillaBlocks = this.getValidVanillaBlockTypeIds();
+
             const a = vanillaBlocks
-                .filter(blockName => {
-                    return blockName.endsWith(':gravel') ||
-                        blockName.endsWith(':red_sand') ||
-                        blockName.endsWith(':suspicious_sand') ||
-                        blockName.endsWith(':sand');
+                .filter(b => {
+                    return b.endsWith(':gravel') ||
+                        b.endsWith(':red_sand') ||
+                        b.endsWith(':suspicious_sand') ||
+                        b.endsWith(':sand');
                 });
 
             this.#naturalGravityBlockTypeIds = a;
@@ -662,10 +684,11 @@ export class BlockTypeIds {
      */
     static getGravityBlockTypeIdSet () {
         if (!this.#gravityBlockTypeIdSet) {
-            const vanillaBlocks = this.getValidVanillaBlockTypeIds();
-            const a = vanillaBlocks
-                .filter(blockName => { return blockName.endsWith('_concrete_powder'); })
-                .concat(this.getNaturalGravityBlockTypeIds());
+
+            const a = [
+                ...this.getNaturalGravityBlockTypeIds(),
+                ...this.getConcretePowderBlockTypeIds(),
+            ];
 
             this.#gravityBlockTypeIds = a;
             this.#gravityBlockTypeIdSet = new Set(a);
@@ -734,8 +757,7 @@ export class BlockTypeIds {
     static getSaplingBlockTypeIdSet () {
         if (!this.#saplingBlockTypeIdSet) {
             const vanillaBlocks = this.getValidVanillaBlockTypeIds();
-            const a = vanillaBlocks
-                .filter(blockName => { return blockName.endsWith('_sapling'); });
+            const a = vanillaBlocks.filter(blockName => { return blockName.endsWith('_sapling'); });
 
             this.#saplingBlockTypeIds = a;
             this.#saplingBlockTypeIdSet = new Set(a);
@@ -771,7 +793,6 @@ export class BlockTypeIds {
         if (!this.#plankBlockTypeIds) this.#plankBlockTypeIds = Array.from(this.getPlankBlockTypeIdSet());
         return this.#plankBlockTypeIds;
     }
-
     //=============================================================================
     //  by region
     //=============================================================================
@@ -781,8 +802,7 @@ export class BlockTypeIds {
     static getNetherLogBlockTypeIdSet () {
         if (!this.#netherLogBlockTypeIdSet) {
             const netherWoodenBlocks = this.getNetherWoodenBlockTypeIds();
-            const a = netherWoodenBlocks
-                .filter(b => { return b.endsWith('_stem') || b.endsWith('_hyphae'); });
+            const a = netherWoodenBlocks.filter(b => { return b.endsWith('_stem') || b.endsWith('_hyphae'); });
 
             this.#netherLogBlockTypeIds = a;
             this.#netherLogBlockTypeIdSet = new Set(a);
@@ -818,15 +838,13 @@ export class BlockTypeIds {
         if (!this.#overworldLogBlockTypeIds) this.#overworldLogBlockTypeIds = Array.from(this.getOverworldLogBlockTypeIdSet());
         return this.#overworldLogBlockTypeIds;
     }
-
     /**
      * @returns {Set<string>}
      */
     static getOverworldPlankBlockTypeIdSet () {
         if (!this.#overworldPlankBlockTypeIdSet) {
             const overworldWoodenBlocks = this.getOverworldWoodenBlockTypeIds();
-            const a = overworldWoodenBlocks
-                .filter(b => { return b.endsWith('_planks'); });
+            const a = overworldWoodenBlocks.filter(b => { return b.endsWith('_planks'); });
 
             this.#overworldPlankBlockTypeIds = a;
             this.#overworldPlankBlockTypeIdSet = new Set(a);
@@ -840,7 +858,6 @@ export class BlockTypeIds {
         if (!this.#overworldPlankBlockTypeIds) this.#overworldPlankBlockTypeIds = Array.from(this.getOverworldPlankBlockTypeIdSet());
         return this.#overworldPlankBlockTypeIds;
     }
-
     /**
      * @returns {Set<string>}
      */
@@ -862,7 +879,6 @@ export class BlockTypeIds {
         if (!this.#netherPlankBlockTypeIds) this.#netherPlankBlockTypeIds = Array.from(this.getNetherPlankBlockTypeIdSet());
         return this.#netherPlankBlockTypeIds;
     }
-
     //=============================================================================
     // Stairs + trap doors
     //=============================================================================
@@ -872,9 +888,7 @@ export class BlockTypeIds {
     static getStairBlockTypeIdSet () {
         if (!this.#stairBlockTypeIdSet) {
             const vanillaBlocks = this.getValidVanillaBlockTypeIds();
-            const a = vanillaBlocks
-                .filter(blockName => { return blockName.endsWith('_stairs'); });
-
+            const a = vanillaBlocks.filter(blockName => { return blockName.endsWith('_stairs'); });
             this.#stairBlockTypeIds = a;
             this.#stairBlockTypeIdSet = new Set(a);
         }
@@ -887,15 +901,13 @@ export class BlockTypeIds {
         if (!this.#stairBlockTypeIds) this.#stairBlockTypeIds = Array.from(this.getStairBlockTypeIdSet());
         return this.#stairBlockTypeIds;
     }
-
     /**
      * @returns {Set<string>}
      */
     static getTrapDoorBlockTypeIdSet () {
         if (!this.#trapDoorBlockTypeIdSet) {
             const vanillaBlocks = this.getValidVanillaBlockTypeIds();
-            const a = vanillaBlocks
-                .filter(blockName => { return blockName.endsWith('trapdoor'); });
+            const a = vanillaBlocks.filter(blockName => { return blockName.endsWith('trapdoor'); });
 
             this.#trapDoorBlockTypeIds = a;
             this.#trapDoorBlockTypeIdSet = new Set(a);
@@ -952,24 +964,35 @@ export class BlockTypeIds {
             const vanillaSet = this.getValidVanillaBlockTypeIdSet();
             const vanillaIDs = this.getValidVanillaBlockTypeIds();
             const a = [
-                "minecraft:dandelion",
-                "minecraft:poppy",
-                "minecraft:blue_orchid",
-                "minecraft:allium",
-                "minecraft:azure_bluet",
-                "minecraft:oxeye_daisy",
-                "minecraft:cornflower",
-                'minecraft:lily_of_the_valley',
-                'minecraft:wildflowers',
-                'minecraft:pink_petals',
-                'minecraft:short_dry_grass',
+                'minecraft:allium',
+                'minecraft:azure_bluet',
+                'minecraft:big_dripleaf',
+                'minecraft:blue_orchid',
+                'minecraft:bush',
+                'minecraft:cornflower',
+                'minecraft:dandelion',
+                'minecraft:dead_bush',
                 'minecraft:fern',
+                'minecraft:kelp',
+                'minecraft:lily_of_the_valley',
+                'minecraft:lily_pad',
+                'minecraft:mangrove_propagule',
                 'minecraft:nether_sprouts',
-                ...vanillaIDs.filter(b => b.endsWith('_leaves')),
+                'minecraft:oxeye_daisy',
+                'minecraft:pink_petals',
+                'minecraft:poppy',
+                'minecraft:seagrass',
+                'minecraft:short_dry_grass',
+                'minecraft:small_dripleaf_block',
+                'minecraft:sugar_cane',
+                'minecraft:sweet_berry_bush',
+                'minecraft:wildflowers',
+                ...this.getSaplingBlockTypeIds(),
+                ...this.getLeafBlockTypeIds(),
+                ...vanillaIDs.filter(b => b.endsWith('_roots')),
                 ...vanillaIDs.filter(b => b.endsWith('_tulip')),
-                ...vanillaIDs.filter(b => b.endsWith('_roots'))
-            ].filter(b => vanillaSet.has(b));
-
+            ];
+            this.normalizeBlockIdsInPlace(a);
             this.#shortPlantBlockTypeIds = a;
             this.#shortPlantBlockTypeIdSet = new Set(a);
         }
@@ -989,14 +1012,15 @@ export class BlockTypeIds {
         if (!this.#tallPlantBlockTypeIdSet) {
             const vanillaSet = this.getValidVanillaBlockTypeIdSet();
             const a = [
-                "minecraft:rose_bush",
-                "minecraft:lilac",
-                "minecraft:peony",
-                "minecraft:sunflower",
-                "minecraft:torchflower",
-                "minecraft:tall_grass",
-                "minecraft:tall_dry_grass",
-                'minecraft:large_fern'
+                'minecraft:bamboo',
+                'minecraft:large_fern',
+                'minecraft:lilac',
+                'minecraft:peony',
+                'minecraft:rose_bush',
+                'minecraft:sunflower',
+                'minecraft:tall_dry_grass',
+                'minecraft:tall_grass',
+                'minecraft:torchflower',
             ].filter(b => vanillaSet.has(b));
 
             this.#tallPlantBlockTypeIds = a;
@@ -1011,6 +1035,29 @@ export class BlockTypeIds {
     static getTallPlantBlockTypeIds () {
         if (!this.#tallPlantBlockTypeIds) this.#tallPlantBlockTypeIds = Array.from(this.getTallPlantBlockTypeIdSet());
         return this.#tallPlantBlockTypeIds;
+    }
+    /**
+     * @returns {Set<string>}
+     */
+    static getPlantBlockTypeIdSet () {
+        if (!this.#plantBlockTypeIdSet) {
+            const a = [
+                ...this.getShortPlantBlockTypeIds(),
+                ...this.getTallPlantBlockTypeIds()
+            ];
+
+            this.#plantBlockTypeIds = a;
+            this.#plantBlockTypeIdSet = new Set(a);
+        }
+        return this.#plantBlockTypeIdSet;
+    }
+    //TODO: add special plants and crops as needed
+    /**
+     * @returns {string[]}
+     */
+    static getPlantBlockTypeIds () {
+        if (!this.#plantBlockTypeIds) this.#plantBlockTypeIds = Array.from(this.getPlantBlockTypeIdSet());
+        return this.#plantBlockTypeIds;
     }
     /**
      * @returns {Set<string>}
@@ -1050,9 +1097,11 @@ export class BlockTypeIds {
      */
     static getNaturalNetherDirtyBlockTypeIdSet () {
         if (!this.#naturalNetherDirtyBlockTypeIdSet) {
+            const vanillaSet = this.getValidVanillaBlockTypeIdSet();
             const a = [
-                'minecraft:crimson_nylium', 'minecraft:warped_nylium'
-            ];
+                'minecraft:crimson_nylium',
+                'minecraft:warped_nylium'
+            ].filter(b => vanillaSet.has(b));
 
             this.#naturalNetherDirtyBlockTypeIds = a;
             this.#naturalNetherDirtyBlockTypeIdSet = new Set(a);
@@ -1114,15 +1163,17 @@ export class BlockTypeIds {
         return this.#dirtyBlockTypeIds;
     }
     /**
+     *  Non-Crafted, cooked
     * @returns {Set<string>}
     */
     static getNaturalBlockTypeIdSet () {
         if (!this.#naturalBlockTypeIdSet) {
             const a = [
-                //TODO add natural cold
                 ...this.getNaturalColdBlockTypeIds(),
                 ...this.getNaturalDirtyBlockTypeIds(),
-                ...this.getNaturalStoneBlockTypeIds()
+                ...this.getNaturalStoneBlockTypeIds(),
+                ...this.getLogBlockTypeIds(),
+                ...this.getPlantBlockTypeIds()
             ];
             this.#naturalBlockTypeIds = a;
             this.#naturalBlockTypeIdSet = new Set(a);
@@ -1145,10 +1196,7 @@ export class BlockTypeIds {
     static getGlassBlockTypeIdSet () {
         if (!this.#glassBlockTypeIdSet) {
             const vanillaBlocks = this.getValidVanillaBlockTypeIds();
-            const a = vanillaBlocks
-                .filter(blockName => { return blockName.endsWith('_stained_glass'); })
-                .concat('glass');
-
+            const a = vanillaBlocks.filter(b => { return b.endsWith('_stained_glass') || b.endsWith(':glass'); });
             this.#glassBlockTypeIds = a;
             this.#glassBlockTypeIdSet = new Set(a);
         }
@@ -1167,9 +1215,8 @@ export class BlockTypeIds {
      */
     static getGlassPaneBlockTypeIdSet () {
         if (!this.#glassPaneBlockTypeIdSet) {
-            const vanillaBlocks = this.getValidVanillaBlockTypeIds().filter(blockName => { return blockName.endsWith('glass_pane'); });
+            const vanillaBlocks = this.getValidVanillaBlockTypeIds();
             const a = vanillaBlocks.filter(b => { return b.endsWith(':glass_pane') || b.endsWith('_stained_glass_pane'); });
-
             this.#glassPaneBlockTypeIds = a;
             this.#glassPaneBlockTypeIdSet = new Set(a);
         }
@@ -1182,7 +1229,6 @@ export class BlockTypeIds {
         if (!this.#glassPaneBlockTypeIds) this.#glassPaneBlockTypeIds = Array.from(this.getGlassPaneBlockTypeIdSet());
         return this.#glassPaneBlockTypeIds;
     }
-
     /**
      * @returns {Set<string>}
      */
@@ -1203,7 +1249,6 @@ export class BlockTypeIds {
         if (!this.#glazedTerracottaBlockTypeIds) this.#glazedTerracottaBlockTypeIds = Array.from(this.getGlazedTerracottaBlockTypeIdSet());
         return this.#glazedTerracottaBlockTypeIds;
     }
-
     /**
      * @returns {Set<string>}
      */
@@ -1212,8 +1257,8 @@ export class BlockTypeIds {
             const vanillaBlocks = this.getValidVanillaBlockTypeIds();
             const a = vanillaBlocks
                 .filter(blockName => { return blockName.endsWith('_terracotta') && !blockName.endsWith('_glazed_terracotta'); })
-                .concat('hardened_clay');
-
+                .concat('minecraft:hardened_clay');
+            this.normalizeBlockIdsInPlace(a);
             this.#terracottaBlockTypeIds = a;
             this.#terracottaBlockTypeIdSet = new Set(a);
         }
@@ -1226,14 +1271,17 @@ export class BlockTypeIds {
         if (!this.#terracottaBlockTypeIds) this.#terracottaBlockTypeIds = Array.from(this.getTerracottaBlockTypeIdSet());
         return this.#terracottaBlockTypeIds;
     }
-
     /**
      * @returns {Set<string>}
      */
     static getCoralBlockTypeIdSet () {
         if (!this.#coralBlockTypeIdSet) {
             const vanillaBlocks = this.getValidVanillaBlockTypeIds();
-            const a = vanillaBlocks.filter(blockName => { return blockName.endsWith('_coral_block') && !blockName.startsWith('dead_'); });
+            const deadCoralSet = this.getDeadCoralBlockTypeIdSet();
+
+            const a = vanillaBlocks
+                .filter(b => { return b.endsWith('_coral_block'); })
+                .filter(b => { return !deadCoralSet.has(b); });
 
             this.#coralBlockTypeIds = a;
             this.#coralBlockTypeIdSet = new Set(a);
@@ -1247,14 +1295,13 @@ export class BlockTypeIds {
         if (!this.#coralBlockTypeIds) this.#coralBlockTypeIds = Array.from(this.getCoralBlockTypeIdSet());
         return this.#coralBlockTypeIds;
     }
-
     /**
      * @returns {Set<string>}
      */
     static getDeadCoralBlockTypeIdSet () {
         if (!this.#deadCoralBlockTypeIdSet) {
             const vanillaBlocks = this.getValidVanillaBlockTypeIds();
-            const a = vanillaBlocks.filter(blockName => { return blockName.endsWith('_coral_block') && blockName.startsWith('dead_'); });
+            const a = vanillaBlocks.filter(b => { return b.endsWith('_coral_block') && b.includes(':dead_'); });
 
             this.#deadCoralBlockTypeIds = a;
             this.#deadCoralBlockTypeIdSet = new Set(a);
@@ -1296,7 +1343,7 @@ export class BlockTypeIds {
     static getConcretePowderBlockTypeIdSet () {
         if (!this.#concretePowderBlockTypeIdSet) {
             const vanillaBlocks = this.getValidVanillaBlockTypeIds();
-            const a = vanillaBlocks.filter(blockName => { return blockName.endsWith('_concrete_powder'); });
+            const a = vanillaBlocks.filter(b => { return b.endsWith('_concrete_powder'); });
 
             this.#concretePowderBlockTypeIds = a;
             this.#concretePowderBlockTypeIdSet = new Set(a);
@@ -1319,16 +1366,10 @@ export class BlockTypeIds {
      */
     static getNaturalOverworldStoneBlockTypeIdSet () {
         if (!this.#naturalOverworldStoneBlockTypeIdSet) {
-            const vanillaSet = this.getValidVanillaBlockTypeIdSet();
             const a = [
-                'minecraft:stone',
-                'minecraft:andesite',
-                'minecraft:diorite',
-                'minecraft:granite',
-                'minecraft:tuff',
-                'minecraft:deepslate',
-                'minecraft:calcite',
-            ].filter(b => vanillaSet.has(b));
+                ...this.getNaturalOverworldAboveZeroStoneBlockTypeIds(),
+                ...this.getNaturalOverworldBelowZeroStoneBlockTypeIds(),
+            ];
 
             this.#naturalOverworldStoneBlockTypeIds = a;
             this.#naturalOverworldStoneBlockTypeIdSet = new Set(a);
@@ -1348,13 +1389,13 @@ export class BlockTypeIds {
      */
     static getNaturalOverworldAboveZeroStoneBlockTypeIdSet () {
         if (!this.#naturalOverworldAboveZeroStoneBlockTypeIdSet) {
-            const base = this.getNaturalOverworldStoneBlockTypeIdSet();
+            const vanillaSet = this.getValidVanillaBlockTypeIdSet();
             const a = [
                 'minecraft:stone',
                 'minecraft:andesite',
                 'minecraft:diorite',
                 'minecraft:granite',
-            ].filter(b => base.has(b));
+            ].filter(b => vanillaSet.has(b));
 
             this.#naturalOverworldAboveZeroStoneBlockTypeIds = a;
             this.#naturalOverworldAboveZeroStoneBlockTypeIdSet = new Set(a);
@@ -1374,12 +1415,12 @@ export class BlockTypeIds {
      */
     static getNaturalOverworldBelowZeroStoneBlockTypeIdSet () {
         if (!this.#naturalOverworldBelowZeroStoneBlockTypeIdSet) {
-            const base = this.getNaturalOverworldStoneBlockTypeIdSet();
+            const vanillaSet = this.getValidVanillaBlockTypeIdSet();
             const a = [
                 'minecraft:tuff',
                 'minecraft:deepslate',
                 'minecraft:calcite',
-            ].filter(b => base.has(b));
+            ].filter(b => vanillaSet.has(b));
 
             this.#naturalOverworldBelowZeroStoneBlockTypeIds = a;
             this.#naturalOverworldBelowZeroStoneBlockTypeIdSet = new Set(a);
@@ -1443,7 +1484,6 @@ export class BlockTypeIds {
         if (!this.#naturalEndStoneBlockTypeIds) this.#naturalEndStoneBlockTypeIds = Array.from(this.getNaturalEndStoneBlockTypeIdSet());
         return this.#naturalEndStoneBlockTypeIds;
     }
-
     /**
      * @returns {Set<string>}
      */
@@ -1467,16 +1507,15 @@ export class BlockTypeIds {
         if (!this.#naturalStoneBlockTypeIds) this.#naturalStoneBlockTypeIds = Array.from(this.getNaturalStoneBlockTypeIdSet());
         return this.#naturalStoneBlockTypeIds;
     }
-
     /**
      * @returns {Set<string>}
      */
     static getNaturalStoneSlabBlockTypeIdSet () {
         if (!this.#naturalStoneSlabBlockTypeIdSet) {
-            const vanillaSet = this.getValidVanillaBlockTypeIdSet();
+            const vanillaSlabSet = this.getValidVanillaSlabTypeIdSet();
             const a = this.getNaturalStoneBlockTypeIds()
                 .map(b => `${b}_slab`)
-                .filter(b => vanillaSet.has(b));
+                .filter(b => vanillaSlabSet.has(b));
 
             this.#naturalStoneSlabBlockTypeIds = a;
             this.#naturalStoneSlabBlockTypeIdSet = new Set(a);
@@ -1490,16 +1529,15 @@ export class BlockTypeIds {
         if (!this.#naturalStoneSlabBlockTypeIds) this.#naturalStoneSlabBlockTypeIds = Array.from(this.getNaturalStoneSlabBlockTypeIdSet());
         return this.#naturalStoneSlabBlockTypeIds;
     }
-
     /**
      * @returns {Set<string>}
      */
     static getNaturalOverworldStoneSlabBlockTypeIdSet () {
         if (!this.#naturalOverworldStoneSlabBlockTypeIdSet) {
-            const vanillaSet = this.getValidVanillaBlockTypeIdSet();
+            const vanillaSlabSet = this.getValidVanillaSlabTypeIdSet();
             const a = this.getNaturalOverworldStoneBlockTypeIds()
                 .map(b => `${b}_slab`)
-                .filter(b => vanillaSet.has(b));
+                .filter(b => vanillaSlabSet.has(b));
 
             this.#naturalOverworldStoneSlabBlockTypeIds = a;
             this.#naturalOverworldStoneSlabBlockTypeIdSet = new Set(a);
@@ -1513,16 +1551,15 @@ export class BlockTypeIds {
         if (!this.#naturalOverworldStoneSlabBlockTypeIds) this.#naturalOverworldStoneSlabBlockTypeIds = Array.from(this.getNaturalOverworldStoneSlabBlockTypeIdSet());
         return this.#naturalOverworldStoneSlabBlockTypeIds;
     }
-
     /**
      * @returns {Set<string>}
      */
     static getNaturalNetherStoneSlabBlockTypeIdSet () {
         if (!this.#naturalNetherStoneSlabBlockTypeIdSet) {
-            const vanillaSet = this.getValidVanillaBlockTypeIdSet();
+            const vanillaSlabSet = this.getValidVanillaSlabTypeIdSet();
             const a = this.getNaturalNetherStoneBlockTypeIds()
                 .map(b => `${b}_slab`)
-                .filter(b => vanillaSet.has(b));
+                .filter(b => vanillaSlabSet.has(b));
 
             this.#naturalNetherStoneSlabBlockTypeIds = a;
             this.#naturalNetherStoneSlabBlockTypeIdSet = new Set(a);
@@ -1542,10 +1579,10 @@ export class BlockTypeIds {
      */
     static getNaturalEndStoneSlabBlockTypeIdSet () {
         if (!this.#naturalEndStoneSlabBlockTypeIdSet) {
-            const vanillaSet = this.getValidVanillaBlockTypeIdSet();
+            const vanillaSlabSet = this.getValidVanillaSlabTypeIdSet();
             const a = this.getNaturalEndStoneBlockTypeIds()
                 .map(b => `${b}_slab`)
-                .filter(b => vanillaSet.has(b));
+                .filter(b => vanillaSlabSet.has(b));
 
             this.#naturalEndStoneSlabBlockTypeIds = a;
             this.#naturalEndStoneSlabBlockTypeIdSet = new Set(a);
@@ -1566,9 +1603,11 @@ export class BlockTypeIds {
      */
     static getNaturalOceanFloorBlockTypeIdSet () {
         if (!this.#naturalOceanFloorBlockTypeIdSet) {
+            const VanillaIds = this.getValidVanillaBlockTypeIds();
             const a = [
-                'clay_block', 'gravel', 'sand', 'dirt', 'magma',
+                'clay_block', 'gravel', 'sand', 'dirt', 'magma', 'seagrass', 'kelp',
                 ...this.getCoralBlockTypeIds(),
+                ...VanillaIds.filter(b => b.endsWith('_coral_fan') && !b.includes(':dead_'))
                 //...this.getNaturalOverworldAboveZeroStoneBlockTypeIds()  yes but....
             ];
             this.normalizeBlockIdsInPlace(a);
@@ -1589,7 +1628,10 @@ export class BlockTypeIds {
      */
     static getNaturalOceanBlockTypeIdSet () {
         if (!this.#naturalOceanBlockTypeIdSet) {
-            const a = [ 'wet_sponge', ...this.getNaturalOceanFloorBlockTypeIds(), ];
+            const a = [
+                'wet_sponge',
+                ...this.getNaturalOceanFloorBlockTypeIds()
+            ];
             this.normalizeBlockIdsInPlace(a);
             this.#naturalOceanBlockTypeIds = a;
             this.#naturalOceanBlockTypeIdSet = new Set(a);
@@ -1611,7 +1653,12 @@ export class BlockTypeIds {
      */
     static getOceanMonumentBlockTypeIdSet () {
         if (!this.#oceanMonumentBlockTypeIdSet) {
-            const a = [ 'prismarine', 'dark_prismarine', 'prismarine_bricks', 'sea_lantern', 'wet_sponge' ];
+            const a = [ 
+                'prismarine', 
+                'dark_prismarine', 
+                'prismarine_bricks', 
+                'sea_lantern', 
+                'wet_sponge' ];
             this.normalizeBlockIdsInPlace(a);
             this.#oceanMonumentBlockTypeIds = a;
             this.#oceanMonumentBlockTypeIdSet = new Set(a);
@@ -1650,7 +1697,7 @@ export class BlockTypeIds {
     }
 
     //=============================================================================
-    // Underwater blocks (with slab variants)
+    // Frozen Biome
     //=============================================================================
     /**
      * @returns {Set<string>}
@@ -1678,6 +1725,27 @@ export class BlockTypeIds {
     static getNaturalColdBlockTypeIds () {
         if (!this.#naturalColdBlockTypeIds) this.#naturalColdBlockTypeIds = Array.from(this.getNaturalColdBlockTypeIdSet());
         return this.#naturalColdBlockTypeIds;
+    }
+    /**
+     * @returns {Set<string>}
+     */
+    static getColdBlockTypeIdSet () {
+        //no diff yet - but if adding, be sure to normalize
+        if (!this.#coldBlockTypeIdSet) {
+            const a = [
+                ...this.getNaturalColdBlockTypeIds()
+            ];
+            this.#coldBlockTypeIds = a;
+            this.#coldBlockTypeIdSet = new Set(a);
+        }
+        return this.#coldBlockTypeIdSet;
+    }
+    /**
+     * @returns {string[]}
+     */
+    static getColdBlockTypeIds () {
+        if (!this.#coldBlockTypeIds) this.#coldBlockTypeIds = Array.from(this.getColdBlockTypeIdSet());
+        return this.#coldBlockTypeIds;
     }
 
     //=============================================================================
@@ -1876,7 +1944,7 @@ export class BlockTypeIds {
             if (removeEmpty && !s) continue;
             if (addNamespace) s = addNameSpace(s); // or addNameSpaceInPlace if you prefer two-pass
             if (verify) {
-                const fixed = BlockTypeIds.coerceToValidTypeId(s);
+                const fixed = this.coerceToValidTypeId(s);
                 if (!fixed) continue;    // remove invalid
                 s = fixed;
             }
@@ -1923,7 +1991,7 @@ export class BlockTypeIds {
      * @returns {string[]}
      */
     static purgeInvalidBlockTypeIdsInPlace_auto (a) {
-        return this.purgeInvalidBlockTypeIdsInPlace(a, BlockTypeIds.getValidBlockTypeIdSet());
+        return this.purgeInvalidBlockTypeIdsInPlace(a, this.getValidBlockTypeIdSet());
     }
 
     //================================================================================================
@@ -1951,7 +2019,7 @@ export class BlockTypeIds {
             this.normalizeBlockIdsInPlace(a, { addNamespace: true, verify: true, removeEmpty: true });
         }
 
-        const validSlabSet = verify ? BlockTypeIds.getValidSlabTypeIdSet() : null;
+        const validSlabSet = verify ? this.getValidSlabTypeIdSet() : null;
         const existing = new Set(a);
 
         // Use BOTH raw + coerced sources for derivation
@@ -2011,7 +2079,7 @@ export class BlockTypeIds {
             this.normalizeBlockIdsInPlace(a, { addNamespace: true, verify: true, removeEmpty: true });
         }
 
-        const validWallSet = verify ? BlockTypeIds.getValidWallTypeIdSet() : null;
+        const validWallSet = verify ? this.getValidWallTypeIdSet() : null;
         const existing = new Set(a);
 
         // Use BOTH raw + coerced sources for derivation

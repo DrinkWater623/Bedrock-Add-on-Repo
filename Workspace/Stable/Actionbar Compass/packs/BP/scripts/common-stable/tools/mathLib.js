@@ -10,6 +10,9 @@ Change Log:
     20251102 - Add some needed functions
 ========================================================================*/
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
+
+import { world } from "@minecraft/server";
+
 //========================================================================
 export const rnd = (min = 0, max = 0) => Math.random() * (max - min) + min;
 export const rndInt = (min = 0, max = 0) => Math.floor(Math.random() * (max - min + 1)) + min;
@@ -70,6 +73,11 @@ export function bitArrayAdd (numberArray, numberToAdd = 0, base = 10, minReturnL
     
     return numberArray;
 }
-//=============================================================================
+//==============================================================================
+export function getWorldTime () {
+    const daytime = world.getTimeOfDay() + 6000;
+    const datetime = new Date(daytime * 3.6 * 1000);
+    return { hours: datetime.getHours(), minutes: datetime.getMinutes() };
+}//=============================================================================
 // End of FIle
 //=============================================================================

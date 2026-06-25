@@ -12,7 +12,7 @@ Change Log:
     20251219 - Created/Copied
 ========================================================================*/
 // Minecraft
-import {  Player } from "@minecraft/server";
+import {  Player, system } from "@minecraft/server";
 import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus } from "@minecraft/server";
 // Shared
 import { PlayerDebug } from "./common-stable/gameObjects/index.js";
@@ -20,6 +20,9 @@ import { PlayerDebug } from "./common-stable/gameObjects/index.js";
 import { pack, packDisplayName } from './settings.js';
 import { dev } from "./debug.js";
 import { shelter } from "./helpers/shelters.js";
+import { Vector3Lib } from "./common-stable/tools/vectorClass.js";
+import { rotationToCardinalDirection } from "./common-stable/tools/rotationLib.js";
+import { round,getWorldTime } from "./common-stable/tools/mathLib.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 //==============================================================================
@@ -32,7 +35,7 @@ function register_about (registry) {
     dev.alertFunctionKey('register_about');
     const cmd = {
         name: `${pack.cmdNameSpace}:about_element_affinity`,
-        description: `Info/Help for DW623's ${packDisplayName} add-on`,
+        description: `${packDisplayName} Add-on Information`,
         permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
     };
@@ -346,6 +349,88 @@ function register_event_player_info (registry) {
             playerDebug.playerInfo(origin.sourceEntity);
         }
         return { status: CustomCommandStatus.Success };
+    });
+}
+//Trying some of this info out...
+//==============================================================================
+/**
+ * @param {CustomCommandRegistry} registry 
+ */
+function register_getGeoInfo (registry) {
+    const cmd = {
+        name: `${pack.cmdNameSpace}:here`,
+        description: "Show Current Location Information",
+        permissionLevel: CommandPermissionLevel.Any,
+        cheatsRequired: false
+    };
+    /**
+     * @returns {import("@minecraft/server").CustomCommandResult}
+     */
+    registry.registerCommand(cmd, (origin) => {
+        if (origin.sourceEntity instanceof Player) {
+            const player = origin.sourceEntity;
+
+            system.runTimeout(() => {
+                const { dimension, location, name } = player;
+
+                player.sendMessage(`\n\n§bYou:§r ${name}`);
+                player.sendMessage(`§gWorld Time:§r ${getWorldTime().hours}:00`);
+                player.sendMessage(`§dDimension:§r ${dimension.id}`);
+                player.sendMessage(`§bLocation:§r ${Vector3Lib.toString(location, 1, true)}`);
+
+                const inBiome = dimension.getBiome(location);
+                if (inBiome) player.sendMessage(`§aBiome:§r ${inBiome.id}`);
+
+                const facingRotation = rotationToCardinalDirection(player.getRotation().y);
+                player.sendMessage(`§6Facing:§r ${facingRotation}`);
+
+                const inBlock = dimension?.getBlock(location);
+                if (inBlock) {
+                    player.sendMessage(`§eIn Block:§r ${inBlock.typeId} (skylight level: ${inBlock.getSkyLightLevel()}) (light level: ${inBlock.getLightLevel()}) ${inBlock.isSolid ? '' : 'Non-Solid'}`);
+
+                    const onBlock = inBlock.below();
+                    if (onBlock) {
+                        player.sendMessage(`§gOn Block:§r ${onBlock.typeId} (light level: ${onBlock.getLightLevel()})  ${onBlock.isSolid ? '' : 'Non-Solid'}`);
+                    }
+                    const topSolidBlock = dimension.getTopmostBlock(inBlock.location);
+                    if (topSolidBlock)
+                        if (topSolidBlock.location.y > inBlock.location.y)
+                            player.sendMessage(`§gTop Block:§r ${topSolidBlock.typeId} @ ${Vector3Lib.toString(topSolidBlock.location, 0, true)} (light level: ${topSolidBlock.getLightLevel()})  ${topSolidBlock.isSolid ? '' : 'Non-Solid'}`);
+
+                    // const above = inBlock.above()
+                    // if (above) {
+                    const blockView = player.getBlockFromViewDirection({ maxDistance: 16, includeLiquidBlocks: true, includePassableBlocks: true });
+
+                    if (blockView) {
+                        const block = blockView.block;
+                        player.sendMessage(`§9Looking at Block:§r ${block.typeId} (face: ${blockView.face}) (light level: ${block.getLightLevel()})  ${block.isSolid ? '' : 'Non-Solid'}`);
+                    }
+                    //}
+                }
+                const entityView = player.getEntitiesFromViewDirection({ maxDistance: 16, ignoreBlockCollision: false });
+                if (entityView && entityView.length > 0) {
+                    let msg = '';
+                    if (entityView.length == 1) {
+                        const e = entityView[ 0 ];
+                        msg = `§9Looking at Entity:§r ${e.entity.typeId} ${e.entity.nameTag ? e.entity.nameTag : ''} §eDistance:§r ${round(e.distance, 1)}`;
+                    }
+                    else {
+                        msg = `§9Looking at Entities:§r`;
+                        entityView.forEach(e => {
+                            msg += `\n==> ${e.entity.typeId} ${e.entity.nameTag ? e.entity.nameTag : ''} §eDistance:§r ${round(e.distance, 1)}`;
+                        });
+                    }
+                    player.sendMessage(msg);
+                }
+
+                //Maybe.... TODO:
+                //add list of close by players
+                //list of close monsters
+            }, 1);
+        }
+
+        const result = { status: CustomCommandStatus.Success };
+        return result;
     });
 }
 //===============================

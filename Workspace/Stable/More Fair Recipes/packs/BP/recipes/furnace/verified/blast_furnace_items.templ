@@ -1,4 +1,18 @@
 {
+  "$scope":{
+    "blast_furnace":[
+      {"folder":"misc"	,"input":"rotten_flesh"		  ,"count":1 ,"output":"leather"},		
+      {"folder":"metal"	,"input":"raw_copper_block"	,"count":1 ,"output":"copper_block"},
+      {"folder":"metal"	,"input":"raw_gold_block"	  ,"count":1 ,"output":"gold_block"},
+      {"folder":"metal"	,"input":"raw_iron_block"	  ,"count":1 ,"output":"iron_block"},
+      {"folder":"metal"	,"input":"iron_trapdoor"	  ,"count":1 ,"output":"iron_ingot"},		
+      {"folder":"tools"	,"input":"stone_axe"		    ,"count":1 ,"output":"stone_button"},
+      {"folder":"tools"	,"input":"stone_hoe"		    ,"count":1 ,"output":"stone_button"},
+      {"folder":"tools"	,"input":"stone_pickaxe"	  ,"count":1 ,"output":"stone_button"},
+      {"folder":"tools"	,"input":"stone_shovel"		  ,"count":1 ,"output":"stone_button"},
+      {"folder":"tools"	,"input":"stone_sword"		  ,"count":1 ,"output":"stone_button"}
+    ]
+  },
   "$files": {
     "array": "blast_furnace",
     "fileName": "./{{folder}}/{{output}}_from_{{input}}"
@@ -6,7 +20,7 @@
   "$template": {
     "format_version": "1.12.0",
     "minecraft:recipe_furnace": {
-      "description": {"identifier":"dw623:blast_{{output}}_from_{{input}}"},
+      "description": {"identifier":"blast:{{output}}_from_{{input}}"},
       "tags": ["blast_furnace"],
       "input": "minecraft:{{input}}",
       "output": "minecraft:{{output}}"

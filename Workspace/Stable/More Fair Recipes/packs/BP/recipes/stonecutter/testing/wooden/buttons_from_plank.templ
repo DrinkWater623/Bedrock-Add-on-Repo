@@ -1,0 +1,19 @@
+{
+  "$files": {
+    "array": "woods",
+    "fileName": "./buttons/from_planks_{{value}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {"identifier":"cut:{{value}}_buttons_from_planks"},
+      "tags": ["stonecutter"],
+      "priority": 0,
+      "ingredients":[{"item":"minecraft:{{value}}_planks"}],
+      "result": {        
+        "item": "minecraft:{value}}_button",
+        "count": 32
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$files": {
+    "array": "woods",
+    "fileName": "./trapdoors/from_planks_{{value}}"
+  },
+  "$template": {
+    "format_version": "1.12.0",
+    "minecraft:recipe_shapeless": {
+      "description": {"identifier":"cut:trapdoors_from_planks_{{value}}"},
+      "tags": ["stonecutter"],
+      "priority": 0,
+      "ingredients": [{"item":"minecraft:{{value}}_planks"}],
+      "result": {
+        "item": "minecraft:{{value}}_trapdoor",
+        "count": 4
+      }
+    }
+  }
+}

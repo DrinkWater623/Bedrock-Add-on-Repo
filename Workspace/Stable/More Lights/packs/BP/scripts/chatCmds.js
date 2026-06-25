@@ -2,7 +2,7 @@
 // @ts-check
 /* =====================================================================
 Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
-License: M.I.T. (https://www.gnu.org/licenses/gpl-3.0.html)
+License: M.I.T. 
 URL: https://github.com/DrinkWater623
 ========================================================================
 TODO: 
@@ -25,7 +25,7 @@ import { dev } from "./debug.js";
 function register_about (registry) {
     const cmd = {
         name: `${pack.cmdNameSpace}:about_lights`,
-        description: "Info/Help for DW623's More Lights add-on",
+        description: `${packDisplayName} Add-on Information`,
         permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
 
@@ -119,7 +119,7 @@ function register_event_on_Place (registry) {
      * @returns {import("@minecraft/server").CustomCommandResult}
      */
     registry.registerCommand(cmd, (origin) => {
-       dev.toggle_itemEvent('onPlace', true);
+        dev.toggle_itemEvent('onPlace', true);
         return { status: CustomCommandStatus.Success };
     });
 }
@@ -137,7 +137,7 @@ function register_event_beforePlayerInteractWithBlock (registry) {
      * @returns {import("@minecraft/server").CustomCommandResult}
      */
     registry.registerCommand(cmd, (origin) => {
-       dev.toggle_itemEvent('beforePlayerInteractWithBlock', true);
+        dev.toggle_itemEvent('beforePlayerInteractWithBlock', true);
         return { status: CustomCommandStatus.Success };
     });
 }
@@ -148,7 +148,7 @@ function register_event_beforePlayerInteractWithBlock (registry) {
  */
 export function registerCustomCommands (registry) {
     register_about(registry);
-    if (pack.debugOn) registerDebugCommands(registry)
+    if (pack.debugOn) registerDebugCommands(registry);
 }
 /**
  * @param {CustomCommandRegistry} registry 

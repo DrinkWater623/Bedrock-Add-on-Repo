@@ -1,0 +1,10 @@
+{
+    "metals":[
+		"iron"	,
+		"copper",
+		"waxed_copper",
+		"waxed_exposed_copper",		
+		"waxed_weathered_copper",
+		"waxed_oxidized_copper"
+	]
+}

@@ -32,7 +32,7 @@ export function toDirection (input) {
  */
 export function rotationToCardinalDirection (rotation) {
     const posRotation=AngleMath.negativeAngleConvert(Math.floor(rotation));
-    let dirs = [ "south", "west", "north", "west", "south" ];
+    let dirs = [ "south", "west", "north", "east", "south" ];
     let dir = Math.round((posRotation % 360) / 90);
     if (dir < 0) dir += 4;
 

@@ -14,16 +14,15 @@ Last Update: 20251023 - Update and sep out debug-only stuff and add the stable s
 // Minecraft
 import { Entity, system, Block, GameMode, Player } from "@minecraft/server";
 // Shared Stable
-import { airBlock, leafBlocks, Ticks } from "../common-data/index.js";
-import {  Entities, spawnEntityAtLocation, Blocks } from "../common-stable/gameObjects/index.js";
+import { airBlock, Ticks } from "../common-data/index.js";
+import { Entities, spawnEntityAtLocation, Blocks } from "../common-stable/gameObjects/index.js";
 import { makeRandomName, rndInt, chance, Vector3Lib, isInForest, isOutside, getWorldTime, DynamicPropertyLib } from "../common-stable/tools/index.js";
 // Local
 import { targetBlockAdjacent } from "./fn-blocks.js";
 import { alertLog, pack, watchFor, entityDynamicVars } from '../settings.js';
-import { devDebug } from "../debug.js";
+import { dev } from "../debug.js";
 //==============================================================================
-const debugFunctions = false || devDebug.debugFunctionsOn;
-const debugOn = devDebug.debugOn;
+const debugFunctions = false;
 //==============================================================================
 //==============================================================================
 /** cache once (watchFor is stable) */
@@ -33,7 +32,6 @@ const HOME_ID = watchFor.spider_home_typeId;
 const ENTITY_SPAWNED_EVENT = "minecraft:entity_spawned";
 const FIREFLY_PARTICLE = 'minecraft:firefly_particle';
 const XP_ORB = "minecraft:xp_orb";
-const leaves = [ ...leafBlocks ];
 export const entityScriptEvents = {
     //All
     despawnEventName: 'despawn_me',
@@ -165,6 +163,7 @@ class Web {
      * @returns {boolean} 
      */
     static enterWeb (entity, isBaby = false) {
+        const _name = 'enterWeb';
         const { dimension, location } = entity;
         const locationStr = Vector3Lib.toString(location, 0, true);
         const inBlock = dimension.getBlock(location);
@@ -183,7 +182,7 @@ class Web {
         }
 
         const alertMsg = inBlock.typeId == HOME_ID ? `§l${entity.nameTag || entity.id}§r §bAlready in Web @ ${locationStr} - enterWeb()` : `§l${entity.nameTag || entity.id}§r§b Entering Web @ ${Vector3Lib.toString(webBlock.location, 0, true)}`;
-        alertLog.log(alertMsg, devDebug.watchEntityEvents);
+        alertLog.log(alertMsg, dev.isDebugEntityEvent(_name));
 
         Entities.teleportAndCenter(entity, webBlock); //1 tick out
         system.runTimeout(() => {
@@ -194,10 +193,10 @@ class Web {
                 system.runTimeout(() => {
                     if (entity.isValid && Web.insideWebBlock(entity)) {
                         DynamicPropertyLib.increment(entity, entityDynamicVars.websEntered);
-                        if (devDebug.watchEntityGoals) devDebug.dsb.increment('stats', 'enterWeb');
+                        if (dev.isDebugEntityEvent(_name)) dev.dsb.increment('stats', 'enterWeb');
                     }
                     else {
-                        alertLog.warn(`${entity.nameTag || entity.id} May Have Entered Web @ ${Vector3Lib.toString(webBlock.location, 0, true)}`, debugOn);
+                        alertLog.warn(`${entity.nameTag || entity.id} May Have Entered Web @ ${Vector3Lib.toString(webBlock.location, 0, true)}`, dev.debugOn);
                     }
                 }, 1);
             }, 1);
@@ -211,6 +210,7 @@ class Web {
      * @returns {boolean}
      */
     static expandWeb (entity) {
+        const _name = 'expandWeb';
         const { dimension, location } = entity;
         const inBlock = dimension.getBlock(location);
         if (!inBlock) return false;
@@ -238,18 +238,18 @@ class Web {
         system.runTimeout(() => {
             if (Web.insideWebBlock(entity)) {
                 entity.nameTag;
-                alertLog.success(`${entity.nameTag || entity.id} Expanded Web @ ${Vector3Lib.toString(newWeb.location, 0, true)}`, devDebug.watchEntityEvents);
+                alertLog.success(`${entity.nameTag || entity.id} Expanded Web @ ${Vector3Lib.toString(newWeb.location, 0, true)}`, dev.isDebugEntityEvent(_name));
                 DynamicPropertyLib.increment(entity, entityDynamicVars.websExpanded);
-                if (debugOn) {
-                    devDebug.dsb.increment('ctrs', 'webs');
-                    if (devDebug.watchEntityGoals)
-                        devDebug.dsb.increment('stats', 'expandWeb');
+                if (dev.debugOn) {
+                    dev.dsb.increment('ctrs', 'webs');
+                    if (dev.isDebugEntityEvent(_name))
+                        dev.dsb.increment('stats', 'expandWeb');
                     else
-                        devDebug.dsb.increment('stats', 'newWeb');
+                        dev.dsb.increment('stats', 'newWeb');
                 }
             }
             else {
-                alertLog.warn(`${entity.nameTag || entity.id} May Have Expanded Web @ ${Vector3Lib.toString(newWeb.location, 0, true)}`, debugOn);
+                alertLog.warn(`${entity.nameTag || entity.id} May Have Expanded Web @ ${Vector3Lib.toString(newWeb.location, 0, true)}`, dev.debugOn);
             }
         }, 4);
 
@@ -261,6 +261,8 @@ class Web {
      * @returns {boolean}
      */
     static placeWeb (entity) {
+        const _name = 'placeWeb';
+        const debugMe = dev.isDebugEntityEvent(_name)
         //this cannot be called unless spider is next to a target block, so place in air if cannot determine
         const { dimension, location } = entity;
         const inBlock = dimension.getBlock(location);
@@ -290,15 +292,15 @@ class Web {
         //Log
         system.runTimeout(() => {
             if (Web.insideWebBlock(entity)) {
-                alertLog.log(`§l${entity.nameTag || entity.id}§r §5Placed New Web @ ${Vector3Lib.toString(inBlock.location, 0, true)}`, devDebug.watchEntityEvents);
+                alertLog.log(`§l${entity.nameTag || entity.id}§r §5Placed New Web @ ${Vector3Lib.toString(inBlock.location, 0, true)}`, debugMe);
                 DynamicPropertyLib.increment(entity, entityDynamicVars.websCreated);
-                if (debugOn) {
-                    devDebug.dsb.increment('ctrs', 'webs');
-                    devDebug.dsb.increment('stats', 'newWeb');
+                if (dev.debugOn) {
+                    dev.dsb.increment('ctrs', 'webs');
+                    dev.dsb.increment('stats', 'newWeb');
                 }
             }
             else {
-                alertLog.warn(`§l${entity.nameTag || entity.id}§r §6May have Placed New Web @ ${Vector3Lib.toString(inBlock.location, 0, true)}`, debugOn);
+                alertLog.warn(`§l${entity.nameTag || entity.id}§r §6May have Placed New Web @ ${Vector3Lib.toString(inBlock.location, 0, true)}`, dev.debugOn);
             }
         }, 4);
 
@@ -344,11 +346,13 @@ function welcomeBack (entity) {
  * @returns
  */
 export function fireFlyFood (entity) {
+    const _name = 'fireFlyFood';
+    const debugMe = dev.isDebugFunction(_name);
     if (!entity.isValid) return;
 
     const { dimension, location, nameTag } = entity;
     const locationStr = Vector3Lib.toString(location, 2, true);
-    alertLog.success(`§l${nameTag}§r is §aEating Now§r @ ${locationStr}`, devDebug.watchEntityEating);
+    alertLog.success(`§l${nameTag}§r found a firefly bush and is §aEating Now§r @ ${locationStr}`, debugMe);
 
     //spawn fireflies
     const fireflyLocation = { x: location.x, y: location.y + 3, z: location.z };
@@ -399,7 +403,7 @@ export function fireFlyFood (entity) {
     //now go home
     system.runTimeout(() => {
         if (entity.isValid) {
-            if (debugOn) devDebug.dsb.increment('stats', 'satiated');
+            if (dev.debugOn) dev.dsb.increment('stats', 'satiated');
             entity.addTag('satiated');
             entity.removeTag('hungry');
         }
@@ -417,7 +421,7 @@ function newEgg (entity) {
     const inBlock = entity.dimension.getBlock(entity.location);
     if (!inBlock || !inBlock.isValid) return;
 
-    devDebug.dsb.increment('stats', 'layEgg');
+    dev.dsb.increment('stats', 'layEgg');
     system.runTimeout(() => { Entities.centerAlign(entity); }, 1);
 }
 //===================================================================
@@ -509,7 +513,7 @@ function setHungerChance (entity, hungerChance = 0.5, debug = false) {
     const locationStr = Vector3Lib.toString(location, 0, true);
     system.runTimeout(() => {
         if (entity.isValid) {
-            devDebug.dsb.increment("stats", 'hungry');
+            dev.dsb.increment("stats", 'hungry');
             alertLog.log(`§l${nameTag} is §cHungry Now§r @ ${locationStr}`, debug);
             entity.addTag('hungry');
             entity.triggerEvent(entityScriptEvents.spider_hungryEventName);
@@ -523,6 +527,8 @@ function setHungerChance (entity, hungerChance = 0.5, debug = false) {
  * Current tick .... 5 min off from Last Updated Tick
  */
 export function flyPopulationCheck () {
+    const _name = 'flyPopulationCheck';
+    const debugMe = dev.isDebugFunction(_name);
     let fliesKilled = false;
 
     const flies = Entities.getAllEntities({ families: [ "dw623" ], type: watchFor.fly_typeId });
@@ -544,7 +550,7 @@ export function flyPopulationCheck () {
         });
     }
     else
-        alertLog.warn(`§lNo Flies - Cannot do Life Cycles`, devDebug.watchEntityPopulation);
+        alertLog.warn(`§lNo Flies - Cannot do Life Cycles`, debugMe);
 
 
     system.runTimeout(() => {
@@ -554,7 +560,7 @@ export function flyPopulationCheck () {
         // .filter(e => { e.dimension.isChunkLoaded(e.location); });
 
         if (spiders.length === 0) {
-            alertLog.warn(`§lNo Loaded Spiders - Cannot do a Fly Population Check - will run a Spider Population Check Now`, devDebug.watchEntityPopulation);
+            alertLog.warn(`§lNo Loaded Spiders - Cannot do a Fly Population Check - will run a Spider Population Check Now`, debugMe);
             spiderPopulationCheck();
             return;
         }
@@ -572,7 +578,7 @@ export function flyPopulationCheck () {
                 const flies = dimension.getEntities(entitySearchOptions);
 
                 if (flies.length === 0) { //spawn some in
-                    alertLog.log(`§l${nameTag} - §6Low fly count = ${flies.length} - Spawning some in`, devDebug.watchEntityPopulation);
+                    alertLog.log(`§l${nameTag} - §6Low fly count = ${flies.length} - Spawning some in`, debugMe);
                     const maxFlies = rndInt(2, 5);
                     spawnEntityAtLocation(watchFor.fly_typeId, dimension, location, maxFlies / 2, maxFlies, 5, 300, ENTITY_SPAWNED_EVENT);
                 }
@@ -586,6 +592,8 @@ export function flyPopulationCheck () {
  * @param {Player} player 
  */
 function spawnSpidersAroundPlayerIfNeeded (player) {
+    const _name = 'spawnSpidersAroundPlayerIfNeeded';
+    const debugMe = dev.isDebugFunction(_name);
     if (!player.isValid || player.dimension.id !== 'overworld') return;
 
     const { dimension, location } = player;
@@ -598,9 +606,9 @@ function spawnSpidersAroundPlayerIfNeeded (player) {
 
     let min = watchFor.spiderPopulationMinimum();
     if (closeSpiders.length < min) {
-        devDebug.dsb.increment('stats', 'Spiders Added');
+        dev.dsb.increment('stats', 'Spiders Added');
         min = min - closeSpiders.length;
-        alertLog.warn(`§lSpawning missing spiders around ${player.name}`, devDebug.watchEntityPopulation);
+        alertLog.warn(`§lSpawning missing spiders around ${player.name}`, debugMe);
         spawnEntityAtLocation(watchFor.spider_typeId, dimension, location, Math.ceil(min / 2), min + 1, 5, 1200);
     }
 }
@@ -627,6 +635,8 @@ export function spiderPopulationCheck () {
  * @param {Entity} entity 
  */
 function entityStallCheck_lastTick (entity) {
+    const _name = 'entityStallCheck_lastTick';
+    const debugMe = dev.isDebugFunction(_name);
     if (!entity.isValid) return;
 
     const { dimension, location, nameTag } = entity;
@@ -637,7 +647,7 @@ function entityStallCheck_lastTick (entity) {
         if (!isUnloaded) {
             //report once
             entity.setDynamicProperty('isUnloaded', true);
-            alertLog.warn(`§l${nameTag}§r§c is in an unLoaded Chunk §r@ ${locationStr}`, devDebug.watchEntityEvents);
+            alertLog.warn(`§l${nameTag}§r§c is in an unLoaded Chunk §r@ ${locationStr}`, debugMe);
             //devDebug.dsb.increment('stats', 'chunkUnloaded');
         }
         return;
@@ -657,36 +667,36 @@ function entityStallCheck_lastTick (entity) {
     const alreadyStalled = DynamicPropertyLib.getBoolean(entity, 'isStalled');
 
     if (alreadyStalled) {
-        if (debugOn) {
-            devDebug.dsb.increment('stats', 'killed');
+        if (dev.debugOn) {
+            dev.dsb.increment('stats', 'killed');
             const msg = `§r§l${nameTag}§r§v is Stalled (${deltaMinutes}m) @ ${locationStr} - §l§cKilled`;
-            alertLog.warn(msg, devDebug.watchEntityStalls);
+            alertLog.warn(msg, debugMe);
         }
         entity.kill();
         return;
     }
 
     const msg = `§r§l${nameTag}§r§v is Stalled (${deltaMinutes}m) @ ${locationStr} - §cGo Check Why`;
-    alertLog.warn(msg, devDebug.watchEntityStalls);
+    alertLog.warn(msg, debugMe);
 
     system.runTimeout(() => {
         if (entity.isValid) {
-            devDebug.dsb.increment('stats', 'stalled');
+            dev.dsb.increment('stats', 'stalled');
             entity.setDynamicProperty('isStalled', true);
             entity.triggerEvent(entity.hasComponent('is_baby') ? entityScriptEvents.baby_wanderEventName : entityScriptEvents.wanderEventName);
             system.runTimeout(() => {
                 if (entity.isValid) {
                     entity.applyImpulse({ x: rndInt(-8, 8), y: rndInt(1, 8), z: rndInt(-8, 8) });
                     const msg = `§r§l${nameTag}§r§v got Impulsed to fix stall (stuck in one spot)`;
-                    alertLog.log(msg, devDebug.watchEntityStalls);
+                    alertLog.log(msg, debugMe);
                     system.runTimeout(() => {
                         if (hasMovedRegister(entity)) {
                             const msg = `§r§l${nameTag}'s§r§v stall was fixed`;
-                            alertLog.success(msg, devDebug.watchEntityStalls);
+                            alertLog.success(msg, debugMe);
                         }
                         else if (entity.isValid) {
                             const msg = `§r§l${nameTag}'s§r§v stall was not fixed`;
-                            alertLog.warn(msg, devDebug.watchEntityStalls);
+                            alertLog.warn(msg, debugMe);
                         }
                     }, 100);
                 }
@@ -766,13 +776,16 @@ function makeSpiderEggName (overrides = {}) {
  * @returns 
  */
 export function entityEventProcess (entity, id, message) {
+    const _name = 'entityEventProcess';
+    const debugMe = dev.isDebugFunction(_name);
     if (id === 'entity:validation') alertLog.log(`Entity Event Received: ${id} : ${message}`, debugFunctions);
     if (!entity || !entity.isValid) return;
 
     const { typeId } = entity;
+    const watchEntityEating = dev.isDebugEntityEvent('eating');
 
     if (id === 'entity:validation') {
-        alertLog.success(`Validated ${message}`, devDebug.watchEntitySubscriptions);
+        alertLog.success(`Validated ${message}`, debugMe);
         pack.validatedEntities.set(typeId, true);
         return;
     }
@@ -784,34 +797,34 @@ export function entityEventProcess (entity, id, message) {
     if (typeId == watchFor.spider_typeId) {
         hasMovedRegister(entity);
 
-        if (!nameTag && (watchFor.allowFakeNameTags || debugOn)) {
+        if (!nameTag && (watchFor.allowFakeNameTags || dev.debugOn)) {
             nameTag = makeSpiderName() || 'Lil Tree Spider';
             entity.nameTag = nameTag;
         }
 
         if (id === 'spider:forceHunger') {
-            alertLog.warn(`§l${nameTag}§r messageId ${id} @ ${locationStr}`, debugOn);
+            alertLog.warn(`§l${nameTag}§r messageId ${id} @ ${locationStr}`, dev.debugOn);
             if (!entity.hasTag('hungry')) {
-                alertLog.warn(`§l${nameTag}§r is being forced to eat @ ${locationStr}`, debugOn);
+                alertLog.warn(`§l${nameTag}§r is being forced to eat @ ${locationStr}`, dev.debugOn);
                 entity.addTag('hungry');
-                setHungerChance(entity, 1, debugOn);
+                setHungerChance(entity, 1, dev.debugOn);
             }
             return;
         }
     }
     else if (typeId == watchFor.egg_typeId) {
 
-        if (!nameTag && (watchFor.allowFakeNameTags || debugOn)) {
+        if (!nameTag && (watchFor.allowFakeNameTags || dev.debugOn)) {
             nameTag = makeSpiderEggName();
             if (nameTag && entity.isValid) entity.nameTag = nameTag; else return;
         }
     }
     else if (typeId === watchFor.fly_typeId) {
-        if (id === 'debugLogEvent:NewFly' && devDebug.watchEntityEvents) devDebug.dsb.increment('stats', 'newFlies');
+        if (id === 'debugLogEvent:NewFly' && dev.debugOn) dev.dsb.increment('stats', 'newFlies');
         return;
     }
     else if (typeId === watchFor.firefly_typeId) {
-        if (id === 'debugLogEvent:NewFireFly' && debugOn) devDebug.dsb.increment('stats', 'newFireflies');
+        if (id === 'debugLogEvent:NewFireFly' && dev.debugOn) dev.dsb.increment('stats', 'newFireflies');
         return;
     }
 
@@ -827,14 +840,10 @@ export function entityEventProcess (entity, id, message) {
         if (id === `mainEvent:placeWeb`) { Web.placeWeb(entity); return; }
         if (id === `mainEvent:newEgg`) { newEgg(entity); return; }
         if (id === `mainEvent:layEgg`) { DynamicPropertyLib.addNumber(entity, entityDynamicVars.eggsLaid, 1); return; }
-        if (id === `mainEvent:eatFireflies`) {
-            alertLog.log(`§l${nameTag}§r §aFound a Firefly Bush§r @ ${locationStr}`, devDebug.watchEntityEating);
-            fireFlyFood(entity);
-            return;
-        }
+        if (id === `mainEvent:eatFireflies`) { fireFlyFood(entity); return; }
 
         if (id == ('mainEvent:hungryEnd')) {
-            alertLog.warn(`§l${nameTag} §cCould not find food before daybreak§r @ ${locationStr}`, devDebug.watchEntityEating);
+            alertLog.warn(`§l${nameTag} §cCould not find food before daybreak§r @ ${locationStr}`, watchEntityEating);
             if (entity.isValid) {
                 const triggerEvent = entity.hasComponent('is_baby') ? entityScriptEvents.baby_lookForWebEventName : entityScriptEvents.lookForWebEventName;
                 entity.triggerEvent(triggerEvent);
@@ -842,17 +851,17 @@ export function entityEventProcess (entity, id, message) {
             return;
         }
 
-        alertLog.log(`§5Other (${id}:${message}) for ${nameTag}  @ ${locationStr}`, devDebug.watchEntityGoals);
+        alertLog.log(`§5Other (${id}:${message}) for ${nameTag}  @ ${locationStr}`, debugMe);
         return;
     }//mainEvent
 
     if (id.startsWith('subEvent')) {
         if (id == ('subEvent:lookForFood')) {
-            alertLog.log(`§l${nameTag} is looking for fire flies to eat @ ${locationStr}`, devDebug.watchEntityEating);
+            alertLog.log(`§l${nameTag} is looking for fire flies to eat @ ${locationStr}`, watchEntityEating);
             return;
         }
 
-        alertLog.log(`§5Other (${id}:${message}) for ${nameTag}  @ ${locationStr}`, devDebug.watchEntityGoals);
+        alertLog.log(`§5Other (${id}:${message}) for ${nameTag}  @ ${locationStr}`, debugMe);
         return;
     }//subEvent
 
@@ -865,19 +874,19 @@ export function entityEventProcess (entity, id, message) {
             if (hourOfDay <= 5 || hourOfDay >= 18)
                 if (!entity.hasTag('hungry'))
                     if (!entity.hasTag('satiated'))
-                        setHungerChance(entity, watchFor.hungryChance(), devDebug.watchEntityEating);
+                        setHungerChance(entity, watchFor.hungryChance(), watchEntityEating);
         }
-        alertLog.log(`§l${nameTag}§r is wandering around) @ ${locationStr} `, devDebug.watchEntityEvents);
+        alertLog.log(`§l${nameTag}§r is wandering around) @ ${locationStr} `, dev.isDebugEntityEvent('wander'));
         return;
     }
     //----------------------
-    if (!debugOn) return;
+    if (!dev.debugOn) return;
     if (!entity.isValid) return; // yeah they do become invalid in the middle of things and cause an error
     //----------------------    
 
     //other look for events
     if (id.startsWith('lookEvent')) {
-        alertLog.log(`§l${nameTag}§r is looking for ${message}) @ ${locationStr} `, devDebug.watchEntityEvents);
+        alertLog.log(`§l${nameTag}§r is looking for ${message}) @ ${locationStr} `, dev.isDebugEntityEvent('lookFor'));
         return;
     }
 
@@ -885,22 +894,22 @@ export function entityEventProcess (entity, id, message) {
         if (id === 'debugLogEvent:NewEntity') {
             if (message == 'born') {
                 DynamicPropertyLib.increment(entity, entityDynamicVars.entityBorn);
-                devDebug.dsb.increment('stats', 'born');
-                alertLog.log(`§bNew Baby Born§r in Biome ${dimension.getBiome(location).id}: §l${nameTag}§r§6  @ ${locationStr}`, devDebug.watchEntityEvents || devDebug.watchEntityGoals);
+                dev.dsb.increment('stats', 'born');
+                alertLog.log(`§bNew Baby Born§r in Biome ${dimension.getBiome(location).id}: §l${nameTag}§r§6  @ ${locationStr}`, debugMe || dev.isDebugEntityEvent('entityBorn'));
                 return;
             }
 
             if (message == 'spawned') {
                 DynamicPropertyLib.increment(entity, entityDynamicVars.entitySpawns);
-                devDebug.dsb.increment('stats', 'spawned');
-                alertLog.log(`§aNew Adult Spawned§r in Biome ${dimension.getBiome(location).id}: §l${nameTag}§r§6  @ ${locationStr} - scriptEventReceive ()`, devDebug.watchEntityEvents || devDebug.watchEntityGoals);
+                dev.dsb.increment('stats', 'spawned');
+                alertLog.log(`§aNew Adult Spawned§r in Biome ${dimension.getBiome(location).id}: §l${nameTag}§r§6  @ ${locationStr} - scriptEventReceive ()`, debugMe || dev.isDebugEntityEvent('entitySpawned'));
                 return;
             }
         }
 
         if (message === 'puberty') {
-            devDebug.dsb.increment('stats', 'grewUp');
-            if (devDebug.watchEntityEvents) {
+            dev.dsb.increment('stats', 'grewUp');
+            if (debugMe) {
                 alertLog.log(`§l${nameTag}§r §bGrew Up @ ${locationStr}`);
             }
             return;
@@ -909,31 +918,31 @@ export function entityEventProcess (entity, id, message) {
 
     if (id.startsWith('alertEvent')) {
         if (message == 'despawn_me') {
-            alertLog.warn(`§l${nameTag}§r is running event despawn_me @ ${locationStr}`, debugOn);
+            alertLog.warn(`§l${nameTag}§r is running event despawn_me @ ${locationStr}`, dev.debugOn);
             return;
         }
 
         if (message == 'replace_me') {
-            alertLog.warn(`§l${nameTag}§r is running event replace_me @ ${locationStr}`, debugOn);
+            alertLog.warn(`§l${nameTag}§r is running event replace_me @ ${locationStr}`, dev.debugOn);
             return;
         }
 
-        alertLog.log(`§pOther alertEvent for ${nameTag} (${message})`, devDebug.watchEntityEvents);
+        alertLog.log(`§pOther alertEvent for ${nameTag} (${message})`, debugMe);
         return;
     }
 
     if (id.startsWith('miscEvent')) {
-        alertLog.log(`(Misc Event) for §l${nameTag}§r (§6${message}) @ ${locationStr}`, devDebug.watchEntityEvents);
+        alertLog.log(`(Misc Event) for §l${nameTag}§r (§6${message}) @ ${locationStr}`, debugMe);
         return;
     }
 
     if (id.startsWith('debug:Stick')) {
-        alertLog.log(`§l${nameTag}§r says §v${message}§r @ ${locationStr}`, debugOn);
+        alertLog.log(`§l${nameTag}§r says §v${message}§r @ ${locationStr}`, dev.debugOn);
         return;
     }
 
     const note = `${nameTag} ${message} @ ${locationStr} (event)`;
-    alertLog.error(`Unhandled Entity JSON Communication:\nId: ${id}\nMessage: ${note}`, debugOn);
+    alertLog.error(`Unhandled Entity JSON Communication:\nId: ${id}\nMessage: ${note}`, dev.debugOn);
     return;
 }
 //====================================================================

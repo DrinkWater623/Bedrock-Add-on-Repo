@@ -2,7 +2,7 @@
 // @ts-check
 /* =====================================================================
 Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
-License: GPL-3.0-only
+License: M.I.T.
 URL: https://github.com/DrinkWater623
 ========================================================================
 Description:     
@@ -10,10 +10,9 @@ Description:
 ========================================================================
 Change Log:    
     20251216 - Created and chatty helped me fill it up with what I needed
+    20260113 - Removed unNeeded imports
 */
 //==============================================================================
-
-import { Block } from "@minecraft/server";
 /**
  * Return a random item from an array (or undefined if empty).
  * @template T

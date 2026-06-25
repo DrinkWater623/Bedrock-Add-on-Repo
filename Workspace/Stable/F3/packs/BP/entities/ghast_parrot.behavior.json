@@ -93,9 +93,7 @@
 			}
 		},
 		"components": {
-			"minecraft:scale": {
-				"value": 0.25
-			},
+			"minecraft:scale":{"value":0.25},
 			"minecraft:breathable": {
 				"total_supply": 15,
 				"suffocate_time": 0
