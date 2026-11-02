@@ -15,7 +15,7 @@ import {
 import { alertLog, chatLog, pack, packDisplayName } from "./settings.js";
 import { dev } from "./debug.js";
 import { getBankXp, safeGetTotalXp, showXpBankMenu } from "./helpers/xpBankForms.js";
-import { DynamicPropertyLib } from "./common-stable/tools/dynamicPropertyClass.js";
+import { DynamicPropertyLib } from "./common-stable/tools/index.js";
 //==============================================================================
 const dv = pack.dvNames;
 /** Toggle for function-entry logs. */

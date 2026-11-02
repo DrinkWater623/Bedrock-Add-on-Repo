@@ -1,0 +1,69 @@
+{
+    "potions":[
+        {"poison":false ,"level":0  ,"potion_id":1  ,"potion":"mundane"         },
+        {"poison":false ,"level":1  ,"potion_id":2  ,"potion":"mundane"         },
+
+        {"poison":false ,"level":0  ,"potion_id":3  ,"potion":"thick"           },
+
+        {"poison":false ,"level":0  ,"potion_id":4  ,"potion":"awkward"         },
+
+        {"poison":false ,"level":0  ,"potion_id":5  ,"potion":"night_vision"    },
+        {"poison":false ,"level":1  ,"potion_id":6  ,"potion":"night_vision"    },
+
+        {"poison":false ,"level":0  ,"potion_id":7  ,"potion":"invisibility"    },
+        {"poison":false ,"level":1  ,"potion_id":8  ,"potion":"invisibility"    },
+
+        {"poison":false ,"level":0  ,"potion_id":9  ,"potion":"leaping"         },
+        {"poison":false ,"level":1  ,"potion_id":10 ,"potion":"leaping"         },
+        {"poison":false ,"level":2  ,"potion_id":11 ,"potion":"leaping"         },
+
+        {"poison":false ,"level":0  ,"potion_id":12 ,"potion":"fire_resistance" },
+        {"poison":false ,"level":1  ,"potion_id":13 ,"potion":"fire_resistance" },
+
+        {"poison":false ,"level":0  ,"potion_id":14 ,"potion":"swiftness"       },
+        {"poison":false ,"level":1  ,"potion_id":15 ,"potion":"swiftness"       },
+        {"poison":false ,"level":2  ,"potion_id":16 ,"potion":"swiftness"       },
+
+        {"poison":false ,"level":0  ,"potion_id":17 ,"potion":"slowness"        },
+        {"poison":false ,"level":1  ,"potion_id":18 ,"potion":"slowness"        },
+        {"poison":false ,"level":2  ,"potion_id":42 ,"potion":"slowness"        },
+
+        {"poison":false ,"level":0  ,"potion_id":19 ,"potion":"water_breathing" },
+        {"poison":false ,"level":1  ,"potion_id":20 ,"potion":"water_breathing" },
+
+        {"poison":false ,"level":0  ,"potion_id":21 ,"potion":"healing"         },
+        {"poison":false ,"level":2  ,"potion_id":22 ,"potion":"healing"         },
+
+        {"poison":true  ,"level":0  ,"potion_id":23 ,"potion":"harming"         },
+        {"poison":true  ,"level":2  ,"potion_id":24 ,"potion":"harming"         },
+
+        {"poison":true  ,"level":0  ,"potion_id":25 ,"potion":"poison"          },
+        {"poison":true  ,"level":1  ,"potion_id":26 ,"potion":"poison"          },
+        {"poison":true  ,"level":2  ,"potion_id":27 ,"potion":"poison"          },
+
+        {"poison":false ,"level":0  ,"potion_id":28 ,"potion":"regeneration"    },
+        {"poison":false ,"level":1  ,"potion_id":29 ,"potion":"regeneration"    },
+        {"poison":false ,"level":2  ,"potion_id":30 ,"potion":"regeneration"    },
+
+        {"poison":false ,"level":0  ,"potion_id":31 ,"potion":"strength"         },
+        {"poison":false ,"level":1  ,"potion_id":32 ,"potion":"strength"         },
+        {"poison":false ,"level":2  ,"potion_id":33 ,"potion":"strength"         },
+
+        {"poison":true  ,"level":0  ,"potion_id":34 ,"potion":"weakness"         },
+        {"poison":true  ,"level":1  ,"potion_id":35 ,"potion":"weakness"         },
+
+        {"poison":true  ,"level":0  ,"potion_id":36 ,"potion":"decay"            },
+        
+        {"poison":false ,"level":0  ,"potion_id":37 ,"potion":"turtle_master"    },
+        {"poison":false ,"level":1  ,"potion_id":38 ,"potion":"turtle_master"    },
+        {"poison":false ,"level":2  ,"potion_id":39 ,"potion":"turtle_master"    },
+
+        {"poison":false ,"level":0  ,"potion_id":40 ,"potion":"slow_falling"     },
+        {"poison":false ,"level":1  ,"potion_id":41 ,"potion":"slow_falling"     },
+
+        {"poison":false ,"level":0  ,"potion_id":43 ,"potion":"wind_charging"    },
+        {"poison":false ,"level":0  ,"potion_id":44 ,"potion":"weaving"          },
+        {"poison":true  ,"level":0  ,"potion_id":45 ,"potion":"oozing"           },
+        {"poison":true  ,"level":0  ,"potion_id":46 ,"potion":"infestation"      }
+    ]
+}

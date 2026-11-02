@@ -1,7 +1,7 @@
 // settings.js  F3
 //@ts-check
 import { world } from "@minecraft/server";
-import { ConsoleAlert, ChatMsg } from "./common-stable/tools/messageLib";
+import { ConsoleAlert, ChatMsg } from "./common-stable/tools/index.js";
 //==============================================================================
 /**
  *  Owner is to edit this file as needed

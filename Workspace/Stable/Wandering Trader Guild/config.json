@@ -14,7 +14,7 @@
 		"description": "A group of wandering traders, each with their own specialty of items to sell",
 		"license":"GPL-3.0-only",
 		"url": "https://github.com/DrinkWater623",
-		"min_engine_version": [1,21,50],
+		"min_engine_version": [1,26,10],
 		"BP": {
 			"header_uuid": "5f8dfd22-2703-46ca-a088-e94186d9b0f3",
 			"module_uuid": "e69355e9-66dc-48e8-9fcd-ea9dc0c7e208"
@@ -82,7 +82,7 @@
 					{"profile":"template"},	
 					{"filter":"mani_fest",
 						"settings":{
-							"preview":true,"beta":true,"min_engine_version":[1,21,0],
+							"preview":true,"beta":true,"min_engine_version":[1,26,10],
 							"BP":{"dependencies":{"module_name":"@minecraft/server","version":"get"}}
 						}
 					}

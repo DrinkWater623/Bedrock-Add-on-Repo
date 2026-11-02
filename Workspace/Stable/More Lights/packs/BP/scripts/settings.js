@@ -1,7 +1,7 @@
 // settings.js  More Lights Minecraft Bedrock Add-on
 // @ts-check
 
-import { ChatMsg, ConsoleAlert } from "./common-stable/tools/messageLib";
+import { ChatMsg, ConsoleAlert } from "./common-stable/tools/index.js";
 
 /* =====================================================================
 Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  

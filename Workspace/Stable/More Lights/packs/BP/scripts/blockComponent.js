@@ -14,7 +14,7 @@ import { BlockComponentPlayerPlaceBeforeEvent } from "@minecraft/server";
 import { watchFor } from "./settings.js";
 import { dev, emitters } from "./debug.js";
 import { Block_Events } from "./common-stable/gameObjects/index.js";
-import { defaultSoundId } from "./common-data/globalConstantsLib.js";
+import { defaultSoundId } from "./common-data/index.js";
 //==============================================================================
 /**
  * @typedef {'north' | 'south' | 'east' | 'west'} BlockSides  

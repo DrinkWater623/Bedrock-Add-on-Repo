@@ -15,7 +15,7 @@
 		"license":"GPL-3.0-only",
 		"url": "https://github.com/DrinkWater623",
 		"version": [1,0,1],													
-		"min_engine_version": [1,21,50],							
+		"min_engine_version": [1,26,10],							
 		"BP":{
 			"header_uuid": "60156da2-e8e1-4ac8-8d66-18690ad45da2",
 			"module_uuid": "0b044400-7d7f-4192-9f4b-d8d2256bfef8",

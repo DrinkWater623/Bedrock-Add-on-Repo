@@ -11,7 +11,7 @@ TODO:
 Change Log:
     20260104 - Created
 ========================================================================*/
-import { Blocks, BlockTypeIds } from "../common-stable/gameObjects/index.js";
+import { BlockTypeIds } from "../common-data/index.js";
 // ========================================================================
 /**
  * Element-specific block groups (cached + registry-safe).

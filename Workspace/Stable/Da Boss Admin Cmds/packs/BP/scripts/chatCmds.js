@@ -6,7 +6,7 @@ import { system, Player, world, TimeOfDay } from "@minecraft/server";
 import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus, CustomCommandParamType, CustomCommandOrigin } from "@minecraft/server";
 // Shared
 import { Players } from "./common-stable/gameObjects/index.js";
-import { Vector3Lib } from "./common-stable/tools/vectorClass.js";
+import { Vector3Lib,getWorldTime } from "./common-stable/tools/index.js";
 // Local
 import { alertLog, pack, packDisplayName } from './settings.js';
 //==============================================================================
@@ -15,11 +15,11 @@ const debugFunctions = false;
 const SUCCESS = { status: CustomCommandStatus.Success };
 const FAILURE = { status: CustomCommandStatus.Failure };
 //==============================================================================
-function getWorldTime () {
-    const daytime = world.getTimeOfDay() + 6000;
-    const datetime = new Date(daytime * 3.6 * 1000);
-    return { hours: datetime.getHours(), minutes: datetime.getMinutes() };
-}
+// function getWorldTime () {
+//     const daytime = world.getTimeOfDay() + 6000;
+//     const datetime = new Date(daytime * 3.6 * 1000);
+//     return { hours: datetime.getHours(), minutes: datetime.getMinutes() };
+// }
 //==============================================================================
 /**
  * @param {CustomCommandRegistry} registry 

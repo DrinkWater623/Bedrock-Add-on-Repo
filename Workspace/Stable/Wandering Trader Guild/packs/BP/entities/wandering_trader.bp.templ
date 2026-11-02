@@ -142,9 +142,35 @@
         }
       },
       "components": {
-        "minecraft:economy_trade_table": {
-          "display_name": "Wandering Trader Leader"
-        },
+        "$minecraft:pushable":null,
+        "minecraft:pushable_by_entity": {},
+        "minecraft:pushable_by_block": {},
+        "minecraft:economy_trade_table": {"display_name": "Wandering Trader Leader"},
+        "$minecraft:damage_sensor":  {
+        "triggers": [
+          {
+            "cause": "entity_attack",
+            "deals_damage": "no",
+            "on_damage": {
+              "event": "minecraft:become_scared"
+            }
+          },
+          {
+            "cause": "projectile",
+            "deals_damage": "no",
+            "on_damage": {
+              "event": "minecraft:become_scared"
+            }
+          },
+          {
+            "cause": "magic",
+            "deals_damage": "yes",
+            "on_damage": {
+              "event": "minecraft:become_scared"
+            }
+          }
+        ]
+      },
         "$minecraft:despawn": {
           "remove_child_entities": false,
           "filters": {

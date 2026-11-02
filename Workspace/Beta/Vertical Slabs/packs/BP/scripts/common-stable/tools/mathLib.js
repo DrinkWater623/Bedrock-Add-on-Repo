@@ -74,7 +74,7 @@ export function bitArrayAdd (numberArray, numberToAdd = 0, base = 10, minReturnL
     return numberArray;
 }
 //==============================================================================
-export function getWorldTime () {
+export function getWorldTime_voidMovedToTimers () {
     const daytime = world.getTimeOfDay() + 6000;
     const datetime = new Date(daytime * 3.6 * 1000);
     return { hours: datetime.getHours(), minutes: datetime.getMinutes() };

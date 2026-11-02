@@ -14,7 +14,7 @@ import { BlockComponentPlayerPlaceBeforeEvent } from "@minecraft/server";
 import { DynamicPropertyLib } from "../tools/dynamicPropertyClass.js";
 import { Vector3Lib } from "../tools/vectorClass.js";
 import { FaceLocationGrid } from "./blockFace.js";
-import { Blocks } from "./blockLib.js";
+import { Blocks, Permutations } from "./blockLib.js";
 //=============================================================================
 /** @typedef {boolean | number | string} BlockStateValueType */
 //=============================================================================
@@ -153,8 +153,9 @@ export class Block_Events {
         const { soundId = 'hit.stone', debugOn = false } = opts;
         let { debugMsg = '' } = opts;
 
-        //@ts-ignore
-        let newPermutation = permutation.withState(blockStateName, newBlockState);
+        const newPermutation = Permutations.withState(permutation, blockStateName, newBlockState);
+        if (!newPermutation) return;
+
         system.run(() => {
             debugMsg += `\n§aSetting block state = ${blockStateName} to ${newBlockState}`;
             block.dimension.setBlockPermutation(block.location, newPermutation);
@@ -301,8 +302,7 @@ export class Block_Events {
             return false;
         }
 
-        //@ts-ignore
-        const currentBlockStateValue = event.permutationToPlace.getState(blockStateName);
+        const currentBlockStateValue = Permutations.getState(event.permutationToPlace, blockStateName);
         if (!currentBlockStateValue) return false;
 
         const newBlockState = grid.getEdgeName(3);
@@ -378,8 +378,7 @@ export class Block_Events {
         //const grid3 = grid.grid(3);
 
         const newBlockState = this.bar_gridPositionPtr_get(grid);
-        //@ts-ignore
-        const currentBlockStateValue = event.permutationToPlace.getState(blockStateName);
+        const currentBlockStateValue = Permutations.getState(event.permutationToPlace, blockStateName);
         if (!currentBlockStateValue) return false;
 
         //if no rotation needed
@@ -391,7 +390,7 @@ export class Block_Events {
 
         this.newBlockPermutation_setBlock(newBlock, old_permutation, blockStateName, newBlockState, { soundId, debugOn, debugMsg });
         return true;
-    }    
+    }
     /**
     * a Mini Block is a 1/27th piece of a block.  all 9 geo positions must be used in your block file
     * Changes cardinal rotation when player touches left/right edge center of block so that above rotation works in block file
@@ -402,7 +401,7 @@ export class Block_Events {
     * @param {{soundId?:string,debugOn?:boolean}} [opts={}] 
     * @returns {boolean}
     */
-    onPlace_block_rotation_mini_square (event, rows,blockStateName, opts = {}) {
+    onPlace_block_rotation_mini_square (event, rows, blockStateName, opts = {}) {
         const player = event.player;
         if (!player || !player.isValid) return false;
         if (!event.block.isValid) return false;
@@ -433,12 +432,11 @@ export class Block_Events {
         const grid = new FaceLocationGrid(touchedBlockFaceLocation, touchedBlockFace, touchedBlockLocation, false);
 
         //where it is different - starts here
-        if (debugOn) { debugMsg += grid.blockFaceLocationInfo_show([ rows-1, rows, rows+1 ], true) ?? ''; }
+        if (debugOn) { debugMsg += grid.blockFaceLocationInfo_show([ rows - 1, rows, rows + 1 ], true) ?? ''; }
         const gridN = grid.grid(rows);
 
         const newBlockState = gridN.x + (rows * gridN.y);
-        //@ts-ignore
-        const currentBlockStateValue = event.permutationToPlace.getState(blockStateName);
+        const currentBlockStateValue = Permutations.getState(old_permutation, blockStateName);
         if (!currentBlockStateValue) return false;
 
         //if no rotation needed

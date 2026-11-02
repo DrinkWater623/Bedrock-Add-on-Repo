@@ -1,19 +1,22 @@
 // main.js Wandering Trader Guild
 // @ts-check
 /**
- * This is called only if beta is not used, 
+ * Change Log:
+ *  20251203 - Created
+ *  20260804 - Update for 1.26.10
+ * 
  */
 //==============================================================================
 // Local
+import { dev } from "./debug.js";
 import { alertLog, pack } from './settings.js';
 import { subscriptionsStable } from './subscribes.js';
-import { devDebug } from "./helpers/fn-debug.js";
 //==============================================================================
-devDebug.anyOn();
-const msg = `Add-on - §bStable ${devDebug.debugOn ? '§4(debug mode)' : ''}`;
-alertLog.log(`§6Installing ${msg}`, devDebug.debugOn);
+dev.anyOn();
+const msg = `Add-on - §bStable ${dev.debugOn ? '§4(debug mode)' : ''}`;
+dev._controlLog(`§6Installing ${msg}`, pack.debugOn);
 subscriptionsStable();
-alertLog.success(`Installed ${msg}`, pack.isLoadAlertOn);
+alertLog.success(`Installed ${msg}`, pack.isLoadAlertsOn && !pack.debugOn);
 //==============================================================================
 // End of File
 //==============================================================================

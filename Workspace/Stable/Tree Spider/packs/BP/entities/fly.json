@@ -1,5 +1,5 @@
 {
-  "format_version": "1.21.50",
+  "format_version": "1.26.10",
   "minecraft:entity": {
     "description": {
       "identifier": "dw623:fly",
@@ -12,7 +12,7 @@
           "client_sync": true,
           "default": false
         }
-      }      
+      }
     },
     //FIXME: needs a life cycle added.... 
     // ?? check out mingle, see if it can have them hang out together
@@ -39,51 +39,84 @@
                       minecraft:behavior.move_around_target
                       minecraft:follow_range
     */
-    "component_groups": { 
+    "component_groups": {
       //TODO: find player to annoy, find zombie to buzz around... 
       //TODO: see if can make buzzing sound and buzzing around animation
       //maybe have it look for a web to get caught in... and if it finds one, a spider spawns to eat it and leave orbs
       "cg:temp_validation": {
-          "minecraft:type_family": {"family":["fly","dw623","dw623_validation"]}, 
-          "minecraft:scale": {"value":0.2},
-          "minecraft:physics":{"has_collision":false,"has_gravity":false},
-          //"minecraft:timer": {"looping":false,"time":5.0,"time_down_event":{"event":"despawn_me"}},
-          "minecraft:breathable": {
-              "breathes_air": true,                    
-              "breathes_lava": true,
-              "breathes_solids": true,
-              "breathes_water": true,
-              "generates_bubbles": false
-          },
-          "minecraft:behavior.avoid_mob_type": {
-              "priority": 1,                        
-              "avoid_target_xz":16,
-              "max_dist": 8,
-              "max_flee": 8,
-              "walk_speed_multiplier": 5,
-              "sprint_speed_multiplier": 5,
-              "sprint_distance":8,
-              "entity_types": [                            
+        "minecraft:type_family": {
+          "family": [
+            "fly",
+            "dw623",
+            "dw623_validation"
+          ]
+        },
+        "minecraft:scale": {
+          "value": 0.2
+        },
+        "minecraft:physics": {
+          "has_collision": false,
+          "has_gravity": false
+        },
+        //"minecraft:timer": {"looping":false,"time":5.0,"time_down_event":{"event":"despawn_me"}},
+        "minecraft:breathable": {
+          "breathes_air": true,
+          "breathes_lava": true,
+          "breathes_solids": true,
+          "breathes_water": true,
+          "generates_bubbles": false
+        },
+        "minecraft:behavior.avoid_mob_type": {
+          "priority": 1,
+          "avoid_target_xz": 16,
+          "max_dist": 8,
+          "max_flee": 8,
+          "walk_speed_multiplier": 5,
+          "sprint_speed_multiplier": 5,
+          "sprint_distance": 8,
+          "entity_types": [
+            {
+              "filters": {
+                "any_of": [
                   {
-                      "filters": {
-                          "any_of":[
-                              {"test":"is_family","subject":"other","value":"mob"},
-                              {"test":"is_family","subject":"other","value":"animal"},
-                              {"test":"is_family","subject":"other","value":"monster"},
-                              {"test":"is_family","subject":"other","value":"player"}
-                          ]
-                      }
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "mob"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "animal"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "monster"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "player"
                   }
-              ]
-          }                     
+                ]
+              }
+            }
+          ]
+        }
       },
-      "instant_despawn":{"minecraft:instant_despawn":{}},    
+      "instant_despawn": {
+        "minecraft:instant_despawn": {}
+      },
       "if_weather_raining_cg": {
         "minecraft:environment_sensor": {
           "triggers": [
             {
               "event": "seek_shelter_event",
-              "filters": {"test":"weather","operator":"==","value":"precipitation"}
+              "filters": {
+                "test": "weather",
+                "operator": "==",
+                "value": "precipitation"
+              }
             }
           ]
         },
@@ -98,7 +131,11 @@
           "triggers": [
             {
               "event": "abort_sheltering",
-              "filters": {"test":"weather","operator":"==","value":"clear"}
+              "filters": {
+                "test": "weather",
+                "operator": "==",
+                "value": "clear"
+              }
             }
           ]
         },
@@ -107,7 +144,7 @@
           "speed_multiplier": 0.25,
           "cooldown_time": 0
         }
-      },      
+      },
       "default_sound": {
         "minecraft:ambient_sound_interval": {
           "event_name": "ambient",
@@ -117,49 +154,73 @@
       },
       "duplicate_me": {
         "minecraft:spawn_entity": {
-          "entities": [{
-            "min_wait_time": 0,
-            "max_wait_time": 1,
-            "spawn_entity": "dw623:fly",
-            "single_use": true,
-            "num_to_spawn": 1,
-            "spawn_event": "minecraft:entity_spawned"
-          }]
+          "entities": [
+            {
+              "min_wait_time": 0,
+              "max_wait_time": 1,
+              "spawn_entity": "dw623:fly",
+              "single_use": true,
+              "num_to_spawn": 1,
+              "spawn_event": "minecraft:entity_spawned"
+            }
+          ]
         }
       },
       "duplicate_me_2": {
         "minecraft:spawn_entity": {
-          "entities": [{
-            "min_wait_time": 0,
-            "max_wait_time": 1,
-            "spawn_entity": "dw623:fly",
-            "single_use": true,
-            "num_to_spawn": 2,
-            "spawn_event": "minecraft:entity_spawned"
-          }]
+          "entities": [
+            {
+              "min_wait_time": 0,
+              "max_wait_time": 1,
+              "spawn_entity": "dw623:fly",
+              "single_use": true,
+              "num_to_spawn": 2,
+              "spawn_event": "minecraft:entity_spawned"
+            }
+          ]
         }
       },
-      "cg:standard_fly":{
-        "minecraft:scale": {"value":0.20},
-        "minecraft:collision_box": {"width":0.55,"height":0.5},
+      "cg:standard_fly": {
+        "minecraft:scale": {
+          "value": 0.20
+        },
+        "minecraft:collision_box": {
+          "width": 0.55,
+          "height": 0.5
+        },
         "minecraft:conditional_bandwidth_optimization": {},
         "minecraft:is_hidden_when_invisible": {},
         "minecraft:physics": {},
-        "minecraft:pushable": {"is_pushable":true,"is_pushable_by_piston":true},
-        "minecraft:breathable": {        
-          "total_supply":5,"suffocate_time":-1,
+        "minecraft:pushable_by_entity": {},
+        "minecraft:pushable_by_block": {},
+        "minecraft:breathable": {
+          "total_supply": 5,
+          "suffocate_time": -1,
           "breathe_blocks": [
             "minecraft:composter",
-            "minecraft:acacia_leaves","minecraft:birch_leaves","minecraft:cherry_leaves","minecraft:jungle_leaves",
-            "minecraft:dark_oak_leaves","minecraft:mangrove_leaves","minecraft:oak_leaves","minecraft:pale_oak_leaves","minecraft:spruce_leaves",
-            "minecraft:azalea","minecraft:azalea_leaves","minecraft:azalea_leaves_flowered",
+            "minecraft:acacia_leaves",
+            "minecraft:birch_leaves",
+            "minecraft:cherry_leaves",
+            "minecraft:jungle_leaves",
+            "minecraft:dark_oak_leaves",
+            "minecraft:mangrove_leaves",
+            "minecraft:oak_leaves",
+            "minecraft:pale_oak_leaves",
+            "minecraft:spruce_leaves",
+            "minecraft:azalea",
+            "minecraft:azalea_leaves",
+            "minecraft:azalea_leaves_flowered",
             "minecraft:web"
             // ?? TODO: add nature
           ]
-        },  
+        },
         //movement
-        "minecraft:game_event_movement_tracking": {"emit_flap":true},      
-        "minecraft:behavior.float": {"priority":19},
+        "minecraft:game_event_movement_tracking": {
+          "emit_flap": true
+        },
+        "minecraft:behavior.float": {
+          "priority": 19
+        },
         "minecraft:behavior.random_fly": {
           "priority": 10,
           "xz_dist": 5,
@@ -175,11 +236,18 @@
           "y_dist": 1,
           "y_offset": -1,
           "interval": 1,
-          "hover_height": [ 0.25, 1 ]
+          "hover_height": [
+            0.25,
+            1
+          ]
         },
         "minecraft:can_fly": {},
-        "minecraft:flying_speed": {"value":0.20}, //TODO: maybe have fly faster if attacked
-        "minecraft:movement": {"value":0.4},
+        "minecraft:flying_speed": {
+          "value": 0.20
+        }, //TODO: maybe have fly faster if attacked
+        "minecraft:movement": {
+          "value": 0.4
+        },
         "minecraft:movement.hover": {},
         "minecraft:jump.static": {},
         "minecraft:navigation.hover": {
@@ -204,8 +272,17 @@
           "goal_radius": 1.0,
           //"stay_duration": 20.0, 
           "target_selection_method": "random",
-          "target_offset": [ 0, 0.25, 0 ],
-          "target_block_filters": {"test":"is_waterlogged","subject":"block","operator":"==","value":false},          
+          "target_offset": [
+            0,
+            0.25,
+            0
+          ],
+          "target_block_filters": {
+            "test": "is_waterlogged",
+            "subject": "block",
+            "operator": "==",
+            "value": false
+          },
           "target_blocks": [
             "minecraft:web",
             //fruit or food
@@ -220,7 +297,7 @@
             "minecraft:sweet_berry_bush"
           ] //,"on_stay_completed": [{"event":"spawn_friend","target":"self"}]
         },
-        "minecraft:behavior.snacking":{
+        "minecraft:behavior.snacking": {
           "priority": 10,
           "items": [
             "dw623:rotten_flesh_kabob",
@@ -237,43 +314,76 @@
             "minecraft:rotten_flesh",
             "minecraft:spider_eye",
             "minecraft:suspicious_stew",
-            "minecraft:sweet_berries"          
+            "minecraft:sweet_berries"
           ],
           "snacking_cooldown": 20,
           "snacking_stop_chance": 0.25
-        },            
+        },
         // with others  
         "minecraft:behavior.avoid_mob_type": {
           "priority": 4,
-          "avoid_target_xz":3,
+          "avoid_target_xz": 3,
           "max_dist": 2,
           "max_flee": 4,
-          "sprint_distance":2,
-          "entity_types": [                            
+          "sprint_distance": 2,
+          "entity_types": [
             {
               "filters": {
-                "any_of":[
-                  {"test":"is_family","subject":"other","value":"bee"},
-                  {"test":"is_family","subject":"other","value":"cat"},
-                  {"test":"is_family","subject":"other","value":"chicken"},
-                  {"test":"is_family","subject":"other","value":"frog"},
-                  {"test":"is_family","subject":"other","value":"parrot"}
+                "any_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bee"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "cat"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "chicken"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "frog"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "parrot"
+                  }
                 ]
               }
             }
           ]
-        } ,    
-        "minecraft:attack": {"damage": 0.01},
-        "minecraft:behavior.panic": {"priority":2,"speed_multiplier":0.5},
+        },
+        "minecraft:attack": {
+          "damage": 0.01
+        },
+        "minecraft:behavior.panic": {
+          "priority": 2,
+          "speed_multiplier": 0.5
+        },
         "minecraft:behavior.nearest_attackable_target": {
           "priority": 15,
           "entity_types": [
             {
               "filters": {
-                "any_of":[                
-                  {"test":"is_family","subject":"other","value":"zombie"},
-                  {"test":"is_family","subject":"other","value":"minecraft:zombie_villager"}
-                ]              
+                "any_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "zombie"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "minecraft:zombie_villager"
+                  }
+                ]
               },
               "max_dist": 16
             }
@@ -288,32 +398,107 @@
           "preferred_actor_type": "zombie",
           "filters": {
             "any_of": [
-              {"test":"is_family","subject":"other","value":"tree_spider"},
-              {"test":"is_family","subject":"other","value":"camel"},
-              {"test":"is_family","subject":"other","value":"cow"},
-              {"test":"is_family","subject":"other","value":"donkey"},
-              {"test":"is_family","subject":"other","value":"goat"},
-              {"test":"is_family","subject":"other","value":"horse"},
-              {"test":"is_family","subject":"other","value":"llama"},
-              {"test":"is_family","subject":"other","value":"mule"},
-              {"test":"is_family","subject":"other","value":"panda"},
-              {"test":"is_family","subject":"other","value":"pig"},
-              {"test":"is_family","subject":"other","value":"polar_bear"},
-              {"test":"is_family","subject":"other","value":"zombie"},
-              {"test":"is_family","subject":"other","value":"zombie_villager"}
+              {
+                "test": "is_family",
+                "subject": "other",
+                "value": "tree_spider"
+              },
+              {
+                "test": "is_family",
+                "subject": "other",
+                "value": "camel"
+              },
+              {
+                "test": "is_family",
+                "subject": "other",
+                "value": "cow"
+              },
+              {
+                "test": "is_family",
+                "subject": "other",
+                "value": "donkey"
+              },
+              {
+                "test": "is_family",
+                "subject": "other",
+                "value": "goat"
+              },
+              {
+                "test": "is_family",
+                "subject": "other",
+                "value": "horse"
+              },
+              {
+                "test": "is_family",
+                "subject": "other",
+                "value": "llama"
+              },
+              {
+                "test": "is_family",
+                "subject": "other",
+                "value": "mule"
+              },
+              {
+                "test": "is_family",
+                "subject": "other",
+                "value": "panda"
+              },
+              {
+                "test": "is_family",
+                "subject": "other",
+                "value": "pig"
+              },
+              {
+                "test": "is_family",
+                "subject": "other",
+                "value": "polar_bear"
+              },
+              {
+                "test": "is_family",
+                "subject": "other",
+                "value": "zombie"
+              },
+              {
+                "test": "is_family",
+                "subject": "other",
+                "value": "zombie_villager"
+              }
             ]
           }
         },
         "minecraft:damage_sensor": {
           "triggers": [
-            {"cause":"fall","deals_damage":"no"},
-            {"on_damage":{"filters":{"test":"is_block","subject":"block","value":"minecraft:sweet_berry_bush"}},"deals_damage":"no"}
+            {
+              "cause": "fall",
+              "deals_damage": "no"
+            },
+            {
+              "on_damage": {
+                "filters": {
+                  "test": "is_block",
+                  "subject": "block",
+                  "value": "minecraft:sweet_berry_bush"
+                }
+              },
+              "deals_damage": "no"
+            }
           ]
         },
         "minecraft:hurt_on_condition": {
-          "damage_conditions": [{"filters":{"test":"in_lava","subject":"self"},"cause":"lava","damage_per_tick":4}]
+          "damage_conditions": [
+            {
+              "filters": {
+                "test": "in_lava",
+                "subject": "self"
+              },
+              "cause": "lava",
+              "damage_per_tick": 4
+            }
+          ]
         },
-        "minecraft:experience_reward": {"on_death":"1"},
+        "minecraft:experience_reward": {
+          "on_death": "1"
+        },
         //FIXME:  how to flock
         "minecraft:flocking": {
           "in_water": false,
@@ -334,7 +519,7 @@
           "max_height": 5,
           "block_distance": 2,
           "block_weight": 0.85
-        }, 
+        },
         //TODO:  why not .temp_float ?????
         "minecraft:behavior.tempt": {
           "priority": 5,
@@ -355,7 +540,7 @@
             "minecraft:rotten_flesh",
             "minecraft:spider_eye",
             "minecraft:suspicious_stew",
-            "minecraft:sweet_berries"          
+            "minecraft:sweet_berries"
           ]
         },
         "minecraft:interact": {
@@ -365,8 +550,17 @@
               "on_interact": {
                 "filters": {
                   "all_of": [
-                    { "test": "is_family", "subject" : "other", "value" :  "player"},
-                    { "test": "has_equipment", "domain": "hand", "subject": "other", "value": "minecraft:honey_bottle" }
+                    {
+                      "test": "is_family",
+                      "subject": "other",
+                      "value": "player"
+                    },
+                    {
+                      "test": "has_equipment",
+                      "domain": "hand",
+                      "subject": "other",
+                      "value": "minecraft:honey_bottle"
+                    }
                   ]
                 },
                 "event": "caught_me_in_a_bottle"
@@ -378,12 +572,21 @@
         "minecraft:despawn": {
           "despawn_from_chance": false,
           "despawn_from_inactivity": false,
-          "despawn_from_distance": {"max_distance":64,"min_distance":48},
+          "despawn_from_distance": {
+            "max_distance": 64,
+            "min_distance": 48
+          },
           "despawn_from_simulation_edge": true,
-          "filters": {"test":"distance_to_nearest_player","operator":">","value":64}
-        }, 
+          "filters": {
+            "test": "distance_to_nearest_player",
+            "operator": ">",
+            "value": 64
+          }
+        },
         //-------------------------------------
-        "minecraft:loot": {"table":"loot_tables/entities/fly.json"}
+        "minecraft:loot": {
+          "table": "loot_tables/entities/fly.json"
+        }
       }
     },
     //TODO:  Later
@@ -392,40 +595,103 @@
     // then when looking for shelter/home can find block, then go inside and STAY for a bit or while need to shelter
     "components": {
       //stats
-      "minecraft:type_family": {"family":["fly","dw623","pest"]},      
-      "minecraft:health": {"value":20,"max":20},
-      "minecraft:mark_variant": {"value":1}, // == no stinger in bee entity file.. can fix later      
-      "minecraft:balloonable": {"mass":0.5}
+      "minecraft:type_family": {
+        "family": [
+          "fly",
+          "dw623",
+          "pest"
+        ]
+      },
+      "minecraft:health": {
+        "value": 20,
+        "max": 20
+      },
+      "minecraft:mark_variant": {
+        "value": 1
+      }, // == no stinger in bee entity file.. can fix later      
+      "minecraft:balloonable": {
+        "mass": 0.5
+      }
     },
     "events": {
-      "dw623:entity_validation":{
-          "sequence":[            
-              {"queue_command": {"command":["scriptevent entity:validation fly"]}},
-              {"add":{"component_groups":["cg:temp_validation"]}}                        
-          ]
+      "dw623:entity_validation": {
+        "sequence": [
+          {
+            "queue_command": {
+              "command": [
+                "scriptevent entity:validation fly"
+              ]
+            }
+          },
+          {
+            "add": {
+              "component_groups": [
+                "cg:temp_validation"
+              ]
+            }
+          }
+        ]
       },
       "minecraft:entity_spawned": {
-        "sequence":[            
-          {"queue_command": {"command":["scriptevent debugLogEvent:NewFly spawned"]}},
-          {"add":{"component_groups":["cg:standard_fly","if_weather_raining_cg"]}}
+        "sequence": [
+          {
+            "queue_command": {
+              "command": [
+                "scriptevent debugLogEvent:NewFly spawned"
+              ]
+            }
+          },
+          {
+            "add": {
+              "component_groups": [
+                "cg:standard_fly",
+                "if_weather_raining_cg"
+              ]
+            }
+          }
         ]
-      },                                  
+      },
       //=====================
       "seek_shelter_event": {
-        "remove": {"component_groups":["if_weather_raining_cg"]},
-        "add": {"component_groups":["default_sound","if_weather_clear_cg"]}
+        "remove": {
+          "component_groups": [
+            "if_weather_raining_cg"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "default_sound",
+            "if_weather_clear_cg"
+          ]
+        }
       },
       "abort_sheltering": {
-        "remove": {"component_groups":["if_weather_clear_cg"]},
-        "add": {"component_groups":["if_weather_raining_cg"]}
+        "remove": {
+          "component_groups": [
+            "if_weather_clear_cg"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "if_weather_raining_cg"
+          ]
+        }
       },
       //=====================
       //call from scripts when life-cycle is over 
-      "perish_event": {"add":{"component_groups":["instant_despawn"]}},
+      "perish_event": {
+        "add": {
+          "component_groups": [
+            "instant_despawn"
+          ]
+        }
+      },
       //TODO:
       "caught_me_in_a_bottle": {
         // needs to disappear, up to 5 around it and give player a bottle of flies
-        "add": {"component_groups":[]}
+        "add": {
+          "component_groups": []
+        }
       }
     }
   }

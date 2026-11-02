@@ -339,7 +339,6 @@ function validateEntityFiles (debugMe = false) {
     watchFor.packEntityList().forEach(typeId => {
         pack.validatedEntities.set(typeId, false);
 
-        //@ts-expect-error
         const entity = dimension.spawnEntity(typeId, location, { initialPersistence: true, spawnEvent: entityScriptEvents.entity_validatedEventName });
         if (entity) {
             alertLog.success(`Entity spawn validated for typeId: ${typeId} - isValid: ${entity.isValid}`, debugMe);

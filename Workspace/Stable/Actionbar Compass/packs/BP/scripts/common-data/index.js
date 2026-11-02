@@ -1,9 +1,8 @@
 // AUTO-GENERATED — do not edit by hand
 // Folder: ../../Bedrock Add-on Repo/Workspace/Stable/Actionbar Compass/packs/BP/scripts/common-data
-// Generated: 2026-06-25 03:05:33Z
+// Generated: 2026-11-01 06:14:53Z
 // @ts-check
 
-export { blocksDotJson } from "./blocks.json copy.js";
 export { blocksDotJson } from "./blocks.json.js";
 export { BlockTypeIds } from "./BlockTypeIds.js";
 export { brightChatColors, chatColorCode, chatColors, colors, darkChatColors, leavingVerbs, mcNameSpace, PLAYER_TYPE_ID, Ticks } from "./globalConstantsLib.js";

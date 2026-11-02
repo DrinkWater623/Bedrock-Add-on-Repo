@@ -11,10 +11,9 @@ Change Log
 ========================================================================*/
 import { system ,world,Dimension} from '@minecraft/server';
 // Shared
-import {  rndInt } from "./mathLib.js";
-//local 
-
-import { alertLog } from "../../settings.js";  //every add-on of mine, has a settings file
+import { chance, rndInt } from "./mathLib.js";
+//local - all my packs have a settings file
+import { alertLog } from "../../settings.js"; 
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 //===================================================================
@@ -25,6 +24,9 @@ import { alertLog } from "../../settings.js";  //every add-on of mine, has a set
  * @param {number} tickDelay
  * @param {Vector3 | undefined} [locationPreCheck=null] 
  * 
+ * Requires world-ready execution.
+ * Do not call during module initialization or system.beforeEvents.startup.
+ * A delay postpones the command, not the initial dimension lookup.
  */
 export function worldRun (command, dimension = 'overworld', tickDelay = 0, locationPreCheck = undefined) {
 
@@ -55,6 +57,9 @@ export function worldRun (command, dimension = 'overworld', tickDelay = 0, locat
  * @param {number} tickInterval
  * @returns 
  * 
+ * Requires world-ready execution.
+ * Do not call during module initialization or system.beforeEvents.startup.
+ * A delay postpones the command, not the initial dimension lookup.
  */
 export function worldRunInterval (command, dimension = 'overworld', tickInterval = 1) {
 

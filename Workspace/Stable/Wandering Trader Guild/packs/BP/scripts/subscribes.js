@@ -8,14 +8,15 @@ URL: https://github.com/DrinkWater623
 Change Log: 
     20251203 - Created
     20251204 - Adding script events to provide names
+    20260804 - Update for 1.26.10
 ========================================================================*/
 import { world, system } from "@minecraft/server";
 //Shared
-import { SystemSubscriptions } from "./common-stable/subscriptions/systemSubs-stable.js";
+import { SystemSubscriptions } from "./common-stable/subscriptions/index.js";
 //Local
 import { alertLog, chatLog, pack, packDisplayName, watchFor } from './settings.js';
+import { dev } from "./debug.js";
 import { registerCustomCommands } from "./chatCmds.js";
-import { devDebug } from "./helpers/fn-debug.js";
 import { entityEventProcess } from "./helpers/fn-entities.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
@@ -23,9 +24,9 @@ import { entityEventProcess } from "./helpers/fn-entities.js";
 /** @typedef {Parameters<typeof system.afterEvents.scriptEventReceive.subscribe>[0]} AfterScriptEventReceiveHandler */
 /** @typedef {Parameters<typeof system.beforeEvents.startup.subscribe>[0]} BeforeStartupHandler */
 //==============================================================================
-const debugOn = false || devDebug.debugOn;
-const debugFunctionsOn = false || devDebug.debugFunctionsOn;
-const debugSubscriptionsOn = devDebug.debugSubscriptionsOn;
+const debugOn = false || dev.debugOn;
+const debugFunctionsOn = false;
+const debugSubscriptionsOn = false;
 //==============================================================================
 /** @type {AfterScriptEventReceiveHandler} */
 const onAfterScriptEventReceive = (event) => {

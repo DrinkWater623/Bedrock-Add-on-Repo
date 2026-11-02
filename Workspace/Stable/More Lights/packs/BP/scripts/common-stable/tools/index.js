@@ -1,10 +1,10 @@
 // AUTO-GENERATED — do not edit by hand
 // Folder: ../../Bedrock Add-on Repo/Workspace/Stable/More Lights/packs/BP/scripts/common-stable/tools
-// Generated: 2026-06-25 03:05:34Z
+// Generated: 2026-11-01 06:14:53Z
 // @ts-check
 
 export { DynamicPropertyLib } from "./dynamicPropertyClass.js";
-export { bitArrayAdd, chance, clamp, getWorldTime, rnd, rndFloat, rndInt, round } from "./mathLib.js";
+export { bitArrayAdd, chance, clamp, getWorldTime_voidMovedToTimers, rnd, rndFloat, rndInt, round } from "./mathLib.js";
 export { ChatMsg, ConsoleAlert } from "./messageLib.js";
 export { addNameSpace, addNameSpaceInPlace, booleanKeyExist, cloneMixedBooleanAfterBeforeFlagMap, dedupeArrayInPlace, emitArray, emitObjectInnards, isBeforeAfterBooleanObject, listArray, listObjectInnards, objectEntries_any_booleans_opts, objectEntries_any_true, objectEntries_set_booleans, objectEntries_set_booleans_opts, objectEntries_toggle_booleans, objectEntries_toggle_booleans_opts, objectKeysWhereBoolean, objectKeysWhereBooleanOpts, randomArrayItem, randomArrayItemExcept, randomArrayString, randomArrayStringExcept, readBooleanKey } from "./objects.js";
 export { AngleMath, CardinalDirections, Compass, DirectionInfo, DirectionNames, IntermediateDirections, rotationToCardinalDirection, toDirection } from "./rotationLib.js";

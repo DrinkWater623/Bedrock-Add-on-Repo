@@ -75,10 +75,13 @@ export class Entities {
      * @param {number} [tickDelay=0] 
      */
     static eventTrigger (entity, trigger, tickDelay = 0) {
-        if (entity.isValid)
-            system.runTimeout(() => {
-                system.run(() => { entity.triggerEvent(trigger); });
-            }, tickDelay);
+        if (!entity.isValid) return;
+
+        system.runTimeout(() => {
+            if (entity.isValid) {
+                entity.triggerEvent(trigger);
+            }
+        }, tickDelay);
     }
     //==============================================================================
     /**
@@ -254,7 +257,10 @@ export class Entities {
      */
     static centerAlign (entity, tickDelay = 0) {
         if (!entity.isValid) return;
+
         system.runTimeout(() => {
+            if (!entity.isValid) return;
+
             const locationCenter = entity.dimension.getBlock(entity.location)?.center();
             if (locationCenter) entity.teleport(locationCenter);
         }, tickDelay);
@@ -266,8 +272,11 @@ export class Entities {
      * @param {number} [tickDelay=0]  
      */
     static teleportAndCenter (entity, location, tickDelay = 0) {
+        if (!entity.isValid) return;
+
         system.runTimeout(() => {
-            //this.centerAlign(entity, 0); //why? this
+            if (!entity.isValid) return;
+            
             entity.teleport((location));
             system.runTimeout(() => { this.centerAlign(entity); }, 1);
         }, tickDelay);
@@ -567,7 +576,7 @@ export class EntityFloatingItems {
         //this is more like item stacks
         if (dimension.isChunkLoaded(location))
             return this.floatingItems(dimension, location, closest, maxDistance).length;
-        
+
         return 0;
     }
 

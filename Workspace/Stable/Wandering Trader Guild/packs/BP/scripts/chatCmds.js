@@ -17,7 +17,7 @@ const FAILURE = { status: CustomCommandStatus.Failure };
 function register_about (registry) {
     const cmd = {
         name: `${pack.cmdNameSpace}:about_wandering_trader_guild`,
-         description: `${packDisplayName} Add-on Information`,
+        description: `${packDisplayName} Add-on Information`,
         permissionLevel: CommandPermissionLevel.Any,
         cheatsRequired: false
 

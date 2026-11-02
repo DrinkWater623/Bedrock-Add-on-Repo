@@ -31,12 +31,14 @@ export function toDirection (input) {
  * @returns { 'south' | 'west' | 'north' | 'east'}
  */
 export function rotationToCardinalDirection (rotation) {
-    const posRotation=AngleMath.negativeAngleConvert(Math.floor(rotation));
-    let dirs = [ "south", "west", "north", "east", "south" ];
+    const posRotation = AngleMath.negativeAngleConvert(Math.floor(rotation));
+    /** @type {Array<'south' | 'west' | 'north' | 'east'>} */
+    const dirs = [ "south", "west", "north", "east" ];
+
     let dir = Math.round((posRotation % 360) / 90);
     if (dir < 0) dir += 4;
+    if (dir === 4) dir = 0;
 
-    //@ts-ignore    
     return dirs[ dir ];
 }
 export class CardinalDirections {

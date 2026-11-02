@@ -20,9 +20,9 @@ import { PlayerDebug } from "./common-stable/gameObjects/index.js";
 import { pack, packDisplayName } from './settings.js';
 import { dev } from "./debug.js";
 import { shelter } from "./helpers/shelters.js";
-import { Vector3Lib } from "./common-stable/tools/vectorClass.js";
-import { rotationToCardinalDirection } from "./common-stable/tools/rotationLib.js";
-import { round,getWorldTime } from "./common-stable/tools/mathLib.js";
+import { Vector3Lib } from "./common-stable/tools/index.js";
+import { rotationToCardinalDirection } from "./common-stable/tools/index.js";
+import { round,getWorldTime } from "./common-stable/tools/index.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 //==============================================================================

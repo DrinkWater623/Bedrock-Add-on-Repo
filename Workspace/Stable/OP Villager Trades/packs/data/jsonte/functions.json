@@ -1,0 +1,4 @@
+{
+    "realTitle": "(v) => Title(Replace(v, '_', ' '))",
+    "coloredTitle": "(v,c)=>'§'+c+Title(Replace(v, '_', ' '))+'§r'"
+}

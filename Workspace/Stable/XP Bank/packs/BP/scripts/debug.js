@@ -89,6 +89,7 @@ class DevCompass extends Dev {
 }
 //==============================================================================
 export const dev = new DevCompass(packDisplayName);
+//==============================================================================
 export const emitters = {
     // Console / alert channel (persistent in your console log)
     alertLog: dev.alertLog.bind(dev),

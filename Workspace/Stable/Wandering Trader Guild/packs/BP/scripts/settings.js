@@ -7,12 +7,13 @@ URL: https://github.com/DrinkWater623
 ========================================================================
 Change Log: 
     20251203 - Created
+    20260804 - Update for 1.26.10
 ========================================================================*/
 // Shared
-import { ConsoleAlert, ChatMsg } from "./common-stable/tools/messageLib";
+import { ConsoleAlert, ChatMsg } from "./common-stable/tools/index.js";
 //==============================================================================
 /**
- *  Owner is to edit this file as needed - Note: debug vars in fn-debug
+ *  Owner is to edit this file as needed - Note: debug vars in debug.js
  */
 //==============================================================================
 export const pack = {
@@ -24,7 +25,8 @@ export const pack = {
     worldLoaded: false,
     nameSpace: "dw623",
     cmdNameSpace: "wtg",
-    isLoadAlertOn: true
+    isLoadAlertsOn: true,
+    debugOn: false //important - do not release Add-ons with this true, as it was meant for debugging only
 };
 //==============================================================================
 export const packDisplayName = `§a${pack.packName}§r`;

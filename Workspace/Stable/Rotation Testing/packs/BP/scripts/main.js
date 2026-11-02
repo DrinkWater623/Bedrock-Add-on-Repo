@@ -17,8 +17,8 @@
 */
 //=============================================================================
 import { world, system, Block } from '@minecraft/server';
-import {bitArrayAdd} from './common-other/mathLib';
-import {PlayerLib} from './common-stable/playerClass'
+import {bitArrayAdd} from './common-other/index.js';
+import {PlayerLib} from './common-stable/index.js'
 //=============================================================================
 const numOfAngles = 64;
 //names of the states in the Block Json

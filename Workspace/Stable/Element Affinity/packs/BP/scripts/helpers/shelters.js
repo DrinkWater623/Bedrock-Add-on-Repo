@@ -20,7 +20,7 @@ import { shelterBuild } from "../common-stable/structures/index.js";
 // Local
 import { dev } from "../debug.js";
 import { ElementBlocks } from "./cachedData.js";
-import { BlockTypeIds } from "../common-data/BlockTypeIds.js";
+import { BlockTypeIds } from "../common-data/index.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").Vector3} Vector3 */
 /**

@@ -24,7 +24,7 @@ export function placeBlockEventHandler (event, mainhand) {
     if (!block || !block.isValid()) return;
     if (!mainhand.hasItem()) return;
 
-    const x = getAdjacentBlock(block, face);
+    const x = adjacentBlock_get(block, face);
     if (!x || x.typeId != airBlock) return;    
 
     try {

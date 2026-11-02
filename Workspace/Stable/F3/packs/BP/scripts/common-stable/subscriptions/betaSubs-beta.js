@@ -11,11 +11,12 @@ Change Log:
 // Minecraft
 import { world } from "@minecraft/server";
 // Shared
-import { SubscriptionEntry, SubscriptionOwner } from "./subscriptionBaseClass.js";
+import { SubscriptionEntry, SubscriptionOwner } from "../../common-stable/subscriptions/subscriptionBaseClass.js";
 //==============================================================================
 /** @typedef {import("@minecraft/server").BlockEventOptions} BlockEventOptions */
 //==============================================================================
 // Typedefs for handlers (function type subscribe expects).
+// @ts-ignore — beta event absent from installed stable definitions
 /** @typedef {Parameters<typeof world.beforeEvents.playerPlaceBlock.subscribe>[0]} BeforePlayerPlaceBlockHandler */
 /*
 TODO: add the rest
@@ -24,6 +25,7 @@ BETAworld.afterEvents.playerUseNameTag.subscribe((ev) => { });
 */
 //==============================================================================
 // Typedefs for stored handles (Bedrock returns the function reference).
+// @ts-ignore — beta event absent from installed stable definitions
 /** @typedef {ReturnType<typeof world.beforeEvents.playerPlaceBlock.subscribe>} BeforePlayerPlaceBlockHandle */
 //==============================================================================
 // Player subscriptions
@@ -36,6 +38,7 @@ export class BetaSubscriptions extends SubscriptionOwner {
         super("BetaSubscriptions", packName, debug);
 
         /** @type {SubscriptionEntry<BeforePlayerPlaceBlockHandler, BeforePlayerPlaceBlockHandle,BlockEventOptions>} */
+
         this.beforePlayerPlaceBlock = new SubscriptionEntry(
             this,
             "beforePlayerPlaceBlock",
@@ -59,11 +62,6 @@ export class BetaSubscriptions extends SubscriptionOwner {
             );
         }
     }
-}
-//==============================================================================
-function not_used_Block_Subs () {
-
-    world.beforeEvents.playerPlaceBlock.subscribe((ev) => { });
 }
 //==============================================================================
 // End of File

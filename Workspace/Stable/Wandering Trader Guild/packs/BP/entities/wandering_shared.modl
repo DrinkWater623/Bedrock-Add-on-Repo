@@ -3,12 +3,33 @@
     "$template": {
         "minecraft:entity": {          
             "components": {
+                "$minecraft:pushable":null,
+                "minecraft:pushable_by_entity": {},
+                "minecraft:pushable_by_block": {},
                 "minecraft:health": {"value":100,"max":100},
-                "$minecraft:damage_sensor": {
-                    "triggers": [                        
-                        {"cause":"entity_attack","deals_damage":false,"on_damage":{"event":"minecraft:start_despawn"}},
-                        {"cause":"projectile","deals_damage":false,"on_damage":{"event":"minecraft:become_scared"}},
-                        {"cause":"magic","deals_damage":true,"on_damage":{"event":"minecraft:become_scared"}}
+                "$minecraft:damage_sensor":  {
+                    "triggers": [
+                    {
+                        "cause": "entity_attack",
+                        "deals_damage": "no",
+                        "on_damage": {
+                        "event": "minecraft:become_scared"
+                        }
+                    },
+                    {
+                        "cause": "projectile",
+                        "deals_damage": "no",
+                        "on_damage": {
+                        "event": "minecraft:become_scared"
+                        }
+                    },
+                    {
+                        "cause": "magic",
+                        "deals_damage": "yes",
+                        "on_damage": {
+                        "event": "minecraft:become_scared"
+                        }
+                    }
                     ]
                 },
                 "$minecraft:despawn": {

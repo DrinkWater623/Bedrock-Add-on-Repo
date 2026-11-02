@@ -2,16 +2,16 @@
 // @ts-check
 //==============================================================================
 // Minecraft
-import { system, Player, world } from "@minecraft/server";
+import { system, Player } from "@minecraft/server";
 import { CustomCommandRegistry, CommandPermissionLevel, CustomCommandStatus, CustomCommandOrigin } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 // Shared
 // Local
 import { alertLog, pack, packDisplayName } from './settings.js';
 import { showCoordsToggle, tagToggle } from "./helpers/functions.js";
-import { Vector3Lib } from "./common-stable/tools/vectorClass.js";
-import { rotationToCardinalDirection } from "./common-stable/tools/rotationLib.js";
-import { getWorldTime, round } from "./common-stable/tools/mathLib.js";
+import { Vector3Lib } from "./common-stable/tools/index.js";
+import { rotationToCardinalDirection } from "./common-stable/tools/index.js";
+import { getWorldTime } from "./common-stable/tools/index.js";
 //==============================================================================
 const debugFunctions = false;
 //==============================================================================

@@ -27,6 +27,8 @@
   ],
   "weapon_smith_list":[
     {"ore_count":3, "tool_name":"axe"},
+    {"ore_count":3, "tool_name":"mace"},
+    {"ore_count":3, "tool_name":"spear"},
     {"ore_count":2, "tool_name":"sword"}
   ],
   "tool_list":[
@@ -34,8 +36,10 @@
     {"tool_group":1  ,"ore_count":1, "tool_name":"shovel"},
     {"tool_group":2  ,"ore_count":3, "tool_name":"pickaxe"},
     {"tool_group":3  ,"ore_count":3, "tool_name":"axe"},
+    {"tool_group":4  ,"ore_count":2, "tool_name":"spear"},
     {"tool_group":4  ,"ore_count":2, "tool_name":"sword"},
     
+    {"tool_group":5  ,"ore_count":2, "tool_name":"mace"},
     {"tool_group":5  ,"ore_count":0, "tool_name":"trident"},
     {"tool_group":6  ,"ore_count":0, "tool_name":"bow"},
     {"tool_group":6  ,"ore_count":0, "tool_name":"crossbow"},

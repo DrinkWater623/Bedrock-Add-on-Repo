@@ -12,14 +12,14 @@ Change Log
 // MC
 import { Entity, system } from "@minecraft/server";
 // Shared
-import { makeRandomName } from "../common-stable/tools/randomNames.js";
-import { leavingVerbs, Ticks } from "../common-data/globalConstantsLib.js";
+import { makeRandomName } from "../common-stable/tools/index.js";
+import { leavingVerbs, Ticks } from "../common-data/index.js";
 // Local
-import { alertLog, pack, traderJobTitles, typeIDPrefix, watchFor } from "../settings";
-import { devDebug } from "./fn-debug";
-import { toTitleCase } from "../common-stable/tools/stringLib.js";
-import { rndInt } from "../common-stable/tools/mathLib.js";
-import { DynamicPropertyLib } from "../common-stable/tools/dynamicPropertyClass.js";
+import { alertLog, traderJobTitles, typeIDPrefix } from "../settings";
+import { dev } from "../debug.js";
+import { toTitleCase } from "../common-stable/tools/index.js";
+import { rndInt } from "../common-stable/tools/index.js";
+import { DynamicPropertyLib } from "../common-stable/tools/index.js";
 //=======================================================================
 const unlessLines = [
     'someone feeds me something yummy',
@@ -114,7 +114,7 @@ function nameEntity (entity) {
         entity.setDynamicProperty('random_job', job);
         //need a copy with formatting
         entity.setDynamicProperty('nameTag', nameTag);
-        alertLog.log(`${nameTag} was named`, devDebug.entityNaming);
+        alertLog.log(`${nameTag} was named`, dev.entityNaming);
     }
 
     return nameTag;
@@ -141,7 +141,7 @@ function colorEntityName (entity, colorCode, nameTag) {
 
         nameTag = `§${colorCode[ 0 ].toLowerCase()}${name}§r`;
         entity.nameTag = nameTag;
-        alertLog.log(`${nameTag}'s name was re-colored`, devDebug.entityNaming);
+        //alertLog.log(`${nameTag}'s name was re-colored`, dev.entityNaming);
     }, 1);
 }
 //=======================================================================
@@ -170,7 +170,7 @@ function despawnWarningTimer (entity, minutes = 0, warnAt = 1) {
         }
     }, ticks);
 
-    alertLog.log(`${entity.nameTag}'s warning timer was set`, devDebug.entityTimers);
+    //alertLog.log(`${entity.nameTag}'s warning timer was set`, dev.entityTimers);
 }
 //========================================================================
 //=======================================================================

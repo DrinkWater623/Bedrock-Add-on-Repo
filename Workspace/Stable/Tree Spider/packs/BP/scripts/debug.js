@@ -20,11 +20,10 @@ import { Scoreboard, system } from "@minecraft/server";
 // Shared
 import { Ticks } from "./common-data/index.js";
 import { Dev } from './common-stable/debug/index.js';
-import { getWorldTime, Scoreboards } from "./common-stable/tools/index.js";
+import { getWorldTime } from "./common-stable/tools/index.js";
 import { Entities } from "./common-stable/gameObjects/index.js";
 // Local
 import { pack, packDisplayName, watchFor } from './settings.js';
-import { flyPopulationCheck } from "./helpers/fn-entities.js";
 //==============================================================================
 const now = () => { return `§l§gTime: ${getWorldTime().hours}:00`; };
 //==============================================================================

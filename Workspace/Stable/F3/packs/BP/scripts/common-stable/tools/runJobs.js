@@ -24,6 +24,9 @@ import { alertLog } from "../../settings.js";
  * @param {number} tickDelay
  * @param {Vector3 | undefined} [locationPreCheck=null] 
  * 
+ * Requires world-ready execution.
+ * Do not call during module initialization or system.beforeEvents.startup.
+ * A delay postpones the command, not the initial dimension lookup.
  */
 export function worldRun (command, dimension = 'overworld', tickDelay = 0, locationPreCheck = undefined) {
 
@@ -54,6 +57,9 @@ export function worldRun (command, dimension = 'overworld', tickDelay = 0, locat
  * @param {number} tickInterval
  * @returns 
  * 
+ * Requires world-ready execution.
+ * Do not call during module initialization or system.beforeEvents.startup.
+ * A delay postpones the command, not the initial dimension lookup.
  */
 export function worldRunInterval (command, dimension = 'overworld', tickInterval = 1) {
 

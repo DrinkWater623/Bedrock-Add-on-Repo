@@ -32,9 +32,9 @@ export const vanillaTools = vanillaItems.filter(item => {
     return false;
 });
 //==================================================================== 
-export const hoes=vanillaTools.filter(item => item.endsWith('_hoe'))
-export const shovels=vanillaTools.filter(item => item.endsWith('_shovel'))
-export const swords=vanillaTools.filter(item => item.endsWith('_sword'))
+export const vanillaHoes=vanillaTools.filter(item => item.endsWith('_hoe'))
+export const vanillaShovels=vanillaTools.filter(item => item.endsWith('_shovel'))
+export const vanillaSwords=vanillaTools.filter(item => item.endsWith('_sword'))
 //====================================================================
 export const vanillaWeapons = vanillaTools.filter(item => {
     if (item.endsWith('_sword')) return true;

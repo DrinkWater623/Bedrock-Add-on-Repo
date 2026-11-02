@@ -1,0 +1,37 @@
+// fn-entities.js  Wither Alert
+// @ts-check
+/* =====================================================================
+Copyright (C) 2025 DrinkWater623/PinkSalt623/Update Block Dev  
+License: GPL-3.0-only (https://www.gnu.org/licenses/gpl-3.0.html)
+CliffNotes: Using my files within Minecraft Bedrock MarketPlace is prohibited without written permission.  All code must remain freely visible and license passed along.
+URL: https://github.com/DrinkWater623
+========================================================================
+Change Log: 
+    20251206 - created 
+========================================================================*/
+/** @typedef {import("@minecraft/server").Vector3} Vector3 */
+// import { MinecraftEntityTypes, MinecraftEffectTypes } from "@minecraft/vanilla-data";
+//==============================================================================
+// Minecraft
+import { Entity, system, Block, GameMode, Player } from "@minecraft/server";
+// Shared Data
+import { Ticks } from "../common-data/index.js";
+// Shared Other
+import { makeRandomName } from "../common-stable/tools/index.js";
+import { rndInt, chance } from "../common-stable/tools/index.js";
+// Shared Stable
+import { DynamicPropertyLib } from "../common-stable/tools/index.js";
+import { EntityLib, spawnEntityAtLocation } from "../common-stable/gameObjects/entityClass.js";
+import { Vector3Lib, } from '../common-stable/tools/index.js';
+// Local
+import { devDebug } from "../debug.js";
+import { alertLog, pack, watchFor, entityDynamicVars } from '../settings.js';
+//==============================================================================
+const debugFunctions = false || devDebug.debugFunctionsOn;
+const debugOn = devDebug.debugOn;
+//==============================================================================
+//==============================================================================
+
+//====================================================================
+// End of File
+//====================================================================

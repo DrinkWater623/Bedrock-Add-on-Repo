@@ -1,0 +1,74 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.2.json",
+	"author": "DrinkWater623, Update Block Dev",
+	"name": "OP_Villager_Trades",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"mani_fest":{
+		"Debug":false,
+		"preview":false,
+		"beta":false,
+		"name": "OP Villager Trades",
+		"description": "Better trades for villagers, and more!  This is a work in progress, and will be updated over time.",
+		"license":"GPL-3.0-only",
+		"url": "https://github.com/DrinkWater623",
+		"min_engine_version": [1,26,10],
+		"BP": {
+			"header_uuid": "220f336c-9817-47fc-ad3f-641698c2f7b5",
+			"module_uuid": "0bc6782e-ff5c-4f42-9a3c-f54417929400"
+		},
+		"RP": {
+			"header_uuid": "a288e4b5-b47a-4fee-85db-d602083678d0",
+			"module_uuid": "52a0ce47-acb8-4690-b41c-c8b42b275510"
+		}
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"jsonte": {"url":"github.com/MCDevKit/regolith-library","version":"2.14.0"},
+			"dot_ignore": {"runWith":"python","script":"./filters/dot_ignore.py"},
+			"empty_ignore": {"runWith":"python","script":"./filters/empty_ignore.py"},
+			"mani_fest": {"runWith":"nodejs","script":"./filters/mani_fest.js"}
+		},
+		"profiles": {
+			"template": {
+				"export": {"readOnly":false,"target":"local"},				
+				"filters": [											
+					{"filter":"dot_ignore"},					
+					{"filter":"jsonte"},
+					{"filter":"empty_ignore"}
+				]
+			},			
+			"build": {
+				"export": {"readOnly":false,"target":"local"},				
+				"filters": [	
+					{"profile":"template"},												
+					{"filter":"mani_fest","settings":{"beta":false,"preview":false}}
+				]
+			},
+			"build-beta": {
+				"export": {"readOnly":false,"target":"local","bpName": "'BP'","rpName": "'RP'"},				
+				"filters": [	
+					{"profile":"template"},												
+					{"filter":"mani_fest","settings":{"beta":true,"preview":false}}
+				]
+			},	
+			"stable": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"profile":"template"},		
+					{"filter":"mani_fest","settings":{"beta":false}}
+				]
+			},
+			"beta": {
+				"export": {"readOnly":false,"target":"development"},
+				"filters": [
+					{"profile":"template"},			
+					{"filter":"mani_fest","settings":{"beta":true}}
+				]
+			}
+		}
+	}
+}

@@ -10,16 +10,20 @@ Last Update: 20251023 - add in stable stuff and update to api 2.0 and move debug
 ========================================================================*/
 
 //Shared
-import * as vanillaItems from "../common-data/item-data.js";
+import {
+    vanillaHoes,
+    vanillaShovels,
+    vanillaSwords
+} from "../common-data/index.js";
 //===================================================================
 const allowLongStickLikeTools=[
     "minecraft:bamboo",
     "minecraft:bone",
     "minecraft:stick",
     "minecraft:trident"
-].concat(vanillaItems.hoes)
-.concat(vanillaItems.shovels)
-.concat(vanillaItems.swords)
+].concat(vanillaHoes)
+.concat(vanillaShovels)
+.concat(vanillaSwords)
 
 //===================================================================
 /**

@@ -39,9 +39,9 @@
         {"type":2,  "body":-1,  "tools":"sword",       "optimal":0,    "max":2,    "enchantment":"fire_aspect"       },      
         {"type":2,  "body":-1,  "tools":"sword",       "optimal":0,    "max":3,    "enchantment":"looting"           },           
         {"type":2,  "body":-1,  "tools":"sword",       "optimal":0,    "max":2,    "enchantment":"knockback"         },         
-        {"type":2,  "body":-1,  "tools":"sword,axe",   "optimal":0,    "max":5,    "enchantment":"sharpness"         },         
-        {"type":2,  "body":-1,  "tools":"sword,axe",   "optimal":0,    "max":5,    "enchantment":"smite"             },
-        {"type":2,  "body":-1,  "tools":"sword,axe",   "optimal":0,    "max":5,    "enchantment":"bane_of_arthropods"}       
+        {"type":2,  "body":-1,  "tools":"sword,axe,spear",   "optimal":0,    "max":5,    "enchantment":"sharpness"         },         
+        {"type":2,  "body":-1,  "tools":"sword,axe,spear",   "optimal":0,    "max":5,    "enchantment":"smite"             },
+        {"type":2,  "body":-1,  "tools":"sword,axe,spear",   "optimal":0,    "max":5,    "enchantment":"bane_of_arthropods"}       
     ],
     "a_test":[
         {
